@@ -39,6 +39,7 @@ from .window import EartagWindow, AboutDialog
 class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id='org.dithernet.Eartag',
+                         resource_base_path='/org/dithernet/Eartag',
                          flags=Gio.ApplicationFlags.FLAGS_NONE)
 
     def do_activate(self):

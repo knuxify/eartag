@@ -28,7 +28,7 @@
 
 from .file import EartagFile
 
-from gi.repository import Adw, Gtk, GObject
+from gi.repository import Adw, Gtk, GObject, Pango
 from os.path import basename
 import mutagen
 
@@ -69,10 +69,39 @@ class EartagFileView(Adw.Bin):
     def __init__(self, path=None):
         """Initializes the EartagFileView."""
         super().__init__()
+        self.setup_editable_label(self.title_entry, _("Title"))
+        self.setup_editable_label(self.artist_entry, _("Artist"))
 
         self.file_path = path
         if path:
             self.load_file()
+
+    def setup_editable_label(self, parent, editable_placeholder):
+        """
+        Editable labels are missing a few nice features that we need
+        (namely proper centering and word wrapping), but since they're
+        just GtkStacks with a regular GtkLabel inside, we can modify
+        them to suit our needs. This function automates the process.
+        """
+
+        # The layout is:
+        # GtkEditableLabel
+        #  -> GtkStack
+        #     -> GtkStackPage
+        #        -> GtkLabel
+        # We use "get_first_child" since that's the easiest way to get
+        # the direct child of the object (EditableLabel has no get_child).
+        label = parent.get_first_child().get_pages()[0].get_child()
+        editable = parent.get_first_child().get_pages()[1].get_child()
+
+        label.set_wrap(True)
+        label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
+        label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
+        label.set_lines(3)
+        label.set_max_width_chars(128)
+        label.set_justify(Gtk.Justification.CENTER)
+
+        editable.set_placeholder_text(editable_placeholder)
 
     def load_file(self):
         """Reads the file path from self.file_path and loads the file."""
@@ -90,10 +119,10 @@ class EartagFileView(Adw.Bin):
             GObject.BindingFlags.SYNC_CREATE)
 
         # Bind the values
-        self.file.bind_property('title', self.title_entry, 'value',
+        self.file.bind_property('title', self.title_entry, 'text',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
-        self.file.bind_property('artist', self.artist_entry, 'value',
+        self.file.bind_property('artist', self.artist_entry, 'text',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
         self.file.bind_property('album', self.album_entry, 'value',

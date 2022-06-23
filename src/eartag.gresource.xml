@@ -4,6 +4,6 @@
     <file>ui/fileview.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
-    <file>gtk/help-overlay.ui</file>
+    <file>style.css</file>
   </gresource>
 </gresources>

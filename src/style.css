@@ -1,0 +1,10 @@
+/* WORKAROUND: Setting the title class overrides the opacity in the placeholder,
+   this fixes it */
+.editing.title-1 placeholder,
+.editing.title-2 placeholder,
+.editing.title-3 placeholder,
+.editing.title-4 placeholder,
+.editing.title-5 placeholder
+{
+	opacity: 0.5;
+}
