@@ -1,0 +1,9 @@
+data/org.dithernet.Eartag.desktop.in
+data/org.dithernet.Eartag.appdata.xml.in
+data/org.dithernet.Eartag.gschema.xml
+src/ui/window.ui
+src/ui/fileview.ui
+src/ui/nofile.ui
+src/main.py
+src/fileview.py
+src/window.py

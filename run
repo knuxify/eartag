@@ -1,0 +1,7 @@
+#!/bin/sh
+rm -r output
+rm -r /tmp/eartag
+meson --prefix=/tmp/eartag . output
+meson compile -C output
+meson install -C output
+GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas GTK_DEBUG=interactive /tmp/eartag/bin/eartag

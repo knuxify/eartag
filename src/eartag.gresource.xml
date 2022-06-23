@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/org/dithernet/Eartag">
+    <file>ui/fileview.ui</file>
+    <file>ui/nofile.ui</file>
+    <file>ui/window.ui</file>
+    <file>gtk/help-overlay.ui</file>
+  </gresource>
+</gresources>

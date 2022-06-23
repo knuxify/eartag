@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=eartag
+Exec=eartag
+Icon=org.dithernet.Eartag
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true
