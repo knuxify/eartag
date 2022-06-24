@@ -76,7 +76,7 @@ class EartagEditableLabel(Gtk.EditableLabel):
 
     def display_placeholder(self, *args):
         """Displays/hides placeholder in non-editing mode as needed."""
-        if self.get_text() == '':
+        if not self.get_text():
             self.label.set_label(self.placeholder)
             self.label.add_css_class('dim-label')
         else:
@@ -186,6 +186,9 @@ class EartagFileView(Adw.Bin):
             self.file.bind_property(property, _entry, 'text',
                 GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
         )
+
+        if type(entry) == EartagEditableLabel:
+            entry.notify('text')
 
     @Gtk.Template.Callback()
     def show_cover_file_chooser(self, *args):
