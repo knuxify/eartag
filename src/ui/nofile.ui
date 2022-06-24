@@ -1,52 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="EartagNoFile" parent="GtkBox">
-    <property name="orientation">vertical</property>
-    <property name="valign">center</property>
-    <property name="hexpand">true</property>
-    <property name="vexpand">true</property>
-    <property name="spacing">12</property>
-
-    <property name="margin-top">36</property>
-    <property name="margin-bottom">36</property>
-    <property name="margin-start">24</property>
-    <property name="margin-end">24</property>
-
+  <template class="EartagNoFile" parent="AdwBin">
     <child>
-      <object class="GtkLabel" id="title">
-        <property name="label">Eartag</property>
-        <property name="justify">center</property>
-        <property name="wrap">true</property>
+      <object class="GtkScrolledWindow" id="content_scroll">
+        <property name="hscrollbar-policy">never</property>
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
+        <child>
+          <object class="AdwClamp">
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="valign">center</property>
+                <property name="hexpand">true</property>
+                <property name="vexpand">true</property>
+                <property name="spacing">12</property>
 
-        <style>
-          <class name="title-1"/>
-        </style>
-      </object>
-    </child>
+                <property name="margin-top">36</property>
+                <property name="margin-bottom">36</property>
+                <property name="margin-start">24</property>
+                <property name="margin-end">24</property>
 
-    <child>
-      <object class="GtkLabel" id="description">
-        <property name="label">To edit a file's tags, drag-and-drop the file onto this window or use the buttons below.</property>
-        <property name="justify">center</property>
-        <property name="wrap">true</property>
+                <child>
+                  <object class="GtkLabel" id="title">
+                    <property name="label">Eartag</property>
+                    <property name="justify">center</property>
+                    <property name="wrap">true</property>
 
-        <style>
-          <class name="body"/>
-        </style>
-      </object>
-    </child>
+                    <style>
+                      <class name="title-1"/>
+                    </style>
+                  </object>
+                </child>
 
-    <child>
-      <object class="GtkButton" id="open_file">
-        <property name="label">Open a file</property>
-        <property name="halign">center</property>
-        <signal name="clicked" handler="on_add_file"/>
+                <child>
+                  <object class="GtkLabel" id="description">
+                    <property name="label">To edit a file's tags, drag-and-drop the file onto this window or use the buttons below.</property>
+                    <property name="justify">center</property>
+                    <property name="wrap">true</property>
 
-        <style>
-          <class name="suggested-action"/>
-          <class name="pill"/>
-        </style>
+                    <style>
+                      <class name="body"/>
+                    </style>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkButton" id="open_file">
+                    <property name="label">Open a file</property>
+                    <property name="halign">center</property>
+                    <signal name="clicked" handler="on_add_file"/>
+
+                    <style>
+                      <class name="suggested-action"/>
+                      <class name="pill"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </template>

@@ -52,7 +52,7 @@ class EartagCloseWarningDialog(Gtk.MessageDialog):
         self.window.close()
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/nofile.ui')
-class EartagNoFile(Gtk.Box):
+class EartagNoFile(Adw.Bin):
     __gtype_name__ = 'EartagNoFile'
 
     def __init__(self):

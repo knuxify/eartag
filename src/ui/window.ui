@@ -44,28 +44,16 @@
         </child>
 
         <child>
-          <object class="AdwClamp">
+          <object class="GtkStack" id="content_stack">
+            <property name="visible-child">no_file</property>
+            <property name="transition-type">crossfade</property>
+
             <child>
-              <object class="GtkScrolledWindow" id="content_scroll">
-                <property name="hscrollbar-policy">never</property>
-                <property name="hexpand">true</property>
-                <property name="vexpand">true</property>
+              <object class="EartagNoFile" id="no_file"/>
+            </child>
 
-                <child>
-                  <object class="GtkStack" id="content_stack">
-                    <property name="visible-child">no_file</property>
-                    <property name="transition-type">crossfade</property>
-
-                    <child>
-                      <object class="EartagNoFile" id="no_file"/>
-                    </child>
-
-                    <child>
-                      <object class="EartagFileView" id="file_view"/>
-                    </child>
-                  </object>
-                </child>
-              </object>
+            <child>
+              <object class="EartagFileView" id="file_view"/>
             </child>
           </object>
         </child>
