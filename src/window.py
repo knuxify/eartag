@@ -59,7 +59,7 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_file_chooser(self):
         """Shows the file chooser."""
         self.file_chooser = Gtk.FileChooserDialog(
-                                title="Open File",
+                                title=_("Open File"),
                                 transient_for=self,
                                 action=Gtk.FileChooserAction.OPEN,
                                 filter=self.audio_file_filter

@@ -143,7 +143,7 @@ class EartagFileView(Adw.Bin):
     def show_cover_file_chooser(self, *args):
         """Shows the file chooser."""
         self.file_chooser = Gtk.FileChooserDialog(
-                                title="Open File",
+                                title=_("Select Album Cover Image"),
                                 transient_for=self.get_native(),
                                 action=Gtk.FileChooserAction.OPEN,
                                 filter=self.image_file_filter
