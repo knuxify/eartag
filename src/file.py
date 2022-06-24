@@ -304,7 +304,7 @@ class EartagFileTagLib(EartagFile):
 
     @GObject.Property
     def releaseyear(self):
-        if 'DATE' in self.tl_file.tags:
+        if 'DATE' in self.tl_file.tags and self.tl_file.tags['DATE']:
             return self.tl_file.tags['DATE'][0]
         return None
 
@@ -330,6 +330,8 @@ def eartagfile_from_path(path):
     if not os.path.exists(path):
         raise ValueError
 
-    if magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
+    if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
+        magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
         return EartagFileEyed3(path)
+    print(magic.Magic(mime=True).from_file(path))
     return EartagFileTagLib(path)
