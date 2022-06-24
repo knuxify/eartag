@@ -29,6 +29,28 @@
 from gi.repository import Gtk, Adw
 from .fileview import EartagFileView
 
+@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/closewarning.ui')
+class EartagCloseWarningDialog(Gtk.MessageDialog):
+    __gtype_name__ = 'EartagCloseWarningDialog'
+
+    def __init__(self, window):
+        super().__init__(transient_for=window)
+        self.window = window
+
+    @Gtk.Template.Callback()
+    def on_button_discard(self, *args):
+        self.window.force_close = True
+        self.window.close()
+
+    @Gtk.Template.Callback()
+    def on_button_cancel(self, *args):
+        self.close()
+
+    @Gtk.Template.Callback()
+    def on_button_save(self, *args):
+        self.window.file_view.save()
+        self.window.close()
+
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/nofile.ui')
 class EartagNoFile(Gtk.Box):
     __gtype_name__ = 'EartagNoFile'
@@ -53,11 +75,14 @@ class EartagWindow(Adw.ApplicationWindow):
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
 
+    force_close = False
+
     def __init__(self, application, path=None):
         super().__init__(application=application, title='Eartag')
         if path:
             self.file_view.file_path = path
             self.file_view.load_file()
+        self.connect('close-request', self.on_close_request)
 
     def show_file_chooser(self):
         """Shows the file chooser."""
@@ -89,6 +114,13 @@ class EartagWindow(Adw.ApplicationWindow):
     @Gtk.Template.Callback()
     def on_save(self, *args):
         self.file_view.save()
+
+    def on_close_request(self, *args):
+        if self.force_close == False and self.file_view.file and \
+            self.file_view.file._is_modified:
+            self.close_request_dialog = EartagCloseWarningDialog(self)
+            self.close_request_dialog.present()
+            return True
 
 class AboutDialog(Gtk.AboutDialog):
     def __init__(self, parent):

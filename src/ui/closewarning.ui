@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagCloseWarningDialog" parent="GtkMessageDialog">
+    <property name="title" translatable="yes">Save changes before closing?</property>
+
+    <child type="action">
+      <object class="GtkButton" id="button_discard">
+        <property name="label" translatable="yes">Close without saving</property>
+        <signal name="clicked" handler="on_button_discard"/>
+        <style>
+          <class name="destructive-action"/>
+        </style>
+      </object>
+    </child>
+
+    <child type="action">
+      <object class="GtkButton" id="button_cancel">
+        <property name="label" translatable="yes">Cancel</property>
+        <signal name="clicked" handler="on_button_cancel"/>
+      </object>
+    </child>
+
+    <child type="action">
+      <object class="GtkButton" id="button_save">
+        <property name="label" translatable="yes">Save</property>
+        <signal name="clicked" handler="on_button_save"/>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -3,6 +3,7 @@ data/org.dithernet.Eartag.appdata.xml.in
 data/org.dithernet.Eartag.gschema.xml
 src/ui/window.ui
 src/ui/fileview.ui
+src/ui/closewarning.ui
 src/ui/nofile.ui
 src/main.py
 src/fileview.py
