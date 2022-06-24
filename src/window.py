@@ -53,8 +53,11 @@ class EartagWindow(Adw.ApplicationWindow):
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, application, path=None):
+        super().__init__(application=application)
+        if path:
+            self.file_view.file_path = path
+            self.file_view.load_file()
 
     def show_file_chooser(self):
         """Shows the file chooser."""

@@ -28,6 +28,8 @@
 
 import sys
 import gi
+import os.path
+import magic
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -40,12 +42,22 @@ class Application(Adw.Application):
     def __init__(self):
         super().__init__(application_id='org.dithernet.Eartag',
                          resource_base_path='/org/dithernet/Eartag',
-                         flags=Gio.ApplicationFlags.FLAGS_NONE)
+                         flags=Gio.ApplicationFlags.HANDLES_OPEN)
+        self.path = None
+        self.connect('open', self.on_open)
+
+    def on_open(self, window, filename, *args):
+        self.path = filename[0].get_path()
+        if self.path and not os.path.exists(self.path):
+            self.path = None
+        if self.path and not magic.Magic(mime=True).from_file(self.path).startswith('audio/'):
+            self.path = None
+        self.do_activate()
 
     def do_activate(self):
         win = self.props.active_window
         if not win:
-            win = EartagWindow(application=self)
+            win = EartagWindow(application=self, path=self.path)
         self.create_action('about', self.on_about_action)
         self.create_action('open_file', self.on_open_file_action)
         win.present()
