@@ -57,6 +57,7 @@ class EartagTagListItem(Adw.ActionRow):
 class EartagFileView(Adw.Bin):
     __gtype_name__ = 'EartagFileView'
 
+    album_cover_image = Gtk.Template.Child()
     title_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
     artist_entry = Gtk.Template.Child()
@@ -119,6 +120,9 @@ class EartagFileView(Adw.Bin):
             GObject.BindingFlags.SYNC_CREATE)
 
         # Bind the values
+        self.file.bind_property('cover_path', self.album_cover_image, 'file',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+
         self.file.bind_property('title', self.title_entry, 'text',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
@@ -133,6 +137,32 @@ class EartagFileView(Adw.Bin):
 
         self.file.bind_property('comment', self.comment_entry, 'value',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+
+    @Gtk.Template.Callback()
+    def show_cover_file_chooser(self, *args):
+        """Shows the file chooser."""
+        self.file_chooser = Gtk.FileChooserDialog(
+                                title="Open File",
+                                transient_for=self.get_native(),
+                                action=Gtk.FileChooserAction.OPEN,
+                                )
+        self.file_chooser.add_buttons(
+            _("_Cancel"), Gtk.ResponseType.CANCEL,
+            _("_Open"), Gtk.ResponseType.ACCEPT
+        )
+
+        self.file_chooser.connect('response', self.open_cover_file_from_dialog)
+
+        self.file_chooser.present()
+
+    def open_cover_file_from_dialog(self, dialog, response):
+        """
+        Callback for a FileChooser that takes the response and opens the file
+        selected in the dialog.
+        """
+        if response == Gtk.ResponseType.ACCEPT:
+            self.file.cover_path = dialog.get_file().get_path()
+        self.file_chooser.destroy()
 
     def save(self):
         """Saves changes to the file."""
