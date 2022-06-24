@@ -30,56 +30,41 @@ from gi.repository import GObject
 import eyed3
 import magic
 import mimetypes
+import os.path
 import taglib
 import tempfile
 
+eyed3.log.setLevel("ERROR")
+
 class EartagFile(GObject.Object):
-    """GObject wrapper that provides information about a file."""
+    """
+    Generic base for GObject wrappers that provide information about a music
+    file.
+
+    The following functions are implemented by the subclasses:
+      - save() - saves the changes to a file.
+    """
     __gtype_name__ = 'EartagFile'
 
-    handled_properties = ['title', 'artist', 'album', 'albumartist', 'releaseyear', 'comment']
+    handled_properties = ['title', 'artist', 'album', 'albumartist', 'genre', 'releaseyear', 'comment']
     _is_modified = False
-    _is_cover_modified = False
 
     def __init__(self, path):
         """Initializes an EartagFile for the given file path."""
         super().__init__()
-        try:
-            self.tl_file = taglib.File(path)
-        except OSError:
-            # TODO: display some kind of user-friendly warning about this
-            raise ValueError
 
-        if mimetypes.guess_type(path)[0] == 'audio/mpeg':
-            # We're dealing with an mp3 file, use eyed3 for coverart
-            self.eyed3_file = eyed3.load(path)
-            if not self.eyed3_file.tag:
-                self.eyed3_file.initTag()
-                self.eyed3_file.tag.save()
+        self.path = path
 
         for prop in self.handled_properties:
             self.notify(prop)
         self.notify('is_modified')
 
-        self.load_cover()
-
-    def __del__(self, *args):
-        if self.image_file:
-            self.image_file.close()
-        if self.eyed3_file:
-            self.eyed3_file = None
-        self.tl_file.close()
-
-    def save(self):
-        """Saves the changes to the file."""
-        self.tl_file.save()
-        if self.eyed3_file and self._is_cover_modified:
-            self.eyed3_file.tag.save()
-        self._is_modified = False
+    def mark_as_modified(self):
+        self._is_modified = True
         self.notify('is_modified')
 
-    def set_modified(self):
-        self._is_modified = True
+    def mark_as_unmodified(self):
+        self._is_modified = False
         self.notify('is_modified')
 
     @GObject.Property(type=bool, default=False)
@@ -87,37 +72,31 @@ class EartagFile(GObject.Object):
         """Returns whether the values have been modified or not."""
         return self._is_modified
 
-    def load_cover(self):
-        """Loads the album cover from the file."""
-        cover = None
-        mime_type = None
-        if self.eyed3_file:
-            images = list(self.eyed3_file.tag.images)
-            for image in images:
-                if image.picture_type in [0, 3]: # OTHER, FRONT_COVER
-                    cover = image
-                    mime_type = image.mime_type
-                    picture = image.image_data
-                    self.cover_picture_type = image.picture_type
-                    break
 
-        # We create a temporary file with the image cover so that it can be
-        # loaded by GtkImage. No point in trying to set up fancy GdkPixbuf
-        # machinery.
-        if cover:
-            self.image_file = tempfile.NamedTemporaryFile(
-                suffix=mimetypes.guess_extension(mime_type)
-            )
-            self.image_file.write(picture)
-            self._cover_path = self.image_file.name
-        else:
-            self.image_file = None
-            self._cover_path = None
-            self.cover_picture_type = 0
-        self.notify('cover_path')
-        self.set_modified()
+class EartagFileEyed3(EartagFile):
+    """EartagFile handler that uses eyed3. Used for mp3 files."""
+    __gtype_name__ = 'EartagFileEyed3'
 
-    # GObject properties
+    _cover_path = None
+
+    def __init__(self, path):
+        super().__init__(path)
+        self.e3_file = eyed3.load(path)
+        if not self.e3_file.tag:
+            self.e3_file.initTag()
+            self.e3_file.tag.save()
+        self.load_cover()
+
+    def save(self):
+        self.e3_file.tag.save()
+        self.mark_as_unmodified()
+
+    def __del__(self, *args):
+        if self.coverart_tempfile:
+            self.coverart_tempfile.close()
+        self.e3_file = None
+
+    # Cover-art support
 
     @GObject.Property(type=str)
     def cover_path(self):
@@ -128,9 +107,145 @@ class EartagFile(GObject.Object):
         self._cover_path = value
         mime_type = magic.Magic(mime=True).from_file(value)
         with open(value, 'rb') as cover_art:
-            self.eyed3_file.tag.images.set(0, cover_art.read(), mime_type)
-        self.set_modified()
-        self._is_cover_modified = True
+            # TODO: We currently set the cover to 0 (OTHER), we should give
+            # the user the option to use FRONT_COVER, with the necessary
+            # warnings about incompatibilities, etc.
+            self.e3_file.tag.images.set(0, cover_art.read(), mime_type)
+        self.mark_as_modified()
+
+    def load_cover(self):
+        """Loads the album cover from the file."""
+        cover = None
+        mime_type = None
+        images = list(self.e3_file.tag.images)
+        for image in images:
+            if image.picture_type in [0, 3]: # OTHER, FRONT_COVER
+                cover = image
+                mime_type = image.mime_type
+                picture = image.image_data
+                self.cover_picture_type = image.picture_type
+                break
+
+        # We create a temporary file with the image cover so that it can be
+        # loaded by GtkImage. No point in trying to set up fancy GdkPixbuf
+        # machinery.
+        if cover:
+            self.coverart_tempfile = tempfile.NamedTemporaryFile(
+                suffix=mimetypes.guess_extension(mime_type)
+            )
+            self.coverart_tempfile.write(picture)
+            self._cover_path = self.coverart_tempfile.name
+        else:
+            self.coverart_tempfile = None
+            self._cover_path = None
+        self.notify('cover_path')
+        self.mark_as_modified()
+
+    # Main properties
+
+    @GObject.Property(type=str)
+    def title(self):
+        if self.e3_file.tag.title:
+            return self.e3_file.tag.title
+        return ''
+
+    @title.setter
+    def title(self, value):
+        self.e3_file.tag.title = value
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def artist(self):
+        if self.e3_file.tag.artist:
+            return self.e3_file.tag.artist
+        return ''
+
+    @artist.setter
+    def artist(self, value):
+        self.e3_file.tag.artist = value
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def album(self):
+        if self.e3_file.tag.album:
+            return self.e3_file.tag.album
+        return ''
+
+    @album.setter
+    def album(self, value):
+        self.e3_file.tag.album = value
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def albumartist(self):
+        if self.e3_file.tag.album_artist:
+            return self.e3_file.tag.album_artist
+        return ''
+
+    @albumartist.setter
+    def albumartist(self, value):
+        self.e3_file.tag.album_artist = value
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def genre(self):
+        if self.e3_file.tag.genre:
+            return self.e3_file.tag.genre
+        return ''
+
+    @genre.setter
+    def genre(self, value):
+        self.e3_file.tag.genre = value
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def releaseyear(self):
+        if self.e3_file.tag.release_date:
+            return self.e3_file.tag.release_date
+        return ''
+
+    @releaseyear.setter
+    def releaseyear(self, value):
+        try:
+            self.e3_file.tag.release_date = int(value)
+        except ValueError:
+            # eyed3 is very loud about "incorrect release dates". Shut it up.
+            pass
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def comment(self):
+        if self.e3_file.tag.comments:
+            return self.e3_file.tag.comments[0]
+        return ''
+
+    @comment.setter
+    def comment(self, value):
+        self.e3_file.tag.comments[0] = value
+        self.mark_as_modified()
+
+class EartagFileTagLib(EartagFile):
+    """EartagFile handler that uses pytaglib. Used for non-mp3 files."""
+    __gtype_name__ = 'EartagFileTagLib'
+
+    def __init__(self, path):
+        super().__init__(path)
+        self.tl_file = taglib.File(path)
+
+    def save(self):
+        """Saves the changes to the file."""
+        self.tl_file.save()
+        self.mark_as_unmodified()
+
+    def __del__(self, *args):
+        self.tl_file.close()
+
+    # Main properties
+
+    @GObject.Property(type=str)
+    def cover_path(self):
+        # No cover art support :(
+        return None
 
     @GObject.Property(type=str)
     def title(self):
@@ -139,9 +254,9 @@ class EartagFile(GObject.Object):
         return ''
 
     @title.setter
-    def set_title(self, value):
+    def title(self, value):
         self.tl_file.tags['TITLE'] = [value]
-        self.set_modified()
+        self.mark_as_modified()
 
     @GObject.Property(type=str)
     def artist(self):
@@ -150,9 +265,9 @@ class EartagFile(GObject.Object):
         return ''
 
     @artist.setter
-    def set_artist(self, value):
+    def artist(self, value):
         self.tl_file.tags['ARTIST'] = [value]
-        self.set_modified()
+        self.mark_as_modified()
 
     @GObject.Property(type=str)
     def album(self):
@@ -161,9 +276,9 @@ class EartagFile(GObject.Object):
         return ''
 
     @album.setter
-    def set_album(self, value):
+    def album(self, value):
         self.tl_file.tags['ALBUM'] = [value]
-        self.set_modified()
+        self.mark_as_modified()
 
     @GObject.Property(type=str)
     def albumartist(self):
@@ -172,9 +287,9 @@ class EartagFile(GObject.Object):
         return ''
 
     @albumartist.setter
-    def set_albumartist(self, value):
+    def albumartist(self, value):
         self.tl_file.tags['ALBUMARTIST'] = [value]
-        self.set_modified()
+        self.mark_as_modified()
 
     @GObject.Property(type=str)
     def genre(self):
@@ -183,20 +298,20 @@ class EartagFile(GObject.Object):
         return ''
 
     @genre.setter
-    def set_genre(self, value):
+    def genre(self, value):
         self.tl_file.tags['GENRE'] = [value]
-        self.set_modified()
+        self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property
     def releaseyear(self):
         if 'DATE' in self.tl_file.tags:
             return self.tl_file.tags['DATE'][0]
-        return ''
+        return None
 
     @releaseyear.setter
-    def set_releaseyear(self, value):
+    def releaseyear(self, value):
         self.tl_file.tags['DATE'] = [value]
-        self.set_modified()
+        self.mark_as_modified()
 
     @GObject.Property(type=str)
     def comment(self):
@@ -205,6 +320,16 @@ class EartagFile(GObject.Object):
         return ''
 
     @comment.setter
-    def set_comment(self, value):
+    def comment(self, value):
         self.tl_file.tags['COMMENT'] = [value]
-        self.set_modified()
+        self.mark_as_modified()
+
+
+def eartagfile_from_path(path):
+    """Returns an EartagFile subclass for the provided file."""
+    if not os.path.exists(path):
+        raise ValueError
+
+    if mimetypes.guess_type(path)[0] == 'audio/mpeg':
+        return EartagFileEyed3(path)
+    return EartagFileTagLib(path)

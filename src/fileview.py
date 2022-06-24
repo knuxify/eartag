@@ -26,7 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from .file import EartagFile
+from .file import eartagfile_from_path
 
 from gi.repository import Adw, Gtk, GObject, Pango
 from os.path import basename
@@ -120,10 +120,7 @@ class EartagFileView(Adw.Bin):
                 binding.unbind()
             self.bindings = []
 
-        self.file = EartagFile(self.file_path)
-        if not self.file:
-            # TODO: add some kind of user-facing warning?
-            raise ValueError("File is not recognized by mutagen")
+        self.file = eartagfile_from_path(self.file_path)
 
         window = self.get_native()
         window.save_button.set_visible(True)
