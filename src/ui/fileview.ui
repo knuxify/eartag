@@ -35,8 +35,8 @@
                 <property name="spacing">6</property>
 
                 <child>
-                  <object class="GtkEditableLabel" id="title_entry">
-                    <property name="xalign">0.5</property>
+                  <object class="EartagEditableLabel" id="title_entry">
+                    <property name="placeholder" translatable="yes">Title</property>
                     <style>
                       <class name="title-1"/>
                     </style>
@@ -44,8 +44,8 @@
                 </child>
 
                 <child>
-                  <object class="GtkEditableLabel" id="artist_entry">
-                    <property name="xalign">0.5</property>
+                  <object class="EartagEditableLabel" id="artist_entry">
+                    <property name="placeholder" translatable="yes">Artist</property>
                     <style>
                       <class name="title-3"/>
                     </style>
