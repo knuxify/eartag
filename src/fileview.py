@@ -30,28 +30,33 @@ from .file import EartagFile
 
 from gi.repository import Adw, Gtk, GObject, Pango
 from os.path import basename
-import mutagen
+import re
 
 class EartagTagListItem(Adw.ActionRow):
     __gtype_name__ = 'EartagTagListItem'
 
-    def __init__(self, path=None):
+    _is_numeric = False
+
+    def __init__(self):
         super().__init__(can_target=False, focusable=False, focus_on_click=False)
         self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
         self.add_suffix(self.value_entry)
         self.set_activatable_widget(self.value_entry)
-        self.value_entry.connect('changed', self.do_notify)
 
-    def do_notify(self, *args):
-        self.notify('value')
+    def disallow_nonnumeric(self, entry, text, length, position, *args):
+        if text and not text.isdigit():
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
 
-    @GObject.Property(type=str)
-    def value(self):
-        return self.value_entry.get_text()
+    @GObject.Property(type=bool, default=False)
+    def is_numeric(self):
+        return self._is_numeric
 
-    @value.setter
-    def set_value(self, value):
-        self.value_entry.set_text(value)
+    @is_numeric.setter
+    def set_is_numeric(self, value):
+        self._is_numeric = value
+        if value == True:
+            self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
+            self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/fileview.ui')
 class EartagFileView(Adw.Bin):
@@ -59,10 +64,12 @@ class EartagFileView(Adw.Bin):
 
     album_cover_image = Gtk.Template.Child()
     title_entry = Gtk.Template.Child()
-    comment_entry = Gtk.Template.Child()
     artist_entry = Gtk.Template.Child()
     album_entry = Gtk.Template.Child()
     albumartist_entry = Gtk.Template.Child()
+    genre_entry = Gtk.Template.Child()
+    releaseyear_entry = Gtk.Template.Child()
+    comment_entry = Gtk.Template.Child()
 
     image_file_filter = Gtk.Template.Child()
     toast_overlay = Gtk.Template.Child()
@@ -130,13 +137,19 @@ class EartagFileView(Adw.Bin):
         self.file.bind_property('artist', self.artist_entry, 'text',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
-        self.file.bind_property('album', self.album_entry, 'value',
+        self.file.bind_property('album', self.album_entry.value_entry, 'text',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
-        self.file.bind_property('albumartist', self.albumartist_entry, 'value',
+        self.file.bind_property('albumartist', self.albumartist_entry.value_entry, 'text',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
-        self.file.bind_property('comment', self.comment_entry, 'value',
+        self.file.bind_property('genre', self.genre_entry.value_entry, 'text',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+
+        self.file.bind_property('releaseyear', self.releaseyear_entry.value_entry, 'text',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+
+        self.file.bind_property('comment', self.comment_entry.value_entry, 'text',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
 
     @Gtk.Template.Callback()

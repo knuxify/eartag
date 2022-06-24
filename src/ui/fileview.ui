@@ -76,6 +76,19 @@
                 </child>
 
                 <child>
+                  <object class="EartagTagListItem" id="genre_entry">
+                    <property name="title" translatable="yes">Genre</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="EartagTagListItem" id="releaseyear_entry">
+                    <property name="title" translatable="yes">Release year</property>
+                    <property name="is-numeric">true</property>
+                  </object>
+                </child>
+
+                <child>
                   <object class="EartagTagListItem" id="comment_entry">
                     <property name="title" translatable="yes">Comment</property>
                   </object>

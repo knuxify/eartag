@@ -37,7 +37,7 @@ class EartagFile(GObject.Object):
     """GObject wrapper that provides information about a file."""
     __gtype_name__ = 'EartagFile'
 
-    handled_properties = ['title', 'artist', 'album', 'albumartist', 'comment']
+    handled_properties = ['title', 'artist', 'album', 'albumartist', 'releaseyear', 'comment']
     _is_modified = False
     _is_cover_modified = False
 
@@ -110,7 +110,6 @@ class EartagFile(GObject.Object):
             )
             self.image_file.write(picture)
             self._cover_path = self.image_file.name
-            print(self._cover_path)
         else:
             self.image_file = None
             self._cover_path = None
@@ -175,6 +174,28 @@ class EartagFile(GObject.Object):
     @albumartist.setter
     def set_albumartist(self, value):
         self.tl_file.tags['ALBUMARTIST'] = [value]
+        self.set_modified()
+
+    @GObject.Property(type=str)
+    def genre(self):
+        if 'GENRE' in self.tl_file.tags:
+            return self.tl_file.tags['GENRE'][0]
+        return ''
+
+    @genre.setter
+    def set_genre(self, value):
+        self.tl_file.tags['GENRE'] = [value]
+        self.set_modified()
+
+    @GObject.Property(type=str)
+    def releaseyear(self):
+        if 'DATE' in self.tl_file.tags:
+            return self.tl_file.tags['DATE'][0]
+        return ''
+
+    @releaseyear.setter
+    def set_releaseyear(self, value):
+        self.tl_file.tags['DATE'] = [value]
         self.set_modified()
 
     @GObject.Property(type=str)
