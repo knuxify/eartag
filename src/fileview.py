@@ -74,6 +74,7 @@ class EartagFileView(Adw.Bin):
     image_file_filter = Gtk.Template.Child()
     toast_overlay = Gtk.Template.Child()
     file = None
+    bindings = []
 
     def __init__(self, path=None):
         """Initializes the EartagFileView."""
@@ -114,6 +115,11 @@ class EartagFileView(Adw.Bin):
 
     def load_file(self):
         """Reads the file path from self.file_path and loads the file."""
+        if self.bindings:
+            for binding in self.bindings:
+                binding.unbind()
+            self.bindings = []
+
         self.file = EartagFile(self.file_path)
         if not self.file:
             # TODO: add some kind of user-facing warning?
@@ -124,33 +130,33 @@ class EartagFileView(Adw.Bin):
         window.window_title.set_subtitle(basename(self.file_path))
         window.content_stack.set_visible_child(self)
 
-        self.file.bind_property('is_modified', window.save_button, 'sensitive',
-            GObject.BindingFlags.SYNC_CREATE)
+        self.bindings.append(
+            self.file.bind_property('is_modified', window.save_button, 'sensitive',
+                GObject.BindingFlags.SYNC_CREATE)
+        )
 
-        # Bind the values
-        self.file.bind_property('cover_path', self.album_cover_image, 'file',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        self.bindings.append(
+            self.file.bind_property('cover_path', self.album_cover_image, 'file',
+                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        )
 
-        self.file.bind_property('title', self.title_entry, 'text',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        self.setup_entry(self.title_entry, 'title')
+        self.setup_entry(self.artist_entry, 'artist')
+        self.setup_entry(self.album_entry, 'album')
+        self.setup_entry(self.albumartist_entry, 'albumartist')
+        self.setup_entry(self.genre_entry, 'genre')
+        self.setup_entry(self.releaseyear_entry, 'releaseyear')
+        self.setup_entry(self.comment_entry, 'comment')
 
-        self.file.bind_property('artist', self.artist_entry, 'text',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+    def setup_entry(self, entry, property):
+        _entry = entry
+        if type(entry) == EartagTagListItem:
+            _entry = entry.value_entry
 
-        self.file.bind_property('album', self.album_entry.value_entry, 'text',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-
-        self.file.bind_property('albumartist', self.albumartist_entry.value_entry, 'text',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-
-        self.file.bind_property('genre', self.genre_entry.value_entry, 'text',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-
-        self.file.bind_property('releaseyear', self.releaseyear_entry.value_entry, 'text',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-
-        self.file.bind_property('comment', self.comment_entry.value_entry, 'text',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        self.bindings.append(
+            self.file.bind_property(property, _entry, 'text',
+                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        )
 
     @Gtk.Template.Callback()
     def show_cover_file_chooser(self, *args):
