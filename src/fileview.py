@@ -154,7 +154,9 @@ class EartagFileView(Adw.Bin):
 
         window = self.get_native()
         window.save_button.set_visible(True)
-        window.window_title.set_subtitle(basename(self.file_path))
+        file_basename = basename(self.file_path)
+        window.set_title('{f} — Eartag'.format(f=file_basename))
+        window.window_title.set_subtitle(file_basename)
         window.content_stack.set_visible_child(self)
 
         self.bindings.append(
