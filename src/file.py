@@ -55,10 +55,6 @@ class EartagFile(GObject.Object):
 
         self.path = path
 
-        for prop in self.handled_properties:
-            self.notify(prop)
-        self.notify('is_modified')
-
     def mark_as_modified(self):
         self._is_modified = True
         self.notify('is_modified')
@@ -86,6 +82,10 @@ class EartagFileEyed3(EartagFile):
             self.e3_file.initTag()
             self.e3_file.tag.save()
         self.load_cover()
+
+        for prop in self.handled_properties:
+            self.notify(prop)
+        self.notify('is_modified')
 
     def save(self):
         self.e3_file.tag.save()
@@ -139,7 +139,6 @@ class EartagFileEyed3(EartagFile):
             self.coverart_tempfile = None
             self._cover_path = None
         self.notify('cover_path')
-        self.mark_as_modified()
 
     # Main properties
 
@@ -231,6 +230,10 @@ class EartagFileTagLib(EartagFile):
     def __init__(self, path):
         super().__init__(path)
         self.tl_file = taglib.File(path)
+
+        for prop in self.handled_properties:
+            self.notify(prop)
+        self.notify('is_modified')
 
     def save(self):
         """Saves the changes to the file."""
