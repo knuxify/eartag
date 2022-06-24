@@ -27,7 +27,7 @@
 # authorization.
 
 from gi.repository import GObject
-import mutagen
+import taglib
 
 class EartagFile(GObject.Object):
     """GObject wrapper that provides information about a file."""
@@ -39,8 +39,9 @@ class EartagFile(GObject.Object):
     def __init__(self, path):
         """Initializes an EartagFile for the given file path."""
         super().__init__()
-        self.mg_file = mutagen.File(path, easy=True)
-        if not self.mg_file:
+        try:
+            self.tl_file = taglib.File(path)
+        except OSError:
             # TODO: display some kind of user-friendly warning about this
             raise ValueError
 
@@ -50,7 +51,7 @@ class EartagFile(GObject.Object):
 
     def save(self):
         """Saves the changes to the file."""
-        self.mg_file.save()
+        self.tl_file.save()
         self._is_modified = False
         self.notify('is_modified')
 
@@ -67,55 +68,55 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=str)
     def title(self):
-        if 'title' in self.mg_file:
-            return self.mg_file['title'][0]
+        if 'TITLE' in self.tl_file.tags:
+            return self.tl_file.tags['TITLE'][0]
         return ''
 
     @title.setter
     def set_title(self, value):
-        self.mg_file['title'] = [value]
+        self.tl_file.tags['TITLE'] = [value]
         self.set_modified()
 
     @GObject.Property(type=str)
     def artist(self):
-        if 'artist' in self.mg_file:
-            return self.mg_file['artist'][0]
+        if 'ARTIST' in self.tl_file.tags:
+            return self.tl_file.tags['ARTIST'][0]
         return ''
 
     @artist.setter
     def set_artist(self, value):
-        self.mg_file['artist'] = [value]
+        self.tl_file.tags['ARTIST'] = [value]
         self.set_modified()
 
     @GObject.Property(type=str)
     def album(self):
-        if 'album' in self.mg_file:
-            return self.mg_file['album'][0]
+        if 'ALBUM' in self.tl_file.tags:
+            return self.tl_file.tags['ALBUM'][0]
         return ''
 
     @album.setter
     def set_album(self, value):
-        self.mg_file['album'] = [value]
+        self.tl_file.tags['ALBUM'] = [value]
         self.set_modified()
 
     @GObject.Property(type=str)
     def albumartist(self):
-        if 'albumartist' in self.mg_file:
-            return self.mg_file['albumartist'][0]
+        if 'ALBUMARTIST' in self.tl_file.tags:
+            return self.tl_file.tags['ALBUMARTIST'][0]
         return ''
 
     @albumartist.setter
     def set_albumartist(self, value):
-        self.mg_file['albumartist'] = [value]
+        self.tl_file.tags['ALBUMARTIST'] = [value]
         self.set_modified()
 
     @GObject.Property(type=str)
     def comment(self):
-        if 'comment' in self.mg_file:
-            return self.mg_file['comment'][0]
+        if 'COMMENT' in self.tl_file.tags:
+            return self.tl_file.tags['COMMENT'][0]
         return ''
 
     @comment.setter
     def set_comment(self, value):
-        self.mg_file['comment'] = [value]
+        self.tl_file.tags['COMMENT'] = [value]
         self.set_modified()
