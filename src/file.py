@@ -67,7 +67,7 @@ class EartagFile(GObject.Object):
         if self.image_file:
             self.image_file.close()
         if self.eyed3_file:
-            self.eyed3_file.close()
+            self.eyed3_file = None
         self.tl_file.close()
 
     def save(self):
