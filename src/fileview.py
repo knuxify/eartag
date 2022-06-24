@@ -64,6 +64,7 @@ class EartagFileView(Adw.Bin):
     album_entry = Gtk.Template.Child()
     albumartist_entry = Gtk.Template.Child()
 
+    image_file_filter = Gtk.Template.Child()
     toast_overlay = Gtk.Template.Child()
     file = None
 
@@ -145,6 +146,7 @@ class EartagFileView(Adw.Bin):
                                 title="Open File",
                                 transient_for=self.get_native(),
                                 action=Gtk.FileChooserAction.OPEN,
+                                filter=self.image_file_filter
                                 )
         self.file_chooser.add_buttons(
             _("_Cancel"), Gtk.ResponseType.CANCEL,

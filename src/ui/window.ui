@@ -73,6 +73,12 @@
     </child>
   </template>
 
+  <object class="GtkFileFilter" id="audio_file_filter">
+    <mime-types>
+      <mime-type>audio/*</mime-type>
+    </mime-types>
+  </object>
+
   <menu id="primary_menu">
     <section>
       <item>

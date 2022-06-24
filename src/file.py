@@ -110,6 +110,7 @@ class EartagFile(GObject.Object):
             )
             self.image_file.write(picture)
             self._cover_path = self.image_file.name
+            print(self._cover_path)
         else:
             self.image_file = None
             self._cover_path = None

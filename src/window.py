@@ -48,6 +48,8 @@ class EartagWindow(Adw.ApplicationWindow):
     window_title = Gtk.Template.Child()
     content_stack = Gtk.Template.Child()
 
+    audio_file_filter = Gtk.Template.Child()
+
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
 
@@ -60,6 +62,7 @@ class EartagWindow(Adw.ApplicationWindow):
                                 title="Open File",
                                 transient_for=self,
                                 action=Gtk.FileChooserAction.OPEN,
+                                filter=self.audio_file_filter
                                 )
         self.file_chooser.add_buttons(
             _("_Cancel"), Gtk.ResponseType.CANCEL,
