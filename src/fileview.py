@@ -78,9 +78,9 @@ class EartagEditableLabel(Gtk.EditableLabel):
         """Displays/hides placeholder in non-editing mode as needed."""
         if self.get_text() == '':
             self.label.set_label(self.placeholder)
-            self.label.add_css_class('placeholder')
+            self.label.add_css_class('dim-label')
         else:
-            self.label.remove_css_class('placeholder')
+            self.label.remove_css_class('dim-label')
 
     @GObject.Property(type=str)
     def placeholder(self):
