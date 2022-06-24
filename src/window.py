@@ -29,6 +29,32 @@
 from gi.repository import Gtk, Adw
 from .fileview import EartagFileView
 
+@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/discardwarning.ui')
+class EartagDiscardWarningDialog(Gtk.MessageDialog):
+    __gtype_name__ = 'EartagDiscardWarningDialog'
+
+    def __init__(self, window, file_path):
+        super().__init__(transient_for=window)
+        self.window = window
+        self.file_path = file_path
+
+    @Gtk.Template.Callback()
+    def on_dbutton_discard(self, *args):
+        self.window.file_view.file_path = self.file_path
+        self.window.file_view.load_file()
+        self.close()
+
+    @Gtk.Template.Callback()
+    def on_dbutton_cancel(self, *args):
+        self.close()
+
+    @Gtk.Template.Callback()
+    def on_dbutton_save(self, *args):
+        self.window.file_view.save()
+        self.window.file_view.file_path = self.file_path
+        self.window.file_view.load_file()
+        self.close()
+
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/closewarning.ui')
 class EartagCloseWarningDialog(Gtk.MessageDialog):
     __gtype_name__ = 'EartagCloseWarningDialog'
@@ -106,10 +132,15 @@ class EartagWindow(Adw.ApplicationWindow):
         Callback for a FileChooser that takes the response and opens the file
         selected in the dialog.
         """
-        if response == Gtk.ResponseType.ACCEPT:
-            self.file_view.file_path = dialog.get_file().get_path()
-            self.file_view.load_file()
         self.file_chooser.destroy()
+        if response == Gtk.ResponseType.ACCEPT:
+            file_path = dialog.get_file().get_path()
+            if self.file_view.file and self.file_view.file._is_modified:
+                self.discard_warning = EartagDiscardWarningDialog(self, file_path)
+                self.discard_warning.show()
+                return False
+            self.file_view.file_path = file_path
+            self.file_view.load_file()
 
     @Gtk.Template.Callback()
     def on_save(self, *args):
