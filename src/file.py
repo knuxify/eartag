@@ -333,5 +333,4 @@ def eartagfile_from_path(path):
     if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
         magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
         return EartagFileEyed3(path)
-    print(magic.Magic(mime=True).from_file(path))
     return EartagFileTagLib(path)
