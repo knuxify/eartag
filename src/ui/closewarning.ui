@@ -2,7 +2,8 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="EartagCloseWarningDialog" parent="GtkMessageDialog">
-    <property name="title" translatable="yes">Save changes before closing?</property>
+    <property name="text" translatable="yes">Save changes before closing?</property>
+    <property name="secondary-text" translatable="yes">If you don't save your changes, they will be permanently lost.</property>
 
     <child type="action">
       <object class="GtkButton" id="button_discard">
