@@ -12,3 +12,7 @@
 label.placeholder {
 	opacity: 0.5;
 }
+
+.artist {
+	font-weight: normal;
+}

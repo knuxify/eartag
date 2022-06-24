@@ -48,6 +48,7 @@
                     <property name="placeholder" translatable="yes">Artist</property>
                     <style>
                       <class name="title-3"/>
+                      <class name="artist"/>
                     </style>
                   </object>
                 </child>
