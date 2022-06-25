@@ -30,6 +30,7 @@ from .file import eartagfile_from_path
 
 from gi.repository import Adw, Gtk, GObject, Pango
 from os.path import basename
+import traceback
 
 class EartagEditableLabel(Gtk.EditableLabel):
     """
@@ -148,11 +149,25 @@ class EartagFileView(Adw.Bin):
                 binding.unbind()
             self.bindings = []
 
-        self.file = eartagfile_from_path(self.file_path)
+        file_basename = basename(self.file_path)
+
+        try:
+            self.file = eartagfile_from_path(self.file_path)
+        except:
+            traceback.print_exc()
+            self.error_dialog = Gtk.MessageDialog(
+                                    transient_for=self.get_native(),
+                                    buttons=Gtk.ButtonsType.OK,
+                                    message_type=Gtk.MessageType.ERROR,
+                                    text=_("Failed to load file"),
+                                    secondary_text=_("Could not load file {f}. Check the logs for more information.").format(f=file_basename)
+            )
+            self.error_dialog.connect('response', self.close_dialog)
+            self.error_dialog.show()
+            return False
 
         window = self.get_native()
         window.save_button.set_visible(True)
-        file_basename = basename(self.file_path)
         window.set_title('{f} — Eartag'.format(f=file_basename))
         window.window_title.set_subtitle(file_basename)
         window.content_stack.set_visible_child(self)
@@ -189,6 +204,9 @@ class EartagFileView(Adw.Bin):
 
         if type(entry) == EartagEditableLabel:
             entry.notify('text')
+
+    def close_dialog(self, dialog, *args):
+        dialog.close()
 
     @Gtk.Template.Callback()
     def show_cover_file_chooser(self, *args):

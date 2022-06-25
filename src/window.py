@@ -26,11 +26,12 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import Adw, Gdk, Gio, Gtk
 from .fileview import EartagFileView
-import os.path
+
+from gi.repository import Adw, Gdk, Gio, Gtk
 import magic
 import mimetypes
+import os.path
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Gtk.MessageDialog):

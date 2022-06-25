@@ -74,6 +74,7 @@ class EartagFileEyed3(EartagFile):
     __gtype_name__ = 'EartagFileEyed3'
 
     _cover_path = None
+    e3_file = None
 
     def __init__(self, path):
         super().__init__(path)
@@ -88,7 +89,8 @@ class EartagFileEyed3(EartagFile):
         self.notify('is_modified')
 
     def save(self):
-        self.e3_file.tag.save()
+        if self.e3_file:
+            self.e3_file.tag.save()
         self.mark_as_unmodified()
 
     def __del__(self, *args):
@@ -227,6 +229,8 @@ class EartagFileTagLib(EartagFile):
     """EartagFile handler that uses pytaglib. Used for non-mp3 files."""
     __gtype_name__ = 'EartagFileTagLib'
 
+    tl_file = None
+
     def __init__(self, path):
         super().__init__(path)
         self.tl_file = taglib.File(path)
@@ -237,11 +241,13 @@ class EartagFileTagLib(EartagFile):
 
     def save(self):
         """Saves the changes to the file."""
-        self.tl_file.save()
+        if self.tl_file:
+            self.tl_file.save()
         self.mark_as_unmodified()
 
     def __del__(self, *args):
-        self.tl_file.close()
+        if self.tl_file:
+            self.tl_file.close()
 
     # Main properties
 
