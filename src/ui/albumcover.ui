@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagAlbumCover" parent="GtkButton">
+    <property name="width-request">196</property>
+    <property name="height-request">196</property>
+    <property name="halign">center</property>
+    <property name="valign">start</property>
+    <property name="hexpand">false</property>
+    <property name="vexpand">false</property>
+    <property name="tooltip-text">Album cover</property>
+    <signal name="clicked" handler="show_cover_file_chooser"/>
+
+    <style>
+      <class name="album-cover"/>
+    </style>
+
+    <child>
+      <object class="GtkStack" id="preview_stack">
+        <property name="hexpand">true</property>
+        <property name="visible-child">no_cover</property>
+
+        <child>
+          <object class="GtkImage" id="no_cover">
+            <property name="icon-name">folder-music-symbolic</property>
+            <property name="pixel-size">96</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkImage" id="cover_image">
+            <property name="hexpand">true</property>
+            <property name="vexpand">true</property>
+            <property name="pixel-size">196</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+
+  <object class="GtkFileFilter" id="image_file_filter">
+    <mime-types>
+      <mime-type>image/*</mime-type>
+    </mime-types>
+  </object>
+</interface>

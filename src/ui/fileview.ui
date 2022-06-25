@@ -21,17 +21,7 @@
                 <property name="margin-end">24</property>
 
                 <child>
-                  <object class="GtkButton" id="album_cover">
-                    <property name="width-request">196</property>
-                    <property name="height-request">196</property>
-                    <property name="halign">center</property>
-                    <property name="tooltip-text" translatable="yes">Change album cover</property>
-                    <signal name="clicked" handler="show_cover_file_chooser"/>
-
-                    <child>
-                      <object class="GtkImage" id="album_cover_image"/>
-                    </child>
-                  </object>
+                  <object class="EartagAlbumCover" id="album_cover"/>
                 </child>
 
                 <child>
@@ -108,10 +98,4 @@
       </object>
     </child>
   </template>
-
-  <object class="GtkFileFilter" id="image_file_filter">
-    <mime-types>
-      <mime-type>image/*</mime-type>
-    </mime-types>
-  </object>
 </interface>

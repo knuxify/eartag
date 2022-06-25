@@ -47,12 +47,13 @@ class EartagFile(GObject.Object):
     __gtype_name__ = 'EartagFile'
 
     handled_properties = ['title', 'artist', 'album', 'albumartist', 'genre', 'releaseyear', 'comment']
+    _supports_album_covers = False
     _is_modified = False
 
     def __init__(self, path):
         """Initializes an EartagFile for the given file path."""
         super().__init__()
-
+        self.notify('supports-album-covers')
         self.path = path
 
     def mark_as_modified(self):
@@ -68,6 +69,11 @@ class EartagFile(GObject.Object):
         """Returns whether the values have been modified or not."""
         return self._is_modified
 
+    @GObject.Property(type=bool, default=False)
+    def supports_album_covers(self):
+        """Returns whether album covers are supported."""
+        return self._supports_album_covers
+
 
 class EartagFileEyed3(EartagFile):
     """EartagFile handler that uses eyed3. Used for mp3 files."""
@@ -75,6 +81,7 @@ class EartagFileEyed3(EartagFile):
 
     _cover_path = None
     e3_file = None
+    _supports_album_covers = True
 
     def __init__(self, path):
         super().__init__(path)
@@ -113,6 +120,7 @@ class EartagFileEyed3(EartagFile):
             # the user the option to use FRONT_COVER, with the necessary
             # warnings about incompatibilities, etc.
             self.e3_file.tag.images.set(0, cover_art.read(), mime_type)
+            images = list(self.e3_file.tag.images)
         self.mark_as_modified()
 
     def load_cover(self):
@@ -230,6 +238,7 @@ class EartagFileTagLib(EartagFile):
     __gtype_name__ = 'EartagFileTagLib'
 
     tl_file = None
+    _supports_album_covers = False
 
     def __init__(self, path):
         super().__init__(path)

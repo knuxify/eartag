@@ -29,8 +29,86 @@
 from .file import eartagfile_from_path
 
 from gi.repository import Adw, Gtk, GObject, Pango
-from os.path import basename
+import os.path
 import traceback
+
+@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/albumcover.ui')
+class EartagAlbumCover(Gtk.Button):
+    __gtype_name__ = 'EartagAlbumCover'
+
+    preview_stack = Gtk.Template.Child()
+    no_cover = Gtk.Template.Child()
+    cover_image = Gtk.Template.Child()
+
+    file = None
+    image_file_filter = Gtk.Template.Child()
+    image_file_binding = None
+
+    def __init__(self):
+        super().__init__()
+        self.connect('destroy', self.on_destroy)
+
+    def bind_to_file(self, file):
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.image_file_binding = None
+
+        self.file = file
+
+        if file.supports_album_covers:
+            self.set_sensitive(True)
+        else:
+            self.set_sensitive(False)
+            self.cover_image.set_from_file(None)
+            self.on_cover_change()
+            return
+
+        self.image_file_binding = self.file.bind_property(
+                'cover_path', self.cover_image, 'file',
+                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
+        self.on_cover_change()
+        self.file.connect('notify::cover_path', self.on_cover_change)
+
+    def on_cover_change(self, *args):
+        if self.file.cover_path and os.path.exists(self.file.cover_path):
+            self.preview_stack.set_visible_child(self.cover_image)
+        else:
+            self.preview_stack.set_visible_child(self.no_cover)
+
+    def on_destroy(self, *args):
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.file = None
+
+    @Gtk.Template.Callback()
+    def show_cover_file_chooser(self, *args):
+        """Shows the file chooser."""
+        self.file_chooser = Gtk.FileChooserDialog(
+                                title=_("Select Album Cover Image"),
+                                transient_for=self.get_native(),
+                                action=Gtk.FileChooserAction.OPEN,
+                                filter=self.image_file_filter
+                                )
+        self.file_chooser.add_buttons(
+            _("_Cancel"), Gtk.ResponseType.CANCEL,
+            _("_Open"), Gtk.ResponseType.ACCEPT
+        )
+
+        self.file_chooser.connect('response', self.open_cover_file_from_dialog)
+
+        self.file_chooser.present()
+
+    def open_cover_file_from_dialog(self, dialog, response):
+        """
+        Callback for a FileChooser that takes the response and opens the file
+        selected in the dialog.
+        """
+        if response == Gtk.ResponseType.ACCEPT:
+            self.file.cover_path = dialog.get_file().get_path()
+            self.file.notify('cover-path')
+            self.on_cover_change()
+        self.file_chooser.destroy()
 
 class EartagEditableLabel(Gtk.EditableLabel):
     """
@@ -121,7 +199,7 @@ class EartagTagListItem(Adw.ActionRow):
 class EartagFileView(Adw.Bin):
     __gtype_name__ = 'EartagFileView'
 
-    album_cover_image = Gtk.Template.Child()
+    album_cover = Gtk.Template.Child()
     title_entry = Gtk.Template.Child()
     artist_entry = Gtk.Template.Child()
     album_entry = Gtk.Template.Child()
@@ -130,7 +208,6 @@ class EartagFileView(Adw.Bin):
     releaseyear_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
 
-    image_file_filter = Gtk.Template.Child()
     file = None
     bindings = []
 
@@ -148,8 +225,7 @@ class EartagFileView(Adw.Bin):
             for binding in self.bindings:
                 binding.unbind()
             self.bindings = []
-
-        file_basename = basename(self.file_path)
+        file_basename = os.path.basename(self.file_path)
 
         try:
             self.file = eartagfile_from_path(self.file_path)
@@ -177,10 +253,7 @@ class EartagFileView(Adw.Bin):
                 GObject.BindingFlags.SYNC_CREATE)
         )
 
-        self.bindings.append(
-            self.file.bind_property('cover_path', self.album_cover_image, 'file',
-                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-        )
+        self.album_cover.bind_to_file(self.file)
 
         self.setup_entry(self.title_entry, 'title')
         self.setup_entry(self.artist_entry, 'artist')
@@ -207,33 +280,6 @@ class EartagFileView(Adw.Bin):
 
     def close_dialog(self, dialog, *args):
         dialog.close()
-
-    @Gtk.Template.Callback()
-    def show_cover_file_chooser(self, *args):
-        """Shows the file chooser."""
-        self.file_chooser = Gtk.FileChooserDialog(
-                                title=_("Select Album Cover Image"),
-                                transient_for=self.get_native(),
-                                action=Gtk.FileChooserAction.OPEN,
-                                filter=self.image_file_filter
-                                )
-        self.file_chooser.add_buttons(
-            _("_Cancel"), Gtk.ResponseType.CANCEL,
-            _("_Open"), Gtk.ResponseType.ACCEPT
-        )
-
-        self.file_chooser.connect('response', self.open_cover_file_from_dialog)
-
-        self.file_chooser.present()
-
-    def open_cover_file_from_dialog(self, dialog, response):
-        """
-        Callback for a FileChooser that takes the response and opens the file
-        selected in the dialog.
-        """
-        if response == Gtk.ResponseType.ACCEPT:
-            self.file.cover_path = dialog.get_file().get_path()
-        self.file_chooser.destroy()
 
     def save(self):
         """Saves changes to the file."""
