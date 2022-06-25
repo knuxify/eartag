@@ -30,7 +30,6 @@ from .file import eartagfile_from_path
 
 from gi.repository import Adw, Gtk, GObject, Pango
 from os.path import basename
-import re
 
 class EartagEditableLabel(Gtk.EditableLabel):
     """
@@ -181,6 +180,8 @@ class EartagFileView(Adw.Bin):
         _entry = entry
         if type(entry) == EartagTagListItem:
             _entry = entry.value_entry
+        elif type(entry) == EartagEditableLabel:
+            _entry = entry.editable
 
         self.bindings.append(
             self.file.bind_property(property, _entry, 'text',
