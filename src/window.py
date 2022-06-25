@@ -26,8 +26,9 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import Gtk, Adw
+from gi.repository import Adw, Gdk, Gio, Gtk
 from .fileview import EartagFileView
+import magic
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Gtk.MessageDialog):
@@ -40,8 +41,7 @@ class EartagDiscardWarningDialog(Gtk.MessageDialog):
 
     @Gtk.Template.Callback()
     def on_dbutton_discard(self, *args):
-        self.window.file_view.file_path = self.file_path
-        self.window.file_view.load_file()
+        self.window.load_file(self.file_path)
         self.close()
 
     @Gtk.Template.Callback()
@@ -51,8 +51,7 @@ class EartagDiscardWarningDialog(Gtk.MessageDialog):
     @Gtk.Template.Callback()
     def on_dbutton_save(self, *args):
         self.window.file_view.save()
-        self.window.file_view.file_path = self.file_path
-        self.window.file_view.load_file()
+        self.window.load_file(self.file_path)
         self.close()
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/closewarning.ui')
@@ -101,6 +100,9 @@ class EartagWindow(Adw.ApplicationWindow):
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
 
+    overlay = Gtk.Template.Child()
+    drop_highlight_revealer = Gtk.Template.Child()
+
     force_close = False
 
     def __init__(self, application, path=None):
@@ -109,6 +111,28 @@ class EartagWindow(Adw.ApplicationWindow):
             self.file_view.file_path = path
             self.file_view.load_file()
         self.connect('close-request', self.on_close_request)
+
+        self.drop_target = Gtk.DropTarget(
+            actions=Gdk.DragAction.COPY,
+            formats=Gdk.ContentFormats.new_for_gtype(Gio.File)
+            )
+        self.drop_target.connect('enter', self.on_drag_hover)
+        self.drop_target.connect('leave', self.on_drag_unhover)
+        self.drop_target.connect('drop', self.on_drag_drop)
+        self.add_controller(self.drop_target)
+
+    def on_drag_hover(self, *args):
+        self.drop_highlight_revealer.set_reveal_child(True)
+        return Gdk.DragAction.COPY
+
+    def on_drag_unhover(self, *args):
+        self.drop_highlight_revealer.set_reveal_child(False)
+
+    def on_drag_drop(self, drop_target, value, *args):
+        path = value.get_path()
+        if magic.Magic(mime=True).from_file(path).startswith('audio/'):
+            self.open_file(path)
+        self.on_drag_unhover()
 
     def show_file_chooser(self):
         """Shows the file chooser."""
@@ -127,6 +151,27 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.file_chooser.present()
 
+    def load_file(self, path):
+        """
+        Loads the file in the file view.
+
+        This function should never be called directly in the UI; use open_file,
+        which also checks if any changes won't get discarded.
+        """
+        self.file_view.file_path = path
+        self.file_view.load_file()
+
+    def open_file(self, path):
+        """
+        Loads the file with the given path. Note that this does not perform
+        any validation; caller functions are meant to check for this manually.
+        """
+        if self.file_view.file and self.file_view.file._is_modified:
+            self.discard_warning = EartagDiscardWarningDialog(self, path)
+            self.discard_warning.show()
+            return False
+        self.load_file(path)
+
     def open_file_from_dialog(self, dialog, response):
         """
         Callback for a FileChooser that takes the response and opens the file
@@ -135,12 +180,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_chooser.destroy()
         if response == Gtk.ResponseType.ACCEPT:
             file_path = dialog.get_file().get_path()
-            if self.file_view.file and self.file_view.file._is_modified:
-                self.discard_warning = EartagDiscardWarningDialog(self, file_path)
-                self.discard_warning.show()
-                return False
-            self.file_view.file_path = file_path
-            self.file_view.load_file()
+            return self.open_file(file_path)
 
     @Gtk.Template.Callback()
     def on_save(self, *args):

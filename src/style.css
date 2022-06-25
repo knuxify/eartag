@@ -12,3 +12,8 @@
 .artist {
 	font-weight: normal;
 }
+
+.drag-target {
+	background-color: darker(@accent_bg_color);
+	opacity: 0.85;
+}

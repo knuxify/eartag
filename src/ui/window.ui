@@ -5,55 +5,116 @@
     <property name="default-width">400</property>
     <property name="default-height">700</property>
     <child>
-      <object class="GtkBox" id="container">
-        <property name="orientation">vertical</property>
+      <object class="GtkOverlay" id="overlay">
         <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
 
-        <child>
-          <object class="AdwHeaderBar" id="headerbar">
-            <child type="start">
-              <object class="GtkButton" id="save_button">
-                <property name="visible">false</property>
-                <property name="sensitive">false</property>
-                <property name="label" translatable="yes">Save</property>
-                <signal name="clicked" handler="on_save"/>
+        <child type="overlay">
+          <object class="GtkRevealer" id="drop_highlight_revealer">
+            <property name="receives-default">false</property>
+            <property name="can-focus">false</property>
+            <property name="can-target">false</property>
+
+            <property name="transition-type">crossfade</property>
+            <property name="hexpand">true</property>
+            <property name="vexpand">true</property>
+
+            <child>
+              <object class="AdwBin">
+                <property name="hexpand">true</property>
+                <property name="vexpand">true</property>
 
                 <style>
-                  <class name="suggested-action"/>
+                  <class name="drag-target"/>
                 </style>
+
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="valign">center</property>
+                    <property name="spacing">36</property>
+
+                    <property name="margin-top">24</property>
+                    <property name="margin-bottom">24</property>
+                    <property name="margin-start">24</property>
+                    <property name="margin-end">24</property>
+
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">document-send-symbolic</property>
+                        <property name="pixel-size">96</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Drop a file to edit it</property>
+                        <property name="wrap">true</property>
+
+                        <style>
+                          <class name="title-1"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
-
-            <child type="title">
-              <object class="AdwWindowTitle" id="window_title">
-                <property name="title">Eartag</property>
-              </object>
-            </child>
-
-            <child type="end">
-              <object class="GtkMenuButton">
-                <property name="icon-name">open-menu-symbolic</property>
-                <property name="menu-model">primary_menu</property>
-              </object>
-            </child>
-
-            <style>
-              <class name="flat"/>
-            </style>
           </object>
         </child>
 
         <child>
-          <object class="GtkStack" id="content_stack">
-            <property name="visible-child">no_file</property>
-            <property name="transition-type">crossfade</property>
+          <object class="GtkBox" id="container">
+            <property name="orientation">vertical</property>
+            <property name="hexpand">true</property>
 
             <child>
-              <object class="EartagNoFile" id="no_file"/>
+              <object class="AdwHeaderBar" id="headerbar">
+                <child type="start">
+                  <object class="GtkButton" id="save_button">
+                    <property name="visible">false</property>
+                    <property name="sensitive">false</property>
+                    <property name="label" translatable="yes">Save</property>
+                    <signal name="clicked" handler="on_save"/>
+
+                    <style>
+                      <class name="suggested-action"/>
+                    </style>
+                  </object>
+                </child>
+
+                <child type="title">
+                  <object class="AdwWindowTitle" id="window_title">
+                    <property name="title">Eartag</property>
+                  </object>
+                </child>
+
+                <child type="end">
+                  <object class="GtkMenuButton">
+                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="menu-model">primary_menu</property>
+                  </object>
+                </child>
+
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
             </child>
 
             <child>
-              <object class="EartagFileView" id="file_view"/>
+              <object class="GtkStack" id="content_stack">
+                <property name="visible-child">no_file</property>
+                <property name="transition-type">crossfade</property>
+
+                <child>
+                  <object class="EartagNoFile" id="no_file"/>
+                </child>
+
+                <child>
+                  <object class="EartagFileView" id="file_view"/>
+                </child>
+              </object>
             </child>
           </object>
         </child>
