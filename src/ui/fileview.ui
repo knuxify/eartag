@@ -3,104 +3,100 @@
   <requires lib="gtk" version="4.0"/>
   <template class="EartagFileView" parent="AdwBin">
     <child>
-      <object class="AdwToastOverlay" id="toast_overlay">
+      <object class="GtkScrolledWindow" id="content_scroll">
+        <property name="hscrollbar-policy">never</property>
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
         <child>
-          <object class="GtkScrolledWindow" id="content_scroll">
-            <property name="hscrollbar-policy">never</property>
-            <property name="hexpand">true</property>
-            <property name="vexpand">true</property>
+          <object class="AdwClamp">
             <child>
-              <object class="AdwClamp">
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="hexpand">true</property>
+                <property name="spacing">24</property>
+
+                <property name="margin-top">36</property>
+                <property name="margin-bottom">36</property>
+                <property name="margin-start">24</property>
+                <property name="margin-end">24</property>
+
                 <child>
-                  <object class="GtkBox">
+                  <object class="GtkButton" id="album_cover">
+                    <property name="width-request">196</property>
+                    <property name="height-request">196</property>
+                    <property name="halign">center</property>
+                    <property name="tooltip-text" translatable="yes">Change album cover</property>
+                    <signal name="clicked" handler="show_cover_file_chooser"/>
+
+                    <child>
+                      <object class="GtkImage" id="album_cover_image"/>
+                    </child>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkBox" id="important_data_container">
                     <property name="orientation">vertical</property>
-                    <property name="hexpand">true</property>
-                    <property name="spacing">24</property>
-
-                    <property name="margin-top">36</property>
-                    <property name="margin-bottom">36</property>
-                    <property name="margin-start">24</property>
-                    <property name="margin-end">24</property>
+                    <property name="spacing">6</property>
 
                     <child>
-                      <object class="GtkButton" id="album_cover">
-                        <property name="width-request">196</property>
-                        <property name="height-request">196</property>
-                        <property name="halign">center</property>
-                        <property name="tooltip-text" translatable="yes">Change album cover</property>
-                        <signal name="clicked" handler="show_cover_file_chooser"/>
-
-                        <child>
-                          <object class="GtkImage" id="album_cover_image"/>
-                        </child>
-                      </object>
-                    </child>
-
-                    <child>
-                      <object class="GtkBox" id="important_data_container">
-                        <property name="orientation">vertical</property>
-                        <property name="spacing">6</property>
-
-                        <child>
-                          <object class="EartagEditableLabel" id="title_entry">
-                            <property name="placeholder" translatable="yes">Title</property>
-                            <style>
-                              <class name="title-1"/>
-                            </style>
-                          </object>
-                        </child>
-
-                        <child>
-                          <object class="EartagEditableLabel" id="artist_entry">
-                            <property name="placeholder" translatable="yes">Artist</property>
-                            <style>
-                              <class name="title-3"/>
-                              <class name="artist"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-
-                    <child>
-                      <object class="GtkListBox" id="tag_list">
-                        <property name="hexpand">true</property>
-                        <property name="valign">start</property>
-                        <property name="selection-mode">none</property>
+                      <object class="EartagEditableLabel" id="title_entry">
+                        <property name="placeholder" translatable="yes">Title</property>
                         <style>
-                          <class name="boxed-list"/>
+                          <class name="title-1"/>
                         </style>
+                      </object>
+                    </child>
 
-                        <child>
-                          <object class="EartagTagListItem" id="album_entry">
-                            <property name="title" translatable="yes">Album</property>
-                          </object>
-                        </child>
+                    <child>
+                      <object class="EartagEditableLabel" id="artist_entry">
+                        <property name="placeholder" translatable="yes">Artist</property>
+                        <style>
+                          <class name="title-3"/>
+                          <class name="artist"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
 
-                        <child>
-                          <object class="EartagTagListItem" id="albumartist_entry">
-                            <property name="title" translatable="yes">Album artist</property>
-                          </object>
-                        </child>
+                <child>
+                  <object class="GtkListBox" id="tag_list">
+                    <property name="hexpand">true</property>
+                    <property name="valign">start</property>
+                    <property name="selection-mode">none</property>
+                    <style>
+                      <class name="boxed-list"/>
+                    </style>
 
-                        <child>
-                          <object class="EartagTagListItem" id="genre_entry">
-                            <property name="title" translatable="yes">Genre</property>
-                          </object>
-                        </child>
+                    <child>
+                      <object class="EartagTagListItem" id="album_entry">
+                        <property name="title" translatable="yes">Album</property>
+                      </object>
+                    </child>
 
-                        <child>
-                          <object class="EartagTagListItem" id="releaseyear_entry">
-                            <property name="title" translatable="yes">Release year</property>
-                            <property name="is-numeric">true</property>
-                          </object>
-                        </child>
+                    <child>
+                      <object class="EartagTagListItem" id="albumartist_entry">
+                        <property name="title" translatable="yes">Album artist</property>
+                      </object>
+                    </child>
 
-                        <child>
-                          <object class="EartagTagListItem" id="comment_entry">
-                            <property name="title" translatable="yes">Comment</property>
-                          </object>
-                        </child>
+                    <child>
+                      <object class="EartagTagListItem" id="genre_entry">
+                        <property name="title" translatable="yes">Genre</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="EartagTagListItem" id="releaseyear_entry">
+                        <property name="title" translatable="yes">Release year</property>
+                        <property name="is-numeric">true</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="EartagTagListItem" id="comment_entry">
+                        <property name="title" translatable="yes">Comment</property>
                       </object>
                     </child>
                   </object>

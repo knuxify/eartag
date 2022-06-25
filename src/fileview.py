@@ -130,7 +130,6 @@ class EartagFileView(Adw.Bin):
     comment_entry = Gtk.Template.Child()
 
     image_file_filter = Gtk.Template.Child()
-    toast_overlay = Gtk.Template.Child()
     file = None
     bindings = []
 
@@ -220,5 +219,7 @@ class EartagFileView(Adw.Bin):
 
     def save(self):
         """Saves changes to the file."""
-        self.toast_overlay.add_toast(Adw.Toast.new(_("Saved changes to file")))
+        self.get_native().toast_overlay.add_toast(
+            Adw.Toast.new(_("Saved changes to file"))
+        )
         self.file.save()

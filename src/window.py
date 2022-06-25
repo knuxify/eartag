@@ -28,7 +28,9 @@
 
 from gi.repository import Adw, Gdk, Gio, Gtk
 from .fileview import EartagFileView
+import os.path
 import magic
+import mimetypes
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Gtk.MessageDialog):
@@ -100,6 +102,7 @@ class EartagWindow(Adw.ApplicationWindow):
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
 
+    toast_overlay = Gtk.Template.Child()
     overlay = Gtk.Template.Child()
     drop_highlight_revealer = Gtk.Template.Child()
 
@@ -130,8 +133,14 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
-        if magic.Magic(mime=True).from_file(path).startswith('audio/'):
+        if mimetypes.guess_type(path)[0].startswith('audio/') or \
+            magic.Magic(mime=True).from_file(path).startswith('audio/'):
             self.open_file(path)
+        else:
+            self.toast_overlay.add_toast(Adw.Toast.new(
+                _('File {f} not supported').format(f=os.path.basename(path))
+                )
+            )
         self.on_drag_unhover()
 
     def show_file_chooser(self):
