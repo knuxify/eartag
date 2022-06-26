@@ -28,12 +28,14 @@
 
 from .file import eartagfile_from_path
 
-from gi.repository import Adw, Gtk, GObject, Pango
+from gi.repository import Adw, Gtk, Gdk, Gio, GObject, Pango
 import os.path
 import traceback
+import magic
+import mimetypes
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/albumcover.ui')
-class EartagAlbumCover(Gtk.Button):
+class EartagAlbumCover(Adw.Bin):
     __gtype_name__ = 'EartagAlbumCover'
 
     preview_stack = Gtk.Template.Child()
@@ -44,9 +46,21 @@ class EartagAlbumCover(Gtk.Button):
     image_file_filter = Gtk.Template.Child()
     image_file_binding = None
 
+    drop_highlight_revealer = Gtk.Template.Child()
+
     def __init__(self):
         super().__init__()
         self.connect('destroy', self.on_destroy)
+        self.drop_target = Gtk.DropTarget(
+            actions=Gdk.DragAction.COPY,
+            formats=Gdk.ContentFormats.new_for_gtype(Gio.File)
+            )
+
+        self.drop_target.connect('accept', self.on_drag_accept)
+        self.drop_target.connect('enter', self.on_drag_hover)
+        self.drop_target.connect('leave', self.on_drag_unhover)
+        self.drop_target.connect('drop', self.on_drag_drop)
+        self.add_controller(self.drop_target)
 
     def bind_to_file(self, file):
         if self.image_file_binding:
@@ -109,6 +123,34 @@ class EartagAlbumCover(Gtk.Button):
             self.file.notify('cover-path')
             self.on_cover_change()
         self.file_chooser.destroy()
+
+    # Drag-and-drop
+
+    def on_drag_accept(self, target, drop, *args):
+        drop.read_value_async(Gio.File, 0, None, self.verify_file_valid)
+        return True
+
+    def verify_file_valid(self, drop, task, *args):
+        file = drop.read_value_finish(task)
+        path = file.get_path()
+        if not mimetypes.guess_type(path)[0].startswith('image/') and \
+            not magic.Magic(mime=True).from_file(path).startswith('image/'):
+                self.drop_target.reject()
+                self.on_drag_unhover()
+
+    def on_drag_hover(self, *args):
+        self.drop_highlight_revealer.set_reveal_child(True)
+        return Gdk.DragAction.COPY
+
+    def on_drag_unhover(self, *args):
+        self.drop_highlight_revealer.set_reveal_child(False)
+
+    def on_drag_drop(self, drop_target, value, *args):
+        path = value.get_path()
+        self.file.cover_path = path
+        self.file.notify('cover-path')
+        self.on_cover_change()
+        self.on_drag_unhover()
 
 class EartagEditableLabel(Gtk.EditableLabel):
     """

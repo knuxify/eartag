@@ -17,3 +17,7 @@
 	background-color: darker(@accent_bg_color);
 	opacity: 0.85;
 }
+
+.album-cover-drag-target {
+	border-radius: 6px;
+}
