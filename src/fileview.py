@@ -27,8 +27,9 @@
 # authorization.
 
 from .file import eartagfile_from_path
+from .common import EartagEditableLabel
 
-from gi.repository import Adw, Gtk, Gdk, Gio, GObject, Pango
+from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path
 import traceback
 import magic
@@ -151,65 +152,6 @@ class EartagAlbumCover(Adw.Bin):
         self.file.notify('cover-path')
         self.on_cover_change()
         self.on_drag_unhover()
-
-class EartagEditableLabel(Gtk.EditableLabel):
-    """
-    Editable labels are missing a few nice features that we need
-    (namely proper centering and word wrapping), but since they're
-    just GtkStacks with a regular GtkLabel inside, we can modify
-    them to suit our needs. This class automates the process.
-    """
-    __gtype_name__ = 'EartagEditableLabel'
-
-    _placeholder = ''
-
-    def __init__(self):
-        super().__init__()
-
-        # The layout is:
-        # GtkEditableLabel
-        #  -> GtkStack
-        #     -> GtkStackPage
-        #        -> GtkLabel
-        # We use "get_first_child" since that's the easiest way to get
-        # the direct child of the object (EditableLabel has no get_child).
-        label = self.get_first_child().get_pages()[0].get_child()
-        editable = self.get_first_child().get_pages()[1].get_child()
-
-        label.set_wrap(True)
-        label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-        label.set_lines(3)
-        label.set_max_width_chars(128)
-        label.set_justify(Gtk.Justification.CENTER)
-        self.set_alignment(0.5)
-
-        self.bind_property('placeholder', editable, 'placeholder-text',
-            GObject.BindingFlags.SYNC_CREATE)
-
-        self.connect('notify::editing', self.display_placeholder)
-        self.connect('notify::text', self.display_placeholder)
-
-        self.label = label
-        self.editable = editable
-        self.display_placeholder()
-
-    def display_placeholder(self, *args):
-        """Displays/hides placeholder in non-editing mode as needed."""
-        if not self.get_text():
-            self.label.set_label(self.placeholder)
-            self.label.add_css_class('dim-label')
-        else:
-            self.label.remove_css_class('dim-label')
-
-    @GObject.Property(type=str)
-    def placeholder(self):
-        """Placeholder to display when the text is empty."""
-        return self._placeholder
-
-    @placeholder.setter
-    def placeholder(self, value):
-        self._placeholder = value
 
 class EartagTagListItem(Adw.ActionRow):
     __gtype_name__ = 'EartagTagListItem'
