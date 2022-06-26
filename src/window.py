@@ -120,10 +120,23 @@ class EartagWindow(Adw.ApplicationWindow):
             actions=Gdk.DragAction.COPY,
             formats=Gdk.ContentFormats.new_for_gtype(Gio.File)
             )
+        self.drop_target.connect('accept', self.on_drag_accept)
         self.drop_target.connect('enter', self.on_drag_hover)
         self.drop_target.connect('leave', self.on_drag_unhover)
         self.drop_target.connect('drop', self.on_drag_drop)
         self.add_controller(self.drop_target)
+
+    def on_drag_accept(self, target, drop, *args):
+        drop.read_value_async(Gio.File, 0, None, self.verify_file_valid)
+        return True
+
+    def verify_file_valid(self, drop, task, *args):
+        file = drop.read_value_finish(task)
+        path = file.get_path()
+        if not mimetypes.guess_type(path)[0].startswith('audio/') and \
+            not magic.Magic(mime=True).from_file(path).startswith('audio/'):
+                self.drop_target.reject()
+                self.on_drag_unhover()
 
     def on_drag_hover(self, *args):
         self.drop_highlight_revealer.set_reveal_child(True)
@@ -134,14 +147,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
-        if mimetypes.guess_type(path)[0].startswith('audio/') or \
-            magic.Magic(mime=True).from_file(path).startswith('audio/'):
-            self.open_file(path)
-        else:
-            self.toast_overlay.add_toast(Adw.Toast.new(
-                _('File {f} not supported').format(f=os.path.basename(path))
-                )
-            )
+        self.open_file(path)
         self.on_drag_unhover()
 
     def show_file_chooser(self):
