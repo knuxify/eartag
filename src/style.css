@@ -13,6 +13,16 @@
 	font-weight: normal;
 }
 
+.album-cover {
+	border-radius: 6px;
+	padding: 6px;
+	margin: 0;
+}
+
+.album-cover stack * {
+	border-radius: 6px;
+}
+
 .drag-target {
 	background-color: darker(@accent_bg_color);
 	opacity: 0.85;
