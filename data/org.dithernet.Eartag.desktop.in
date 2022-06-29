@@ -1,8 +1,12 @@
 [Desktop Entry]
-Name=eartag
+Name=Eartag
+Comment=Tag your music files in peace
 Exec=eartag
 Icon=org.dithernet.Eartag
 Terminal=false
 Type=Application
-Categories=GTK;
 StartupNotify=true
+Categories=GNOME;GTK;Audio;AudioVideo;AudioVideoEditing;
+Keywords=music;audio;tag;tagging;tagger;
+MimeType=application/ogg;application/x-cue;application/x-ogg;application/xspf+xml;audio/aac;audio/flac;audio/midi;audio/mp3;audio/mp4;audio/mpeg;audio/mpegurl;audio/ogg;audio/prs.sid;audio/wav;audio/x-flac;audio/x-it;audio/x-mod;audio/x-mp3;audio/x-mpeg;audio/x-mpegurl;audio/x-ms-asx;audio/x-ms-wma;audio/x-musepack;audio/x-s3m;audio/x-scpls;audio/x-stm;audio/x-vorbis+ogg;audio/x-wav;audio/x-wavpack;audio/x-xm;x-content/audio-cdda;
+X-Purism-FormFactor=Workstation;Mobile;
