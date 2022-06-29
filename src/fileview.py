@@ -157,16 +157,30 @@ class EartagTagListItem(Adw.ActionRow):
     __gtype_name__ = 'EartagTagListItem'
 
     _is_numeric = False
+    bindings = []
 
     def __init__(self):
         super().__init__(can_target=False, focusable=False, focus_on_click=False)
         self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
         self.add_suffix(self.value_entry)
         self.set_activatable_widget(self.value_entry)
+        self.connect('destroy', self.on_destroy)
+
+    def on_destroy(self, *args):
+        if self.bindings:
+            for binding in self.bindings:
+                binding.unbind()
+        self.bindings = []
 
     def disallow_nonnumeric(self, entry, text, length, position, *args):
         if text and not text.isdigit():
             GObject.signal_stop_emission_by_name(entry, 'insert-text')
+
+    def bind_to_property(self, file, property):
+        self.bindings.append(
+            file.bind_property(property, self.value_entry, 'text',
+                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+        )
 
     @GObject.Property(type=bool, default=False)
     def is_numeric(self):
@@ -248,18 +262,14 @@ class EartagFileView(Adw.Bin):
         self.setup_entry(self.comment_entry, 'comment')
 
     def setup_entry(self, entry, property):
-        _entry = entry
         if type(entry) == EartagTagListItem:
-            _entry = entry.value_entry
+            entry.bind_to_property(self.file, property)
+            self.bindings = self.bindings + entry.bindings
         elif type(entry) == EartagEditableLabel:
-            _entry = entry.editable
-
-        self.bindings.append(
-            self.file.bind_property(property, _entry, 'text',
-                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-        )
-
-        if type(entry) == EartagEditableLabel:
+            self.bindings.append(
+                self.file.bind_property(property, entry, 'text',
+                    GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+            )
             entry.notify('text')
 
     def close_dialog(self, dialog, *args):
