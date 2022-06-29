@@ -175,6 +175,28 @@ class EartagFileEyed3(EartagFile):
         self.mark_as_modified()
 
     @GObject.Property(type=str)
+    def tracknumber(self):
+        if self.e3_file.tag.track_num:
+            return str(self.e3_file.tag.track_num[0])
+        return ''
+
+    @tracknumber.setter
+    def tracknumber(self, value):
+        self.e3_file.tag.track_num = (value, self.e3_file.tag.track_num[1])
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def totaltracknumber(self):
+        if self.e3_file.tag.track_num:
+            return str(self.e3_file.tag.track_num[1])
+        return ''
+
+    @totaltracknumber.setter
+    def totaltracknumber(self, value):
+        self.e3_file.tag.track_num = (self.e3_file.tag.track_num[0], value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
     def album(self):
         if self.e3_file.tag.album:
             return self.e3_file.tag.album
@@ -288,6 +310,42 @@ class EartagFileTagLib(EartagFile):
         self.mark_as_modified()
 
     @GObject.Property(type=str)
+    def tracknumber(self):
+        if 'TRACKNUMBER' in self.tl_file.tags:
+            print("tn")
+            if '/' in self.tl_file.tags['TRACKNUMBER'][0]:
+                return self.tl_file.tags['TRACKNUMBER'][0].split('/')[0]
+            return self.tl_file.tags['TRACKNUMBER'][0]
+        return ''
+
+    @tracknumber.setter
+    def tracknumber(self, value):
+        if self.totaltracknumber:
+            self.tl_file.tags['TRACKNUMBER'] = ['{n}/{t}'.format(
+                n=str(value), t=str(self.totaltracknumber))
+            ]
+        else:
+            self.tl_file.tags['TRACKNUMBER'] = [str(value)]
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def totaltracknumber(self):
+        if 'TRACKNUMBER' in self.tl_file.tags:
+            if '/' in self.tl_file.tags['TRACKNUMBER'][0]:
+                return self.tl_file.tags['TRACKNUMBER'][0].split('/')[1]
+        return ''
+
+    @totaltracknumber.setter
+    def totaltracknumber(self, value):
+        if self.tracknumber:
+            self.tl_file.tags['TRACKNUMBER'] = ['{n}/{t}'.format(
+                n=str(self.tracknumber), t=str(value))
+            ]
+        else:
+            self.tl_file.tags['TRACKNUMBER'] = ['0/{t}'.format(t=str(value))]
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
     def album(self):
         if 'ALBUM' in self.tl_file.tags:
             return self.tl_file.tags['ALBUM'][0]
@@ -348,7 +406,7 @@ def eartagfile_from_path(path):
     if not os.path.exists(path):
         raise ValueError
 
-    if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
-        magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
-        return EartagFileEyed3(path)
+    #if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
+    #   magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
+        #return EartagFileEyed3(path)
     return EartagFileTagLib(path)
