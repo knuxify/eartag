@@ -156,13 +156,27 @@ class EartagAlbumCover(Adw.Bin):
 class EartagTagListItem(Adw.ActionRow):
     __gtype_name__ = 'EartagTagListItem'
 
+    _is_double = False
     _is_numeric = False
+    _max_width_chars = -1
     bindings = []
+
+    value_entry_double = None
 
     def __init__(self):
         super().__init__(can_target=False, focusable=False, focus_on_click=False)
+        self.suffixes = Gtk.Box(valign=Gtk.Align.CENTER, halign=Gtk.Align.END, spacing=6)
+        self.add_suffix(self.suffixes)
+
         self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
-        self.add_suffix(self.value_entry)
+        self.suffixes.append(self.value_entry)
+
+        self.double_separator_label = Gtk.Label(valign=Gtk.Align.CENTER, visible=False)
+        self.suffixes.append(self.double_separator_label)
+
+        self.value_entry_double = Gtk.Entry(valign=Gtk.Align.CENTER, visible=False)
+        self.suffixes.append(self.value_entry_double)
+
         self.set_activatable_widget(self.value_entry)
         self.connect('destroy', self.on_destroy)
 
@@ -177,10 +191,32 @@ class EartagTagListItem(Adw.ActionRow):
             GObject.signal_stop_emission_by_name(entry, 'insert-text')
 
     def bind_to_property(self, file, property):
-        self.bindings.append(
-            file.bind_property(property, self.value_entry, 'text',
-                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
-        )
+        if type(property) == list and self._is_double:
+            self.bindings.append(
+                file.bind_property(property[0], self.value_entry, 'text',
+                    GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+            )
+
+            self.bindings.append(
+                file.bind_property(property[1], self.value_entry_double, 'text',
+                    GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+            )
+        else:
+            self.bindings.append(
+                file.bind_property(property, self.value_entry, 'text',
+                    GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
+            )
+
+    @GObject.Property(type=int, default=-1)
+    def max_width_chars(self):
+        return self._max_width_chars
+
+    @max_width_chars.setter
+    def set_max_width_chars(self, value):
+        self._max_width_chars = value
+        self.value_entry.set_max_width_chars(value)
+        if self._is_double:
+            self.value_entry_double.set_max_width_chars(value)
 
     @GObject.Property(type=bool, default=False)
     def is_numeric(self):
@@ -192,6 +228,37 @@ class EartagTagListItem(Adw.ActionRow):
         if value == True:
             self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+            if self._is_double:
+                self.value_entry_double.set_input_purpose(Gtk.InputPurpose.DIGITS)
+                self.value_entry_double.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+
+    @GObject.Property(type=str, default='')
+    def double_separator(self):
+        return self._double_separator
+
+    @double_separator.setter
+    def set_double_separator(self, value):
+        self._double_separator = value
+        if value:
+            self.double_separator_label.set_label(value)
+            self.double_separator_label.set_visible(True)
+        else:
+            self.double_separator_label.set_visible(False)
+
+    @GObject.Property(type=bool, default=False)
+    def is_double(self):
+        return self._is_double
+
+    @is_double.setter
+    def set_is_double(self, value):
+        self._is_double = value
+        if value:
+            self.value_entry_double.set_visible(True)
+            # Update other properties to ensure the input purpose is set
+            self.set_property('is-numeric', self.get_property('is-numeric'))
+            self.set_property('max-width-chars', self.get_property('max-width-chars'))
+        else:
+            self.value_entry_double.set_visible(False)
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/fileview.ui')
 class EartagFileView(Adw.Bin):
