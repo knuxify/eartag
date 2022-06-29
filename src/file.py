@@ -312,7 +312,6 @@ class EartagFileTagLib(EartagFile):
     @GObject.Property(type=str)
     def tracknumber(self):
         if 'TRACKNUMBER' in self.tl_file.tags:
-            print("tn")
             if '/' in self.tl_file.tags['TRACKNUMBER'][0]:
                 return self.tl_file.tags['TRACKNUMBER'][0].split('/')[0]
             return self.tl_file.tags['TRACKNUMBER'][0]
@@ -406,7 +405,7 @@ def eartagfile_from_path(path):
     if not os.path.exists(path):
         raise ValueError
 
-    #if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
-    #   magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
-        #return EartagFileEyed3(path)
+    if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
+        magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
+        return EartagFileEyed3(path)
     return EartagFileTagLib(path)
