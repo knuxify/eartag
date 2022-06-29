@@ -267,6 +267,7 @@ class EartagFileView(Adw.Bin):
     album_cover = Gtk.Template.Child()
     title_entry = Gtk.Template.Child()
     artist_entry = Gtk.Template.Child()
+    tracknumber_entry = Gtk.Template.Child()
     album_entry = Gtk.Template.Child()
     albumartist_entry = Gtk.Template.Child()
     genre_entry = Gtk.Template.Child()
@@ -322,6 +323,7 @@ class EartagFileView(Adw.Bin):
 
         self.setup_entry(self.title_entry, 'title')
         self.setup_entry(self.artist_entry, 'artist')
+        self.setup_entry(self.tracknumber_entry, ['tracknumber', 'totaltracknumber'])
         self.setup_entry(self.album_entry, 'album')
         self.setup_entry(self.albumartist_entry, 'albumartist')
         self.setup_entry(self.genre_entry, 'genre')
