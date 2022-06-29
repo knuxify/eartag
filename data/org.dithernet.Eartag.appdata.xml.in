@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
+	<name>Eartag</name>
+	<summary>Tag your music files in peace</summary>
 	<id>org.dithernet.Eartag.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>MIT</project_license>
 	<description>
-	  <p>No description</p>
+	  <p>Eartag is a small and simple music tag editor that doesn't try to manage your entire library.</p>
+	  <h2>Why?</h2>
+	  <p>A lot of music tag editors are made to apply changes to entire music libraries. They require you to set up a music folder, etc. This is convenient when you want to keep your entire library in check, but sometimes you just need to edit one file's data without any of the additional hassle.</p>
+	  <p>Thus, Eartag was made to be a simple tag editor that can edit singular files as needed.</p>
 	</description>
 </component>
