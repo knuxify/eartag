@@ -26,7 +26,27 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
+# This file contains various functions/classes used in multiple places that
+# were generic enough to be split into a single file.
+
 from gi.repository import Gtk, GObject, Pango
+import magic
+import mimetypes
+
+VALID_NONAUDIO_MIMES = ('application/ogg', 'application/x-ogg', 'video/x-wmv')
+def is_valid_music_file(path):
+    """
+    Takes a path to a file and returns True if it's supported, False otherwise.
+    """
+    mimetype = magic.Magic(mime=True).from_file(path)
+    if mimetype == 'application/octet-stream':
+        # Try to guess mimetype from filetype if magic fails
+        mimetype = mimetypes.guess_type(path)[0]
+
+    if not mimetype.startswith('audio/') and not mimetype in VALID_NONAUDIO_MIMES:
+        return False
+    return True
+
 
 class EartagEditableLabel(Gtk.EditableLabel):
     """

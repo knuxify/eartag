@@ -29,13 +29,13 @@
 import sys
 import gi
 import os.path
-import magic
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
 from gi.repository import Adw, Gtk, Gio
 
+from .common import is_valid_music_file
 from .window import EartagWindow, AboutDialog
 
 class Application(Adw.Application):
@@ -48,10 +48,11 @@ class Application(Adw.Application):
 
     def on_open(self, window, filename, *args):
         self.path = filename[0].get_path()
-        if self.path and not os.path.exists(self.path):
-            self.path = None
-        if self.path and not magic.Magic(mime=True).from_file(self.path).startswith('audio/'):
-            self.path = None
+        if self.path:
+            if not os.path.exists(self.path):
+                self.path = None
+            elif not is_valid_music_file(self.path):
+                self.path = None
         self.do_activate()
 
     def do_activate(self):

@@ -26,11 +26,10 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
+from .common import is_valid_music_file
 from .fileview import EartagFileView
 
 from gi.repository import Adw, Gdk, Gio, Gtk
-import magic
-import mimetypes
 import os.path
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/discardwarning.ui')
@@ -133,10 +132,9 @@ class EartagWindow(Adw.ApplicationWindow):
     def verify_file_valid(self, drop, task, *args):
         file = drop.read_value_finish(task)
         path = file.get_path()
-        if not mimetypes.guess_type(path)[0].startswith('audio/') and \
-            not magic.Magic(mime=True).from_file(path).startswith('audio/'):
-                self.drop_target.reject()
-                self.on_drag_unhover()
+        if not is_valid_music_file(path):
+            self.drop_target.reject()
+            self.on_drag_unhover()
 
     def on_drag_hover(self, *args):
         self.drop_highlight_revealer.set_reveal_child(True)
