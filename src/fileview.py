@@ -275,6 +275,7 @@ class EartagFileView(Adw.Bin):
     comment_entry = Gtk.Template.Child()
 
     file = None
+    writable = False
     bindings = []
 
     def __init__(self, path=None):
@@ -314,10 +315,24 @@ class EartagFileView(Adw.Bin):
         window.window_title.set_subtitle(file_basename)
         window.content_stack.set_visible_child(self)
 
-        self.bindings.append(
-            self.file.bind_property('is_modified', window.save_button, 'sensitive',
-                GObject.BindingFlags.SYNC_CREATE)
-        )
+        try:
+            writable_check = open(self.file_path, 'a')
+            writable_check.close()
+        except OSError:
+            self.writable = False
+            # TRANSLATORS: Tooltip text for save button when saving is disabled
+            window.save_button.set_tooltip_text(_('File is read-only, saving is disabled'))
+            window.save_button.set_sensitive(False)
+            self.get_native().toast_overlay.add_toast(
+                Adw.Toast.new(_("Opened file is read-only; changes cannot be saved."))
+            )
+        else:
+            self.writable = True
+            window.save_button.set_tooltip_text('')
+            self.bindings.append(
+                self.file.bind_property('is_modified', window.save_button, 'sensitive',
+                    GObject.BindingFlags.SYNC_CREATE)
+            )
 
         self.album_cover.bind_to_file(self.file)
 
@@ -346,6 +361,9 @@ class EartagFileView(Adw.Bin):
 
     def save(self):
         """Saves changes to the file."""
+        if not self.writable:
+            return False
+
         try:
             self.file.save()
         except:
