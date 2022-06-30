@@ -30,6 +30,7 @@
 # were generic enough to be split into a single file.
 
 from gi.repository import Gtk, GObject, Pango
+import os.path
 import magic
 import mimetypes
 
@@ -38,6 +39,10 @@ def is_valid_music_file(path):
     """
     Takes a path to a file and returns True if it's supported, False otherwise.
     """
+    # In Flatpak, some files don't exist; double-check to make sure
+    if not os.path.exists(path):
+        return False
+
     mimetype = magic.Magic(mime=True).from_file(path)
     if mimetype == 'application/octet-stream':
         # Try to guess mimetype from filetype if magic fails

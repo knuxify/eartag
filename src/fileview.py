@@ -134,8 +134,8 @@ class EartagAlbumCover(Adw.Bin):
     def verify_file_valid(self, drop, task, *args):
         file = drop.read_value_finish(task)
         path = file.get_path()
-        if not mimetypes.guess_type(path)[0].startswith('image/') and \
-            not magic.Magic(mime=True).from_file(path).startswith('image/'):
+        if not os.path.exists(path) or (not mimetypes.guess_type(path)[0].startswith('image/') and \
+            not magic.Magic(mime=True).from_file(path).startswith('image/')):
                 self.drop_target.reject()
                 self.on_drag_unhover()
 
