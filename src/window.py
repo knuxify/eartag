@@ -182,7 +182,8 @@ class EartagWindow(Adw.ApplicationWindow):
         Loads the file with the given path. Note that this does not perform
         any validation; caller functions are meant to check for this manually.
         """
-        if self.file_view.file and self.file_view.file._is_modified:
+        fileview = self.file_view
+        if fileview.file and fileview.writable and fileview.file._is_modified:
             self.discard_warning = EartagDiscardWarningDialog(self, path)
             self.discard_warning.show()
             return False
