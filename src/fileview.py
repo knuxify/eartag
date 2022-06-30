@@ -333,6 +333,7 @@ class EartagFileView(Adw.Bin):
                 self.file.bind_property('is_modified', window.save_button, 'sensitive',
                     GObject.BindingFlags.SYNC_CREATE)
             )
+        self.set_sensitive(self.writable)
 
         self.album_cover.bind_to_file(self.file)
 
