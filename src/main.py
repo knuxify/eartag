@@ -61,7 +61,13 @@ class Application(Adw.Application):
             win = EartagWindow(application=self, path=self.path)
         self.create_action('about', self.on_about_action)
         self.create_action('open_file', self.on_open_file_action)
+        self.set_accels_for_action('app.open_file', ('<Ctrl>o', None))
+        self.create_action('save', self.on_save_action)
+        self.set_accels_for_action('app.save', ('<Ctrl>s', None))
         win.present()
+
+    def on_save_action(self, widget, _):
+        self.get_active_window().file_view.save()
 
     def on_about_action(self, widget, _):
         about = AboutDialog(self.props.active_window)

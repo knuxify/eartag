@@ -361,7 +361,7 @@ class EartagFileView(Adw.Bin):
 
     def save(self):
         """Saves changes to the file."""
-        if not self.writable:
+        if not self.file or not self.writable or not self.file.is_modified:
             return False
 
         try:
