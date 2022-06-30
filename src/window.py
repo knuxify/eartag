@@ -52,7 +52,8 @@ class EartagDiscardWarningDialog(Gtk.MessageDialog):
 
     @Gtk.Template.Callback()
     def on_dbutton_save(self, *args):
-        self.window.file_view.save()
+        if not self.window.file_view.save():
+            return False
         self.window.load_file(self.file_path)
         self.close()
 
@@ -75,7 +76,8 @@ class EartagCloseWarningDialog(Gtk.MessageDialog):
 
     @Gtk.Template.Callback()
     def on_button_save(self, *args):
-        self.window.file_view.save()
+        if not self.window.file_view.save():
+            return False
         self.window.close()
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/nofile.ui')
@@ -198,7 +200,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def on_save(self, *args):
-        self.file_view.save()
+        if not self.file_view.save():
+            return False
 
     def on_close_request(self, *args):
         if self.force_close == False and self.file_view.file and \

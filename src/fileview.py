@@ -346,7 +346,22 @@ class EartagFileView(Adw.Bin):
 
     def save(self):
         """Saves changes to the file."""
-        self.get_native().toast_overlay.add_toast(
-            Adw.Toast.new(_("Saved changes to file"))
-        )
-        self.file.save()
+        try:
+            self.file.save()
+        except:
+            traceback.print_exc()
+            file_basename = os.path.basename(self.file_path)
+            self.error_dialog = Gtk.MessageDialog(
+                                    transient_for=self.get_native(),
+                                    buttons=Gtk.ButtonsType.OK,
+                                    message_type=Gtk.MessageType.ERROR,
+                                    text=_("Failed to save file"),
+                                    secondary_text=_("Could not save file {f}. Check the logs for more information.").format(f=file_basename)
+            )
+            self.error_dialog.connect('response', self.close_dialog)
+            self.error_dialog.show()
+            return False
+        else:
+            self.get_native().toast_overlay.add_toast(
+                Adw.Toast.new(_("Saved changes to file"))
+            )
