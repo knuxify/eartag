@@ -336,7 +336,7 @@ class EartagFileView(Adw.Bin):
             self.bindings = self.bindings + entry.bindings
         elif type(entry) == EartagEditableLabel:
             self.bindings.append(
-                self.file.bind_property(property, entry, 'text',
+                self.file.bind_property(property, entry.editable, 'text',
                     GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
             )
             entry.notify('text')

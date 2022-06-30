@@ -160,8 +160,10 @@ class EartagFileEyed3(EartagFile):
 
     @title.setter
     def title(self, value):
-        self.e3_file.tag.title = value
-        self.mark_as_modified()
+        if value != (self.e3_file.tag.title or ''):
+            self.e3_file.tag.title = value
+            if value != None:
+                self.mark_as_modified()
 
     @GObject.Property(type=str)
     def artist(self):
@@ -171,8 +173,9 @@ class EartagFileEyed3(EartagFile):
 
     @artist.setter
     def artist(self, value):
-        self.e3_file.tag.artist = value
-        self.mark_as_modified()
+        if value != (self.e3_file.tag.artist or ''):
+            self.e3_file.tag.artist = value
+            self.mark_as_modified()
 
     @GObject.Property(type=str)
     def tracknumber(self):
