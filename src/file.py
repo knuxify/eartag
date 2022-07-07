@@ -120,7 +120,6 @@ class EartagFileEyed3(EartagFile):
             # the user the option to use FRONT_COVER, with the necessary
             # warnings about incompatibilities, etc.
             self.e3_file.tag.images.set(0, cover_art.read(), mime_type)
-            images = list(self.e3_file.tag.images)
         self.mark_as_modified()
 
     def load_cover(self):
@@ -144,6 +143,7 @@ class EartagFileEyed3(EartagFile):
                 suffix=mimetypes.guess_extension(mime_type)
             )
             self.coverart_tempfile.write(picture)
+            self.coverart_tempfile.flush()
             self._cover_path = self.coverart_tempfile.name
         else:
             self.coverart_tempfile = None
