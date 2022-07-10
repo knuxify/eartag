@@ -267,6 +267,7 @@ class EartagFileView(Adw.Bin):
     album_cover = Gtk.Template.Child()
     title_entry = Gtk.Template.Child()
     artist_entry = Gtk.Template.Child()
+    file_info = Gtk.Template.Child()
     tracknumber_entry = Gtk.Template.Child()
     album_entry = Gtk.Template.Child()
     albumartist_entry = Gtk.Template.Child()
@@ -345,6 +346,25 @@ class EartagFileView(Adw.Bin):
         self.setup_entry(self.genre_entry, 'genre')
         self.setup_entry(self.releaseyear_entry, 'releaseyear')
         self.setup_entry(self.comment_entry, 'comment')
+
+        # Get human-readable version of length
+        length_min, length_sec = divmod(int(self.file.length), 60)
+        length_hour, length_min = divmod(length_min, 60)
+        if length_hour:
+            length_readable = '{h}∶{m}∶{s}'.format(
+                h=length_hour, m=length_min, s=length_sec
+            )
+        else:
+            length_readable = '{m}∶{s}'.format(
+                m=length_min, s=length_sec
+            )
+
+        self.file_info.set_label('{filetype} • {length} • {bitrate} kbps • {channels}'.format(
+            filetype=self.file.filetype,
+            length=length_readable,
+            bitrate=self.file.bitrate,
+            channels=self.file.channels
+        ))
 
     def setup_entry(self, entry, property):
         if type(entry) == EartagTagListItem:

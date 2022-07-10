@@ -152,6 +152,23 @@ class EartagFileEyed3(EartagFile):
 
     # Main properties
 
+    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
+    def length(self):
+        return self.e3_file.info.time_secs
+
+    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
+    def bitrate(self):
+        # in kbps
+        return self.e3_file.info.bit_rate[1]
+
+    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
+    def channels(self):
+        return self.e3_file.info.mode
+
+    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
+    def filetype(self):
+        return 'mp3' # we only handle mp3 files with eyed3
+
     @GObject.Property(type=str)
     def title(self):
         if self.e3_file.tag.title:
@@ -284,6 +301,30 @@ class EartagFileTagLib(EartagFile):
             self.tl_file.close()
 
     # Main properties
+
+    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
+    def length(self):
+        return self.e3_file.length
+
+    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
+    def bitrate(self):
+        # in kbps
+        return self.e3_file.bitrate
+
+    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
+    def channels(self):
+        channels = self.tl_file.channels
+        if channels == 1:
+            return 'Mono'
+        elif channels == 2:
+            return 'Stereo'
+        else:
+            return _("{n} channel".format(n=channels), "{n} channels".format(n=channels))
+
+    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
+    def filetype(self):
+        mimetype = magic.Magic(mime=True).from_file(self.path)
+        return mimetypes.guess_extension(mimetype).replace('.', '')
 
     @GObject.Property(type=str)
     def cover_path(self):

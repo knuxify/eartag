@@ -47,6 +47,20 @@
                         </style>
                       </object>
                     </child>
+
+                    <child>
+                      <object class="GtkLabel" id="file_info">
+                        <property name="justify">center</property>
+                        <property name="wrap">true</property>
+                        <property name="margin-top">6</property>
+
+                        <style>
+                          <class name="dim-label"/>
+                          <class name="caption-header"/>
+                        </style>
+                      </object>
+                    </child>
+
                   </object>
                 </child>
 
