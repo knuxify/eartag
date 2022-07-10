@@ -46,7 +46,7 @@ class EartagFile(GObject.Object):
     """
     __gtype_name__ = 'EartagFile'
 
-    handled_properties = ['title', 'artist', 'album', 'albumartist', 'genre', 'releaseyear', 'comment']
+    handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'totaltracknumber', 'genre', 'releaseyear', 'comment']
     _supports_album_covers = False
     _is_modified = False
 
