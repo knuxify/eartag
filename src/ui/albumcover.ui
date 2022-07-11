@@ -36,7 +36,7 @@
 
                     <child>
                       <object class="GtkImage">
-                        <property name="icon-name">list-add-symbolic</property>
+                        <property name="icon-name">document-edit-symbolic</property>
                         <property name="pixel-size">96</property>
                         <property name="valign">center</property>
                         <property name="halign">center</property>
