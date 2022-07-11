@@ -304,12 +304,12 @@ class EartagFileTagLib(EartagFile):
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def length(self):
-        return self.e3_file.length
+        return self.tl_file.length
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def bitrate(self):
         # in kbps
-        return self.e3_file.bitrate
+        return self.tl_file.bitrate
 
     @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
     def channels(self):
