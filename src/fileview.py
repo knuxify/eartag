@@ -27,7 +27,7 @@
 # authorization.
 
 from .file import eartagfile_from_path
-from .common import EartagEditableLabel
+from .common import EartagEditableLabel, is_valid_image_file
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path
@@ -145,11 +145,10 @@ class EartagAlbumCover(Adw.Bin):
     def verify_file_valid(self, drop, task, *args):
         file = drop.read_value_finish(task)
         path = file.get_path()
-        if not os.path.exists(path) or (not mimetypes.guess_type(path)[0].startswith('image/') and \
-            not magic.Magic(mime=True).from_file(path).startswith('image/')):
-                self.handling_undefined_drag = True
-                self.drop_target.reject()
-                self.on_drag_unhover()
+        if not is_valid_image_file(path):
+            self.handling_undefined_drag = True
+            self.drop_target.reject()
+            self.on_drag_unhover()
         else:
             self.handling_undefined_drag = False
 

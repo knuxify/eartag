@@ -48,10 +48,26 @@ def is_valid_music_file(path):
         # Try to guess mimetype from filetype if magic fails
         mimetype = mimetypes.guess_type(path)[0]
 
-    if not mimetype.startswith('audio/') and mimetype not in VALID_NONAUDIO_MIMES:
+    if not mimetype or not mimetype.startswith('audio/') and mimetype not in VALID_NONAUDIO_MIMES:
         return False
     return True
 
+def is_valid_image_file(path):
+    """
+    Takes a path to a file and returns True if it's supported, False otherwise.
+    """
+    # In Flatpak, some files don't exist; double-check to make sure
+    if not os.path.exists(path):
+        return False
+
+    mimetype = magic.Magic(mime=True).from_file(path)
+    if mimetype == 'application/octet-stream':
+        # Try to guess mimetype from filetype if magic fails
+        mimetype = mimetypes.guess_type(path)[0]
+
+    if not mimetype or not mimetype in ['image/jpeg', 'image/png']:
+        return False
+    return True
 
 class EartagEditableLabel(Gtk.EditableLabel):
     """
