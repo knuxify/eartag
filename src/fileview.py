@@ -376,13 +376,17 @@ class EartagFileView(Adw.Bin):
         # Get human-readable version of length
         length_min, length_sec = divmod(int(self.file.length), 60)
         length_hour, length_min = divmod(length_min, 60)
+
         if length_hour:
             length_readable = '{h}∶{m}∶{s}'.format(
-                h=length_hour, m=length_min, s=length_sec
+                h=str(length_hour).rjust(2, '0'),
+                m=str(length_min).rjust(2, '0'),
+                s=str(length_sec).rjust(2, '0')
             )
         else:
             length_readable = '{m}∶{s}'.format(
-                m=length_min, s=length_sec
+                m=str(length_min).rjust(2, '0'),
+                s=str(length_sec).rjust(2, '0')
             )
 
         self.file_info.set_label('{filetype} • {length} • {bitrate} kbps • {channels}'.format(
