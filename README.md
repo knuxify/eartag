@@ -1,4 +1,4 @@
-# Eartag
+# Ear Tag
 
 Small and simple music tag editor that doesn't try to manage your entire library
 
@@ -6,13 +6,13 @@ Small and simple music tag editor that doesn't try to manage your entire library
 
 A lot of music tag editors are made to apply changes to entire music libraries. They require you to set up a music folder, etc. This is convenient when you want to keep your entire library in check, but sometimes you just need to edit one file's data without any of the additional hassle.
 
-Thus, Eartag was made to be a simple tag editor that can edit singular files as needed.
+Thus, Ear Tag was made to be a simple tag editor that can edit singular files as needed.
 
 (Additionally, due to its compact design, it can be used on mobile Linux devices.)
 
 ## Dependencies
 
-Eartag is written in Python, and uses GTK4 and libadwaita for the UI. The following dependencies are required:
+Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The following dependencies are required:
 
 - Python >= 3.6
 - GTK4
@@ -49,11 +49,10 @@ Project development happens on [GitHub](https://github.com/knuxify/eartag). For 
 
 ## TODO
 
-While Eartag is ready to use as-is, there are a few nice features that may be added in the near future:
+While Ear Tag is ready to use as-is, there are a few nice features that may be added in the near future:
 
  - [ ] Support for fetching data from Musicbrainz
  - [ ] The ability to open and edit multiple files at once
- - [ ] Support for setting custom tags
  - [ ] Warnings for malformed tags
 
 The project's fully open-source, so if you feel like you could try to implement one of these features, feel free to do so and send a patch to us!
