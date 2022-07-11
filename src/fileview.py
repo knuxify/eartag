@@ -389,7 +389,7 @@ class EartagFileView(Adw.Bin):
                 s=str(length_sec).rjust(2, '0')
             )
 
-        self.file_info.set_label('{filetype} • {length} • {bitrate} kbps • {channels}'.format(
+        self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
             filetype=self.file.filetype,
             length=length_readable,
             bitrate=self.file.bitrate,
