@@ -14,13 +14,19 @@
 }
 
 .album-cover {
-	border-radius: 6px;
-	padding: 6px;
+	box-shadow: 0px 1px 6px rgba(0,0,0,0.3),
+	      0px 2px 12px rgba(0,0,0,0.15),
+	      0px 6px 32px rgba(0,0,0,0.1);
+	border-radius: 12px;
+}
+
+.album-cover button {
+	padding: 0;
 	margin: 0;
 }
 
-.album-cover stack * {
-	border-radius: 6px;
+.album-cover * {
+	border-radius: 12px;
 }
 
 .drag-target {
@@ -28,6 +34,11 @@
 	opacity: 0.85;
 }
 
-.album-cover-drag-target {
-	border-radius: 6px;
+.album-cover .drag-target {
+	border: 1px solid @accent_bg_color;
+}
+
+.album-cover .hover-highlight {
+	background-color: rgba(56, 56, 56, 0.5);
+	color: #fff;
 }

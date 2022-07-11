@@ -30,7 +30,6 @@ from .common import is_valid_music_file
 from .fileview import EartagFileView
 
 from gi.repository import Adw, Gdk, Gio, Gtk
-import os.path
 
 @Gtk.Template(resource_path='/org/dithernet/Eartag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Gtk.MessageDialog):

@@ -48,7 +48,7 @@ def is_valid_music_file(path):
         # Try to guess mimetype from filetype if magic fails
         mimetype = mimetypes.guess_type(path)[0]
 
-    if not mimetype.startswith('audio/') and not mimetype in VALID_NONAUDIO_MIMES:
+    if not mimetype.startswith('audio/') and mimetype not in VALID_NONAUDIO_MIMES:
         return False
     return True
 
@@ -111,4 +111,3 @@ class EartagEditableLabel(Gtk.EditableLabel):
     @placeholder.setter
     def placeholder(self, value):
         self._placeholder = value
-

@@ -9,10 +9,14 @@
     <property name="hexpand">false</property>
     <property name="vexpand">false</property>
 
+    <style>
+      <class name="album-cover"/>
+    </style>
+
     <child>
       <object class="GtkOverlay" id="drag_overlay">
         <child type="overlay">
-          <object class="GtkRevealer" id="drop_highlight_revealer">
+          <object class="GtkRevealer" id="highlight_revealer">
             <property name="receives-default">false</property>
             <property name="can-focus">false</property>
             <property name="can-target">false</property>
@@ -23,19 +27,40 @@
             <property name="vexpand">true</property>
 
             <child>
-              <object class="GtkBox">
-                <style>
-                  <class name="album-cover-drag-target"/>
-                  <class name="drag-target"/>
-                </style>
+              <object class="GtkStack" id="highlight_stack">
+                <child>
+                  <object class="GtkBox" id="hover_highlight">
+                    <style>
+                      <class name="hover-highlight"/>
+                    </style>
+
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">list-add-symbolic</property>
+                        <property name="pixel-size">96</property>
+                        <property name="valign">center</property>
+                        <property name="halign">center</property>
+                        <property name="hexpand">true</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
 
                 <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">document-send-symbolic</property>
-                    <property name="pixel-size">96</property>
-                    <property name="valign">center</property>
-                    <property name="halign">center</property>
-                    <property name="hexpand">true</property>
+                  <object class="GtkBox" id="drop_highlight">
+                    <style>
+                      <class name="drag-target"/>
+                    </style>
+
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">document-send-symbolic</property>
+                        <property name="pixel-size">96</property>
+                        <property name="valign">center</property>
+                        <property name="halign">center</property>
+                        <property name="hexpand">true</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -47,10 +72,6 @@
           <object class="GtkButton" id="button">
             <property name="tooltip-text">Album cover</property>
             <signal name="clicked" handler="show_cover_file_chooser"/>
-
-            <style>
-              <class name="album-cover"/>
-            </style>
 
             <child>
               <object class="GtkStack" id="preview_stack">
@@ -71,6 +92,7 @@
                     <property name="hexpand">true</property>
                     <property name="vexpand">true</property>
                     <property name="pixel-size">196</property>
+                    <property name="overflow">hidden</property>
                   </object>
                 </child>
               </object>

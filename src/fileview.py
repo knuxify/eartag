@@ -47,7 +47,13 @@ class EartagAlbumCover(Adw.Bin):
     image_file_filter = Gtk.Template.Child()
     image_file_binding = None
 
-    drop_highlight_revealer = Gtk.Template.Child()
+    highlight_revealer = Gtk.Template.Child()
+    highlight_stack = Gtk.Template.Child()
+    drop_highlight = Gtk.Template.Child()
+    hover_highlight = Gtk.Template.Child()
+
+    handling_drag = False
+    handling_undefined_drag = False
 
     def __init__(self):
         super().__init__()
@@ -63,6 +69,11 @@ class EartagAlbumCover(Adw.Bin):
         self.drop_target.connect('drop', self.on_drag_drop)
         self.add_controller(self.drop_target)
 
+        self.hover_controller = Gtk.EventControllerMotion.new()
+        self.hover_controller.connect('enter', self.on_hover)
+        self.hover_controller.connect('leave', self.on_unhover)
+        self.add_controller(self.hover_controller)
+
     def bind_to_file(self, file):
         if self.image_file_binding:
             self.image_file_binding.unbind()
@@ -71,9 +82,9 @@ class EartagAlbumCover(Adw.Bin):
         self.file = file
 
         if file.supports_album_covers:
-            self.set_sensitive(True)
+            self.set_visible(True)
         else:
-            self.set_sensitive(False)
+            self.set_visible(False)
             self.cover_image.set_from_file(None)
             self.on_cover_change()
             return
@@ -136,15 +147,21 @@ class EartagAlbumCover(Adw.Bin):
         path = file.get_path()
         if not os.path.exists(path) or (not mimetypes.guess_type(path)[0].startswith('image/') and \
             not magic.Magic(mime=True).from_file(path).startswith('image/')):
+                self.handling_undefined_drag = True
                 self.drop_target.reject()
                 self.on_drag_unhover()
+        else:
+            self.handling_undefined_drag = False
 
     def on_drag_hover(self, *args):
-        self.drop_highlight_revealer.set_reveal_child(True)
+        self.handling_drag = True
+        self.highlight_stack.set_visible_child(self.drop_highlight)
+        self.highlight_revealer.set_reveal_child(True)
         return Gdk.DragAction.COPY
 
     def on_drag_unhover(self, *args):
-        self.drop_highlight_revealer.set_reveal_child(False)
+        self.highlight_revealer.set_reveal_child(False)
+        self.handling_drag = False
 
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
@@ -152,6 +169,15 @@ class EartagAlbumCover(Adw.Bin):
         self.file.notify('cover-path')
         self.on_cover_change()
         self.on_drag_unhover()
+
+    # Hover
+    def on_hover(self, *args):
+        if not self.handling_drag and not self.handling_undefined_drag:
+            self.highlight_stack.set_visible_child(self.hover_highlight)
+            self.highlight_revealer.set_reveal_child(True)
+
+    def on_unhover(self, *args):
+        self.highlight_revealer.set_reveal_child(False)
 
 class EartagTagListItem(Adw.ActionRow):
     __gtype_name__ = 'EartagTagListItem'
