@@ -24,7 +24,7 @@
 
                 <child>
                   <object class="GtkLabel" id="title">
-                    <property name="label">Eartag</property>
+                    <property name="label">Ear Tag</property>
                     <property name="justify">center</property>
                     <property name="wrap">true</property>
 

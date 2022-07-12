@@ -87,7 +87,7 @@
 
                     <child type="title">
                       <object class="AdwWindowTitle" id="window_title">
-                        <property name="title">Eartag</property>
+                        <property name="title">Ear Tag</property>
                       </object>
                     </child>
 
@@ -139,7 +139,7 @@
         <attribute name="action">app.open_file</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About Eartag</attribute>
+        <attribute name="label" translatable="yes">_About Ear Tag</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>
