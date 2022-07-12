@@ -139,10 +139,12 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def on_drag_hover(self, *args):
         self.drop_highlight_revealer.set_reveal_child(True)
+        self.drop_highlight_revealer.set_can_target(True)
         return Gdk.DragAction.COPY
 
     def on_drag_unhover(self, *args):
         self.drop_highlight_revealer.set_reveal_child(False)
+        self.drop_highlight_revealer.set_can_target(False)
 
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
