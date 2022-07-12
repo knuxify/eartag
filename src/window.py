@@ -31,7 +31,7 @@ from .fileview import EartagFileView
 
 from gi.repository import Adw, Gdk, Gio, Gtk
 
-@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/discardwarning.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Gtk.MessageDialog):
     __gtype_name__ = 'EartagDiscardWarningDialog'
 
@@ -56,7 +56,7 @@ class EartagDiscardWarningDialog(Gtk.MessageDialog):
         self.window.load_file(self.file_path)
         self.close()
 
-@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/closewarning.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/closewarning.ui')
 class EartagCloseWarningDialog(Gtk.MessageDialog):
     __gtype_name__ = 'EartagCloseWarningDialog'
 
@@ -79,7 +79,7 @@ class EartagCloseWarningDialog(Gtk.MessageDialog):
             return False
         self.window.close()
 
-@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/nofile.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
     __gtype_name__ = 'EartagNoFile'
 
@@ -90,7 +90,7 @@ class EartagNoFile(Adw.Bin):
     def on_add_file(self, *args):
         self.get_native().show_file_chooser()
 
-@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/window.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/window.ui')
 class EartagWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'EartagWindow'
 
@@ -213,9 +213,9 @@ class EartagWindow(Adw.ApplicationWindow):
 class AboutDialog(Gtk.AboutDialog):
     def __init__(self, parent):
         Gtk.AboutDialog.__init__(self)
-        self.props.program_name = 'Eartag'
+        self.props.program_name = 'Ear Tag'
         self.props.version = "0.1.0"
         self.props.authors = ['knuxify']
         self.props.copyright = '(C) 2022 knuxify'
-        self.props.logo_icon_name = 'org.dithernet.Eartag'
+        self.props.logo_icon_name = 'app.drey.EarTag'
         self.set_transient_for(parent)

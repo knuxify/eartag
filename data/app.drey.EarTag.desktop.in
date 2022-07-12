@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Eartag
+Name=Ear Tag
 Comment=Tag your music files in peace
 Exec=eartag
-Icon=org.dithernet.Eartag
+Icon=app.drey.Eartag
 Terminal=false
 Type=Application
 StartupNotify=true

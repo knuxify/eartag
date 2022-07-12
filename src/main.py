@@ -40,8 +40,8 @@ from .window import EartagWindow, AboutDialog
 
 class Application(Adw.Application):
     def __init__(self):
-        super().__init__(application_id='org.dithernet.Eartag',
-                         resource_base_path='/org/dithernet/Eartag',
+        super().__init__(application_id='app.drey.EarTag',
+                         resource_base_path='/app/drey/EarTag',
                          flags=Gio.ApplicationFlags.HANDLES_OPEN)
         self.path = None
         self.connect('open', self.on_open)

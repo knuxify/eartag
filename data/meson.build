@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-  input: 'org.dithernet.Eartag.desktop.in',
-  output: 'org.dithernet.Eartag.desktop',
+  input: 'app.drey.EarTag.desktop.in',
+  output: 'app.drey.EarTag.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -15,8 +15,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-  input: 'org.dithernet.Eartag.appdata.xml.in',
-  output: 'org.dithernet.Eartag.appdata.xml',
+  input: 'app.drey.EarTag.appdata.xml.in',
+  output: 'app.drey.EarTag.appdata.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -29,7 +29,7 @@ if appstream_util.found()
   )
 endif
 
-install_data('org.dithernet.Eartag.gschema.xml',
+install_data('app.drey.EarTag.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 

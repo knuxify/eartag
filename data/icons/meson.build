@@ -1,4 +1,4 @@
-application_id = 'org.dithernet.Eartag'
+application_id = 'app.drey.EarTag'
 
 scalable_dir = join_paths('hicolor', 'scalable', 'apps')
 install_data(

@@ -1,5 +1,5 @@
 {
-    "app-id" : "org.dithernet.Eartag",
+    "app-id" : "app.drey.EarTag",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "42",
     "sdk" : "org.gnome.Sdk",

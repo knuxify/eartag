@@ -35,7 +35,7 @@ import traceback
 import magic
 import mimetypes
 
-@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/albumcover.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcover.ui')
 class EartagAlbumCover(Adw.Bin):
     __gtype_name__ = 'EartagAlbumCover'
 
@@ -285,7 +285,7 @@ class EartagTagListItem(Adw.ActionRow):
         else:
             self.value_entry_double.set_visible(False)
 
-@Gtk.Template(resource_path='/org/dithernet/Eartag/ui/fileview.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Adw.Bin):
     __gtype_name__ = 'EartagFileView'
 
