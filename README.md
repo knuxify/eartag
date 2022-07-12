@@ -2,6 +2,8 @@
 
 Small and simple music tag editor that doesn't try to manage your entire library
 
+![Screenshot](screenshot.png)
+
 ## Why?
 
 A lot of music tag editors are made to apply changes to entire music libraries. They require you to set up a music folder, etc. This is convenient when you want to keep your entire library in check, but sometimes you just need to edit one file's data without any of the additional hassle.
