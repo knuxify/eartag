@@ -23,6 +23,13 @@
                 <property name="margin-end">24</property>
 
                 <child>
+                  <object class="GtkImage" id="icon">
+                    <property name="icon-name">app.drey.EarTag</property>
+                    <property name="pixel-size">96</property>
+                  </object>
+                </child>
+
+                <child>
                   <object class="GtkLabel" id="title">
                     <property name="label">Ear Tag</property>
                     <property name="justify">center</property>
