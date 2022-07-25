@@ -218,6 +218,7 @@ class AboutDialog(Gtk.AboutDialog):
         self.props.program_name = 'Ear Tag'
         self.props.version = "0.1.0"
         self.props.authors = ['knuxify']
+        self.props.artists = ['Igor Dyatlov']
         self.props.copyright = '(C) 2022 knuxify'
         self.props.logo_icon_name = 'app.drey.EarTag'
         self.set_transient_for(parent)
