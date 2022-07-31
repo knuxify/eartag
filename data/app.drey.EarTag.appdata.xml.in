@@ -5,9 +5,9 @@
 	<id>app.drey.EarTag.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>MIT</project_license>
-	<content_rating type="oars-1.1" />
+	<content_rating type="oars-1.1"/>
 	<releases>
-		<release version="0.1.0" date="2022-07-30">
+		<release version="0.1.0" date="2022-07-31">
 			<description>Initial release.</description>
 		</release>
 	</releases>
