@@ -2,7 +2,7 @@
 Name=Ear Tag
 Comment=Tag your music files in peace
 Exec=eartag
-Icon=app.drey.Eartag
+Icon=app.drey.EarTag
 Terminal=false
 Type=Application
 StartupNotify=true
