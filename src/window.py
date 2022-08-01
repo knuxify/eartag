@@ -153,20 +153,15 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_file_chooser(self):
         """Shows the file chooser."""
-        self.file_chooser = Gtk.FileChooserDialog(
+        self.file_chooser = Gtk.FileChooserNative(
                                 title=_("Open File"),
                                 transient_for=self,
                                 action=Gtk.FileChooserAction.OPEN,
                                 filter=self.audio_file_filter
                                 )
-        self.file_chooser.add_buttons(
-            _("_Cancel"), Gtk.ResponseType.CANCEL,
-            _("_Open"), Gtk.ResponseType.ACCEPT
-        )
 
         self.file_chooser.connect('response', self.open_file_from_dialog)
-
-        self.file_chooser.present()
+        self.file_chooser.show()
 
     def load_file(self, path):
         """

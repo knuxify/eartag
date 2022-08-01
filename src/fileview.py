@@ -110,20 +110,15 @@ class EartagAlbumCover(Adw.Bin):
     @Gtk.Template.Callback()
     def show_cover_file_chooser(self, *args):
         """Shows the file chooser."""
-        self.file_chooser = Gtk.FileChooserDialog(
+        self.file_chooser = Gtk.FileChooserNative(
                                 title=_("Select Album Cover Image"),
                                 transient_for=self.get_native(),
                                 action=Gtk.FileChooserAction.OPEN,
                                 filter=self.image_file_filter
                                 )
-        self.file_chooser.add_buttons(
-            _("_Cancel"), Gtk.ResponseType.CANCEL,
-            _("_Open"), Gtk.ResponseType.ACCEPT
-        )
 
         self.file_chooser.connect('response', self.open_cover_file_from_dialog)
-
-        self.file_chooser.present()
+        self.file_chooser.show()
 
     def open_cover_file_from_dialog(self, dialog, response):
         """
