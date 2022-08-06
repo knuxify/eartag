@@ -22,7 +22,7 @@ msgstr ""
 
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:3
 msgid "Ear Tag"
-msgstr "Ушная бирка"
+msgstr "Ear Tag"
 
 #: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.appdata.xml.in:4
 msgid "Tag your music files in peace"
@@ -36,7 +36,7 @@ msgstr "music;audio;tag;tagging;tagger;музыка;аудио;тэг;тэгир
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage your entire library."
 msgstr ""
-"Ушная бирка - это маленький и простой редактор музыкальных тегов, который не пытается "
+"Ear Tag - это маленький и простой редактор музыкальных тегов, который не пытается "
 "управлять всей вашей библиотекой."
 
 #: data/app.drey.EarTag.appdata.xml.in:10
@@ -54,7 +54,7 @@ msgstr ""
 #: data/app.drey.EarTag.appdata.xml.in:11
 msgid "Thus, Ear Tag was made to be a simple tag editor that can edit singular files as needed."
 msgstr ""
-"Таким образом, Ушная бирка была создана как простой редактор тегов, который может "
+"Таким образом, Ear Tag был создан как простой редактор тегов, который может "
 "редактировать отдельные файлы по мере необходимости."
 
 #: src/ui/window.ui:51
@@ -71,7 +71,7 @@ msgstr "_Открыть файл"
 
 #: src/ui/window.ui:142
 msgid "_About Ear Tag"
-msgstr "Об Ушной бирке"
+msgstr "Об Ear Tag"
 
 #: src/ui/fileview.ui:34
 msgid "Title"
