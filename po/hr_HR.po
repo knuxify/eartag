@@ -22,7 +22,7 @@ msgstr ""
 # Translators: Do NOT translate or transliterate this text
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:3
 msgid "Ear Tag"
-msgstr ""
+msgstr "Ear Tag"
 
 #: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.appdata.xml.in:4
 msgid "Tag your music files in peace"
