@@ -1,1 +1,1 @@
-i18n.gettext('eartag', preset: 'glib')
+i18n.gettext('app.drey.EarTag', preset: 'glib')

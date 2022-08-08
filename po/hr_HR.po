@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-26 21:51+0300\n"
+"POT-Creation-Date: 2022-08-09 00:25+0200\n"
 "PO-Revision-Date: 2022-08-08 13:41+0200\n"
 "Last-Translator: \n"
 "Language-Team: sheep <hi@sheepdev.xyz>\n"
@@ -20,19 +20,24 @@ msgstr ""
 "X-Generator: Poedit 3.1\n"
 
 # Translators: Do NOT translate or transliterate this text
-#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:3
+#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
-#: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.appdata.xml.in:4
-msgid "Tag your music files in peace"
-msgstr "Označite svoju glazbu na miru"
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr ""
 
-#: data/app.drey.EarTag.desktop.in:11
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
+msgid "Small and simple music tag editor"
+msgstr ""
+
+#: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "muzika;audio;oznaka;označavanje;označivač;"
 
-#: data/app.drey.EarTag.appdata.xml.in:9
+#: data/app.drey.EarTag.appdata.xml.in:18
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -40,7 +45,7 @@ msgstr ""
 "Ear Tag je mali i jednostavni program za označavanje vaše glazbe koji ne "
 "pokušava upravljati vašom cijelom bibliotekom."
 
-#: data/app.drey.EarTag.appdata.xml.in:10
+#: data/app.drey.EarTag.appdata.xml.in:19
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -53,7 +58,7 @@ msgstr ""
 "nekada morate promijeniti samo podatke jedne datoteke bez ikakvih dodatnih "
 "problema."
 
-#: data/app.drey.EarTag.appdata.xml.in:11
+#: data/app.drey.EarTag.appdata.xml.in:20
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -61,19 +66,20 @@ msgstr ""
 "Stoga, Ear Tag je napravljen da bude jednostavni uređivač oznaka koji može "
 "uređivati pojedinačne datoteke."
 
-#: src/ui/window.ui:51
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
 msgid "Drop a file to edit it"
 msgstr "Ubacite datoteku kako bi ste je uredili"
 
-#: src/ui/window.ui:79 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/window.ui:80 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 msgid "Save"
 msgstr "Spremi"
 
-#: src/ui/window.ui:138
+#: src/ui/window.ui:135
 msgid "_Open file"
 msgstr "_Otvori datoteku"
 
-#: src/ui/window.ui:142
+#: src/ui/window.ui:139
 msgid "_About Ear Tag"
 msgstr "_O Ear Tagu"
 
@@ -89,28 +95,23 @@ msgstr "Umjetnik"
 msgid "Track number"
 msgstr "Broj staze"
 
-#. TRANSLATORS: Displayed between track number and total track count
-#: src/ui/fileview.ui:81
-msgid "/"
-msgstr "/"
-
-#: src/ui/fileview.ui:89
+#: src/ui/fileview.ui:88
 msgid "Album"
 msgstr "Album"
 
-#: src/ui/fileview.ui:95
+#: src/ui/fileview.ui:94
 msgid "Album artist"
 msgstr "Izvođač albuma"
 
-#: src/ui/fileview.ui:101
+#: src/ui/fileview.ui:100
 msgid "Genre"
 msgstr "Žanr"
 
-#: src/ui/fileview.ui:107
+#: src/ui/fileview.ui:106
 msgid "Release year"
 msgstr "Godina izdanja"
 
-#: src/ui/fileview.ui:114
+#: src/ui/fileview.ui:113
 msgid "Comment"
 msgstr "Komentar"
 
@@ -142,47 +143,51 @@ msgstr "Odbaci promjene i otvori"
 msgid "Select Album Cover Image"
 msgstr "Odaberite sliku naslovnice albuma"
 
-#: src/fileview.py:120 src/window.py:163
-msgid "_Cancel"
-msgstr "_Otkaži"
-
-#: src/fileview.py:121 src/window.py:164
-msgid "_Open"
-msgstr "_Otvori"
-
-#: src/fileview.py:331
+#: src/fileview.py:326
 msgid "Failed to load file"
 msgstr "Učitavanje datoteke nije uspjelo"
 
-#: src/fileview.py:332
+#: src/fileview.py:327
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 "Nije moguće učitati datoteku {f}. Više informacija potražite u logovima."
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:350
+#: src/fileview.py:345
 msgid "File is read-only, saving is disabled"
 msgstr "Datoteka je samo za čitanje, spremanje je onemogućeno"
 
-#: src/fileview.py:353
+#: src/fileview.py:348
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
 
-#: src/fileview.py:426
+#: src/fileview.py:421
 msgid "Failed to save file"
 msgstr "Spremanje datoteke nije uspjelo"
 
-#: src/fileview.py:427
+#: src/fileview.py:422
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Nije moguće spremiti datoteku {f}. Više informacija potražite u logovima."
 
-#: src/fileview.py:434
+#: src/fileview.py:429
 msgid "Saved changes to file"
 msgstr "Promjene spremljene u datoteku"
 
 #: src/window.py:157
 msgid "Open File"
 msgstr "Otvori datoteku"
+
+#~ msgid "/"
+#~ msgstr "/"
+
+#~ msgid "Tag your music files in peace"
+#~ msgstr "Označite svoju glazbu na miru"
+
+#~ msgid "_Cancel"
+#~ msgstr "_Otkaži"
+
+#~ msgid "_Open"
+#~ msgstr "_Otvori"

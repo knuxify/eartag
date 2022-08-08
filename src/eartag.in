@@ -39,7 +39,7 @@ localedir = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-gettext.install('eartag', localedir)
+gettext.install('app.drey.EarTag', localedir)
 
 if __name__ == '__main__':
     import gi

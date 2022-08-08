@@ -77,8 +77,7 @@
                       <object class="EartagTagListItem" id="tracknumber_entry">
                         <property name="title" translatable="yes">Track number</property>
                         <property name="max-width-chars">4</property>
-                        <!-- TRANSLATORS: Displayed between track number and total track count -->
-                        <property name="double-separator" translatable="yes">/</property>
+                        <property name="double-separator">/</property>
                         <property name="is-double">true</property>
                         <property name="is-numeric">true</property>
                       </object>

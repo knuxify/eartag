@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the app.drey.EarTag package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-26 21:51+0300\n"
+"POT-Creation-Date: 2022-08-09 00:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,44 +17,57 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Translators: Do NOT translate or transliterate this text
-#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:3
+#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
 msgid "Ear Tag"
-msgstr "Ear Tag"
-
-#: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.appdata.xml.in:4
-msgid "Tag your music files in peace"
 msgstr ""
 
-#: data/app.drey.EarTag.desktop.in:11
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr ""
+
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
+msgid "Small and simple music tag editor"
+msgstr ""
+
+#: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
 msgstr ""
 
-#: data/app.drey.EarTag.appdata.xml.in:9
-msgid "Ear Tag is a small and simple music tag editor that doesn't try to manage your entire library."
+#: data/app.drey.EarTag.appdata.xml.in:18
+msgid ""
+"Ear Tag is a small and simple music tag editor that doesn't try to manage "
+"your entire library."
 msgstr ""
 
-#: data/app.drey.EarTag.appdata.xml.in:10
-msgid "A lot of music tag editors are made to apply changes to entire music libraries. They require you to set up a music folder, etc. This is convenient when you want to keep your entire library in check, but sometimes you just need to edit one file's data without any of the additional hassle."
+#: data/app.drey.EarTag.appdata.xml.in:19
+msgid ""
+"A lot of music tag editors are made to apply changes to entire music "
+"libraries. They require you to set up a music folder, etc. This is "
+"convenient when you want to keep your entire library in check, but sometimes "
+"you just need to edit one file's data without any of the additional hassle."
 msgstr ""
 
-#: data/app.drey.EarTag.appdata.xml.in:11
-msgid "Thus, Ear Tag was made to be a simple tag editor that can edit singular files as needed."
+#: data/app.drey.EarTag.appdata.xml.in:20
+msgid ""
+"Thus, Ear Tag was made to be a simple tag editor that can edit singular "
+"files as needed."
 msgstr ""
 
-#: src/ui/window.ui:51
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
 msgid "Drop a file to edit it"
 msgstr ""
 
-#: src/ui/window.ui:79 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/window.ui:80 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 msgid "Save"
 msgstr ""
 
-#: src/ui/window.ui:138
+#: src/ui/window.ui:135
 msgid "_Open file"
 msgstr ""
 
-#: src/ui/window.ui:142
+#: src/ui/window.ui:139
 msgid "_About Ear Tag"
 msgstr ""
 
@@ -70,28 +83,23 @@ msgstr ""
 msgid "Track number"
 msgstr ""
 
-#. TRANSLATORS: Displayed between track number and total track count
-#: src/ui/fileview.ui:81
-msgid "/"
-msgstr ""
-
-#: src/ui/fileview.ui:89
+#: src/ui/fileview.ui:88
 msgid "Album"
 msgstr ""
 
-#: src/ui/fileview.ui:95
+#: src/ui/fileview.ui:94
 msgid "Album artist"
 msgstr ""
 
-#: src/ui/fileview.ui:101
+#: src/ui/fileview.ui:100
 msgid "Genre"
 msgstr ""
 
-#: src/ui/fileview.ui:107
+#: src/ui/fileview.ui:106
 msgid "Release year"
 msgstr ""
 
-#: src/ui/fileview.ui:114
+#: src/ui/fileview.ui:113
 msgid "Comment"
 msgstr ""
 
@@ -123,42 +131,34 @@ msgstr ""
 msgid "Select Album Cover Image"
 msgstr ""
 
-#: src/fileview.py:120 src/window.py:163
-msgid "_Cancel"
-msgstr ""
-
-#: src/fileview.py:121 src/window.py:164
-msgid "_Open"
-msgstr ""
-
-#: src/fileview.py:331
+#: src/fileview.py:326
 msgid "Failed to load file"
 msgstr ""
 
-#: src/fileview.py:332
+#: src/fileview.py:327
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:350
+#: src/fileview.py:345
 msgid "File is read-only, saving is disabled"
 msgstr ""
 
-#: src/fileview.py:353
+#: src/fileview.py:348
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr ""
 
-#: src/fileview.py:426
+#: src/fileview.py:421
 msgid "Failed to save file"
 msgstr ""
 
-#: src/fileview.py:427
+#: src/fileview.py:422
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 
-#: src/fileview.py:434
+#: src/fileview.py:429
 msgid "Saved changes to file"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-26 21:51+0300\n"
+"POT-Creation-Date: 2022-08-09 00:25+0200\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -16,60 +16,72 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 3.1\n"
 
-#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:3
+#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
-#: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.appdata.xml.in:4
-msgid "Tag your music files in peace"
-msgstr "Управляйте тегами своих музыкальный файлов просто"
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr ""
 
-#: data/app.drey.EarTag.desktop.in:11
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
+msgid "Small and simple music tag editor"
+msgstr ""
+
+#: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
-msgstr "music;audio;tag;tagging;tagger;музыка;аудио;тэг;тэгирование;тэггер;тег;тегирование;"
-
-#: data/app.drey.EarTag.appdata.xml.in:9
-msgid ""
-"Ear Tag is a small and simple music tag editor that doesn't try to manage your entire library."
 msgstr ""
-"Ear Tag - это маленький и простой редактор музыкальных тегов, который не пытается "
-"управлять всей вашей библиотекой."
+"music;audio;tag;tagging;tagger;музыка;аудио;тэг;тэгирование;тэггер;тег;"
+"тегирование;"
 
-#: data/app.drey.EarTag.appdata.xml.in:10
+#: data/app.drey.EarTag.appdata.xml.in:18
 msgid ""
-"A lot of music tag editors are made to apply changes to entire music libraries. They require "
-"you to set up a music folder, etc. This is convenient when you want to keep your entire "
-"library in check, but sometimes you just need to edit one file's data without any of the "
-"additional hassle."
+"Ear Tag is a small and simple music tag editor that doesn't try to manage "
+"your entire library."
 msgstr ""
-"Многие редакторы музыкальных тегов предназначены для внесения изменений в целые музыкальные "
-"библиотеки. Они требуют создания папки с музыкой и т.д. Это удобно, когда вы хотите держать "
-"под контролем всю библиотеку, но иногда вам нужно просто отредактировать данные одного файла "
-"без дополнительных хлопот."
+"Ear Tag - это маленький и простой редактор музыкальных тегов, который не "
+"пытается управлять всей вашей библиотекой."
 
-#: data/app.drey.EarTag.appdata.xml.in:11
-msgid "Thus, Ear Tag was made to be a simple tag editor that can edit singular files as needed."
+#: data/app.drey.EarTag.appdata.xml.in:19
+msgid ""
+"A lot of music tag editors are made to apply changes to entire music "
+"libraries. They require you to set up a music folder, etc. This is "
+"convenient when you want to keep your entire library in check, but sometimes "
+"you just need to edit one file's data without any of the additional hassle."
+msgstr ""
+"Многие редакторы музыкальных тегов предназначены для внесения изменений в "
+"целые музыкальные библиотеки. Они требуют создания папки с музыкой и т.д. "
+"Это удобно, когда вы хотите держать под контролем всю библиотеку, но иногда "
+"вам нужно просто отредактировать данные одного файла без дополнительных "
+"хлопот."
+
+#: data/app.drey.EarTag.appdata.xml.in:20
+msgid ""
+"Thus, Ear Tag was made to be a simple tag editor that can edit singular "
+"files as needed."
 msgstr ""
 "Таким образом, Ear Tag был создан как простой редактор тегов, который может "
 "редактировать отдельные файлы по мере необходимости."
 
-#: src/ui/window.ui:51
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
 msgid "Drop a file to edit it"
 msgstr "Перетащите файл, чтобы отредактировать его"
 
-#: src/ui/window.ui:79 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/window.ui:80 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 msgid "Save"
 msgstr "Сохранить"
 
-#: src/ui/window.ui:138
+#: src/ui/window.ui:135
 msgid "_Open file"
 msgstr "_Открыть файл"
 
-#: src/ui/window.ui:142
+#: src/ui/window.ui:139
 msgid "_About Ear Tag"
 msgstr "Об Ear Tag"
 
@@ -85,28 +97,23 @@ msgstr "Исполнитель"
 msgid "Track number"
 msgstr "Номер дорожки"
 
-#. TRANSLATORS: Displayed between track number and total track count
-#: src/ui/fileview.ui:81
-msgid "/"
-msgstr "/"
-
-#: src/ui/fileview.ui:89
+#: src/ui/fileview.ui:88
 msgid "Album"
 msgstr "Альбом"
 
-#: src/ui/fileview.ui:95
+#: src/ui/fileview.ui:94
 msgid "Album artist"
 msgstr "Исполнитель альбома"
 
-#: src/ui/fileview.ui:101
+#: src/ui/fileview.ui:100
 msgid "Genre"
 msgstr "Жанр"
 
-#: src/ui/fileview.ui:107
+#: src/ui/fileview.ui:106
 msgid "Release year"
 msgstr "Год выпуска"
 
-#: src/ui/fileview.ui:114
+#: src/ui/fileview.ui:113
 msgid "Comment"
 msgstr "Комментарий"
 
@@ -138,45 +145,54 @@ msgstr "Отменить изменения и откройте"
 msgid "Select Album Cover Image"
 msgstr "Выберите изображение обложки альбома"
 
-#: src/fileview.py:120 src/window.py:163
-msgid "_Cancel"
-msgstr "_Отменить"
-
-#: src/fileview.py:121 src/window.py:164
-msgid "_Open"
-msgstr "_Открыть"
-
-#: src/fileview.py:331
+#: src/fileview.py:326
 msgid "Failed to load file"
 msgstr "Не удалось загрузить файл"
 
-#: src/fileview.py:332
+#: src/fileview.py:327
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
-msgstr "Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной информации."
+msgstr ""
+"Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной "
+"информации."
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:350
+#: src/fileview.py:345
 msgid "File is read-only, saving is disabled"
 msgstr "Файл доступен только для чтения, сохранение отключено"
 
-#: src/fileview.py:353
+#: src/fileview.py:348
 msgid "Opened file is read-only; changes cannot be saved."
-msgstr "Открытый файл доступен только для чтения; изменения не могут быть сохранены."
+msgstr ""
+"Открытый файл доступен только для чтения; изменения не могут быть сохранены."
 
-#: src/fileview.py:426
+#: src/fileview.py:421
 msgid "Failed to save file"
 msgstr "Не удалось сохранить файл"
 
-#: src/fileview.py:427
+#: src/fileview.py:422
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
-msgstr "Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной информации."
+msgstr ""
+"Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной "
+"информации."
 
-#: src/fileview.py:434
+#: src/fileview.py:429
 msgid "Saved changes to file"
 msgstr "Сохранить изменения в файл"
 
 #: src/window.py:157
 msgid "Open File"
 msgstr "Открыть файл"
+
+#~ msgid "/"
+#~ msgstr "/"
+
+#~ msgid "Tag your music files in peace"
+#~ msgstr "Управляйте тегами своих музыкальный файлов просто"
+
+#~ msgid "_Cancel"
+#~ msgstr "_Отменить"
+
+#~ msgid "_Open"
+#~ msgstr "_Открыть"

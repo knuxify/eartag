@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Ear Tag
-Comment=Tag your music files in peace
+GenericName=Tag Editor
+Comment=Small and simple music tag editor
 Exec=eartag
 Icon=app.drey.EarTag
 Terminal=false
