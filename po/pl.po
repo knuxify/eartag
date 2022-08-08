@@ -42,7 +42,7 @@ msgid ""
 "your entire library."
 msgstr ""
 "Ear Tag to mały i prosty edytor tagów muzyki który nie próbuje zarządzać "
-"całą twoją biblioteką muzyki."
+"całą twoją biblioteką."
 
 #: data/app.drey.EarTag.appdata.xml.in:19
 msgid ""
@@ -61,13 +61,13 @@ msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
 msgstr ""
-"Dlatego Ear Tag został stworzony, aby być prostym edytorem tagów który może "
+"Dlatego Ear Tag został stworzony jako prosty edytor tagów który może "
 "edytować pojedyncze pliki, gdy jest to potrzebne."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
 msgid "Drop a file to edit it"
-msgstr "Zrzuć plik, aby go edytować"
+msgstr "Upuść plik, aby go edytować"
 
 #: src/ui/window.ui:80 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 msgid "Save"
