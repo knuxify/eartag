@@ -12,6 +12,12 @@ Thus, Ear Tag was made to be a simple tag editor that can edit singular files as
 
 (Additionally, due to its compact design, it can be used on mobile Linux devices.)
 
+## Installing
+
+Ear Tag is available on [Flathub](https://flathub.org/apps/details/app.drey.EarTag), as well as the following software repositories:
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/eartag.svg)](https://repology.org/project/eartag/versions)
+
 ## Dependencies
 
 Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The following dependencies are required:
