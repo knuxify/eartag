@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-09 00:25+0200\n"
+"POT-Creation-Date: 2022-08-11 11:06+0200\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -184,6 +184,11 @@ msgstr "Сохранить изменения в файл"
 #: src/window.py:157
 msgid "Open File"
 msgstr "Открыть файл"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/window.py:218 src/window.py:219
+msgid "translator-credits"
+msgstr ""
 
 #~ msgid "/"
 #~ msgstr "/"

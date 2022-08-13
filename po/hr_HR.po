@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-09 00:25+0200\n"
+"POT-Creation-Date: 2022-08-11 11:06+0200\n"
 "PO-Revision-Date: 2022-08-08 13:41+0200\n"
 "Last-Translator: \n"
 "Language-Team: sheep <hi@sheepdev.xyz>\n"
@@ -179,6 +179,11 @@ msgstr "Promjene spremljene u datoteku"
 #: src/window.py:157
 msgid "Open File"
 msgstr "Otvori datoteku"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/window.py:218 src/window.py:219
+msgid "translator-credits"
+msgstr ""
 
 #~ msgid "/"
 #~ msgstr "/"
