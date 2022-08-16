@@ -1,0 +1,191 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the app.drey.EarTag package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: app.drey.EarTag\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-08-11 11:06+0200\n"
+"PO-Revision-Date: 2022-08-16 11:30+0200\n"
+"Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr "Éditeur de balises"
+
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
+msgid "Small and simple music tag editor"
+msgstr "Un petit éditeur de balises de fichiers musicaux, simple et efficace"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "music;audio;tag;tagging;tagger;données;"
+
+#: data/app.drey.EarTag.appdata.xml.in:18
+msgid ""
+"Ear Tag is a small and simple music tag editor that doesn't try to manage "
+"your entire library."
+msgstr ""
+"Ear Tag est un petit et simple éditeur de balises musicales qui n'essaie pas "
+"de gérer l’ensemble de votre bibliothèque."
+
+#: data/app.drey.EarTag.appdata.xml.in:19
+msgid ""
+"A lot of music tag editors are made to apply changes to entire music "
+"libraries. They require you to set up a music folder, etc. This is "
+"convenient when you want to keep your entire library in check, but sometimes "
+"you just need to edit one file's data without any of the additional hassle."
+msgstr ""
+"De nombreux éditeurs de balises musicales sont conçus pour appliquer des "
+"modifications à des bibliothèques musicales entières. Ils vous demandent de "
+"configurer un dossier de musique, etc. C’est pratique lorsque vous souhaitez "
+"contrôler l’ensemble de votre bibliothèque, mais il arrive parfois que vous "
+"ayez juste besoin de modifier les données d’un fichier sans avoir à vous "
+"préoccuper du reste."
+
+#: data/app.drey.EarTag.appdata.xml.in:20
+msgid ""
+"Thus, Ear Tag was made to be a simple tag editor that can edit singular "
+"files as needed."
+msgstr ""
+"Ainsi, Ear Tag a été conçu pour être un simple éditeur de balises qui peut "
+"modifier des fichiers infividuels selon les besoins."
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
+msgid "Drop a file to edit it"
+msgstr "Glissez-déposez un fichier pour l’éditer"
+
+#: src/ui/window.ui:80 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+msgid "Save"
+msgstr "Enregistrer"
+
+#: src/ui/window.ui:135
+msgid "_Open file"
+msgstr "_Ouvrir un fichier"
+
+#: src/ui/window.ui:139
+msgid "_About Ear Tag"
+msgstr "À _propos de Ear Tag"
+
+#: src/ui/fileview.ui:34
+msgid "Title"
+msgstr "Titre"
+
+#: src/ui/fileview.ui:43
+msgid "Artist"
+msgstr "Artiste"
+
+#: src/ui/fileview.ui:78
+msgid "Track number"
+msgstr "Numéro de piste"
+
+#: src/ui/fileview.ui:88
+msgid "Album"
+msgstr "Album"
+
+#: src/ui/fileview.ui:94
+msgid "Album artist"
+msgstr "Artiste de l’album"
+
+#: src/ui/fileview.ui:100
+msgid "Genre"
+msgstr "Genre"
+
+#: src/ui/fileview.ui:106
+msgid "Release year"
+msgstr "Année de sortie"
+
+#: src/ui/fileview.ui:113
+msgid "Comment"
+msgstr "Commentaire"
+
+#: src/ui/closewarning.ui:5
+msgid "Save changes before closing?"
+msgstr "Enregistrer les modifications avant la fermeture ?"
+
+#: src/ui/closewarning.ui:6 src/ui/discardwarning.ui:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr ""
+"Vos modifications seront perdues définitivement si vous ne les enregistrez "
+"pas."
+
+#: src/ui/closewarning.ui:10
+msgid "Close without saving"
+msgstr "Fermer sans enregistrer"
+
+#: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/ui/discardwarning.ui:5
+msgid "Save changes before opening another file?"
+msgstr "Enregistrer les modifications avant d’ouvrir un autre fichier ?"
+
+#: src/ui/discardwarning.ui:10
+msgid "Discard changes and open"
+msgstr "Abandonner les modifications et ouvrir"
+
+#: src/fileview.py:114
+msgid "Select Album Cover Image"
+msgstr "Sélectionnez une image de couverture de l’album"
+
+#: src/fileview.py:326
+msgid "Failed to load file"
+msgstr "Échec du chargement du fichier"
+
+#: src/fileview.py:327
+#, python-brace-format
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr ""
+"Impossible de charger le fichier {f}. Vérifiez les journaux pour plus "
+"d’informations."
+
+#. TRANSLATORS: Tooltip text for save button when saving is disabled
+#: src/fileview.py:345
+msgid "File is read-only, saving is disabled"
+msgstr "Le fichier est en lecture seule, l’enregistrement est désactivé"
+
+#: src/fileview.py:348
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr ""
+"Le fichier ouvert est en lecture seule ; les modifications ne peuvent être "
+"enregistrées."
+
+#: src/fileview.py:421
+msgid "Failed to save file"
+msgstr "Échec de l’enregistrement du fichier"
+
+#: src/fileview.py:422
+#, python-brace-format
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr ""
+"Impossible d’enregistrer le fichier {f}. Vérifiez les journaux pour plus "
+"d’informations."
+
+#: src/fileview.py:429
+msgid "Saved changes to file"
+msgstr "Modifications enregistrées dans le fichier"
+
+#: src/window.py:157
+msgid "Open File"
+msgstr "Ouvrir un fichier"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/window.py:218 src/window.py:219
+msgid "translator-credits"
+msgstr "Irénée Thirion"
