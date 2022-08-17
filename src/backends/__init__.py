@@ -1,4 +1,4 @@
-# file.py
+# backends/__init__.py
 #
 # Copyright 2022 knuxify
 #
@@ -26,19 +26,5 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-import magic
-import mimetypes
-import os.path
-
-from .backends import EartagFileEyed3, EartagFileTagLib
-
-
-def eartagfile_from_path(path):
-    """Returns an EartagFile subclass for the provided file."""
-    if not os.path.exists(path):
-        raise ValueError
-
-    if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
-        magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
-        return EartagFileEyed3(path)
-    return EartagFileTagLib(path)
+from .file_eyed3 import EartagFileEyed3
+from .file_taglib import EartagFileTagLib

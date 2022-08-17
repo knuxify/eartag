@@ -1,4 +1,4 @@
-# file.py
+# backends/file.py
 #
 # Copyright 2022 knuxify
 #
@@ -26,19 +26,42 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-import magic
-import mimetypes
-import os.path
+from gi.repository import GObject
 
-from .backends import EartagFileEyed3, EartagFileTagLib
+class EartagFile(GObject.Object):
+    """
+    Generic base for GObject wrappers that provide information about a music
+    file.
 
+    The following functions are implemented by the subclasses:
+      - save() - saves the changes to a file.
+    """
+    __gtype_name__ = 'EartagFile'
 
-def eartagfile_from_path(path):
-    """Returns an EartagFile subclass for the provided file."""
-    if not os.path.exists(path):
-        raise ValueError
+    handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'totaltracknumber', 'genre', 'releaseyear', 'comment']
+    _supports_album_covers = False
+    _is_modified = False
 
-    if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
-        magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
-        return EartagFileEyed3(path)
-    return EartagFileTagLib(path)
+    def __init__(self, path):
+        """Initializes an EartagFile for the given file path."""
+        super().__init__()
+        self.notify('supports-album-covers')
+        self.path = path
+
+    def mark_as_modified(self):
+        self._is_modified = True
+        self.notify('is_modified')
+
+    def mark_as_unmodified(self):
+        self._is_modified = False
+        self.notify('is_modified')
+
+    @GObject.Property(type=bool, default=False)
+    def is_modified(self):
+        """Returns whether the values have been modified or not."""
+        return self._is_modified
+
+    @GObject.Property(type=bool, default=False)
+    def supports_album_covers(self):
+        """Returns whether album covers are supported."""
+        return self._supports_album_covers
