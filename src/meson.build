@@ -34,4 +34,6 @@ eartag_sources = [
   'window.py',
 ]
 
+subdir('backends')
+
 install_data(eartag_sources, install_dir: moduledir)
