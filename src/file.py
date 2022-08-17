@@ -30,15 +30,25 @@ import magic
 import mimetypes
 import os.path
 
-from .backends import EartagFileEyed3, EartagFileTagLib
-
+from .backends import EartagFileEyed3, EartagFileTagLib, EartagFileMutagenVorbis
 
 def eartagfile_from_path(path):
     """Returns an EartagFile subclass for the provided file."""
     if not os.path.exists(path):
         raise ValueError
 
-    if mimetypes.guess_type(path)[0] == 'audio/mpeg' or \
-        magic.Magic(mime=True).from_file(path) == 'audio/mpeg':
+    mimetypes_guess = mimetypes.guess_type(path)[0]
+    magic_guess = magic.Magic(mime=True).from_file(path)
+
+    is_type = lambda type: mimetypes_guess == type or magic_guess == type
+
+    if is_type('audio/mpeg'):
         return EartagFileEyed3(path)
+    elif is_type('audio/flac') or is_type('audio/ogg'):
+        try:
+            import mutagen
+        except ImportError:
+            print("mutagen unavailable, using taglib to handle ogg/flac!")
+        else:
+            return EartagFileMutagenVorbis(path)
     return EartagFileTagLib(path)
