@@ -35,6 +35,8 @@ import traceback
 import magic
 import mimetypes
 
+import gettext
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcover.ui')
 class EartagAlbumCover(Adw.Bin):
     __gtype_name__ = 'EartagAlbumCover'
@@ -383,11 +385,20 @@ class EartagFileView(Adw.Bin):
                 s=str(length_sec).rjust(2, '0')
             )
 
+        # Get human-readable version of channel count
+        channels = self.file.channels
+        if channels == 1:
+            channels_readable = 'Mono'
+        elif channels == 2:
+            channels_readable = 'Stereo'
+        else:
+            channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels)
+
         self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
             filetype=self.file.filetype,
             length=length_readable,
             bitrate=self.file.bitrate,
-            channels=self.file.channels
+            channels=channels_readable
         ))
 
     def setup_entry(self, entry, property):

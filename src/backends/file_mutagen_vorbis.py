@@ -90,15 +90,9 @@ class EartagFileMutagenVorbis(EartagFile):
         # in bps, needs conversion
         return round(self.mg_file.info.bitrate / 1000, 0)
 
-    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
+    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def channels(self):
-        channels = self.mg_file.info.channels
-        if channels == 1:
-            return 'Mono'
-        elif channels == 2:
-            return 'Stereo'
-        else:
-            return _("{n} channel".format(n=channels), "{n} channels".format(n=channels))
+        return self.mg_file.info.channels
 
     @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
     def filetype(self):

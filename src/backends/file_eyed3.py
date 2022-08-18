@@ -122,9 +122,17 @@ class EartagFileEyed3(EartagFile):
         # in kbps
         return self.e3_file.info.bit_rate[1]
 
-    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
+    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def channels(self):
-        return self.e3_file.info.mode
+        # Unfortunately eyed3 does not provide the exact channel count;
+        # this guesses it based on the mode
+        mode = self.e3_file.info.mode
+        if mode == 'Mono':
+            return 1
+        # This is not a typo - we're trying to catch "Stereo" and "stereo" here
+        elif 'tereo' in mode:
+            return 2
+        return 0
 
     @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
     def filetype(self):
