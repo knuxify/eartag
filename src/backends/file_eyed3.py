@@ -43,6 +43,7 @@ class EartagFileEyed3(EartagFile):
     _cover_path = None
     e3_file = None
     _supports_album_covers = True
+    coverart_tempfile = None
 
     def __init__(self, path):
         super().__init__(path)
