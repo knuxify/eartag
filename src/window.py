@@ -28,8 +28,9 @@
 
 from .common import is_valid_music_file
 from .fileview import EartagFileView
+from .file import EartagFileManager
 
-from gi.repository import Adw, Gdk, Gio, Gtk
+from gi.repository import Adw, Gdk, Gio, Gtk, GObject
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Gtk.MessageDialog):
@@ -37,12 +38,12 @@ class EartagDiscardWarningDialog(Gtk.MessageDialog):
 
     def __init__(self, window, file_path):
         super().__init__(transient_for=window)
-        self.window = window
         self.file_path = file_path
+        self.file_manager = window.file_manager
 
     @Gtk.Template.Callback()
     def on_dbutton_discard(self, *args):
-        self.window.load_file(self.file_path)
+        self.file_manager.load_file(self.file_path)
         self.close()
 
     @Gtk.Template.Callback()
@@ -51,9 +52,9 @@ class EartagDiscardWarningDialog(Gtk.MessageDialog):
 
     @Gtk.Template.Callback()
     def on_dbutton_save(self, *args):
-        if not self.window.file_view.save():
+        if not self.file_manager.save():
             return False
-        self.window.load_file(self.file_path)
+        self.file_manager.load_file(self.file_path)
         self.close()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/closewarning.ui')
@@ -63,6 +64,7 @@ class EartagCloseWarningDialog(Gtk.MessageDialog):
     def __init__(self, window):
         super().__init__(transient_for=window)
         self.window = window
+        self.file_manager = window.file_manager
 
     @Gtk.Template.Callback()
     def on_button_discard(self, *args):
@@ -75,7 +77,7 @@ class EartagCloseWarningDialog(Gtk.MessageDialog):
 
     @Gtk.Template.Callback()
     def on_button_save(self, *args):
-        if not self.window.file_view.save():
+        if not self.file_manager.save():
             return False
         self.window.close()
 
@@ -110,10 +112,16 @@ class EartagWindow(Adw.ApplicationWindow):
     force_close = False
 
     def __init__(self, application, path=None):
-        super().__init__(application=application, title='Eartag')
+        super().__init__(application=application, title='Ear Tag')
+
+        self.file_manager = EartagFileManager(self)
+        self.file_view.set_file_manager(self.file_manager)
+        self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
+                            GObject.BindingFlags.SYNC_CREATE)
+
         if path:
-            self.file_view.file_path = path
-            self.file_view.load_file()
+            self.file_manager.load_file(path, mode=EartagFileManager.LOAD_OVERWRITE)
+
         self.connect('close-request', self.on_close_request)
 
         self.drop_target = Gtk.DropTarget(
@@ -163,27 +171,16 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_chooser.connect('response', self.open_file_from_dialog)
         self.file_chooser.show()
 
-    def load_file(self, path):
-        """
-        Loads the file in the file view.
-
-        This function should never be called directly in the UI; use open_file,
-        which also checks if any changes won't get discarded.
-        """
-        self.file_view.file_path = path
-        self.file_view.load_file()
-
     def open_file(self, path):
         """
         Loads the file with the given path. Note that this does not perform
         any validation; caller functions are meant to check for this manually.
         """
-        fileview = self.file_view
-        if fileview.file and fileview.writable and fileview.file._is_modified:
+        if self.file_manager._is_modified:
             self.discard_warning = EartagDiscardWarningDialog(self, path)
             self.discard_warning.show()
             return False
-        self.load_file(path)
+        self.file_manager.load_file(path)
 
     def open_file_from_dialog(self, dialog, response):
         """
@@ -197,12 +194,12 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def on_save(self, *args):
-        if not self.file_view.save():
+        if not self.file_manager.save():
             return False
 
     def on_close_request(self, *args):
-        if self.force_close == False and self.file_view.file and \
-            self.file_view.file._is_modified:
+        if self.force_close == False and list(self.file_manager.files) and \
+            self.file_manager._is_modified:
             self.close_request_dialog = EartagCloseWarningDialog(self)
             self.close_request_dialog.present()
             return True

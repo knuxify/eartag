@@ -41,20 +41,44 @@ class EartagFile(GObject.Object):
     handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'totaltracknumber', 'genre', 'releaseyear', 'comment']
     _supports_album_covers = False
     _is_modified = False
+    _is_writable = False
 
     def __init__(self, path):
         """Initializes an EartagFile for the given file path."""
         super().__init__()
         self.notify('supports-album-covers')
         self.path = path
+        self.update_writability()
+
+    def update_writability(self):
+        """
+        Checks if the file is writable and sets the writable property
+        accordingly.
+        """
+        try:
+            writable_check = open(self.path, 'a')
+            writable_check.close()
+        except OSError:
+            self._is_writable = False
+        else:
+            self._is_writable = True
+        self.notify('is_writable')
+
+    @GObject.Signal
+    def modified(self):
+        pass
 
     def mark_as_modified(self):
-        self._is_modified = True
-        self.notify('is_modified')
+        if not self._is_modified:
+            self._is_modified = True
+            self.notify('is_modified')
+            self.emit('modified')
 
     def mark_as_unmodified(self):
-        self._is_modified = False
-        self.notify('is_modified')
+        if self._is_modified:
+            self._is_modified = False
+            self.notify('is_modified')
+            self.emit('modified')
 
     @GObject.Property(type=bool, default=False)
     def is_modified(self):
@@ -65,3 +89,8 @@ class EartagFile(GObject.Object):
     def supports_album_covers(self):
         """Returns whether album covers are supported."""
         return self._supports_album_covers
+
+    @GObject.Property(type=bool, default=False)
+    def is_writable(self):
+        """Returns whether the file can be written to."""
+        return self._is_writable

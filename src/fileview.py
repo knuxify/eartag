@@ -297,52 +297,41 @@ class EartagFileView(Adw.Bin):
     releaseyear_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
 
-    file = None
     writable = False
     bindings = []
 
-    def __init__(self, path=None):
+    def __init__(self):
         """Initializes the EartagFileView."""
         super().__init__()
 
-        self.file_path = path
-        if path:
-            self.load_file()
+    def set_file_manager(self, file_manager):
+        self.file_manager = file_manager
+        self.file_manager.connect('files_loaded', self.bind_to_file)
 
-    def load_file(self):
-        """Reads the file path from self.file_path and loads the file."""
+    def bind_to_file(self, *args):
+        """
+        Reads the file data from the file manager and applies it
+        to the file view.
+        """
         if self.bindings:
             for binding in self.bindings:
                 binding.unbind()
             self.bindings = []
-        file_basename = os.path.basename(self.file_path)
 
-        try:
-            self.file = eartagfile_from_path(self.file_path)
-        except:
-            traceback.print_exc()
-            self.error_dialog = Gtk.MessageDialog(
-                                    transient_for=self.get_native(),
-                                    buttons=Gtk.ButtonsType.OK,
-                                    message_type=Gtk.MessageType.ERROR,
-                                    text=_("Failed to load file"),
-                                    secondary_text=_("Could not load file {f}. Check the logs for more information.").format(f=file_basename)
-            )
-            self.error_dialog.connect('response', self.close_dialog)
-            self.error_dialog.show()
-            return False
+        if len(self.file_manager.selected_files) == 1:
+            file = self.file_manager.selected_files[0]
+        else:
+            raise NotImplementedError
+
+        file_basename = os.path.basename(file.path)
 
         window = self.get_native()
         window.save_button.set_visible(True)
-        window.set_title('{f} — Eartag'.format(f=file_basename))
+        window.set_title('{f} — Ear Tag'.format(f=file_basename))
         window.window_title.set_subtitle(file_basename)
         window.content_stack.set_visible_child(self)
 
-        try:
-            writable_check = open(self.file_path, 'a')
-            writable_check.close()
-        except OSError:
-            self.writable = False
+        if not file.is_writable:
             # TRANSLATORS: Tooltip text for save button when saving is disabled
             window.save_button.set_tooltip_text(_('File is read-only, saving is disabled'))
             window.save_button.set_sensitive(False)
@@ -350,27 +339,22 @@ class EartagFileView(Adw.Bin):
                 Adw.Toast.new(_("Opened file is read-only; changes cannot be saved."))
             )
         else:
-            self.writable = True
             window.save_button.set_tooltip_text('')
-            self.bindings.append(
-                self.file.bind_property('is_modified', window.save_button, 'sensitive',
-                    GObject.BindingFlags.SYNC_CREATE)
-            )
-        self.set_sensitive(self.writable)
+        self.set_sensitive(file.is_writable)
 
-        self.album_cover.bind_to_file(self.file)
+        self.album_cover.bind_to_file(file)
 
-        self.setup_entry(self.title_entry, 'title')
-        self.setup_entry(self.artist_entry, 'artist')
-        self.setup_entry(self.tracknumber_entry, ['tracknumber', 'totaltracknumber'])
-        self.setup_entry(self.album_entry, 'album')
-        self.setup_entry(self.albumartist_entry, 'albumartist')
-        self.setup_entry(self.genre_entry, 'genre')
-        self.setup_entry(self.releaseyear_entry, 'releaseyear')
-        self.setup_entry(self.comment_entry, 'comment')
+        self.setup_entry(file, self.title_entry, 'title')
+        self.setup_entry(file, self.artist_entry, 'artist')
+        self.setup_entry(file, self.tracknumber_entry, ['tracknumber', 'totaltracknumber'])
+        self.setup_entry(file, self.album_entry, 'album')
+        self.setup_entry(file, self.albumartist_entry, 'albumartist')
+        self.setup_entry(file, self.genre_entry, 'genre')
+        self.setup_entry(file, self.releaseyear_entry, 'releaseyear')
+        self.setup_entry(file, self.comment_entry, 'comment')
 
         # Get human-readable version of length
-        length_min, length_sec = divmod(int(self.file.length), 60)
+        length_min, length_sec = divmod(int(file.length), 60)
         length_hour, length_min = divmod(length_min, 60)
 
         if length_hour:
@@ -386,7 +370,7 @@ class EartagFileView(Adw.Bin):
             )
 
         # Get human-readable version of channel count
-        channels = self.file.channels
+        channels = file.channels
         if channels == 1:
             channels_readable = 'Mono'
         elif channels == 2:
@@ -395,47 +379,23 @@ class EartagFileView(Adw.Bin):
             channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels)
 
         self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
-            filetype=self.file.filetype,
+            filetype=file.filetype,
             length=length_readable,
-            bitrate=self.file.bitrate,
+            bitrate=file.bitrate,
             channels=channels_readable
         ))
 
-    def setup_entry(self, entry, property):
+    def setup_entry(self, file, entry, property):
         if type(entry) == EartagTagListItem:
-            entry.bind_to_property(self.file, property)
+            entry.bind_to_property(file, property)
             self.bindings = self.bindings + entry.bindings
         elif type(entry) == EartagEditableLabel:
             self.bindings.append(
-                self.file.bind_property(property, entry.editable, 'text',
+                file.bind_property(property, entry.editable, 'text',
                     GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE)
             )
             entry.notify('text')
 
-    def close_dialog(self, dialog, *args):
-        dialog.close()
-
     def save(self):
         """Saves changes to the file."""
-        if not self.file or not self.writable or not self.file.is_modified:
-            return False
-
-        try:
-            self.file.save()
-        except:
-            traceback.print_exc()
-            file_basename = os.path.basename(self.file_path)
-            self.error_dialog = Gtk.MessageDialog(
-                                    transient_for=self.get_native(),
-                                    buttons=Gtk.ButtonsType.OK,
-                                    message_type=Gtk.MessageType.ERROR,
-                                    text=_("Failed to save file"),
-                                    secondary_text=_("Could not save file {f}. Check the logs for more information.").format(f=file_basename)
-            )
-            self.error_dialog.connect('response', self.close_dialog)
-            self.error_dialog.show()
-            return False
-        else:
-            self.get_native().toast_overlay.add_toast(
-                Adw.Toast.new(_("Saved changes to file"))
-            )
+        self.file_manager.save()
