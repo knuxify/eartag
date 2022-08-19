@@ -171,7 +171,7 @@ class EartagFileMutagenVorbis(EartagFile):
 
     @artist.setter
     def artist(self, value):
-        self.tl_file.tags['artist'] = value
+        self.mg_file.tags['artist'] = value
         self.mark_as_modified()
 
     @GObject.Property(type=str)
