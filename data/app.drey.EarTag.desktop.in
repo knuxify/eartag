@@ -2,7 +2,7 @@
 Name=Ear Tag
 GenericName=Tag Editor
 Comment=Small and simple music tag editor
-Exec=eartag
+Exec=eartag %U
 Icon=app.drey.EarTag
 Terminal=false
 Type=Application
