@@ -67,51 +67,110 @@
         <child>
           <object class="AdwToastOverlay" id="toast_overlay">
             <child>
-              <object class="GtkBox" id="container">
-                <property name="orientation">vertical</property>
-                <property name="hexpand">true</property>
+              <object class="AdwFlap" id="container_flap">
+                <child type="flap">
+                  <object class="GtkBox" id="sidebar_container">
+                    <property name="orientation">vertical</property>
 
-                <child>
-                  <object class="AdwHeaderBar" id="headerbar">
-                    <child type="start">
-                      <object class="GtkButton" id="save_button">
-                        <property name="visible">false</property>
-                        <property name="sensitive">false</property>
-                        <property name="label" translatable="yes">Save</property>
-                        <signal name="clicked" handler="on_save"/>
+                    <style>
+                      <class name="background"/>
+                    </style>
 
-                        <style>
-                          <class name="suggested-action"/>
-                        </style>
+                    <child>
+                      <object class="AdwHeaderBar" id="sidebar_headerbar">
+                        <property name="show-end-title-buttons">false</property>
+                        <property name="title-widget"><object class="GtkLabel"/></property>
+                        <child type="start">
+                          <object class="GtkButton" id="hide_sidebar_button">
+                            <property name="icon-name">go-previous-symbolic</property>
+                            <property name="halign">start</property>
+                            <signal name="clicked" handler="hide_sidebar"/>
+                            <binding name="visible">
+                              <lookup name="folded">container_flap</lookup>
+                            </binding>
+                          </object>
+                        </child>
+
+                        <child type="end">
+                          <object class="GtkButton" id="insert_button">
+                            <property name="halign">end</property>
+                            <property name="icon-name">list-add</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
 
-                    <child type="title">
-                      <object class="AdwWindowTitle" id="window_title">
-                        <property name="title">Ear Tag</property>
-                      </object>
-                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="hscrollbar-policy">never</property>
 
-                    <child type="end">
-                      <object class="GtkMenuButton">
-                        <property name="icon-name">open-menu-symbolic</property>
-                        <property name="menu-model">primary_menu</property>
+                        <child>
+                          <object class="EartagFileList" id="sidebar_list">
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
 
-                <child>
-                  <object class="GtkStack" id="content_stack">
-                    <property name="visible-child">no_file</property>
-                    <property name="transition-type">crossfade</property>
+                <child type="content">
+                  <object class="GtkBox" id="container">
+                    <property name="orientation">vertical</property>
+                    <property name="hexpand">true</property>
 
                     <child>
-                      <object class="EartagNoFile" id="no_file"/>
+                      <object class="AdwHeaderBar" id="headerbar">
+                        <child type="start">
+                          <object class="GtkButton" id="show_sidebar_button">
+                            <property name="icon-name">open-menu-symbolic</property>
+                            <signal name="clicked" handler="show_sidebar"/>
+                            <binding name="visible">
+                              <lookup name="folded">container_flap</lookup>
+                            </binding>
+                          </object>
+                        </child>
+
+                        <child type="start">
+                          <object class="GtkButton" id="save_button">
+                            <property name="visible">false</property>
+                            <property name="sensitive">false</property>
+                            <property name="label" translatable="yes">Save</property>
+                            <signal name="clicked" handler="on_save"/>
+
+                            <style>
+                              <class name="suggested-action"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child type="title">
+                          <object class="AdwWindowTitle" id="window_title">
+                            <property name="title">Ear Tag</property>
+                          </object>
+                        </child>
+
+                        <child type="end">
+                          <object class="GtkMenuButton">
+                            <property name="icon-name">view-more-symbolic</property>
+                            <property name="menu-model">primary_menu</property>
+                          </object>
+                        </child>
+                      </object>
                     </child>
 
                     <child>
-                      <object class="EartagFileView" id="file_view"/>
+                      <object class="GtkStack" id="content_stack">
+                        <property name="visible-child">no_file</property>
+                        <property name="transition-type">crossfade</property>
+
+                        <child>
+                          <object class="EartagNoFile" id="no_file"/>
+                        </child>
+
+                        <child>
+                          <object class="EartagFileView" id="file_view"/>
+                        </child>
+                      </object>
                     </child>
                   </object>
                 </child>

@@ -4,6 +4,7 @@
     <file>ui/albumcover.ui</file>
     <file>ui/closewarning.ui</file>
     <file>ui/discardwarning.ui</file>
+    <file>ui/filelistitem.ui</file>
     <file>ui/fileview.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>

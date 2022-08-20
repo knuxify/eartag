@@ -29,6 +29,7 @@
 from .common import is_valid_music_file
 from .fileview import EartagFileView
 from .file import EartagFileManager
+from .sidebar import EartagFileList
 
 from gi.repository import Adw, Gdk, Gio, Gtk, GObject
 
@@ -99,6 +100,8 @@ class EartagWindow(Adw.ApplicationWindow):
     save_button = Gtk.Template.Child()
     window_title = Gtk.Template.Child()
     content_stack = Gtk.Template.Child()
+    container_flap = Gtk.Template.Child()
+    sidebar_list = Gtk.Template.Child()
 
     audio_file_filter = Gtk.Template.Child()
 
@@ -116,6 +119,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
+        self.sidebar_list.set_file_manager(self.file_manager)
         self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
                             GObject.BindingFlags.SYNC_CREATE)
 
@@ -191,6 +195,14 @@ class EartagWindow(Adw.ApplicationWindow):
         if response == Gtk.ResponseType.ACCEPT:
             file_path = dialog.get_file().get_path()
             return self.open_file(file_path)
+
+    @Gtk.Template.Callback()
+    def show_sidebar(self, *args):
+        self.container_flap.set_reveal_flap(True)
+
+    @Gtk.Template.Callback()
+    def hide_sidebar(self, *args):
+        self.container_flap.set_reveal_flap(False)
 
     @Gtk.Template.Callback()
     def on_save(self, *args):

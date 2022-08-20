@@ -31,6 +31,7 @@ eartag_sources = [
   'main.py',
   'file.py',
   'fileview.py',
+  'sidebar.py',
   'window.py',
 ]
 
