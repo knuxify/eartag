@@ -37,14 +37,14 @@ from gi.repository import Adw, Gdk, Gio, Gtk, GObject
 class EartagDiscardWarningDialog(Gtk.MessageDialog):
     __gtype_name__ = 'EartagDiscardWarningDialog'
 
-    def __init__(self, window, file_path):
+    def __init__(self, window, paths):
         super().__init__(transient_for=window)
-        self.file_path = file_path
+        self.paths = paths
         self.file_manager = window.file_manager
 
     @Gtk.Template.Callback()
     def on_dbutton_discard(self, *args):
-        self.file_manager.load_file(self.file_path)
+        self.file_manager.load_multiple_files(self.paths, mode=EartagFileManager.LOAD_OVERWRITE)
         self.close()
 
     @Gtk.Template.Callback()
@@ -55,7 +55,7 @@ class EartagDiscardWarningDialog(Gtk.MessageDialog):
     def on_dbutton_save(self, *args):
         if not self.file_manager.save():
             return False
-        self.file_manager.load_file(self.file_path)
+        self.file_manager.load_multiple_files(self.paths, mode=EartagFileManager.LOAD_OVERWRITE)
         self.close()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/closewarning.ui')
@@ -165,7 +165,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
-        self.open_file(path)
+        self.open_files([path])
         self.on_drag_unhover()
 
     def show_file_chooser(self):
@@ -177,22 +177,27 @@ class EartagWindow(Adw.ApplicationWindow):
                                 title=_("Open File"),
                                 transient_for=self,
                                 action=Gtk.FileChooserAction.OPEN,
-                                filter=self.audio_file_filter
+                                filter=self.audio_file_filter,
+                                select_multiple=True
                                 )
 
         self.file_chooser.connect('response', self.open_file_from_dialog)
         self.file_chooser.show()
 
-    def open_file(self, path):
+    def open_files(self, paths):
         """
         Loads the file with the given path. Note that this does not perform
         any validation; caller functions are meant to check for this manually.
         """
         if self.open_mode != EartagFileManager.LOAD_INSERT and self.file_manager._is_modified:
-            self.discard_warning = EartagDiscardWarningDialog(self, path)
+            self.discard_warning = EartagDiscardWarningDialog(self, paths)
             self.discard_warning.show()
             return False
-        self.file_manager.load_file(path, mode=self.open_mode)
+
+        if len(paths) == 1:
+            self.file_manager.load_file(paths[0], mode=self.open_mode)
+        else:
+            self.file_manager.load_multiple_files(paths, mode=self.open_mode)
 
     def open_file_from_dialog(self, dialog, response):
         """
@@ -202,8 +207,10 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_chooser.destroy()
         self.file_chooser = None
         if response == Gtk.ResponseType.ACCEPT:
-            file_path = dialog.get_file().get_path()
-            return self.open_file(file_path)
+            paths = []
+            for file in list(dialog.get_files()):
+                paths.append(file.get_path())
+            return self.open_files(paths)
 
     @Gtk.Template.Callback()
     def show_sidebar(self, *args):
