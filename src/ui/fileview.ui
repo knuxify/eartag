@@ -127,8 +127,8 @@
     <child>
       <object class="AdwStatusPage" id="select_file">
         <property name="icon-name">edit-select-all-symbolic</property>
-        <property name="title" translatable="yes">No File Selected</property>
-        <property name="description" translatable="yes">Select a file from the opened file list.</property>
+        <property name="title" translatable="yes">Select a File</property>
+        <property name="description" translatable="yes">Select the files you want to edit from the list of opened files.</property>
       </object>
     </child>
   </template>

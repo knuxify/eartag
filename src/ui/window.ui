@@ -122,14 +122,31 @@
                     </child>
 
                     <child>
-                      <object class="GtkScrolledWindow">
-                        <property name="hscrollbar-policy">never</property>
-                        <property name="vexpand">true</property>
-                        <property name="min-content-width">300</property>
-                        <property name="max-content-width">400</property>
+                      <object class="GtkStack" id="sidebar_stack">
+                        <property name="transition-type">crossfade</property>
 
                         <child>
-                          <object class="EartagFileList" id="sidebar_list"/>
+                          <object class="GtkScrolledWindow" id="sidebar_scroll">
+                            <property name="hscrollbar-policy">never</property>
+                            <property name="vexpand">true</property>
+                            <property name="min-content-width">300</property>
+                            <property name="max-content-width">400</property>
+
+                            <child>
+                              <object class="EartagFileList" id="sidebar_list"/>
+                            </child>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="AdwStatusPage" id="sidebar_no_files">
+                            <property name="icon-name">list-add-symbolic</property>
+                            <property name="title" translatable="yes">No Files Opened</property>
+                            <property name="description">Use the "+" button on the top bar to open files to edit.</property>
+                            <style>
+                              <class name="compact"/>
+                            </style>
+                          </object>
                         </child>
                       </object>
                     </child>

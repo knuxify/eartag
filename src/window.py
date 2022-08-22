@@ -103,7 +103,11 @@ class EartagWindow(Adw.ApplicationWindow):
     window_title = Gtk.Template.Child()
     content_stack = Gtk.Template.Child()
     container_flap = Gtk.Template.Child()
+
+    sidebar_stack = Gtk.Template.Child()
+    sidebar_scroll = Gtk.Template.Child()
     sidebar_list = Gtk.Template.Child()
+    sidebar_no_files = Gtk.Template.Child()
 
     audio_file_filter = Gtk.Template.Child()
 
@@ -128,9 +132,11 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
                             GObject.BindingFlags.SYNC_CREATE)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
+        self.sidebar_stack.set_visible_child(self.sidebar_no_files)
 
         if paths:
             self.file_manager.load_multiple_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
+            self.sidebar_stack.set_visible_child(self.sidebar_scroll)
 
         self.connect('close-request', self.on_close_request)
 
@@ -150,8 +156,10 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.content_stack.set_visible_child(self.file_view)
+            self.sidebar_stack.set_visible_child(self.sidebar_scroll)
         else:
             self.content_stack.set_visible_child(self.no_file)
+            self.sidebar_stack.set_visible_child(self.sidebar_no_files)
 
     def on_drag_accept(self, target, drop, *args):
         drop.read_value_async(Gdk.FileList, 0, None, self.verify_files_valid)
