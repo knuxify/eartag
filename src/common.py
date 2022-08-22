@@ -127,3 +127,58 @@ class EartagEditableLabel(Gtk.EditableLabel):
     @placeholder.setter
     def placeholder(self, value):
         self._placeholder = value
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverimage.ui')
+class EartagAlbumCoverImage(Gtk.Stack):
+    __gtype_name__ = 'EartagAlbumCoverImage'
+
+    no_cover = Gtk.Template.Child()
+    cover_image = Gtk.Template.Child()
+
+    file = None
+    image_file_binding = None
+
+    def __init__(self):
+        super().__init__()
+        self.connect('destroy', self.on_destroy)
+
+    def on_destroy(self, *args):
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.file = None
+
+    def bind_to_file(self, file):
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.image_file_binding = None
+
+        self.file = file
+
+        if file.supports_album_covers:
+            self.image_file_binding = self.file.bind_property(
+                    'cover_path', self.cover_image, 'file',
+                    GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            )
+            self.on_cover_change()
+            self.file.connect('notify::cover_path', self.on_cover_change)
+        else:
+            self.cover_image.set_from_file(None)
+            self.on_cover_change()
+
+    def on_cover_change(self, *args):
+        if self.file.cover_path and os.path.exists(self.file.cover_path):
+            self.set_visible_child(self.cover_image)
+        else:
+            self.set_visible_child(self.no_cover)
+
+    @GObject.Property(type=int, default=196)
+    def pixel_size(self):
+        return self.cover_image.get_pixel_size()
+
+    @pixel_size.setter
+    def pixel_size(self, value):
+        self.cover_image.set_pixel_size(value)
+        if value < 100:
+            self.no_cover.set_pixel_size(value - 4)
+        else:
+            self.no_cover.set_pixel_size(96)

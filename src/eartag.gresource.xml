@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/app/drey/EarTag">
-    <file>ui/albumcover.ui</file>
+    <file>ui/albumcoverbutton.ui</file>
+    <file>ui/albumcoverimage.ui</file>
     <file>ui/closewarning.ui</file>
     <file>ui/discardwarning.ui</file>
     <file>ui/filelistitem.ui</file>

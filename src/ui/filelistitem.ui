@@ -3,7 +3,33 @@
   <requires lib="gtk" version="4.0"/>
   <template class="EartagFileListItem" parent="GtkBox">
     <child>
-      <object class="GtkLabel" id="title"/>
+      <object class="EartagAlbumCoverImage" id="coverart_image">
+        <property name="pixel-size">64</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="GtkBox" id="data_box">
+        <property name="orientation">vertical</property>
+
+        <child>
+          <object class="GtkLabel" id="title_label">
+            <style>
+              <class name="heading"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkLabel" id="filename_label">
+            <property name="ellipsize">middle</property>
+
+            <style>
+              <class name="subtitle"/>
+            </style>
+          </object>
+        </child>
+      </object>
     </child>
   </template>
 </interface>

@@ -27,7 +27,7 @@
 # authorization.
 
 from .file import eartagfile_from_path
-from .common import EartagEditableLabel, is_valid_image_file
+from .common import EartagEditableLabel, is_valid_image_file, EartagAlbumCoverImage
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path
@@ -37,17 +37,11 @@ import mimetypes
 
 import gettext
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcover.ui')
-class EartagAlbumCover(Adw.Bin):
-    __gtype_name__ = 'EartagAlbumCover'
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverbutton.ui')
+class EartagAlbumCoverButton(Adw.Bin):
+    __gtype_name__ = 'EartagAlbumCoverButton'
 
-    preview_stack = Gtk.Template.Child()
-    no_cover = Gtk.Template.Child()
     cover_image = Gtk.Template.Child()
-
-    file = None
-    image_file_filter = Gtk.Template.Child()
-    image_file_binding = None
 
     highlight_revealer = Gtk.Template.Child()
     highlight_stack = Gtk.Template.Child()
@@ -56,6 +50,7 @@ class EartagAlbumCover(Adw.Bin):
 
     handling_drag = False
     handling_undefined_drag = False
+    image_file_filter = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -77,36 +72,15 @@ class EartagAlbumCover(Adw.Bin):
         self.add_controller(self.hover_controller)
 
     def bind_to_file(self, file):
-        if self.image_file_binding:
-            self.image_file_binding.unbind()
-        self.image_file_binding = None
-
         self.file = file
+        self.cover_image.bind_to_file(file)
 
         if file.supports_album_covers:
             self.set_visible(True)
         else:
             self.set_visible(False)
-            self.cover_image.set_from_file(None)
-            self.on_cover_change()
-            return
-
-        self.image_file_binding = self.file.bind_property(
-                'cover_path', self.cover_image, 'file',
-                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
-        )
-        self.on_cover_change()
-        self.file.connect('notify::cover_path', self.on_cover_change)
-
-    def on_cover_change(self, *args):
-        if self.file.cover_path and os.path.exists(self.file.cover_path):
-            self.preview_stack.set_visible_child(self.cover_image)
-        else:
-            self.preview_stack.set_visible_child(self.no_cover)
 
     def on_destroy(self, *args):
-        if self.image_file_binding:
-            self.image_file_binding.unbind()
         self.file = None
 
     @Gtk.Template.Callback()
@@ -130,7 +104,7 @@ class EartagAlbumCover(Adw.Bin):
         if response == Gtk.ResponseType.ACCEPT:
             self.file.cover_path = dialog.get_file().get_path()
             self.file.notify('cover-path')
-            self.on_cover_change()
+            self.cover_image.on_cover_change()
         self.file_chooser.destroy()
 
     # Drag-and-drop
@@ -163,7 +137,7 @@ class EartagAlbumCover(Adw.Bin):
         path = value.get_path()
         self.file.cover_path = path
         self.file.notify('cover-path')
-        self.on_cover_change()
+        self.cover_image.on_cover_change()
         self.on_drag_unhover()
 
     # Hover

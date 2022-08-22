@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="EartagAlbumCover" parent="AdwBin">
+  <template class="EartagAlbumCoverButton" parent="AdwBin">
     <property name="width-request">196</property>
     <property name="height-request">196</property>
     <property name="halign">center</property>
@@ -74,27 +74,8 @@
             <signal name="clicked" handler="show_cover_file_chooser"/>
 
             <child>
-              <object class="GtkStack" id="preview_stack">
-                <property name="hexpand">true</property>
-                <property name="visible-child">no_cover</property>
-
-                <child>
-                  <object class="GtkImage" id="no_cover">
-                    <property name="icon-name">folder-music-symbolic</property>
-                    <property name="pixel-size">96</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                  </object>
-                </child>
-
-                <child>
-                  <object class="GtkImage" id="cover_image">
-                    <property name="hexpand">true</property>
-                    <property name="vexpand">true</property>
-                    <property name="pixel-size">196</property>
-                    <property name="overflow">hidden</property>
-                  </object>
-                </child>
+              <object class="EartagAlbumCoverImage" id="cover_image">
+                <property name="pixel-size">196</property>
               </object>
             </child>
           </object>
