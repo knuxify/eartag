@@ -90,6 +90,7 @@ class EartagFileList(Gtk.ListView):
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
+        self.file_manager.connect('selection-override', self.handle_selection_override)
         self.selection_model = Gtk.MultiSelection(model=self.file_manager.files)
         self.selection_model.connect('selection-changed', self.update_selection)
         self.set_model(self.selection_model)
@@ -119,3 +120,21 @@ class EartagFileList(Gtk.ListView):
         check_count = position
 
         self.file_manager.selected_files = selected_items
+
+    def handle_selection_override(self, *args):
+        """
+        When a file is loaded and the selected files list is empty,
+        the first loaded file is automatically added by the file manager
+        to the list of selected files.
+
+        Since the sidebar doesn't always listen to selection events
+        (we're the primary generator of those, see function above, so
+        capturing them would cause infinite loops and other problems),
+        it provides a secondary event, named "selection-override", which
+        is used to signify a selection event from outside the sidebar.
+        """
+        self.selection_model.select_item(
+            self.file_manager.files.find(
+                self.file_manager.selected_files[0]
+            )[1], True
+        )
