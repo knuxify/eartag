@@ -78,7 +78,9 @@ class EartagFileManager(GObject.Object):
 
     @GObject.Signal
     def selection_changed(self):
-        pass
+        if self.files and not self.selected_files:
+            self.selected_files.append(self.files.get_item(0))
+            self.emit('selection_changed')
 
     def load_file(self, path, mode=0, emit_loaded=True):
         """Loads a file."""
@@ -167,10 +169,10 @@ class EartagFileManager(GObject.Object):
 
     def remove(self, file):
         """Removes a file from the opened file list."""
+        self.files.remove(self.files.find(file)[1])
         if file in self.selected_files:
             self._selected_files.remove(file)
             self.emit('selection-changed')
-        self.files.remove(self.files.find(file)[1])
 
     def close_dialog(self, dialog, *args):
         dialog.close()
