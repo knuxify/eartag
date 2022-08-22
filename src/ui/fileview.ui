@@ -59,6 +59,7 @@
                         <style>
                           <class name="dim-label"/>
                           <class name="caption-header"/>
+                          <class name="numeric"/>
                         </style>
                       </object>
                     </child>
