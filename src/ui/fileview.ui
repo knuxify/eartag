@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="EartagFileView" parent="AdwBin">
+  <template class="EartagFileView" parent="GtkStack">
+    <property name="transition-type">crossfade</property>
+
     <child>
       <object class="GtkScrolledWindow" id="content_scroll">
         <property name="hscrollbar-policy">never</property>
@@ -119,6 +121,14 @@
             </child>
           </object>
         </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwStatusPage" id="select_file">
+        <property name="icon-name">edit-select-all-symbolic</property>
+        <property name="title" translatable="yes">No File Selected</property>
+        <property name="description" translatable="yes">Select a file from the opened file list.</property>
       </object>
     </child>
   </template>

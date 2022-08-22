@@ -257,8 +257,11 @@ class EartagTagListItem(Adw.ActionRow):
             self.value_entry_double.set_visible(False)
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
-class EartagFileView(Adw.Bin):
+class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
+
+    content_scroll = Gtk.Template.Child()
+    select_file = Gtk.Template.Child()
 
     album_cover = Gtk.Template.Child()
     title_entry = Gtk.Template.Child()
@@ -299,11 +302,15 @@ class EartagFileView(Adw.Bin):
         if selected_files_count <= 0:
             window.set_title('Ear Tag')
             window.window_title.set_subtitle('')
+            if self.file_manager.files:
+                self.set_visible_child(self.select_file)
             return False
         elif selected_files_count == 1:
             file = self.file_manager.selected_files[0]
         else:
             raise NotImplementedError
+
+        self.set_visible_child(self.content_scroll)
 
         file_basename = os.path.basename(file.path)
 

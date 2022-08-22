@@ -78,9 +78,7 @@ class EartagFileManager(GObject.Object):
 
     @GObject.Signal
     def selection_changed(self):
-        if self.files and not self.selected_files:
-            self.selected_files.append(self.files.get_item(0))
-            self.emit('selection_changed')
+        pass
 
     @GObject.Signal
     def selection_override(self):
