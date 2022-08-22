@@ -2,7 +2,6 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="EartagFileListItem" parent="GtkBox">
-    <property name="halign">start</property>
     <property name="hexpand">true</property>
     <property name="spacing">12</property>
     <style>
@@ -12,7 +11,7 @@
     <child>
       <object class="EartagAlbumCoverImage" id="coverart_image">
         <property name="pixel-size">48</property>
-        <property name="halign">start</property>
+        <property name="hexpand">false</property>
       </object>
     </child>
 
@@ -20,7 +19,7 @@
       <object class="GtkBox" id="data_box">
         <property name="orientation">vertical</property>
         <property name="hexpand">true</property>
-        <property name="halign">start</property>
+        <property name="halign">fill</property>
         <property name="valign">center</property>
         <property name="spacing">3</property>
 
@@ -54,6 +53,9 @@
       <object class="GtkButton" id="remove_button">
         <property name="icon-name">list-remove-symbolic</property>
         <signal name="clicked" handler="remove_item"/>
+        <property name="hexpand">true</property>
+        <property name="halign">end</property>
+        <property name="valign">center</property>
         <style>
           <class name="flat"/>
         </style>
