@@ -170,6 +170,7 @@ class EartagFileManager(GObject.Object):
                 self.window.toast_overlay.add_toast(
                     Adw.Toast.new(_("Saved changes to file"))
                 )
+        return True
 
     def update_modified_status(self, *args):
         """Responsible for setting the is_modified property."""
@@ -179,8 +180,11 @@ class EartagFileManager(GObject.Object):
                 return
         self.set_property('is_modified', False)
 
-    def remove(self, file):
+    def remove(self, file, force_discard=False):
         """Removes a file from the opened file list."""
+        if file.is_modified and not force_discard:
+            EartagRemovalDiscardWarningDialog(self, file).present()
+            return False
         self.files.remove(self.files.find(file)[1])
         if file in self.selected_files:
             self._selected_files.remove(file)
@@ -188,6 +192,7 @@ class EartagFileManager(GObject.Object):
                 self.selected_files.append(self.files.get_item(0))
             self.emit('selection-changed')
             self.emit('selection_override')
+        return True
 
     def close_dialog(self, dialog, *args):
         dialog.close()
@@ -208,3 +213,31 @@ class EartagFileManager(GObject.Object):
     def selected_files(self, value):
         self._selected_files = value
         self.emit('selection_changed')
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/removaldiscardwarning.ui')
+class EartagRemovalDiscardWarningDialog(Gtk.MessageDialog):
+    __gtype_name__ = 'EartagRemovalDiscardWarningDialog'
+
+    def __init__(self, file_manager, file):
+        super().__init__(transient_for=file_manager.window)
+        self.file_manager = file_manager
+        self.file = file
+
+    @Gtk.Template.Callback()
+    def on_rdbutton_discard(self, *args):
+        self.file_manager.remove(self.file, force_discard=True)
+        self.file = None
+        self.close()
+
+    @Gtk.Template.Callback()
+    def on_rdbutton_cancel(self, *args):
+        self.file = None
+        self.close()
+
+    @Gtk.Template.Callback()
+    def on_rdbutton_save(self, *args):
+        if not self.file_manager.save():
+            return False
+        self.file_manager.remove(self.file, force_discard=True)
+        self.file = None
+        self.close()

@@ -6,6 +6,7 @@ src/ui/fileview.ui
 src/ui/closewarning.ui
 src/ui/discardwarning.ui
 src/ui/filelistitem.ui
+src/ui/removaldiscardwarning.ui
 src/ui/nofile.ui
 src/main.py
 src/fileview.py

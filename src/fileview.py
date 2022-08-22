@@ -314,7 +314,6 @@ class EartagFileView(Gtk.Stack):
 
         file_basename = os.path.basename(file.path)
 
-        window.save_button.set_visible(True)
         window.set_title('{f} — Ear Tag'.format(f=file_basename))
         window.window_title.set_subtitle(file_basename)
 

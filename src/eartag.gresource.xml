@@ -11,6 +11,7 @@
     <file>ui/discardwarning.ui</file>
     <file>ui/filelistitem.ui</file>
     <file>ui/fileview.ui</file>
+	<file>ui/removaldiscardwarning.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
     <file>style.css</file>

@@ -85,7 +85,6 @@
 
                         <child type="start">
                           <object class="GtkButton" id="save_button">
-                            <property name="visible">false</property>
                             <property name="sensitive">false</property>
                             <property name="label" translatable="yes">Save</property>
                             <signal name="clicked" handler="on_save"/>

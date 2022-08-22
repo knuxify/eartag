@@ -64,8 +64,8 @@ class EartagFileListItem(Gtk.Box):
 
     @Gtk.Template.Callback()
     def remove_item(self, *args):
-        self.filelist.file_manager.remove(self.file)
-        self.on_destroy()
+        if self.filelist.file_manager.remove(self.file):
+            self.on_destroy()
 
     @GObject.Property(type=str)
     def title(self):
