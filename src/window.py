@@ -119,7 +119,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     open_mode = EartagFileManager.LOAD_OVERWRITE
 
-    def __init__(self, application, path=None):
+    def __init__(self, application, paths=None):
         super().__init__(application=application, title='Ear Tag')
 
         self.file_manager = EartagFileManager(self)
@@ -128,8 +128,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
                             GObject.BindingFlags.SYNC_CREATE)
 
-        if path:
-            self.file_manager.load_file(path, mode=EartagFileManager.LOAD_OVERWRITE)
+        if paths:
+            self.file_manager.load_multiple_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
 
         self.connect('close-request', self.on_close_request)
 

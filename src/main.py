@@ -44,22 +44,22 @@ class Application(Adw.Application):
         super().__init__(application_id='app.drey.EarTag',
                          resource_base_path='/app/drey/EarTag',
                          flags=Gio.ApplicationFlags.HANDLES_OPEN)
-        self.path = None
+        self.paths = []
         self.connect('open', self.on_open)
 
-    def on_open(self, window, filename, *args):
-        self.path = filename[0].get_path()
-        if self.path:
-            if not os.path.exists(self.path):
-                self.path = None
-            elif not is_valid_music_file(self.path):
-                self.path = None
+    def on_open(self, window, files, *args):
+        for file in files:
+            path = file.get_path()
+            if path:
+                if not os.path.exists(path) or not is_valid_music_file(path):
+                    continue
+                self.paths.append(path)
         self.do_activate()
 
     def do_activate(self):
         win = self.props.active_window
         if not win:
-            win = EartagWindow(application=self, path=self.path)
+            win = EartagWindow(application=self, paths=self.paths)
         self.create_action('about', self.on_about_action)
         self.create_action('open_file', self.on_open_file_action)
         self.set_accels_for_action('app.open_file', ('<Ctrl>o', None))
