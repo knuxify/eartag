@@ -135,7 +135,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.drop_target = Gtk.DropTarget(
             actions=Gdk.DragAction.COPY,
-            formats=Gdk.ContentFormats.new_for_gtype(Gio.File)
+            formats=Gdk.ContentFormats.new_for_gtype(Gdk.FileList)
             )
         self.drop_target.connect('accept', self.on_drag_accept)
         self.drop_target.connect('enter', self.on_drag_hover)
@@ -144,15 +144,16 @@ class EartagWindow(Adw.ApplicationWindow):
         self.add_controller(self.drop_target)
 
     def on_drag_accept(self, target, drop, *args):
-        drop.read_value_async(Gio.File, 0, None, self.verify_file_valid)
+        drop.read_value_async(Gdk.FileList, 0, None, self.verify_files_valid)
         return True
 
-    def verify_file_valid(self, drop, task, *args):
-        file = drop.read_value_finish(task)
-        path = file.get_path()
-        if not is_valid_music_file(path):
-            self.drop_target.reject()
-            self.on_drag_unhover()
+    def verify_files_valid(self, drop, task, *args):
+        files = drop.read_value_finish(task).get_files()
+        for file in files:
+            path = file.get_path()
+            if not is_valid_music_file(path):
+                self.drop_target.reject()
+                self.on_drag_unhover()
 
     def on_drag_hover(self, *args):
         self.drop_highlight_revealer.set_reveal_child(True)
@@ -164,8 +165,11 @@ class EartagWindow(Adw.ApplicationWindow):
         self.drop_highlight_revealer.set_can_target(False)
 
     def on_drag_drop(self, drop_target, value, *args):
-        path = value.get_path()
-        self.open_files([path])
+        files = value.get_files()
+        paths = []
+        for file in files:
+            paths.append(file.get_path())
+        self.open_files(paths)
         self.on_drag_unhover()
 
     def show_file_chooser(self):

@@ -293,7 +293,8 @@ class EartagFileView(Adw.Bin):
                 binding.unbind()
             self.bindings = []
 
-        if len(self.file_manager.selected_files) == 1:
+        selected_files_count = len(self.file_manager.selected_files)
+        if selected_files_count == 1:
             file = self.file_manager.selected_files[0]
         else:
             raise NotImplementedError

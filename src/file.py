@@ -114,14 +114,16 @@ class EartagFileManager(GObject.Object):
             self.emit('files_loaded')
             self.update_modified_status()
 
+        return True
+
     def load_multiple_files(self, paths, mode=1):
         """Loads files with the provided paths."""
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
-            self.selected_files = []
+            self._selected_files = []
 
         for path in paths:
-            if not self.load_file(path, mode=self.MODE_INSERT, emit_loaded=False):
+            if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False):
                 self.emit('files_loaded')
                 self.update_modified_status()
                 return False
