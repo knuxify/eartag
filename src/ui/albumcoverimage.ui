@@ -4,6 +4,9 @@
   <template class="EartagAlbumCoverImage" parent="GtkStack">
     <property name="hexpand">true</property>
     <property name="visible-child">no_cover</property>
+    <style>
+      <class name="cover-image"/>
+    </style>
 
     <child>
       <object class="GtkImage" id="no_cover">

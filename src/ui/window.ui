@@ -71,9 +71,11 @@
                 <child type="flap">
                   <object class="GtkBox" id="sidebar_container">
                     <property name="orientation">vertical</property>
+                    <property name="width-request">300</property>
 
                     <style>
-                      <class name="background"/>
+                      <class name="view"/>
+                      <class name="sidebar"/>
                     </style>
 
                     <child>
@@ -104,10 +106,11 @@
                       <object class="GtkScrolledWindow">
                         <property name="hscrollbar-policy">never</property>
                         <property name="vexpand">true</property>
+                        <property name="min-content-width">300</property>
+                        <property name="max-content-width">400</property>
 
                         <child>
-                          <object class="EartagFileList" id="sidebar_list">
-                          </object>
+                          <object class="EartagFileList" id="sidebar_list"/>
                         </child>
                       </object>
                     </child>

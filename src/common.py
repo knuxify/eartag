@@ -179,6 +179,9 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def pixel_size(self, value):
         self.cover_image.set_pixel_size(value)
         if value < 100:
-            self.no_cover.set_pixel_size(value - 4)
+            if value > 36:
+                self.no_cover.set_pixel_size(32)
+            else:
+                self.no_cover.set_pixel_size(value - 4)
         else:
             self.no_cover.set_pixel_size(96)

@@ -1,4 +1,5 @@
 from gi.repository import GObject, Gtk
+import os.path
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/filelistitem.ui')
 class EartagFileListItem(Gtk.Box):
@@ -19,6 +20,7 @@ class EartagFileListItem(Gtk.Box):
 
         self.bindings.append(self.file.bind_property('title', self, 'title',
             GObject.BindingFlags.SYNC_CREATE))
+        self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
 
     @GObject.Property(type=str)
@@ -39,6 +41,7 @@ class EartagFileList(Gtk.ListView):
         self.sidebar_factory.connect('setup', self.setup)
         self.sidebar_factory.connect('bind', self.bind)
         self.set_factory(self.sidebar_factory)
+        self.add_css_class('navigation-sidebar')
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
