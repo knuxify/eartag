@@ -294,7 +294,9 @@ class EartagFileView(Adw.Bin):
             self.bindings = []
 
         selected_files_count = len(self.file_manager.selected_files)
-        if selected_files_count == 1:
+        if selected_files_count <= 0:
+            return False
+        elif selected_files_count == 1:
             file = self.file_manager.selected_files[0]
         else:
             raise NotImplementedError
@@ -305,7 +307,6 @@ class EartagFileView(Adw.Bin):
         window.save_button.set_visible(True)
         window.set_title('{f} — Ear Tag'.format(f=file_basename))
         window.window_title.set_subtitle(file_basename)
-        window.content_stack.set_visible_child(self)
 
         if not file.is_writable:
             # TRANSLATORS: Tooltip text for save button when saving is disabled

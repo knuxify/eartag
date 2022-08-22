@@ -127,6 +127,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.sidebar_list.set_file_manager(self.file_manager)
         self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
                             GObject.BindingFlags.SYNC_CREATE)
+        self.file_manager.files.connect('items-changed', self.toggle_fileview)
 
         if paths:
             self.file_manager.load_multiple_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
@@ -142,6 +143,15 @@ class EartagWindow(Adw.ApplicationWindow):
         self.drop_target.connect('leave', self.on_drag_unhover)
         self.drop_target.connect('drop', self.on_drag_drop)
         self.add_controller(self.drop_target)
+
+    def toggle_fileview(self, *args):
+        """
+        Shows/hides the fileview/"no files" message depending on opened files.
+        """
+        if self.file_manager.files.get_n_items() > 0:
+            self.content_stack.set_visible_child(self.file_view)
+        else:
+            self.content_stack.set_visible_child(self.no_file)
 
     def on_drag_accept(self, target, drop, *args):
         drop.read_value_async(Gdk.FileList, 0, None, self.verify_files_valid)
