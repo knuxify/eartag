@@ -82,8 +82,16 @@ class EartagFileManager(GObject.Object):
             self.selected_files.append(self.files.get_item(0))
             self.emit('selection_changed')
 
+    @GObject.Signal
+    def selection_override(self):
+        """
+        Internal signal used to communicate selection overrides to the sidebar.
+        """
+        pass
+
     def load_file(self, path, mode=0, emit_loaded=True):
         """Loads a file."""
+        _selection_override = False
         file_basename = os.path.basename(path)
 
         try:
@@ -106,15 +114,21 @@ class EartagFileManager(GObject.Object):
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
             self.selected_files = [_file]
+            _selection_override = True
+            self.emit('selection_override')
 
         if not self.selected_files:
             self.selected_files = [_file]
+            _selection_override = True
 
         self.files.append(_file)
 
         if emit_loaded:
             self.emit('files_loaded')
             self.update_modified_status()
+
+        if _selection_override:
+            self.emit('selection_override')
 
         return True
 
@@ -172,7 +186,10 @@ class EartagFileManager(GObject.Object):
         self.files.remove(self.files.find(file)[1])
         if file in self.selected_files:
             self._selected_files.remove(file)
+            if not self.selected_files and self.files:
+                self.selected_files.append(self.files.get_item(0))
             self.emit('selection-changed')
+            self.emit('selection_override')
 
     def close_dialog(self, dialog, *args):
         dialog.close()

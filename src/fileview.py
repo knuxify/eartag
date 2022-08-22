@@ -288,6 +288,8 @@ class EartagFileView(Adw.Bin):
         Reads the file data from the file manager and applies it
         to the file view.
         """
+        window = self.get_native()
+
         if self.bindings:
             for binding in self.bindings:
                 binding.unbind()
@@ -295,6 +297,8 @@ class EartagFileView(Adw.Bin):
 
         selected_files_count = len(self.file_manager.selected_files)
         if selected_files_count <= 0:
+            window.set_title('Ear Tag')
+            window.window_title.set_subtitle('')
             return False
         elif selected_files_count == 1:
             file = self.file_manager.selected_files[0]
@@ -303,7 +307,6 @@ class EartagFileView(Adw.Bin):
 
         file_basename = os.path.basename(file.path)
 
-        window = self.get_native()
         window.save_button.set_visible(True)
         window.set_title('{f} — Ear Tag'.format(f=file_basename))
         window.window_title.set_subtitle(file_basename)

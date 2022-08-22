@@ -133,8 +133,9 @@ class EartagFileList(Gtk.ListView):
         it provides a secondary event, named "selection-override", which
         is used to signify a selection event from outside the sidebar.
         """
-        self.selection_model.select_item(
-            self.file_manager.files.find(
-                self.file_manager.selected_files[0]
-            )[1], True
-        )
+        if self.file_manager.selected_files:
+            self.selection_model.select_item(
+                self.file_manager.files.find(
+                    self.file_manager.selected_files[0]
+                )[1], True
+            )
