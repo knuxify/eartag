@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
+  <gresource prefix="/app/drey/EarTag/icons/scalable/actions/">
+    <file alias="view-queue-rtl-symbolic.svg">assets/icons/view-queue-rtl-symbolic.svg</file>
+    <file alias="view-queue-symbolic.svg">assets/icons/view-queue-symbolic.svg</file>
+  </gresource>
   <gresource prefix="/app/drey/EarTag">
     <file>ui/albumcoverbutton.ui</file>
     <file>ui/albumcoverimage.ui</file>
