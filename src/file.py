@@ -64,6 +64,7 @@ class EartagFileManager(GObject.Object):
     LOAD_INSERT = 1
 
     _is_modified = False
+    _selected_files = []
 
     def __init__(self, window):
         super().__init__()
@@ -73,6 +74,10 @@ class EartagFileManager(GObject.Object):
 
     @GObject.Signal
     def files_loaded(self):
+        pass
+
+    @GObject.Signal
+    def selection_changed(self):
         pass
 
     def load_file(self, path, mode=0, emit_loaded=True):
@@ -168,3 +173,12 @@ class EartagFileManager(GObject.Object):
     @is_modified.setter
     def is_modified(self, value):
         self._is_modified = value
+
+    @GObject.Property
+    def selected_files(self):
+        return self._selected_files
+
+    @selected_files.setter
+    def selected_files(self, value):
+        self._selected_files = value
+        self.emit('selection_changed')

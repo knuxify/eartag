@@ -281,6 +281,7 @@ class EartagFileView(Adw.Bin):
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
         self.file_manager.connect('files_loaded', self.bind_to_file)
+        self.file_manager.connect('selection_changed', self.bind_to_file)
 
     def bind_to_file(self, *args):
         """

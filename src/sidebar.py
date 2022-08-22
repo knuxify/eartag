@@ -59,24 +59,18 @@ class EartagFileList(Gtk.ListView):
 
     def update_selection(self, selection_model, position, n_items):
         """Updates the selected files."""
-        selection = self.selection_model.get_selection_in_range(position, n_items)
-        values = []
-        iter = Gtk.BitsetIter()
-        iter.init_first(selection)
-        values.append(iter.get_value())
-        for i in range(n_items - 1):
-            iter.next()
-            values.append(iter.get_value())
+        # TODO: use get_selection_in_range to improve potential performance.
+        # this is a rather naive implementation.
+        #selection = self.selection_model.get_selection_in_range(position, n_items)
+        selection = self.selection_model.get_selection()
+
+        # Get list of selected items
+        selected_items = []
+        for i in range(selection.get_size()):
+            item_no = selection.get_nth(i)
+            selected_items.append(self.file_manager.files.get_item(item_no))
 
         file_count = self.file_manager.files.get_n_items()
         check_count = position
 
-        for iter_count in range(n_items):
-            item = self.file_manager.files.get_item(check_count)
-            if values[iter_count] == 0:
-                if item not in self.file_manager.selected_files:
-                    self.file_manager.selected_files.append(item)
-            elif values[iter_count] == 1:
-                if item in self.file_manager.selected_files:
-                    self.file_manager.selected_files.remove(item)
-            check_count += 1
+        self.file_manager.selected_files = selected_items

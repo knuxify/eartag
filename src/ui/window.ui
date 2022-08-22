@@ -97,6 +97,7 @@
                           <object class="GtkButton" id="insert_button">
                             <property name="halign">end</property>
                             <property name="icon-name">list-add</property>
+                            <signal name="clicked" handler="insert_file"/>
                           </object>
                         </child>
                       </object>
@@ -126,7 +127,7 @@
                       <object class="AdwHeaderBar" id="headerbar">
                         <child type="start">
                           <object class="GtkButton" id="show_sidebar_button">
-                            <property name="icon-name">open-menu-symbolic</property>
+                            <property name="icon-name">view-queue-symbolic</property>
                             <signal name="clicked" handler="show_sidebar"/>
                             <binding name="visible">
                               <lookup name="folded">container_flap</lookup>

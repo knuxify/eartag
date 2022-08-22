@@ -91,7 +91,9 @@ class EartagNoFile(Adw.Bin):
 
     @Gtk.Template.Callback()
     def on_add_file(self, *args):
-        self.get_native().show_file_chooser()
+        window = self.get_native()
+        window.open_mode = EartagFileManager.LOAD_OVERWRITE
+        window.show_file_chooser()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/window.ui')
 class EartagWindow(Adw.ApplicationWindow):
@@ -113,6 +115,9 @@ class EartagWindow(Adw.ApplicationWindow):
     drop_highlight_revealer = Gtk.Template.Child()
 
     force_close = False
+    file_chooser = None
+
+    open_mode = EartagFileManager.LOAD_OVERWRITE
 
     def __init__(self, application, path=None):
         super().__init__(application=application, title='Ear Tag')
@@ -165,6 +170,9 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_file_chooser(self):
         """Shows the file chooser."""
+        if self.file_chooser:
+            return
+
         self.file_chooser = Gtk.FileChooserNative(
                                 title=_("Open File"),
                                 transient_for=self,
@@ -180,11 +188,11 @@ class EartagWindow(Adw.ApplicationWindow):
         Loads the file with the given path. Note that this does not perform
         any validation; caller functions are meant to check for this manually.
         """
-        if self.file_manager._is_modified:
+        if self.open_mode != EartagFileManager.LOAD_INSERT and self.file_manager._is_modified:
             self.discard_warning = EartagDiscardWarningDialog(self, path)
             self.discard_warning.show()
             return False
-        self.file_manager.load_file(path)
+        self.file_manager.load_file(path, mode=self.open_mode)
 
     def open_file_from_dialog(self, dialog, response):
         """
@@ -192,6 +200,7 @@ class EartagWindow(Adw.ApplicationWindow):
         selected in the dialog.
         """
         self.file_chooser.destroy()
+        self.file_chooser = None
         if response == Gtk.ResponseType.ACCEPT:
             file_path = dialog.get_file().get_path()
             return self.open_file(file_path)
@@ -208,6 +217,11 @@ class EartagWindow(Adw.ApplicationWindow):
     def on_save(self, *args):
         if not self.file_manager.save():
             return False
+
+    @Gtk.Template.Callback()
+    def insert_file(self, *args):
+        self.open_mode = EartagFileManager.LOAD_INSERT
+        self.show_file_chooser()
 
     def on_close_request(self, *args):
         if self.force_close == False and list(self.file_manager.files) and \

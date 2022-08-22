@@ -37,6 +37,7 @@ from gi.repository import Adw, Gtk, Gio
 
 from .common import is_valid_music_file
 from .window import EartagWindow, AboutDialog
+from .file import EartagFileManager
 
 class Application(Adw.Application):
     def __init__(self):
@@ -74,7 +75,9 @@ class Application(Adw.Application):
         about.present()
 
     def on_open_file_action(self, widget, _):
-        self.get_active_window().show_file_chooser()
+        window = self.get_active_window()
+        window.open_mode = EartagFileManager.LOAD_OVERWRITE
+        window.show_file_chooser()
 
     def create_action(self, name, callback):
         """ Add an Action and connect to a callback """
