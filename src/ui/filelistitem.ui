@@ -49,5 +49,16 @@
         </child>
       </object>
     </child>
+
+    <child>
+      <object class="GtkButton" id="remove_button">
+        <property name="icon-name">list-remove-symbolic</property>
+        <signal name="clicked" handler="remove_item"/>
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+
   </template>
 </interface>

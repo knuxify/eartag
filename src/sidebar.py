@@ -12,6 +12,11 @@ class EartagFileListItem(Gtk.Box):
     file = None
     bindings = []
 
+    def __init__(self, filelist):
+        super().__init__()
+        self.filelist = filelist
+        self.connect('destroy', self.on_destroy)
+
     def bind_to_file(self, file):
         if self.bindings:
             for b in self.bindings:
@@ -22,6 +27,17 @@ class EartagFileListItem(Gtk.Box):
             GObject.BindingFlags.SYNC_CREATE))
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
+
+    def on_destroy(self, *args):
+        if self.bindings:
+            for b in self.bindings:
+                b.unbind()
+        self.file = None
+
+    @Gtk.Template.Callback()
+    def remove_item(self, *args):
+        self.filelist.file_manager.remove(self.file)
+        self.on_destroy()
 
     @GObject.Property(type=str)
     def title(self):
@@ -50,7 +66,7 @@ class EartagFileList(Gtk.ListView):
         self.set_model(self.selection_model)
 
     def setup(self, factory, list_item):
-        list_item.set_child(EartagFileListItem())
+        list_item.set_child(EartagFileListItem(self))
 
     def bind(self, factory, list_item):
         child = list_item.get_child()

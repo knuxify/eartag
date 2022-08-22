@@ -165,6 +165,13 @@ class EartagFileManager(GObject.Object):
                 return
         self.set_property('is_modified', False)
 
+    def remove(self, file):
+        """Removes a file from the opened file list."""
+        if file in self.selected_files:
+            self._selected_files.remove(file)
+            self.emit('selection-changed')
+        self.files.remove(self.files.find(file)[1])
+
     def close_dialog(self, dialog, *args):
         dialog.close()
 
