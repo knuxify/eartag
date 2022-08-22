@@ -56,8 +56,12 @@
         <property name="hexpand">true</property>
         <property name="halign">end</property>
         <property name="valign">center</property>
+        <!-- TRANSLATORS: Tooltip for button used to remove file from opened file list -->
+        <property name="tooltip-text" translatable="yes">Remove from list</property>
+
         <style>
           <class name="flat"/>
+          <class name="circular"/>
         </style>
       </object>
     </child>

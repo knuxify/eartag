@@ -82,10 +82,26 @@
                       <object class="AdwHeaderBar" id="sidebar_headerbar">
                         <property name="show-end-title-buttons">false</property>
                         <property name="title-widget"><object class="GtkLabel"/></property>
+
                         <child type="start">
+                          <object class="GtkButton" id="save_button">
+                            <property name="visible">false</property>
+                            <property name="sensitive">false</property>
+                            <property name="label" translatable="yes">Save</property>
+                            <signal name="clicked" handler="on_save"/>
+
+                            <style>
+                              <class name="suggested-action"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child type="end">
                           <object class="GtkButton" id="hide_sidebar_button">
                             <property name="icon-name">go-previous-symbolic</property>
                             <property name="halign">start</property>
+                            <!-- TRANSLATORS: Tooltip for the button used to close the file list sidebar -->
+                            <property name="tooltip-text" translatable="yes">Close file list</property>
                             <signal name="clicked" handler="hide_sidebar"/>
                             <binding name="visible">
                               <lookup name="folded">container_flap</lookup>
@@ -98,6 +114,8 @@
                             <property name="halign">end</property>
                             <property name="icon-name">list-add</property>
                             <signal name="clicked" handler="insert_file"/>
+                            <!-- TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue -->
+                            <property name="tooltip-text" translatable="yes">Add file</property>
                           </object>
                         </child>
                       </object>
@@ -128,23 +146,12 @@
                         <child type="start">
                           <object class="GtkButton" id="show_sidebar_button">
                             <property name="icon-name">view-queue-symbolic</property>
+                            <!-- TRANSLATORS: Tooltip for the button used to close the file list sidebar -->
+                            <property name="tooltip-text" translatable="yes">Show file list</property>
                             <signal name="clicked" handler="show_sidebar"/>
                             <binding name="visible">
                               <lookup name="folded">container_flap</lookup>
                             </binding>
-                          </object>
-                        </child>
-
-                        <child type="start">
-                          <object class="GtkButton" id="save_button">
-                            <property name="visible">false</property>
-                            <property name="sensitive">false</property>
-                            <property name="label" translatable="yes">Save</property>
-                            <signal name="clicked" handler="on_save"/>
-
-                            <style>
-                              <class name="suggested-action"/>
-                            </style>
                           </object>
                         </child>
 
