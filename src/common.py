@@ -69,7 +69,91 @@ def is_valid_image_file(path):
         return False
     return True
 
-class EartagEditableLabel(Gtk.EditableLabel):
+class EartagMultipleValueEntry:
+    """
+    A set of common functions used by entries that can have multiple values.
+
+    Usage instructions:
+      - Inherit from this class in the desired object.
+      - Set the properties list to contain the property the entry is bound to.
+      - Connect the on_changed signal to your entry's change.
+    """
+    def refresh_multiple_values(self, file=None):
+        if not file:
+            try:
+                file = self.files[0]
+            except IndexError:
+                return False
+
+        self._setup_entry(self.value_entry, file, False)
+        if self._is_double:
+            self._setup_entry(self.value_entry_double, file, True)
+
+    def _multiple_values_check(self, checked_file, property):
+        """
+        Used internally in bind_to_property to figure out if there are
+        multiple values for a property.
+
+        Returns True if there are multiple values, False otherwise.
+        """
+        value = checked_file.get_property(property)
+        for _file in self.files:
+            if _file == checked_file:
+                continue
+
+            if _file.get_property(property) != value:
+                return True
+        return False
+
+    def _setup_entry(self, entry, file, is_double):
+        has_multiple_files = len(self.files) > 1
+
+        # TRANSLATORS: Placeholder displayed when multiple files with different values are created
+        _multiple_values =_('(multiple values)')
+
+        property = (is_double and self.properties[1]) or self.properties[0]
+        if has_multiple_files and self._multiple_values_check(file, property):
+            entry.set_placeholder_text(_multiple_values)
+            self.ignore_edit[property] = True
+            entry.set_text('')
+            self.ignore_edit[property] = False
+        else:
+            self.ignore_edit[property] = True
+            entry.set_text(str(file.get_property(property)) or '')
+            self.ignore_edit[property] = False
+            entry.set_placeholder_text('')
+
+    def bind_to_file(self, file):
+        if file in self.files:
+            return
+        self.files.append(file)
+        self.refresh_multiple_values(file)
+
+    def unbind_from_file(self, file):
+        if file not in self.files:
+            return
+        self.files.remove(file)
+        self.refresh_multiple_values()
+
+    def on_changed(self, entry, is_double=False):
+        property = (is_double and self.properties[1]) or self.properties[0]
+        if property in self.ignore_edit and not self.ignore_edit[property]:
+            value = entry.get_text()
+            if self._is_numeric:
+                try:
+                    value = int(value)
+                except ValueError:
+                    value = -1
+            for file in self.files:
+                if file.get_property(property) != value:
+                    if self._is_numeric and not value:
+                        continue
+                        #file.set_property(property, -1)
+                    file.set_property(property, value)
+        else:
+            return False
+
+class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
     """
     Editable labels are missing a few nice features that we need
     (namely proper centering and word wrapping), but since they're
@@ -77,6 +161,9 @@ class EartagEditableLabel(Gtk.EditableLabel):
     them to suit our needs. This class automates the process.
     """
     __gtype_name__ = 'EartagEditableLabel'
+
+    _is_numeric = False
+    _is_double = False
 
     _placeholder = ''
 
@@ -107,9 +194,17 @@ class EartagEditableLabel(Gtk.EditableLabel):
         self.connect('notify::editing', self.display_placeholder)
         self.connect('notify::text', self.display_placeholder)
 
+        # Setup necessary for EartagMultipleValueEntry
+        self.value_entry = self
+        self.connect('changed', self.on_changed)
+
         self.label = label
         self.editable = editable
         self.display_placeholder()
+
+        self.files = []
+        self.properties = []
+        self.ignore_edit = {}
 
     def display_placeholder(self, *args):
         """Displays/hides placeholder in non-editing mode as needed."""
@@ -127,6 +222,15 @@ class EartagEditableLabel(Gtk.EditableLabel):
     @placeholder.setter
     def placeholder(self, value):
         self._placeholder = value
+
+    # Implemented for EartagMultipleValueEntry
+    def set_placeholder_text(self, value):
+        self.set_property('placeholder', value)
+        self.display_placeholder()
+
+    def _setup_entry(self, entry, file, is_double):
+        EartagMultipleValueEntry._setup_entry(self, entry, file, is_double)
+        self.display_placeholder()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverimage.ui')
 class EartagAlbumCoverImage(Gtk.Stack):
