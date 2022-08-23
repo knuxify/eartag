@@ -105,13 +105,13 @@ class EartagFileTagLib(EartagFile):
         self.tl_file.tags['ARTIST'] = [value]
         self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property(type=int)
     def tracknumber(self):
         if 'TRACKNUMBER' in self.tl_file.tags:
             if '/' in self.tl_file.tags['TRACKNUMBER'][0]:
-                return self.tl_file.tags['TRACKNUMBER'][0].split('/')[0]
-            return self.tl_file.tags['TRACKNUMBER'][0]
-        return ''
+                return int(self.tl_file.tags['TRACKNUMBER'][0].split('/')[0])
+            return int(self.tl_file.tags['TRACKNUMBER'][0])
+        return None
 
     @tracknumber.setter
     def tracknumber(self, value):
@@ -123,12 +123,12 @@ class EartagFileTagLib(EartagFile):
             self.tl_file.tags['TRACKNUMBER'] = [str(value)]
         self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property(type=int)
     def totaltracknumber(self):
         if 'TRACKNUMBER' in self.tl_file.tags:
             if '/' in self.tl_file.tags['TRACKNUMBER'][0]:
-                return self.tl_file.tags['TRACKNUMBER'][0].split('/')[1]
-        return ''
+                return int(self.tl_file.tags['TRACKNUMBER'][0].split('/')[1])
+        return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
@@ -173,7 +173,7 @@ class EartagFileTagLib(EartagFile):
         self.tl_file.tags['GENRE'] = [value]
         self.mark_as_modified()
 
-    @GObject.Property
+    @GObject.Property(type=int)
     def releaseyear(self):
         if 'DATE' in self.tl_file.tags and self.tl_file.tags['DATE']:
             return self.tl_file.tags['DATE'][0]
