@@ -29,7 +29,7 @@
 from .common import is_valid_music_file
 from .fileview import EartagFileView
 from .file import EartagFileManager
-from .sidebar import EartagFileList
+from .sidebar import EartagSidebar
 
 from gi.repository import Adw, Gdk, Gio, Gtk, GObject
 
@@ -104,10 +104,7 @@ class EartagWindow(Adw.ApplicationWindow):
     content_stack = Gtk.Template.Child()
     container_flap = Gtk.Template.Child()
 
-    sidebar_stack = Gtk.Template.Child()
-    sidebar_scroll = Gtk.Template.Child()
-    sidebar_list = Gtk.Template.Child()
-    sidebar_no_files = Gtk.Template.Child()
+    sidebar = Gtk.Template.Child()
 
     audio_file_filter = Gtk.Template.Child()
 
@@ -128,11 +125,10 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
-        self.sidebar_list.set_file_manager(self.file_manager)
+        self.sidebar.set_file_manager(self.file_manager)
         self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
                             GObject.BindingFlags.SYNC_CREATE)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
-        self.sidebar_stack.set_visible_child(self.sidebar_no_files)
 
         if paths:
             self.file_manager.load_multiple_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
@@ -156,10 +152,9 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.content_stack.set_visible_child(self.file_view)
-            self.sidebar_stack.set_visible_child(self.sidebar_scroll)
         else:
             self.content_stack.set_visible_child(self.no_file)
-            self.sidebar_stack.set_visible_child(self.sidebar_no_files)
+        self.sidebar.toggle_fileview()
 
     def on_drag_accept(self, target, drop, *args):
         drop.read_value_async(Gdk.FileList, 0, None, self.verify_files_valid)

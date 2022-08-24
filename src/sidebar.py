@@ -142,3 +142,28 @@ class EartagFileList(Gtk.ListView):
                     self.file_manager.selected_files[0]
                 )[1], True
             )
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')
+class EartagSidebar(Gtk.Stack):
+    __gtype_name__ = 'EartagSidebar'
+
+    list_scroll = Gtk.Template.Child()
+    file_list = Gtk.Template.Child()
+    no_files = Gtk.Template.Child()
+
+    def __init__(self):
+        super().__init__()
+
+    def set_file_manager(self, file_manager):
+        self.file_manager = file_manager
+        self.file_list.set_file_manager(self.file_manager)
+        self.set_visible_child(self.no_files)
+
+    def toggle_fileview(self, *args):
+        """
+        Shows/hides the fileview/"no files" message depending on opened files.
+        """
+        if self.file_manager.files.get_n_items() > 0:
+            self.set_visible_child(self.list_scroll)
+        else:
+            self.set_visible_child(self.no_files)
