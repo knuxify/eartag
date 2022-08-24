@@ -197,6 +197,7 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
         # Setup necessary for EartagMultipleValueEntry
         self.value_entry = self
         self.connect('changed', self.on_changed)
+        self._original_placeholder = None
 
         self.label = label
         self.editable = editable
@@ -221,11 +222,16 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
 
     @placeholder.setter
     def placeholder(self, value):
+        if not self._original_placeholder:
+            self._original_placeholder = value
         self._placeholder = value
 
     # Implemented for EartagMultipleValueEntry
     def set_placeholder_text(self, value):
-        self.set_property('placeholder', value)
+        if value:
+            self.set_property('placeholder', value)
+        else:
+            self.set_property('placeholder', self._original_placeholder)
         self.display_placeholder()
 
     def _setup_entry(self, entry, file, is_double):
