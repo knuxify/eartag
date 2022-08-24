@@ -26,7 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import GObject, Gtk
+from gi.repository import GObject, Gtk, GLib
 import os.path
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/filelistitem.ui')
@@ -98,8 +98,13 @@ class EartagFileList(Gtk.ListView):
     def set_sidebar(self, sidebar):
         self.sidebar = sidebar
 
+        # Set up sort model for sort button
+        self.sort_model = Gtk.SortListModel(model=self.file_manager.files)
+        self.sorter = Gtk.CustomSorter.new(self.sort_func, None)
+        self.sort_model.set_sorter(self.sorter)
+
         # Set up filter model for search
-        self.filter_model = Gtk.FilterListModel(model=self.file_manager.files)
+        self.filter_model = Gtk.FilterListModel(model=self.sort_model)
         self.filter = Gtk.CustomFilter.new(self.filter_func, self.filter_model)
         self.filter_model.set_filter(self.filter)
 
@@ -127,9 +132,9 @@ class EartagFileList(Gtk.ListView):
         selected_items = []
         for i in range(selection.get_size()):
             item_no = selection.get_nth(i)
-            selected_items.append(self.file_manager.files.get_item(item_no))
+            selected_items.append(self.filter_model.get_item(item_no))
 
-        file_count = self.file_manager.files.get_n_items()
+        file_count = self.filter_model.get_n_items()
         check_count = position
 
         self.file_manager.selected_files = selected_items
@@ -173,6 +178,27 @@ class EartagFileList(Gtk.ListView):
             return True
 
         return False
+
+    def sort_func(self, a, b, *args):
+        """Custom sort function implementation for file sorting."""
+        # Step 1. Compare album names
+        a_album = GLib.utf8_casefold(a.album, -1)
+        b_album = GLib.utf8_casefold(b.album, -1)
+        collate = GLib.utf8_collate(a_album, b_album)
+
+        # Step 2. Compare track numbers
+        if (a.tracknumber or -1) > (b.tracknumber or -1):
+            collate += 2
+        elif (a.tracknumber or -1) < (b.tracknumber or -1):
+            collate -= 2
+
+        # Step 3. If the result is inconclusive, compare filenames
+        if collate == 0:
+            a_filename = GLib.utf8_casefold(os.path.basename(a.path), -1)
+            b_filename = GLib.utf8_casefold(os.path.basename(b.path), -1)
+            collate = GLib.utf8_collate(a_filename, b_filename)
+
+        return collate
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')
 class EartagSidebar(Gtk.Box):

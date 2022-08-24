@@ -326,6 +326,10 @@ class EartagFileView(Gtk.Stack):
         """
         window = self.get_native()
 
+        _no_files = False
+        if len(self.file_manager.files) == 0:
+            _no_files = True
+
         # Get list of selected (added)/unselected (removed) files
         added_files = [file for file in self.file_manager.selected_files if file not in self.bound_files]
         removed_files = [file for file in self.bound_files if file not in self.file_manager.selected_files]
@@ -428,6 +432,9 @@ class EartagFileView(Gtk.Stack):
             self.setup_entry(file, self.genre_entry, 'genre')
             self.setup_entry(file, self.releaseyear_entry, 'releaseyear')
             self.setup_entry(file, self.comment_entry, 'comment')
+
+        if _no_files:
+            window.run_sort()
 
     def setup_entry(self, file, entry, property, property_double=None):
         if type(entry) == EartagTagListItem:

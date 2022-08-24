@@ -95,6 +95,15 @@
                           </object>
                         </child>
 
+                        <child type="start">
+                          <object class="GtkButton" id="sort_button">
+                            <property name="icon-name">view-sort-descending-symbolic</property>
+                            <signal name="clicked" handler="run_sort"/>
+                            <!-- TRANSLATORS: Tooltip for button used to sort files in the opened file list -->
+                            <property name="tooltip-text" translatable="yes">Sort files</property>
+                          </object>
+                        </child>
+
                         <child type="end">
                           <object class="GtkButton" id="hide_sidebar_button">
                             <property name="icon-name">go-previous-symbolic</property>
@@ -111,7 +120,7 @@
                         <child type="end">
                           <object class="GtkButton" id="insert_button">
                             <property name="halign">end</property>
-                            <property name="icon-name">list-add</property>
+                            <property name="icon-name">list-add-symbolic</property>
                             <signal name="clicked" handler="insert_file"/>
                             <!-- TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue -->
                             <property name="tooltip-text" translatable="yes">Add file</property>
@@ -126,6 +135,7 @@
                             </accessibility>
                           </object>
                         </child>
+
                       </object>
                     </child>
 

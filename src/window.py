@@ -245,6 +245,11 @@ class EartagWindow(Adw.ApplicationWindow):
         self.container_flap.set_reveal_flap(False)
 
     @Gtk.Template.Callback()
+    def run_sort(self, *args):
+        if self.file_manager.files:
+            self.sidebar.file_list.sorter.changed(Gtk.SorterChange.DIFFERENT)
+
+    @Gtk.Template.Callback()
     def on_save(self, *args):
         if not self.file_manager.save():
             return False

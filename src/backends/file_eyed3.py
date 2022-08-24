@@ -167,7 +167,7 @@ class EartagFileEyed3(EartagFile):
     @GObject.Property(type=int)
     def tracknumber(self):
         if self.e3_file.tag.track_num:
-            return str(self.e3_file.tag.track_num[0])
+            return int(self.e3_file.tag.track_num[0] or -1)
         return None
 
     @tracknumber.setter
@@ -178,7 +178,7 @@ class EartagFileEyed3(EartagFile):
     @GObject.Property(type=int)
     def totaltracknumber(self):
         if self.e3_file.tag.track_num:
-            return str(self.e3_file.tag.track_num[1])
+            return int(self.e3_file.tag.track_num[1] or -1)
         return None
 
     @totaltracknumber.setter
