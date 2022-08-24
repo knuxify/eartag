@@ -33,6 +33,7 @@ import os.path
 class EartagFileListItem(Gtk.Box):
     __gtype_name__ = 'EartagFileListItem'
 
+    modified_icon = Gtk.Template.Child()
     coverart_image = Gtk.Template.Child()
     title_label = Gtk.Template.Child()
     filename_label = Gtk.Template.Child()
@@ -53,6 +54,8 @@ class EartagFileListItem(Gtk.Box):
 
         self.bindings.append(self.file.bind_property('title', self, 'title',
             GObject.BindingFlags.SYNC_CREATE))
+        self.bindings.append(self.file.bind_property('is-modified', self.modified_icon,
+            'visible', GObject.BindingFlags.SYNC_CREATE))
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
 

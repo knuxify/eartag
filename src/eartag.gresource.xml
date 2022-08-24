@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/app/drey/EarTag/icons/scalable/actions/">
+    <file alias="file-modified-symbolic.svg">assets/icons/file-modified-symbolic.svg</file>
     <file alias="view-queue-rtl-symbolic.svg">assets/icons/view-queue-rtl-symbolic.svg</file>
     <file alias="view-queue-symbolic.svg">assets/icons/view-queue-symbolic.svg</file>
   </gresource>
