@@ -115,6 +115,7 @@ class EartagFileManager(GObject.Object):
 
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
+            self.file_paths = []
             self.selected_files = [_file]
             _selection_override = True
             self.emit('selection_override')
@@ -139,6 +140,7 @@ class EartagFileManager(GObject.Object):
         """Loads files with the provided paths."""
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
+            self.file_paths = []
             self._selected_files = []
 
         for path in paths:

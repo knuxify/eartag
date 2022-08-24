@@ -27,6 +27,23 @@
 # authorization.
 
 from gi.repository import GObject
+import filecmp
+
+class EartagFileCover:
+    """This class is only used for comparing two covers on two files."""
+    def __init__(self, cover_path):
+        self.cover_path = cover_path
+        if cover_path:
+            with open(cover_path, 'rb') as cover_file:
+                self.cover_data = cover_file.read()
+
+    def __eq__(self, other):
+        if not isinstance(other, EartagFileCover):
+            return False
+        if self.cover_path:
+            return filecmp.cmp(self.cover_path, other.cover_path)
+        else:
+            return not other.cover_path
 
 class EartagFile(GObject.Object):
     """
@@ -63,6 +80,14 @@ class EartagFile(GObject.Object):
         else:
             self._is_writable = True
         self.notify('is_writable')
+
+    @property
+    def cover(self):
+        """Gets raw cover data. This is usually used for comparisons between two files."""
+        if not self._supports_album_covers:
+            return False
+
+        return EartagFileCover(self.cover_path)
 
     @GObject.Signal
     def modified(self):

@@ -275,6 +275,21 @@ class EartagAlbumCoverImage(Gtk.Stack):
             self.cover_image.set_from_file(None)
             self.on_cover_change()
 
+    def unbind_from_file(self, file=None):
+        if not self.file or (file and file != self.file):
+            return False
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.image_file_binding = None
+        self.file = None
+
+    def mark_as_empty(self):
+        """In some cases, we need to force the cover to be shown as empty."""
+        self.set_visible_child(self.no_cover)
+
+    def mark_as_nonempty(self):
+        self.on_cover_change()
+
     def on_cover_change(self, *args):
         if self.file.cover_path and os.path.exists(self.file.cover_path):
             self.set_visible_child(self.cover_image)

@@ -76,17 +76,45 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.hover_controller.connect('leave', self.on_unhover)
         self.add_controller(self.hover_controller)
 
-    def bind_to_file(self, file):
-        self.file = file
-        self.cover_image.bind_to_file(file)
+        self.files = []
 
-        if file.supports_album_covers:
-            self.set_visible(True)
+    def bind_to_file(self, file):
+        self.files.append(file)
+        if len(self.files) < 2:
+            if not file.supports_album_covers:
+                self.set_visible(False)
+                return False
+            else:
+                self.set_visible(True)
+            self.cover_image.bind_to_file(file)
         else:
-            self.set_visible(False)
+            covers_different = False
+            our_cover = file.cover
+
+            if False in [f.supports_album_covers for f in self.files]:
+                self.set_visible(False)
+            else:
+                self.set_visible(True)
+
+            for _file in self.files:
+                if _file.cover != our_cover:
+                    covers_different = True
+                    self.cover_image.mark_as_empty()
+                    break
+            if not covers_different:
+                self.cover_image.mark_as_nonempty()
+
+    def unbind_from_file(self, file):
+        self.files.remove(file)
+        for file in self.files:
+            if not file.supports_album_covers:
+                self.set_visible(False)
+                break
+            else:
+                self.set_visible(True)
 
     def on_destroy(self, *args):
-        self.file = None
+        self.files = None
 
     @Gtk.Template.Callback()
     def show_cover_file_chooser(self, *args):
@@ -107,8 +135,9 @@ class EartagAlbumCoverButton(Adw.Bin):
         selected in the dialog.
         """
         if response == Gtk.ResponseType.ACCEPT:
-            self.file.cover_path = dialog.get_file().get_path()
-            self.file.notify('cover-path')
+            for file in self.files:
+                file.cover_path = dialog.get_file().get_path()
+                file.notify('cover-path')
             self.cover_image.on_cover_change()
         self.file_chooser.destroy()
 
@@ -140,8 +169,9 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
-        self.file.cover_path = path
-        self.file.notify('cover-path')
+        for file in self.files:
+            file.cover_path = path
+            file.notify('cover-path')
         self.cover_image.on_cover_change()
         self.on_drag_unhover()
 
@@ -370,6 +400,7 @@ class EartagFileView(Gtk.Stack):
             self.unbind_entry(file, self.genre_entry)
             self.unbind_entry(file, self.releaseyear_entry)
             self.unbind_entry(file, self.comment_entry)
+            self.album_cover.unbind_from_file(file)
 
         for file in added_files:
             if file not in self.bindings:
