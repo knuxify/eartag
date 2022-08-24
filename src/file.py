@@ -70,6 +70,7 @@ class EartagFileManager(GObject.Object):
         super().__init__()
         self.window = window
         self.files = Gio.ListStore(item_type=EartagFile)
+        self.file_paths = []
         self.selected_files = []
 
     @GObject.Signal
@@ -89,6 +90,9 @@ class EartagFileManager(GObject.Object):
 
     def load_file(self, path, mode=0, emit_loaded=True):
         """Loads a file."""
+        if path in self.file_paths:
+            return False
+
         _selection_override = False
         file_basename = os.path.basename(path)
 
@@ -120,6 +124,7 @@ class EartagFileManager(GObject.Object):
             _selection_override = True
 
         self.files.append(_file)
+        self.file_paths.append(_file.path)
 
         if emit_loaded:
             self.emit('files_loaded')
@@ -185,6 +190,7 @@ class EartagFileManager(GObject.Object):
         if file.is_modified and not force_discard:
             EartagRemovalDiscardWarningDialog(self, file).present()
             return False
+        self.file_paths.remove(file.path)
         self.files.remove(self.files.find(file)[1])
         if file in self.selected_files:
             self._selected_files.remove(file)
