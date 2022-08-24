@@ -94,8 +94,18 @@ class EartagFileList(Gtk.ListView):
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
         self.file_manager.connect('selection-override', self.handle_selection_override)
-        self.selection_model = Gtk.MultiSelection(model=self.file_manager.files)
+
+    def set_sidebar(self, sidebar):
+        self.sidebar = sidebar
+
+        # Set up filter model for search
+        self.filter_model = Gtk.FilterListModel(model=self.file_manager.files)
+        self.filter = Gtk.CustomFilter.new(self.filter_func, self.filter_model)
+        self.filter_model.set_filter(self.filter)
+
+        self.selection_model = Gtk.MultiSelection(model=self.filter_model)
         self.selection_model.connect('selection-changed', self.update_selection)
+
         self.set_model(self.selection_model)
 
     def setup(self, factory, list_item):
@@ -143,27 +153,72 @@ class EartagFileList(Gtk.ListView):
                 )[1], True
             )
 
+    def filter_func(self, file, *args):
+        """Custom filter for file search."""
+        query = self.sidebar.search_entry.get_text()
+        if not query:
+            return True
+        query = query.casefold()
+
+        if query in file.title.casefold():
+            return True
+
+        if query in file.artist.casefold():
+            return True
+
+        if query in file.album.casefold():
+            return True
+
+        if query in os.path.basename(file.path).casefold():
+            return True
+
+        return False
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')
-class EartagSidebar(Gtk.Stack):
+class EartagSidebar(Gtk.Box):
     __gtype_name__ = 'EartagSidebar'
 
+    list_stack = Gtk.Template.Child()
     list_scroll = Gtk.Template.Child()
     file_list = Gtk.Template.Child()
     no_files = Gtk.Template.Child()
 
+    search_bar = Gtk.Template.Child()
+    search_entry = Gtk.Template.Child()
+    no_results = Gtk.Template.Child()
+
     def __init__(self):
         super().__init__()
+
+        self.search_bar.set_key_capture_widget(self)
+        self.search_bar.connect_entry(self.search_entry)
+        self.search_entry.connect('search-changed', self.search_changed)
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
         self.file_list.set_file_manager(self.file_manager)
-        self.set_visible_child(self.no_files)
+        self.list_stack.set_visible_child(self.no_files)
+        self.file_list.set_sidebar(self)
 
     def toggle_fileview(self, *args):
         """
         Shows/hides the fileview/"no files" message depending on opened files.
         """
         if self.file_manager.files.get_n_items() > 0:
-            self.set_visible_child(self.list_scroll)
+            self.list_stack.set_visible_child(self.list_scroll)
         else:
-            self.set_visible_child(self.no_files)
+            self.list_stack.set_visible_child(self.no_files)
+
+    def search_changed(self, search_entry, *args):
+        """Emitted when the search has changed."""
+        self.file_list.filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        if self.file_list.filter_model.get_n_items() == 0 and \
+                self.file_manager.files.get_n_items() > 0:
+            self.list_stack.set_visible_child(self.no_results)
+        else:
+            self.toggle_fileview()
+
+        # Scroll back to top of list
+        vadjust = self.file_list.get_vadjustment()
+        vadjust.set_value(vadjust.get_lower())

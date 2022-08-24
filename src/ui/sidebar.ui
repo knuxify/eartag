@@ -1,30 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="EartagSidebar" parent="GtkStack">
-    <property name="transition-type">crossfade</property>
+  <template class="EartagSidebar" parent="GtkBox">
+    <property name="orientation">vertical</property>
 
     <child>
-      <object class="GtkScrolledWindow" id="list_scroll">
-        <property name="hscrollbar-policy">never</property>
-        <property name="vexpand">true</property>
-        <property name="min-content-width">300</property>
-        <property name="max-content-width">400</property>
-
+      <object class="GtkSearchBar" id="search_bar">
+        <property name="hexpand">false</property>
         <child>
-          <object class="EartagFileList" id="file_list"/>
+          <object class="GtkSearchEntry" id="search_entry">
+            <property name="hexpand">true</property>
+          </object>
         </child>
       </object>
     </child>
 
     <child>
-      <object class="AdwStatusPage" id="no_files">
-        <property name="icon-name">list-add-symbolic</property>
-        <property name="title" translatable="yes">No Files Opened</property>
-        <property name="description">Use the "+" button on the top bar to open files to edit.</property>
-        <style>
-          <class name="compact"/>
-        </style>
+      <object class="GtkStack" id="list_stack">
+        <property name="transition-type">crossfade</property>
+
+        <child>
+          <object class="GtkScrolledWindow" id="list_scroll">
+            <property name="hscrollbar-policy">never</property>
+            <property name="vexpand">true</property>
+            <property name="min-content-width">300</property>
+            <property name="max-content-width">400</property>
+
+            <child>
+              <object class="EartagFileList" id="file_list"/>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwStatusPage" id="no_files">
+            <property name="icon-name">list-add-symbolic</property>
+            <property name="title" translatable="yes">No Files Opened</property>
+            <property name="description">Use the "+" button on the top bar to open files to edit.</property>
+            <style>
+              <class name="compact"/>
+            </style>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwStatusPage" id="no_results">
+            <property name="icon-name">system-search-symbolic</property>
+            <property name="title" translatable="yes">No Results Found</property>
+            <property name="description" translatable="yes">Try a different search query.</property>
+
+            <style>
+              <class name="compact"/>
+            </style>
+          </object>
+        </child>
       </object>
     </child>
   </template>

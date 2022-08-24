@@ -8,6 +8,7 @@ src/ui/discardwarning.ui
 src/ui/filelistitem.ui
 src/ui/removaldiscardwarning.ui
 src/ui/nofile.ui
+src/ui/sidebar.ui
 src/main.py
 src/fileview.py
 src/sidebar.py

@@ -117,6 +117,15 @@
                             <property name="tooltip-text" translatable="yes">Add file</property>
                           </object>
                         </child>
+
+                        <child type="end">
+                          <object class="GtkToggleButton" id="sidebar_search_button">
+                            <property name="icon-name">edit-find-symbolic</property>
+                            <accessibility>
+                              <property name="label" translatable="yes">Search</property>
+                            </accessibility>
+                          </object>
+                        </child>
                       </object>
                     </child>
 
