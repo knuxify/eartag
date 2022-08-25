@@ -128,6 +128,14 @@
                         </child>
 
                         <child type="end">
+                          <object class="GtkToggleButton" id="select_multiple_button">
+                            <property name="icon-name">selection-mode-symbolic</property>
+                            <!-- TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue -->
+                            <property name="tooltip-text" translatable="yes">Select multiple files</property>
+                          </object>
+                        </child>
+
+                        <child type="end">
                           <object class="GtkToggleButton" id="sidebar_search_button">
                             <property name="icon-name">edit-find-symbolic</property>
                             <accessibility>

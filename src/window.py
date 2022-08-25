@@ -106,6 +106,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     sidebar = Gtk.Template.Child()
     sidebar_search_button = Gtk.Template.Child()
+    select_multiple_button = Gtk.Template.Child()
 
     audio_file_filter = Gtk.Template.Child()
 
@@ -135,7 +136,12 @@ class EartagWindow(Adw.ApplicationWindow):
             self.sidebar.search_bar, 'search-mode-enabled',
             flags=GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
-
+        self.select_multiple_button.bind_property('active', self.sidebar, 'selection-mode',
+            flags=GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
+        self.select_multiple_button.bind_property('active', self.sidebar.action_bar, 'revealed',
+            flags=GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
 
         if paths:
             self.file_manager.load_multiple_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)

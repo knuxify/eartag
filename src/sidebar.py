@@ -28,6 +28,7 @@
 
 from gi.repository import GObject, Gtk, GLib
 import os.path
+import gettext
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/filelistitem.ui')
 class EartagFileListItem(Gtk.Box):
@@ -39,12 +40,16 @@ class EartagFileListItem(Gtk.Box):
     filename_label = Gtk.Template.Child()
     _title = None
     file = None
-    bindings = []
+
+    cover_edit_stack = Gtk.Template.Child()
+    select_button = Gtk.Template.Child()
 
     def __init__(self, filelist):
         super().__init__()
+        self._selected = False
         self.filelist = filelist
         self.connect('destroy', self.on_destroy)
+        self.bindings = []
 
     def bind_to_file(self, file):
         if self.bindings:
@@ -52,6 +57,8 @@ class EartagFileListItem(Gtk.Box):
                 b.unbind()
         self.file = file
 
+        self.bindings.append(self.select_button.bind_property('active', self, 'selected',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE))
         self.bindings.append(self.file.bind_property('title', self, 'title',
             GObject.BindingFlags.SYNC_CREATE))
         self.bindings.append(self.file.bind_property('is-modified', self.modified_icon,
@@ -64,6 +71,16 @@ class EartagFileListItem(Gtk.Box):
             for b in self.bindings:
                 b.unbind()
         self.file = None
+
+    @GObject.Property(type=bool, default=False)
+    def selected(self):
+        return self._selected
+
+    @selected.setter
+    def selected(self, value):
+        self._selected = value
+        self.filelist.update_selection(self, value)
+        self.filelist.emit('selection-changed')
 
     @Gtk.Template.Callback()
     def remove_item(self, *args):
@@ -79,6 +96,12 @@ class EartagFileListItem(Gtk.Box):
         # TRANSLATORS: Placeholder for file sidebar items with no title set
         self.title_label.set_label(value or _('(No title)'))
 
+    def show_selection_button(self, *args):
+        self.cover_edit_stack.set_visible_child(self.select_button)
+
+    def hide_selection_button(self, *args):
+        self.cover_edit_stack.set_visible_child(self.coverart_image)
+
 class EartagFileList(Gtk.ListView):
     """List of opened tracks."""
     __gtype_name__ = 'EartagFileList'
@@ -88,8 +111,16 @@ class EartagFileList(Gtk.ListView):
         self.sidebar_factory = Gtk.SignalListItemFactory()
         self.sidebar_factory.connect('setup', self.setup)
         self.sidebar_factory.connect('bind', self.bind)
+        self.sidebar_factory.connect('unbind', self.bind)
         self.set_factory(self.sidebar_factory)
         self.add_css_class('navigation-sidebar')
+        self._children = []
+        self._selection_mode = False
+        self._ignore_unselect = False
+
+    @GObject.Signal
+    def selection_changed(self):
+        self.file_manager.emit('selection-changed')
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -108,8 +139,8 @@ class EartagFileList(Gtk.ListView):
         self.filter = Gtk.CustomFilter.new(self.filter_func, self.filter_model)
         self.filter_model.set_filter(self.filter)
 
-        self.selection_model = Gtk.MultiSelection(model=self.filter_model)
-        self.selection_model.connect('selection-changed', self.update_selection)
+        self.selection_model = Gtk.SingleSelection(model=self.filter_model)
+        self.selection_model.connect('selection-changed', self.update_selection_from_model)
 
         self.set_model(self.selection_model)
 
@@ -118,26 +149,21 @@ class EartagFileList(Gtk.ListView):
 
     def bind(self, factory, list_item):
         child = list_item.get_child()
+        self._children.append(child)
         file = list_item.get_item()
         child.bind_to_file(file)
 
-    def update_selection(self, selection_model, position, n_items):
-        """Updates the selected files."""
-        # TODO: use get_selection_in_range to improve potential performance.
-        # this is a rather naive implementation.
-        #selection = self.selection_model.get_selection_in_range(position, n_items)
-        selection = self.selection_model.get_selection()
+    def unbind(self, factory, list_item):
+        self._children.remove(list_item.get_child())
 
-        # Get list of selected items
-        selected_items = []
-        for i in range(selection.get_size()):
-            item_no = selection.get_nth(i)
-            selected_items.append(self.filter_model.get_item(item_no))
-
-        file_count = self.filter_model.get_n_items()
-        check_count = position
-
-        self.file_manager.selected_files = selected_items
+    def update_selection(self, listitem, checked):
+        """Updates the selected file list."""
+        if checked:
+            if listitem.file not in self.file_manager.selected_files:
+                self.file_manager.selected_files.append(listitem.file)
+        else:
+            if listitem.file in self.file_manager.selected_files:
+                self.file_manager.selected_files.remove(listitem.file)
 
     def handle_selection_override(self, *args):
         """
@@ -200,6 +226,88 @@ class EartagFileList(Gtk.ListView):
 
         return collate
 
+    def enable_selection_mode(self, *args):
+        self.selection_model.set_can_unselect(True)
+        for item in self._children:
+            item.show_selection_button()
+
+    def disable_selection_mode(self, *args):
+        selected_items = []
+        self.selection_model.set_can_unselect(False)
+        for item in self._children:
+            if item.selected:
+                selected_items.append(item)
+            item.hide_selection_button()
+
+        for item in selected_items:
+            if item != selected_items[0]:
+                item.selected = False
+            else:
+                for pos in range(0, self.filter_model.get_n_items()):
+                    _item = self.filter_model.get_item(pos)
+                    if _item == item:
+                        self.selection_model.select_item(pos)
+                        break
+
+    def select_all(self, *args):
+        for item in self._children:
+            item.selected = True
+
+    @GObject.Property(type=bool, default=False)
+    def selection_mode(self):
+        """Whether the sidebar is in selection mode or not."""
+        return self._selection_mode
+
+    @selection_mode.setter
+    def selection_mode(self, value):
+        self._selection_mode = value
+        if value:
+            self.enable_selection_mode()
+        else:
+            self.disable_selection_mode()
+
+    def update_selection_from_model(self, selection_model, position, n_items):
+        """Updates the selected files."""
+        if self._ignore_unselect:
+            return
+
+        unselected_file = None
+        selected_file = None
+        selected_file_pos = None
+
+        for pos in (position, position + n_items - 1):
+            if selection_model.is_selected(pos):
+                selected_file = self.filter_model.get_item(pos)
+                selected_file_pos = pos
+            else:
+                unselected_file = self.filter_model.get_item(pos)
+
+        if self.selection_mode:
+            if selected_file:
+                for item in self._children:
+                    if item.file == selected_file:
+                        item.selected = not item.selected
+                        break
+                self._ignore_unselect = True
+                self.selection_model.unselect_item(selected_file_pos)
+                self._ignore_unselect = False
+        else:
+            for item in self._children:
+                if unselected_file and item.file == unselected_file:
+                    unselected_item = item
+                if selected_file and item.file == selected_file:
+                    selected_item = item
+
+            # This is done outside of the loop, in this order, to prevent
+            # a visible switch to the "unselected" status page.
+            if selected_file:
+                selected_item.selected = True
+            if unselected_file:
+                unselected_item.selected = False
+
+            self.file_manager.selected_files = [selected_file]
+        self.emit('selection-changed')
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')
 class EartagSidebar(Gtk.Box):
     __gtype_name__ = 'EartagSidebar'
@@ -213,6 +321,11 @@ class EartagSidebar(Gtk.Box):
     search_entry = Gtk.Template.Child()
     no_results = Gtk.Template.Child()
 
+    action_bar = Gtk.Template.Child()
+    select_all_button = Gtk.Template.Child()
+    remove_selected_button = Gtk.Template.Child()
+    selected_message_label = Gtk.Template.Child()
+
     def __init__(self):
         super().__init__()
 
@@ -225,6 +338,11 @@ class EartagSidebar(Gtk.Box):
         self.file_list.set_file_manager(self.file_manager)
         self.list_stack.set_visible_child(self.no_files)
         self.file_list.set_sidebar(self)
+
+        self.file_manager.connect('files-loaded', self.refresh_actionbar_button_state)
+        self.file_manager.files.connect('items-changed', self.refresh_actionbar_button_state)
+        self.file_list.connect('selection-changed', self.refresh_actionbar_button_state)
+        self.refresh_actionbar_button_state()
 
     def toggle_fileview(self, *args):
         """
@@ -248,3 +366,42 @@ class EartagSidebar(Gtk.Box):
         # Scroll back to top of list
         vadjust = self.file_list.get_vadjustment()
         vadjust.set_value(vadjust.get_lower())
+
+    def toggle_selection_mode(self, *args):
+        self.file_list.toggle_selection_mode()
+
+    @Gtk.Template.Callback()
+    def select_all(self, *args):
+        self.file_list.select_all()
+
+    @Gtk.Template.Callback()
+    def remove_selected(self, *args):
+        for file in self.file_manager.selected_files:
+            self.file_manager.remove(file)
+
+    def refresh_actionbar_button_state(self, *args):
+        if not self.file_manager.files or not self.selection_mode:
+            selected_message = ''
+            self.action_bar.set_revealed(False)
+        else:
+            self.action_bar.set_revealed(True)
+            selected_file_count = len(self.file_manager.selected_files)
+            if selected_file_count == 0:
+                selected_message = _('No files selected')
+                self.remove_selected_button.set_sensitive(False)
+            else:
+                selected_message = gettext.ngettext(
+                    "{n} file selected", "{n} files selected", selected_file_count).\
+                        format(n=selected_file_count)
+                self.remove_selected_button.set_sensitive(True)
+
+        self.selected_message_label.set_label(selected_message)
+
+    @GObject.Property(type=bool, default=False)
+    def selection_mode(self):
+        """Whether the sidebar is in selection mode or not."""
+        return self.file_list.selection_mode
+
+    @selection_mode.setter
+    def selection_mode(self, value):
+        self.file_list.selection_mode = value

@@ -56,5 +56,33 @@
         </child>
       </object>
     </child>
+
+    <child>
+      <object class="GtkActionBar" id="action_bar">
+        <child type="start">
+          <object class="GtkButton" id="select_all_button">
+            <property name="icon-name">edit-select-all-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Select all files</property>
+            <signal name="clicked" handler="select_all"/>
+          </object>
+        </child>
+
+        <child type="center">
+          <object class="GtkLabel" id="selected_message_label">
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
+
+        <child type="end">
+          <object class="GtkButton" id="remove_selected_button">
+            <property name="icon-name">user-trash-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Remove selected files</property>
+            <signal name="clicked" handler="remove_selected"/>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>
