@@ -200,6 +200,7 @@ class EartagFileManager(GObject.Object):
                 self.selected_files.append(self.files.get_item(0))
             self.emit('selection-changed')
             self.emit('selection_override')
+        self.update_modified_status()
         return True
 
     def close_dialog(self, dialog, *args):

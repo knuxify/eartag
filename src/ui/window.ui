@@ -49,7 +49,7 @@
                     <child>
                       <object class="GtkLabel">
                         <!-- TRANSLATORS: Displayed when drag-and-dropping a music file onto the window -->
-                        <property name="label" translatable="yes">Drop a file to edit it</property>
+                        <property name="label" translatable="yes">Drop a file to add it to the opened file list</property>
                         <property name="wrap">true</property>
 
                         <style>
