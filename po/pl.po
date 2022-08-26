@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-08-26 17:25+0200\n"
-"PO-Revision-Date: 2022-08-09 00:38+0200\n"
+"PO-Revision-Date: 2022-08-26 17:32+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -34,7 +34,7 @@ msgstr "Mały i prosty edytor tagów plików muzyki"
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
-msgstr "muzyka;audio;tag;znacznik;znaczniki;tagi;tagowanie;metadane"
+msgstr "muzyka;audio;tag;znacznik;znaczniki;tagi;tagowanie;metadane;"
 
 #: data/app.drey.EarTag.appdata.xml.in:18
 msgid ""
@@ -66,9 +66,8 @@ msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
-#, fuzzy
 msgid "Drop a file to add it to the opened file list"
-msgstr "Upuść plik, aby go edytować"
+msgstr "Upuść plik, aby dodać go do listy otwartych plików"
 
 #: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 #: src/ui/removaldiscardwarning.ui:27
@@ -78,31 +77,31 @@ msgstr "Zapisz"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:103
 msgid "Sort files"
-msgstr ""
+msgstr "Sortuj pliki"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:112
 msgid "Close file list"
-msgstr ""
+msgstr "Zamknij listę plików"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:126
 msgid "Add file"
-msgstr ""
+msgstr "Dodaj plik"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:134
 msgid "Select multiple files"
-msgstr ""
+msgstr "Wybierz kilka plików"
 
 #: src/ui/window.ui:142
 msgid "Search"
-msgstr ""
+msgstr "Szukaj"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:167
 msgid "Show file list"
-msgstr ""
+msgstr "Pokaż listę plików"
 
 #: src/ui/window.ui:223
 msgid "_Open file"
@@ -146,11 +145,11 @@ msgstr "Komentarz"
 
 #: src/ui/fileview.ui:131
 msgid "Select a File"
-msgstr ""
+msgstr "Wybierz plik"
 
 #: src/ui/fileview.ui:132
 msgid "Select the files you want to edit from the list of opened files."
-msgstr ""
+msgstr "Wybierz plik, który chcesz edytować z listy otwartych plików."
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -181,58 +180,57 @@ msgstr "Porzuć zmiany i otwórz"
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
 msgid "File has unsaved changes"
-msgstr ""
+msgstr "Plik ma niezapisane zmiany"
 
 #. TRANSLATORS: Tooltip for button used to remove file from opened file list
 #: src/ui/filelistitem.ui:90
 msgid "Remove from list"
-msgstr ""
+msgstr "Usuń z listy"
 
 #: src/ui/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save changes before closing file?"
 msgstr "Zapisać zmiany przed zamknięciem?"
 
 #: src/ui/removaldiscardwarning.ui:10
-#, fuzzy
 msgid "Discard changes and close"
-msgstr "Porzuć zmiany i otwórz"
+msgstr "Porzuć zmiany i zamknij"
 
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
 "buttons below."
 msgstr ""
+"Aby edytować tagi pliku, przeciągnij i upuść plik na te okno lub użyj "
+"przycisków poniżej."
 
 #: src/ui/nofile.ui:58
-#, fuzzy
 msgid "Open a file"
-msgstr "_Otwórz plik"
+msgstr "Otwórz plik"
 
 #: src/ui/sidebar.ui:38
 msgid "No Files Opened"
-msgstr ""
+msgstr "Brak otwartych plików"
 
 #: src/ui/sidebar.ui:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Brak wyników"
 
 #: src/ui/sidebar.ui:50
 msgid "Try a different search query."
-msgstr ""
+msgstr "Spróbuj użyć innych słów kluczowych."
 
 #: src/ui/sidebar.ui:65
 msgid "Select all files"
-msgstr ""
+msgstr "Wybierz wszystkie pliki"
 
 #: src/ui/sidebar.ui:81
 msgid "Remove selected files"
-msgstr ""
+msgstr "Usuń wybrane pliki"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
 #: src/common.py:112
 msgid "(multiple values)"
-msgstr ""
+msgstr "(kilka wartości)"
 
 #: src/file.py:107
 msgid "Failed to load file"
@@ -268,14 +266,14 @@ msgstr "Wybierz obraz okładki albumu"
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{n} kanał"
+msgstr[1] "{n} kanały"
+msgstr[2] "{n} kanałów"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/fileview.py:410
 msgid "(Multiple files selected)"
-msgstr ""
+msgstr "(Kilka plików zaznaczone)"
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
 #: src/fileview.py:438
@@ -290,19 +288,19 @@ msgstr ""
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
-msgstr ""
+msgstr "(Brak tytułu)"
 
 #: src/sidebar.py:372
 msgid "No files selected"
-msgstr ""
+msgstr "Nie zaznaczono żadnych plików"
 
 #: src/sidebar.py:376
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Zaznaczono {n} plik"
+msgstr[1] "Zaznaczono {n} pliki"
+msgstr[2] "Zaznaczono {n} plików"
 
 #: src/window.py:209
 msgid "Open File"
@@ -311,4 +309,4 @@ msgstr "Otwórz plik"
 #. TRANSLATORS: Add your name/nickname here
 #: src/window.py:285 src/window.py:286
 msgid "translator-credits"
-msgstr ""
+msgstr "knuxify <knuxify@gmail.com>"
