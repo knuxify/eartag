@@ -122,10 +122,15 @@ class EartagAlbumCoverButton(Adw.Bin):
             for _file in self.files:
                 if _file.cover != our_cover:
                     covers_different = True
+                    if _file.supports_album_covers and _file.cover:
+                        self.cover_image.bind_to_file(_file)
                     self.cover_image.mark_as_empty()
                     break
             if not covers_different:
                 self.cover_image.mark_as_nonempty()
+                if self.files[0].supports_album_covers and self.files[0].cover:
+                    self.cover_image.bind_to_file(self.files[0])
+
         elif len(self.files) == 1:
             self.cover_image.bind_to_file(self.files[0])
             self.cover_image.on_cover_change()

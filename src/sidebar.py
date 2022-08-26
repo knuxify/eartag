@@ -183,7 +183,6 @@ class EartagFileList(Gtk.ListView):
         if not self.selection_mode:
             self.selection_model.select_item(0, True)
 
-
     def filter_func(self, file, *args):
         """Custom filter for file search."""
         query = self.sidebar.search_entry.get_text()

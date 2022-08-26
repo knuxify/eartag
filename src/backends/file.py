@@ -43,7 +43,10 @@ class EartagFileCover:
         if self.cover_path and other.cover_path:
             return filecmp.cmp(self.cover_path, other.cover_path)
         else:
-            return not other.cover_path
+            if self.cover_path == other.cover_path:
+                return True
+            else:
+                return False
 
 class EartagFile(GObject.Object):
     """
