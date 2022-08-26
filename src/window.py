@@ -195,7 +195,9 @@ class EartagWindow(Adw.ApplicationWindow):
         paths = []
         for file in files:
             paths.append(file.get_path())
+        self.open_mode = EartagFileManager.LOAD_INSERT
         self.open_files(paths)
+        self.open_mode = EartagFileManager.LOAD_OVERWRITE
         self.on_drag_unhover()
 
     def show_file_chooser(self):
