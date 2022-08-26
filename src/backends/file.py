@@ -40,7 +40,7 @@ class EartagFileCover:
     def __eq__(self, other):
         if not isinstance(other, EartagFileCover):
             return False
-        if self.cover_path:
+        if self.cover_path and other.cover_path:
             return filecmp.cmp(self.cover_path, other.cover_path)
         else:
             return not other.cover_path
@@ -66,6 +66,7 @@ class EartagFile(GObject.Object):
         self.notify('supports-album-covers')
         self.path = path
         self.update_writability()
+        self._cover_path = None
 
     def update_writability(self):
         """
