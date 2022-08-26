@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-11 11:06+0200\n"
+"POT-Creation-Date: 2022-08-26 17:25+0200\n"
 "PO-Revision-Date: 2022-08-08 13:41+0200\n"
 "Last-Translator: \n"
 "Language-Team: sheep <hi@sheepdev.xyz>\n"
@@ -68,58 +68,98 @@ msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
-msgid "Drop a file to edit it"
+#, fuzzy
+msgid "Drop a file to add it to the opened file list"
 msgstr "Ubacite datoteku kako bi ste je uredili"
 
-#: src/ui/window.ui:80 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/removaldiscardwarning.ui:27
 msgid "Save"
 msgstr "Spremi"
 
-#: src/ui/window.ui:135
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:103
+msgid "Sort files"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:112
+msgid "Close file list"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:126
+msgid "Add file"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:134
+msgid "Select multiple files"
+msgstr ""
+
+#: src/ui/window.ui:142
+msgid "Search"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:167
+msgid "Show file list"
+msgstr ""
+
+#: src/ui/window.ui:223
 msgid "_Open file"
 msgstr "_Otvori datoteku"
 
-#: src/ui/window.ui:139
+#: src/ui/window.ui:227
 msgid "_About Ear Tag"
 msgstr "_O Ear Tagu"
 
-#: src/ui/fileview.ui:34
+#: src/ui/fileview.ui:36
 msgid "Title"
 msgstr "Naslov"
 
-#: src/ui/fileview.ui:43
+#: src/ui/fileview.ui:45
 msgid "Artist"
 msgstr "Umjetnik"
 
-#: src/ui/fileview.ui:78
+#: src/ui/fileview.ui:81
 msgid "Track number"
 msgstr "Broj staze"
 
-#: src/ui/fileview.ui:88
+#: src/ui/fileview.ui:91
 msgid "Album"
 msgstr "Album"
 
-#: src/ui/fileview.ui:94
+#: src/ui/fileview.ui:97
 msgid "Album artist"
 msgstr "Izvođač albuma"
 
-#: src/ui/fileview.ui:100
+#: src/ui/fileview.ui:103
 msgid "Genre"
 msgstr "Žanr"
 
-#: src/ui/fileview.ui:106
+#: src/ui/fileview.ui:109
 msgid "Release year"
 msgstr "Godina izdanja"
 
-#: src/ui/fileview.ui:113
+#: src/ui/fileview.ui:116
 msgid "Comment"
 msgstr "Komentar"
+
+#: src/ui/fileview.ui:131
+msgid "Select a File"
+msgstr ""
+
+#: src/ui/fileview.ui:132
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
 msgstr "Spremiti promjene prije zatvaranja?"
 
 #: src/ui/closewarning.ui:6 src/ui/discardwarning.ui:6
+#: src/ui/removaldiscardwarning.ui:6
 msgid "If you don't save your changes, they will be permanently lost."
 msgstr "Ako ne spremite svoje promjene, one će biti trajno izgubljene."
 
@@ -128,6 +168,7 @@ msgid "Close without saving"
 msgstr "Zatvori bez spremanja"
 
 #: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
+#: src/ui/removaldiscardwarning.ui:20
 msgid "Cancel"
 msgstr "Otkaži"
 
@@ -139,49 +180,135 @@ msgstr "Spremi promjene prije otvaranja druge datoteke?"
 msgid "Discard changes and open"
 msgstr "Odbaci promjene i otvori"
 
-#: src/fileview.py:114
-msgid "Select Album Cover Image"
-msgstr "Odaberite sliku naslovnice albuma"
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:49
+msgid "File has unsaved changes"
+msgstr ""
 
-#: src/fileview.py:326
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:90
+msgid "Remove from list"
+msgstr ""
+
+#: src/ui/removaldiscardwarning.ui:5
+#, fuzzy
+msgid "Save changes before closing file?"
+msgstr "Spremiti promjene prije zatvaranja?"
+
+#: src/ui/removaldiscardwarning.ui:10
+#, fuzzy
+msgid "Discard changes and close"
+msgstr "Odbaci promjene i otvori"
+
+#: src/ui/nofile.ui:46
+msgid ""
+"To edit a file's tags, drag-and-drop the file onto this window or use the "
+"buttons below."
+msgstr ""
+
+#: src/ui/nofile.ui:58
+#, fuzzy
+msgid "Open a file"
+msgstr "_Otvori datoteku"
+
+#: src/ui/sidebar.ui:38
+msgid "No Files Opened"
+msgstr ""
+
+#: src/ui/sidebar.ui:49
+msgid "No Results Found"
+msgstr ""
+
+#: src/ui/sidebar.ui:50
+msgid "Try a different search query."
+msgstr ""
+
+#: src/ui/sidebar.ui:65
+msgid "Select all files"
+msgstr ""
+
+#: src/ui/sidebar.ui:81
+msgid "Remove selected files"
+msgstr ""
+
+#. TRANSLATORS: Placeholder displayed when multiple files with different values are created
+#: src/common.py:112
+msgid "(multiple values)"
+msgstr ""
+
+#: src/file.py:107
 msgid "Failed to load file"
 msgstr "Učitavanje datoteke nije uspjelo"
 
-#: src/fileview.py:327
+#: src/file.py:108
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 "Nije moguće učitati datoteku {f}. Više informacija potražite u logovima."
 
-#. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:345
-msgid "File is read-only, saving is disabled"
-msgstr "Datoteka je samo za čitanje, spremanje je onemogućeno"
-
-#: src/fileview.py:348
-msgid "Opened file is read-only; changes cannot be saved."
-msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
-
-#: src/fileview.py:421
+#: src/file.py:171
 msgid "Failed to save file"
 msgstr "Spremanje datoteke nije uspjelo"
 
-#: src/fileview.py:422
+#: src/file.py:172
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Nije moguće spremiti datoteku {f}. Više informacija potražite u logovima."
 
-#: src/fileview.py:429
+#: src/file.py:179
 msgid "Saved changes to file"
 msgstr "Promjene spremljene u datoteku"
 
-#: src/window.py:157
+#: src/fileview.py:145
+msgid "Select Album Cover Image"
+msgstr "Odaberite sliku naslovnice albuma"
+
+#: src/fileview.py:400
+#, python-brace-format
+msgid "{n} channel"
+msgid_plural "{n} channels"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/fileview.py:410
+msgid "(Multiple files selected)"
+msgstr ""
+
+#. TRANSLATORS: Tooltip text for save button when saving is disabled
+#: src/fileview.py:438
+msgid "File is read-only, saving is disabled"
+msgstr "Datoteka je samo za čitanje, spremanje je onemogućeno"
+
+#: src/fileview.py:441
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/sidebar.py:116
+msgid "(No title)"
+msgstr ""
+
+#: src/sidebar.py:372
+msgid "No files selected"
+msgstr ""
+
+#: src/sidebar.py:376
+#, python-brace-format
+msgid "{n} file selected"
+msgid_plural "{n} files selected"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/window.py:209
 msgid "Open File"
 msgstr "Otvori datoteku"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/window.py:218 src/window.py:219
+#: src/window.py:285 src/window.py:286
 msgid "translator-credits"
 msgstr ""
 

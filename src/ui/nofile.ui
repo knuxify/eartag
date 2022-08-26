@@ -43,7 +43,7 @@
 
                 <child>
                   <object class="GtkLabel" id="description">
-                    <property name="label">To edit a file's tags, drag-and-drop the file onto this window or use the buttons below.</property>
+                    <property name="label" translatable="yes">To edit a file's tags, drag-and-drop the file onto this window or use the buttons below.</property>
                     <property name="justify">center</property>
                     <property name="wrap">true</property>
 
@@ -55,7 +55,7 @@
 
                 <child>
                   <object class="GtkButton" id="open_file">
-                    <property name="label">Open a file</property>
+                    <property name="label" translatable="yes">Open a file</property>
                     <property name="halign">center</property>
                     <signal name="clicked" handler="on_add_file"/>
 

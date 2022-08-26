@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-11 11:06+0200\n"
+"POT-Creation-Date: 2022-08-26 17:25+0200\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -70,58 +70,98 @@ msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
-msgid "Drop a file to edit it"
+#, fuzzy
+msgid "Drop a file to add it to the opened file list"
 msgstr "Перетащите файл, чтобы отредактировать его"
 
-#: src/ui/window.ui:80 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/removaldiscardwarning.ui:27
 msgid "Save"
 msgstr "Сохранить"
 
-#: src/ui/window.ui:135
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:103
+msgid "Sort files"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:112
+msgid "Close file list"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:126
+msgid "Add file"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:134
+msgid "Select multiple files"
+msgstr ""
+
+#: src/ui/window.ui:142
+msgid "Search"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:167
+msgid "Show file list"
+msgstr ""
+
+#: src/ui/window.ui:223
 msgid "_Open file"
 msgstr "_Открыть файл"
 
-#: src/ui/window.ui:139
+#: src/ui/window.ui:227
 msgid "_About Ear Tag"
 msgstr "Об Ear Tag"
 
-#: src/ui/fileview.ui:34
+#: src/ui/fileview.ui:36
 msgid "Title"
 msgstr "Название"
 
-#: src/ui/fileview.ui:43
+#: src/ui/fileview.ui:45
 msgid "Artist"
 msgstr "Исполнитель"
 
-#: src/ui/fileview.ui:78
+#: src/ui/fileview.ui:81
 msgid "Track number"
 msgstr "Номер дорожки"
 
-#: src/ui/fileview.ui:88
+#: src/ui/fileview.ui:91
 msgid "Album"
 msgstr "Альбом"
 
-#: src/ui/fileview.ui:94
+#: src/ui/fileview.ui:97
 msgid "Album artist"
 msgstr "Исполнитель альбома"
 
-#: src/ui/fileview.ui:100
+#: src/ui/fileview.ui:103
 msgid "Genre"
 msgstr "Жанр"
 
-#: src/ui/fileview.ui:106
+#: src/ui/fileview.ui:109
 msgid "Release year"
 msgstr "Год выпуска"
 
-#: src/ui/fileview.ui:113
+#: src/ui/fileview.ui:116
 msgid "Comment"
 msgstr "Комментарий"
+
+#: src/ui/fileview.ui:131
+msgid "Select a File"
+msgstr ""
+
+#: src/ui/fileview.ui:132
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
 msgstr "Сохранить изменения перед закрытием?"
 
 #: src/ui/closewarning.ui:6 src/ui/discardwarning.ui:6
+#: src/ui/removaldiscardwarning.ui:6
 msgid "If you don't save your changes, they will be permanently lost."
 msgstr "Если вы не сохраните свои изменения, они будут безвозвратно утеряны."
 
@@ -130,6 +170,7 @@ msgid "Close without saving"
 msgstr "Закрыть без сохранения"
 
 #: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
+#: src/ui/removaldiscardwarning.ui:20
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -141,52 +182,138 @@ msgstr "Сохранить изменения перед открытием др
 msgid "Discard changes and open"
 msgstr "Отменить изменения и откройте"
 
-#: src/fileview.py:114
-msgid "Select Album Cover Image"
-msgstr "Выберите изображение обложки альбома"
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:49
+msgid "File has unsaved changes"
+msgstr ""
 
-#: src/fileview.py:326
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:90
+msgid "Remove from list"
+msgstr ""
+
+#: src/ui/removaldiscardwarning.ui:5
+#, fuzzy
+msgid "Save changes before closing file?"
+msgstr "Сохранить изменения перед закрытием?"
+
+#: src/ui/removaldiscardwarning.ui:10
+#, fuzzy
+msgid "Discard changes and close"
+msgstr "Отменить изменения и откройте"
+
+#: src/ui/nofile.ui:46
+msgid ""
+"To edit a file's tags, drag-and-drop the file onto this window or use the "
+"buttons below."
+msgstr ""
+
+#: src/ui/nofile.ui:58
+#, fuzzy
+msgid "Open a file"
+msgstr "_Открыть файл"
+
+#: src/ui/sidebar.ui:38
+msgid "No Files Opened"
+msgstr ""
+
+#: src/ui/sidebar.ui:49
+msgid "No Results Found"
+msgstr ""
+
+#: src/ui/sidebar.ui:50
+msgid "Try a different search query."
+msgstr ""
+
+#: src/ui/sidebar.ui:65
+msgid "Select all files"
+msgstr ""
+
+#: src/ui/sidebar.ui:81
+msgid "Remove selected files"
+msgstr ""
+
+#. TRANSLATORS: Placeholder displayed when multiple files with different values are created
+#: src/common.py:112
+msgid "(multiple values)"
+msgstr ""
+
+#: src/file.py:107
 msgid "Failed to load file"
 msgstr "Не удалось загрузить файл"
 
-#: src/fileview.py:327
+#: src/file.py:108
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 "Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной "
 "информации."
 
-#. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:345
-msgid "File is read-only, saving is disabled"
-msgstr "Файл доступен только для чтения, сохранение отключено"
-
-#: src/fileview.py:348
-msgid "Opened file is read-only; changes cannot be saved."
-msgstr ""
-"Открытый файл доступен только для чтения; изменения не могут быть сохранены."
-
-#: src/fileview.py:421
+#: src/file.py:171
 msgid "Failed to save file"
 msgstr "Не удалось сохранить файл"
 
-#: src/fileview.py:422
+#: src/file.py:172
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной "
 "информации."
 
-#: src/fileview.py:429
+#: src/file.py:179
 msgid "Saved changes to file"
 msgstr "Сохранить изменения в файл"
 
-#: src/window.py:157
+#: src/fileview.py:145
+msgid "Select Album Cover Image"
+msgstr "Выберите изображение обложки альбома"
+
+#: src/fileview.py:400
+#, python-brace-format
+msgid "{n} channel"
+msgid_plural "{n} channels"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/fileview.py:410
+msgid "(Multiple files selected)"
+msgstr ""
+
+#. TRANSLATORS: Tooltip text for save button when saving is disabled
+#: src/fileview.py:438
+msgid "File is read-only, saving is disabled"
+msgstr "Файл доступен только для чтения, сохранение отключено"
+
+#: src/fileview.py:441
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr ""
+"Открытый файл доступен только для чтения; изменения не могут быть сохранены."
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/sidebar.py:116
+msgid "(No title)"
+msgstr ""
+
+#: src/sidebar.py:372
+msgid "No files selected"
+msgstr ""
+
+#: src/sidebar.py:376
+#, python-brace-format
+msgid "{n} file selected"
+msgid_plural "{n} files selected"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: src/window.py:209
 msgid "Open File"
 msgstr "Открыть файл"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/window.py:218 src/window.py:219
+#: src/window.py:285 src/window.py:286
 msgid "translator-credits"
 msgstr ""
 
