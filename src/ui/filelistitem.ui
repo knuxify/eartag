@@ -3,7 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <template class="EartagFileListItem" parent="GtkBox">
     <property name="hexpand">true</property>
-    <property name="spacing">6</property>
+    <property name="spacing">12</property>
     <style>
       <class name="filelist-item"/>
     </style>
