@@ -174,20 +174,15 @@ class EartagFileList(Gtk.ListView):
 
     def handle_selection_override(self, *args):
         """
-        When a file is loaded and the selected files list is empty,
-        the first loaded file is automatically added by the file manager
-        to the list of selected files.
+        When files are loaded for the first time, the selection is empty;
+        we need to set the selection here since we only keep the information
+        about the display order in the filter list.
 
-        Since the sidebar doesn't always listen to selection events
-        (we're the primary generator of those, see function above, so
-        capturing them would cause infinite loops and other problems),
-        it provides a secondary event, named "selection-override", which
-        is used to signify a selection event from outside the sidebar.
+        The file manager emits selection-override when this is needed.
         """
-        if self.file_manager.selected_files and not self.selection_mode:
-            for item_no in range(0, self.filter_model.get_n_items() - 1):
-                if self.filter_model.get_item(item_no) in self.file_manager.selected_files:
-                    self.selection_model.select_item(item_no, True)
+        if not self.selection_mode:
+            self.selection_model.select_item(0, True)
+
 
     def filter_func(self, file, *args):
         """Custom filter for file search."""

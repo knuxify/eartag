@@ -116,12 +116,11 @@ class EartagFileManager(GObject.Object):
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
             self.file_paths = []
-            self.selected_files = [_file]
+            self.selected_files = []
             _selection_override = True
-            self.emit('selection_override')
 
         if not self.selected_files:
-            self.selected_files = [_file]
+            self.selected_files = []
             _selection_override = True
 
         self.files.append(_file)
@@ -131,8 +130,8 @@ class EartagFileManager(GObject.Object):
             self.emit('files_loaded')
             self.update_modified_status()
 
-        if _selection_override:
-            self.emit('selection_override')
+            if _selection_override:
+                self.emit('selection_override')
 
         return True
 
@@ -151,6 +150,8 @@ class EartagFileManager(GObject.Object):
 
         self.emit('files_loaded')
         self.update_modified_status()
+        if mode == self.LOAD_OVERWRITE:
+            self.emit('selection_override')
 
     def save(self):
         """Saves changes in all files."""
