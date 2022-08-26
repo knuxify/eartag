@@ -223,6 +223,9 @@ class EartagFileManager(GObject.Object):
         self._selected_files = value
         self.emit('selection_changed')
 
+    def select_all(self, *args):
+        self.selected_files = list(self.files)
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/removaldiscardwarning.ui')
 class EartagRemovalDiscardWarningDialog(Gtk.MessageDialog):
     __gtype_name__ = 'EartagRemovalDiscardWarningDialog'

@@ -52,6 +52,7 @@ class EartagFileListItem(Gtk.Box):
             self.show_selection_button()
         self.file_manager = filelist.file_manager
         self.file_manager.connect('selection-changed', self.handle_selection_change)
+        self.filelist.connect('notify::selection-mode', self.toggle_selection_mode)
         self.connect('destroy', self.on_destroy)
         self.bindings = []
 
@@ -70,6 +71,7 @@ class EartagFileListItem(Gtk.Box):
             'visible', GObject.BindingFlags.SYNC_CREATE))
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
+        self.handle_selection_change()
 
     def on_destroy(self, *args):
         if self.bindings:
@@ -119,6 +121,12 @@ class EartagFileListItem(Gtk.Box):
     def hide_selection_button(self, *args):
         self.cover_edit_stack.set_visible_child(self.coverart_image)
 
+    def toggle_selection_mode(self, *args):
+        if self.filelist.selection_mode:
+            self.show_selection_button()
+        else:
+            self.hide_selection_button()
+
 class EartagFileList(Gtk.ListView):
     """List of opened tracks."""
     __gtype_name__ = 'EartagFileList'
@@ -131,7 +139,6 @@ class EartagFileList(Gtk.ListView):
         self.sidebar_factory.connect('unbind', self.bind)
         self.set_factory(self.sidebar_factory)
         self.add_css_class('navigation-sidebar')
-        self._children = []
         self._selection_mode = False
         self._ignore_unselect = False
 
@@ -162,12 +169,8 @@ class EartagFileList(Gtk.ListView):
 
     def bind(self, factory, list_item):
         child = list_item.get_child()
-        self._children.append(child)
         file = list_item.get_item()
         child.bind_to_file(file)
-
-    def unbind(self, factory, list_item):
-        self._children.remove(list_item.get_child())
 
     def handle_selection_override(self, *args):
         """
@@ -230,9 +233,9 @@ class EartagFileList(Gtk.ListView):
 
     def enable_selection_mode(self, *args):
         self.selection_model.set_can_unselect(True)
+        self._ignore_unselect = True
         self.selection_model.unselect_item(self.selection_model.get_selected())
-        for item in self._children:
-            item.show_selection_button()
+        self._ignore_unselect = False
 
     def disable_selection_mode(self, *args):
         if self.file_manager.selected_files:
@@ -246,14 +249,10 @@ class EartagFileList(Gtk.ListView):
                     self.selection_model.select_item(item_no, True)
                     break
 
-        for item in self._children:
-            item.hide_selection_button()
-
         self.selection_model.set_can_unselect(False)
 
     def select_all(self, *args):
-        for item in self._children:
-            item.selected = True
+        self.file_manager.select_all()
 
     @GObject.Property(type=bool, default=False)
     def selection_mode(self):
@@ -286,27 +285,14 @@ class EartagFileList(Gtk.ListView):
 
         if self.selection_mode:
             if selected_file:
-                for item in self._children:
-                    if item.file == selected_file:
-                        item.selected = not item.selected
-                        break
                 self._ignore_unselect = True
                 self.selection_model.unselect_item(selected_file_pos)
                 self._ignore_unselect = False
+                if selected_file not in self.file_manager.selected_files:
+                    self.file_manager.selected_files.append(selected_file)
+                else:
+                    self.file_manager.selected_files.remove(selected_file)
         else:
-            for item in self._children:
-                if unselected_file and item.file == unselected_file:
-                    unselected_item = item
-                if selected_file and item.file == selected_file:
-                    selected_item = item
-
-            # This is done outside of the loop, in this order, to prevent
-            # a visible switch to the "unselected" status page.
-            if selected_file:
-                selected_item.selected = True
-            if unselected_file:
-                unselected_item.selected = False
-
             self.file_manager.selected_files = [selected_file]
         self.file_manager.emit('selection-changed')
 
