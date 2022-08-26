@@ -2,7 +2,7 @@
 
 Small and simple music tag editor that doesn't try to manage your entire library
 
-![Screenshot](screenshot-2.png)
+![Screenshot](screenshot.png)
 
 ## Why?
 
@@ -58,10 +58,6 @@ Project development happens on [GitHub](https://github.com/knuxify/eartag). For 
 
 ## TODO
 
-While Ear Tag is ready to use as-is, there are a few nice features that may be added in the near future:
-
- - [ ] Support for fetching data from Musicbrainz
- - [ ] The ability to open and edit multiple files at once
- - [ ] Warnings for malformed tags
+While Ear Tag is ready to use as-is, there are a few nice features that may be added in the near future. You can find them in our [bug tracker](https://github.com/knuxify/eartag/issues?q=is%3Aissue+is%3Aopen+label%3A%22feature+request%22).
 
 The project's fully open-source, so if you feel like you could try to implement one of these features, feel free to do so and send a patch to us!
