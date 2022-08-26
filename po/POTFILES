@@ -5,7 +5,11 @@ src/ui/window.ui
 src/ui/fileview.ui
 src/ui/closewarning.ui
 src/ui/discardwarning.ui
+src/ui/filelistitem.ui
+src/ui/removaldiscardwarning.ui
 src/ui/nofile.ui
+src/ui/sidebar.ui
 src/main.py
 src/fileview.py
+src/sidebar.py
 src/window.py

@@ -2,7 +2,7 @@
 
 Small and simple music tag editor that doesn't try to manage your entire library
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot-2.png)
 
 ## Why?
 

@@ -174,13 +174,13 @@ class EartagFileMutagenVorbis(EartagFile):
         self.mg_file.tags['artist'] = value
         self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property(type=int)
     def tracknumber(self):
         if 'TRACKNUMBER' in self.mg_file.tags:
             if '/' in self.mg_file.tags['TRACKNUMBER'][0]:
-                return self.mg_file.tags['TRACKNUMBER'][0].split('/')[0]
-            return self.mg_file.tags['TRACKNUMBER'][0]
-        return ''
+                return int(self.mg_file.tags['TRACKNUMBER'][0].split('/')[0])
+            return int(self.mg_file.tags['TRACKNUMBER'][0])
+        return None
 
     @tracknumber.setter
     def tracknumber(self, value):
@@ -192,12 +192,12 @@ class EartagFileMutagenVorbis(EartagFile):
             self.mg_file.tags['TRACKNUMBER'] = [str(value)]
         self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property(type=int)
     def totaltracknumber(self):
         if 'TRACKNUMBER' in self.mg_file.tags:
             if '/' in self.mg_file.tags['TRACKNUMBER'][0]:
-                return self.mg_file.tags['TRACKNUMBER'][0].split('/')[1]
-        return ''
+                return int(self.mg_file.tags['TRACKNUMBER'][0].split('/')[1])
+        return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
@@ -236,7 +236,7 @@ class EartagFileMutagenVorbis(EartagFile):
         self.mg_file.tags['genre'] = value
         self.mark_as_modified()
 
-    @GObject.Property
+    @GObject.Property(type=int)
     def releaseyear(self):
         return self._get_tag('date')
 

@@ -43,6 +43,7 @@ class EartagFileEyed3(EartagFile):
     _cover_path = None
     e3_file = None
     _supports_album_covers = True
+    coverart_tempfile = None
 
     def __init__(self, path):
         super().__init__(path)
@@ -163,22 +164,22 @@ class EartagFileEyed3(EartagFile):
             self.e3_file.tag.artist = value
             self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property(type=int)
     def tracknumber(self):
         if self.e3_file.tag.track_num:
-            return str(self.e3_file.tag.track_num[0])
-        return ''
+            return int(self.e3_file.tag.track_num[0] or -1)
+        return None
 
     @tracknumber.setter
     def tracknumber(self, value):
         self.e3_file.tag.track_num = (value, self.e3_file.tag.track_num[1])
         self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property(type=int)
     def totaltracknumber(self):
         if self.e3_file.tag.track_num:
-            return str(self.e3_file.tag.track_num[1])
-        return ''
+            return int(self.e3_file.tag.track_num[1] or -1)
+        return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
@@ -210,19 +211,19 @@ class EartagFileEyed3(EartagFile):
     @GObject.Property(type=str)
     def genre(self):
         if self.e3_file.tag.genre:
-            return self.e3_file.tag.genre
+            return self.e3_file.tag.genre.name
         return ''
 
     @genre.setter
     def genre(self, value):
-        self.e3_file.tag.genre = value
+        self.e3_file.tag.genre = eyed3.id3.Genre(name=value, id=None)
         self.mark_as_modified()
 
-    @GObject.Property(type=str)
+    @GObject.Property(type=int)
     def releaseyear(self):
         if self.e3_file.tag.release_date:
-            return self.e3_file.tag.release_date
-        return ''
+            return self.e3_file.tag.release_date.year
+        return None
 
     @releaseyear.setter
     def releaseyear(self, value):

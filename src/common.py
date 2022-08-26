@@ -69,7 +69,91 @@ def is_valid_image_file(path):
         return False
     return True
 
-class EartagEditableLabel(Gtk.EditableLabel):
+class EartagMultipleValueEntry:
+    """
+    A set of common functions used by entries that can have multiple values.
+
+    Usage instructions:
+      - Inherit from this class in the desired object.
+      - Set the properties list to contain the property the entry is bound to.
+      - Connect the on_changed signal to your entry's change.
+    """
+    def refresh_multiple_values(self, file=None):
+        if not file:
+            try:
+                file = self.files[0]
+            except IndexError:
+                return False
+
+        self._setup_entry(self.value_entry, file, False)
+        if self._is_double:
+            self._setup_entry(self.value_entry_double, file, True)
+
+    def _multiple_values_check(self, checked_file, property):
+        """
+        Used internally in bind_to_property to figure out if there are
+        multiple values for a property.
+
+        Returns True if there are multiple values, False otherwise.
+        """
+        value = checked_file.get_property(property)
+        for _file in self.files:
+            if _file == checked_file:
+                continue
+
+            if _file.get_property(property) != value:
+                return True
+        return False
+
+    def _setup_entry(self, entry, file, is_double):
+        has_multiple_files = len(self.files) > 1
+
+        # TRANSLATORS: Placeholder displayed when multiple files with different values are created
+        _multiple_values =_('(multiple values)')
+
+        property = (is_double and self.properties[1]) or self.properties[0]
+        if has_multiple_files and self._multiple_values_check(file, property):
+            entry.set_placeholder_text(_multiple_values)
+            self.ignore_edit[property] = True
+            entry.set_text('')
+            self.ignore_edit[property] = False
+        else:
+            self.ignore_edit[property] = True
+            entry.set_text(str(file.get_property(property)) or '')
+            self.ignore_edit[property] = False
+            entry.set_placeholder_text('')
+
+    def bind_to_file(self, file):
+        if file in self.files:
+            return
+        self.files.append(file)
+        self.refresh_multiple_values(file)
+
+    def unbind_from_file(self, file):
+        if file not in self.files:
+            return
+        self.files.remove(file)
+        self.refresh_multiple_values()
+
+    def on_changed(self, entry, is_double=False):
+        property = (is_double and self.properties[1]) or self.properties[0]
+        if property in self.ignore_edit and not self.ignore_edit[property]:
+            value = entry.get_text()
+            if self._is_numeric:
+                try:
+                    value = int(value)
+                except ValueError:
+                    value = -1
+            for file in self.files:
+                if file.get_property(property) != value:
+                    if self._is_numeric and not value:
+                        continue
+                        #file.set_property(property, -1)
+                    file.set_property(property, value)
+        else:
+            return False
+
+class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
     """
     Editable labels are missing a few nice features that we need
     (namely proper centering and word wrapping), but since they're
@@ -77,6 +161,9 @@ class EartagEditableLabel(Gtk.EditableLabel):
     them to suit our needs. This class automates the process.
     """
     __gtype_name__ = 'EartagEditableLabel'
+
+    _is_numeric = False
+    _is_double = False
 
     _placeholder = ''
 
@@ -107,9 +194,18 @@ class EartagEditableLabel(Gtk.EditableLabel):
         self.connect('notify::editing', self.display_placeholder)
         self.connect('notify::text', self.display_placeholder)
 
+        # Setup necessary for EartagMultipleValueEntry
+        self.value_entry = self
+        self.connect('changed', self.on_changed)
+        self._original_placeholder = None
+
         self.label = label
         self.editable = editable
         self.display_placeholder()
+
+        self.files = []
+        self.properties = []
+        self.ignore_edit = {}
 
     def display_placeholder(self, *args):
         """Displays/hides placeholder in non-editing mode as needed."""
@@ -126,4 +222,91 @@ class EartagEditableLabel(Gtk.EditableLabel):
 
     @placeholder.setter
     def placeholder(self, value):
+        if not self._original_placeholder:
+            self._original_placeholder = value
         self._placeholder = value
+
+    # Implemented for EartagMultipleValueEntry
+    def set_placeholder_text(self, value):
+        if value:
+            self.set_property('placeholder', value)
+        else:
+            self.set_property('placeholder', self._original_placeholder)
+        self.display_placeholder()
+
+    def _setup_entry(self, entry, file, is_double):
+        EartagMultipleValueEntry._setup_entry(self, entry, file, is_double)
+        self.display_placeholder()
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverimage.ui')
+class EartagAlbumCoverImage(Gtk.Stack):
+    __gtype_name__ = 'EartagAlbumCoverImage'
+
+    no_cover = Gtk.Template.Child()
+    cover_image = Gtk.Template.Child()
+
+    file = None
+    image_file_binding = None
+
+    def __init__(self):
+        super().__init__()
+        self.connect('destroy', self.on_destroy)
+
+    def on_destroy(self, *args):
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.file = None
+
+    def bind_to_file(self, file):
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.image_file_binding = None
+
+        self.file = file
+
+        if file.supports_album_covers:
+            self.image_file_binding = self.file.bind_property(
+                    'cover_path', self.cover_image, 'file',
+                    GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            )
+            self.on_cover_change()
+            self.file.connect('notify::cover_path', self.on_cover_change)
+        else:
+            self.cover_image.set_from_file(None)
+            self.on_cover_change()
+
+    def unbind_from_file(self, file=None):
+        if not self.file or (file and file != self.file):
+            return False
+        if self.image_file_binding:
+            self.image_file_binding.unbind()
+        self.image_file_binding = None
+        self.file = None
+
+    def mark_as_empty(self):
+        """In some cases, we need to force the cover to be shown as empty."""
+        self.set_visible_child(self.no_cover)
+
+    def mark_as_nonempty(self):
+        self.on_cover_change()
+
+    def on_cover_change(self, *args):
+        if self.file.cover_path and os.path.exists(self.file.cover_path):
+            self.set_visible_child(self.cover_image)
+        else:
+            self.set_visible_child(self.no_cover)
+
+    @GObject.Property(type=int, default=196)
+    def pixel_size(self):
+        return self.cover_image.get_pixel_size()
+
+    @pixel_size.setter
+    def pixel_size(self, value):
+        self.cover_image.set_pixel_size(value)
+        if value < 100:
+            if value > 36:
+                self.no_cover.set_pixel_size(32)
+            else:
+                self.no_cover.set_pixel_size(value - 4)
+        else:
+            self.no_cover.set_pixel_size(96)

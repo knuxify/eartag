@@ -42,3 +42,18 @@
 	background-color: rgba(56, 56, 56, 0.5);
 	color: #fff;
 }
+
+.sidebar {
+	border-left: @border;
+}
+
+.filelist-item {
+	padding: 6px 0;
+}
+
+.filelist-item .cover-image {
+	background-color: rgba(56, 56, 56, 0.5);
+	border-radius: 6px;
+}
+
+.filelist-item * { border-radius: 6px; }

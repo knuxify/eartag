@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagRemovalDiscardWarningDialog" parent="GtkMessageDialog">
+    <property name="text" translatable="yes">Save changes before closing file?</property>
+    <property name="secondary-text" translatable="yes">If you don't save your changes, they will be permanently lost.</property>
+
+    <child type="action">
+      <object class="GtkButton" id="button_discard">
+        <property name="label" translatable="yes">Discard changes and close</property>
+        <signal name="clicked" handler="on_rdbutton_discard"/>
+        <style>
+          <class name="destructive-action"/>
+        </style>
+      </object>
+    </child>
+
+    <child type="action">
+      <object class="GtkButton" id="button_cancel">
+        <property name="label" translatable="yes">Cancel</property>
+        <signal name="clicked" handler="on_rdbutton_cancel"/>
+      </object>
+    </child>
+
+    <child type="action">
+      <object class="GtkButton" id="button_save">
+        <property name="label" translatable="yes">Save</property>
+        <signal name="clicked" handler="on_rdbutton_save"/>
+      </object>
+    </child>
+  </template>
+</interface>
