@@ -80,6 +80,7 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def bind_to_file(self, file):
         self.files.append(file)
+
         if len(self.files) < 2:
             if not file.supports_album_covers:
                 self.set_visible(False)
@@ -87,6 +88,7 @@ class EartagAlbumCoverButton(Adw.Bin):
             else:
                 self.set_visible(True)
             self.cover_image.bind_to_file(file)
+            self.cover_image.mark_as_nonempty()
         else:
             covers_different = False
             our_cover = file.cover
@@ -106,12 +108,27 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def unbind_from_file(self, file):
         self.files.remove(file)
-        for file in self.files:
-            if not file.supports_album_covers:
+
+        for _file in self.files:
+            if not _file.supports_album_covers:
                 self.set_visible(False)
                 break
             else:
                 self.set_visible(True)
+
+        if len(self.files) > 1:
+            covers_different = False
+            our_cover = self.files[0].cover
+            for _file in self.files:
+                if _file.cover != our_cover:
+                    covers_different = True
+                    self.cover_image.mark_as_empty()
+                    break
+            if not covers_different:
+                self.cover_image.mark_as_nonempty()
+        elif len(self.files) == 1:
+            self.cover_image.bind_to_file(self.files[0])
+            self.cover_image.on_cover_change()
 
     def on_destroy(self, *args):
         self.files = None
