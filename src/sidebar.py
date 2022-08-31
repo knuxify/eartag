@@ -182,7 +182,7 @@ class EartagFileList(Gtk.ListView):
         """
         if not self.selection_mode:
             self.selection_model.select_item(0, True)
-            if len(self.file_manager.selected_files) == 0:
+            if len(self.file_manager.selected_files) == 0 and self.file_manager.files:
                 self.update_selection_from_model(self.selection_model, 0, 1)
 
     def filter_func(self, file, *args):
