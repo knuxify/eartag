@@ -145,7 +145,6 @@ class EartagWindow(Adw.ApplicationWindow):
 
         if paths:
             self.file_manager.load_multiple_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
-            self.sidebar_stack.set_visible_child(self.sidebar_scroll)
 
         self.connect('close-request', self.on_close_request)
 
