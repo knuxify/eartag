@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-26 17:25+0200\n"
+"POT-Creation-Date: 2022-09-03 13:49+0200\n"
 "PO-Revision-Date: 2022-08-08 13:41+0200\n"
 "Last-Translator: \n"
 "Language-Team: sheep <hi@sheepdev.xyz>\n"
@@ -291,11 +291,11 @@ msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
 msgid "(No title)"
 msgstr ""
 
-#: src/sidebar.py:372
+#: src/sidebar.py:374
 msgid "No files selected"
 msgstr ""
 
-#: src/sidebar.py:376
+#: src/sidebar.py:378
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
@@ -303,14 +303,19 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/window.py:209
+#: src/window.py:208
 msgid "Open File"
 msgstr "Otvori datoteku"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/window.py:285 src/window.py:286
+#: src/window.py:284 src/window.py:285
 msgid "translator-credits"
 msgstr ""
+
+#: src/ui/albumcoverbutton.ui:73
+#, fuzzy
+msgid "Album cover"
+msgstr "Album"
 
 #~ msgid "/"
 #~ msgstr "/"

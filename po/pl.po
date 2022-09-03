@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-26 17:25+0200\n"
+"POT-Creation-Date: 2022-09-03 13:49+0200\n"
 "PO-Revision-Date: 2022-08-26 17:32+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
@@ -290,11 +290,11 @@ msgstr ""
 msgid "(No title)"
 msgstr "(Brak tytułu)"
 
-#: src/sidebar.py:372
+#: src/sidebar.py:374
 msgid "No files selected"
 msgstr "Nie zaznaczono żadnych plików"
 
-#: src/sidebar.py:376
+#: src/sidebar.py:378
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
@@ -302,11 +302,16 @@ msgstr[0] "Zaznaczono {n} plik"
 msgstr[1] "Zaznaczono {n} pliki"
 msgstr[2] "Zaznaczono {n} plików"
 
-#: src/window.py:209
+#: src/window.py:208
 msgid "Open File"
 msgstr "Otwórz plik"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/window.py:285 src/window.py:286
+#: src/window.py:284 src/window.py:285
 msgid "translator-credits"
 msgstr "knuxify <knuxify@gmail.com>"
+
+#: src/ui/albumcoverbutton.ui:73
+#, fuzzy
+msgid "Album cover"
+msgstr "Album"

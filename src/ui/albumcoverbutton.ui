@@ -70,7 +70,7 @@
 
         <child>
           <object class="GtkButton" id="button">
-            <property name="tooltip-text">Album cover</property>
+            <property name="tooltip-text" translatable="yes">Album cover</property>
             <signal name="clicked" handler="show_cover_file_chooser"/>
 
             <child>
