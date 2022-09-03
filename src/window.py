@@ -31,7 +31,7 @@ from .fileview import EartagFileView
 from .file import EartagFileManager
 from .sidebar import EartagSidebar
 
-from gi.repository import Adw, Gdk, Gio, Gtk, GObject
+from gi.repository import Adw, Gdk, GLib, Gio, Gtk, GObject
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Gtk.MessageDialog):
@@ -173,7 +173,12 @@ class EartagWindow(Adw.ApplicationWindow):
         return True
 
     def verify_files_valid(self, drop, task, *args):
-        files = drop.read_value_finish(task).get_files()
+        try:
+            files = drop.read_value_finish(task).get_files()
+        except GLib.GError:
+            self.drop_target.reject()
+            self.on_drag_unhover()
+            return False
         for file in files:
             path = file.get_path()
             if not is_valid_music_file(path):
