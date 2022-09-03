@@ -74,8 +74,7 @@
                     <property name="width-request">300</property>
 
                     <style>
-                      <class name="view"/>
-                      <class name="sidebar"/>
+                      <class name="background"/>
                     </style>
 
                     <child>
@@ -151,6 +150,10 @@
                       <object class="EartagSidebar" id="sidebar"/>
                     </child>
                   </object>
+                </child>
+
+                <child type="separator">
+                  <object class="GtkSeparator"/>
                 </child>
 
                 <child type="content">
