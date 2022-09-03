@@ -277,7 +277,7 @@ class AboutDialog(Gtk.AboutDialog):
     def __init__(self, parent):
         Gtk.AboutDialog.__init__(self)
         self.props.program_name = 'Ear Tag'
-        self.props.version = "0.1.1"
+        self.props.version = "0.2.0"
         self.props.authors = ['knuxify']
         self.props.artists = ['Igor Dyatlov']
         # TRANSLATORS: Add your name/nickname here
