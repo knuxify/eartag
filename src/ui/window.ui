@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="EartagWindow" parent="AdwApplicationWindow">
-    <property name="default-width">400</property>
+    <property name="default-width">900</property>
     <property name="default-height">700</property>
     <child>
       <object class="GtkOverlay" id="overlay">
