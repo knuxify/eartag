@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-03 13:49+0200\n"
-"PO-Revision-Date: 2022-08-26 17:32+0200\n"
+"PO-Revision-Date: 2022-09-03 13:53+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -288,7 +288,7 @@ msgstr ""
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
-msgstr "(Brak tytułu)"
+msgstr "(Bez tytułu)"
 
 #: src/sidebar.py:374
 msgid "No files selected"
@@ -312,6 +312,5 @@ msgid "translator-credits"
 msgstr "knuxify <knuxify@gmail.com>"
 
 #: src/ui/albumcoverbutton.ui:73
-#, fuzzy
 msgid "Album cover"
-msgstr "Album"
+msgstr "Okładka albumu"
