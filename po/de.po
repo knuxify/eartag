@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-03 13:49+0200\n"
-"PO-Revision-Date: 2022-08-13 16:52+0200\n"
+"PO-Revision-Date: 2022-09-04 10:46+0200\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -66,9 +66,9 @@ msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
-#, fuzzy
 msgid "Drop a file to add it to the opened file list"
-msgstr "Legen Sie eine Datei ab, um sie zu bearbeiten"
+msgstr ""
+"Legen Sie eine Datei ab, um sie zur Liste der geöffneten Dateien hinzuzufügen"
 
 #: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 #: src/ui/removaldiscardwarning.ui:27
@@ -78,31 +78,31 @@ msgstr "Speichern"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:103
 msgid "Sort files"
-msgstr ""
+msgstr "Dateien sortieren"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:112
 msgid "Close file list"
-msgstr ""
+msgstr "Dateiliste schließen"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:126
 msgid "Add file"
-msgstr ""
+msgstr "Datei hinzufügen"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:134
 msgid "Select multiple files"
-msgstr ""
+msgstr "Mehrere Dateien auswählen"
 
 #: src/ui/window.ui:142
 msgid "Search"
-msgstr ""
+msgstr "Suchen"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:167
 msgid "Show file list"
-msgstr ""
+msgstr "Dateiliste anzeigen"
 
 #: src/ui/window.ui:223
 msgid "_Open file"
@@ -146,11 +146,13 @@ msgstr "Kommentar"
 
 #: src/ui/fileview.ui:131
 msgid "Select a File"
-msgstr ""
+msgstr "Eine Datei auswählen"
 
 #: src/ui/fileview.ui:132
 msgid "Select the files you want to edit from the list of opened files."
 msgstr ""
+"Wählen Sie die Dateien, die Sie bearbeiten wollen, aus der Liste der "
+"geöffneten Dateien aus."
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -160,7 +162,7 @@ msgstr "Änderungen speichern vor dem Schließen?"
 #: src/ui/removaldiscardwarning.ui:6
 msgid "If you don't save your changes, they will be permanently lost."
 msgstr ""
-"Wenn Sie Ihre Änderungen nicht speichern, werden sie dauerhaft verloren sein."
+"Wenn Sie Ihre Änderungen nicht speichern, gehen sie unwiderruflich verloren."
 
 #: src/ui/closewarning.ui:10
 msgid "Close without saving"
@@ -182,58 +184,57 @@ msgstr "Änderungen verwerfen und öffnen"
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
 msgid "File has unsaved changes"
-msgstr ""
+msgstr "Datei hat ungespeicherte Änderungen"
 
 #. TRANSLATORS: Tooltip for button used to remove file from opened file list
 #: src/ui/filelistitem.ui:90
 msgid "Remove from list"
-msgstr ""
+msgstr "Aus Liste entfernen"
 
 #: src/ui/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save changes before closing file?"
-msgstr "Änderungen speichern vor dem Schließen?"
+msgstr "Änderungen speichern vor dem Schließen der Datei?"
 
 #: src/ui/removaldiscardwarning.ui:10
-#, fuzzy
 msgid "Discard changes and close"
-msgstr "Änderungen verwerfen und öffnen"
+msgstr "Änderungen verwerfen und schließen"
 
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
 "buttons below."
 msgstr ""
+"Um die Tags einer Datei zu bearbeiten, ziehen Sie die Datei auf dieses "
+"Fenster und legen sie ab, oder verwenden Sie die Knöpfe unten."
 
 #: src/ui/nofile.ui:58
-#, fuzzy
 msgid "Open a file"
-msgstr "_Datei öffnen"
+msgstr "Eine Datei öffnen"
 
 #: src/ui/sidebar.ui:38
 msgid "No Files Opened"
-msgstr ""
+msgstr "Keine Dateien geöffnet"
 
 #: src/ui/sidebar.ui:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Keine Ergebnisse gefunden"
 
 #: src/ui/sidebar.ui:50
 msgid "Try a different search query."
-msgstr ""
+msgstr "Probieren Sie es mit einer anderen Suchanfrage."
 
 #: src/ui/sidebar.ui:65
 msgid "Select all files"
-msgstr ""
+msgstr "Alle Dateien auswählen"
 
 #: src/ui/sidebar.ui:81
 msgid "Remove selected files"
-msgstr ""
+msgstr "Ausgewählte Dateien entfernen"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
 #: src/common.py:112
 msgid "(multiple values)"
-msgstr ""
+msgstr "(Mehrere Werte)"
 
 #: src/file.py:107
 msgid "Failed to load file"
@@ -269,18 +270,18 @@ msgstr "Albumbild auswählen"
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} Kanal"
+msgstr[1] "{n} Kanäle"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/fileview.py:410
 msgid "(Multiple files selected)"
-msgstr ""
+msgstr "(Mehrere Dateien ausgewählt)"
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
 #: src/fileview.py:438
 msgid "File is read-only, saving is disabled"
-msgstr "Die Datei ist schreibgeschützt, Speichern ist deaktiviert"
+msgstr "Datei ist schreibgeschützt, Speichern ist deaktiviert"
 
 #: src/fileview.py:441
 msgid "Opened file is read-only; changes cannot be saved."
@@ -291,18 +292,18 @@ msgstr ""
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
-msgstr ""
+msgstr "(Kein Titel)"
 
 #: src/sidebar.py:374
 msgid "No files selected"
-msgstr ""
+msgstr "Keine Dateien ausgewählt"
 
 #: src/sidebar.py:378
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} Datei ausgewählt"
+msgstr[1] "{n} Dateien ausgewählt"
 
 #: src/window.py:208
 msgid "Open File"
@@ -314,6 +315,5 @@ msgid "translator-credits"
 msgstr "Jürgen Benvenuti <gastornis@posteo.org>, 2022"
 
 #: src/ui/albumcoverbutton.ui:73
-#, fuzzy
 msgid "Album cover"
-msgstr "Album"
+msgstr "Albumbild"
