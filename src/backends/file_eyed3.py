@@ -237,10 +237,10 @@ class EartagFileEyed3(EartagFile):
     @GObject.Property(type=str)
     def comment(self):
         if self.e3_file.tag.comments:
-            return self.e3_file.tag.comments[0]
+            return self.e3_file.tag.comments[0].text
         return ''
 
     @comment.setter
     def comment(self, value):
-        self.e3_file.tag.comments[0] = value
+        self.e3_file.tag.comments.set(value)
         self.mark_as_modified()
