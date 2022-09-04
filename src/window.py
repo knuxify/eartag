@@ -287,7 +287,7 @@ class AboutDialog(Gtk.AboutDialog):
         self.props.artists = ['Igor Dyatlov']
         # TRANSLATORS: Add your name/nickname here
         if _('translator-credits') != 'translator-credits':
-            self.props.translators = [_('translator-credits')]
+            self.props.translator_credits = _('translator-credits')
         self.props.copyright = '(C) 2022 knuxify'
         self.props.logo_icon_name = 'app.drey.EarTag'
         self.set_transient_for(parent)
