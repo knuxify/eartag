@@ -366,18 +366,18 @@ class EartagSidebar(Gtk.Box):
     def refresh_actionbar_button_state(self, *args):
         if not self.file_manager.files or not self.selection_mode:
             selected_message = ''
+            self.action_bar.set_sensitive(False)
             self.action_bar.set_revealed(False)
         else:
+            self.action_bar.set_sensitive(True)
             self.action_bar.set_revealed(True)
             selected_file_count = len(self.file_manager.selected_files)
             if selected_file_count == 0:
                 selected_message = _('No files selected')
-                self.remove_selected_button.set_sensitive(False)
             else:
                 selected_message = gettext.ngettext(
                     "{n} file selected", "{n} files selected", selected_file_count).\
                         format(n=selected_file_count)
-                self.remove_selected_button.set_sensitive(True)
 
         self.selected_message_label.set_label(selected_message)
 

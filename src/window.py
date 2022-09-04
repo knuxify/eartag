@@ -158,14 +158,20 @@ class EartagWindow(Adw.ApplicationWindow):
         self.drop_target.connect('drop', self.on_drag_drop)
         self.add_controller(self.drop_target)
 
+        self.toggle_fileview()
+
     def toggle_fileview(self, *args):
         """
         Shows/hides the fileview/"no files" message depending on opened files.
         """
         if self.file_manager.files.get_n_items() > 0:
             self.content_stack.set_visible_child(self.file_view)
+            self.select_multiple_button.set_sensitive(True)
         else:
             self.content_stack.set_visible_child(self.no_file)
+            self.select_multiple_button.set_sensitive(False)
+            if self.sidebar.selection_mode:
+                self.select_multiple_button.set_active(False)
         self.sidebar.toggle_fileview()
 
     def on_drag_accept(self, target, drop, *args):
