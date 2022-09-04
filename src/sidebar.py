@@ -240,7 +240,7 @@ class EartagFileList(Gtk.ListView):
                 if file != first_selected_file:
                     self.file_manager.selected_files.remove(file)
 
-            for item_no in range(0, self.filter_model.get_n_items() - 1):
+            for item_no in range(0, self.filter_model.get_n_items()):
                 if self.filter_model.get_item(item_no) == first_selected_file:
                     self.selection_model.select_item(item_no, True)
                     break
