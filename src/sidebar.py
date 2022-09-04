@@ -389,3 +389,5 @@ class EartagSidebar(Gtk.Box):
     @selection_mode.setter
     def selection_mode(self, value):
         self.file_list.selection_mode = value
+        # Workaround for the text not showing up on initial load
+        self.refresh_actionbar_button_state()
