@@ -2,14 +2,14 @@
 # Copyright (C) 2022 app.drey.EarTag's COPYRIGHT HOLDER
 # This file is distributed under the same license as the app.drey.EarTag package.
 #
-# Sabri Ünal <libreajans@gmail.com>, 2020.
+# Sabri Ünal <libreajans@gmail.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-03 13:49+0200\n"
-"PO-Revision-Date: 2022-08-10 00:46+0300\n"
+"PO-Revision-Date: 2022-09-04 18:46+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -67,9 +67,8 @@ msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
-#, fuzzy
 msgid "Drop a file to add it to the opened file list"
-msgstr "Düzenlenecek dosyası buraya bırakın"
+msgstr "Açılan dosya listesine eklemek için bir dosya bırakın"
 
 #: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 #: src/ui/removaldiscardwarning.ui:27
@@ -79,31 +78,31 @@ msgstr "Kaydet"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:103
 msgid "Sort files"
-msgstr ""
+msgstr "Dosyaları sırala"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:112
 msgid "Close file list"
-msgstr ""
+msgstr "Dosya listesini kapat"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:126
 msgid "Add file"
-msgstr ""
+msgstr "Dosya ekle"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:134
 msgid "Select multiple files"
-msgstr ""
+msgstr "Birden çok dosya seç"
 
 #: src/ui/window.ui:142
 msgid "Search"
-msgstr ""
+msgstr "Ara"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:167
 msgid "Show file list"
-msgstr ""
+msgstr "Dosya listesini göster"
 
 #: src/ui/window.ui:223
 msgid "_Open file"
@@ -147,11 +146,11 @@ msgstr "Yorum"
 
 #: src/ui/fileview.ui:131
 msgid "Select a File"
-msgstr ""
+msgstr "Dosya Seç"
 
 #: src/ui/fileview.ui:132
 msgid "Select the files you want to edit from the list of opened files."
-msgstr ""
+msgstr "Açılan dosyalar listesinden düzenlemek istediğiniz dosyaları seçin."
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -182,58 +181,57 @@ msgstr "Değişikliklerden vazgeç ve aç"
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
 msgid "File has unsaved changes"
-msgstr ""
+msgstr "Dosyada kaydedilmemiş değişiklikler var"
 
 #. TRANSLATORS: Tooltip for button used to remove file from opened file list
 #: src/ui/filelistitem.ui:90
 msgid "Remove from list"
-msgstr ""
+msgstr "Listeden kaldır"
 
 #: src/ui/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save changes before closing file?"
-msgstr "Değişiklikler kapatmadan önce kaydedilsin mi?"
+msgstr "Değişiklikler dosya kapatılmadan önce kaydedilsin mi?"
 
 #: src/ui/removaldiscardwarning.ui:10
-#, fuzzy
 msgid "Discard changes and close"
-msgstr "Değişikliklerden vazgeç ve aç"
+msgstr "Değişikliklerden vazgeç ve kapat"
 
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
 "buttons below."
 msgstr ""
+"Dosyanın etiketlerini düzenlemek için dosyayı bu pencereye sürükleyip "
+"bırakın veya aşağıdaki düğmeleri kullanın."
 
 #: src/ui/nofile.ui:58
-#, fuzzy
 msgid "Open a file"
-msgstr "Dosya _aç"
+msgstr "Dosya aç"
 
 #: src/ui/sidebar.ui:38
 msgid "No Files Opened"
-msgstr ""
+msgstr "Hiçbir Dosya Açılmadı"
 
 #: src/ui/sidebar.ui:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Hiçbir Sonuç Bulunamadı"
 
 #: src/ui/sidebar.ui:50
 msgid "Try a different search query."
-msgstr ""
+msgstr "Farklı bir arama deneyin."
 
 #: src/ui/sidebar.ui:65
 msgid "Select all files"
-msgstr ""
+msgstr "Tüm dosyaları seç"
 
 #: src/ui/sidebar.ui:81
 msgid "Remove selected files"
-msgstr ""
+msgstr "Seçilen dosyaları kaldır"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
 #: src/common.py:112
 msgid "(multiple values)"
-msgstr ""
+msgstr "(birden çok değer)"
 
 #: src/file.py:107
 msgid "Failed to load file"
@@ -266,12 +264,12 @@ msgstr "Albüm Kapak Resmi Seç"
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
-msgstr[0] ""
+msgstr[0] "{n} kanal"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/fileview.py:410
 msgid "(Multiple files selected)"
-msgstr ""
+msgstr "(Birden fazla dosya seçildi)"
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
 #: src/fileview.py:438
@@ -285,17 +283,17 @@ msgstr "Açılan dosya salt okunur; değişiklikler kaydedilemez."
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
-msgstr ""
+msgstr "(Başlıksız)"
 
 #: src/sidebar.py:374
 msgid "No files selected"
-msgstr ""
+msgstr "Hiçbir dosya seçilmedi"
 
 #: src/sidebar.py:378
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
-msgstr[0] ""
+msgstr[0] "{n} dosya seçildi"
 
 #: src/window.py:208
 msgid "Open File"
@@ -308,6 +306,5 @@ msgid "translator-credits"
 msgstr "Sabri Ünal <libreajans@gmail.com>"
 
 #: src/ui/albumcoverbutton.ui:73
-#, fuzzy
 msgid "Album cover"
-msgstr "Albüm"
+msgstr "Albüm kapağı"
