@@ -107,6 +107,7 @@ class EartagWindow(Adw.ApplicationWindow):
     sidebar = Gtk.Template.Child()
     sidebar_search_button = Gtk.Template.Child()
     select_multiple_button = Gtk.Template.Child()
+    sort_button = Gtk.Template.Child()
 
     audio_file_filter = Gtk.Template.Child()
 
@@ -167,9 +168,13 @@ class EartagWindow(Adw.ApplicationWindow):
         if self.file_manager.files.get_n_items() > 0:
             self.content_stack.set_visible_child(self.file_view)
             self.select_multiple_button.set_sensitive(True)
+            self.sidebar_search_button.set_sensitive(True)
+            self.sort_button.set_sensitive(True)
         else:
             self.content_stack.set_visible_child(self.no_file)
             self.select_multiple_button.set_sensitive(False)
+            self.sidebar_search_button.set_sensitive(False)
+            self.sort_button.set_sensitive(False)
             if self.sidebar.selection_mode:
                 self.select_multiple_button.set_active(False)
         self.sidebar.toggle_fileview()
