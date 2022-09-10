@@ -26,7 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from .common import is_valid_music_file
+from .common import is_valid_music_file, VALID_AUDIO_MIMES
 from .fileview import EartagFileView
 from .file import EartagFileManager
 from .sidebar import EartagSidebar
@@ -109,8 +109,6 @@ class EartagWindow(Adw.ApplicationWindow):
     select_multiple_button = Gtk.Template.Child()
     sort_button = Gtk.Template.Child()
 
-    audio_file_filter = Gtk.Template.Child()
-
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
 
@@ -125,6 +123,10 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def __init__(self, application, paths=None):
         super().__init__(application=application, title='Ear Tag')
+
+        self.audio_file_filter = Gtk.FileFilter()
+        for mime in VALID_AUDIO_MIMES:
+            self.audio_file_filter.add_mime_type(mime)
 
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)

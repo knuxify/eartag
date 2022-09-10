@@ -34,7 +34,25 @@ import os.path
 import magic
 import mimetypes
 
-VALID_NONAUDIO_MIMES = ('application/ogg', 'application/x-ogg', 'video/x-wmv')
+VALID_AUDIO_MIMES = (
+    'application/ogg',
+    'application/x-ogg',
+    'audio/flac',
+    'audio/mp3',
+    'audio/mp4',
+    'audio/mpeg',
+    'audio/ogg',
+    'audio/wav',
+    'audio/x-flac',
+    'audio/x-mp3',
+    'audio/x-mpeg',
+    'audio/x-ms-wma',
+    'audio/x-vorbis+ogg',
+    'audio/x-wav',
+    'video/x-wmv',
+    'x-content/audio-cdda'
+    )
+
 def is_valid_music_file(path):
     """
     Takes a path to a file and returns True if it's supported, False otherwise.
@@ -48,7 +66,7 @@ def is_valid_music_file(path):
         # Try to guess mimetype from filetype if magic fails
         mimetype = mimetypes.guess_type(path)[0]
 
-    if not mimetype or not mimetype.startswith('audio/') and mimetype not in VALID_NONAUDIO_MIMES:
+    if not mimetype or mimetype not in VALID_AUDIO_MIMES:
         return False
     return True
 
