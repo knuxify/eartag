@@ -217,6 +217,9 @@
   <object class="GtkFileFilter" id="audio_file_filter">
     <mime-types>
       <mime-type>audio/*</mime-type>
+      <mime-type>application/ogg</mime-type>
+      <mime-type>application/x-ogg</mime-type>
+      <mime-type>video/x-wmv</mime-type>
     </mime-types>
   </object>
 
