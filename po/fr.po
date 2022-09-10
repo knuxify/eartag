@@ -2,21 +2,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the app.drey.EarTag package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Irénée THIRION <irenee.thirion@e.email>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-03 13:49+0200\n"
-"PO-Revision-Date: 2022-08-16 11:30+0200\n"
-"Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2022-09-10 00:49+0200\n"
+"Last-Translator: Irénée THIRION <irenee.thirion@e.email>\n"
+"Language-Team: French <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 42.0\n"
 
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
@@ -67,9 +68,9 @@ msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
-#, fuzzy
 msgid "Drop a file to add it to the opened file list"
-msgstr "Glissez-déposez un fichier pour l’éditer"
+msgstr ""
+"Glissez-déposez un fichier pour l’ajouter à la liste des fichiers ouverts"
 
 #: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
 #: src/ui/removaldiscardwarning.ui:27
@@ -79,31 +80,31 @@ msgstr "Enregistrer"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:103
 msgid "Sort files"
-msgstr ""
+msgstr "Trier les fichiers"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:112
 msgid "Close file list"
-msgstr ""
+msgstr "Fermer la liste des fichiers"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:126
 msgid "Add file"
-msgstr ""
+msgstr "Ajouter un fichier"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:134
 msgid "Select multiple files"
-msgstr ""
+msgstr "Sélectionner plusieurs fichiers"
 
 #: src/ui/window.ui:142
 msgid "Search"
-msgstr ""
+msgstr "Rechercher"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:167
 msgid "Show file list"
-msgstr ""
+msgstr "Afficher la liste des fichiers"
 
 #: src/ui/window.ui:223
 msgid "_Open file"
@@ -147,11 +148,13 @@ msgstr "Commentaire"
 
 #: src/ui/fileview.ui:131
 msgid "Select a File"
-msgstr ""
+msgstr "Sélectionner un fichier"
 
 #: src/ui/fileview.ui:132
 msgid "Select the files you want to edit from the list of opened files."
 msgstr ""
+"Sélectionnez les fichiers que vous voulez modifier depuis la liste des "
+"fichiers ouverts."
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -184,58 +187,57 @@ msgstr "Abandonner les modifications et ouvrir"
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
 msgid "File has unsaved changes"
-msgstr ""
+msgstr "Le fichier possède des modifications non enregistrées"
 
 #. TRANSLATORS: Tooltip for button used to remove file from opened file list
 #: src/ui/filelistitem.ui:90
 msgid "Remove from list"
-msgstr ""
+msgstr "Retirer de la liste"
 
 #: src/ui/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save changes before closing file?"
-msgstr "Enregistrer les modifications avant la fermeture ?"
+msgstr "Enregistrer les modifications avant la fermeture du fichier ?"
 
 #: src/ui/removaldiscardwarning.ui:10
-#, fuzzy
 msgid "Discard changes and close"
-msgstr "Abandonner les modifications et ouvrir"
+msgstr "Abandonner les modifications et fermer"
 
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
 "buttons below."
 msgstr ""
+"Pour modifier les balises d’un fichier, faites glisser le fichier dans cette "
+"fenêtre ou utilisez les boutons ci-dessous."
 
 #: src/ui/nofile.ui:58
-#, fuzzy
 msgid "Open a file"
-msgstr "_Ouvrir un fichier"
+msgstr "Ouvrir un fichier"
 
 #: src/ui/sidebar.ui:38
 msgid "No Files Opened"
-msgstr ""
+msgstr "Aucun fichier ouvert"
 
 #: src/ui/sidebar.ui:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Aucun résultat trouvé"
 
 #: src/ui/sidebar.ui:50
 msgid "Try a different search query."
-msgstr ""
+msgstr "Essayez une requête différente."
 
 #: src/ui/sidebar.ui:65
 msgid "Select all files"
-msgstr ""
+msgstr "Sélectionner tous les fichiers"
 
 #: src/ui/sidebar.ui:81
 msgid "Remove selected files"
-msgstr ""
+msgstr "Supprimer les fichiers sélectionnés"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
 #: src/common.py:112
 msgid "(multiple values)"
-msgstr ""
+msgstr "(plusieurs valeurs)"
 
 #: src/file.py:107
 msgid "Failed to load file"
@@ -271,13 +273,13 @@ msgstr "Sélectionnez une image de couverture de l’album"
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} canal"
+msgstr[1] "{n} canaux"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/fileview.py:410
 msgid "(Multiple files selected)"
-msgstr ""
+msgstr "(Plusieurs fichiers sélectionnés)"
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
 #: src/fileview.py:438
@@ -293,18 +295,18 @@ msgstr ""
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
-msgstr ""
+msgstr "(Pas de titre)"
 
 #: src/sidebar.py:374
 msgid "No files selected"
-msgstr ""
+msgstr "Aucun fichier sélectionné"
 
 #: src/sidebar.py:378
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{n} fichier sélectionné"
+msgstr[1] "{n} fichiers sélectionnés"
 
 #: src/window.py:208
 msgid "Open File"
@@ -316,6 +318,5 @@ msgid "translator-credits"
 msgstr "Irénée Thirion"
 
 #: src/ui/albumcoverbutton.ui:73
-#, fuzzy
 msgid "Album cover"
-msgstr "Album"
+msgstr "Couverture d’album"
