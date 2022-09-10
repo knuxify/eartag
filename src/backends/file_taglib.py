@@ -27,6 +27,7 @@
 # authorization.
 
 from gi.repository import GObject
+import os.path
 import taglib
 import magic
 import mimetypes
