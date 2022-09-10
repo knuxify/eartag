@@ -242,7 +242,10 @@ class EartagFileMutagenVorbis(EartagFile):
 
     @releaseyear.setter
     def releaseyear(self, value):
-        self.mg_file.tags['date'] = value
+        if value >= 0:
+            self.mg_file.tags['date'] = str(value)
+        else:
+            self.mg_file.tags['date'] = ''
         self.mark_as_modified()
 
     @GObject.Property(type=str)
