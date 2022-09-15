@@ -29,7 +29,7 @@
 # This file contains various functions/classes used in multiple places that
 # were generic enough to be split into a single file.
 
-from gi.repository import Gtk, Gdk, GObject, Pango
+from gi.repository import Gtk, Gdk, GdkPixbuf, GObject, Pango
 import os.path
 import magic
 import mimetypes
@@ -265,29 +265,18 @@ class EartagAlbumCoverImage(Gtk.Stack):
     cover_image = Gtk.Template.Child()
 
     file = None
-    image_file_binding = None
 
     def __init__(self):
         super().__init__()
         self.connect('destroy', self.on_destroy)
 
     def on_destroy(self, *args):
-        if self.image_file_binding:
-            self.image_file_binding.unbind()
         self.file = None
 
     def bind_to_file(self, file):
-        if self.image_file_binding:
-            self.image_file_binding.unbind()
-        self.image_file_binding = None
-
         self.file = file
 
         if file.supports_album_covers:
-            self.image_file_binding = self.file.bind_property(
-                    'cover_path', self.cover_image, 'file',
-                    GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
-            )
             self.on_cover_change()
             self.file.connect('notify::cover-path', self.on_cover_change)
         else:
@@ -312,6 +301,14 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def on_cover_change(self, *args):
         if self.file.cover_path and os.path.exists(self.file.cover_path):
             self.set_visible_child(self.cover_image)
+            self.cover_image.set_from_pixbuf(
+                GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                    self.file.cover_path,
+                    self.cover_image.get_pixel_size(),
+                    self.cover_image.get_pixel_size(),
+                    True
+                )
+            )
         else:
             self.set_visible_child(self.no_cover)
 
