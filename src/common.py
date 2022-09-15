@@ -29,7 +29,7 @@
 # This file contains various functions/classes used in multiple places that
 # were generic enough to be split into a single file.
 
-from gi.repository import Gtk, GObject, Pango
+from gi.repository import Gtk, Gdk, GObject, Pango
 import os.path
 import magic
 import mimetypes
@@ -204,6 +204,7 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
         label.set_lines(3)
         label.set_max_width_chars(128)
         label.set_justify(Gtk.Justification.CENTER)
+        label.set_cursor(Gdk.Cursor.new_from_name('text'))
         self.set_alignment(0.5)
 
         self.bind_property('placeholder', editable, 'placeholder-text',
