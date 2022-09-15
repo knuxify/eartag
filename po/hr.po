@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-03 13:49+0200\n"
-"PO-Revision-Date: 2022-08-08 13:41+0200\n"
+"PO-Revision-Date: 2022-09-15 16:38+0200\n"
 "Last-Translator: \n"
 "Language-Team: sheep <hi@sheepdev.xyz>\n"
 "Language: hr_HR\n"
@@ -27,11 +27,11 @@ msgstr "Ear Tag"
 
 #: data/app.drey.EarTag.desktop.in:4
 msgid "Tag Editor"
-msgstr ""
+msgstr "Označivač glazbe"
 
 #: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
 msgid "Small and simple music tag editor"
-msgstr ""
+msgstr "Mali i jednostavni označivač glazbe"
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
@@ -68,7 +68,6 @@ msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
-#, fuzzy
 msgid "Drop a file to add it to the opened file list"
 msgstr "Ubacite datoteku kako bi ste je uredili"
 
@@ -80,31 +79,31 @@ msgstr "Spremi"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:103
 msgid "Sort files"
-msgstr ""
+msgstr "Sortiranje datoteka"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:112
 msgid "Close file list"
-msgstr ""
+msgstr "Zatvori listu datoteka"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:126
 msgid "Add file"
-msgstr ""
+msgstr "Dodaj datoteku"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:134
 msgid "Select multiple files"
-msgstr ""
+msgstr "Odaberi više datoteka"
 
 #: src/ui/window.ui:142
 msgid "Search"
-msgstr ""
+msgstr "Pretraži"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:167
 msgid "Show file list"
-msgstr ""
+msgstr "Prikaži listu datoteka"
 
 #: src/ui/window.ui:223
 msgid "_Open file"
@@ -148,11 +147,11 @@ msgstr "Komentar"
 
 #: src/ui/fileview.ui:131
 msgid "Select a File"
-msgstr ""
+msgstr "Odaberi datoteku"
 
 #: src/ui/fileview.ui:132
 msgid "Select the files you want to edit from the list of opened files."
-msgstr ""
+msgstr "Odaberi datoteke koje želiš urediti s liste otvorenih datoteka."
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -183,58 +182,57 @@ msgstr "Odbaci promjene i otvori"
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
 msgid "File has unsaved changes"
-msgstr ""
+msgstr "Datoteka ima nespremljene promjene"
 
 #. TRANSLATORS: Tooltip for button used to remove file from opened file list
 #: src/ui/filelistitem.ui:90
 msgid "Remove from list"
-msgstr ""
+msgstr "Makni sa liste"
 
 #: src/ui/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save changes before closing file?"
-msgstr "Spremiti promjene prije zatvaranja?"
+msgstr "Spremiti promjene prije zatvaranja datoteke?"
 
 #: src/ui/removaldiscardwarning.ui:10
-#, fuzzy
 msgid "Discard changes and close"
-msgstr "Odbaci promjene i otvori"
+msgstr "Odbaci promjene i zatvori"
 
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
 "buttons below."
 msgstr ""
+"Kako bih editirali oznake datoteke, drag-i-dropajte datoteku na ovaj prozor "
+"ili koristite dugme ispod."
 
 #: src/ui/nofile.ui:58
-#, fuzzy
 msgid "Open a file"
 msgstr "_Otvori datoteku"
 
 #: src/ui/sidebar.ui:38
 msgid "No Files Opened"
-msgstr ""
+msgstr "Nema otvorenih datoteka"
 
 #: src/ui/sidebar.ui:49
 msgid "No Results Found"
-msgstr ""
+msgstr "Nema pronađenih rezultata"
 
 #: src/ui/sidebar.ui:50
 msgid "Try a different search query."
-msgstr ""
+msgstr "Probajte drugi upit pretraživanja."
 
 #: src/ui/sidebar.ui:65
 msgid "Select all files"
-msgstr ""
+msgstr "Odaberi sve datoteke"
 
 #: src/ui/sidebar.ui:81
 msgid "Remove selected files"
-msgstr ""
+msgstr "Ukloni više datoteka"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
 #: src/common.py:112
 msgid "(multiple values)"
-msgstr ""
+msgstr "(više vrijednosti)"
 
 #: src/file.py:107
 msgid "Failed to load file"
@@ -268,14 +266,14 @@ msgstr "Odaberite sliku naslovnice albuma"
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{n} kanal"
+msgstr[1] "{n} kanala"
+msgstr[2] "{n} kanala"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/fileview.py:410
 msgid "(Multiple files selected)"
-msgstr ""
+msgstr "(Više datoteka odabrano)"
 
 #. TRANSLATORS: Tooltip text for save button when saving is disabled
 #: src/fileview.py:438
@@ -289,19 +287,19 @@ msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
-msgstr ""
+msgstr "(Nema naslov)"
 
 #: src/sidebar.py:374
 msgid "No files selected"
-msgstr ""
+msgstr "Nema odabranih datoteka"
 
 #: src/sidebar.py:378
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "{n} datoteka odabrana"
+msgstr[1] "{n} datoteka odabrano"
+msgstr[2] "{n} datoteka odabrano"
 
 #: src/window.py:208
 msgid "Open File"
@@ -310,10 +308,9 @@ msgstr "Otvori datoteku"
 #. TRANSLATORS: Add your name/nickname here
 #: src/window.py:284 src/window.py:285
 msgid "translator-credits"
-msgstr ""
+msgstr "sheep"
 
 #: src/ui/albumcoverbutton.ui:73
-#, fuzzy
 msgid "Album cover"
 msgstr "Album"
 
