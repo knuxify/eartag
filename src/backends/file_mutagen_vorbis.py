@@ -128,7 +128,9 @@ class EartagFileMutagenVorbis(EartagFile):
 
         if isinstance(self.mg_file, FLAC):
             picture.type = PictureType.COVER_FRONT
-            self.mg_file.clear_pictures()
+            for _pic in self.mg_file.pictures:
+                if _pic.type in (PictureType.COVER_FRONT, PictureType.OTHER):
+                    self.mg_file.pictures.remove(_pic)
             self.mg_file.add_picture(picture)
         else:
             picture_data = picture.write()
