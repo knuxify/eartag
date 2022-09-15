@@ -35,6 +35,7 @@ from PIL import Image
 
 from mutagen.flac import FLAC, Picture, error as FLACError
 from mutagen.oggvorbis import OggVorbis
+from mutagen.id3 import PictureType
 
 from .file import EartagFile
 
@@ -125,35 +126,106 @@ class EartagFileMutagenVorbis(EartagFile):
         picture.height = img.height
         picture.depth = mode_to_bpp[img.mode]
 
-        picture_data = picture.write()
-        encoded_data = base64.b64encode(picture_data)
-        vcomment_value = encoded_data.decode("ascii")
+        if isinstance(self.mg_file, FLAC):
+            picture.type = PictureType.COVER_FRONT
+            self.mg_file.clear_pictures()
+            self.mg_file.add_picture(picture)
+        else:
+            picture_data = picture.write()
+            encoded_data = base64.b64encode(picture_data)
+            vcomment_value = encoded_data.decode("ascii")
 
-        self.mg_file["metadata_block_picture"] = [vcomment_value]
+            self.mg_file["metadata_block_picture"] = [vcomment_value]
 
         self.mark_as_modified()
 
     def load_cover(self):
         """Loads cover data from file."""
-        for b64_data in self.mg_file.get("metadata_block_picture", []):
-            try:
-                data = base64.b64decode(b64_data)
-            except (TypeError, ValueError):
-                continue
+        # See https://mutagen.readthedocs.io/en/latest/user/vcomment.html.
+        # There are three ways to get the cover image:
 
-            try:
-                self.cover_picture = Picture(data)
-            except FLACError:
-                continue
+        # 1. Using `mutagen.flac.FLAC.pictures`
+        if isinstance(self.mg_file, FLAC) and self.mg_file.pictures:
+            picture_cover = None
+            picture_other = None
 
-            cover_extension = mimetypes.guess_extension(self.cover_picture.mime)
+            # We run this in two loops so that we can prio
+            for picture in self.mg_file.pictures:
+                if picture.type == PictureType.COVER_FRONT:
+                    picture_cover = picture
 
+                elif picture.type == PictureType.OTHER:
+                    picture_other = picture
+                    return
+
+            if picture_cover:
+                picture = picture_cover
+            elif picture_other:
+                picture = picture_other
+            else:
+                self.notify('cover_path')
+                return
+
+
+            cover_extension = mimetypes.guess_extension(picture.mime)
             self.coverart_tempfile = tempfile.NamedTemporaryFile(
                 suffix=cover_extension
             )
-            self.coverart_tempfile.write(self.cover_picture.data)
+            self.coverart_tempfile.write(picture.data)
             self.coverart_tempfile.flush()
             self._cover_path = self.coverart_tempfile.name
+
+        # 2. Using metadata_block_picture
+        elif self.mg_file.get("metadata_block_picture", []):
+            for b64_data in self.mg_file.get("metadata_block_picture", []):
+                try:
+                    data = base64.b64decode(b64_data)
+                except (TypeError, ValueError):
+                    continue
+
+                try:
+                    self.cover_picture = Picture(data)
+                except FLACError:
+                    continue
+
+                cover_extension = mimetypes.guess_extension(self.cover_picture.mime)
+
+                self.coverart_tempfile = tempfile.NamedTemporaryFile(
+                    suffix=cover_extension
+                )
+                self.coverart_tempfile.write(self.cover_picture.data)
+                self.coverart_tempfile.flush()
+                self._cover_path = self.coverart_tempfile.name
+
+        # 3. Using the coverart field (and optionally covermime)
+        else:
+            covers = self.mg_file.get("coverart", [])
+            mimes = self.mg_file.get("coverartmime", [])
+
+            n = 0
+            for cover in covers:
+                try:
+                    data = base64.b64decode(cover.encode("ascii"))
+                except (TypeError, ValueError):
+                    continue
+
+                if not data:
+                    continue
+
+                cover_extension = mimetypes.guess_extension(
+                    magic.from_buffer(data, mime=True)
+                )
+                if not cover_extension and mimes and len(mimes) == len(covers):
+                    cover_extension = mimes[n]
+
+                self.coverart_tempfile = tempfile.NamedTemporaryFile(
+                    suffix=cover_extension
+                )
+                self.coverart_tempfile.write(data)
+                self.coverart_tempfile.flush()
+                self._cover_path = self.coverart_tempfile.name
+                n += 1
+
         self.notify('cover_path')
 
     @GObject.Property(type=str)
