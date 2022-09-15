@@ -289,7 +289,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
                     GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
             )
             self.on_cover_change()
-            self.file.connect('notify::cover_path', self.on_cover_change)
+            self.file.connect('notify::cover-path', self.on_cover_change)
         else:
             self.cover_image.set_from_file(None)
             self.on_cover_change()
