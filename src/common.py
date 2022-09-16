@@ -37,6 +37,7 @@ import mimetypes
 VALID_AUDIO_MIMES = (
     'application/ogg',
     'application/x-ogg',
+    'audio/aac',
     'audio/flac',
     'audio/mp3',
     'audio/mp4',
