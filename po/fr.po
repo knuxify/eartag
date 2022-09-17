@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-03 13:49+0200\n"
-"PO-Revision-Date: 2022-09-10 00:49+0200\n"
+"PO-Revision-Date: 2022-09-17 14:09+0200\n"
 "Last-Translator: Irénée THIRION <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -64,7 +64,7 @@ msgid ""
 "files as needed."
 msgstr ""
 "Ainsi, Ear Tag a été conçu pour être un simple éditeur de balises qui peut "
-"modifier des fichiers infividuels selon les besoins."
+"modifier des fichiers individuels selon les besoins."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
