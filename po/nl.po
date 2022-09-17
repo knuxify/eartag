@@ -1,0 +1,320 @@
+# Dutch translation for Ear Tag.
+# Copyright (C) 2022 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the app.drey.EarTag package.
+# Philip Goto <philip.goto@gmail.com>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: app.drey.EarTag\n"
+"Report-Msgid-Bugs-To: https://github.com/knuxify/eartag/issues\n"
+"POT-Creation-Date: 2022-09-17 17:25+0200\n"
+"PO-Revision-Date: 2022-09-17 17:58+0200\n"
+"Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
+"Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+
+#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr "Tag-bewerker"
+
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
+msgid "Small and simple music tag editor"
+msgstr "Kleine en eenvoudige muziek-tag-bewerker"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "music;audio;tag;tagging;tagger;muziek;taggen;metadata;"
+
+#: data/app.drey.EarTag.appdata.xml.in:15
+msgid "Initial release."
+msgstr "Initiële uitgave."
+
+#: data/app.drey.EarTag.appdata.xml.in:20
+msgid ""
+"Ear Tag is a small and simple music tag editor that doesn't try to manage "
+"your entire library."
+msgstr ""
+"Ear Tag is een kleine en eenvoudige muziek-tag-bewerker die niet uw hele "
+"bibliotheek probeert te beheren."
+
+#: data/app.drey.EarTag.appdata.xml.in:21
+msgid ""
+"A lot of music tag editors are made to apply changes to entire music "
+"libraries. They require you to set up a music folder, etc. This is "
+"convenient when you want to keep your entire library in check, but sometimes "
+"you just need to edit one file's data without any of the additional hassle."
+msgstr ""
+"Veel muziek-tag-bewerkers zijn gemaakt om wijzigingen toe te passen op hele "
+"muziekbibliotheken; deze vereisen bijvoorbeeld dat u een muziekmap opzet. "
+"Dit kan handig zijn wanneer u uw hele bibliotheek bij wilt houden, maar soms "
+"is het nodig om één bestand te bewerken zonder extra gedoe."
+
+#: data/app.drey.EarTag.appdata.xml.in:22
+msgid ""
+"Thus, Ear Tag was made to be a simple tag editor that can edit singular "
+"files as needed."
+msgstr ""
+"Daarom is Ear Tag een simpele tag-bewerker die gemaakt is om enkele "
+"bestanden te bewerken wanneer dat nodig is."
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
+msgid "Drop a file to add it to the opened file list"
+msgstr ""
+"Sleep een bestand hierheen om deze toe te voegen aan de lijst met geopende "
+"bestanden"
+
+#: src/ui/window.ui:88 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/removaldiscardwarning.ui:27
+msgid "Save"
+msgstr "Opslaan"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:102
+msgid "Sort files"
+msgstr "Bestanden sorteren"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:111
+msgid "Close file list"
+msgstr "Bestandslijst sluiten"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:125
+msgid "Add file"
+msgstr "Bestand toevoegen"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:133
+msgid "Select multiple files"
+msgstr "Meerdere bestanden selecteren"
+
+#: src/ui/window.ui:141
+msgid "Search"
+msgstr "Zoeken"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:170
+msgid "Show file list"
+msgstr "Bestandslijst weergeven"
+
+#: src/ui/window.ui:220
+msgid "_Open file"
+msgstr "_Bestand openen"
+
+#: src/ui/window.ui:224
+msgid "_About Ear Tag"
+msgstr "_Over Ear Tag"
+
+#: src/ui/fileview.ui:36
+msgid "Title"
+msgstr "Titel"
+
+#: src/ui/fileview.ui:45
+msgid "Artist"
+msgstr "Artiest"
+
+#: src/ui/fileview.ui:81
+msgid "Track number"
+msgstr "Muzieknummer"
+
+#: src/ui/fileview.ui:91
+msgid "Album"
+msgstr "Album"
+
+#: src/ui/fileview.ui:97
+msgid "Album artist"
+msgstr "Albumartiest"
+
+#: src/ui/fileview.ui:103
+msgid "Genre"
+msgstr "Genre"
+
+#: src/ui/fileview.ui:109
+msgid "Release year"
+msgstr "Uitgavejaar"
+
+#: src/ui/fileview.ui:116
+msgid "Comment"
+msgstr "Opmerking"
+
+#: src/ui/fileview.ui:131
+msgid "Select a File"
+msgstr "Bestand selecteren"
+
+#: src/ui/fileview.ui:132
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
+"Selecteer de bestanden die u wilt bewerken van de lijst met geopende "
+"bestanden."
+
+#: src/ui/closewarning.ui:5
+msgid "Save changes before closing?"
+msgstr "Wijzigingen opslaan alvorens te sluiten?"
+
+#: src/ui/closewarning.ui:6 src/ui/discardwarning.ui:6
+#: src/ui/removaldiscardwarning.ui:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr ""
+"Als u uw wijzigingen niet opslaat zullen deze definitief verloren gaan."
+
+#: src/ui/closewarning.ui:10
+msgid "Close without saving"
+msgstr "Afsluiten zonder opslaan"
+
+#: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
+#: src/ui/removaldiscardwarning.ui:20
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: src/ui/discardwarning.ui:5
+msgid "Save changes before opening another file?"
+msgstr "Wijzigingen opslaan alvorens een ander bestand te openen?"
+
+#: src/ui/discardwarning.ui:10
+msgid "Discard changes and open"
+msgstr "Wijzigingen verwerpen en openen"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:49
+msgid "File has unsaved changes"
+msgstr "Bestand heeft niet-opgeslagen wijzigingen"
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:90
+msgid "Remove from list"
+msgstr "Uit lijst verwijderen"
+
+#: src/ui/removaldiscardwarning.ui:5
+msgid "Save changes before closing file?"
+msgstr "Wijzigingen opslaan alvorens bestand te sluiten?"
+
+#: src/ui/removaldiscardwarning.ui:10
+msgid "Discard changes and close"
+msgstr "Wijzigingen verwerpen en sluiten"
+
+#: src/ui/nofile.ui:46
+msgid ""
+"To edit a file's tags, drag-and-drop the file onto this window or use the "
+"buttons below."
+msgstr ""
+"Om tags van een bestand te bewerken, sleep deze naar dit venster of gebruik "
+"de knoppen hieronder."
+
+#: src/ui/nofile.ui:58
+msgid "Open a file"
+msgstr "Bestand openen"
+
+#: src/ui/sidebar.ui:38
+msgid "No Files Opened"
+msgstr "Geen bestanden geopend"
+
+#: src/ui/sidebar.ui:49
+msgid "No Results Found"
+msgstr "Geen resultaten gevonden"
+
+#: src/ui/sidebar.ui:50
+msgid "Try a different search query."
+msgstr "Probeer een andere zoekopdracht."
+
+#: src/ui/sidebar.ui:65
+msgid "Select all files"
+msgstr "Alle bestanden selecteren"
+
+#: src/ui/sidebar.ui:81
+msgid "Remove selected files"
+msgstr "Geselecteerde bestanden verwijderen"
+
+#. TRANSLATORS: Placeholder displayed when multiple files with different values are created
+#: src/common.py:131
+msgid "(multiple values)"
+msgstr "(meerdere waarden)"
+
+#: src/file.py:107
+msgid "Failed to load file"
+msgstr "Bestand laden mislukt"
+
+#: src/file.py:108
+#, python-brace-format
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr ""
+"Kon bestand {f} niet laden. Controleer de logboeken voor meer informatie."
+
+#: src/file.py:171
+msgid "Failed to save file"
+msgstr "Bestand opslaan mislukt"
+
+#: src/file.py:172
+#, python-brace-format
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr ""
+"Kon bestand {f} niet opslaan. Controleer de logboeken voor meer informatie."
+
+#: src/file.py:179
+msgid "Saved changes to file"
+msgstr "Wijzigingen naar bestand opgeslagen"
+
+#: src/fileview.py:145
+msgid "Select Album Cover Image"
+msgstr "Albumhoesafbeelding selecteren"
+
+#: src/fileview.py:400
+#, python-brace-format
+msgid "{n} channel"
+msgid_plural "{n} channels"
+msgstr[0] "{n} kanaal"
+msgstr[1] "{n} kanalen"
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/fileview.py:410
+msgid "(Multiple files selected)"
+msgstr "(meerdere bestanden geselecteerd)"
+
+#. TRANSLATORS: Tooltip text for save button when saving is disabled
+#: src/fileview.py:438
+msgid "File is read-only, saving is disabled"
+msgstr "Bestand is alleen-lezen, opslaan is uitgeschakled"
+
+#: src/fileview.py:441
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr ""
+"Geopend bestand is alleen-lezen; wijzigingen kunnen niet worden opgeslagen."
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/sidebar.py:116
+msgid "(No title)"
+msgstr "(geen titel)"
+
+#: src/sidebar.py:376
+msgid "No files selected"
+msgstr "Geen bestanden geselecteerd"
+
+#: src/sidebar.py:380
+#, python-brace-format
+msgid "{n} file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "{n} bestand geselecteerd"
+msgstr[1] "{n} bestanden geselecteerd"
+
+#: src/window.py:226
+msgid "Open File"
+msgstr "Bestand openen"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/window.py:302 src/window.py:303
+msgid "translator-credits"
+msgstr "Philip Goto <philip.goto@gmail.com>"
+
+#: src/ui/albumcoverbutton.ui:73
+msgid "Album cover"
+msgstr "Albumhoes"
