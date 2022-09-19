@@ -1,0 +1,317 @@
+# Italian translation for Ear Tag
+# Copyright (C) 2022 Ear Tag's copyright holder
+# This file is distributed under the same license as the app.drey.EarTag package.
+# Davide Ferracin <davide.ferracin@protonmail.com>, 2022."
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: app.drey.EarTag\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-03 13:49+0200\n"
+"PO-Revision-Date: 2022-09-11 14:46+0200\n"
+"Last-Translator: Davide Ferracin <davide.ferracin@protonmail.com>\n"
+"Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+
+#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr "Editor di etichette musicali"
+
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
+msgid "Small and simple music tag editor"
+msgstr ""
+"Un piccolo e semplice editor per modificare le etichette musicali"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "musica;audio;tag;etichetta;etichette;etichettare;etichettatore;etichettamento;"
+
+#: data/app.drey.EarTag.appdata.xml.in:18
+msgid ""
+"Ear Tag is a small and simple music tag editor that doesn't try to manage "
+"your entire library."
+msgstr ""
+"Ear Tag è un piccolo e semplice editor di etichette musicali che non intende "
+"gestire tutta la tua libreria."
+
+#: data/app.drey.EarTag.appdata.xml.in:19
+msgid ""
+"A lot of music tag editors are made to apply changes to entire music "
+"libraries. They require you to set up a music folder, etc. This is "
+"convenient when you want to keep your entire library in check, but sometimes "
+"you just need to edit one file's data without any of the additional hassle."
+msgstr ""
+"Tanti editor di etichette musicali sono concepiti per applicare le modifiche ad "
+"intere librerie musicali, e perciò richiedono di impostare una cartella "
+"dedicata per la musica, e altro ancora. Questo può essere comodo quando "
+"si desidera gestire tutta la propria libreria, ma talvolta si ha bisogno "
+"soltanto di modificare le informazioni di un file senza complicazioni."
+
+#: data/app.drey.EarTag.appdata.xml.in:20
+msgid ""
+"Thus, Ear Tag was made to be a simple tag editor that can edit singular "
+"files as needed."
+msgstr ""
+"Perciò, Ear Tag è progettato per essere un editor semplice che può modificare "
+"i file singolarmente, al bisogno."
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
+msgid "Drop a file to add it to the opened file list"
+msgstr ""
+"Rilasciare qui un file per aggiungerlo alla lista dei file aperti"
+
+#: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
+#: src/ui/removaldiscardwarning.ui:27
+msgid "Save"
+msgstr "Salva"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:103
+msgid "Sort files"
+msgstr "Ordina i file"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:112
+msgid "Close file list"
+msgstr "Chiude la lista dei file"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:126
+msgid "Add file"
+msgstr "Aggiunge file"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:134
+msgid "Select multiple files"
+msgstr "Seleziona file multipli"
+
+#: src/ui/window.ui:142
+msgid "Search"
+msgstr "Cerca"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:167
+msgid "Show file list"
+msgstr "Mostra la lista dei file"
+
+#: src/ui/window.ui:223
+msgid "_Open file"
+msgstr "_Apri file"
+
+#: src/ui/window.ui:227
+msgid "_About Ear Tag"
+msgstr "_Informazioni su Ear Tag"
+
+#: src/ui/fileview.ui:36
+msgid "Title"
+msgstr "Titolo"
+
+#: src/ui/fileview.ui:45
+msgid "Artist"
+msgstr "Artista"
+
+#: src/ui/fileview.ui:81
+msgid "Track number"
+msgstr "Numero di traccia"
+
+#: src/ui/fileview.ui:91
+msgid "Album"
+msgstr "Album"
+
+#: src/ui/fileview.ui:97
+msgid "Album artist"
+msgstr "Artista dell’album"
+
+#: src/ui/fileview.ui:103
+msgid "Genre"
+msgstr "Genere"
+
+#: src/ui/fileview.ui:109
+msgid "Release year"
+msgstr "Anno di uscita"
+
+#: src/ui/fileview.ui:116
+msgid "Comment"
+msgstr "Commento"
+
+#: src/ui/fileview.ui:131
+msgid "Select a File"
+msgstr "Selezionare un file"
+
+#: src/ui/fileview.ui:132
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "Selezionare i file da modificare dalla lista dei file aperti."
+
+#: src/ui/closewarning.ui:5
+msgid "Save changes before closing?"
+msgstr "Salvare le modifiche prima di chiudere?"
+
+#: src/ui/closewarning.ui:6 src/ui/discardwarning.ui:6
+#: src/ui/removaldiscardwarning.ui:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr ""
+"Le modifiche saranno perse definitivamente se le modifiche non vengono "
+"salvate."
+
+#: src/ui/closewarning.ui:10
+msgid "Close without saving"
+msgstr "Chiudi senza salvare"
+
+#: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
+#: src/ui/removaldiscardwarning.ui:20
+msgid "Cancel"
+msgstr "Annulla"
+
+#: src/ui/discardwarning.ui:5
+msgid "Save changes before opening another file?"
+msgstr "Salvare le modifiche prima di aprire un altro file?"
+
+#: src/ui/discardwarning.ui:10
+msgid "Discard changes and open"
+msgstr "Scarta le modifiche e apri"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:49
+msgid "File has unsaved changes"
+msgstr "Il file contiene delle modifiche non salvate"
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:90
+msgid "Remove from list"
+msgstr "Rimuove dalla lista"
+
+#: src/ui/removaldiscardwarning.ui:5
+msgid "Save changes before closing file?"
+msgstr "Salvare le modifiche prima di chiudere il file?"
+
+#: src/ui/removaldiscardwarning.ui:10
+msgid "Discard changes and close"
+msgstr "Scarta le modifiche e chiudi"
+
+#: src/ui/nofile.ui:46
+msgid ""
+"To edit a file's tags, drag-and-drop the file onto this window or use the "
+"buttons below."
+msgstr ""
+"Per modificare le etichette di un file, trascinarlo in questa finestra "
+"oppure usare i pulsanti qui sotto."
+
+#: src/ui/nofile.ui:58
+msgid "Open a file"
+msgstr "Apri un file"
+
+#: src/ui/sidebar.ui:38
+msgid "No Files Opened"
+msgstr "Nessun file aperto"
+
+#: src/ui/sidebar.ui:49
+msgid "No Results Found"
+msgstr "Nessun risultato trovato"
+
+#: src/ui/sidebar.ui:50
+msgid "Try a different search query."
+msgstr "Provare con una chiave di ricerca differente."
+
+#: src/ui/sidebar.ui:65
+msgid "Select all files"
+msgstr "Seleziona tutti i file"
+
+#: src/ui/sidebar.ui:81
+msgid "Remove selected files"
+msgstr "Rimuove i file selezionati"
+
+#. TRANSLATORS: Placeholder displayed when multiple files with different values are created
+#: src/common.py:112
+msgid "(multiple values)"
+msgstr "(più valori)"
+
+#: src/file.py:107
+msgid "Failed to load file"
+msgstr "Caricamento del file non riuscito"
+
+#: src/file.py:108
+#, python-brace-format
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr ""
+"Caricamento del file {f} non riuscito. Consultare i registri per ulteriori " 
+"informazioni."
+
+#: src/file.py:171
+msgid "Failed to save file"
+msgstr "Salvataggio del file non riuscito"
+
+#: src/file.py:172
+#, python-brace-format
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr ""
+"Salvataggio del file {f} non riuscito. Consultare i registri per ulteriori " 
+"informazioni."
+
+#: src/file.py:179
+msgid "Saved changes to file"
+msgstr "Modifiche salvate sul file"
+
+#: src/fileview.py:145
+msgid "Select Album Cover Image"
+msgstr "Selezionare un'immagine di copertina dell'album"
+
+#: src/fileview.py:400
+#, python-brace-format
+msgid "{n} channel"
+msgid_plural "{n} channels"
+msgstr[0] "{n} canale"
+msgstr[1] "{n} canali"
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/fileview.py:410
+msgid "(Multiple files selected)"
+msgstr "(Più file selezionati)"
+
+#. TRANSLATORS: Tooltip text for save button when saving is disabled
+#: src/fileview.py:438
+msgid "File is read-only, saving is disabled"
+msgstr "Il file è in sola lettura, il salvataggio è disabilitato"
+
+#: src/fileview.py:441
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr ""
+"Il file aperto è in sola lettura; le modifiche non possono essere salvate."
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/sidebar.py:116
+msgid "(No title)"
+msgstr "(Nessun titolo)"
+
+#: src/sidebar.py:374
+msgid "No files selected"
+msgstr "Nessun file selezionato"
+
+#: src/sidebar.py:378
+#, python-brace-format
+msgid "{n} file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "{n} file selezionato"
+msgstr[1] "{n} file selezionati"
+
+#: src/window.py:208
+msgid "Open File"
+msgstr "Apri file"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/window.py:284 src/window.py:285
+msgid "translator-credits"
+msgstr "Davide Ferracin <davide.ferracin@protonmail.com>, 2022"
+
+#: src/ui/albumcoverbutton.ui:73
+msgid "Album cover"
+msgstr "Copertina dell'album"
