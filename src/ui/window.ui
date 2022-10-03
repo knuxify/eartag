@@ -163,6 +163,8 @@
 
                     <child>
                       <object class="AdwHeaderBar" id="headerbar">
+                        <property name="show-start-title-buttons">false</property>
+
                         <child type="start">
                           <object class="GtkButton" id="show_sidebar_button">
                             <property name="icon-name">view-queue-symbolic</property>
