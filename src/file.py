@@ -100,13 +100,14 @@ class EartagFileManager(GObject.Object):
             _file = eartagfile_from_path(path)
         except:
             traceback.print_exc()
-            self.error_dialog = Gtk.MessageDialog(
+            self.error_dialog = Adw.MessageDialog(
+                                    modal=True,
                                     transient_for=self.window,
-                                    buttons=Gtk.ButtonsType.OK,
-                                    message_type=Gtk.MessageType.ERROR,
-                                    text=_("Failed to load file"),
-                                    secondary_text=_("Could not load file {f}. Check the logs for more information.").format(f=file_basename)
+                                    heading=_("Failed to load file"),
+                                    body=_("Could not load file {f}. Check the logs for more information.").format(f=file_basename)
             )
+            # TRANSLATORS: "Okay" button in the "failed to save file" dialog
+            self.error_dialog.add_response("ok", _("OK"))
             self.error_dialog.connect('response', self.close_dialog)
             self.error_dialog.show()
             return False
@@ -164,13 +165,14 @@ class EartagFileManager(GObject.Object):
             except:
                 traceback.print_exc()
                 file_basename = os.path.basename(file.path)
-                self.error_dialog = Gtk.MessageDialog(
+                self.error_dialog = Adw.MessageDialog(
+                                        modal=True,
                                         transient_for=self.window,
-                                        buttons=Gtk.ButtonsType.OK,
-                                        message_type=Gtk.MessageType.ERROR,
-                                        text=_("Failed to save file"),
-                                        secondary_text=_("Could not save file {f}. Check the logs for more information.").format(f=file_basename)
+                                        heading=_("Failed to save file"),
+                                        body=_("Could not save file {f}. Check the logs for more information.").format(f=file_basename)
                 )
+                # TRANSLATORS: "Okay" button in the "failed to save file" dialog
+                self.error_dialog.add_response("ok", _("OK"))
                 self.error_dialog.connect('response', self.close_dialog)
                 self.error_dialog.show()
                 return False
