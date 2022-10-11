@@ -176,10 +176,10 @@ class EartagFileManager(GObject.Object):
                 self.error_dialog.connect('response', self.close_dialog)
                 self.error_dialog.show()
                 return False
-            else:
-                self.window.toast_overlay.add_toast(
-                    Adw.Toast.new(_("Saved changes to file"))
-                )
+
+        self.window.toast_overlay.add_toast(
+            Adw.Toast.new(_("Saved changes to files"))
+        )
         return True
 
     def update_modified_status(self, *args):
