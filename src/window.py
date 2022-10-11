@@ -290,17 +290,3 @@ class EartagWindow(Adw.ApplicationWindow):
             self.close_request_dialog = EartagCloseWarningDialog(self)
             self.close_request_dialog.present()
             return True
-
-class AboutDialog(Gtk.AboutDialog):
-    def __init__(self, parent):
-        Gtk.AboutDialog.__init__(self)
-        self.props.program_name = 'Ear Tag'
-        self.props.version = "0.2.1"
-        self.props.authors = ['knuxify']
-        self.props.artists = ['Igor Dyatlov']
-        # TRANSLATORS: Add your name/nickname here
-        if _('translator-credits') != 'translator-credits':
-            self.props.translator_credits = _('translator-credits')
-        self.props.copyright = '(C) 2022 knuxify'
-        self.props.logo_icon_name = 'app.drey.EarTag'
-        self.set_transient_for(parent)

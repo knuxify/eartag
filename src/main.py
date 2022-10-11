@@ -36,14 +36,15 @@ gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk, Gio
 
 from .common import is_valid_music_file
-from .window import EartagWindow, AboutDialog
+from .window import EartagWindow
 from .file import EartagFileManager
 
 class Application(Adw.Application):
-    def __init__(self):
+    def __init__(self, version='dev'):
         super().__init__(application_id='app.drey.EarTag',
                          resource_base_path='/app/drey/EarTag',
                          flags=Gio.ApplicationFlags.HANDLES_OPEN)
+        self.version = version
         self.paths = []
         self.connect('open', self.on_open)
 
@@ -66,12 +67,49 @@ class Application(Adw.Application):
         self.create_action('save', self.on_save_action)
         self.set_accels_for_action('app.save', ('<Ctrl>s', None))
         win.present()
+        self._ = _
 
     def on_save_action(self, widget, _):
         self.get_active_window().file_view.save()
 
     def on_about_action(self, widget, _):
-        about = AboutDialog(self.props.active_window)
+        about = Adw.AboutWindow(
+            application_name="Ear Tag",
+            application_icon="app.drey.EarTag",
+            developers=["knuxify"],
+            artists=["Igor Dyatlov"],
+            license_type=Gtk.License.MIT_X11,
+            issue_url="https://github.com/knuxify/eartag/issues",
+            version=self.version,
+            website="https://github.com/knuxify/eartag"
+        )
+
+        if self._('translator-credits') != 'translator-credits':
+            # TRANSLATORS: Add your name/nickname here
+            about.props.translator_credits = self._('translator-credits')
+
+        lib_versions = []
+        import taglib
+        lib_versions.append(f"pytaglib: {taglib.version}")
+        import eyed3
+        lib_versions.append(f"eyed3: {eyed3.version}")
+        try:
+            import mutagen
+        except ImportError:
+            lib_versions.append("mutagen: not available")
+        else:
+            lib_versions.append(f"mutagen: {mutagen.version_string}")
+        try:
+            import PIL
+        except ImportError:
+            lib_versions.append("pillow: not available")
+        else:
+            lib_versions.append(f"pillow: {PIL.__version__}")
+        about.set_debug_info('\n'.join(lib_versions))
+
+        about.set_modal(True)
+        about.set_transient_for(self.props.active_window)
+
         about.present()
 
     def on_open_file_action(self, widget, _):
@@ -87,5 +125,5 @@ class Application(Adw.Application):
 
 
 def main(version):
-    app = Application()
+    app = Application(version)
     return app.run(sys.argv)
