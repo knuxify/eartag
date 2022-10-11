@@ -77,11 +77,10 @@
                     </style>
 
                     <child>
-                      <object class="EartagTagListItem" id="tracknumber_entry">
+                      <object class="EartagTagListDoubleItem" id="tracknumber_entry">
                         <property name="title" translatable="yes">Track number</property>
                         <property name="max-width-chars">4</property>
                         <property name="double-separator">/</property>
-                        <property name="is-double">true</property>
                         <property name="is-numeric">true</property>
                       </object>
                     </child>
