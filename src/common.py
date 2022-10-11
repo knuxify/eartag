@@ -131,10 +131,10 @@ class EartagMultipleValueEntry:
 
         property = (is_double and self.properties[1]) or self.properties[0]
         if has_multiple_files and self._multiple_values_check(file, property):
-            entry.set_placeholder_text(_multiple_values)
             self.ignore_edit[property] = True
             entry.set_text('')
             self.ignore_edit[property] = False
+            entry.set_placeholder_text(_multiple_values)
         else:
             self.ignore_edit[property] = True
             entry.set_text(str(file.get_property(property)) or '')

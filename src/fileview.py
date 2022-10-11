@@ -206,38 +206,7 @@ class EartagAlbumCoverButton(Adw.Bin):
     def on_unhover(self, *args):
         self.highlight_revealer.set_reveal_child(False)
 
-class EartagTagListItem(Adw.ActionRow, EartagMultipleValueEntry):
-    __gtype_name__ = 'EartagTagListItem'
-
-    _is_double = False
-    _is_numeric = False
-    _max_width_chars = -1
-
-    value_entry_double = None
-
-    def __init__(self):
-        super().__init__(can_target=False, focusable=False, focus_on_click=False)
-        self.suffixes = Gtk.Box(valign=Gtk.Align.CENTER, halign=Gtk.Align.END, spacing=6)
-        self.add_suffix(self.suffixes)
-
-        self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
-        self.value_entry.connect('changed', self.on_changed, False)
-        self.suffixes.append(self.value_entry)
-
-        self.double_separator_label = Gtk.Label(valign=Gtk.Align.CENTER, visible=False)
-        self.suffixes.append(self.double_separator_label)
-
-        self.value_entry_double = Gtk.Entry(valign=Gtk.Align.CENTER, visible=False)
-        self.value_entry_double.connect('changed', self.on_changed, True)
-        self.suffixes.append(self.value_entry_double)
-
-        self.set_activatable_widget(self.value_entry)
-        self.connect('destroy', self.on_destroy)
-
-        self.files = []
-        self.properties = []
-        self.ignore_edit = {}
-
+class EartagTagListItemBase:
     def on_destroy(self, *args):
         self.files = []
 
@@ -250,22 +219,37 @@ class EartagTagListItem(Adw.ActionRow, EartagMultipleValueEntry):
             return
 
         if property_double:
+            if not self._is_double:
+                raise ValueError
             self.properties = [property, property_double]
             self.ignore_edit[property_double] = False
         else:
             self.properties = [property]
         self.ignore_edit[property] = False
 
-    @GObject.Property(type=int, default=-1)
-    def max_width_chars(self):
-        return self._max_width_chars
+class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValueEntry):
+    __gtype_name__ = 'EartagTagListItem'
 
-    @max_width_chars.setter
-    def max_width_chars(self, value):
-        self._max_width_chars = value
-        self.value_entry.set_max_width_chars(value)
-        if self._is_double:
-            self.value_entry_double.set_max_width_chars(value)
+    _is_double = False
+    _is_numeric = False
+
+    def __init__(self):
+        super().__init__(use_markup=True)
+        self._title = self.get_title()
+
+        self.value_entry = self # for compatibility
+
+        self.connect('changed', self.on_changed, False)
+        self.connect('destroy', self.on_destroy)
+
+        self.files = []
+        self.properties = []
+        self.ignore_edit = {}
+        self._placeholder = ''
+
+    @GObject.Property(type=bool, default=False)
+    def is_double(self):
+        return False
 
     @GObject.Property(type=bool, default=False)
     def is_numeric(self):
@@ -275,11 +259,65 @@ class EartagTagListItem(Adw.ActionRow, EartagMultipleValueEntry):
     def is_numeric(self, value):
         self._is_numeric = value
         if value == True:
-            self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
-            if self._is_double:
-                self.value_entry_double.set_input_purpose(Gtk.InputPurpose.DIGITS)
-                self.value_entry_double.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+            self.set_input_purpose(Gtk.InputPurpose.DIGITS)
+            self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+
+    def set_placeholder_text(self, text):
+        """
+        This is used by EartagMultipleValueEntry to show a placeholder value
+        when there are multiple files selected.
+
+        In the case of AdwEntryRows, the title acts as the placeholder,
+        but if we overrode the title, then the purpose of the field wouldn't
+        be displayed.
+
+        So, instead, we append the placeholder to the title, and remove it when
+        the state changes.
+        """
+        self._placeholder = text
+        if text:
+            # TODO: it would be nice to have the placeholder text highlighted in bold,
+            # currently https://gitlab.gnome.org/GNOME/libadwaita/-/issues/579 is
+            # preventing us from doing that but i got a fix for it merged; revisit once
+            # the next minor libadwaita release is out
+            self.set_title(self.get_title() + ' ' + text)
+        else:
+            if self._title:
+                self.set_title(self._title)
+            else:
+                # This if-else statement is a workaround for cases where the _title
+                # variable doesn't get initialized properly.
+                self._title = self.get_title()
+
+class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultipleValueEntry):
+    __gtype_name__ = 'EartagTagListDoubleItem'
+
+    _is_double = True
+    _is_numeric = False
+    _max_width_chars = -1
+
+    def __init__(self):
+        super().__init__(can_target=False, focusable=False, focus_on_click=False)
+        self.suffixes = Gtk.Box(valign=Gtk.Align.CENTER, halign=Gtk.Align.END, spacing=6)
+        self.add_suffix(self.suffixes)
+
+        self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
+        self.value_entry.connect('changed', self.on_changed, False)
+        self.suffixes.append(self.value_entry)
+
+        self.double_separator_label = Gtk.Label(valign=Gtk.Align.CENTER)
+        self.suffixes.append(self.double_separator_label)
+
+        self.value_entry_double = Gtk.Entry(valign=Gtk.Align.CENTER)
+        self.value_entry_double.connect('changed', self.on_changed, True)
+        self.suffixes.append(self.value_entry_double)
+
+        self.set_activatable_widget(self.value_entry)
+        self.connect('destroy', self.on_destroy)
+
+        self.files = []
+        self.properties = []
+        self.ignore_edit = {}
 
     @GObject.Property(type=str, default='')
     def double_separator(self):
@@ -296,19 +334,31 @@ class EartagTagListItem(Adw.ActionRow, EartagMultipleValueEntry):
 
     @GObject.Property(type=bool, default=False)
     def is_double(self):
-        return self._is_double
+        return True
 
-    @is_double.setter
-    def is_double(self, value):
-        self._is_double = value
-        if value:
-            self.value_entry_double.set_visible(True)
+    @GObject.Property(type=int, default=-1)
+    def max_width_chars(self):
+        return self._max_width_chars
+
+    @max_width_chars.setter
+    def max_width_chars(self, value):
+        self._max_width_chars = value
+        self.value_entry.set_max_width_chars(value)
+        self.value_entry_double.set_max_width_chars(value)
+
+    @GObject.Property(type=bool, default=False)
+    def is_numeric(self):
+        return self._is_numeric
+
+    @is_numeric.setter
+    def is_numeric(self, value):
+        self._is_numeric = value
+        if value == True:
+            self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
+            self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
 
             self.value_entry_double.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.value_entry_double.get_delegate().connect('insert-text', self.disallow_nonnumeric)
-            self.value_entry_double.set_max_width_chars(self.max_width_chars)
-        else:
-            self.value_entry_double.set_visible(False)
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
