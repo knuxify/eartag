@@ -34,53 +34,42 @@ from .sidebar import EartagSidebar
 from gi.repository import Adw, Gdk, GLib, Gio, Gtk, GObject
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/discardwarning.ui')
-class EartagDiscardWarningDialog(Gtk.MessageDialog):
+class EartagDiscardWarningDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagDiscardWarningDialog'
 
     def __init__(self, window, paths):
-        super().__init__(transient_for=window)
+        super().__init__(modal=True, transient_for=window)
         self.paths = paths
         self.file_manager = window.file_manager
 
     @Gtk.Template.Callback()
-    def on_dbutton_discard(self, *args):
-        self.file_manager.load_multiple_files(self.paths, mode=EartagFileManager.LOAD_OVERWRITE)
-        self.close()
-
-    @Gtk.Template.Callback()
-    def on_dbutton_cancel(self, *args):
-        self.close()
-
-    @Gtk.Template.Callback()
-    def on_dbutton_save(self, *args):
-        if not self.file_manager.save():
-            return False
-        self.file_manager.load_multiple_files(self.paths, mode=EartagFileManager.LOAD_OVERWRITE)
+    def handle_response(self, dialog, response):
+        if response == 'save':
+            if not self.file_manager.save():
+                return False
+        if response != 'cancel':
+            self.file_manager.load_multiple_files(self.paths, mode=EartagFileManager.LOAD_OVERWRITE)
         self.close()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/closewarning.ui')
-class EartagCloseWarningDialog(Gtk.MessageDialog):
+class EartagCloseWarningDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagCloseWarningDialog'
 
     def __init__(self, window):
-        super().__init__(transient_for=window)
+        super().__init__(modal=True, transient_for=window)
         self.window = window
         self.file_manager = window.file_manager
 
     @Gtk.Template.Callback()
-    def on_button_discard(self, *args):
-        self.window.force_close = True
-        self.window.close()
-
-    @Gtk.Template.Callback()
-    def on_button_cancel(self, *args):
+    def handle_response(self, dialog, response):
+        if response == 'discard':
+            self.window.force_close = True
+            self.window.close()
+        elif response == 'save':
+            if not self.file_manager.save():
+                return False
+            self.window.close()
         self.close()
-
-    @Gtk.Template.Callback()
-    def on_button_save(self, *args):
-        if not self.file_manager.save():
-            return False
-        self.window.close()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):

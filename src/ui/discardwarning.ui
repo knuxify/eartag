@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="EartagDiscardWarningDialog" parent="GtkMessageDialog">
-    <property name="text" translatable="yes">Save changes before opening another file?</property>
-    <property name="secondary-text" translatable="yes">If you don't save your changes, they will be permanently lost.</property>
+  <template class="EartagDiscardWarningDialog" parent="AdwMessageDialog">
+    <property name="heading" translatable="yes">Save changes before opening another file?</property>
+    <property name="body" translatable="yes">If you don't save your changes, they will be permanently lost.</property>
+    <property name="close-response">cancel</property>
+    <property name="default-response">save</property>
+    <signal name="response" handler="handle_response"/>
 
-    <child type="action">
-      <object class="GtkButton" id="button_discard">
-        <property name="label" translatable="yes">Discard changes and open</property>
-        <signal name="clicked" handler="on_dbutton_discard"/>
-        <style>
-          <class name="destructive-action"/>
-        </style>
-      </object>
-    </child>
-
-    <child type="action">
-      <object class="GtkButton" id="button_cancel">
-        <property name="label" translatable="yes">Cancel</property>
-        <signal name="clicked" handler="on_dbutton_cancel"/>
-      </object>
-    </child>
-
-    <child type="action">
-      <object class="GtkButton" id="button_save">
-        <property name="label" translatable="yes">Save</property>
-        <signal name="clicked" handler="on_dbutton_save"/>
-      </object>
-    </child>
+    <responses>
+      <response id="cancel" translatable="yes">_Cancel</response>
+      <response id="discard" translatable="yes" appearance="destructive">_Discard changes and open</response>
+      <response id="save" translatable="yes">_Save and open</response>
+    </responses>
   </template>
 </interface>

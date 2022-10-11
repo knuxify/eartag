@@ -228,29 +228,20 @@ class EartagFileManager(GObject.Object):
         self.selected_files = list(self.files)
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/removaldiscardwarning.ui')
-class EartagRemovalDiscardWarningDialog(Gtk.MessageDialog):
+class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagRemovalDiscardWarningDialog'
 
     def __init__(self, file_manager, file):
-        super().__init__(transient_for=file_manager.window)
+        super().__init__(modal=True, transient_for=file_manager.window)
         self.file_manager = file_manager
         self.file = file
 
     @Gtk.Template.Callback()
-    def on_rdbutton_discard(self, *args):
-        self.file_manager.remove(self.file, force_discard=True)
-        self.file = None
-        self.close()
-
-    @Gtk.Template.Callback()
-    def on_rdbutton_cancel(self, *args):
-        self.file = None
-        self.close()
-
-    @Gtk.Template.Callback()
-    def on_rdbutton_save(self, *args):
-        if not self.file_manager.save():
-            return False
-        self.file_manager.remove(self.file, force_discard=True)
+    def handle_response(self, dialog, response):
+        if response == 'save':
+            if not self.file_manager.save():
+                return False
+        if response != 'cancel':
+            self.file_manager.remove(self.file, force_discard=True)
         self.file = None
         self.close()
