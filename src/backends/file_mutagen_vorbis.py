@@ -89,7 +89,7 @@ class EartagFileMutagenVorbis(EartagFile):
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def bitrate(self):
         # in bps, needs conversion
-        return round(self.mg_file.info.bitrate / 1000, 0)
+        return int(round(self.mg_file.info.bitrate / 1000, 0))
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def channels(self):
