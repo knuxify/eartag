@@ -89,10 +89,19 @@ class Application(Adw.Application):
             about.props.translator_credits = self._('translator-credits')
 
         lib_versions = []
+
+        lib_versions.append(f"gtk4: {Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}")
+        lib_versions.append(f"libadwaita: {Adw.get_major_version()}.{Adw.get_minor_version()}.{Adw.get_micro_version()}")
+
         import taglib
         lib_versions.append(f"pytaglib: {taglib.version}")
         import eyed3
         lib_versions.append(f"eyed3: {eyed3.version}")
+        import magic
+        try:
+            lib_versions.append(f"libmagic: {magic.version()}")
+        except NotImplementedError:
+            lib_versions.append(f"libmagic: version data N/A")
         try:
             import mutagen
         except ImportError:
@@ -105,7 +114,24 @@ class Application(Adw.Application):
             lib_versions.append("pillow: not available")
         else:
             lib_versions.append(f"pillow: {PIL.__version__}")
-        about.set_debug_info('\n'.join(lib_versions))
+
+        lib_version_str = '\n - '.join(lib_versions)
+
+        opened_file_list = []
+        for file in self.props.active_window.file_manager.files:
+            opened_file_list.append(f'{os.path.split(file.path)[-1]}, {magic.Magic(mime=True).from_file(file.path)}, {file.__gtype_name__}')
+
+        opened_file_list_str = '\n - '.join(opened_file_list) or 'None'
+
+        about.set_debug_info(f'''Ear Tag {self.version}
+
+Running in Flatpak: {os.path.exists('/.flatpak-info') and 'YES' or 'NO'}
+
+Dependency versions:
+ - {lib_version_str}
+
+Opened files:
+ - {opened_file_list_str}''')
 
         about.set_modal(True)
         about.set_transient_for(self.props.active_window)
