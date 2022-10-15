@@ -228,7 +228,12 @@ class EartagFileEyed3(EartagFile):
     @releaseyear.setter
     def releaseyear(self, value):
         try:
+            # set TDRL tag
             self.e3_file.tag.release_date = int(value)
+            # set TDRC tag. Many applications use this for release 
+            # date regardless of the fact that this value is rarely 
+            # known, and release dates are more correct
+            self.e3_file.tag.recording_date = int(value)
         except ValueError:
             # eyed3 is very loud about "incorrect release dates". Shut it up.
             pass
