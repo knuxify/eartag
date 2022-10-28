@@ -41,7 +41,7 @@ def eartagfile_from_path(path):
         raise ValueError
 
     mimetypes_guess = mimetypes.guess_type(path)[0]
-    magic_guess = magic.Magic(mime=True).from_file(path)
+    magic_guess = magic.from_file(path, mime=True)
 
     is_type = lambda type: mimetypes_guess == type or magic_guess == type
 

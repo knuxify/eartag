@@ -119,7 +119,7 @@ class Application(Adw.Application):
 
         opened_file_list = []
         for file in self.props.active_window.file_manager.files:
-            opened_file_list.append(f'{os.path.split(file.path)[-1]}, {magic.Magic(mime=True).from_file(file.path)}, {file.__gtype_name__}')
+            opened_file_list.append(f'{os.path.split(file.path)[-1]}, {magic.from_file(file.path, mime=True)}, {file.__gtype_name__}')
 
         opened_file_list_str = '\n - '.join(opened_file_list) or 'None'
 

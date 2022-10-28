@@ -76,7 +76,7 @@ class EartagFileEyed3(EartagFile):
     @cover_path.setter
     def cover_path(self, value):
         self._cover_path = value
-        mime_type = magic.Magic(mime=True).from_file(value)
+        mime_type = magic.from_file(value, mime=True)
         with open(value, 'rb') as cover_art:
             # TODO: We currently set the cover to 0 (OTHER), we should give
             # the user the option to use FRONT_COVER, with the necessary

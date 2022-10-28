@@ -52,7 +52,7 @@ class EartagFileMutagenVorbis(EartagFile):
     def __init__(self, path):
         super().__init__(path)
         if mimetypes.guess_type(path)[0] == 'audio/flac' or \
-                magic.Magic(mime=True).from_file(path) == 'audio/flac':
+                magic.from_file(path, mime=True) == 'audio/flac':
             self.mg_file = FLAC(path)
         else:
             self.mg_file = OggVorbis(path)
@@ -97,7 +97,7 @@ class EartagFileMutagenVorbis(EartagFile):
 
     @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
     def filetype(self):
-        mimetype = magic.Magic(mime=True).from_file(self.path)
+        mimetype = magic.from_file(self.path, mime=True)
         if mimetype == 'audio/flac':
             return 'flac'
         else:
@@ -120,7 +120,7 @@ class EartagFileMutagenVorbis(EartagFile):
         picture = Picture()
         picture.data = data
         picture.type = 17
-        picture.mime = magic.Magic(mime=True).from_file(value)
+        picture.mime = magic.from_file(value, mime=True)
         img = Image.open(value)
         picture.width = img.width
         picture.height = img.height

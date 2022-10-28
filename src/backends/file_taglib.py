@@ -76,7 +76,7 @@ class EartagFileTagLib(EartagFile):
 
     @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
     def filetype(self):
-        mimetype = magic.Magic(mime=True).from_file(self.path)
+        mimetype = magic.from_file(self.path, mime=True)
         mimetype_ext = mimetypes.guess_extension(mimetype)
         if not mimetype_ext:
             mimetype_ext = os.path.splitext(self.path)[-1]

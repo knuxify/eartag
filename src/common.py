@@ -62,7 +62,7 @@ def is_valid_music_file(path):
     if not os.path.exists(path):
         return False
 
-    mimetype = magic.Magic(mime=True).from_file(path)
+    mimetype = magic.from_file(path, mime=True)
     if mimetype == 'application/octet-stream':
         # Try to guess mimetype from filetype if magic fails
         mimetype = mimetypes.guess_type(path)[0]
@@ -79,7 +79,7 @@ def is_valid_image_file(path):
     if not os.path.exists(path):
         return False
 
-    mimetype = magic.Magic(mime=True).from_file(path)
+    mimetype = magic.from_file(path, mime=True)
     if mimetype == 'application/octet-stream':
         # Try to guess mimetype from filetype if magic fails
         mimetype = mimetypes.guess_type(path)[0]
