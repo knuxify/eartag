@@ -31,6 +31,7 @@ import magic
 import mimetypes
 import os.path
 import traceback
+import threading
 
 from .backends import EartagFileEyed3, EartagFileTagLib, EartagFileMutagenVorbis
 from .backends.file import EartagFile
@@ -65,6 +66,8 @@ class EartagFileManager(GObject.Object):
 
     _is_modified = False
     _selected_files = []
+    _loading_progress = 0
+    _is_loading_multiple_files = False
 
     def __init__(self, window):
         super().__init__()
@@ -92,6 +95,10 @@ class EartagFileManager(GObject.Object):
         """Loads a file."""
         if path in self.file_paths:
             return False
+
+        if not self._is_loading_multiple_files:
+            self._loading_progress = 0
+            self.notify('loading_progress')
 
         _selection_override = False
         file_basename = os.path.basename(path)
@@ -136,23 +143,38 @@ class EartagFileManager(GObject.Object):
 
         return True
 
-    def load_multiple_files(self, paths, mode=1):
+    def _load_multiple_files(self, paths, mode=1):
         """Loads files with the provided paths."""
+        self._is_loading_multiple_files = True
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
             self.file_paths = []
             self._selected_files = []
 
+        file_count = len(paths)
+        progress_step = 1 / file_count
+
         for path in paths:
             if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False):
                 self.emit('files_loaded')
                 self.update_modified_status()
+                self._is_loading_multiple_files = False
                 return False
+            self._loading_progress += progress_step
+            self.notify('loading_progress')
 
         self.emit('files_loaded')
+        self._loading_progress = 0
+        self.notify('loading_progress')
         self.update_modified_status()
         if mode == self.LOAD_OVERWRITE:
             self.emit('selection_override')
+        self._is_loading_multiple_files = False
+
+    def load_multiple_files(self, *args, **kwargs):
+        """Loads files with the provided paths."""
+        thread = threading.Thread(target=self._load_multiple_files, daemon=True, args=args, kwargs=kwargs)
+        thread.start()
 
     def save(self):
         """Saves changes in all files."""
@@ -228,6 +250,10 @@ class EartagFileManager(GObject.Object):
 
     def select_all(self, *args):
         self.selected_files = list(self.files)
+
+    @GObject.Property(type=float, default=0.0)
+    def loading_progress(self):
+        return self._loading_progress
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/removaldiscardwarning.ui')
 class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):

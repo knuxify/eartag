@@ -310,6 +310,9 @@ class EartagSidebar(Gtk.Box):
     remove_selected_button = Gtk.Template.Child()
     selected_message_label = Gtk.Template.Child()
 
+    loading_progressbar = Gtk.Template.Child()
+    loading_progressbar_revealer = Gtk.Template.Child()
+
     def __init__(self):
         super().__init__()
 
@@ -326,7 +329,17 @@ class EartagSidebar(Gtk.Box):
         self.file_manager.connect('files-loaded', self.refresh_actionbar_button_state)
         self.file_manager.files.connect('items-changed', self.refresh_actionbar_button_state)
         self.file_manager.connect('selection-changed', self.refresh_actionbar_button_state)
+        self.file_manager.connect('notify::loading-progress', self.update_loading_progressbar)
         self.refresh_actionbar_button_state()
+
+    def update_loading_progressbar(self, *args):
+        """
+        Updates the loading progressbar's position.
+        """
+        loading_progress = self.file_manager.get_property('loading-progress')
+        self.loading_progressbar_revealer.set_reveal_child(not loading_progress == 0)
+        self.set_sensitive(loading_progress == 0)
+        self.loading_progressbar.set_fraction(loading_progress)
 
     def toggle_fileview(self, *args):
         """
