@@ -238,7 +238,7 @@ class EartagFileManager(GObject.Object):
         if file in self.selected_files:
             self._selected_files.remove(file)
             if not self.selected_files and self.files:
-                self.selected_files.append(self.files.get_item(0))
+                self._selected_files.append(self.files.get_item(0))
             self.emit('selection-changed')
             self.emit('selection_override')
         self.update_modified_status()
