@@ -238,7 +238,7 @@ class EartagFileList(Gtk.ListView):
             first_selected_file = self.file_manager.selected_files[0]
             for file in self.file_manager.selected_files:
                 if file != first_selected_file:
-                    self.file_manager.selected_files.remove(file)
+                    self.file_manager._selected_files.remove(file)
 
             for item_no in range(0, self.filter_model.get_n_items()):
                 if self.filter_model.get_item(item_no) == first_selected_file:
@@ -373,7 +373,8 @@ class EartagSidebar(Gtk.Box):
 
     @Gtk.Template.Callback()
     def remove_selected(self, *args):
-        for file in self.file_manager.selected_files:
+        old_selected = self.file_manager.selected_files.copy()
+        for file in old_selected:
             self.file_manager.remove(file)
 
     def refresh_actionbar_button_state(self, *args):
