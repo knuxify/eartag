@@ -96,7 +96,7 @@ class EartagFileManager(GObject.Object):
     def load_file(self, path, mode=0, emit_loaded=True):
         """Loads a file."""
         if path in self.file_paths:
-            return False
+            return True
 
         if not self._is_loading_multiple_files:
             self._loading_progress = 0
