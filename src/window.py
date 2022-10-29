@@ -123,6 +123,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
                             GObject.BindingFlags.SYNC_CREATE)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
+        self.file_manager.connect('notify::loading-progress', self.update_loading_progress)
         self.sidebar_search_button.bind_property(
             'active',
             self.sidebar.search_bar, 'search-mode-enabled',
@@ -151,6 +152,13 @@ class EartagWindow(Adw.ApplicationWindow):
         self.add_controller(self.drop_target)
 
         self.toggle_fileview()
+
+    def update_loading_progress(self, *args):
+        loading_progress = self.file_manager.get_property('loading-progress')
+        is_loading = not loading_progress == 0
+        self.select_multiple_button.set_sensitive(not is_loading)
+        self.sidebar_search_button.set_sensitive(not is_loading)
+        self.sort_button.set_sensitive(not is_loading)
 
     def toggle_fileview(self, *args):
         """
