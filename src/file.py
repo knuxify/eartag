@@ -167,6 +167,8 @@ class EartagFileManager(GObject.Object):
             if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False):
                 self.emit('files_loaded')
                 self.update_modified_status()
+                self._loading_progress = 0
+                self.notify('loading_progress')
                 self._is_loading_multiple_files = False
                 return False
             self._loading_progress += progress_step
