@@ -27,7 +27,6 @@
       </object>
     </child>
 
-
     <child>
       <object class="GtkStack" id="list_stack">
         <property name="transition-type">crossfade</property>
