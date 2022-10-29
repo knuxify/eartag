@@ -32,6 +32,7 @@ import mimetypes
 import os.path
 import traceback
 import threading
+import time
 
 from .backends import EartagFileEyed3, EartagFileTagLib, EartagFileMutagenVorbis
 from .backends.file import EartagFile
@@ -68,6 +69,7 @@ class EartagFileManager(GObject.Object):
     _selected_files = []
     _loading_progress = 0
     _is_loading_multiple_files = False
+    _halt_loading = False
 
     def __init__(self, window):
         super().__init__()
@@ -146,6 +148,8 @@ class EartagFileManager(GObject.Object):
     def _load_multiple_files(self, paths, mode=1):
         """Loads files with the provided paths."""
         self._is_loading_multiple_files = True
+        self._loading_progress = 0
+        self.notify('loading_progress')
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
             self.file_paths = []
@@ -155,6 +159,11 @@ class EartagFileManager(GObject.Object):
         progress_step = 1 / file_count
 
         for path in paths:
+            if self._halt_loading:
+                # We don't emit "files-loaded" here because the only case where loading is
+                # halted this way is if another load operation is about to begin
+                self._is_loading_multiple_files = False
+                return False
             if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False):
                 self.emit('files_loaded')
                 self.update_modified_status()
@@ -173,6 +182,11 @@ class EartagFileManager(GObject.Object):
 
     def load_multiple_files(self, *args, **kwargs):
         """Loads files with the provided paths."""
+        if self._is_loading_multiple_files:
+            self._halt_loading = True
+            while self._is_loading_multiple_files:
+                time.sleep(0.25)
+            self._halt_loading = False
         thread = threading.Thread(target=self._load_multiple_files, daemon=True, args=args, kwargs=kwargs)
         thread.start()
 
