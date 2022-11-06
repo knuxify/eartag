@@ -39,6 +39,11 @@ localedir = '@localedir@'
 
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
+try:
+    locale.bindtextdomain('app.drey.EarTag', localedir)
+    locale.textdomain('app.drey.EarTag')
+except:
+    print("Python built without locale support, some translations may not work!")
 gettext.install('app.drey.EarTag', localedir)
 
 if __name__ == '__main__':
