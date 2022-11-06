@@ -78,10 +78,12 @@ class EartagFileEyed3(EartagFile):
         self._cover_path = value
         mime_type = magic.from_file(value, mime=True)
         with open(value, 'rb') as cover_art:
-            # TODO: We currently set the cover to 0 (OTHER), we should give
-            # the user the option to use FRONT_COVER, with the necessary
-            # warnings about incompatibilities, etc.
-            self.e3_file.tag.images.set(0, cover_art.read(), mime_type)
+            # TODO: We currently set the cover to both 0 (OTHER) and
+            # 3 (FRONT_COVER). It would be nice to allow the user to
+            # select one of these only.
+            cover_art_data = cover_art.read()
+            self.e3_file.tag.images.set(0, cover_art_data, mime_type)
+            self.e3_file.tag.images.set(3, cover_art_data, mime_type)
         self.mark_as_modified()
 
     def load_cover(self):
