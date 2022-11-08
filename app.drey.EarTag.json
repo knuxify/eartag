@@ -1,14 +1,13 @@
 {
     "app-id" : "app.drey.EarTag",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "42",
+    "runtime-version" : "43",
     "sdk" : "org.gnome.Sdk",
     "command" : "eartag",
     "finish-args" : [
 		"--filesystem=xdg-pictures:ro",
 		"--filesystem=xdg-music:rw",
 		"--filesystem=xdg-download:rw",
-		"--filesystem=/run/media:rw",
         "--share=network",
         "--share=ipc",
         "--socket=fallback-x11",
@@ -28,6 +27,20 @@
     ],
     "modules" : [
         {
+            "name": "taglib",
+            "builddir": true,
+            "buildsystem": "cmake-ninja",
+            "config-opts": ["-DWITH_ASF=ON", "-DWITH_MP4=ON", "-DBUILD_SHARED_LIBS=ON"],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://taglib.github.io/releases/taglib-1.12.tar.gz",
+                    "sha512": "7e369faa5e3c6c6401052b7a19e35b0cf8c1e5ed9597053ac731a7718791d5d4803d1b18a93e903ec8c3fc6cb92e34d9616daa2ae4d326965d4c4d5624dcdaba"
+                }
+            ]
+        },
+        "flatpak-python-modules.json",
+        {
             "name" : "eartag",
             "builddir" : true,
             "buildsystem" : "meson",
@@ -35,23 +48,10 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/knuxify/eartag.git",
-					"branch": "main"
+                    "tag": "0.2.1",
+                    "commit": "af529a703c3b94834dba7fb0444715375b2ef789"
                 }
             ]
-        },
-		{
-			"name": "taglib",
-			"builddir": true,
-			"buildsystem": "cmake-ninja",
-			"config-opts": ["-DWITH_ASF=ON", "-DWITH_MP4=ON", "-DBUILD_SHARED_LIBS=ON"],
-			"sources": [
-				{
-					"type": "archive",
-					"url": "https://taglib.github.io/releases/taglib-1.12.tar.gz",
-					"sha512": "7e369faa5e3c6c6401052b7a19e35b0cf8c1e5ed9597053ac731a7718791d5d4803d1b18a93e903ec8c3fc6cb92e34d9616daa2ae4d326965d4c4d5624dcdaba"
-				}
-			]
-		},
-		"data/flatpak-python3-modules.json"
+        }
     ]
 }
