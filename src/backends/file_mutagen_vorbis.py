@@ -312,7 +312,10 @@ class EartagFileMutagenVorbis(EartagFile):
 
     @GObject.Property(type=int)
     def releaseyear(self):
-        return self._get_tag('date')
+        _date = self._get_tag('date')
+        if _date:
+            return int(_date)
+        return None
 
     @releaseyear.setter
     def releaseyear(self, value):

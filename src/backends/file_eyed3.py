@@ -118,7 +118,7 @@ class EartagFileEyed3(EartagFile):
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def length(self):
-        return self.e3_file.info.time_secs
+        return int(self.e3_file.info.time_secs)
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def bitrate(self):
