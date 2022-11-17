@@ -72,7 +72,7 @@ class EartagFileTagLib(EartagFile):
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def channels(self):
-        channels = self.tl_file.channels
+        return self.tl_file.channels
 
     @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
     def filetype(self):
