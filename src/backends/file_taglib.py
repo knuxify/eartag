@@ -180,12 +180,12 @@ class EartagFileTagLib(EartagFile):
     @GObject.Property(type=int)
     def releaseyear(self):
         if 'DATE' in self.tl_file.tags and self.tl_file.tags['DATE']:
-            return self.tl_file.tags['DATE'][0]
+            return int(self.tl_file.tags['DATE'][0])
         return None
 
     @releaseyear.setter
     def releaseyear(self, value):
-        self.tl_file.tags['DATE'] = [value]
+        self.tl_file.tags['DATE'] = [str(value)]
         self.mark_as_modified()
 
     @GObject.Property(type=str)
