@@ -509,10 +509,10 @@ class EartagFileView(Gtk.Stack):
             window.run_sort()
 
     def setup_entry(self, file, entry, property, property_double=None):
-        if type(entry) == EartagTagListItem:
+        if isinstance(entry, EartagTagListItem) or isinstance(entry, EartagTagListDoubleItem):
             entry._set_property(property, property_double)
             entry.bind_to_file(file)
-        elif type(entry) == EartagEditableLabel:
+        elif isinstance(entry, EartagEditableLabel):
             entry.properties = [property]
             entry.ignore_edit = {property: False}
             entry.bind_to_file(file)
