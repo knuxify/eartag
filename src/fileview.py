@@ -274,6 +274,8 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
         So, instead, we append the placeholder to the title, and remove it when
         the state changes.
         """
+        if self._placeholder and text:
+            return
         self._placeholder = text
         if text:
             # TODO: it would be nice to have the placeholder text highlighted in bold,
