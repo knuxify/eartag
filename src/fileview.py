@@ -521,9 +521,9 @@ class EartagFileView(Gtk.Stack):
             entry.notify('text')
 
     def unbind_entry(self, file, entry):
-        if type(entry) == EartagTagListItem:
+        if isinstance(entry, EartagTagListItem) or isinstance(entry, EartagTagListDoubleItem):
             entry.unbind_from_file(file)
-        elif type(entry) == EartagEditableLabel:
+        elif isinstance(entry, EartagEditableLabel):
             entry.unbind_from_file(file)
             entry.notify('text')
 
