@@ -225,7 +225,7 @@ class EartagFileEyed3(EartagFile):
     def releaseyear(self):
         if self.e3_file.tag.release_date:
             return self.e3_file.tag.release_date.year
-        return None
+        return -1
 
     @releaseyear.setter
     def releaseyear(self, value):
