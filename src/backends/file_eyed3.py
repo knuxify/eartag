@@ -170,7 +170,7 @@ class EartagFileEyed3(EartagFile):
     def tracknumber(self):
         if self.e3_file.tag.track_num:
             return int(self.e3_file.tag.track_num[0] or -1)
-        return None
+        return -1
 
     @tracknumber.setter
     def tracknumber(self, value):
@@ -181,7 +181,7 @@ class EartagFileEyed3(EartagFile):
     def totaltracknumber(self):
         if self.e3_file.tag.track_num:
             return int(self.e3_file.tag.track_num[1] or -1)
-        return None
+        return -1
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):

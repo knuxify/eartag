@@ -138,7 +138,13 @@ class EartagMultipleValueEntry:
             entry.set_placeholder_text(_multiple_values)
         else:
             self.ignore_edit[property] = True
-            entry.set_text(str(file.get_property(property)) or '')
+            value = file.get_property(property)
+            if isinstance(value, int) and value != -1:
+                entry.set_text(str(file.get_property(property))) # Ignore this warning, PyGObject won't actually accept a non-string here
+            elif value:
+                entry.set_text(str(file.get_property(property)))
+            else:
+                entry.set_text('')
             self.ignore_edit[property] = False
             entry.set_placeholder_text('')
 
