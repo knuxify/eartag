@@ -1,6 +1,7 @@
 from src.backends.file import EartagFile
 import os
 import shutil
+import filecmp
 
 prop_to_example_string = {
     'title': 'Example Title',
@@ -14,40 +15,57 @@ prop_to_example_string = {
     'comment': 'Example Comment'
 }
 
+EXAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'examples')
+
 def run_backend_tests(file_class, extension):
-    examples_dir = os.path.join(os.path.dirname(__file__), 'examples')
-    file_read = file_class(os.path.join(examples_dir, f'example.{extension}'))
+    file_read = file_class(os.path.join(EXAMPLES_DIR, f'example.{extension}'))
     backend_read(file_read)
 
     shutil.copyfile(
-        os.path.join(examples_dir, f'example-notags.{extension}'),
-        os.path.join(examples_dir, f'_example-notags-fortest.{extension}')
+        os.path.join(EXAMPLES_DIR, f'example-notags.{extension}'),
+        os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}')
     )
-    file_write = file_class(os.path.join(examples_dir, f'_example-notags-fortest.{extension}'))
+    file_write = file_class(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
     backend_write(file_write)
-    os.remove(os.path.join(examples_dir, f'_example-notags-fortest.{extension}'))
+    os.remove(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
 
 def backend_read(file):
     """Tests common backend read functions."""
-    for prop in EartagFile.handled_properties:
+    for prop in file.handled_properties:
         try:
             assert file.get_property(prop) == prop_to_example_string[prop]
         except AssertionError:
             raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})')
 
+    if file._supports_album_covers:
+        assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'))
+
     assert file.get_property('is_modified') == False
     assert file.get_property('channels') == 1
     assert file.get_property('length') == 1
-    # There's no exact way for us to know the bitrate, it differs between
-    # each file...
+    assert file.get_property('bitrate') != 0
+
+def backend_read_empty(file):
+    for prop in file.handled_properties:
+        try:
+            assert not file.get_property(prop) or (isinstance(file.get_property(prop), int) and file.get_property(prop) == -1)
+        except AssertionError:
+            raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')
+
+    assert file.get_property('is_modified') == False
+    assert not file.get_property('cover_path')
 
 def backend_write(file):
     """Tests common backend write functions."""
-    for prop in EartagFile.handled_properties:
-        assert file.get_property(prop) != prop_to_example_string[prop]
+    backend_read_empty(file)
 
-    for prop in EartagFile.handled_properties:
+    for prop in file.handled_properties:
         file.set_property(prop, prop_to_example_string[prop])
+
+    if file._supports_album_covers:
+        file.set_property('cover_path', os.path.join(EXAMPLES_DIR, f'cover.png'))
+
+    assert file.get_property('is_modified') == True
 
     file.save()
 
