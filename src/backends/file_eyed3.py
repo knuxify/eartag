@@ -170,22 +170,28 @@ class EartagFileEyed3(EartagFile):
     def tracknumber(self):
         if self.e3_file.tag.track_num:
             return int(self.e3_file.tag.track_num[0] or -1)
-        return -1
+        return None
 
     @tracknumber.setter
     def tracknumber(self, value):
-        self.e3_file.tag.track_num = (value, self.e3_file.tag.track_num[1])
+        if value < 1:
+            self.e3_file.tag.track_num = (None, self.e3_file.tag.track_num[1])
+        else:
+            self.e3_file.tag.track_num = (value, self.e3_file.tag.track_num[1])
         self.mark_as_modified()
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
         if self.e3_file.tag.track_num:
             return int(self.e3_file.tag.track_num[1] or -1)
-        return -1
+        return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
-        self.e3_file.tag.track_num = (self.e3_file.tag.track_num[0], value)
+        if value < 1:
+            self.e3_file.tag.track_num = (self.e3_file.tag.track_num[0], None)
+        else:
+            self.e3_file.tag.track_num = (self.e3_file.tag.track_num[0], value)
         self.mark_as_modified()
 
     @GObject.Property(type=str)
@@ -225,20 +231,29 @@ class EartagFileEyed3(EartagFile):
     def releaseyear(self):
         if self.e3_file.tag.release_date:
             return self.e3_file.tag.release_date.year
-        return -1
+        return None
 
     @releaseyear.setter
     def releaseyear(self, value):
-        try:
-            # set TDRL tag
-            self.e3_file.tag.release_date = int(value)
-            # set TDRC tag. Many applications use this for release 
-            # date regardless of the fact that this value is rarely 
-            # known, and release dates are more correct
-            self.e3_file.tag.recording_date = int(value)
-        except ValueError:
-            # eyed3 is very loud about "incorrect release dates". Shut it up.
-            pass
+        if value > -1:
+            try:
+                # Set TDRL tag
+                self.e3_file.tag.release_date = int(value)
+            except ValueError:
+                # eyed3 is very loud about "incorrect release dates". Shut it up.
+                pass
+
+            try:
+                # Set TDRC tag. Many applications use this for release
+                # date regardless of the fact that this value is rarely
+                # known, and release dates are more correct
+                self.e3_file.tag.recording_date = int(value)
+            except ValueError:
+                pass
+        else:
+            self.e3_file.tag.release_date = None
+            self.e3_file.tag.recording_date = None
+
         self.mark_as_modified()
 
     @GObject.Property(type=str)

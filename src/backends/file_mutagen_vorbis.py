@@ -315,7 +315,7 @@ class EartagFileMutagenVorbis(EartagFile):
         _date = self._get_tag('date')
         if _date:
             return int(_date)
-        return -1
+        return None
 
     @releaseyear.setter
     def releaseyear(self, value):
