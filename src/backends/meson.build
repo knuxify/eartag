@@ -5,6 +5,7 @@ backends_sources = [
   'file.py',
   'file_eyed3.py',
   'file_taglib.py',
+  'file_mutagen_common.py',
   'file_mutagen_vorbis.py'
 ]
 

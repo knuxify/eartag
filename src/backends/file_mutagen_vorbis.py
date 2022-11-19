@@ -28,38 +28,31 @@
 
 from gi.repository import GObject
 import base64
+import tempfile
 import magic
 import mimetypes
-import tempfile
 from PIL import Image
 
 from mutagen.flac import FLAC, Picture, error as FLACError
 from mutagen.oggvorbis import OggVorbis
 from mutagen.id3 import PictureType
 
-from .file import EartagFile
+from .file_mutagen_common import EartagFileMutagenCommon
 
-class EartagFileMutagenVorbis(EartagFile):
+class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for Voris Comment support."""
     __gtype_name__ = 'EartagFileMutagenVorbis'
 
-    mg_file = None
     _supports_album_covers = True
-    cover_picture = None
-    _cover_path = None
-    coverart_tempfile = None
 
     def __init__(self, path):
         super().__init__(path)
-        if mimetypes.guess_type(path)[0] == 'audio/flac' or \
-                magic.from_file(path, mime=True) == 'audio/flac':
-            self.mg_file = FLAC(path)
-        else:
-            self.mg_file = OggVorbis(path)
-
+        self.cover_picture = None
+        self._cover_path = None
+        self.coverart_tempfile = None
         self.load_cover()
 
-    def _get_tag(self, tag_name):
+    def get_tag(self, tag_name):
         """Tries the lowercase, then uppercase representation of the tag."""
         try:
             return self.mg_file.tags[tag_name.lower()][0]
@@ -67,41 +60,19 @@ class EartagFileMutagenVorbis(EartagFile):
             try:
                 return self.mg_file.tags[tag_name.upper()][0]
             except KeyError:
-                return ''
+                return None
 
-    def save(self):
-        """Saves the changes to the file."""
-        if self.mg_file:
-            self.mg_file.save()
-        self.mark_as_unmodified()
+    def set_tag(self, tag_name, value):
+        """Sets the tag with the given name to the given value."""
+        if tag_name.upper() in self.mg_file.tags:
+            self.mg_file.tags[tag_name.upper()] = str(value)
+        else:
+            self.mg_file.tags[tag_name] = str(value)
 
     def __del__(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
-        self.mg_file = None
-
-    # Main properties
-
-    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
-    def length(self):
-        return self.mg_file.info.length
-
-    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
-    def bitrate(self):
-        # in bps, needs conversion
-        return int(round(self.mg_file.info.bitrate / 1000, 0))
-
-    @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
-    def channels(self):
-        return self.mg_file.info.channels
-
-    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
-    def filetype(self):
-        mimetype = magic.from_file(self.path, mime=True)
-        if mimetype == 'audio/flac':
-            return 'flac'
-        else:
-            return 'ogg'
+        super().__del__()
 
     @GObject.Property(type=str)
     def cover_path(self):
@@ -230,24 +201,6 @@ class EartagFileMutagenVorbis(EartagFile):
 
         self.notify('cover_path')
 
-    @GObject.Property(type=str)
-    def title(self):
-        return self._get_tag('title')
-
-    @title.setter
-    def title(self, value):
-        self.mg_file.tags['title'] = value
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def artist(self):
-        return self._get_tag('artist')
-
-    @artist.setter
-    def artist(self, value):
-        self.mg_file.tags['artist'] = value
-        self.mark_as_modified()
-
     @GObject.Property(type=int)
     def tracknumber(self):
         if 'TRACKNUMBER' in self.mg_file.tags:
@@ -283,36 +236,9 @@ class EartagFileMutagenVorbis(EartagFile):
             self.mg_file.tags['TRACKNUMBER'] = ['0/{t}'.format(t=str(value))]
         self.mark_as_modified()
 
-    @GObject.Property(type=str)
-    def album(self):
-        return self._get_tag('album')
-
-    @album.setter
-    def album(self, value):
-        self.mg_file.tags['album'] = value
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def albumartist(self):
-        return self._get_tag('ALBUMARTIST')
-
-    @albumartist.setter
-    def albumartist(self, value):
-        self.mg_file.tags['ALBUMARTIST'] = [value]
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def genre(self):
-        return self._get_tag('genre')
-
-    @genre.setter
-    def genre(self, value):
-        self.mg_file.tags['genre'] = value
-        self.mark_as_modified()
-
     @GObject.Property(type=int)
     def releaseyear(self):
-        _date = self._get_tag('date')
+        _date = self.get_tag('date')
         if _date:
             return int(_date)
         return None
@@ -327,7 +253,7 @@ class EartagFileMutagenVorbis(EartagFile):
 
     @GObject.Property(type=str)
     def comment(self):
-        return self._get_tag('DESCRIPTION')
+        return self.get_tag('DESCRIPTION')
 
     @comment.setter
     def comment(self, value):

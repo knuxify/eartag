@@ -28,6 +28,7 @@
 
 from gi.repository import GObject
 import filecmp
+import os
 
 class EartagFileCover:
     """This class is only used for comparing two covers on two files."""
@@ -55,6 +56,13 @@ class EartagFile(GObject.Object):
 
     The following functions are implemented by the subclasses:
       - save() - saves the changes to a file.
+      - get_tag(tag_name) - gets the tag with the given name. The name matches
+                            the property name of the tag in this object.
+      - set_tag(tag_name, value) - gets the tag with the given name. The name
+                           matches the property name of the tag in this object.
+
+    Do not use get_tag and set_tag directly in the code; use get_property and
+    set_property instead.
     """
     __gtype_name__ = 'EartagFile'
 
@@ -123,3 +131,95 @@ class EartagFile(GObject.Object):
     def is_writable(self):
         """Returns whether the file can be written to."""
         return self._is_writable
+
+    # Properties, used for bindings; backends must implement get_tag and set_tag options
+    # that take these property names, or redefine the properties
+
+    @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
+    def filetype(self):
+        return os.path.splitext(self.path)[-1]
+
+    @GObject.Property(type=str)
+    def cover_path(self):
+        return None
+
+    @GObject.Property(type=str)
+    def title(self):
+        return self.get_tag('title')
+
+    @title.setter
+    def title(self, value):
+        self.set_tag('title', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def artist(self):
+        return self.get_tag('artist')
+
+    @artist.setter
+    def artist(self, value):
+        self.set_tag('artist', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=int)
+    def tracknumber(self):
+        return self.get_tag('tracknumber')
+
+    @tracknumber.setter
+    def tracknumber(self, value):
+        self.set_tag('tracknumber', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=int)
+    def totaltracknumber(self):
+        return self.get_tag('totaltracknumber')
+
+    @totaltracknumber.setter
+    def totaltracknumber(self, value):
+        self.set_tag('totaltracknumber', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def album(self):
+        return self.get_tag('album')
+
+    @album.setter
+    def album(self, value):
+        self.set_tag('album', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def albumartist(self):
+        return self.get_tag('albumartist')
+
+    @albumartist.setter
+    def albumartist(self, value):
+        self.set_tag('albumartist', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def genre(self):
+        return self.get_tag('genre')
+
+    @genre.setter
+    def genre(self, value):
+        self.set_tag('genre', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=int)
+    def releaseyear(self):
+        return self.get_tag('date')
+
+    @releaseyear.setter
+    def releaseyear(self, value):
+        self.set_tag('releaseyear', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def comment(self):
+        return self.get_tag('comment')
+
+    @comment.setter
+    def comment(self, value):
+        self.set_tag('comment', value)
+        self.mark_as_modified()
