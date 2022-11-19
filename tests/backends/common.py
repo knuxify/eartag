@@ -35,7 +35,7 @@ def backend_read(file):
         try:
             assert file.get_property(prop) == prop_to_example_string[prop]
         except AssertionError:
-            raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})')
+            raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)}) {file.mg_file.tags}')
 
     if file._supports_album_covers:
         assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'))
