@@ -29,7 +29,6 @@
 from gi.repository import GObject
 import base64
 import tempfile
-from PIL import Image
 
 import mutagen
 
