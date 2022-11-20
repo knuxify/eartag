@@ -31,7 +31,6 @@ import base64
 import magic
 import mimetypes
 import tempfile
-from PIL import Image
 
 from mutagen.easyid3 import EasyID3
 from mutagen.id3 import PictureType
@@ -109,12 +108,17 @@ KEY_TO_FRAME_CLASS = {
 class EartagFileMutagenID3(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for ID3 support."""
     __gtype_name__ = 'EartagFileMutagenID3'
-    _supports_album_covers = False
+    _supports_album_covers = True
 
     def __init__(self, path):
+        if magic.from_file(path, mime=True) == 'audio/x-wav':
+            # For some reason APIC frames get thrown out of wav files,
+            # so disable cover support for them:
+            self._supports_album_covers = False
         super().__init__(path)
         if not self.mg_file.tags:
             self.mg_file.add_tags()
+        self.load_cover()
 
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""
@@ -128,6 +132,67 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         frame_class = KEY_TO_FRAME_CLASS[tag_name.lower()]
         self.mg_file.tags.setall(frame_name, [frame_class(encoding=3, text=[str(value)])])
+
+    @GObject.Property(type=str)
+    def cover_path(self):
+        return self._cover_path
+
+    @cover_path.setter
+    def cover_path(self, value):
+        self._cover_path = value
+
+        with open(value, "rb") as cover_file:
+            data = cover_file.read()
+
+        # Remove conflicting entries
+        for tag in dict(self.mg_file.tags).copy():
+            if tag.startswith('APIC') and self.mg_file.tags[tag].type in (0, 3):
+                del(self.mg_file.tags[tag])
+
+        self.mg_file.tags.add(
+            mutagen.id3.APIC(
+                encoding=3, desc='Album cover', mime=magic.from_file(value, mime=True), data=data, type=3
+            )
+        )
+
+        # Also set as "Other" cover art, for compatibility
+        # Would be nice if we could let the user decide whether or not to do this...
+        self.mg_file.tags.add(
+            mutagen.id3.APIC(
+                encoding=3, desc='Album cover', mime=magic.from_file(value, mime=True), data=data, type=0
+            )
+        )
+
+        self.mark_as_modified()
+
+    def load_cover(self):
+        """Loads the cover from the file and saves it to a temporary file."""
+        picture_data = None
+
+        pictures = self.mg_file.tags.getall('APIC')
+        # Loop twice, first to get cover art (preffered), second to get "other"
+
+        for picture in pictures:
+            if picture.type == 3:
+                picture_data = picture.data
+                break
+
+        if not picture_data:
+            for picture in pictures:
+                if picture.type == 0:
+                    picture_data = picture.data
+                    break
+
+        if not picture_data:
+            return None
+
+        cover_extension = mimetypes.guess_extension(picture.mime)
+        self.coverart_tempfile = tempfile.NamedTemporaryFile(
+            suffix=cover_extension
+        )
+        self.coverart_tempfile.write(picture_data)
+        self.coverart_tempfile.flush()
+        self._cover_path = self.coverart_tempfile.name
 
     @GObject.Property(type=int)
     def tracknumber(self):

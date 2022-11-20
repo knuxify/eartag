@@ -35,10 +35,13 @@ def backend_read(file):
         try:
             assert file.get_property(prop) == prop_to_example_string[prop]
         except AssertionError:
-            raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)}) {file.mg_file.tags}')
+            raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})')
 
     if file._supports_album_covers:
-        assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'))
+        try:
+            assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'))
+        except TypeError:
+            raise ValueError('Cover art was not found in the provided file')
 
     assert file.get_property('is_modified') == False
     assert file.get_property('channels') == 1
