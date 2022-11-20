@@ -26,7 +26,6 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from .file_eyed3 import EartagFileEyed3
 from .file_taglib import EartagFileTagLib
 from .file_mutagen_vorbis import EartagFileMutagenVorbis
 from .file_mutagen_id3 import EartagFileMutagenID3
