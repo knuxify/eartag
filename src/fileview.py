@@ -444,7 +444,9 @@ class EartagFileView(Gtk.Stack):
 
             # Get human-readable version of channel count
             channels = file.channels
-            if channels == 1:
+            if channels == 0:
+                channels_readable = 'N/A'
+            elif channels == 1:
                 channels_readable = 'Mono'
             elif channels == 2:
                 channels_readable = 'Stereo'

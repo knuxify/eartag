@@ -34,7 +34,7 @@ import traceback
 import threading
 import time
 
-from .backends import EartagFileTagLib, EartagFileMutagenVorbis, EartagFileMutagenID3
+from .backends import EartagFileTagLib, EartagFileMutagenVorbis, EartagFileMutagenID3, EartagFileMutagenMP4
 from .backends.file import EartagFile
 
 def eartagfile_from_path(path):
@@ -51,6 +51,8 @@ def eartagfile_from_path(path):
         return EartagFileMutagenID3(path)
     elif is_type('audio/flac') or is_type('audio/ogg'):
         return EartagFileMutagenVorbis(path)
+    elif is_type('audio/x-m4a') or is_type('audio/aac'):
+        return EartagFileMutagenMP4(path)
     return EartagFileTagLib(path)
 
 class EartagFileManager(GObject.Object):

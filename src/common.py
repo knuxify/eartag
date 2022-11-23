@@ -45,6 +45,7 @@ VALID_AUDIO_MIMES = (
     'audio/ogg',
     'audio/wav',
     'audio/x-flac',
+    'audio/x-m4a',
     'audio/x-mp3',
     'audio/x-mpeg',
     'audio/x-ms-wma',

@@ -163,20 +163,32 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=int)
     def tracknumber(self):
-        return self.get_tag('tracknumber')
+        _raw = self.get_tag('tracknumber')
+        if _raw:
+            return int(_raw)
+        return None
 
     @tracknumber.setter
     def tracknumber(self, value):
-        self.set_tag('tracknumber', value)
+        if value:
+            self.set_tag('tracknumber', int(value))
+        else:
+            self.set_tag('tracknumber', None)
         self.mark_as_modified()
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
-        return self.get_tag('totaltracknumber')
+        _raw = self.get_tag('totaltracknumber')
+        if _raw:
+            return int(_raw)
+        return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
-        self.set_tag('totaltracknumber', value)
+        if value:
+            self.set_tag('totaltracknumber', int(value))
+        else:
+            self.set_tag('totaltracknumber', None)
         self.mark_as_modified()
 
     @GObject.Property(type=str)
@@ -208,11 +220,17 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=int)
     def releaseyear(self):
-        return self.get_tag('date')
+        _raw = self.get_tag('releaseyear')
+        if _raw:
+            return int(_raw)
+        return None
 
     @releaseyear.setter
     def releaseyear(self, value):
-        self.set_tag('releaseyear', value)
+        if value:
+            self.set_tag('releaseyear', int(value))
+        else:
+            self.set_tag('releaseyear', None)
         self.mark_as_modified()
 
     @GObject.Property(type=str)

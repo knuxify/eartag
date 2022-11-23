@@ -6,6 +6,7 @@ backends_sources = [
   'file_taglib.py',
   'file_mutagen_common.py',
   'file_mutagen_vorbis.py',
+  'file_mutagen_mp4.py',
   'file_mutagen_id3.py'
 ]
 

@@ -93,8 +93,8 @@ class Application(Adw.Application):
         lib_versions.append(f"gtk4: {Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}")
         lib_versions.append(f"libadwaita: {Adw.get_major_version()}.{Adw.get_minor_version()}.{Adw.get_micro_version()}")
 
-        import taglib
-        lib_versions.append(f"pytaglib: {taglib.version}")
+        #import taglib
+        #lib_versions.append(f"pytaglib: {taglib.version}")
         import eyed3
         lib_versions.append(f"eyed3: {eyed3.version}")
         import magic

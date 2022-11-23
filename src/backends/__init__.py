@@ -29,3 +29,4 @@
 from .file_taglib import EartagFileTagLib
 from .file_mutagen_vorbis import EartagFileMutagenVorbis
 from .file_mutagen_id3 import EartagFileMutagenID3
+from .file_mutagen_mp4 import EartagFileMutagenMP4
