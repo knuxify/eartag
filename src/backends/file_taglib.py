@@ -34,6 +34,16 @@ import mimetypes
 
 from .file import EartagFile
 
+TAGNAME_TO_DICTENTRY = {
+    'title': 'TITLE',
+    'artist': 'ARTIST',
+    'album': 'ALBUM',
+    'albumartist': 'ALBUMARTIST',
+    'genre': 'GENRE',
+    'releaseyear': 'DATE',
+    'comment': 'COMMENT'
+}
+
 class EartagFileTagLib(EartagFile):
     """EartagFile handler that uses pytaglib. Used for non-mp3 files."""
     __gtype_name__ = 'EartagFileTagLib'
@@ -48,6 +58,17 @@ class EartagFileTagLib(EartagFile):
         for prop in self.handled_properties:
             self.notify(prop)
         self.notify('is_modified')
+
+    def get_tag(self, tag_name):
+        """Gets a tag's value using the TAGNAME_TO_DICTENTRY list as a guideline."""
+        try:
+            return self.tl_file.tags[TAGNAME_TO_DICTENTRY[tag_name.lower()]][0]
+        except (KeyError, IndexError):
+            return ''
+
+    def set_tag(self, tag_name, value):
+        """Sets a tag's value using the TAGNAME_TO_DICTENTRY list as a guideline."""
+        self.tl_file.tags[TAGNAME_TO_DICTENTRY[tag_name.lower()]] = [str(value)]
 
     def save(self):
         """Saves the changes to the file."""
@@ -82,28 +103,6 @@ class EartagFileTagLib(EartagFile):
             mimetype_ext = os.path.splitext(self.path)[-1]
         return mimetype_ext.replace('.', '')
 
-    @GObject.Property(type=str)
-    def title(self):
-        if 'TITLE' in self.tl_file.tags:
-            return self.tl_file.tags['TITLE'][0]
-        return ''
-
-    @title.setter
-    def title(self, value):
-        self.tl_file.tags['TITLE'] = [value]
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def artist(self):
-        if 'ARTIST' in self.tl_file.tags:
-            return self.tl_file.tags['ARTIST'][0]
-        return ''
-
-    @artist.setter
-    def artist(self, value):
-        self.tl_file.tags['ARTIST'] = [value]
-        self.mark_as_modified()
-
     @GObject.Property(type=int)
     def tracknumber(self):
         if 'TRACKNUMBER' in self.tl_file.tags:
@@ -137,59 +136,4 @@ class EartagFileTagLib(EartagFile):
             ]
         else:
             self.tl_file.tags['TRACKNUMBER'] = ['0/{t}'.format(t=str(value))]
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def album(self):
-        if 'ALBUM' in self.tl_file.tags:
-            return self.tl_file.tags['ALBUM'][0]
-        return ''
-
-    @album.setter
-    def album(self, value):
-        self.tl_file.tags['ALBUM'] = [value]
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def albumartist(self):
-        if 'ALBUMARTIST' in self.tl_file.tags:
-            return self.tl_file.tags['ALBUMARTIST'][0]
-        return ''
-
-    @albumartist.setter
-    def albumartist(self, value):
-        self.tl_file.tags['ALBUMARTIST'] = [value]
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def genre(self):
-        if 'GENRE' in self.tl_file.tags:
-            return self.tl_file.tags['GENRE'][0]
-        return ''
-
-    @genre.setter
-    def genre(self, value):
-        self.tl_file.tags['GENRE'] = [value]
-        self.mark_as_modified()
-
-    @GObject.Property(type=int)
-    def releaseyear(self):
-        if 'DATE' in self.tl_file.tags and self.tl_file.tags['DATE']:
-            return int(self.tl_file.tags['DATE'][0])
-        return None
-
-    @releaseyear.setter
-    def releaseyear(self, value):
-        self.tl_file.tags['DATE'] = [str(value)]
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def comment(self):
-        if 'COMMENT' in self.tl_file.tags:
-            return self.tl_file.tags['COMMENT'][0]
-        return ''
-
-    @comment.setter
-    def comment(self, value):
-        self.tl_file.tags['COMMENT'] = [value]
         self.mark_as_modified()
