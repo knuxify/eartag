@@ -3,9 +3,11 @@ modulesubdir = join_paths(moduledir, 'backends')
 backends_sources = [
   '__init__.py',
   'file.py',
-  'file_eyed3.py',
   'file_taglib.py',
-  'file_mutagen_vorbis.py'
+  'file_mutagen_common.py',
+  'file_mutagen_vorbis.py',
+  'file_mutagen_mp4.py',
+  'file_mutagen_id3.py'
 ]
 
 install_data(backends_sources, install_dir: modulesubdir)

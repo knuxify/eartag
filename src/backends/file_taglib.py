@@ -83,11 +83,6 @@ class EartagFileTagLib(EartagFile):
         return mimetype_ext.replace('.', '')
 
     @GObject.Property(type=str)
-    def cover_path(self):
-        # No cover art support :(
-        return None
-
-    @GObject.Property(type=str)
     def title(self):
         if 'TITLE' in self.tl_file.tags:
             return self.tl_file.tags['TITLE'][0]

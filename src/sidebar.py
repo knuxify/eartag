@@ -209,8 +209,8 @@ class EartagFileList(Gtk.ListView):
     def sort_func(self, a, b, *args):
         """Custom sort function implementation for file sorting."""
         # Step 1. Compare album names
-        a_album = GLib.utf8_casefold(a.album, -1)
-        b_album = GLib.utf8_casefold(b.album, -1)
+        a_album = GLib.utf8_casefold(a.album or '', -1)
+        b_album = GLib.utf8_casefold(b.album or '', -1)
         collate = GLib.utf8_collate(a_album, b_album)
 
         # Step 2. Compare track numbers
