@@ -37,21 +37,26 @@ import time
 from .backends import EartagFileTagLib, EartagFileMutagenVorbis, EartagFileMutagenID3, EartagFileMutagenMP4
 from .backends.file import EartagFile
 
+def is_type_bulk(path, types):
+    mimetypes_guess = mimetypes.guess_type(path)[0]
+    magic_guess = magic.from_file(path, mime=True)
+
+    for type in types:
+        if mimetypes_guess == type or magic_guess == type:
+            return True
+
+    return False
+
 def eartagfile_from_path(path):
     """Returns an EartagFile subclass for the provided file."""
     if not os.path.exists(path):
         raise ValueError
 
-    mimetypes_guess = mimetypes.guess_type(path)[0]
-    magic_guess = magic.from_file(path, mime=True)
-
-    is_type = lambda type: mimetypes_guess == type or magic_guess == type
-
-    if is_type('audio/mpeg') or is_type('audio/x-wav'):
+    if is_type_bulk(path, ('audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/x-wav')):
         return EartagFileMutagenID3(path)
-    elif is_type('audio/flac') or is_type('audio/ogg'):
+    elif is_type_bulk(path, ('audio/flac', 'audio/ogg', 'application/ogg', 'application/x-ogg', 'audio/x-flac', 'audio/x-vorbis+ogg')):
         return EartagFileMutagenVorbis(path)
-    elif is_type('audio/x-m4a') or is_type('audio/aac'):
+    elif is_type_bulk(path, ('audio/x-m4a', 'audio/aac', 'audio/mp4', 'audio/x-mpeg', 'audio/mpeg')):
         return EartagFileMutagenMP4(path)
     return EartagFileTagLib(path)
 

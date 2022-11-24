@@ -67,7 +67,6 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if not self.mg_file.tags:
             self.mg_file.add_tags()
         self.load_cover()
-        print(self.mg_file.tags)
 
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""

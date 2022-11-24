@@ -42,7 +42,6 @@ class EartagFileMutagenCommon(EartagFile):
         super().__init__(path)
         self.mg_file = None
         self.mg_file = mutagen.File(path)
-        print(type(self.mg_file))
 
     def save(self):
         """Saves the changes to the file."""
