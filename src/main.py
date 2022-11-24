@@ -67,6 +67,12 @@ class Application(Adw.Application):
         self.set_accels_for_action('app.open_file', ('<Ctrl>o', None))
         self.create_action('save', self.on_save_action)
         self.set_accels_for_action('app.save', ('<Ctrl>s', None))
+
+        self.create_action('next_file', self.on_next_action)
+        self.set_accels_for_action('app.next_file', ('<Ctrl>l', None))
+        self.create_action('previous_file', self.on_previous_action)
+        self.set_accels_for_action('app.previous_file', ('<Ctrl>j', None))
+
         win.present()
         self._ = _
 
@@ -145,6 +151,13 @@ Opened files:
         action.connect("activate", callback)
         self.add_action(action)
 
+    def on_next_action(self, *args):
+        win = self.props.active_window
+        win.sidebar.select_next()
+
+    def on_previous_action(self, *args):
+        win = self.props.active_window
+        win.sidebar.select_previous()
 
 def main(version):
     app = Application(version)

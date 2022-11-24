@@ -364,6 +364,12 @@ class EartagSidebar(Gtk.Box):
         vadjust = self.file_list.get_vadjustment()
         vadjust.set_value(vadjust.get_lower())
 
+        # Update the switcher buttons in the fileview
+        fileview = self.get_native().file_view
+        has_files = self.file_list.filter_model.get_n_items() > 1
+        fileview.previous_file_button.set_sensitive(has_files)
+        fileview.next_file_button.set_sensitive(has_files)
+
     def toggle_selection_mode(self, *args):
         self.file_list.toggle_selection_mode()
 
@@ -407,3 +413,23 @@ class EartagSidebar(Gtk.Box):
         self.file_list.selection_mode = value
         # Workaround for the text not showing up on initial load
         self.refresh_actionbar_button_state()
+
+    def select_next(self, *args):
+        """Selects the next item on the sidebar."""
+        if self.file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
+            return
+        selected = self.file_list.selection_model.get_selected()
+        if selected + 1 >= self.file_list.selection_model.get_n_items():
+            self.file_list.selection_model.set_selected(0)
+        else:
+            self.file_list.selection_model.set_selected(selected + 1)
+
+    def select_previous(self, *args):
+        """Selects the previous item on the sidebar."""
+        if self.file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
+            return
+        selected = self.file_list.selection_model.get_selected()
+        if selected - 1 >= 0:
+            self.file_list.selection_model.set_selected(selected - 1)
+        else:
+            self.file_list.selection_model.set_selected(self.file_list.selection_model.get_n_items() - 1)

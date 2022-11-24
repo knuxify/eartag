@@ -366,6 +366,7 @@ class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultip
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
 
+    content_overlay = Gtk.Template.Child()
     content_scroll = Gtk.Template.Child()
     select_file = Gtk.Template.Child()
 
@@ -380,6 +381,11 @@ class EartagFileView(Gtk.Stack):
     releaseyear_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
 
+    previous_file_button_revealer = Gtk.Template.Child()
+    next_file_button_revealer = Gtk.Template.Child()
+    previous_file_button = Gtk.Template.Child()
+    next_file_button = Gtk.Template.Child()
+
     writable = False
     bindings = {}
     bound_files = []
@@ -393,6 +399,19 @@ class EartagFileView(Gtk.Stack):
         self.file_manager.connect('files_loaded', self.bind_to_file)
         self.file_manager.connect('selection_changed', self.bind_to_file)
 
+        sidebar = self.get_native().sidebar
+        sidebar.bind_property('selection-mode', self.previous_file_button, 'sensitive',
+            GObject.BindingFlags.INVERT_BOOLEAN)
+        sidebar.bind_property('selection-mode', self.previous_file_button_revealer, 'reveal-child',
+            GObject.BindingFlags.INVERT_BOOLEAN)
+        sidebar.bind_property('selection-mode', self.next_file_button, 'sensitive',
+            GObject.BindingFlags.INVERT_BOOLEAN)
+        sidebar.bind_property('selection-mode', self.next_file_button_revealer, 'reveal-child',
+            GObject.BindingFlags.INVERT_BOOLEAN)
+
+        self.next_file_button.connect('clicked', sidebar.select_next)
+        self.previous_file_button.connect('clicked', sidebar.select_previous)
+
     def bind_to_file(self, *args):
         """
         Reads the file data from the file manager and applies it
@@ -403,6 +422,19 @@ class EartagFileView(Gtk.Stack):
         _no_files = False
         if len(self.file_manager.files) == 0:
             _no_files = True
+            self.previous_file_button.set_sensitive(False)
+            self.previous_file_button_revealer.set_reveal_child(False)
+            self.next_file_button.set_sensitive(False)
+            self.next_file_button_revealer.set_reveal_child(False)
+        else:
+            if self.get_native().sidebar.file_list.selection_model.get_n_items() > 1:
+                self.previous_file_button.set_sensitive(True)
+                self.next_file_button.set_sensitive(True)
+            else:
+                self.previous_file_button.set_sensitive(False)
+                self.next_file_button.set_sensitive(False)
+            self.previous_file_button_revealer.set_reveal_child(True)
+            self.next_file_button_revealer.set_reveal_child(True)
 
         # Get list of selected (added)/unselected (removed) files
         added_files = [file for file in self.file_manager.selected_files if file not in self.bound_files]
@@ -418,7 +450,7 @@ class EartagFileView(Gtk.Stack):
         else:
             files = self.file_manager.selected_files
 
-        self.set_visible_child(self.content_scroll)
+        self.set_visible_child(self.content_overlay)
 
         if len(files) == 1:
             file = files[0]

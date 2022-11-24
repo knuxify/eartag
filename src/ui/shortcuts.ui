@@ -24,6 +24,20 @@
                 <property name="title" translatable="yes">Save all modified files</property>
               </object>
             </child>
+
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="accelerator">&lt;ctrl&gt;J</property>
+                <property name="title" translatable="yes">Select previous file in sidebar</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="accelerator">&lt;ctrl&gt;L</property>
+                <property name="title" translatable="yes">Select next file in sidebar</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
