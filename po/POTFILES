@@ -16,3 +16,4 @@ src/fileview.py
 src/sidebar.py
 src/window.py
 src/ui/albumcoverbutton.ui
+src/ui/shortcuts.ui
