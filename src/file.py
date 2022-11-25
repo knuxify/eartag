@@ -95,6 +95,10 @@ class EartagFileManager(GObject.Object):
         """
         pass
 
+    @GObject.Signal
+    def files_removed(self):
+        pass
+
     def load_file(self, path, mode=0, emit_loaded=True):
         """Loads a file."""
         if path in self.file_paths:
@@ -243,6 +247,7 @@ class EartagFileManager(GObject.Object):
                 self._selected_files.append(self.files.get_item(0))
             self.emit('selection-changed')
             self.emit('selection_override')
+        self.emit('files-removed')
         self.update_modified_status()
         return True
 

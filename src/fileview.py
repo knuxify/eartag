@@ -366,7 +366,6 @@ class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultip
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
 
-    content_overlay = Gtk.Template.Child()
     content_scroll = Gtk.Template.Child()
     select_file = Gtk.Template.Child()
 
@@ -398,6 +397,7 @@ class EartagFileView(Gtk.Stack):
         self.file_manager = file_manager
         self.file_manager.connect('files_loaded', self.bind_to_file)
         self.file_manager.connect('selection_changed', self.bind_to_file)
+        self.file_manager.connect('files_removed', self.update_buttons)
 
         sidebar = self.get_native().sidebar
         sidebar.bind_property('selection-mode', self.previous_file_button, 'sensitive',
@@ -412,16 +412,9 @@ class EartagFileView(Gtk.Stack):
         self.next_file_button.connect('clicked', sidebar.select_next)
         self.previous_file_button.connect('clicked', sidebar.select_previous)
 
-    def bind_to_file(self, *args):
-        """
-        Reads the file data from the file manager and applies it
-        to the file view.
-        """
-        window = self.get_native()
-
-        _no_files = False
+    def update_buttons(self, *args):
+        """Updates the side switcher button state."""
         if len(self.file_manager.files) == 0:
-            _no_files = True
             self.previous_file_button.set_sensitive(False)
             self.previous_file_button_revealer.set_reveal_child(False)
             self.next_file_button.set_sensitive(False)
@@ -435,6 +428,19 @@ class EartagFileView(Gtk.Stack):
                 self.next_file_button.set_sensitive(False)
             self.previous_file_button_revealer.set_reveal_child(True)
             self.next_file_button_revealer.set_reveal_child(True)
+
+    def bind_to_file(self, *args):
+        """
+        Reads the file data from the file manager and applies it
+        to the file view.
+        """
+        window = self.get_native()
+
+        _no_files = False
+        if len(self.file_manager.files) == 0:
+            _no_files = True
+
+        self.update_buttons()
 
         # Get list of selected (added)/unselected (removed) files
         added_files = [file for file in self.file_manager.selected_files if file not in self.bound_files]
@@ -450,7 +456,7 @@ class EartagFileView(Gtk.Stack):
         else:
             files = self.file_manager.selected_files
 
-        self.set_visible_child(self.content_overlay)
+        self.set_visible_child(self.content_scroll)
 
         if len(files) == 1:
             file = files[0]
@@ -543,6 +549,10 @@ class EartagFileView(Gtk.Stack):
 
         if _no_files:
             window.run_sort()
+
+        # Scroll to the top of the view
+        adjust = self.content_scroll.get_vadjustment()
+        adjust.set_value(adjust.get_lower())
 
     def setup_entry(self, file, entry, property, property_double=None):
         if isinstance(entry, EartagTagListItem) or isinstance(entry, EartagTagListDoubleItem):
