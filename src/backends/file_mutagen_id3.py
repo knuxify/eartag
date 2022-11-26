@@ -111,10 +111,6 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     _supports_album_covers = True
 
     def __init__(self, path):
-        if magic.from_file(path, mime=True) == 'audio/x-wav':
-            # For some reason APIC frames get thrown out of wav files,
-            # so disable cover support for them:
-            self._supports_album_covers = False
         super().__init__(path)
         if not self.mg_file.tags:
             self.mg_file.add_tags()
@@ -151,7 +147,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
         self.mg_file.tags.add(
             mutagen.id3.APIC(
-                encoding=3, desc='Album cover', mime=magic.from_file(value, mime=True), data=data, type=3
+                encoding=3, desc='Cover', mime=magic.from_file(value, mime=True), data=data, type=3
             )
         )
 
@@ -159,7 +155,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         # Would be nice if we could let the user decide whether or not to do this...
         self.mg_file.tags.add(
             mutagen.id3.APIC(
-                encoding=3, desc='Album cover', mime=magic.from_file(value, mime=True), data=data, type=0
+                encoding=3, desc='Cover', mime=magic.from_file(value, mime=True), data=data, type=0
             )
         )
 
