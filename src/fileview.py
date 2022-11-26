@@ -400,21 +400,13 @@ class EartagFileView(Gtk.Stack):
         self.file_manager.connect('files_removed', self.update_buttons)
 
         sidebar = self.get_native().sidebar
-        sidebar.bind_property('selection-mode', self.previous_file_button, 'sensitive',
-            GObject.BindingFlags.INVERT_BOOLEAN)
-        sidebar.bind_property('selection-mode', self.previous_file_button_revealer, 'reveal-child',
-            GObject.BindingFlags.INVERT_BOOLEAN)
-        sidebar.bind_property('selection-mode', self.next_file_button, 'sensitive',
-            GObject.BindingFlags.INVERT_BOOLEAN)
-        sidebar.bind_property('selection-mode', self.next_file_button_revealer, 'reveal-child',
-            GObject.BindingFlags.INVERT_BOOLEAN)
-
         self.next_file_button.connect('clicked', sidebar.select_next)
         self.previous_file_button.connect('clicked', sidebar.select_previous)
+        sidebar.connect('notify::selection-mode', self.update_buttons)
 
     def update_buttons(self, *args):
         """Updates the side switcher button state."""
-        if len(self.file_manager.files) == 0:
+        if len(self.file_manager.files) == 0 or self.get_native().sidebar.selection_mode:
             self.previous_file_button.set_sensitive(False)
             self.previous_file_button_revealer.set_reveal_child(False)
             self.next_file_button.set_sensitive(False)

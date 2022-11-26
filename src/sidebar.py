@@ -365,10 +365,7 @@ class EartagSidebar(Gtk.Box):
         vadjust.set_value(vadjust.get_lower())
 
         # Update the switcher buttons in the fileview
-        fileview = self.get_native().file_view
-        has_files = self.file_list.filter_model.get_n_items() > 1
-        fileview.previous_file_button.set_sensitive(has_files)
-        fileview.next_file_button.set_sensitive(has_files)
+        self.get_native().file_view.update_buttons()
 
     def toggle_selection_mode(self, *args):
         self.file_list.toggle_selection_mode()
