@@ -32,6 +32,7 @@ from .file import EartagFileManager
 from .sidebar import EartagSidebar
 
 from gi.repository import Adw, Gdk, GLib, Gio, Gtk, GObject
+import os
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/discardwarning.ui')
 class EartagDiscardWarningDialog(Adw.MessageDialog):
@@ -82,7 +83,13 @@ class EartagNoFile(Adw.Bin):
     def on_add_file(self, *args):
         window = self.get_native()
         window.open_mode = EartagFileManager.LOAD_OVERWRITE
-        window.show_file_chooser()
+        window.show_file_chooser(folders=False)
+
+    @Gtk.Template.Callback()
+    def on_add_folder(self, *args):
+        window = self.get_native()
+        window.open_mode = EartagFileManager.LOAD_OVERWRITE
+        window.show_file_chooser(folders=True)
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/shortcuts.ui')
 class EartagShortcutsWindow(Gtk.ShortcutsWindow):
@@ -221,18 +228,27 @@ class EartagWindow(Adw.ApplicationWindow):
         self.open_mode = EartagFileManager.LOAD_OVERWRITE
         self.on_drag_unhover()
 
-    def show_file_chooser(self):
+    def show_file_chooser(self, folders=False):
         """Shows the file chooser."""
         if self.file_chooser:
             return
 
+        if folders:
+            action = Gtk.FileChooserAction.SELECT_FOLDER
+            filter = None
+        else:
+            action = Gtk.FileChooserAction.OPEN
+            filter = self.audio_file_filter
+
         self.file_chooser = Gtk.FileChooserNative(
                                 title=_("Open File"),
                                 transient_for=self,
-                                action=Gtk.FileChooserAction.OPEN,
-                                filter=self.audio_file_filter,
+                                action=action,
                                 select_multiple=True
                                 )
+
+        if filter:
+            self.file_chooser.set_filter(filter)
 
         self.file_chooser.connect('response', self.open_file_from_dialog)
         self.file_chooser.show()
@@ -262,7 +278,14 @@ class EartagWindow(Adw.ApplicationWindow):
         if response == Gtk.ResponseType.ACCEPT:
             paths = []
             for file in list(dialog.get_files()):
-                paths.append(file.get_path())
+                _path = file.get_path()
+                if os.path.isdir(_path):
+                    for _file in os.listdir(_path):
+                        _fpath = os.path.join(_path, _file)
+                        if os.path.isfile(_fpath) and is_valid_music_file(_fpath):
+                            paths.append(_fpath)
+                else:
+                    paths.append(_path)
             return self.open_files(paths)
 
     @Gtk.Template.Callback()

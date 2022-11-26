@@ -153,6 +153,11 @@ class EartagFileManager(GObject.Object):
 
     def _load_multiple_files(self, paths, mode=1):
         """Loads files with the provided paths."""
+        if not paths:
+            self._loading_progress = 0
+            self.notify('loading_progress')
+            return True
+
         self._is_loading_multiple_files = True
         self._loading_progress = 0
         self.notify('loading_progress')

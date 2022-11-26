@@ -65,6 +65,19 @@
                     </style>
                   </object>
                 </child>
+
+
+                <child>
+                  <object class="GtkButton" id="open_folder">
+                    <property name="label" translatable="yes">Open a folder</property>
+                    <property name="halign">center</property>
+                    <signal name="clicked" handler="on_add_folder"/>
+
+                    <style>
+                      <class name="pill"/>
+                    </style>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
