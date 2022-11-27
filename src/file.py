@@ -79,6 +79,7 @@ class EartagFileManager(GObject.Object):
         self.files = Gio.ListStore(item_type=EartagFile)
         self.file_paths = []
         self.selected_files = []
+        self._files_buffer = []
         self._selection_removed = False
 
     @GObject.Signal
@@ -100,7 +101,7 @@ class EartagFileManager(GObject.Object):
     def files_removed(self):
         pass
 
-    def load_file(self, path, mode=0, emit_loaded=True):
+    def load_file(self, path, mode=0, emit_loaded=True, use_buffer=False):
         """Loads a file."""
         if path in self.file_paths:
             return True
@@ -140,7 +141,7 @@ class EartagFileManager(GObject.Object):
             self.selected_files = []
             _selection_override = True
 
-        if emit_loaded:
+        if use_buffer:
             self._files_buffer.append(_file)
         else:
             self.files.append(_file)
@@ -181,7 +182,9 @@ class EartagFileManager(GObject.Object):
                 # halted this way is if another load operation is about to begin
                 self._is_loading_multiple_files = False
                 return False
-            if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False):
+            if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False, use_buffer=True):
+                self.files.splice(0, 0, self._files_buffer)
+                self._files_buffer = []
                 self.emit('files_loaded')
                 self.update_modified_status()
                 self._loading_progress = 0
