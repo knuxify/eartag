@@ -281,7 +281,9 @@ class EartagFileManager(GObject.Object):
             return self.remove(file, force_discard=force_discard)
         elif file_count == self.files.get_n_items():
             self.files.remove_all()
+            self.file_paths = []
             self.selected_files = []
+            self.emit('selection_changed')
             self.emit('selection_override')
             self.emit('files-removed')
             return True

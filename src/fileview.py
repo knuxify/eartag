@@ -453,6 +453,22 @@ class EartagFileView(Gtk.Stack):
             window.window_title.set_subtitle('')
             if self.file_manager.files:
                 self.content_stack.set_visible_child(self.select_file)
+
+            for file in self.bindings.keys():
+                for binding in self.bindings[file]:
+                    binding.unbind()
+                self.unbind_entry(file, self.title_entry)
+                self.unbind_entry(file, self.artist_entry)
+                self.unbind_entry(file, self.tracknumber_entry)
+                self.unbind_entry(file, self.album_entry)
+                self.unbind_entry(file, self.albumartist_entry)
+                self.unbind_entry(file, self.genre_entry)
+                self.unbind_entry(file, self.releaseyear_entry)
+                self.unbind_entry(file, self.comment_entry)
+                self.album_cover.unbind_from_file(file)
+
+            self.bindings = {}
+            self.bound_files = []
             return False
         else:
             files = self.file_manager.selected_files
