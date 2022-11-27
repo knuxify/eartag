@@ -51,8 +51,7 @@ VALID_AUDIO_MIMES = (
     'audio/x-ms-wma',
     'audio/x-vorbis+ogg',
     'audio/x-wav',
-    'video/x-wmv',
-    'x-content/audio-cdda'
+    'video/x-wmv'
     )
 
 def is_valid_music_file(path):

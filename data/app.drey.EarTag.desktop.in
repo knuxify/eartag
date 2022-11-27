@@ -9,5 +9,5 @@ Type=Application
 StartupNotify=true
 Categories=GNOME;GTK;Audio;AudioVideo;AudioVideoEditing;
 Keywords=music;audio;tag;tagging;tagger;
-MimeType=application/ogg;application/x-ogg;audio/aac;audio/flac;audio/mp3;audio/mp4;audio/mpeg;audio/ogg;audio/wav;audio/x-flac;audio/x-mp3;audio/x-mpeg;audio/x-ms-wma;audio/x-vorbis+ogg;audio/x-wav;video/x-wmv;x-content/audio-cdda;
+MimeType=application/ogg;application/x-ogg;audio/aac;audio/flac;audio/mp3;audio/mp4;audio/mpeg;audio/ogg;audio/wav;audio/x-flac;audio/x-mp3;audio/x-mpeg;audio/x-ms-wma;audio/x-vorbis+ogg;audio/x-wav;video/x-wmv;
 X-Purism-FormFactor=Workstation;Mobile;
