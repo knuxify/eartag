@@ -251,13 +251,16 @@ class EartagFileManager(GObject.Object):
                 return
         self.set_property('is_modified', False)
 
-    def remove(self, file, force_discard=False, no_emit=False):
+    def remove(self, file, force_discard=False, no_emit=False, use_buffer=False):
         """Removes a file from the opened file list."""
         if file.is_modified and not force_discard:
             EartagRemovalDiscardWarningDialog(self, file).present()
             return False
         self.file_paths.remove(file.path)
-        self.files.remove(self.files.find(file)[1])
+        if use_buffer:
+            self._removed_files_buffer.append(self.files.find(file)[1])
+        else:
+            self.files.remove(self.files.find(file)[1])
         if file in self.selected_files:
             if no_emit:
                 self._selection_removed = True
@@ -274,11 +277,12 @@ class EartagFileManager(GObject.Object):
 
     def remove_multiple(self, files, force_discard=False):
         """Removes files from the opened file list."""
+        self._removed_files_buffer = []
         file_count = len(files)
         if file_count == 0:
             return False
         elif file_count == 1:
-            return self.remove(file, force_discard=force_discard)
+            return self.remove(files[0], force_discard=force_discard)
         elif file_count == self.files.get_n_items():
             self.files.remove_all()
             self.file_paths = []
@@ -293,12 +297,34 @@ class EartagFileManager(GObject.Object):
         self._selection_removed = False
         progress_step = 1 / file_count
         for file in files:
-            if not self.remove(file, force_discard=force_discard, no_emit=True):
+            if not self.remove(file, force_discard=force_discard, no_emit=True, use_buffer=True):
                 self._loading_progress = 0
                 self.notify('loading_progress')
                 return False
             self._loading_progress += progress_step
             self.notify('loading_progress')
+
+        # Split list into removed chunks, which will allow us to use .splice
+        # (much faster than calling remove on each item individually)
+        self._removed_files_buffer.sort()
+        chunks = {}
+        chunk_start = self._removed_files_buffer[0]
+        prev_item = -1
+        for item in self._removed_files_buffer:
+            if item > prev_item + 1:
+                chunks[chunk_start] = prev_item
+                chunk_start = item
+            prev_item = item
+        chunks[chunk_start] = prev_item
+
+
+        offset = 0
+        for raw_chunk_start, chunk_end in chunks.items():
+            chunk_start = raw_chunk_start - offset
+            chunk_length = chunk_end - raw_chunk_start + 1
+            offset += chunk_length
+
+            self.files.splice(chunk_start, chunk_length, [])
 
         if self._selection_removed:
             self.emit('selection-changed')
