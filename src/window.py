@@ -104,7 +104,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     save_button = Gtk.Template.Child()
     window_title = Gtk.Template.Child()
-    content_stack = Gtk.Template.Child()
+    container_stack = Gtk.Template.Child()
     container_flap = Gtk.Template.Child()
 
     sidebar = Gtk.Template.Child()
@@ -179,13 +179,13 @@ class EartagWindow(Adw.ApplicationWindow):
         Shows/hides the fileview/"no files" message depending on opened files.
         """
         if self.file_manager.files.get_n_items() > 0:
-            self.content_stack.set_visible_child(self.file_view)
+            self.container_stack.set_visible_child(self.toast_overlay)
             if self.file_manager.loading_progress == 0:
                 self.select_multiple_button.set_sensitive(True)
                 self.sidebar_search_button.set_sensitive(True)
                 self.sort_button.set_sensitive(True)
         else:
-            self.content_stack.set_visible_child(self.no_file)
+            self.container_stack.set_visible_child(self.no_file)
             self.select_multiple_button.set_sensitive(False)
             self.sidebar_search_button.set_sensitive(False)
             self.sort_button.set_sensitive(False)
