@@ -240,7 +240,10 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     def releaseyear(self):
         _date = self.get_tag('date')
         if _date:
-            return int(_date)
+            try:
+                return int(_date[:4])
+            except:
+                return None
         return None
 
     @releaseyear.setter
