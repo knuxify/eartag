@@ -237,12 +237,14 @@ class EartagWindow(Adw.ApplicationWindow):
         if folders:
             action = Gtk.FileChooserAction.SELECT_FOLDER
             filter = None
+            title = _("Open Folder")
         else:
             action = Gtk.FileChooserAction.OPEN
             filter = self.audio_file_filter
+            title = _("Open File")
 
         self.file_chooser = Gtk.FileChooserNative(
-                                title=_("Open File"),
+                                title=title,
                                 transient_for=self,
                                 action=action,
                                 select_multiple=True

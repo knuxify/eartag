@@ -67,6 +67,7 @@ class Application(Adw.Application):
         self.set_accels_for_action('app.open_file', ('<Ctrl>o', None))
         self.create_action('save', self.on_save_action)
         self.set_accels_for_action('app.save', ('<Ctrl>s', None))
+        self.create_action('open_folder', self.on_open_folder_action)
 
         self.create_action('next_file', self.on_next_action)
         self.set_accels_for_action('app.next_file', ('<Ctrl>l', None))
@@ -144,6 +145,11 @@ Opened files:
         window = self.get_active_window()
         window.open_mode = EartagFileManager.LOAD_OVERWRITE
         window.show_file_chooser()
+
+    def on_open_folder_action(self, widget, _):
+        window = self.get_active_window()
+        window.open_mode = EartagFileManager.LOAD_OVERWRITE
+        window.show_file_chooser(folders=True)
 
     def create_action(self, name, callback):
         """ Add an Action and connect to a callback """

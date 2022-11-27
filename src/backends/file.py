@@ -26,7 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import GObject
+from gi.repository import GObject, GdkPixbuf
 import filecmp
 import os
 
@@ -37,6 +37,20 @@ class EartagFileCover:
         if cover_path:
             with open(cover_path, 'rb') as cover_file:
                 self.cover_data = cover_file.read()
+
+            self.cover_small = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                self.cover_path,
+                48,
+                48,
+                True
+            )
+
+            self.cover_large = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                self.cover_path,
+                196,
+                196,
+                True
+            )
 
     def __eq__(self, other):
         if not isinstance(other, EartagFileCover):
@@ -77,6 +91,7 @@ class EartagFile(GObject.Object):
         self.notify('supports-album-covers')
         self.path = path
         self.update_writability()
+        self._cover = None
         self._cover_path = None
 
     def update_writability(self):
@@ -93,13 +108,19 @@ class EartagFile(GObject.Object):
             self._is_writable = True
         self.notify('is_writable')
 
+    def __del__(self, *args):
+        self._cover = None
+        super.__del__(*args)
+
     @property
     def cover(self):
         """Gets raw cover data. This is usually used for comparisons between two files."""
         if not self._supports_album_covers:
             return False
 
-        return EartagFileCover(self.cover_path)
+        if not self._cover:
+            self._cover = EartagFileCover(self.cover_path)
+        return self._cover
 
     @GObject.Signal
     def modified(self):
