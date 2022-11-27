@@ -113,7 +113,10 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     def __init__(self, path):
         super().__init__(path)
         if not self.mg_file.tags:
-            self.mg_file.add_tags()
+            try:
+                self.mg_file.add_tags()
+            except mutagen.id3._util.error:
+                pass
         self.load_cover()
 
     def get_tag(self, tag_name):
