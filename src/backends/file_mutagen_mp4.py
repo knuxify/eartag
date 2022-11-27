@@ -80,6 +80,11 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         self.mg_file.tags[frame_name] = [str(value)]
 
+    def __del__(self, *args):
+        if self.coverart_tempfile:
+            self.coverart_tempfile.close()
+        super().__del__()
+
     @GObject.Property(type=str)
     def cover_path(self):
         return self._cover_path

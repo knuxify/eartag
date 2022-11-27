@@ -132,6 +132,11 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         frame_class = KEY_TO_FRAME_CLASS[tag_name.lower()]
         self.mg_file.tags.setall(frame_name, [frame_class(encoding=3, text=[str(value)])])
 
+    def __del__(self, *args):
+        if self.coverart_tempfile:
+            self.coverart_tempfile.close()
+        super().__del__()
+
     @GObject.Property(type=str)
     def cover_path(self):
         return self._cover_path
