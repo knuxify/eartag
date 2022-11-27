@@ -47,7 +47,6 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def __init__(self, path):
         super().__init__(path)
-        self.cover_picture = None
         self._cover_path = None
         self.coverart_tempfile = None
         self.load_cover()
@@ -157,16 +156,16 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                     continue
 
                 try:
-                    self.cover_picture = Picture(data)
+                    cover_picture = Picture(data)
                 except FLACError:
                     continue
 
-                cover_extension = mimetypes.guess_extension(self.cover_picture.mime)
+                cover_extension = mimetypes.guess_extension(cover_picture.mime)
 
                 self.coverart_tempfile = tempfile.NamedTemporaryFile(
                     suffix=cover_extension
                 )
-                self.coverart_tempfile.write(self.cover_picture.data)
+                self.coverart_tempfile.write(cover_picture.data)
                 self.coverart_tempfile.flush()
                 self._cover_path = self.coverart_tempfile.name
 
