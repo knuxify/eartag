@@ -366,6 +366,8 @@ class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultip
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
 
+    loading = Gtk.Template.Child()
+    content_stack = Gtk.Template.Child()
     content_scroll = Gtk.Template.Child()
     select_file = Gtk.Template.Child()
 
@@ -398,11 +400,18 @@ class EartagFileView(Gtk.Stack):
         self.file_manager.connect('files_loaded', self.bind_to_file)
         self.file_manager.connect('selection_changed', self.bind_to_file)
         self.file_manager.connect('files_removed', self.update_buttons)
+        self.file_manager.connect('notify::loading-progress', self.update_loading)
 
         sidebar = self.get_native().sidebar
         self.next_file_button.connect('clicked', sidebar.select_next)
         self.previous_file_button.connect('clicked', sidebar.select_previous)
         sidebar.connect('notify::selection-mode', self.update_buttons)
+
+    def update_loading(self, *args):
+        if self.file_manager.loading_progress == 0:
+            self.set_visible_child(self.content_stack)
+        else:
+            self.set_visible_child(self.loading)
 
     def update_buttons(self, *args):
         """Updates the side switcher button state."""
@@ -443,12 +452,12 @@ class EartagFileView(Gtk.Stack):
             window.set_title('Ear Tag')
             window.window_title.set_subtitle('')
             if self.file_manager.files:
-                self.set_visible_child(self.select_file)
+                self.content_stack.set_visible_child(self.select_file)
             return False
         else:
             files = self.file_manager.selected_files
 
-        self.set_visible_child(self.content_scroll)
+        self.content_stack.set_visible_child(self.content_scroll)
 
         if len(files) == 1:
             file = files[0]
