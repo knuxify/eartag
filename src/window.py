@@ -169,7 +169,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def update_loading_progress(self, *args):
         loading_progress = self.file_manager.get_property('loading-progress')
-        is_loading = not loading_progress == 0
+        is_loading = loading_progress != 0
         self.select_multiple_button.set_sensitive(not is_loading)
         self.sidebar_search_button.set_sensitive(not is_loading)
         self.sort_button.set_sensitive(not is_loading)
@@ -180,9 +180,10 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.content_stack.set_visible_child(self.file_view)
-            self.select_multiple_button.set_sensitive(True)
-            self.sidebar_search_button.set_sensitive(True)
-            self.sort_button.set_sensitive(True)
+            if self.file_manager.loading_progress == 0:
+                self.select_multiple_button.set_sensitive(True)
+                self.sidebar_search_button.set_sensitive(True)
+                self.sort_button.set_sensitive(True)
         else:
             self.content_stack.set_visible_child(self.no_file)
             self.select_multiple_button.set_sensitive(False)

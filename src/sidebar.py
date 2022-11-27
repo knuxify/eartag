@@ -339,6 +339,7 @@ class EartagSidebar(Gtk.Box):
         loading_progress = self.file_manager.get_property('loading-progress')
         self.loading_progressbar_revealer.set_reveal_child(not loading_progress == 0)
         self.set_sensitive(loading_progress == 0)
+        self.file_list.set_visible(loading_progress == 0)
         self.loading_progressbar.set_fraction(loading_progress)
 
     def toggle_fileview(self, *args):
