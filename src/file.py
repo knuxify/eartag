@@ -79,6 +79,7 @@ class EartagFileManager(GObject.Object):
         self.files = Gio.ListStore(item_type=EartagFile)
         self.file_paths = []
         self.selected_files = []
+        self._selection_removed = False
 
     @GObject.Signal
     def files_loaded(self):
@@ -139,7 +140,11 @@ class EartagFileManager(GObject.Object):
             self.selected_files = []
             _selection_override = True
 
-        self.files.append(_file)
+        if emit_loaded:
+            self._files_buffer.append(_file)
+        else:
+            self.files.append(_file)
+
         self.file_paths.append(_file.path)
 
         if emit_loaded:
@@ -153,6 +158,7 @@ class EartagFileManager(GObject.Object):
 
     def _load_multiple_files(self, paths, mode=1):
         """Loads files with the provided paths."""
+        self._files_buffer = []
         if not paths:
             self._loading_progress = 0
             self.notify('loading_progress')
@@ -184,6 +190,9 @@ class EartagFileManager(GObject.Object):
                 return False
             self._loading_progress += progress_step
             self.notify('loading_progress')
+
+        self.files.splice(0, 0, self._files_buffer)
+        self._files_buffer = []
 
         self.emit('files_loaded')
         self._loading_progress = 0
@@ -239,7 +248,7 @@ class EartagFileManager(GObject.Object):
                 return
         self.set_property('is_modified', False)
 
-    def remove(self, file, force_discard=False):
+    def remove(self, file, force_discard=False, no_emit=False):
         """Removes a file from the opened file list."""
         if file.is_modified and not force_discard:
             EartagRemovalDiscardWarningDialog(self, file).present()
@@ -247,13 +256,55 @@ class EartagFileManager(GObject.Object):
         self.file_paths.remove(file.path)
         self.files.remove(self.files.find(file)[1])
         if file in self.selected_files:
+            if no_emit:
+                self._selection_removed = True
             self._selected_files.remove(file)
-            if not self.selected_files and self.files:
-                self._selected_files.append(self.files.get_item(0))
+            if not no_emit:
+                if not self.selected_files and self.files:
+                    self._selected_files.append(self.files.get_item(0))
+                self.emit('selection-changed')
+                self.emit('selection_override')
+        if not no_emit:
+            self.emit('files-removed')
+            self.update_modified_status()
+        return True
+
+    def remove_multiple(self, files, force_discard=False):
+        """Removes files from the opened file list."""
+        file_count = len(files)
+        if file_count == 0:
+            return False
+        elif file_count == 1:
+            return self.remove(file, force_discard=force_discard)
+        elif file_count == self.files.get_n_items():
+            self.files.remove_all()
+            self.selected_files = []
+            self.emit('selection_override')
+            self.emit('files-removed')
+            return True
+
+        self._loading_progress = 0
+        self.notify('loading_progress')
+        self._selection_removed = False
+        progress_step = 1 / file_count
+        for file in files:
+            if not self.remove(file, force_discard=force_discard, no_emit=True):
+                self._loading_progress = 0
+                self.notify('loading_progress')
+                return False
+            self._loading_progress += progress_step
+            self.notify('loading_progress')
+
+        if self._selection_removed:
             self.emit('selection-changed')
             self.emit('selection_override')
+
+        self._loading_progress = 0
+        self.notify('loading_progress')
+
         self.emit('files-removed')
         self.update_modified_status()
+
         return True
 
     def close_dialog(self, dialog, *args):
@@ -273,8 +324,10 @@ class EartagFileManager(GObject.Object):
 
     @selected_files.setter
     def selected_files(self, value):
+        old_value = self._selected_files
         self._selected_files = value
-        self.emit('selection_changed')
+        if old_value != value:
+            self.emit('selection_changed')
 
     def select_all(self, *args):
         self.selected_files = list(self.files)

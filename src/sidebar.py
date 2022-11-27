@@ -288,9 +288,9 @@ class EartagFileList(Gtk.ListView):
                     self.file_manager.selected_files.append(selected_file)
                 else:
                     self.file_manager.selected_files.remove(selected_file)
+                self.file_manager.emit('selection-changed')
         else:
             self.file_manager.selected_files = [selected_file]
-        self.file_manager.emit('selection-changed')
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')
 class EartagSidebar(Gtk.Box):
@@ -378,8 +378,7 @@ class EartagSidebar(Gtk.Box):
     @Gtk.Template.Callback()
     def remove_selected(self, *args):
         old_selected = self.file_manager.selected_files.copy()
-        for file in old_selected:
-            self.file_manager.remove(file)
+        self.file_manager.remove_multiple(old_selected)
 
     def refresh_actionbar_button_state(self, *args):
         if not self.file_manager.files or not self.selection_mode:
