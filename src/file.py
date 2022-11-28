@@ -26,6 +26,8 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
+import gi
+gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Adw, Gio, Gtk, GObject
 import magic
 import mimetypes
@@ -34,7 +36,7 @@ import traceback
 import threading
 import time
 
-from .backends import EartagFileTagLib, EartagFileMutagenVorbis, EartagFileMutagenID3, EartagFileMutagenMP4
+from .backends import EartagFileTagLib, EartagFileMutagenVorbis, EartagFileMutagenID3, EartagFileMutagenMP4, EartagFileMutagenASF
 from .backends.file import EartagFile
 
 def is_type_bulk(path, types):
@@ -58,6 +60,8 @@ def eartagfile_from_path(path):
         return EartagFileMutagenVorbis(path)
     elif is_type_bulk(path, ('audio/x-m4a', 'audio/aac', 'audio/mp4', 'audio/x-mpeg', 'audio/mpeg')):
         return EartagFileMutagenMP4(path)
+    elif is_type_bulk(path, ('audio/x-ms-wma', 'audio/wma', 'video/x-ms-asf')):
+        return EartagFileMutagenASF(path)
     return EartagFileTagLib(path)
 
 class EartagFileManager(GObject.Object):
