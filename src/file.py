@@ -26,6 +26,8 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
+import gi
+gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Adw, Gio, Gtk, GObject
 import magic
 import mimetypes
