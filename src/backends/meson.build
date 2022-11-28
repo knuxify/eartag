@@ -3,7 +3,6 @@ modulesubdir = join_paths(moduledir, 'backends')
 backends_sources = [
   '__init__.py',
   'file.py',
-  'file_taglib.py',
   'file_mutagen_common.py',
   'file_mutagen_asf.py',
   'file_mutagen_id3.py',

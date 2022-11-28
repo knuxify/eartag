@@ -36,7 +36,12 @@ import traceback
 import threading
 import time
 
-from .backends import EartagFileTagLib, EartagFileMutagenVorbis, EartagFileMutagenID3, EartagFileMutagenMP4, EartagFileMutagenASF
+from .backends import (
+    EartagFileMutagenVorbis,
+    EartagFileMutagenID3,
+    EartagFileMutagenMP4,
+    EartagFileMutagenASF
+    )
 from .backends.file import EartagFile
 
 def is_type_bulk(path, types):
@@ -62,7 +67,7 @@ def eartagfile_from_path(path):
         return EartagFileMutagenMP4(path)
     elif is_type_bulk(path, ('audio/x-ms-wma', 'audio/wma', 'video/x-ms-asf')):
         return EartagFileMutagenASF(path)
-    return EartagFileTagLib(path)
+    raise ValueError(f"Unsupported file format for file {path}")
 
 class EartagFileManager(GObject.Object):
     """Contains information about the currently loaded files."""

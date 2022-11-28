@@ -28,7 +28,6 @@ Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The follo
 - pygobject
 - eyed3 (used for MP3 file tagging)
 - pillow and mutagen (used for OGG and FLAC file tagging)
-- pytaglib (used for tagging other files)
 - python-magic (used for MIME type detection)
 
 ## Building

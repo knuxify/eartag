@@ -110,8 +110,6 @@ class Application(Adw.Application):
         lib_versions.append(f"mutagen: {mutagen.version_string}")
         import PIL
         lib_versions.append(f"pillow: {PIL.__version__}")
-        import taglib
-        lib_versions.append(f"pytaglib: {taglib.version}")
 
         lib_version_str = '\n - '.join(lib_versions)
 
