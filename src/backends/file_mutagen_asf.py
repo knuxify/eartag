@@ -119,7 +119,7 @@ def pack_image(image_data, image_type=3, description='thumbnail'):
     size = len(image_data)
 
     data = struct.pack("<bi", image_type, size)
-    data += magic.from_buffer(data, mime=True).encode("utf-16-le") + b"\x00\x00"
+    data += magic.from_buffer(image_data, mime=True).encode("utf-16-le") + b"\x00\x00"
     data += description.encode("utf-16-le") + b"\x00\x00"
     data += image_data
 
@@ -182,7 +182,6 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
         self.mg_file.tags['WM/Picture'] = pictures
 
-        print(self.mg_file.tags)
         self.mark_as_modified()
 
     def load_cover(self):
