@@ -173,6 +173,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.select_multiple_button.set_sensitive(not is_loading)
         self.sidebar_search_button.set_sensitive(not is_loading)
         self.sort_button.set_sensitive(not is_loading)
+        if self.file_manager.files.get_n_items() == 0 and is_loading:
+            self.container_stack.set_visible_child(self.toast_overlay)
 
     def toggle_fileview(self, *args):
         """
