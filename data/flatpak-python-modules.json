@@ -4,20 +4,6 @@
     "build-commands": [],
     "modules": [
         {
-            "name": "python3-pytaglib",
-            "buildsystem": "simple",
-            "build-commands": [
-                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pytaglib\" --no-build-isolation"
-            ],
-            "sources": [
-                {
-                    "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/ea/bb/bdd8aa96668820731f8eb871a938efbf535cf70a3fbe2939d3323dfb0228/pytaglib-1.5.0.tar.gz",
-                    "sha256": "8f7603dffdb1930428b305e79b8ca127e9cffc4ce4d2f7440a5f5226a82e6e5f"
-                }
-            ]
-        },
-        {
             "name": "python3-python-magic",
             "buildsystem": "simple",
             "build-commands": [
