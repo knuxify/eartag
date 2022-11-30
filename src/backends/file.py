@@ -264,3 +264,247 @@ class EartagFile(GObject.Object):
     def comment(self, value):
         self.set_tag('comment', value)
         self.mark_as_modified()
+
+    # Additional tag properties.
+
+    @GObject.Property(type=int)
+    def bpm(self):
+        if 'bpm' in self.supported_extra_tags:
+            return int(self.get_tag('bpm'))
+        return None
+
+    @bpm.setter
+    def bpm(self, value):
+        if 'bpm' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('bpm', int(value))
+        else:
+            self.set_tag('bpm', None)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def compilation(self):
+        if 'compilation' in self.supported_extra_tags:
+            return self.get_tag('compilation')
+        return None
+
+    @compilation.setter
+    def compilation(self, value):
+        if 'compilation' not in self.supported_extra_tags:
+            return None
+        self.set_tag('compilation', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def composer(self):
+        if 'composer' in self.supported_extra_tags:
+            return self.get_tag('composer')
+        return None
+
+    @composer.setter
+    def composer(self, value):
+        if 'composer' not in self.supported_extra_tags:
+            return None
+        self.set_tag('composer', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def copyright(self):
+        if 'copyright' in self.supported_extra_tags:
+            return self.get_tag('copyright')
+        return None
+
+    @copyright.setter
+    def copyright(self, value):
+        if 'copyright' not in self.supported_extra_tags:
+            return None
+        self.set_tag('copyright', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def encodedby(self):
+        if 'encodedby' in self.supported_extra_tags:
+            return self.get_tag('encodedby')
+        return None
+
+    @encodedby.setter
+    def encodedby(self, value):
+        if 'encodedby' not in self.supported_extra_tags:
+            return None
+        self.set_tag('encodedby', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def mood(self):
+        if 'mood' in self.supported_extra_tags:
+            return self.get_tag('mood')
+        return None
+
+    @mood.setter
+    def mood(self, value):
+        if 'mood' not in self.supported_extra_tags:
+            return None
+        self.set_tag('mood', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def conductor(self):
+        if 'conductor' in self.supported_extra_tags:
+            return self.get_tag('conductor')
+        return None
+
+    @conductor.setter
+    def conductor(self, value):
+        if 'conductor' not in self.supported_extra_tags:
+            return None
+        self.set_tag('conductor', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def arranger(self):
+        if 'arranger' in self.supported_extra_tags:
+            return self.get_tag('arranger')
+        return None
+
+    @arranger.setter
+    def arranger(self, value):
+        if 'arranger' not in self.supported_extra_tags:
+            return None
+        self.set_tag('arranger', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=int)
+    def discnumber(self):
+        if 'discnumber' in self.supported_extra_tags:
+            return int(self.get_tag('discnumber'))
+        return None
+
+    @discnumber.setter
+    def discnumber(self, value):
+        if 'discnumber' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('discnumber', int(value))
+        else:
+            self.set_tag('discnumber', None)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def publisher(self):
+        if 'publisher' in self.supported_extra_tags:
+            return self.get_tag('publisher')
+        return None
+
+    @publisher.setter
+    def publisher(self, value):
+        if 'publisher' not in self.supported_extra_tags:
+            return None
+        self.set_tag('publisher', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def isrc(self):
+        if 'isrc' in self.supported_extra_tags:
+            return self.get_tag('isrc')
+        return None
+
+    @isrc.setter
+    def isrc(self, value):
+        if 'isrc' not in self.supported_extra_tags:
+            return None
+        self.set_tag('isrc', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def language(self):
+        if 'language' in self.supported_extra_tags:
+            return self.get_tag('language')
+        return None
+
+    @language.setter
+    def language(self, value):
+        if 'language' not in self.supported_extra_tags:
+            return None
+        self.set_tag('language', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def discsubtitle(self):
+        if 'discsubtitle' in self.supported_extra_tags:
+            return self.get_tag('discsubtitle')
+        return None
+
+    @discsubtitle.setter
+    def discsubtitle(self, value):
+        if 'discsubtitle' not in self.supported_extra_tags:
+            return None
+        self.set_tag('discsubtitle', value)
+        self.mark_as_modified()
+
+    # Sort order tags
+
+    @GObject.Property(type=str)
+    def albumartistsort(self):
+        if 'albumartistsort' in self.supported_extra_tags:
+            return self.get_tag('albumartistsort')
+        return None
+
+    @albumartistsort.setter
+    def albumartistsort(self, value):
+        if 'albumartistsort' not in self.supported_extra_tags:
+            return None
+        self.set_tag('albumartistsort', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def albumsort(self):
+        if 'albumsort' in self.supported_extra_tags:
+            return self.get_tag('albumsort')
+        return None
+
+    @albumsort.setter
+    def albumsort(self, value):
+        if 'albumsort' not in self.supported_extra_tags:
+            return None
+        self.set_tag('albumsort', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def composersort(self):
+        if 'composersort' in self.supported_extra_tags:
+            return self.get_tag('composersort')
+        return None
+
+    @composersort.setter
+    def composersort(self, value):
+        if 'composersort' not in self.supported_extra_tags:
+            return None
+        self.set_tag('composersort', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def artistsort(self):
+        if 'artistsort' in self.supported_extra_tags:
+            return self.get_tag('artistsort')
+        return None
+
+    @artistsort.setter
+    def artistsort(self, value):
+        if 'artistsort' not in self.supported_extra_tags:
+            return None
+        self.set_tag('artistsort', value)
+        self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def titlesort(self):
+        if 'titlesort' in self.supported_extra_tags:
+            return self.get_tag('titlesort')
+        return None
+
+    @titlesort.setter
+    def titlesort(self, value):
+        if 'titlesort' not in self.supported_extra_tags:
+            return None
+        self.set_tag('titlesort', value)
+        self.mark_as_modified()

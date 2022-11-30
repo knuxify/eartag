@@ -91,7 +91,7 @@ KEY_TO_FRAME_CLASS = {
     'conductor': mutagen.id3.TPE3,
     'arranger': mutagen.id3.TPE4,
     'discnumber': mutagen.id3.TPOS,
-    'organization': mutagen.id3.TPUB,
+    'publisher': mutagen.id3.TPUB,
     'tracknumber': mutagen.id3.TRCK,
     'author': mutagen.id3.TOLY,
     'albumartistsort': mutagen.id3.TSO2,
@@ -109,6 +109,15 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for ID3 support."""
     __gtype_name__ = 'EartagFileMutagenID3'
     _supports_album_covers = True
+
+    supported_extra_tags = (
+        'bpm', 'compilation', 'composer', 'copyright', 'encodedby',
+        'mood', 'conductor', 'arranger', 'discnumber', 'publisher',
+        'isrc', 'language', 'discsubtitle',
+
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort',
+        'titlesort'
+    )
 
     def __init__(self, path):
         super().__init__(path)

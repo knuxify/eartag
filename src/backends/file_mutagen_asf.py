@@ -134,6 +134,14 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     # have a way to specify it
     handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre', 'releaseyear', 'comment']
 
+    supported_extra_tags = (
+        'bpm', 'composer', 'copyright', 'encodedby',
+        'mood', 'conductor', 'discnumber', 'publisher',
+        'isrc', 'discsubtitle',
+
+        'albumartistsort', 'albumsort', 'artistsort'
+    )
+
     def __init__(self, path):
         super().__init__(path)
         self.load_cover()

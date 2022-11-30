@@ -42,8 +42,24 @@ from .file_mutagen_common import EartagFileMutagenCommon
 class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for Voris Comment support."""
     __gtype_name__ = 'EartagFileMutagenVorbis'
-
     _supports_album_covers = True
+
+    # There's an official standard and semi-official considerations for tags,
+    # plus some more documents linked from https://wiki.xiph.org/VorbisComment;
+    # this only covers tags mentioned there.
+    supported_extra_tags = (
+        'composer', 'copyright', 'encodedby', 'mood', 'conductor',
+        'discnumber', 'publisher', 'isrc',
+
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort',
+        'titlesort'
+    )
+
+    _replaces = {
+        'encodedby': 'encoded-by', # ENCODED-BY, ENCODING, ENCODER???
+        'conductor': 'performer',
+        'publisher': 'organization' # this could be 'publisher' if https://web.archive.org/web/20120429102447/http://reallylongword.org/vorbiscomment/ is to be believed
+    }
 
     def __init__(self, path):
         super().__init__(path)
@@ -53,6 +69,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def get_tag(self, tag_name):
         """Tries the lowercase, then uppercase representation of the tag."""
+        if tag_name.lower() in self._replaces:
+            tag_name = _replaces[tag_name.lower()]
         try:
             return self.mg_file.tags[tag_name.lower()][0]
         except KeyError:

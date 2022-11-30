@@ -54,13 +54,35 @@ KEY_TO_FRAME = {
     'titlesort': 'sonm',
     'composersort': 'soco',
     'tracknumber': 'trkn',
-    'cover': 'covr'
+    'cover': 'covr',
+    'copyright': 'cprt',
+    'bpm': 'tmpo',
+    'composer': '\xa9wrt',
+    'encodedby': '\xa9enc', # might be \xa9too
+    'discnumber': 'disk',
+
+    'conductor': '----:com.apple.iTunes:CONDUCTOR',
+    'discsubtitle': '----:com.apple.iTunes:DISCSUBTITLE',
+    'language': '----:com.apple.iTunes:LANGUAGE',
+    'mood': '----:com.apple.iTunes:MOOD'
 }
+# Annoyingly, there's no central MP4 tag standard; most software just tries to
+# do what iTunes does (or did at some point... apparently they've had since 2005
+# or even earlier to figure it out...)
 
 class EartagFileMutagenMP4(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for MP4 support."""
     __gtype_name__ = 'EartagFileMutagenMP4'
     _supports_album_covers = True
+
+    supported_extra_tags = (
+        'bpm', 'composer', 'copyright', 'encodedby',
+        'mood', 'conductor', 'discnumber', 'publisher',
+        'language', 'discsubtitle',
+
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort',
+        'titlesort'
+    )
 
     def __init__(self, path):
         super().__init__(path)
