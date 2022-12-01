@@ -70,7 +70,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     def get_tag(self, tag_name):
         """Tries the lowercase, then uppercase representation of the tag."""
         if tag_name.lower() in self._replaces:
-            tag_name = _replaces[tag_name.lower()]
+            tag_name = self._replaces[tag_name.lower()]
         try:
             return self.mg_file.tags[tag_name.lower()][0]
         except KeyError:
