@@ -186,9 +186,9 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=int)
     def tracknumber(self):
-        _raw = self.get_tag('tracknumber')
-        if _raw:
-            return int(_raw)
+        value = self.get_tag('tracknumber')
+        if value:
+            return int(value)
         return None
 
     @tracknumber.setter
@@ -201,9 +201,9 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
-        _raw = self.get_tag('totaltracknumber')
-        if _raw:
-            return int(_raw)
+        value = self.get_tag('totaltracknumber')
+        if value:
+            return int(value)
         return None
 
     @totaltracknumber.setter
@@ -243,9 +243,9 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=int)
     def releaseyear(self):
-        _raw = self.get_tag('releaseyear')
-        if _raw:
-            return int(_raw)
+        value = self.get_tag('releaseyear')
+        if value:
+            return int(value)
         return None
 
     @releaseyear.setter
@@ -270,7 +270,9 @@ class EartagFile(GObject.Object):
     @GObject.Property(type=int)
     def bpm(self):
         if 'bpm' in self.supported_extra_tags:
-            return int(self.get_tag('bpm'))
+            value = self.get_tag('bpm')
+            if value:
+                return int(self.get_tag('bpm'))
         return None
 
     @bpm.setter
@@ -377,7 +379,9 @@ class EartagFile(GObject.Object):
     @GObject.Property(type=int)
     def discnumber(self):
         if 'discnumber' in self.supported_extra_tags:
-            return int(self.get_tag('discnumber'))
+            value = self.get_tag('discnumber')
+            if value:
+                return int(value)
         return None
 
     @discnumber.setter
