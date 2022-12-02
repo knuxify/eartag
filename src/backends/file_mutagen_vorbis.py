@@ -48,17 +48,13 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     # plus some more documents linked from https://wiki.xiph.org/VorbisComment;
     # this only covers tags mentioned there.
     supported_extra_tags = (
-        'composer', 'copyright', 'encodedby', 'mood', 'conductor',
-        'discnumber', 'publisher', 'isrc',
+        'composer', 'copyright', 'mood', 'discnumber', 'publisher', 'isrc',
 
-        'albumartistsort', 'albumsort', 'composersort', 'artistsort',
-        'titlesort'
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort', 'titlesort'
     )
 
     _replaces = {
-        'encodedby': 'encoded-by', # ENCODED-BY, ENCODING, ENCODER???
-        'conductor': 'performer',
-        'publisher': 'organization' # this could be 'publisher' if https://web.archive.org/web/20120429102447/http://reallylongword.org/vorbiscomment/ is to be believed
+        'encodedby': 'encoded-by' # ENCODED-BY, ENCODING, ENCODER???
     }
 
     def __init__(self, path):
@@ -269,13 +265,4 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             self.mg_file.tags['date'] = str(value)
         else:
             self.mg_file.tags['date'] = ''
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def comment(self):
-        return self.get_tag('DESCRIPTION')
-
-    @comment.setter
-    def comment(self, value):
-        self.mg_file.tags['DESCRIPTION'] = value
         self.mark_as_modified()

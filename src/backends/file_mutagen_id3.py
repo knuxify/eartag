@@ -58,7 +58,7 @@ KEY_TO_FRAME = {
     'conductor': 'TPE3',
     'arranger': 'TPE4',
     'discnumber': 'TPOS',
-    'organization': 'TPUB',
+    'publisher': 'TPUB',
     'tracknumber': 'TRCK',
     'author': 'TOLY',
     'albumartistsort': 'TSO2',
