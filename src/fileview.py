@@ -33,6 +33,7 @@ from .common import (
     EartagAlbumCoverImage,
     EartagMultipleValueEntry
 )
+from .backends.file import EartagFile
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path
@@ -362,6 +363,110 @@ class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultip
             self.value_entry_double.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.value_entry_double.get_delegate().connect('insert-text', self.disallow_nonnumeric)
 
+class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultipleValueEntry):
+    __gtype_name__ = 'EartagTagListMoreItem'
+
+    _is_double = False
+    _is_numeric = False
+    _max_width_chars = -1
+
+    # I wish GTK had a built-in list type like StringList but for ID-human readable value pairs,
+    # but for now this will have to suffice:
+    tag_names = {
+        "bpm": _("BPM"), # TRANSLATORS: Short for "beats per minute".
+        "compilation": _("Compilation"),
+        "composer": _("Composer"),
+        "copyright": _("Copyright"),
+        "encodedby": _("Encoded by"),
+        "mood": _("Mood"),
+        "conductor": _("Conductor"), # TRANSLATORS: Orchestra conductor
+        "arranger": _("Arranger"),
+        "discnumber": _("Disc number"),
+        "publisher": _("Publisher"),
+        "isrc": "ISRC",
+        "language": _("Language"),
+        "discsubtitle": _("Disc subtitle"),
+
+        "albumartistsort": _("Album artist (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "albumsort": _("Album (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "composersort": _("Composer (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "artistsort": _("Artist (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "titlesort": _("Title (sort") # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+    }
+
+    handled_tags = []
+
+    def __init__(self):
+        super().__init__()
+
+        self.files = []
+        self.properties = []
+        self.ignore_edit = {}
+        self._numeric_connect = None
+
+        self._tag_names_swapped = {}
+        for k, v in self.tag_names.items():
+            self._tag_names_swapped[v] = k
+
+        self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
+        self.value_entry.connect('changed', self.on_changed, False)
+        self.add_suffix(self.value_entry)
+
+        tag_strings = Gtk.StringList.new(list(self.tag_names.values()))
+        self.tag_model = Gtk.FilterListModel(model=tag_strings)
+        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
+        self.tag_model.set_filter(self.tag_filter)
+
+        self.tag_selector = Gtk.DropDown.new(model=self.tag_model)
+        self.tag_selector.set_valign(Gtk.Align.CENTER)
+        self.tag_selector.connect('notify::selected', self.on_tag_selector_select)
+        self.on_tag_selector_select(self.tag_selector)
+        self.add_prefix(self.tag_selector)
+
+        self.set_activatable_widget(self.value_entry)
+        self.connect('destroy', self.on_destroy)
+
+    @GObject.Property(type=bool, default=False)
+    def is_double(self):
+        return False
+
+    @GObject.Property(type=bool, default=False)
+    def is_numeric(self):
+        return self._is_numeric
+
+    @is_numeric.setter
+    def is_numeric(self, value):
+        self._is_numeric = value
+        if value is True:
+            self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
+            self._numeric_connect = self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+        else:
+            self.value_entry.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
+            self.value_entry.get_delegate().disconnect(self._numeric_connect)
+
+    def tag_filter_func(self, _tag_name, *args):
+        tag_name = _tag_name.get_string()
+        tag_prop = self._tag_names_swapped[tag_name]
+        if tag_prop in self.handled_tags and tag_prop not in self.properties:
+            return False
+        for file in self.files:
+            if tag_prop not in file.supported_extra_tags:
+                return False
+        return True
+
+    def on_tag_selector_select(self, dropdown, *args):
+        if self.properties and self.properties[0] in self.handled_tags:
+            self.handled_tags.remove(self.properties[0])
+        property = self._tag_names_swapped[dropdown.get_selected_item().get_string()]
+        self.properties = [property]
+        self.handled_tags.append(property)
+        if property in EartagFile.int_properties and not self._is_numeric:
+            self.set_property('is_numeric', True)
+        elif property not in EartagFile.int_properties and self._is_numeric:
+            self.set_property('is_numeric', False)
+        for file in self.files:
+            self.refresh_multiple_values(file)
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
@@ -382,6 +487,8 @@ class EartagFileView(Gtk.Stack):
     releaseyear_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
 
+    more_tags_expander = Gtk.Template.Child()
+
     previous_file_button_revealer = Gtk.Template.Child()
     next_file_button_revealer = Gtk.Template.Child()
     previous_file_button = Gtk.Template.Child()
@@ -394,6 +501,10 @@ class EartagFileView(Gtk.Stack):
     def __init__(self):
         """Initializes the EartagFileView."""
         super().__init__()
+
+        # FIXME
+        self.test_morerow = EartagTagListMoreItem()
+        self.more_tags_expander.add_row(self.test_morerow)
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -465,6 +576,7 @@ class EartagFileView(Gtk.Stack):
                 self.unbind_entry(file, self.genre_entry)
                 self.unbind_entry(file, self.releaseyear_entry)
                 self.unbind_entry(file, self.comment_entry)
+                self.unbind_entry(file, self.test_morerow) # FIXME
                 self.album_cover.unbind_from_file(file)
 
             self.bindings = {}
@@ -535,6 +647,7 @@ class EartagFileView(Gtk.Stack):
             self.unbind_entry(file, self.genre_entry)
             self.unbind_entry(file, self.releaseyear_entry)
             self.unbind_entry(file, self.comment_entry)
+            self.unbind_entry(file, self.test_morerow) # FIXME
             self.album_cover.unbind_from_file(file)
 
         for file in added_files:
@@ -564,6 +677,9 @@ class EartagFileView(Gtk.Stack):
             self.setup_entry(file, self.releaseyear_entry, 'releaseyear')
             self.setup_entry(file, self.comment_entry, 'comment')
 
+            # FIXME
+            self.setup_entry(file, self.test_morerow, None)
+
         if _no_files:
             window.run_sort()
 
@@ -572,8 +688,9 @@ class EartagFileView(Gtk.Stack):
         adjust.set_value(adjust.get_lower())
 
     def setup_entry(self, file, entry, property, property_double=None):
-        if isinstance(entry, EartagTagListItem) or isinstance(entry, EartagTagListDoubleItem):
-            entry._set_property(property, property_double)
+        if isinstance(entry, EartagTagListItemBase):
+            if not isinstance(entry, EartagTagListMoreItem):
+                entry._set_property(property, property_double)
             entry.bind_to_file(file)
         elif isinstance(entry, EartagEditableLabel):
             entry.properties = [property]
@@ -582,7 +699,7 @@ class EartagFileView(Gtk.Stack):
             entry.notify('text')
 
     def unbind_entry(self, file, entry):
-        if isinstance(entry, EartagTagListItem) or isinstance(entry, EartagTagListDoubleItem):
+        if isinstance(entry, EartagTagListItemBase):
             entry.unbind_from_file(file)
         elif isinstance(entry, EartagEditableLabel):
             entry.unbind_from_file(file)
