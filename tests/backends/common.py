@@ -12,7 +12,27 @@ prop_to_example_string = {
     'totaltracknumber': 99,
     'genre': 'Example Genre',
     'releaseyear': 2022,
-    'comment': 'Example Comment'
+    'comment': 'Example Comment',
+
+    'bpm': 160,
+    'compilation': 'Example Compilation',
+    'composer': 'Example Composer',
+    'copyright': 'Example Copyright',
+    'encodedby': 'Example Encoded by',
+    'mood': 'Example Mood',
+    'conductor': 'Example Conductor',
+    'arranger': 'Example Arranger',
+    'discnumber': 1,
+    'publisher': 'Example Publisher',
+    'isrc': 'Example-ISRC',
+    'language': 'Example Language',
+    'discsubtitle': 'Example Disc Subtitle',
+
+    'albumartistsort': 'Example Album Artist (sort)',
+    'albumsort': 'Example Album (sort)',
+    'composersort': 'Example Composer (sort)',
+    'artistsort': 'Example Artist (sort)',
+    'titlesort': 'Example Title (sort)'
 }
 
 EXAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'examples')
@@ -37,6 +57,12 @@ def backend_read(file, skip_channels=False):
         except AssertionError:
             raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})')
 
+    for prop in file.supported_extra_tags:
+        try:
+            assert file.get_property(prop) == prop_to_example_string[prop]
+        except AssertionError:
+            raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})')
+
     if file._supports_album_covers:
         try:
             assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'))
@@ -56,6 +82,12 @@ def backend_read_empty(file):
         except AssertionError:
             raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')
 
+    for prop in file.supported_extra_tags:
+        try:
+            assert not file.get_property(prop) or (isinstance(file.get_property(prop), int) and file.get_property(prop) == -1)
+        except AssertionError:
+            raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')
+
     assert file.get_property('is_modified') == False
     assert not file.get_property('cover_path')
 
@@ -64,6 +96,9 @@ def backend_write(file, skip_channels=False):
     backend_read_empty(file)
 
     for prop in file.handled_properties:
+        file.set_property(prop, prop_to_example_string[prop])
+
+    for prop in file.supported_extra_tags:
         file.set_property(prop, prop_to_example_string[prop])
 
     if file._supports_album_covers:
