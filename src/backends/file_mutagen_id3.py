@@ -148,6 +148,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         Returns True or False based on whether the tag with the given name is
         present in the file.
         """
+        if not self.mg_file.tags:
+            return False
         if tag_name == 'totaltracknumber':
             return bool(self.totaltracknumber)
         elif tag_name == 'releaseyear':

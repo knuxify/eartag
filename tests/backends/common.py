@@ -97,12 +97,14 @@ def backend_read_empty(file, skip_cover=False):
     for prop in file.handled_properties:
         try:
             assert not file.get_property(prop) or (isinstance(file.get_property(prop), int) and file.get_property(prop) == -1)
+            assert not file.has_tag(prop)
         except AssertionError:
             raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')
 
     for prop in file.supported_extra_tags:
         try:
             assert not file.get_property(prop) or (isinstance(file.get_property(prop), int) and file.get_property(prop) == -1)
+            assert not file.has_tag(prop)
         except AssertionError:
             raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')
 

@@ -93,6 +93,13 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         """
         if tag_name == 'totaltracknumber':
             return bool(self.totaltracknumber)
+        elif tag_name == 'encodedby':
+            if 'encoder' in self.mg_file.tags:
+                return bool(self.mg_file.tags['encoder'][0])
+            elif 'ENCODER' in self.mg_file.tags:
+                return bool(self.mg_file.tags['ENCODER'][0])
+            else:
+                return False
         if tag_name.lower() in self._replaces:
             tag_name = self._replaces[tag_name.lower()]
         if tag_name in self.mg_file.tags or tag_name.upper() in self.mg_file.tags:
