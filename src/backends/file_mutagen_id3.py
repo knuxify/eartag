@@ -46,6 +46,7 @@ KEY_TO_FRAME = {
     'composer': 'TCOM',
     'copyright': 'TCOP',
     'encodedby': 'TENC',
+    'genre': 'TCON',
     'lyricist': 'TEXT',
     'length': 'TLEN',
     'media': 'TMED',
@@ -60,6 +61,7 @@ KEY_TO_FRAME = {
     'discnumber': 'TPOS',
     'publisher': 'TPUB',
     'tracknumber': 'TRCK',
+    'totaltracknumber': 'TRCK',
     'author': 'TOLY',
     'albumartistsort': 'TSO2',
     'albumsort': 'TSOA',
@@ -140,6 +142,32 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         frame_class = KEY_TO_FRAME_CLASS[tag_name.lower()]
         self.mg_file.tags.setall(frame_name, [frame_class(encoding=3, text=[str(value)])])
+
+    def has_tag(self, tag_name):
+        """
+        Returns True or False based on whether the tag with the given name is
+        present in the file.
+        """
+        if tag_name == 'totaltracknumber':
+            return bool(self.totaltracknumber)
+        elif tag_name == 'releaseyear':
+            return 'TDRC' in self.mg_file.tags or 'TDOR' in self.mg_file.tags
+        if tag_name not in KEY_TO_FRAME:
+            return False
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            return True
+        return False
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag with the given name from the file."""
+        if tag_name == 'releaseyear':
+            self.mg_file.tags.delall('TDRC')
+            self.mg_file.tags.delall('TDOR')
+        else:
+            frame_name = KEY_TO_FRAME[tag_name.lower()]
+            self.mg_file.tags.delall(frame_name)
+        self.mark_as_modified()
 
     def __del__(self, *args):
         if self.coverart_tempfile:

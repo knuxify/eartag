@@ -54,6 +54,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     )
 
     _replaces = {
+        'releaseyear': 'date',
         'encodedby': 'encoded-by' # ENCODED-BY, ENCODING, ENCODER???
     }
 
@@ -77,10 +78,33 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def set_tag(self, tag_name, value):
         """Sets the tag with the given name to the given value."""
+        if tag_name.lower() in self._replaces:
+            tag_name = self._replaces[tag_name.lower()]
         if tag_name.upper() in self.mg_file.tags:
             self.mg_file.tags[tag_name.upper()] = str(value)
         else:
             self.mg_file.tags[tag_name] = str(value)
+
+    def has_tag(self, tag_name):
+        """
+        Returns True or False based on whether the tag with the given name is
+        present in the file.
+        """
+        if tag_name == 'totaltracknumber':
+            return bool(self.totaltracknumber)
+        if tag_name.lower() in self._replaces:
+            tag_name = self._replaces[tag_name.lower()]
+        if tag_name in self.mg_file.tags:
+            return True
+        return False
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag with the given name from the file."""
+        if tag_name.lower() in self._replaces:
+            tag_name = self._replaces[tag_name.lower()]
+        if tag_name in self.mg_file.tags:
+            del self.mg_file.tags[tag_name]
+        self.mark_as_modified()
 
     def __del__(self, *args):
         if self.coverart_tempfile:

@@ -54,6 +54,7 @@ KEY_TO_FRAME = {
     'titlesort': 'sonm',
     'composersort': 'soco',
     'tracknumber': 'trkn',
+    'totaltracknumber': 'trkn',
     'cover': 'covr',
     'copyright': 'cprt',
     'bpm': 'tmpo',
@@ -109,6 +110,27 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             self.mg_file.tags[frame_name] = [int(value)]
         else:
             self.mg_file.tags[frame_name] = [str(value)]
+
+    def has_tag(self, tag_name):
+        """
+        Returns True or False based on whether the tag with the given name is
+        present in the file.
+        """
+        if tag_name == 'totaltracknumber':
+            return bool(self.totaltracknumber)
+        if tag_name not in KEY_TO_FRAME:
+            return False
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            return True
+        return False
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag with the given name from the file."""
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            del self.mg_file.tags[frame_name]
+        self.mark_as_modified()
 
     def __del__(self, *args):
         if self.coverart_tempfile:
