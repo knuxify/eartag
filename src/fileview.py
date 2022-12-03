@@ -391,7 +391,7 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         "albumsort": _("Album (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
         "composersort": _("Composer (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
         "artistsort": _("Artist (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "titlesort": _("Title (sort") # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "titlesort": _("Title (sort)") # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
     }
 
     handled_tags = []
@@ -508,9 +508,9 @@ class EartagFileView(Gtk.Stack):
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
-        self.file_manager.connect('files_loaded', self.bind_to_file)
-        self.file_manager.connect('selection_changed', self.bind_to_file)
-        self.file_manager.connect('files_removed', self.update_buttons)
+        self.file_manager.connect('files_loaded', self.update_binds)
+        self.file_manager.connect('selection_changed', self.update_binds)
+        self.file_manager.connect('files_removed', self.update_binds)
         self.file_manager.connect('notify::loading-progress', self.update_loading)
 
         sidebar = self.get_native().sidebar
@@ -541,16 +541,12 @@ class EartagFileView(Gtk.Stack):
             self.previous_file_button_revealer.set_reveal_child(True)
             self.next_file_button_revealer.set_reveal_child(True)
 
-    def bind_to_file(self, *args):
+    def update_binds(self, *args):
         """
         Reads the file data from the file manager and applies it
         to the file view.
         """
         window = self.get_native()
-
-        _no_files = False
-        if len(self.file_manager.files) == 0:
-            _no_files = True
 
         self.update_buttons()
 
@@ -558,6 +554,7 @@ class EartagFileView(Gtk.Stack):
         added_files = [file for file in self.file_manager.selected_files if file not in self.bound_files]
         removed_files = [file for file in self.bound_files if file not in self.file_manager.selected_files]
 
+        # Set up the active view (hide fileview if there are no selected files)
         selected_files_count = len(self.file_manager.selected_files)
         if selected_files_count <= 0:
             window.set_title('Ear Tag')
@@ -565,67 +562,27 @@ class EartagFileView(Gtk.Stack):
             if self.file_manager.files:
                 self.content_stack.set_visible_child(self.select_file)
 
-            for file in self.bindings.keys():
-                for binding in self.bindings[file]:
-                    binding.unbind()
-                self.unbind_entry(file, self.title_entry)
-                self.unbind_entry(file, self.artist_entry)
-                self.unbind_entry(file, self.tracknumber_entry)
-                self.unbind_entry(file, self.album_entry)
-                self.unbind_entry(file, self.albumartist_entry)
-                self.unbind_entry(file, self.genre_entry)
-                self.unbind_entry(file, self.releaseyear_entry)
-                self.unbind_entry(file, self.comment_entry)
-                self.unbind_entry(file, self.test_morerow) # FIXME
-                self.album_cover.unbind_from_file(file)
+            for file in self.bindings.copy().keys():
+                self._unbind_file(file)
 
             self.bindings = {}
             self.bound_files = []
+
+            window.run_sort()
             return False
         else:
             files = self.file_manager.selected_files
 
         self.content_stack.set_visible_child(self.content_scroll)
 
+        # Set up window title and file info label
         if len(files) == 1:
             file = files[0]
             file_basename = os.path.basename(file.path)
             window.set_title('{f} — Ear Tag'.format(f=file_basename))
             window.window_title.set_subtitle(file_basename)
 
-            # Get human-readable version of length
-            length_min, length_sec = divmod(int(file.length), 60)
-            length_hour, length_min = divmod(length_min, 60)
-
-            if length_hour:
-                length_readable = '{h}∶{m}∶{s}'.format(
-                    h=str(length_hour).rjust(2, '0'),
-                    m=str(length_min).rjust(2, '0'),
-                    s=str(length_sec).rjust(2, '0')
-                )
-            else:
-                length_readable = '{m}∶{s}'.format(
-                    m=str(length_min).rjust(2, '0'),
-                    s=str(length_sec).rjust(2, '0')
-                )
-
-            # Get human-readable version of channel count
-            channels = file.channels
-            if channels == 0:
-                channels_readable = 'N/A'
-            elif channels == 1:
-                channels_readable = 'Mono'
-            elif channels == 2:
-                channels_readable = 'Stereo'
-            else:
-                channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels)
-
-            self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
-                filetype=file.filetype,
-                length=length_readable,
-                bitrate=file.bitrate,
-                channels=channels_readable
-            ))
+            self._set_info_label(file)
         else:
             # TRANSLATOR: Placeholder for file path when multiple files are selected
             _multiple_files = _('(Multiple files selected)')
@@ -633,55 +590,28 @@ class EartagFileView(Gtk.Stack):
             window.window_title.set_subtitle(_multiple_files)
             self.file_info.set_label(_multiple_files)
 
+        # Handle added and removed files
         for file in removed_files:
-            if file in self.bindings:
-                for binding in self.bindings[file]:
-                    binding.unbind()
-            del(self.bindings[file])
-            self.bound_files.remove(file)
-            self.unbind_entry(file, self.title_entry)
-            self.unbind_entry(file, self.artist_entry)
-            self.unbind_entry(file, self.tracknumber_entry)
-            self.unbind_entry(file, self.album_entry)
-            self.unbind_entry(file, self.albumartist_entry)
-            self.unbind_entry(file, self.genre_entry)
-            self.unbind_entry(file, self.releaseyear_entry)
-            self.unbind_entry(file, self.comment_entry)
-            self.unbind_entry(file, self.test_morerow) # FIXME
-            self.album_cover.unbind_from_file(file)
+            self._unbind_file(file)
 
         for file in added_files:
-            if file not in self.bindings:
-                self.bindings[file] = []
-            self.bound_files.append(file)
+            self._bind_file(file)
 
+        # Make save/fields sensitive/insensitive based on whether selected files are
+        # all writable
+        has_unwritable = False
+        for file in files:
             if not file.is_writable:
-                # TRANSLATORS: Tooltip text for save button when saving is disabled
-                window.save_button.set_tooltip_text(_('File is read-only, saving is disabled'))
-                window.save_button.set_sensitive(False)
-                self.get_native().toast_overlay.add_toast(
-                    Adw.Toast.new(_("Opened file is read-only; changes cannot be saved."))
-                )
-            else:
-                window.save_button.set_tooltip_text('')
-            self.set_sensitive(file.is_writable)
-
-            self.album_cover.bind_to_file(file)
-
-            self.setup_entry(file, self.title_entry, 'title')
-            self.setup_entry(file, self.artist_entry, 'artist')
-            self.setup_entry(file, self.tracknumber_entry, 'tracknumber', 'totaltracknumber')
-            self.setup_entry(file, self.album_entry, 'album')
-            self.setup_entry(file, self.albumartist_entry, 'albumartist')
-            self.setup_entry(file, self.genre_entry, 'genre')
-            self.setup_entry(file, self.releaseyear_entry, 'releaseyear')
-            self.setup_entry(file, self.comment_entry, 'comment')
-
-            # FIXME
-            self.setup_entry(file, self.test_morerow, None)
-
-        if _no_files:
-            window.run_sort()
+                has_unwritable = True
+                break
+        if has_unwritable:
+            self.set_sensitive(False)
+            window.save_button.set_tooltip_text(_('File is read-only, saving is disabled'))
+            window.save_button.set_sensitive(False)
+        else:
+            self.set_sensitive(True)
+            window.save_button.set_tooltip_text('')
+            window.save_button.set_sensitive(True)
 
         # Scroll to the top of the view
         adjust = self.content_scroll.get_vadjustment()
@@ -704,6 +634,76 @@ class EartagFileView(Gtk.Stack):
         elif isinstance(entry, EartagEditableLabel):
             entry.unbind_from_file(file)
             entry.notify('text')
+
+    def _bind_file(self, file):
+        """Binds a file to the fileview. Used internally in update_binds."""
+        if file not in self.bindings:
+            self.bindings[file] = []
+        self.bound_files.append(file)
+
+        self.setup_entry(file, self.title_entry, 'title')
+        self.setup_entry(file, self.artist_entry, 'artist')
+        self.setup_entry(file, self.tracknumber_entry, 'tracknumber', 'totaltracknumber')
+        self.setup_entry(file, self.album_entry, 'album')
+        self.setup_entry(file, self.albumartist_entry, 'albumartist')
+        self.setup_entry(file, self.genre_entry, 'genre')
+        self.setup_entry(file, self.releaseyear_entry, 'releaseyear')
+        self.setup_entry(file, self.comment_entry, 'comment')
+        self.setup_entry(file, self.test_morerow, None) # FIXME
+        self.album_cover.bind_to_file(file)
+
+    def _unbind_file(self, file):
+        """Unbinds a file from the fileview. Used internally in update_binds."""
+        for binding in self.bindings[file]:
+            binding.unbind()
+        del(self.bindings[file])
+        self.bound_files.remove(file)
+
+        self.unbind_entry(file, self.title_entry)
+        self.unbind_entry(file, self.artist_entry)
+        self.unbind_entry(file, self.tracknumber_entry)
+        self.unbind_entry(file, self.album_entry)
+        self.unbind_entry(file, self.albumartist_entry)
+        self.unbind_entry(file, self.genre_entry)
+        self.unbind_entry(file, self.releaseyear_entry)
+        self.unbind_entry(file, self.comment_entry)
+        self.unbind_entry(file, self.test_morerow) # FIXME
+        self.album_cover.unbind_from_file(file)
+
+    def _set_info_label(self, file):
+        # Get human-readable version of length
+        length_min, length_sec = divmod(int(file.length), 60)
+        length_hour, length_min = divmod(length_min, 60)
+
+        if length_hour:
+            length_readable = '{h}∶{m}∶{s}'.format(
+                h=str(length_hour).rjust(2, '0'),
+                m=str(length_min).rjust(2, '0'),
+                s=str(length_sec).rjust(2, '0')
+            )
+        else:
+            length_readable = '{m}∶{s}'.format(
+                m=str(length_min).rjust(2, '0'),
+                s=str(length_sec).rjust(2, '0')
+            )
+
+        # Get human-readable version of channel count
+        channels = file.channels
+        if channels == 0:
+            channels_readable = 'N/A'
+        elif channels == 1:
+            channels_readable = 'Mono'
+        elif channels == 2:
+            channels_readable = 'Stereo'
+        else:
+            channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels)
+
+        self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
+            filetype=file.filetype,
+            length=length_readable,
+            bitrate=file.bitrate,
+            channels=channels_readable
+        ))
 
     def save(self):
         """Saves changes to the file."""

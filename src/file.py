@@ -162,6 +162,11 @@ class EartagFileManager(GObject.Object):
             if _selection_override:
                 self.emit('selection_override')
 
+            if not _file.is_writable:
+                self.window.toast_overlay.add_toast(
+                    Adw.Toast.new(_("Opened file is read-only; changes cannot be saved."))
+                )
+
         return True
 
     def _load_multiple_files(self, paths, mode=1):
@@ -200,6 +205,16 @@ class EartagFileManager(GObject.Object):
                 return False
             self._loading_progress += progress_step
             self.notify('loading_progress')
+
+        has_unwritable = False
+        for file in self._files_buffer:
+            if not file.is_writable:
+                has_unwritable = True
+
+        if has_unwritable:
+            self.window.toast_overlay.add_toast(
+                Adw.Toast.new(_("Some of the opened files are read-only; changes cannot be saved."))
+            )
 
         self.files.splice(0, 0, self._files_buffer)
         self._files_buffer = []
