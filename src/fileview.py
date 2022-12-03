@@ -611,7 +611,7 @@ class EartagFileView(Gtk.Stack):
         else:
             self.set_sensitive(True)
             window.save_button.set_tooltip_text('')
-            window.save_button.set_sensitive(True)
+            window.save_button.set_sensitive(self.file_manager.is_modified)
 
         # Scroll to the top of the view
         adjust = self.content_scroll.get_vadjustment()
