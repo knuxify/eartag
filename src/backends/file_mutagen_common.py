@@ -46,8 +46,7 @@ class EartagFileMutagenCommon(EartagFile):
 
     def save(self):
         """Saves the changes to the file."""
-        if self.mg_file:
-            self.mg_file.save()
+        self.mg_file.save()
         self.mark_as_unmodified()
 
     def __del__(self, *args):

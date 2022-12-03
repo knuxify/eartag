@@ -48,14 +48,15 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     # plus some more documents linked from https://wiki.xiph.org/VorbisComment;
     # this only covers tags mentioned there.
     supported_extra_tags = (
-        'composer', 'copyright', 'mood', 'discnumber', 'publisher', 'isrc',
+        'composer', 'copyright', 'encodedby', 'mood', 'discnumber', 'publisher',
+        'isrc',
 
         'albumartistsort', 'albumsort', 'composersort', 'artistsort', 'titlesort'
     )
 
     _replaces = {
         'releaseyear': 'date',
-        'encodedby': 'encoded-by' # ENCODED-BY, ENCODING, ENCODER???
+        'encodedby': 'encoder' # There's also ENCODED-BY, but confusingly it represents... the person doing the encoding?
     }
 
     def __init__(self, path):
