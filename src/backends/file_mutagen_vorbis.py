@@ -95,7 +95,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             return bool(self.totaltracknumber)
         if tag_name.lower() in self._replaces:
             tag_name = self._replaces[tag_name.lower()]
-        if tag_name in self.mg_file.tags:
+        if tag_name in self.mg_file.tags or tag_name.upper() in self.mg_file.tags:
             return True
         return False
 
