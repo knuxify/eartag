@@ -97,6 +97,18 @@ class EartagFile(GObject.Object):
         self._cover = None
         self._cover_path = None
 
+    def setup_present_extra_tags(self):
+        """
+        For performance reasons, each file keeps a list of present extra tags.
+        This is used by the fileview to determine which rows to display for
+        extra tags.
+        """
+        self.present_extra_tags = []
+
+        for tag in self.supported_extra_tags:
+            if self.has_tag(tag):
+                self.present_extra_tags.append(tag)
+
     def update_writability(self):
         """
         Checks if the file is writable and sets the writable property
@@ -513,3 +525,11 @@ class EartagFile(GObject.Object):
             return None
         self.set_tag('titlesort', value)
         self.mark_as_modified()
+
+    @GObject.Property(type=str)
+    def none(self):
+        return ''
+
+    @none.setter
+    def none(self, value):
+        return ''
