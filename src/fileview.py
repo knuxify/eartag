@@ -418,6 +418,11 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         #self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
         #self.tag_model.set_filter(self.tag_filter)
 
+        self.remove_button = Gtk.Button(icon_name='list-remove-symbolic', valign=Gtk.Align.CENTER)
+        self.remove_button.connect('clicked', self.remove_row)
+        self.remove_button.add_css_class('flat')
+        self.add_suffix(self.remove_button)
+
         self.tag_selector = Gtk.DropDown.new(model=self.tag_model)
         self.tag_selector.set_valign(Gtk.Align.CENTER)
         self.tag_selector.connect('notify::selected', self.on_tag_selector_select)
@@ -482,8 +487,10 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         property = self._tag_names_swapped[dropdown.get_selected_item().get_string()]
         if property == 'none':
             self.value_entry.set_sensitive(False)
+            self.remove_button.set_sensitive(False)
             return
         self.value_entry.set_sensitive(True)
+        self.remove_button.set_sensitive(True)
         self.properties = [property]
         self.handled_tags.append(property)
         if property in EartagFile.int_properties and not self._is_numeric:
@@ -492,6 +499,10 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             self.set_property('is_numeric', False)
         for file in self.files:
             self.refresh_multiple_values(file)
+
+    def remove_row(self, *args):
+        """Removes the row."""
+        self.get_native().file_view.remove_row(self)
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
@@ -735,6 +746,10 @@ class EartagFileView(Gtk.Stack):
                 self.more_tags_expander.remove(entry)
                 del(more_entries_dict[tag])
 
+        none_entry = more_entries_dict['none']
+        self.more_tags_expander.remove(none_entry)
+        self.more_tags_expander.add_row(none_entry)
+
     def _unbind_files(self, files):
         """Unbinds a file from the fileview. Used internally in update_binds."""
         if not files:
@@ -812,6 +827,36 @@ class EartagFileView(Gtk.Stack):
 
             for filetype in unbanned_filetypes:
                 del(self.banned_tags[filetype])
+
+        none_entry = more_entries_dict['none']
+        self.more_tags_expander.remove(none_entry)
+        self.more_tags_expander.add_row(none_entry)
+
+    def remove_row(self, row):
+        """
+        Removes a 'more tags' row from the fileview. Used in the callback
+        function of the rows' delete button.
+        """
+        if row not in self.more_entries:
+            return
+        self.more_entries.remove(row)
+        self.more_tags_expander.remove(row)
+
+        removed_tag = row.properties[0]
+        for file in self.bound_files:
+            if removed_tag in file.present_extra_tags:
+                file.present_extra_tags.remove(removed_tag)
+                file.delete_tag(removed_tag)
+
+        # Move "none" entry to the end
+        none_entry = None
+        for entry in self.more_entries:
+            if entry.properties and entry.properties[0] == 'none':
+                none_entry = entry
+                break
+        if none_entry:
+            self.more_tags_expander.remove(none_entry)
+            self.more_tags_expander.add_row(none_entry)
 
     def _set_info_label(self, file):
         # Get human-readable version of length
