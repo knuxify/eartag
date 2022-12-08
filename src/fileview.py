@@ -482,13 +482,18 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             self.tag_selector.set_selected(found)
 
     def on_tag_selector_select(self, dropdown, *args):
-        if self.properties and self.properties[0] in self.handled_tags:
-            self.handled_tags.remove(self.properties[0])
+        old_tag = None
+        if self.properties:
+            old_tag = self.properties[0]
+            if self.properties[0] in self.handled_tags:
+                self.handled_tags.remove(self.properties[0])
         property = self._tag_names_swapped[dropdown.get_selected_item().get_string()]
         if property == 'none':
             self.value_entry.set_sensitive(False)
             self.remove_button.set_sensitive(False)
             return
+        if old_tag == 'none':
+            self.get_native().file_view.add_empty_row()
         self.value_entry.set_sensitive(True)
         self.remove_button.set_sensitive(True)
         self.properties = [property]
@@ -498,6 +503,8 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         elif property not in EartagFile.int_properties and self._is_numeric:
             self.set_property('is_numeric', False)
         for file in self.files:
+            if property not in file.present_extra_tags:
+                file.present_extra_tags.append(property)
             self.refresh_multiple_values(file)
 
     def remove_row(self, *args):
@@ -543,6 +550,9 @@ class EartagFileView(Gtk.Stack):
         super().__init__()
 
         # Initialize an initial "none" row
+        self.add_empty_row()
+
+    def add_empty_row(self, *args):
         more_tags_none = EartagTagListMoreItem('none')
         self.more_entries.append(more_tags_none)
         self.more_tags_expander.add_row(more_tags_none)
