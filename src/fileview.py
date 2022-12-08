@@ -396,12 +396,16 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
     }
 
     handled_tags = []
+    skip_filter_change = False
 
     def __init__(self, property=None):
         super().__init__()
 
         self.files = []
-        self.properties = []
+        if property:
+            self.properties = [property]
+        else:
+            self.properties = []
         self.ignore_edit = {}
         self._numeric_connect = None
 
@@ -413,27 +417,27 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         self.value_entry.connect('changed', self.on_changed, False)
         self.add_suffix(self.value_entry)
 
-        self.tag_model = Gtk.StringList.new(list(self.tag_names.values()))
-        #self.tag_model = Gtk.FilterListModel(model=tag_strings)
-        #self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
-        #self.tag_model.set_filter(self.tag_filter)
-
         self.remove_button = Gtk.Button(icon_name='list-remove-symbolic', valign=Gtk.Align.CENTER)
         self.remove_button.connect('clicked', self.remove_row)
         self.remove_button.add_css_class('flat')
         self.add_suffix(self.remove_button)
 
+        tag_strings = Gtk.StringList.new(list(self.tag_names.values()))
+        self.tag_model = Gtk.FilterListModel(model=tag_strings)
+        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
+        self.tag_model.set_filter(self.tag_filter)
+
         self.tag_selector = Gtk.DropDown.new(model=self.tag_model)
         self.tag_selector.set_valign(Gtk.Align.CENTER)
+        # I wish we could just use "DropDown:activate" but it never gets emitted,
+        # but it is just a ToggleButton underneath!
+        self.tag_selector.get_first_child().connect('clicked', self.refresh_filter)
         self.tag_selector.connect('notify::selected', self.on_tag_selector_select)
         self.on_tag_selector_select(self.tag_selector)
         self.add_prefix(self.tag_selector)
 
         self.set_activatable_widget(self.value_entry)
         self.connect('destroy', self.on_destroy)
-
-        if property:
-            self._set_property(property, None)
 
     @GObject.Property(type=bool, default=False)
     def is_double(self):
@@ -457,13 +461,24 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
                 self._numeric_connect = None
 
     def tag_filter_func(self, _tag_name, *args):
+        present_tags = dict([(entry.properties[0], entry) for entry in EartagFileView.more_entries])
+
         tag_name = _tag_name.get_string()
         tag_prop = self._tag_names_swapped[tag_name]
-        if tag_prop in self.handled_tags and tag_prop not in self.properties:
+
+        if tag_prop == 'none' and 'none' in self.properties:
+            return True
+        if tag_prop in present_tags and tag_prop not in self.properties:
             return False
-        for file in self.files:
-            if tag_prop not in file.supported_extra_tags:
-                return False
+
+        banned_tags_list = []
+        for taglist in EartagFileView.banned_tags.values():
+            for tag in taglist:
+                if tag not in banned_tags_list:
+                    banned_tags_list.append(tag)
+
+        if tag_prop in banned_tags_list:
+            return False
         return True
 
     def _set_property(self, property, property_double=None):
@@ -482,11 +497,12 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             self.tag_selector.set_selected(found)
 
     def on_tag_selector_select(self, dropdown, *args):
+        present_tags = dict([(entry.properties[0], entry) for entry in EartagFileView.more_entries])
+
         old_tag = None
         if self.properties:
             old_tag = self.properties[0]
-            if self.properties[0] in self.handled_tags:
-                self.handled_tags.remove(self.properties[0])
+
         property = self._tag_names_swapped[dropdown.get_selected_item().get_string()]
         if property == 'none':
             self.value_entry.set_sensitive(False)
@@ -497,7 +513,6 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         self.value_entry.set_sensitive(True)
         self.remove_button.set_sensitive(True)
         self.properties = [property]
-        self.handled_tags.append(property)
         if property in EartagFile.int_properties and not self._is_numeric:
             self.set_property('is_numeric', True)
         elif property not in EartagFile.int_properties and self._is_numeric:
@@ -506,10 +521,16 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             if property not in file.present_extra_tags:
                 file.present_extra_tags.append(property)
             self.refresh_multiple_values(file)
+        if not self.skip_filter_change:
+            for row in present_tags.values():
+                row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
     def remove_row(self, *args):
         """Removes the row."""
         self.get_native().file_view.remove_row(self)
+
+    def refresh_filter(self, *args):
+        self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
@@ -556,6 +577,9 @@ class EartagFileView(Gtk.Stack):
         more_tags_none = EartagTagListMoreItem('none')
         self.more_entries.append(more_tags_none)
         self.more_tags_expander.add_row(more_tags_none)
+        for file in self.bound_files:
+            self.setup_entry(file, more_tags_none, 'none')
+        more_tags_none.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -686,6 +710,9 @@ class EartagFileView(Gtk.Stack):
         """Binds a file to the fileview. Used internally in update_binds."""
         if not files:
             return
+
+        EartagTagListMoreItem.skip_filter_change = True
+
         all_tags = EartagTagListMoreItem.tag_names.keys()
         more_entries_dict = dict([(entry.properties[0], entry) for entry in self.more_entries])
 
@@ -756,14 +783,25 @@ class EartagFileView(Gtk.Stack):
                 self.more_tags_expander.remove(entry)
                 del(more_entries_dict[tag])
 
+        # Move "none" entry to the bottom
         none_entry = more_entries_dict['none']
+        self.more_entries.remove(none_entry)
+        self.more_entries.append(none_entry)
         self.more_tags_expander.remove(none_entry)
         self.more_tags_expander.add_row(none_entry)
+
+        for entry in self.more_entries:
+            entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        EartagTagListMoreItem.skip_filter_change = False
 
     def _unbind_files(self, files):
         """Unbinds a file from the fileview. Used internally in update_binds."""
         if not files:
             return
+
+        EartagTagListMoreItem.skip_filter_change = True
+
         more_entries_dict = dict([(entry.properties[0], entry) for entry in self.more_entries])
 
         for file in files:
@@ -842,6 +880,11 @@ class EartagFileView(Gtk.Stack):
         self.more_tags_expander.remove(none_entry)
         self.more_tags_expander.add_row(none_entry)
 
+        for entry in self.more_entries:
+            entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        EartagTagListMoreItem.skip_filter_change = False
+
     def remove_row(self, row):
         """
         Removes a 'more tags' row from the fileview. Used in the callback
@@ -867,6 +910,10 @@ class EartagFileView(Gtk.Stack):
         if none_entry:
             self.more_tags_expander.remove(none_entry)
             self.more_tags_expander.add_row(none_entry)
+
+        # Update entry item filters
+        for entry in self.more_entries:
+            entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
     def _set_info_label(self, file):
         # Get human-readable version of length
