@@ -433,7 +433,11 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         # but it is just a ToggleButton underneath!
         self.tag_selector.get_first_child().connect('clicked', self.refresh_filter)
         self.tag_selector.connect('notify::selected', self.on_tag_selector_select)
-        self.on_tag_selector_select(self.tag_selector)
+
+        if property:
+            self._set_property(property)
+        else:
+            self.on_tag_selector_select(self.tag_selector)
         self.add_prefix(self.tag_selector)
 
         self.set_activatable_widget(self.value_entry)
@@ -503,7 +507,13 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         if self.properties:
             old_tag = self.properties[0]
 
-        property = self._tag_names_swapped[dropdown.get_selected_item().get_string()]
+        selected_item = dropdown.get_selected_item()
+        if not selected_item:
+            self.refresh_filter()
+            self._set_property(old_tag)
+            return
+        else:
+            property = self._tag_names_swapped[selected_item.get_string()]
         if property == 'none':
             self.value_entry.set_sensitive(False)
             self.remove_button.set_sensitive(False)
@@ -527,7 +537,7 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
 
     def remove_row(self, *args):
         """Removes the row."""
-        self.get_native().file_view.remove_row(self)
+        self.get_native().file_view.remove_and_unbind_extra_row(self)
 
     def refresh_filter(self, *args):
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
@@ -572,14 +582,6 @@ class EartagFileView(Gtk.Stack):
 
         # Initialize an initial "none" row
         self.add_empty_row()
-
-    def add_empty_row(self, *args):
-        more_tags_none = EartagTagListMoreItem('none')
-        self.more_entries.append(more_tags_none)
-        self.more_tags_expander.add_row(more_tags_none)
-        for file in self.bound_files:
-            self.setup_entry(file, more_tags_none, 'none')
-        more_tags_none.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -729,13 +731,9 @@ class EartagFileView(Gtk.Stack):
                     all_present_extra_tags.append(tag)
 
         for tag in all_present_extra_tags:
-            if tag not in more_entries_dict:
-                entry = EartagTagListMoreItem(tag)
-                self.more_entries.append(entry)
+            if tag not in more_entries_dict and tag not in banned_tags_list:
+                entry = self.add_extra_row(tag, skip_adding_none=True)
                 more_entries_dict[tag] = entry
-                self.more_tags_expander.add_row(entry)
-                for file in self.bound_files:
-                    self.setup_entry(file, entry, tag)
 
         for file in files:
             if file not in self.bindings:
@@ -777,16 +775,11 @@ class EartagFileView(Gtk.Stack):
         for tag in banned_tags_list:
             if tag in more_entries_dict:
                 entry = more_entries_dict[tag]
-                for file in set(self.bound_files) - set(files):
-                    self.unbind_entry(file, entry)
-                self.more_entries.remove(entry)
-                self.more_tags_expander.remove(entry)
+                self.remove_extra_row(entry)
                 del(more_entries_dict[tag])
 
         # Move "none" entry to the bottom
         none_entry = more_entries_dict['none']
-        self.more_entries.remove(none_entry)
-        self.more_entries.append(none_entry)
         self.more_tags_expander.remove(none_entry)
         self.more_tags_expander.add_row(none_entry)
 
@@ -834,8 +827,7 @@ class EartagFileView(Gtk.Stack):
 
         for tag, entry in more_entries_dict.copy().items():
             if tag not in all_present_extra_tags:
-                self.more_tags_expander.remove(entry)
-                self.more_entries.remove(entry)
+                self.remove_extra_row(entry)
                 del(more_entries_dict[tag])
 
         unbanned_filetypes = []
@@ -866,12 +858,7 @@ class EartagFileView(Gtk.Stack):
             for tag in unbanned_tags_list:
                 if tag in all_present_extra_tags:
                     if tag not in more_entries_dict:
-                        entry = EartagTagListMoreItem(tag)
-                        self.more_entries.append(entry)
-                        more_entries_dict[tag] = entry
-                        self.more_tags_expander.add_row(entry)
-                        for file in self.bound_files:
-                            self.setup_entry(file, entry, tag)
+                        self.add_extra_row(tag, skip_adding_none=True)
 
             for filetype in unbanned_filetypes:
                 del(self.banned_tags[filetype])
@@ -885,35 +872,78 @@ class EartagFileView(Gtk.Stack):
 
         EartagTagListMoreItem.skip_filter_change = False
 
-    def remove_row(self, row):
+    def add_empty_row(self, *args):
+        self.add_extra_row('none')
+
+    def add_extra_row(self, tag, skip_adding_none=False):
         """
-        Removes a 'more tags' row from the fileview. Used in the callback
-        function of the rows' delete button.
+        Adds an extra row for the given tag. Consumers are required to make sure that
+        a row with this tag doesn't exist yet.
+
+        Returns the newly created row.
+        """
+        entry = EartagTagListMoreItem(tag)
+        self.more_entries.append(entry)
+        self.more_tags_expander.add_row(entry)
+
+        for file in self.bound_files:
+            self.setup_entry(file, entry, tag)
+
+        # Update entry item filters
+        if not EartagTagListMoreItem.skip_filter_change:
+            for entry in self.more_entries:
+                entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        if not skip_adding_none:
+            # Move "none" entry to the end
+            none_entry = None
+            for entry in self.more_entries:
+                if entry.properties and entry.properties[0] == 'none':
+                    none_entry = entry
+                    break
+            if none_entry:
+                self.more_tags_expander.remove(none_entry)
+                self.more_tags_expander.add_row(none_entry)
+
+        return entry
+
+    def remove_extra_row(self, row, skip_adding_none=False):
+        """
+        Removes a 'more tags' row from the fileview.
         """
         if row not in self.more_entries:
             return
         self.more_entries.remove(row)
         self.more_tags_expander.remove(row)
 
+        # Update entry item filters
+        if not EartagTagListMoreItem.skip_filter_change:
+            for entry in self.more_entries:
+                entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        # Move "none" entry to the end
+        if not skip_adding_none:
+            none_entry = None
+            for entry in self.more_entries:
+                if entry.properties and entry.properties[0] == 'none':
+                    none_entry = entry
+                    break
+            if none_entry:
+                self.more_tags_expander.remove(none_entry)
+                self.more_tags_expander.add_row(none_entry)
+
+    def remove_and_unbind_extra_row(self, row):
+        """
+        Removes a 'more tags' row from the fileview. Used in the callback
+        function of the rows' delete button.
+        """
         removed_tag = row.properties[0]
         for file in self.bound_files:
             if removed_tag in file.present_extra_tags:
                 file.present_extra_tags.remove(removed_tag)
                 file.delete_tag(removed_tag)
 
-        # Move "none" entry to the end
-        none_entry = None
-        for entry in self.more_entries:
-            if entry.properties and entry.properties[0] == 'none':
-                none_entry = entry
-                break
-        if none_entry:
-            self.more_tags_expander.remove(none_entry)
-            self.more_tags_expander.add_row(none_entry)
-
-        # Update entry item filters
-        for entry in self.more_entries:
-            entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+        self.remove_extra_row(row)
 
     def _set_info_label(self, file):
         # Get human-readable version of length
