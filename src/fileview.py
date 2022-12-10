@@ -216,9 +216,6 @@ class EartagTagListItemBase:
             GObject.signal_stop_emission_by_name(entry, 'insert-text')
 
     def _set_property(self, property, property_double=None):
-        if self.properties:
-            return
-
         if property_double:
             if not self._is_double:
                 raise ValueError
@@ -436,8 +433,7 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
 
         if property:
             self._set_property(property)
-        else:
-            self.on_tag_selector_select(self.tag_selector)
+        self.on_tag_selector_select(self.tag_selector)
         self.add_prefix(self.tag_selector)
 
         self.set_activatable_widget(self.value_entry)
@@ -512,14 +508,12 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             self.refresh_filter()
             self._set_property(old_tag)
             return
-        else:
-            property = self._tag_names_swapped[selected_item.get_string()]
+
+        property = self._tag_names_swapped[selected_item.get_string()]
         if property == 'none':
             self.value_entry.set_sensitive(False)
             self.remove_button.set_sensitive(False)
             return
-        if old_tag == 'none':
-            self.get_native().file_view.add_empty_row()
         self.value_entry.set_sensitive(True)
         self.remove_button.set_sensitive(True)
         self.properties = [property]
@@ -531,6 +525,8 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             if property not in file.present_extra_tags:
                 file.present_extra_tags.append(property)
             self.refresh_multiple_values(file)
+        if old_tag == 'none':
+            self.get_native().file_view.add_empty_row()
         if not self.skip_filter_change:
             for row in present_tags.values():
                 row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
