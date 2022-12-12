@@ -405,6 +405,7 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             self.properties = []
         self.ignore_edit = {}
         self._numeric_connect = None
+        self.ignore_selector_select = False
 
         self._tag_names_swapped = {}
         for k, v in self.tag_names.items():
@@ -483,21 +484,25 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
 
     def _set_property(self, property, property_double=None):
         super()._set_property(property, None)
+        self.refresh_filter()
         n = 0
         item = self.tag_model.get_item(n)
-        found = None
+        found = False
         while item:
             if item.get_string() == self.tag_names[property]:
-                found = n
+                found = True
                 break
             n += 1
             item = self.tag_model.get_item(n)
 
         if found:
-            self.tag_selector.set_selected(found)
+            self.ignore_selector_select = True
+            self.tag_selector.set_selected(n)
+            self.ignore_selector_select = False
 
     def on_tag_selector_select(self, dropdown, *args):
-        present_tags = dict([(entry.properties[0], entry) for entry in EartagFileView.more_entries])
+        if self.ignore_selector_select:
+            return
 
         old_tag = None
         if self.properties:
@@ -528,7 +533,7 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         if old_tag == 'none':
             self.get_native().file_view.add_empty_row()
         if not self.skip_filter_change:
-            for row in present_tags.values():
+            for row in EartagFileView.more_entries:
                 row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
     def remove_row(self, *args):
@@ -771,7 +776,7 @@ class EartagFileView(Gtk.Stack):
         for tag in banned_tags_list:
             if tag in more_entries_dict:
                 entry = more_entries_dict[tag]
-                self.remove_extra_row(entry)
+                self.remove_extra_row(entry, skip_adding_none=True)
                 del(more_entries_dict[tag])
 
         # Move "none" entry to the bottom
@@ -823,7 +828,7 @@ class EartagFileView(Gtk.Stack):
 
         for tag, entry in more_entries_dict.copy().items():
             if tag not in all_present_extra_tags:
-                self.remove_extra_row(entry)
+                self.remove_extra_row(entry, skip_adding_none=True)
                 del(more_entries_dict[tag])
 
         unbanned_filetypes = []
@@ -890,7 +895,7 @@ class EartagFileView(Gtk.Stack):
             for entry in self.more_entries:
                 entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
-        if not skip_adding_none:
+        if not skip_adding_none and tag != 'none':
             # Move "none" entry to the end
             none_entry = None
             for entry in self.more_entries:
@@ -899,7 +904,7 @@ class EartagFileView(Gtk.Stack):
                     break
             if none_entry:
                 self.more_tags_expander.remove(none_entry)
-                self.more_tags_expander.add_row(none_entry)
+            self.add_empty_row()
 
         return entry
 
@@ -911,6 +916,8 @@ class EartagFileView(Gtk.Stack):
             return
         self.more_entries.remove(row)
         self.more_tags_expander.remove(row)
+        for file in row.files:
+            self.unbind_entry(file, row)
 
         # Update entry item filters
         if not EartagTagListMoreItem.skip_filter_change:
@@ -926,9 +933,9 @@ class EartagFileView(Gtk.Stack):
                     break
             if none_entry:
                 self.more_tags_expander.remove(none_entry)
-                self.more_tags_expander.add_row(none_entry)
+            self.add_empty_row()
 
-    def remove_and_unbind_extra_row(self, row):
+    def remove_and_unbind_extra_row(self, row, skip_adding_none=False):
         """
         Removes a 'more tags' row from the fileview. Used in the callback
         function of the rows' delete button.
@@ -939,7 +946,7 @@ class EartagFileView(Gtk.Stack):
                 file.present_extra_tags.remove(removed_tag)
                 file.delete_tag(removed_tag)
 
-        self.remove_extra_row(row)
+        self.remove_extra_row(row, skip_adding_none=skip_adding_none)
 
     def _set_info_label(self, file):
         # Get human-readable version of length
