@@ -105,6 +105,11 @@ class EartagFileManager(GObject.Object):
         pass
 
     @GObject.Signal
+    def select_first(self):
+        """See EartagFileList.handle_select_first"""
+        pass
+
+    @GObject.Signal
     def files_removed(self):
         pass
 
@@ -160,6 +165,10 @@ class EartagFileManager(GObject.Object):
             self.update_modified_status()
 
             if _selection_override:
+                self.emit('selection_override')
+            elif not len(self.selected_files) > 1:
+                self.selected_files = [_file]
+                self.emit('selection_changed')
                 self.emit('selection_override')
 
             if not _file.is_writable:
@@ -225,6 +234,9 @@ class EartagFileManager(GObject.Object):
         self.update_modified_status()
         if mode == self.LOAD_OVERWRITE:
             self.emit('selection_override')
+        elif not len(self.selected_files) > 1:
+            self.selected_files = [_file]
+            self.emit('selection-changed')
         self._is_loading_multiple_files = False
 
     def load_multiple_files(self, *args, **kwargs):
@@ -290,7 +302,7 @@ class EartagFileManager(GObject.Object):
             self._selected_files.remove(file)
             if not no_emit:
                 if not self.selected_files and self.files:
-                    self._selected_files.append(self.files.get_item(0))
+                    self.emit('select-first')
                 self.emit('selection-changed')
                 self.emit('selection_override')
         if not no_emit:

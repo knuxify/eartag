@@ -52,7 +52,15 @@ class Application(Adw.Application):
         for file in files:
             path = file.get_path()
             if path:
-                if not os.path.exists(path) or not is_valid_music_file(path):
+                if not os.path.exists(path):
+                    continue
+                if os.path.isdir(path):
+                    for _file in os.listdir(path):
+                        _fpath = os.path.join(path, _file)
+                        if os.path.isfile(_fpath) and is_valid_music_file(_fpath):
+                            self.paths.append(_fpath)
+                    continue
+                elif not is_valid_music_file(path):
                     continue
                 self.paths.append(path)
         self.do_activate()

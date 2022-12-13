@@ -145,6 +145,7 @@ class EartagFileList(Gtk.ListView):
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
         self.file_manager.connect('selection-override', self.handle_selection_override)
+        self.file_manager.connect('select-first', self.handle_select_first)
 
     def set_sidebar(self, sidebar):
         self.sidebar = sidebar
@@ -184,6 +185,28 @@ class EartagFileList(Gtk.ListView):
             self.selection_model.select_item(0, True)
             if len(self.file_manager.selected_files) == 0 and self.file_manager.files:
                 self.update_selection_from_model(self.selection_model, 0, 1)
+            elif len(self.file_manager.selected_files) == 1:
+                selected_file = self.file_manager.selected_files[0]
+                n = 0
+                item = self.selection_model.get_item(n)
+                while item:
+                    item = self.selection_model.get_item(n)
+                    if item == selected_file:
+                        break
+                    n += 1
+                self.selection_model.select_item(n, True)
+
+    def handle_select_first(self, *args):
+        """
+        As the sorted list of files is completely unknown to the file manager,
+        it cannot tell which item is the first in the sidebar. Thus, when the
+        first item needs to be selected (when the currently selected item is
+        removed), we have to select it manually here.
+        """
+        new_selection = self.selection_model.get_item(0)
+        self.file_manager.selected_files = [new_selection]
+        self.file_manager.emit('selection-changed')
+        self.selection_model.select_item(0, True)
 
     def filter_func(self, file, *args):
         """Custom filter for file search."""
