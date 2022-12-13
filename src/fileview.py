@@ -923,7 +923,9 @@ class EartagFileView(Gtk.Stack):
                     break
             if none_entry:
                 self.more_tags_expander.remove(none_entry)
-            self.add_empty_row()
+                self.more_tags_expander.add_row(none_entry)
+            else:
+                self.add_empty_row()
 
         return entry
 
@@ -952,7 +954,9 @@ class EartagFileView(Gtk.Stack):
                     break
             if none_entry:
                 self.more_tags_expander.remove(none_entry)
-            self.add_empty_row()
+                self.more_tags_expander.add_row(none_entry)
+            else:
+                self.add_empty_row()
 
         self.unused_entries.append(row)
 
