@@ -105,6 +105,11 @@ class EartagFileManager(GObject.Object):
         pass
 
     @GObject.Signal
+    def select_first(self):
+        """See EartagFileList.handle_select_first"""
+        pass
+
+    @GObject.Signal
     def files_removed(self):
         pass
 
@@ -297,7 +302,7 @@ class EartagFileManager(GObject.Object):
             self._selected_files.remove(file)
             if not no_emit:
                 if not self.selected_files and self.files:
-                    self._selected_files.append(self.files.get_item(0))
+                    self.emit('select-first')
                 self.emit('selection-changed')
                 self.emit('selection_override')
         if not no_emit:
