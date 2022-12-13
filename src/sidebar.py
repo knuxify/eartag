@@ -245,6 +245,7 @@ class EartagFileList(Gtk.ListView):
                     self.selection_model.select_item(item_no, True)
                     break
 
+        self.file_manager.emit('selection-changed')
         self.selection_model.set_can_unselect(False)
 
     def select_all(self, *args):

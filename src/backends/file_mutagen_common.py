@@ -43,11 +43,11 @@ class EartagFileMutagenCommon(EartagFile):
         self.mg_file = None
         self.mg_file = mutagen.File(path)
         self.coverart_tempfile = None
+        self.setup_present_extra_tags()
 
     def save(self):
         """Saves the changes to the file."""
-        if self.mg_file:
-            self.mg_file.save()
+        self.mg_file.save()
         self.mark_as_unmodified()
 
     def __del__(self, *args):

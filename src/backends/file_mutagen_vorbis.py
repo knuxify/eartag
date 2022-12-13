@@ -42,8 +42,22 @@ from .file_mutagen_common import EartagFileMutagenCommon
 class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for Voris Comment support."""
     __gtype_name__ = 'EartagFileMutagenVorbis'
-
     _supports_album_covers = True
+
+    # There's an official standard and semi-official considerations for tags,
+    # plus some more documents linked from https://wiki.xiph.org/VorbisComment;
+    # this only covers tags mentioned there.
+    supported_extra_tags = (
+        'composer', 'copyright', 'encodedby', 'mood', 'discnumber', 'publisher',
+        'isrc',
+
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort', 'titlesort'
+    )
+
+    _replaces = {
+        'releaseyear': 'date',
+        'encodedby': 'encoder' # There's also ENCODED-BY, but confusingly it represents... the person doing the encoding?
+    }
 
     def __init__(self, path):
         super().__init__(path)
@@ -53,6 +67,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def get_tag(self, tag_name):
         """Tries the lowercase, then uppercase representation of the tag."""
+        if tag_name.lower() in self._replaces:
+            tag_name = self._replaces[tag_name.lower()]
         try:
             return self.mg_file.tags[tag_name.lower()][0]
         except KeyError:
@@ -63,10 +79,40 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def set_tag(self, tag_name, value):
         """Sets the tag with the given name to the given value."""
+        if tag_name.lower() in self._replaces:
+            tag_name = self._replaces[tag_name.lower()]
         if tag_name.upper() in self.mg_file.tags:
             self.mg_file.tags[tag_name.upper()] = str(value)
         else:
             self.mg_file.tags[tag_name] = str(value)
+
+    def has_tag(self, tag_name):
+        """
+        Returns True or False based on whether the tag with the given name is
+        present in the file.
+        """
+        if tag_name == 'totaltracknumber':
+            return bool(self.totaltracknumber)
+        elif tag_name == 'encodedby':
+            if 'encoder' in self.mg_file.tags:
+                return bool(self.mg_file.tags['encoder'][0])
+            elif 'ENCODER' in self.mg_file.tags:
+                return bool(self.mg_file.tags['ENCODER'][0])
+            else:
+                return False
+        if tag_name.lower() in self._replaces:
+            tag_name = self._replaces[tag_name.lower()]
+        if tag_name in self.mg_file.tags or tag_name.upper() in self.mg_file.tags:
+            return True
+        return False
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag with the given name from the file."""
+        if tag_name.lower() in self._replaces:
+            tag_name = self._replaces[tag_name.lower()]
+        if tag_name in self.mg_file.tags:
+            del self.mg_file.tags[tag_name]
+        self.mark_as_modified()
 
     def __del__(self, *args):
         if self.coverart_tempfile:
@@ -251,13 +297,4 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             self.mg_file.tags['date'] = str(value)
         else:
             self.mg_file.tags['date'] = ''
-        self.mark_as_modified()
-
-    @GObject.Property(type=str)
-    def comment(self):
-        return self.get_tag('DESCRIPTION')
-
-    @comment.setter
-    def comment(self, value):
-        self.mg_file.tags['DESCRIPTION'] = value
         self.mark_as_modified()

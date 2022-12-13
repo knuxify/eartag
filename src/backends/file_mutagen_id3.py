@@ -46,6 +46,7 @@ KEY_TO_FRAME = {
     'composer': 'TCOM',
     'copyright': 'TCOP',
     'encodedby': 'TENC',
+    'genre': 'TCON',
     'lyricist': 'TEXT',
     'length': 'TLEN',
     'media': 'TMED',
@@ -58,8 +59,9 @@ KEY_TO_FRAME = {
     'conductor': 'TPE3',
     'arranger': 'TPE4',
     'discnumber': 'TPOS',
-    'organization': 'TPUB',
+    'publisher': 'TPUB',
     'tracknumber': 'TRCK',
+    'totaltracknumber': 'TRCK',
     'author': 'TOLY',
     'albumartistsort': 'TSO2',
     'albumsort': 'TSOA',
@@ -91,7 +93,7 @@ KEY_TO_FRAME_CLASS = {
     'conductor': mutagen.id3.TPE3,
     'arranger': mutagen.id3.TPE4,
     'discnumber': mutagen.id3.TPOS,
-    'organization': mutagen.id3.TPUB,
+    'publisher': mutagen.id3.TPUB,
     'tracknumber': mutagen.id3.TRCK,
     'author': mutagen.id3.TOLY,
     'albumartistsort': mutagen.id3.TSO2,
@@ -109,6 +111,15 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for ID3 support."""
     __gtype_name__ = 'EartagFileMutagenID3'
     _supports_album_covers = True
+
+    supported_extra_tags = (
+        'bpm', 'compilation', 'composer', 'copyright', 'encodedby',
+        'mood', 'conductor', 'arranger', 'discnumber', 'publisher',
+        'isrc', 'language', 'discsubtitle',
+
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort',
+        'titlesort'
+    )
 
     def __init__(self, path):
         super().__init__(path)
@@ -131,6 +142,34 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         frame_class = KEY_TO_FRAME_CLASS[tag_name.lower()]
         self.mg_file.tags.setall(frame_name, [frame_class(encoding=3, text=[str(value)])])
+
+    def has_tag(self, tag_name):
+        """
+        Returns True or False based on whether the tag with the given name is
+        present in the file.
+        """
+        if not self.mg_file.tags:
+            return False
+        if tag_name == 'totaltracknumber':
+            return bool(self.totaltracknumber)
+        elif tag_name == 'releaseyear':
+            return 'TDRC' in self.mg_file.tags or 'TDOR' in self.mg_file.tags
+        if tag_name not in KEY_TO_FRAME:
+            return False
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            return True
+        return False
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag with the given name from the file."""
+        if tag_name == 'releaseyear':
+            self.mg_file.tags.delall('TDRC')
+            self.mg_file.tags.delall('TDOR')
+        else:
+            frame_name = KEY_TO_FRAME[tag_name.lower()]
+            self.mg_file.tags.delall(frame_name)
+        self.mark_as_modified()
 
     def __del__(self, *args):
         if self.coverart_tempfile:

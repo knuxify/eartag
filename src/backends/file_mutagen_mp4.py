@@ -54,13 +54,35 @@ KEY_TO_FRAME = {
     'titlesort': 'sonm',
     'composersort': 'soco',
     'tracknumber': 'trkn',
-    'cover': 'covr'
+    'totaltracknumber': 'trkn',
+    'cover': 'covr',
+    'copyright': 'cprt',
+    'bpm': 'tmpo',
+    'composer': '\xa9wrt',
+    'encodedby': '\xa9enc', # might be \xa9too
+    'discnumber': 'disk',
+
+    'conductor': '----:com.apple.iTunes:CONDUCTOR',
+    'discsubtitle': '----:com.apple.iTunes:DISCSUBTITLE',
+    'language': '----:com.apple.iTunes:LANGUAGE',
+    'mood': '----:com.apple.iTunes:MOOD'
 }
+# Annoyingly, there's no central MP4 tag standard; most software just tries to
+# do what iTunes does (or did at some point... apparently they've had since 2005
+# or even earlier to figure it out...)
 
 class EartagFileMutagenMP4(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for MP4 support."""
     __gtype_name__ = 'EartagFileMutagenMP4'
     _supports_album_covers = True
+
+    supported_extra_tags = (
+        'bpm', 'composer', 'copyright', 'encodedby',
+        'mood', 'conductor', 'discnumber', 'language', 'discsubtitle',
+
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort',
+        'titlesort'
+    )
 
     def __init__(self, path):
         super().__init__(path)
@@ -70,15 +92,45 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
         try:
-            return self.mg_file.tags[KEY_TO_FRAME[tag_name.lower()]][0]
+            if frame_name.startswith('----'):
+                return self.mg_file.tags[frame_name][0].decode("utf-8")
+            else:
+                return self.mg_file.tags[frame_name][0]
         except KeyError:
             return ''
 
     def set_tag(self, tag_name, value):
         """Sets a tag's value using the KEY_TO_FRAME list as a guideline."""
         frame_name = KEY_TO_FRAME[tag_name.lower()]
-        self.mg_file.tags[frame_name] = [str(value)]
+        if frame_name.startswith('----'):
+            self.mg_file.tags[frame_name] = [value.encode("utf-8")]
+        elif tag_name in ('bpm', 'discnumber'):
+            self.mg_file.tags[frame_name] = [int(value)]
+        else:
+            self.mg_file.tags[frame_name] = [str(value)]
+
+    def has_tag(self, tag_name):
+        """
+        Returns True or False based on whether the tag with the given name is
+        present in the file.
+        """
+        if tag_name == 'totaltracknumber':
+            return bool(self.totaltracknumber)
+        if tag_name not in KEY_TO_FRAME:
+            return False
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            return True
+        return False
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag with the given name from the file."""
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            del self.mg_file.tags[frame_name]
+        self.mark_as_modified()
 
     def __del__(self, *args):
         if self.coverart_tempfile:
@@ -160,4 +212,22 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             self.mg_file.tags['trkn'] = [(int(self.tracknumber), int(value))]
         else:
             self.mg_file.tags['trkn'] = [(0, int(value))]
+        self.mark_as_modified()
+
+    @GObject.Property(type=int)
+    def discnumber(self):
+        if 'disk' not in self.mg_file.tags and 'DISK' not in self.mg_file.tags:
+            return None
+
+        try:
+            return int(self.mg_file.tags['disk'][0][0])
+        except KeyError:
+            return int(self.mg_file.tags['DISK'][0][0])
+
+    @discnumber.setter
+    def discnumber(self, value):
+        if int(value) == -1:
+            value = 0
+
+        self.mg_file.tags['disk'] = [(int(value), 0)]
         self.mark_as_modified()

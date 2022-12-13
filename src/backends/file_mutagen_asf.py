@@ -51,6 +51,7 @@ KEY_TO_FRAME = {
     "grouping": "WM/ContentGroupDescription",
     "discsubtitle": "WM/SubTitle",
     "tracknumber": "WM/TrackNumber",
+    "totaltracknumber": "WM/TrackNumber",
     "discnumber": "WM/PartOfSet",
     "bpm": "WM/BeatsPerMinute",
     "copyright": "Copyright",
@@ -134,6 +135,14 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     # have a way to specify it
     handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre', 'releaseyear', 'comment']
 
+    supported_extra_tags = (
+        'bpm', 'composer', 'copyright', 'encodedby',
+        'mood', 'conductor', 'discnumber', 'publisher',
+        'isrc', 'discsubtitle',
+
+        'albumartistsort', 'albumsort', 'artistsort'
+    )
+
     def __init__(self, path):
         super().__init__(path)
         self.load_cover()
@@ -149,6 +158,27 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         """Sets a tag's value using the KEY_TO_FRAME list as a guideline."""
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         self.mg_file.tags[frame_name] = [str(value)]
+
+    def has_tag(self, tag_name):
+        """
+        Returns True or False based on whether the tag with the given name is
+        present in the file.
+        """
+        if tag_name == 'totaltracknumber':
+            return False
+        if tag_name not in KEY_TO_FRAME:
+            return False
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            return True
+        return False
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag with the given name from the file."""
+        frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if frame_name in self.mg_file.tags:
+            del self.mg_file.tags[frame_name]
+        self.mark_as_modified()
 
     def __del__(self, *args):
         if self.coverart_tempfile:
