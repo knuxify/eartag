@@ -98,17 +98,6 @@ class EartagMultipleValueEntry:
       - Set the properties list to contain the property the entry is bound to.
       - Connect the on_changed signal to your entry's change.
     """
-    def refresh_multiple_values(self, file=None):
-        if not file:
-            try:
-                file = self.files[0]
-            except IndexError:
-                return False
-
-        self._setup_entry(self.value_entry, file, False)
-        if self._is_double:
-            self._setup_entry(self.value_entry_double, file, True)
-
     def _multiple_values_check(self, checked_file, property):
         """
         Used internally in bind_to_property to figure out if there are
@@ -148,6 +137,17 @@ class EartagMultipleValueEntry:
                 entry.set_text('')
             self.ignore_edit[property] = False
             entry.set_placeholder_text('')
+
+    def refresh_multiple_values(self, file=None):
+        if not file:
+            try:
+                file = self.files[0]
+            except IndexError:
+                return False
+
+        self._setup_entry(self.value_entry, file, False)
+        if self._is_double:
+            self._setup_entry(self.value_entry_double, file, True)
 
     def bind_to_file(self, file):
         if file in self.files:

@@ -498,50 +498,63 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         if found:
             self.ignore_selector_select = True
             self.tag_selector.set_selected(n)
+            self.set_handled_tag(property)
             self.ignore_selector_select = False
 
-    def on_tag_selector_select(self, dropdown, *args):
-        if self.ignore_selector_select:
-            return
-
+    def set_handled_tag(self, tag):
         old_tag = None
         if self.properties:
             old_tag = self.properties[0]
 
-        selected_item = dropdown.get_selected_item()
-        if not selected_item:
-            self.refresh_filter()
-            self._set_property(old_tag)
-            return
-
-        property = self._tag_names_swapped[selected_item.get_string()]
-        if property == 'none':
+        if tag == 'none':
             self.value_entry.set_sensitive(False)
             self.remove_button.set_sensitive(False)
             return
         self.value_entry.set_sensitive(True)
         self.remove_button.set_sensitive(True)
-        self.properties = [property]
-        if property in EartagFile.int_properties and not self._is_numeric:
+        self.properties = [tag]
+        if tag in EartagFile.int_properties and not self._is_numeric:
             self.set_property('is_numeric', True)
-        elif property not in EartagFile.int_properties and self._is_numeric:
+        elif tag not in EartagFile.int_properties and self._is_numeric:
             self.set_property('is_numeric', False)
         for file in self.files:
-            if property not in file.present_extra_tags:
-                file.present_extra_tags.append(property)
+            if tag not in file.present_extra_tags:
+                file.present_extra_tags.append(tag)
             self.refresh_multiple_values(file)
         if old_tag == 'none':
-            self.get_native().file_view.add_empty_row()
+            try:
+                self.get_native().file_view.add_empty_row()
+            except AttributeError:
+                pass
         if not self.skip_filter_change:
             for row in EartagFileView.more_entries:
                 row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
+    def on_tag_selector_select(self, dropdown, *args):
+        if self.ignore_selector_select:
+            return
+
+        selected_item = dropdown.get_selected_item()
+        if not selected_item:
+            return
+        tag = self._tag_names_swapped[selected_item.get_string()]
+
+        self.set_handled_tag(tag)
+
     def remove_row(self, *args):
         """Removes the row."""
+        self.ignore_selector_select = True
         self.get_native().file_view.remove_and_unbind_extra_row(self)
+        self.ignore_selector_select = False
 
     def refresh_filter(self, *args):
+        do_ignore = False
+        if not self.ignore_selector_select:
+            do_ignore = True
+            self.ignore_selector_select = True
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+        if do_ignore:
+            self.ignore_selector_select = False
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
@@ -574,6 +587,7 @@ class EartagFileView(Gtk.Stack):
     bindings = {}
     bound_files = []
     more_entries = []
+    unused_entries = []
     banned_tags = {}
     opened_filetypes = {}
 
@@ -883,7 +897,12 @@ class EartagFileView(Gtk.Stack):
 
         Returns the newly created row.
         """
-        entry = EartagTagListMoreItem(tag)
+        if self.unused_entries:
+            entry = self.unused_entries[0]
+            self.unused_entries.remove(entry)
+            entry._set_property(tag)
+        else:
+            entry = EartagTagListMoreItem(tag)
         self.more_entries.append(entry)
         self.more_tags_expander.add_row(entry)
 
@@ -934,6 +953,8 @@ class EartagFileView(Gtk.Stack):
             if none_entry:
                 self.more_tags_expander.remove(none_entry)
             self.add_empty_row()
+
+        self.unused_entries.append(row)
 
     def remove_and_unbind_extra_row(self, row, skip_adding_none=False):
         """
