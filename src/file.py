@@ -161,6 +161,10 @@ class EartagFileManager(GObject.Object):
 
             if _selection_override:
                 self.emit('selection_override')
+            elif not len(self.selected_files) > 1:
+                self.selected_files = [_file]
+                self.emit('selection_changed')
+                self.emit('selection_override')
 
             if not _file.is_writable:
                 self.window.toast_overlay.add_toast(
@@ -225,6 +229,9 @@ class EartagFileManager(GObject.Object):
         self.update_modified_status()
         if mode == self.LOAD_OVERWRITE:
             self.emit('selection_override')
+        elif not len(self.selected_files) > 1:
+            self.selected_files = [_file]
+            self.emit('selection-changed')
         self._is_loading_multiple_files = False
 
     def load_multiple_files(self, *args, **kwargs):
