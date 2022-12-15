@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
-"Report-Msgid-Bugs-To: https://github.com/knuxify/eartag/issues\n"
-"POT-Creation-Date: 2022-09-17 17:25+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-15 21:51+0100\n"
 "PO-Revision-Date: 2022-09-17 17:58+0200\n"
 "Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
@@ -34,10 +34,6 @@ msgstr "Kleine en eenvoudige muziek-tag-bewerker"
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;muziek;taggen;metadata;"
-
-#: data/app.drey.EarTag.appdata.xml.in:15
-msgid "Initial release."
-msgstr "Initiële uitgave."
 
 #: data/app.drey.EarTag.appdata.xml.in:20
 msgid ""
@@ -74,89 +70,119 @@ msgstr ""
 "Sleep een bestand hierheen om deze toe te voegen aan de lijst met geopende "
 "bestanden"
 
-#: src/ui/window.ui:88 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
-#: src/ui/removaldiscardwarning.ui:27
+#: src/ui/window.ui:111
 msgid "Save"
 msgstr "Opslaan"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:102
+#: src/ui/window.ui:125
 msgid "Sort files"
 msgstr "Bestanden sorteren"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:111
+#: src/ui/window.ui:134
 msgid "Close file list"
 msgstr "Bestandslijst sluiten"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:125
+#: src/ui/window.ui:148
 msgid "Add file"
 msgstr "Bestand toevoegen"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:133
+#: src/ui/window.ui:156
 msgid "Select multiple files"
 msgstr "Meerdere bestanden selecteren"
 
-#: src/ui/window.ui:141
+#: src/ui/window.ui:164
 msgid "Search"
 msgstr "Zoeken"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:170
+#: src/ui/window.ui:194
 msgid "Show file list"
 msgstr "Bestandslijst weergeven"
 
-#: src/ui/window.ui:220
+#: src/ui/window.ui:235
 msgid "_Open file"
 msgstr "_Bestand openen"
 
-#: src/ui/window.ui:224
+#: src/ui/window.ui:239
+#, fuzzy
+msgid "O_pen folder"
+msgstr "_Bestand openen"
+
+#: src/ui/window.ui:243
+msgid "_Keyboard shortcuts"
+msgstr ""
+
+#: src/ui/window.ui:247
+#, fuzzy
+msgid "S_ave cover to file"
+msgstr "Wijzigingen naar bestand opgeslagen"
+
+#: src/ui/window.ui:251
 msgid "_About Ear Tag"
 msgstr "_Over Ear Tag"
 
-#: src/ui/fileview.ui:36
-msgid "Title"
-msgstr "Titel"
+#: src/ui/fileview.ui:10
+msgid "Loading Files…"
+msgstr ""
 
-#: src/ui/fileview.ui:45
-msgid "Artist"
-msgstr "Artiest"
-
-#: src/ui/fileview.ui:81
-msgid "Track number"
-msgstr "Muzieknummer"
-
-#: src/ui/fileview.ui:91
-msgid "Album"
-msgstr "Album"
-
-#: src/ui/fileview.ui:97
-msgid "Album artist"
-msgstr "Albumartiest"
-
-#: src/ui/fileview.ui:103
-msgid "Genre"
-msgstr "Genre"
-
-#: src/ui/fileview.ui:109
-msgid "Release year"
-msgstr "Uitgavejaar"
-
-#: src/ui/fileview.ui:116
-msgid "Comment"
-msgstr "Opmerking"
-
-#: src/ui/fileview.ui:131
+#: src/ui/fileview.ui:21
 msgid "Select a File"
 msgstr "Bestand selecteren"
 
-#: src/ui/fileview.ui:132
+#: src/ui/fileview.ui:22
 msgid "Select the files you want to edit from the list of opened files."
 msgstr ""
 "Selecteer de bestanden die u wilt bewerken van de lijst met geopende "
 "bestanden."
+
+#: src/ui/fileview.ui:58
+msgid "Previous file"
+msgstr ""
+
+#: src/ui/fileview.ui:76
+#, fuzzy
+msgid "Next file"
+msgstr "Bestanden sorteren"
+
+#: src/ui/fileview.ui:95
+msgid "Title"
+msgstr "Titel"
+
+#: src/ui/fileview.ui:104
+msgid "Artist"
+msgstr "Artiest"
+
+#: src/ui/fileview.ui:140
+msgid "Track number"
+msgstr "Muzieknummer"
+
+#: src/ui/fileview.ui:149
+msgid "Album"
+msgstr "Album"
+
+#: src/ui/fileview.ui:155
+msgid "Album artist"
+msgstr "Albumartiest"
+
+#: src/ui/fileview.ui:161
+msgid "Genre"
+msgstr "Genre"
+
+#: src/ui/fileview.ui:167
+msgid "Release year"
+msgstr "Uitgavejaar"
+
+#: src/ui/fileview.ui:174
+msgid "Comment"
+msgstr "Opmerking"
+
+#: src/ui/fileview.ui:180
+msgid "More tags"
+msgstr ""
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -168,22 +194,34 @@ msgid "If you don't save your changes, they will be permanently lost."
 msgstr ""
 "Als u uw wijzigingen niet opslaat zullen deze definitief verloren gaan."
 
-#: src/ui/closewarning.ui:10
-msgid "Close without saving"
-msgstr "Afsluiten zonder opslaan"
-
-#: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
-#: src/ui/removaldiscardwarning.ui:20
-msgid "Cancel"
+#: src/ui/closewarning.ui:12 src/ui/discardwarning.ui:12
+#: src/ui/removaldiscardwarning.ui:12
+#, fuzzy
+msgid "_Cancel"
 msgstr "Annuleren"
+
+#: src/ui/closewarning.ui:13 src/ui/removaldiscardwarning.ui:13
+#, fuzzy
+msgid "_Discard changes and close"
+msgstr "Wijzigingen verwerpen en sluiten"
+
+#: src/ui/closewarning.ui:14 src/ui/removaldiscardwarning.ui:14
+#, fuzzy
+msgid "_Save and close"
+msgstr "Wijzigingen verwerpen en sluiten"
 
 #: src/ui/discardwarning.ui:5
 msgid "Save changes before opening another file?"
 msgstr "Wijzigingen opslaan alvorens een ander bestand te openen?"
 
-#: src/ui/discardwarning.ui:10
-msgid "Discard changes and open"
+#: src/ui/discardwarning.ui:13
+#, fuzzy
+msgid "_Discard changes and open"
 msgstr "Wijzigingen verwerpen en openen"
+
+#: src/ui/discardwarning.ui:14
+msgid "_Save and open"
+msgstr ""
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
@@ -199,10 +237,6 @@ msgstr "Uit lijst verwijderen"
 msgid "Save changes before closing file?"
 msgstr "Wijzigingen opslaan alvorens bestand te sluiten?"
 
-#: src/ui/removaldiscardwarning.ui:10
-msgid "Discard changes and close"
-msgstr "Wijzigingen verwerpen en sluiten"
-
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
@@ -215,106 +249,244 @@ msgstr ""
 msgid "Open a file"
 msgstr "Bestand openen"
 
-#: src/ui/sidebar.ui:38
+#: src/ui/nofile.ui:72
+#, fuzzy
+msgid "Open a folder"
+msgstr "Bestand openen"
+
+#: src/ui/sidebar.ui:50
 msgid "No Files Opened"
 msgstr "Geen bestanden geopend"
 
-#: src/ui/sidebar.ui:49
+#: src/ui/sidebar.ui:61
 msgid "No Results Found"
 msgstr "Geen resultaten gevonden"
 
-#: src/ui/sidebar.ui:50
+#: src/ui/sidebar.ui:62
 msgid "Try a different search query."
 msgstr "Probeer een andere zoekopdracht."
 
-#: src/ui/sidebar.ui:65
+#: src/ui/sidebar.ui:77
 msgid "Select all files"
 msgstr "Alle bestanden selecteren"
 
-#: src/ui/sidebar.ui:81
+#: src/ui/sidebar.ui:93
 msgid "Remove selected files"
 msgstr "Geselecteerde bestanden verwijderen"
 
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:110 src/main.py:112
+msgid "translator-credits"
+msgstr "Philip Goto <philip.goto@gmail.com>"
+
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
-#: src/common.py:131
+#: src/common.py:121
 msgid "(multiple values)"
 msgstr "(meerdere waarden)"
 
-#: src/file.py:107
+#: src/file.py:135
 msgid "Failed to load file"
 msgstr "Bestand laden mislukt"
 
-#: src/file.py:108
+#: src/file.py:136
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 "Kon bestand {f} niet laden. Controleer de logboeken voor meer informatie."
 
-#: src/file.py:171
+#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
+#: src/file.py:139 src/file.py:270
+msgid "OK"
+msgstr ""
+
+#: src/file.py:176
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr ""
+"Geopend bestand is alleen-lezen; wijzigingen kunnen niet worden opgeslagen."
+
+#: src/file.py:225
+#, fuzzy
+msgid "Some of the opened files are read-only; changes cannot be saved."
+msgstr ""
+"Geopend bestand is alleen-lezen; wijzigingen kunnen niet worden opgeslagen."
+
+#: src/file.py:266
 msgid "Failed to save file"
 msgstr "Bestand opslaan mislukt"
 
-#: src/file.py:172
+#: src/file.py:267
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Kon bestand {f} niet opslaan. Controleer de logboeken voor meer informatie."
 
-#: src/file.py:179
-msgid "Saved changes to file"
+#: src/file.py:276
+#, fuzzy
+msgid "Saved changes to files"
 msgstr "Wijzigingen naar bestand opgeslagen"
 
-#: src/fileview.py:145
+#: src/fileview.py:147
 msgid "Select Album Cover Image"
 msgstr "Albumhoesafbeelding selecteren"
 
-#: src/fileview.py:400
+#: src/fileview.py:374
+#, fuzzy
+msgid "(Select a tag)"
+msgstr "Bestand selecteren"
+
+#: src/fileview.py:375
+msgid "BPM"
+msgstr ""
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/fileview.py:376
+msgid "Compilation"
+msgstr ""
+
+#: src/fileview.py:377
+msgid "Composer"
+msgstr ""
+
+#: src/fileview.py:378
+msgid "Copyright"
+msgstr ""
+
+#: src/fileview.py:379
+msgid "Encoded by"
+msgstr ""
+
+#: src/fileview.py:380
+msgid "Mood"
+msgstr ""
+
+#: src/fileview.py:381
+msgid "Conductor"
+msgstr ""
+
+#. TRANSLATORS: Orchestra conductor
+#: src/fileview.py:382
+msgid "Arranger"
+msgstr ""
+
+#: src/fileview.py:383
+#, fuzzy
+msgid "Disc number"
+msgstr "Muzieknummer"
+
+#: src/fileview.py:384
+msgid "Publisher"
+msgstr ""
+
+#: src/fileview.py:386
+msgid "Language"
+msgstr ""
+
+#: src/fileview.py:387
+msgid "Disc subtitle"
+msgstr ""
+
+#: src/fileview.py:389
+#, fuzzy
+msgid "Album artist (sort)"
+msgstr "Albumartiest"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:390
+#, fuzzy
+msgid "Album (sort)"
+msgstr "Albumhoes"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:391
+msgid "Composer (sort)"
+msgstr ""
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:392
+#, fuzzy
+msgid "Artist (sort)"
+msgstr "Artiest"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:393
+msgid "Title (sort)"
+msgstr ""
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/fileview.py:684
+msgid "(Multiple files selected)"
+msgstr "(meerdere bestanden geselecteerd)"
+
+#: src/fileview.py:705
+msgid "File is read-only, saving is disabled"
+msgstr "Bestand is alleen-lezen, opslaan is uitgeschakled"
+
+#: src/fileview.py:1012
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} kanaal"
 msgstr[1] "{n} kanalen"
 
-#. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:410
-msgid "(Multiple files selected)"
-msgstr "(meerdere bestanden geselecteerd)"
-
-#. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:438
-msgid "File is read-only, saving is disabled"
-msgstr "Bestand is alleen-lezen, opslaan is uitgeschakled"
-
-#: src/fileview.py:441
-msgid "Opened file is read-only; changes cannot be saved."
-msgstr ""
-"Geopend bestand is alleen-lezen; wijzigingen kunnen niet worden opgeslagen."
+#: src/fileview.py:1028
+#, fuzzy
+msgid "Save Album Cover To…"
+msgstr "Albumhoesafbeelding selecteren"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
 msgstr "(geen titel)"
 
-#: src/sidebar.py:376
+#: src/sidebar.py:417
 msgid "No files selected"
 msgstr "Geen bestanden geselecteerd"
 
-#: src/sidebar.py:380
+#: src/sidebar.py:421
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} bestand geselecteerd"
 msgstr[1] "{n} bestanden geselecteerd"
 
-#: src/window.py:226
-msgid "Open File"
+#: src/window.py:242
+#, fuzzy
+msgid "Open Folder"
 msgstr "Bestand openen"
 
-#. TRANSLATORS: Add your name/nickname here
-#: src/window.py:302 src/window.py:303
-msgid "translator-credits"
-msgstr "Philip Goto <philip.goto@gmail.com>"
+#: src/window.py:246
+msgid "Open File"
+msgstr "Bestand openen"
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
 msgstr "Albumhoes"
+
+#: src/ui/shortcuts.ui:13
+msgid "Files"
+msgstr ""
+
+#: src/ui/shortcuts.ui:17
+#, fuzzy
+msgid "Open files"
+msgstr "_Bestand openen"
+
+#: src/ui/shortcuts.ui:24
+#, fuzzy
+msgid "Save all modified files"
+msgstr "Alle bestanden selecteren"
+
+#: src/ui/shortcuts.ui:31
+msgid "Select previous file in sidebar"
+msgstr ""
+
+#: src/ui/shortcuts.ui:38
+#, fuzzy
+msgid "Select next file in sidebar"
+msgstr "Alle bestanden selecteren"
+
+#~ msgid "Initial release."
+#~ msgstr "Initiële uitgave."
+
+#~ msgid "Close without saving"
+#~ msgstr "Afsluiten zonder opslaan"

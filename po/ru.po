@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-03 13:49+0200\n"
+"POT-Creation-Date: 2022-12-15 21:51+0100\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "music;audio;tag;tagging;tagger;музыка;аудио;тэг;тэгирование;тэггер;тег;"
 "тегирование;"
 
-#: data/app.drey.EarTag.appdata.xml.in:18
+#: data/app.drey.EarTag.appdata.xml.in:20
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -47,7 +47,7 @@ msgstr ""
 "Ear Tag - это маленький и простой редактор музыкальных тегов, который не "
 "пытается управлять всей вашей библиотекой."
 
-#: data/app.drey.EarTag.appdata.xml.in:19
+#: data/app.drey.EarTag.appdata.xml.in:21
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -60,7 +60,7 @@ msgstr ""
 "вам нужно просто отредактировать данные одного файла без дополнительных "
 "хлопот."
 
-#: data/app.drey.EarTag.appdata.xml.in:20
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -74,86 +74,116 @@ msgstr ""
 msgid "Drop a file to add it to the opened file list"
 msgstr "Перетащите файл, чтобы отредактировать его"
 
-#: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
-#: src/ui/removaldiscardwarning.ui:27
+#: src/ui/window.ui:111
 msgid "Save"
 msgstr "Сохранить"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:103
+#: src/ui/window.ui:125
 msgid "Sort files"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:112
+#: src/ui/window.ui:134
 msgid "Close file list"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:126
+#: src/ui/window.ui:148
 msgid "Add file"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:134
+#: src/ui/window.ui:156
 msgid "Select multiple files"
 msgstr ""
 
-#: src/ui/window.ui:142
+#: src/ui/window.ui:164
 msgid "Search"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:167
+#: src/ui/window.ui:194
 msgid "Show file list"
 msgstr ""
 
-#: src/ui/window.ui:223
+#: src/ui/window.ui:235
 msgid "_Open file"
 msgstr "_Открыть файл"
 
-#: src/ui/window.ui:227
+#: src/ui/window.ui:239
+#, fuzzy
+msgid "O_pen folder"
+msgstr "_Открыть файл"
+
+#: src/ui/window.ui:243
+msgid "_Keyboard shortcuts"
+msgstr ""
+
+#: src/ui/window.ui:247
+#, fuzzy
+msgid "S_ave cover to file"
+msgstr "Сохранить изменения в файл"
+
+#: src/ui/window.ui:251
 msgid "_About Ear Tag"
 msgstr "Об Ear Tag"
 
-#: src/ui/fileview.ui:36
-msgid "Title"
-msgstr "Название"
+#: src/ui/fileview.ui:10
+msgid "Loading Files…"
+msgstr ""
 
-#: src/ui/fileview.ui:45
-msgid "Artist"
-msgstr "Исполнитель"
-
-#: src/ui/fileview.ui:81
-msgid "Track number"
-msgstr "Номер дорожки"
-
-#: src/ui/fileview.ui:91
-msgid "Album"
-msgstr "Альбом"
-
-#: src/ui/fileview.ui:97
-msgid "Album artist"
-msgstr "Исполнитель альбома"
-
-#: src/ui/fileview.ui:103
-msgid "Genre"
-msgstr "Жанр"
-
-#: src/ui/fileview.ui:109
-msgid "Release year"
-msgstr "Год выпуска"
-
-#: src/ui/fileview.ui:116
-msgid "Comment"
-msgstr "Комментарий"
-
-#: src/ui/fileview.ui:131
+#: src/ui/fileview.ui:21
 msgid "Select a File"
 msgstr ""
 
-#: src/ui/fileview.ui:132
+#: src/ui/fileview.ui:22
 msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
+
+#: src/ui/fileview.ui:58
+msgid "Previous file"
+msgstr ""
+
+#: src/ui/fileview.ui:76
+#, fuzzy
+msgid "Next file"
+msgstr "_Открыть файл"
+
+#: src/ui/fileview.ui:95
+msgid "Title"
+msgstr "Название"
+
+#: src/ui/fileview.ui:104
+msgid "Artist"
+msgstr "Исполнитель"
+
+#: src/ui/fileview.ui:140
+msgid "Track number"
+msgstr "Номер дорожки"
+
+#: src/ui/fileview.ui:149
+msgid "Album"
+msgstr "Альбом"
+
+#: src/ui/fileview.ui:155
+msgid "Album artist"
+msgstr "Исполнитель альбома"
+
+#: src/ui/fileview.ui:161
+msgid "Genre"
+msgstr "Жанр"
+
+#: src/ui/fileview.ui:167
+msgid "Release year"
+msgstr "Год выпуска"
+
+#: src/ui/fileview.ui:174
+msgid "Comment"
+msgstr "Комментарий"
+
+#: src/ui/fileview.ui:180
+msgid "More tags"
 msgstr ""
 
 #: src/ui/closewarning.ui:5
@@ -165,22 +195,33 @@ msgstr "Сохранить изменения перед закрытием?"
 msgid "If you don't save your changes, they will be permanently lost."
 msgstr "Если вы не сохраните свои изменения, они будут безвозвратно утеряны."
 
-#: src/ui/closewarning.ui:10
-msgid "Close without saving"
-msgstr "Закрыть без сохранения"
+#: src/ui/closewarning.ui:12 src/ui/discardwarning.ui:12
+#: src/ui/removaldiscardwarning.ui:12
+msgid "_Cancel"
+msgstr "_Отменить"
 
-#: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
-#: src/ui/removaldiscardwarning.ui:20
-msgid "Cancel"
-msgstr "Отменить"
+#: src/ui/closewarning.ui:13 src/ui/removaldiscardwarning.ui:13
+#, fuzzy
+msgid "_Discard changes and close"
+msgstr "Отменить изменения и откройте"
+
+#: src/ui/closewarning.ui:14 src/ui/removaldiscardwarning.ui:14
+#, fuzzy
+msgid "_Save and close"
+msgstr "Отменить изменения и откройте"
 
 #: src/ui/discardwarning.ui:5
 msgid "Save changes before opening another file?"
 msgstr "Сохранить изменения перед открытием другого файла?"
 
-#: src/ui/discardwarning.ui:10
-msgid "Discard changes and open"
+#: src/ui/discardwarning.ui:13
+#, fuzzy
+msgid "_Discard changes and open"
 msgstr "Отменить изменения и откройте"
+
+#: src/ui/discardwarning.ui:14
+msgid "_Save and open"
+msgstr ""
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
@@ -197,11 +238,6 @@ msgstr ""
 msgid "Save changes before closing file?"
 msgstr "Сохранить изменения перед закрытием?"
 
-#: src/ui/removaldiscardwarning.ui:10
-#, fuzzy
-msgid "Discard changes and close"
-msgstr "Отменить изменения и откройте"
-
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
@@ -213,62 +249,180 @@ msgstr ""
 msgid "Open a file"
 msgstr "_Открыть файл"
 
-#: src/ui/sidebar.ui:38
+#: src/ui/nofile.ui:72
+#, fuzzy
+msgid "Open a folder"
+msgstr "_Открыть файл"
+
+#: src/ui/sidebar.ui:50
 msgid "No Files Opened"
 msgstr ""
 
-#: src/ui/sidebar.ui:49
+#: src/ui/sidebar.ui:61
 msgid "No Results Found"
 msgstr ""
 
-#: src/ui/sidebar.ui:50
+#: src/ui/sidebar.ui:62
 msgid "Try a different search query."
 msgstr ""
 
-#: src/ui/sidebar.ui:65
+#: src/ui/sidebar.ui:77
 msgid "Select all files"
 msgstr ""
 
-#: src/ui/sidebar.ui:81
+#: src/ui/sidebar.ui:93
 msgid "Remove selected files"
 msgstr ""
 
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:110 src/main.py:112
+msgid "translator-credits"
+msgstr ""
+
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
-#: src/common.py:112
+#: src/common.py:121
 msgid "(multiple values)"
 msgstr ""
 
-#: src/file.py:107
+#: src/file.py:135
 msgid "Failed to load file"
 msgstr "Не удалось загрузить файл"
 
-#: src/file.py:108
+#: src/file.py:136
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 "Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной "
 "информации."
 
-#: src/file.py:171
+#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
+#: src/file.py:139 src/file.py:270
+msgid "OK"
+msgstr ""
+
+#: src/file.py:176
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr ""
+"Открытый файл доступен только для чтения; изменения не могут быть сохранены."
+
+#: src/file.py:225
+#, fuzzy
+msgid "Some of the opened files are read-only; changes cannot be saved."
+msgstr ""
+"Открытый файл доступен только для чтения; изменения не могут быть сохранены."
+
+#: src/file.py:266
 msgid "Failed to save file"
 msgstr "Не удалось сохранить файл"
 
-#: src/file.py:172
+#: src/file.py:267
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной "
 "информации."
 
-#: src/file.py:179
-msgid "Saved changes to file"
+#: src/file.py:276
+#, fuzzy
+msgid "Saved changes to files"
 msgstr "Сохранить изменения в файл"
 
-#: src/fileview.py:145
+#: src/fileview.py:147
 msgid "Select Album Cover Image"
 msgstr "Выберите изображение обложки альбома"
 
-#: src/fileview.py:400
+#: src/fileview.py:374
+msgid "(Select a tag)"
+msgstr ""
+
+#: src/fileview.py:375
+msgid "BPM"
+msgstr ""
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/fileview.py:376
+msgid "Compilation"
+msgstr ""
+
+#: src/fileview.py:377
+msgid "Composer"
+msgstr ""
+
+#: src/fileview.py:378
+msgid "Copyright"
+msgstr ""
+
+#: src/fileview.py:379
+msgid "Encoded by"
+msgstr ""
+
+#: src/fileview.py:380
+msgid "Mood"
+msgstr ""
+
+#: src/fileview.py:381
+msgid "Conductor"
+msgstr ""
+
+#. TRANSLATORS: Orchestra conductor
+#: src/fileview.py:382
+msgid "Arranger"
+msgstr ""
+
+#: src/fileview.py:383
+#, fuzzy
+msgid "Disc number"
+msgstr "Номер дорожки"
+
+#: src/fileview.py:384
+msgid "Publisher"
+msgstr ""
+
+#: src/fileview.py:386
+msgid "Language"
+msgstr ""
+
+#: src/fileview.py:387
+msgid "Disc subtitle"
+msgstr ""
+
+#: src/fileview.py:389
+#, fuzzy
+msgid "Album artist (sort)"
+msgstr "Исполнитель альбома"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:390
+#, fuzzy
+msgid "Album (sort)"
+msgstr "Альбом"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:391
+msgid "Composer (sort)"
+msgstr ""
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:392
+#, fuzzy
+msgid "Artist (sort)"
+msgstr "Исполнитель"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:393
+msgid "Title (sort)"
+msgstr ""
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/fileview.py:684
+msgid "(Multiple files selected)"
+msgstr ""
+
+#: src/fileview.py:705
+msgid "File is read-only, saving is disabled"
+msgstr "Файл доступен только для чтения, сохранение отключено"
+
+#: src/fileview.py:1012
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
@@ -276,31 +430,21 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:410
-msgid "(Multiple files selected)"
-msgstr ""
-
-#. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:438
-msgid "File is read-only, saving is disabled"
-msgstr "Файл доступен только для чтения, сохранение отключено"
-
-#: src/fileview.py:441
-msgid "Opened file is read-only; changes cannot be saved."
-msgstr ""
-"Открытый файл доступен только для чтения; изменения не могут быть сохранены."
+#: src/fileview.py:1028
+#, fuzzy
+msgid "Save Album Cover To…"
+msgstr "Выберите изображение обложки альбома"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
 msgstr ""
 
-#: src/sidebar.py:374
+#: src/sidebar.py:417
 msgid "No files selected"
 msgstr ""
 
-#: src/sidebar.py:378
+#: src/sidebar.py:421
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
@@ -308,28 +452,52 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/window.py:208
-msgid "Open File"
+#: src/window.py:242
+#, fuzzy
+msgid "Open Folder"
 msgstr "Открыть файл"
 
-#. TRANSLATORS: Add your name/nickname here
-#: src/window.py:284 src/window.py:285
-msgid "translator-credits"
-msgstr ""
+#: src/window.py:246
+msgid "Open File"
+msgstr "Открыть файл"
 
 #: src/ui/albumcoverbutton.ui:73
 #, fuzzy
 msgid "Album cover"
 msgstr "Альбом"
 
+#: src/ui/shortcuts.ui:13
+msgid "Files"
+msgstr ""
+
+#: src/ui/shortcuts.ui:17
+#, fuzzy
+msgid "Open files"
+msgstr "_Открыть файл"
+
+#: src/ui/shortcuts.ui:24
+msgid "Save all modified files"
+msgstr ""
+
+#: src/ui/shortcuts.ui:31
+msgid "Select previous file in sidebar"
+msgstr ""
+
+#: src/ui/shortcuts.ui:38
+msgid "Select next file in sidebar"
+msgstr ""
+
+#~ msgid "Close without saving"
+#~ msgstr "Закрыть без сохранения"
+
+#~ msgid "Cancel"
+#~ msgstr "Отменить"
+
 #~ msgid "/"
 #~ msgstr "/"
 
 #~ msgid "Tag your music files in peace"
 #~ msgstr "Управляйте тегами своих музыкальный файлов просто"
-
-#~ msgid "_Cancel"
-#~ msgstr "_Отменить"
 
 #~ msgid "_Open"
 #~ msgstr "_Открыть"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-03 13:49+0200\n"
+"POT-Creation-Date: 2022-12-15 21:51+0100\n"
 "PO-Revision-Date: 2022-09-17 14:09+0200\n"
 "Last-Translator: Irénée THIRION <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
@@ -36,7 +36,7 @@ msgstr "Un petit éditeur de balises de fichiers musicaux, simple et efficace"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;données;"
 
-#: data/app.drey.EarTag.appdata.xml.in:18
+#: data/app.drey.EarTag.appdata.xml.in:20
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -44,7 +44,7 @@ msgstr ""
 "Ear Tag est un petit et simple éditeur de balises musicales qui n'essaie pas "
 "de gérer l’ensemble de votre bibliothèque."
 
-#: data/app.drey.EarTag.appdata.xml.in:19
+#: data/app.drey.EarTag.appdata.xml.in:21
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -58,7 +58,7 @@ msgstr ""
 "ayez juste besoin de modifier les données d’un fichier sans avoir à vous "
 "préoccuper du reste."
 
-#: data/app.drey.EarTag.appdata.xml.in:20
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -72,89 +72,119 @@ msgid "Drop a file to add it to the opened file list"
 msgstr ""
 "Glissez-déposez un fichier pour l’ajouter à la liste des fichiers ouverts"
 
-#: src/ui/window.ui:89 src/ui/closewarning.ui:27 src/ui/discardwarning.ui:27
-#: src/ui/removaldiscardwarning.ui:27
+#: src/ui/window.ui:111
 msgid "Save"
 msgstr "Enregistrer"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:103
+#: src/ui/window.ui:125
 msgid "Sort files"
 msgstr "Trier les fichiers"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:112
+#: src/ui/window.ui:134
 msgid "Close file list"
 msgstr "Fermer la liste des fichiers"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:126
+#: src/ui/window.ui:148
 msgid "Add file"
 msgstr "Ajouter un fichier"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:134
+#: src/ui/window.ui:156
 msgid "Select multiple files"
 msgstr "Sélectionner plusieurs fichiers"
 
-#: src/ui/window.ui:142
+#: src/ui/window.ui:164
 msgid "Search"
 msgstr "Rechercher"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:167
+#: src/ui/window.ui:194
 msgid "Show file list"
 msgstr "Afficher la liste des fichiers"
 
-#: src/ui/window.ui:223
+#: src/ui/window.ui:235
 msgid "_Open file"
 msgstr "_Ouvrir un fichier"
 
-#: src/ui/window.ui:227
+#: src/ui/window.ui:239
+#, fuzzy
+msgid "O_pen folder"
+msgstr "_Ouvrir un fichier"
+
+#: src/ui/window.ui:243
+msgid "_Keyboard shortcuts"
+msgstr ""
+
+#: src/ui/window.ui:247
+#, fuzzy
+msgid "S_ave cover to file"
+msgstr "Modifications enregistrées dans le fichier"
+
+#: src/ui/window.ui:251
 msgid "_About Ear Tag"
 msgstr "À _propos de Ear Tag"
 
-#: src/ui/fileview.ui:36
-msgid "Title"
-msgstr "Titre"
+#: src/ui/fileview.ui:10
+msgid "Loading Files…"
+msgstr ""
 
-#: src/ui/fileview.ui:45
-msgid "Artist"
-msgstr "Artiste"
-
-#: src/ui/fileview.ui:81
-msgid "Track number"
-msgstr "Numéro de piste"
-
-#: src/ui/fileview.ui:91
-msgid "Album"
-msgstr "Album"
-
-#: src/ui/fileview.ui:97
-msgid "Album artist"
-msgstr "Artiste de l’album"
-
-#: src/ui/fileview.ui:103
-msgid "Genre"
-msgstr "Genre"
-
-#: src/ui/fileview.ui:109
-msgid "Release year"
-msgstr "Année de sortie"
-
-#: src/ui/fileview.ui:116
-msgid "Comment"
-msgstr "Commentaire"
-
-#: src/ui/fileview.ui:131
+#: src/ui/fileview.ui:21
 msgid "Select a File"
 msgstr "Sélectionner un fichier"
 
-#: src/ui/fileview.ui:132
+#: src/ui/fileview.ui:22
 msgid "Select the files you want to edit from the list of opened files."
 msgstr ""
 "Sélectionnez les fichiers que vous voulez modifier depuis la liste des "
 "fichiers ouverts."
+
+#: src/ui/fileview.ui:58
+msgid "Previous file"
+msgstr ""
+
+#: src/ui/fileview.ui:76
+#, fuzzy
+msgid "Next file"
+msgstr "Trier les fichiers"
+
+#: src/ui/fileview.ui:95
+msgid "Title"
+msgstr "Titre"
+
+#: src/ui/fileview.ui:104
+msgid "Artist"
+msgstr "Artiste"
+
+#: src/ui/fileview.ui:140
+msgid "Track number"
+msgstr "Numéro de piste"
+
+#: src/ui/fileview.ui:149
+msgid "Album"
+msgstr "Album"
+
+#: src/ui/fileview.ui:155
+msgid "Album artist"
+msgstr "Artiste de l’album"
+
+#: src/ui/fileview.ui:161
+msgid "Genre"
+msgstr "Genre"
+
+#: src/ui/fileview.ui:167
+msgid "Release year"
+msgstr "Année de sortie"
+
+#: src/ui/fileview.ui:174
+msgid "Comment"
+msgstr "Commentaire"
+
+#: src/ui/fileview.ui:180
+msgid "More tags"
+msgstr ""
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -167,22 +197,34 @@ msgstr ""
 "Vos modifications seront perdues définitivement si vous ne les enregistrez "
 "pas."
 
-#: src/ui/closewarning.ui:10
-msgid "Close without saving"
-msgstr "Fermer sans enregistrer"
-
-#: src/ui/closewarning.ui:20 src/ui/discardwarning.ui:20
-#: src/ui/removaldiscardwarning.ui:20
-msgid "Cancel"
+#: src/ui/closewarning.ui:12 src/ui/discardwarning.ui:12
+#: src/ui/removaldiscardwarning.ui:12
+#, fuzzy
+msgid "_Cancel"
 msgstr "Annuler"
+
+#: src/ui/closewarning.ui:13 src/ui/removaldiscardwarning.ui:13
+#, fuzzy
+msgid "_Discard changes and close"
+msgstr "Abandonner les modifications et fermer"
+
+#: src/ui/closewarning.ui:14 src/ui/removaldiscardwarning.ui:14
+#, fuzzy
+msgid "_Save and close"
+msgstr "Abandonner les modifications et fermer"
 
 #: src/ui/discardwarning.ui:5
 msgid "Save changes before opening another file?"
 msgstr "Enregistrer les modifications avant d’ouvrir un autre fichier ?"
 
-#: src/ui/discardwarning.ui:10
-msgid "Discard changes and open"
+#: src/ui/discardwarning.ui:13
+#, fuzzy
+msgid "_Discard changes and open"
 msgstr "Abandonner les modifications et ouvrir"
+
+#: src/ui/discardwarning.ui:14
+msgid "_Save and open"
+msgstr ""
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
@@ -198,10 +240,6 @@ msgstr "Retirer de la liste"
 msgid "Save changes before closing file?"
 msgstr "Enregistrer les modifications avant la fermeture du fichier ?"
 
-#: src/ui/removaldiscardwarning.ui:10
-msgid "Discard changes and close"
-msgstr "Abandonner les modifications et fermer"
-
 #: src/ui/nofile.ui:46
 msgid ""
 "To edit a file's tags, drag-and-drop the file onto this window or use the "
@@ -214,109 +252,245 @@ msgstr ""
 msgid "Open a file"
 msgstr "Ouvrir un fichier"
 
-#: src/ui/sidebar.ui:38
+#: src/ui/nofile.ui:72
+#, fuzzy
+msgid "Open a folder"
+msgstr "Ouvrir un fichier"
+
+#: src/ui/sidebar.ui:50
 msgid "No Files Opened"
 msgstr "Aucun fichier ouvert"
 
-#: src/ui/sidebar.ui:49
+#: src/ui/sidebar.ui:61
 msgid "No Results Found"
 msgstr "Aucun résultat trouvé"
 
-#: src/ui/sidebar.ui:50
+#: src/ui/sidebar.ui:62
 msgid "Try a different search query."
 msgstr "Essayez une requête différente."
 
-#: src/ui/sidebar.ui:65
+#: src/ui/sidebar.ui:77
 msgid "Select all files"
 msgstr "Sélectionner tous les fichiers"
 
-#: src/ui/sidebar.ui:81
+#: src/ui/sidebar.ui:93
 msgid "Remove selected files"
 msgstr "Supprimer les fichiers sélectionnés"
 
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:110 src/main.py:112
+msgid "translator-credits"
+msgstr "Irénée Thirion"
+
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
-#: src/common.py:112
+#: src/common.py:121
 msgid "(multiple values)"
 msgstr "(plusieurs valeurs)"
 
-#: src/file.py:107
+#: src/file.py:135
 msgid "Failed to load file"
 msgstr "Échec du chargement du fichier"
 
-#: src/file.py:108
+#: src/file.py:136
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 "Impossible de charger le fichier {f}. Vérifiez les journaux pour plus "
 "d’informations."
 
-#: src/file.py:171
+#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
+#: src/file.py:139 src/file.py:270
+msgid "OK"
+msgstr ""
+
+#: src/file.py:176
+msgid "Opened file is read-only; changes cannot be saved."
+msgstr ""
+"Le fichier ouvert est en lecture seule ; les modifications ne peuvent être "
+"enregistrées."
+
+#: src/file.py:225
+#, fuzzy
+msgid "Some of the opened files are read-only; changes cannot be saved."
+msgstr ""
+"Le fichier ouvert est en lecture seule ; les modifications ne peuvent être "
+"enregistrées."
+
+#: src/file.py:266
 msgid "Failed to save file"
 msgstr "Échec de l’enregistrement du fichier"
 
-#: src/file.py:172
+#: src/file.py:267
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Impossible d’enregistrer le fichier {f}. Vérifiez les journaux pour plus "
 "d’informations."
 
-#: src/file.py:179
-msgid "Saved changes to file"
+#: src/file.py:276
+#, fuzzy
+msgid "Saved changes to files"
 msgstr "Modifications enregistrées dans le fichier"
 
-#: src/fileview.py:145
+#: src/fileview.py:147
 msgid "Select Album Cover Image"
 msgstr "Sélectionnez une image de couverture de l’album"
 
-#: src/fileview.py:400
+#: src/fileview.py:374
+#, fuzzy
+msgid "(Select a tag)"
+msgstr "Sélectionner un fichier"
+
+#: src/fileview.py:375
+msgid "BPM"
+msgstr ""
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/fileview.py:376
+msgid "Compilation"
+msgstr ""
+
+#: src/fileview.py:377
+msgid "Composer"
+msgstr ""
+
+#: src/fileview.py:378
+msgid "Copyright"
+msgstr ""
+
+#: src/fileview.py:379
+msgid "Encoded by"
+msgstr ""
+
+#: src/fileview.py:380
+msgid "Mood"
+msgstr ""
+
+#: src/fileview.py:381
+msgid "Conductor"
+msgstr ""
+
+#. TRANSLATORS: Orchestra conductor
+#: src/fileview.py:382
+msgid "Arranger"
+msgstr ""
+
+#: src/fileview.py:383
+#, fuzzy
+msgid "Disc number"
+msgstr "Numéro de piste"
+
+#: src/fileview.py:384
+msgid "Publisher"
+msgstr ""
+
+#: src/fileview.py:386
+msgid "Language"
+msgstr ""
+
+#: src/fileview.py:387
+msgid "Disc subtitle"
+msgstr ""
+
+#: src/fileview.py:389
+#, fuzzy
+msgid "Album artist (sort)"
+msgstr "Artiste de l’album"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:390
+#, fuzzy
+msgid "Album (sort)"
+msgstr "Couverture d’album"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:391
+msgid "Composer (sort)"
+msgstr ""
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:392
+#, fuzzy
+msgid "Artist (sort)"
+msgstr "Artiste"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:393
+msgid "Title (sort)"
+msgstr ""
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/fileview.py:684
+msgid "(Multiple files selected)"
+msgstr "(Plusieurs fichiers sélectionnés)"
+
+#: src/fileview.py:705
+msgid "File is read-only, saving is disabled"
+msgstr "Le fichier est en lecture seule, l’enregistrement est désactivé"
+
+#: src/fileview.py:1012
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} canal"
 msgstr[1] "{n} canaux"
 
-#. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:410
-msgid "(Multiple files selected)"
-msgstr "(Plusieurs fichiers sélectionnés)"
-
-#. TRANSLATORS: Tooltip text for save button when saving is disabled
-#: src/fileview.py:438
-msgid "File is read-only, saving is disabled"
-msgstr "Le fichier est en lecture seule, l’enregistrement est désactivé"
-
-#: src/fileview.py:441
-msgid "Opened file is read-only; changes cannot be saved."
-msgstr ""
-"Le fichier ouvert est en lecture seule ; les modifications ne peuvent être "
-"enregistrées."
+#: src/fileview.py:1028
+#, fuzzy
+msgid "Save Album Cover To…"
+msgstr "Sélectionnez une image de couverture de l’album"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
 msgid "(No title)"
 msgstr "(Pas de titre)"
 
-#: src/sidebar.py:374
+#: src/sidebar.py:417
 msgid "No files selected"
 msgstr "Aucun fichier sélectionné"
 
-#: src/sidebar.py:378
+#: src/sidebar.py:421
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} fichier sélectionné"
 msgstr[1] "{n} fichiers sélectionnés"
 
-#: src/window.py:208
-msgid "Open File"
+#: src/window.py:242
+#, fuzzy
+msgid "Open Folder"
 msgstr "Ouvrir un fichier"
 
-#. TRANSLATORS: Add your name/nickname here
-#: src/window.py:284 src/window.py:285
-msgid "translator-credits"
-msgstr "Irénée Thirion"
+#: src/window.py:246
+msgid "Open File"
+msgstr "Ouvrir un fichier"
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
 msgstr "Couverture d’album"
+
+#: src/ui/shortcuts.ui:13
+msgid "Files"
+msgstr ""
+
+#: src/ui/shortcuts.ui:17
+#, fuzzy
+msgid "Open files"
+msgstr "_Ouvrir un fichier"
+
+#: src/ui/shortcuts.ui:24
+#, fuzzy
+msgid "Save all modified files"
+msgstr "Sélectionner tous les fichiers"
+
+#: src/ui/shortcuts.ui:31
+msgid "Select previous file in sidebar"
+msgstr ""
+
+#: src/ui/shortcuts.ui:38
+#, fuzzy
+msgid "Select next file in sidebar"
+msgstr "Sélectionner tous les fichiers"
+
+#~ msgid "Close without saving"
+#~ msgstr "Fermer sans enregistrer"
