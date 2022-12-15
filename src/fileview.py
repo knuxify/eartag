@@ -566,6 +566,9 @@ class EartagFileView(Gtk.Stack):
     content_scroll = Gtk.Template.Child()
     select_file = Gtk.Template.Child()
 
+    important_data_container = Gtk.Template.Child()
+    tag_list = Gtk.Template.Child()
+
     album_cover = Gtk.Template.Child()
     title_entry = Gtk.Template.Child()
     artist_entry = Gtk.Template.Child()
@@ -696,11 +699,15 @@ class EartagFileView(Gtk.Stack):
                 has_unwritable = True
                 break
         if has_unwritable:
-            self.set_sensitive(False)
+            self.album_cover.set_sensitive(False)
+            self.important_data_container.set_sensitive(False)
+            self.tag_list.set_sensitive(False)
             window.save_button.set_tooltip_text(_('File is read-only, saving is disabled'))
             window.save_button.set_sensitive(False)
         else:
-            self.set_sensitive(True)
+            self.album_cover.set_sensitive(True)
+            self.important_data_container.set_sensitive(True)
+            self.tag_list.set_sensitive(True)
             window.save_button.set_tooltip_text('')
             window.save_button.set_sensitive(self.file_manager.is_modified)
 
