@@ -82,11 +82,18 @@ class Application(Adw.Application):
         self.create_action('previous_file', self.on_previous_action)
         self.set_accels_for_action('app.previous_file', ('<Ctrl>j', None))
 
+        self.save_cover_action = Gio.SimpleAction.new('save_cover', None)
+        self.save_cover_action.connect("activate", self.on_save_cover_action)
+        self.add_action(self.save_cover_action)
+
         win.present()
         self._ = _
 
     def on_save_action(self, widget, _):
         self.get_active_window().file_view.save()
+
+    def on_save_cover_action(self, widget, _):
+        self.get_active_window().file_view.save_cover()
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(

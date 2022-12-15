@@ -244,6 +244,10 @@
         <attribute name="action">app.shortcuts</attribute>
       </item>
       <item>
+        <attribute name="label" translatable="yes">S_ave cover to file</attribute>
+        <attribute name="action">app.save_cover</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">_About Ear Tag</attribute>
         <attribute name="action">app.about</attribute>
       </item>

@@ -40,6 +40,7 @@ import os.path
 import traceback
 import magic
 import mimetypes
+import shutil
 
 import gettext
 
@@ -649,6 +650,7 @@ class EartagFileView(Gtk.Stack):
         # Set up the active view (hide fileview if there are no selected files)
         selected_files_count = len(self.file_manager.selected_files)
         if selected_files_count <= 0:
+            window.get_application().save_cover_action.set_enabled(False)
             window.set_title('Ear Tag')
             window.window_title.set_subtitle('')
             if self.file_manager.files:
@@ -672,13 +674,14 @@ class EartagFileView(Gtk.Stack):
             file_basename = os.path.basename(file.path)
             window.set_title('{f} — Ear Tag'.format(f=file_basename))
             window.window_title.set_subtitle(file_basename)
-
+            window.get_application().save_cover_action.set_enabled(True)
             self._set_info_label(file)
         else:
             # TRANSLATOR: Placeholder for file path when multiple files are selected
             _multiple_files = _('(Multiple files selected)')
             window.set_title('{f} — Ear Tag'.format(f=_multiple_files))
             window.window_title.set_subtitle(_multiple_files)
+            window.get_application().save_cover_action.set_enabled(False)
             self.file_info.set_label(_multiple_files)
 
         # Handle added and removed files
@@ -1011,3 +1014,26 @@ class EartagFileView(Gtk.Stack):
     def save(self):
         """Saves changes to the file."""
         self.file_manager.save()
+
+    def save_cover(self, *args):
+        """Opens a file dialog to have the cover art to a file."""
+        self.file_chooser = Gtk.FileChooserNative(
+                                title=_("Save Album Cover To…"),
+                                transient_for=self.get_native(),
+                                action=Gtk.FileChooserAction.SAVE
+                                )
+
+        self.file_chooser.connect('response', self._save_cover_response)
+        self.file_chooser.show()
+
+    def _save_cover_response(self, dialog, response):
+        if response == Gtk.ResponseType.ACCEPT:
+            cover_path = self.file_manager.selected_files[0].cover_path
+            if cover_path:
+                save_path = dialog.get_file().get_path()
+                cover_mime = magic.from_file(cover_path, mime=True)
+                cover_extension = mimetypes.guess_extension(cover_mime)
+                if cover_extension and not save_path.endswith(cover_extension):
+                    save_path += cover_extension
+                shutil.copyfile(cover_path, save_path)
+        dialog.destroy()
