@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 21:51+0100\n"
+"POT-Creation-Date: 2022-12-16 06:45+0100\n"
 "PO-Revision-Date: 2022-09-15 17:35+0200\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
@@ -329,94 +329,94 @@ msgstr "Odaberite sliku naslovnice albuma"
 msgid "(Select a tag)"
 msgstr "Odaberi datoteku"
 
-#: src/fileview.py:375
+#. TRANSLATORS: Short for "beats per minute".
+#: src/fileview.py:376
 msgid "BPM"
 msgstr ""
 
-#. TRANSLATORS: Short for "beats per minute".
-#: src/fileview.py:376
+#: src/fileview.py:377
 msgid "Compilation"
 msgstr ""
 
-#: src/fileview.py:377
+#: src/fileview.py:378
 msgid "Composer"
 msgstr ""
 
-#: src/fileview.py:378
+#: src/fileview.py:379
 msgid "Copyright"
 msgstr ""
 
-#: src/fileview.py:379
+#: src/fileview.py:380
 msgid "Encoded by"
 msgstr ""
 
-#: src/fileview.py:380
+#: src/fileview.py:381
 msgid "Mood"
 msgstr ""
 
-#: src/fileview.py:381
+#. TRANSLATORS: Orchestra conductor
+#: src/fileview.py:383
 msgid "Conductor"
 msgstr ""
 
-#. TRANSLATORS: Orchestra conductor
-#: src/fileview.py:382
+#: src/fileview.py:384
 msgid "Arranger"
 msgstr ""
 
-#: src/fileview.py:383
+#: src/fileview.py:385
 #, fuzzy
 msgid "Disc number"
 msgstr "Broj staze"
 
-#: src/fileview.py:384
+#: src/fileview.py:386
 msgid "Publisher"
 msgstr ""
 
-#: src/fileview.py:386
+#: src/fileview.py:388
 msgid "Language"
 msgstr ""
 
-#: src/fileview.py:387
+#: src/fileview.py:389
 msgid "Disc subtitle"
 msgstr ""
 
-#: src/fileview.py:389
+#: src/fileview.py:391
 #, fuzzy
 msgid "Album artist (sort)"
 msgstr "Izvođač albuma"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:390
+#: src/fileview.py:392
 #, fuzzy
 msgid "Album (sort)"
 msgstr "Omot albuma"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:391
+#: src/fileview.py:393
 msgid "Composer (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:392
+#: src/fileview.py:394
 #, fuzzy
 msgid "Artist (sort)"
 msgstr "Umjetnik"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:393
+#: src/fileview.py:395
 msgid "Title (sort)"
 msgstr ""
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:684
+#: src/fileview.py:686
 msgid "(Multiple files selected)"
 msgstr "(Više datoteka odabrano)"
 
-#: src/fileview.py:705
+#: src/fileview.py:707
 msgid "File is read-only, saving is disabled"
 msgstr "Datoteka je samo za čitanje, spremanje je onemogućeno"
 
-#: src/fileview.py:1012
+#: src/fileview.py:1014
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
@@ -424,7 +424,7 @@ msgstr[0] "{n} kanal"
 msgstr[1] "{n} kanala"
 msgstr[2] "{n} kanala"
 
-#: src/fileview.py:1028
+#: src/fileview.py:1030
 #, fuzzy
 msgid "Save Album Cover To…"
 msgstr "Odaberite sliku naslovnice albuma"
@@ -434,11 +434,11 @@ msgstr "Odaberite sliku naslovnice albuma"
 msgid "(No title)"
 msgstr "(Nema naslov)"
 
-#: src/sidebar.py:417
+#: src/sidebar.py:420
 msgid "No files selected"
 msgstr "Nema odabranih datoteka"
 
-#: src/sidebar.py:421
+#: src/sidebar.py:424
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"

@@ -372,13 +372,15 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
     # but for now this will have to suffice:
     tag_names = {
         "none": _("(Select a tag)"),
-        "bpm": _("BPM"), # TRANSLATORS: Short for "beats per minute".
+        # TRANSLATORS: Short for "beats per minute".
+        "bpm": _("BPM"),
         "compilation": _("Compilation"),
         "composer": _("Composer"),
         "copyright": _("Copyright"),
         "encodedby": _("Encoded by"),
         "mood": _("Mood"),
-        "conductor": _("Conductor"), # TRANSLATORS: Orchestra conductor
+        # TRANSLATORS: Orchestra conductor
+        "conductor": _("Conductor"),
         "arranger": _("Arranger"),
         "discnumber": _("Disc number"),
         "publisher": _("Publisher"),
