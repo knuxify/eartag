@@ -26,7 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import Adw, Gio, Gtk, GObject
+from gi.repository import Adw, Gio, Gtk, GObject, GLib
 import magic
 import mimetypes
 import os.path
@@ -209,11 +209,11 @@ class EartagFileManager(GObject.Object):
                 self.emit('files_loaded')
                 self.update_modified_status()
                 self._loading_progress = 0
-                self.notify('loading_progress')
+                GLib.idle_add(lambda *args: self.notify('loading_progress'))
                 self._is_loading_multiple_files = False
                 return False
             self._loading_progress += progress_step
-            self.notify('loading_progress')
+            GLib.idle_add(lambda *args: self.notify('loading_progress'))
 
         has_unwritable = False
         for file in self._files_buffer:
