@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 06:45+0100\n"
-"PO-Revision-Date: 2022-09-15 17:35+0200\n"
+"PO-Revision-Date: 2022-12-17 14:52+0100\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Gtranslator 42.0\n"
 
 # Translators: Do NOT translate or transliterate this text
@@ -109,18 +109,16 @@ msgid "_Open file"
 msgstr "_Otvori datoteku"
 
 #: src/ui/window.ui:239
-#, fuzzy
 msgid "O_pen folder"
-msgstr "_Otvori datoteku"
+msgstr "_Otvori mapu"
 
 #: src/ui/window.ui:243
 msgid "_Keyboard shortcuts"
-msgstr ""
+msgstr "_Tipkovnički prečaci"
 
 #: src/ui/window.ui:247
-#, fuzzy
 msgid "S_ave cover to file"
-msgstr "Promjene spremljene u datoteku"
+msgstr "S_premi naslovnicu u datoteku"
 
 #: src/ui/window.ui:251
 msgid "_About Ear Tag"
@@ -128,7 +126,7 @@ msgstr "_O Ear Tagu"
 
 #: src/ui/fileview.ui:10
 msgid "Loading Files…"
-msgstr ""
+msgstr "Učitavanje datoteka..."
 
 #: src/ui/fileview.ui:21
 msgid "Select a File"
@@ -140,12 +138,11 @@ msgstr "Odaberi datoteke koje želiš urediti s liste otvorenih datoteka."
 
 #: src/ui/fileview.ui:58
 msgid "Previous file"
-msgstr ""
+msgstr "Prošla datoteka"
 
 #: src/ui/fileview.ui:76
-#, fuzzy
 msgid "Next file"
-msgstr "Sortiranje datoteka"
+msgstr "Sljedeća datoteka"
 
 #: src/ui/fileview.ui:95
 msgid "Title"
@@ -181,7 +178,7 @@ msgstr "Komentar"
 
 #: src/ui/fileview.ui:180
 msgid "More tags"
-msgstr ""
+msgstr "Više oznaka"
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -198,27 +195,24 @@ msgid "_Cancel"
 msgstr "_Otkaži"
 
 #: src/ui/closewarning.ui:13 src/ui/removaldiscardwarning.ui:13
-#, fuzzy
 msgid "_Discard changes and close"
-msgstr "Odbaci promjene i zatvori"
+msgstr "_Odbaci promjene i zatvori"
 
 #: src/ui/closewarning.ui:14 src/ui/removaldiscardwarning.ui:14
-#, fuzzy
 msgid "_Save and close"
-msgstr "Odbaci promjene i zatvori"
+msgstr "Spremi i zatvori"
 
 #: src/ui/discardwarning.ui:5
 msgid "Save changes before opening another file?"
 msgstr "Spremi promjene prije otvaranja druge datoteke?"
 
 #: src/ui/discardwarning.ui:13
-#, fuzzy
 msgid "_Discard changes and open"
-msgstr "Odbaci promjene i otvori"
+msgstr "_Odbaci promjene i otvori"
 
 #: src/ui/discardwarning.ui:14
 msgid "_Save and open"
-msgstr ""
+msgstr "Spremi i otvori"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
@@ -247,9 +241,8 @@ msgid "Open a file"
 msgstr "_Otvori datoteku"
 
 #: src/ui/nofile.ui:72
-#, fuzzy
 msgid "Open a folder"
-msgstr "_Otvori datoteku"
+msgstr "_Otvori mapu"
 
 #: src/ui/sidebar.ui:50
 msgid "No Files Opened"
@@ -294,16 +287,16 @@ msgstr ""
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
 #: src/file.py:139 src/file.py:270
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: src/file.py:176
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
 
 #: src/file.py:225
-#, fuzzy
 msgid "Some of the opened files are read-only; changes cannot be saved."
-msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
+msgstr ""
+"Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti."
 
 #: src/file.py:266
 msgid "Failed to save file"
@@ -316,96 +309,90 @@ msgstr ""
 "Nije moguće spremiti datoteku {f}. Više informacija potražite u logovima."
 
 #: src/file.py:276
-#, fuzzy
 msgid "Saved changes to files"
-msgstr "Promjene spremljene u datoteku"
+msgstr "Spremljene promjene datoteka"
 
 #: src/fileview.py:147
 msgid "Select Album Cover Image"
 msgstr "Odaberite sliku naslovnice albuma"
 
 #: src/fileview.py:374
-#, fuzzy
 msgid "(Select a tag)"
-msgstr "Odaberi datoteku"
+msgstr "(odaberite oznaku)"
 
 #. TRANSLATORS: Short for "beats per minute".
 #: src/fileview.py:376
 msgid "BPM"
-msgstr ""
+msgstr "otkucaja u minuti"
 
 #: src/fileview.py:377
 msgid "Compilation"
-msgstr ""
+msgstr "Kompilacija"
 
 #: src/fileview.py:378
 msgid "Composer"
-msgstr ""
+msgstr "Skladatelj"
 
 #: src/fileview.py:379
 msgid "Copyright"
-msgstr ""
+msgstr "Autorska prava"
 
 #: src/fileview.py:380
 msgid "Encoded by"
-msgstr ""
+msgstr "Kodirano od strane"
 
 #: src/fileview.py:381
 msgid "Mood"
-msgstr ""
+msgstr "Raspoloženje"
 
 #. TRANSLATORS: Orchestra conductor
 #: src/fileview.py:383
 msgid "Conductor"
-msgstr ""
+msgstr "Dirigent"
 
 #: src/fileview.py:384
 msgid "Arranger"
-msgstr ""
+msgstr "Aranžer"
 
 #: src/fileview.py:385
-#, fuzzy
 msgid "Disc number"
-msgstr "Broj staze"
+msgstr "Broj diska"
 
 #: src/fileview.py:386
 msgid "Publisher"
-msgstr ""
+msgstr "Izdavač"
 
 #: src/fileview.py:388
 msgid "Language"
-msgstr ""
+msgstr "Jezik"
 
 #: src/fileview.py:389
 msgid "Disc subtitle"
-msgstr ""
+msgstr "Podnaslov diska"
 
 #: src/fileview.py:391
-#, fuzzy
 msgid "Album artist (sort)"
-msgstr "Izvođač albuma"
+msgstr "Izvođač albuma (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:392
-#, fuzzy
 msgid "Album (sort)"
-msgstr "Omot albuma"
+msgstr "Omot albuma (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:393
 msgid "Composer (sort)"
-msgstr ""
+msgstr "Skladatelj (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:394
-#, fuzzy
 msgid "Artist (sort)"
-msgstr "Umjetnik"
+msgstr "Umjetnik (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:395
 msgid "Title (sort)"
-msgstr ""
+msgstr "Naslov (vrsta)"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/fileview.py:686
@@ -425,9 +412,8 @@ msgstr[1] "{n} kanala"
 msgstr[2] "{n} kanala"
 
 #: src/fileview.py:1030
-#, fuzzy
 msgid "Save Album Cover To…"
-msgstr "Odaberite sliku naslovnice albuma"
+msgstr "Spremi naslovnicu albuma u..."
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
@@ -447,9 +433,8 @@ msgstr[1] "{n} datoteka odabrano"
 msgstr[2] "{n} datoteka odabrano"
 
 #: src/window.py:242
-#, fuzzy
 msgid "Open Folder"
-msgstr "Otvori datoteku"
+msgstr "Otvori mapu"
 
 #: src/window.py:246
 msgid "Open File"
@@ -461,26 +446,23 @@ msgstr "Omot albuma"
 
 #: src/ui/shortcuts.ui:13
 msgid "Files"
-msgstr ""
+msgstr "Datoteke"
 
 #: src/ui/shortcuts.ui:17
-#, fuzzy
 msgid "Open files"
-msgstr "_Otvori datoteku"
+msgstr "Otvori datoteke"
 
 #: src/ui/shortcuts.ui:24
-#, fuzzy
 msgid "Save all modified files"
-msgstr "Odaberi sve datoteke"
+msgstr "Spremite sve izmijenjene datoteke"
 
 #: src/ui/shortcuts.ui:31
 msgid "Select previous file in sidebar"
-msgstr ""
+msgstr "Odaberite prethodnu datoteku na bočnoj traci"
 
 #: src/ui/shortcuts.ui:38
-#, fuzzy
 msgid "Select next file in sidebar"
-msgstr "Odaberi sve datoteke"
+msgstr "Odaberite sljedeću datoteku na bočnoj traci"
 
 #~ msgid "Close without saving"
 #~ msgstr "Zatvori bez spremanja"
