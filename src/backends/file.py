@@ -164,14 +164,18 @@ class EartagFile(GObject.Object):
             elif not new_value and tag in self.present_extra_tags:
                 self.present_extra_tags.remove(tag)
 
-        if tag not in self.modified_tags:
-            self.modified_tags.append(tag)
-        elif tag in self.original_values:
+        if tag in self.original_values:
             old_value = self.original_values[tag]
             if old_value == new_value or (not old_value and not new_value):
+                if tag in self.modified_tags:
+                    self.modified_tags.remove(tag)
+            elif tag not in self.modified_tags:
+                self.modified_tags.append(tag)
+        elif not new_value:
+            if tag in self.modified_tags:
                 self.modified_tags.remove(tag)
-        elif not new_value and tag not in self.original_values:
-            self.modified_tags.remove(tag)
+        elif tag not in self.modified_tags:
+            self.modified_tags.append(tag)
 
         if not self.modified_tags:
             self._is_modified = False
