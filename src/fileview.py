@@ -400,6 +400,7 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
 
     def __init__(self, property=None):
         super().__init__()
+        self.add_css_class('more-item')
 
         self.files = []
         if property:
@@ -418,7 +419,8 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         self.value_entry.connect('changed', self.on_changed, False)
         self.add_suffix(self.value_entry)
 
-        self.remove_button = Gtk.Button(icon_name='list-remove-symbolic', valign=Gtk.Align.CENTER)
+        self.remove_button = Gtk.Button(icon_name='list-remove-symbolic',
+            valign=Gtk.Align.CENTER, halign=Gtk.Align.END)
         self.remove_button.connect('clicked', self.remove_row)
         self.remove_button.add_css_class('flat')
         self.add_suffix(self.remove_button)
@@ -559,6 +561,20 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         if do_ignore:
             self.ignore_selector_select = False
 
+    def make_compact(self, *args):
+        """Makes the row compact."""
+        self.add_css_class('compact')
+        self.get_first_child().set_orientation(Gtk.Orientation.VERTICAL)
+        self.tag_selector.set_hexpand(True)
+        self.value_entry.set_hexpand(True)
+
+    def make_noncompact(self, *args):
+        """Makes the row non-compact."""
+        self.remove_css_class('compact')
+        self.get_first_child().set_orientation(Gtk.Orientation.HORIZONTAL)
+        self.tag_selector.set_hexpand(False)
+        self.value_entry.set_hexpand(False)
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
@@ -600,6 +616,7 @@ class EartagFileView(Gtk.Stack):
     def __init__(self):
         """Initializes the EartagFileView."""
         super().__init__()
+        self.previous_fileview_width = 0
 
         # Initialize an initial "none" row
         self.add_empty_row()
@@ -615,6 +632,13 @@ class EartagFileView(Gtk.Stack):
         self.next_file_button.connect('clicked', sidebar.select_next)
         self.previous_file_button.connect('clicked', sidebar.select_previous)
         sidebar.connect('notify::selection-mode', self.update_buttons)
+
+    def setup_resize_handler(self, *args):
+        # There's no easy way to call a function whenever a singular widget is resized,
+        # so we just call this on resize changes:
+        surface = self.get_native().get_surface()
+        surface.connect('layout', self.handle_resize)
+        self.handle_resize()
 
     def update_loading(self, *args):
         if self.file_manager.loading_progress == 0:
@@ -717,10 +741,27 @@ class EartagFileView(Gtk.Stack):
         adjust = self.content_scroll.get_vadjustment()
         adjust.set_value(adjust.get_lower())
 
+    def handle_resize(self, *args):
+        fileview_width = self.get_width()
+        if fileview_width == self.previous_fileview_width:
+            return
+        if fileview_width <= 430:
+            for entry in set(self.unused_entries + self.more_entries):
+                entry.make_compact()
+        else:
+            for entry in set(self.unused_entries + self.more_entries):
+                entry.make_noncompact()
+        self.previous_fileview_width = fileview_width
+
     def setup_entry(self, file, entry, property, property_double=None):
         if isinstance(entry, EartagTagListItemBase):
             if not isinstance(entry, EartagTagListMoreItem):
                 entry._set_property(property, property_double)
+            else:
+                if self.get_native().get_surface().get_width() <= 500:
+                    entry.make_compact()
+                else:
+                    entry.make_noncompact()
             entry.bind_to_file(file)
         elif isinstance(entry, EartagEditableLabel):
             entry.properties = [property]

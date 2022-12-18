@@ -77,3 +77,22 @@ editablelabel:focus-within {
 	outline: 2px solid alpha(@accent_color, 0.5);
 	outline-offset: 0;
 }
+
+/* Tweaks for "compact" "more item" entries */
+.more-item.compact .header {
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+.more-item.compact .title {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.more-item.compact .prefixes {
+	margin-right: 0;
+}
+
+.more-item.compact .suffixes {
+	margin-left: 0;
+}

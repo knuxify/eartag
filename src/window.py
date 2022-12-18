@@ -167,6 +167,11 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.toggle_fileview()
 
+        self.connect('realize', self._late_init)
+
+    def _late_init(self, *args):
+        self.file_view.setup_resize_handler()
+
     def update_loading_progress(self, *args):
         loading_progress = self.file_manager.get_property('loading-progress')
         is_loading = loading_progress != 0
