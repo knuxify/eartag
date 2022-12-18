@@ -135,8 +135,15 @@ def backend_write(file, skip_channels=False):
         assert file.get_property('cover_path')
 
     assert file.get_property('is_modified') == True
+    props_set = set(tuple(file.handled_properties) + tuple(file.supported_extra_tags))
+    if file._supports_album_covers:
+        props_set.add('cover_path')
+    assert set(file.modified_tags) == props_set
 
     file.save()
+
+    assert file.get_property('is_modified') == False
+    assert not file.modified_tags
 
     file_class = type(file)
     backend_read(file_class(file.path), skip_channels)

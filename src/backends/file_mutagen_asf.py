@@ -146,6 +146,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     def __init__(self, path):
         super().__init__(path)
         self.load_cover()
+        self.setup_original_values()
 
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""
@@ -178,7 +179,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         if frame_name in self.mg_file.tags:
             del self.mg_file.tags[frame_name]
-        self.mark_as_modified()
+        self.mark_as_modified(tag_name)
 
     def __del__(self, *args):
         if self.coverart_tempfile:
@@ -212,7 +213,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
         self.mg_file.tags['WM/Picture'] = pictures
 
-        self.mark_as_modified()
+        self.mark_as_modified('cover_path')
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""

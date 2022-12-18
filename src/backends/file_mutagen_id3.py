@@ -129,6 +129,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             except mutagen.id3._util.error:
                 pass
         self.load_cover()
+        self.setup_original_values()
 
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""
@@ -169,7 +170,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         else:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             self.mg_file.tags.delall(frame_name)
-        self.mark_as_modified()
+        self.mark_as_modified(tag_name)
 
     def __del__(self, *args):
         if self.coverart_tempfile:
@@ -206,7 +207,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             )
         )
 
-        self.mark_as_modified()
+        self.mark_as_modified('cover_path')
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
@@ -255,7 +256,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             )
         else:
             self.set_tag('tracknumber', value)
-        self.mark_as_modified()
+        self.mark_as_modified('tracknumber')
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
@@ -275,7 +276,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             )
         else:
             self.set_tag('tracknumber', '0/{t}'.format(t=str(value)))
-        self.mark_as_modified()
+        self.mark_as_modified('totaltracknumber')
 
     @GObject.Property()
     def genre(self):
@@ -295,7 +296,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         else:
             genre_raw.encoding = 3
             genre_raw.frames = [value]
-        self.mark_as_modified()
+        self.mark_as_modified('genre')
 
     @GObject.Property()
     def comment(self):
@@ -308,7 +309,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     @comment.setter
     def comment(self, value):
         self.mg_file.tags.setall('COMM', [mutagen.id3.COMM(encoding=3, lang='eng', desc='', text=[str(value)])])
-        self.mark_as_modified()
+        self.mark_as_modified('comment')
 
     # These set both TDRC (date) and TDOR (original date) for compatibility.
     @GObject.Property(type=int)
@@ -327,4 +328,4 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         if 'TDOR' not in self.mg_file.tags or self.mg_file.tags['TDOR'] == self.mg_file.tags['TDRC']:
             self.mg_file.tags.setall('TDOR', [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
 
-        self.mark_as_modified()
+        self.mark_as_modified('releaseyear')

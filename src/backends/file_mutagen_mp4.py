@@ -89,6 +89,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if not self.mg_file.tags:
             self.mg_file.add_tags()
         self.load_cover()
+        self.setup_original_values()
 
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""
@@ -130,7 +131,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         if frame_name in self.mg_file.tags:
             del self.mg_file.tags[frame_name]
-        self.mark_as_modified()
+        self.mark_as_modified(tag_name)
 
     def __del__(self, *args):
         if self.coverart_tempfile:
@@ -150,7 +151,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
         self.mg_file.tags['covr'] = (MP4Cover(data, MP4Cover.FORMAT_PNG),)
 
-        self.mark_as_modified()
+        self.mark_as_modified('cover_path')
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
@@ -191,7 +192,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             self.mg_file.tags['trkn'] = [(int(value), int(self.totaltracknumber))]
         else:
             self.mg_file.tags['trkn'] = [(int(value), 0)]
-        self.mark_as_modified()
+        self.mark_as_modified('tracknumber')
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
@@ -212,7 +213,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             self.mg_file.tags['trkn'] = [(int(self.tracknumber), int(value))]
         else:
             self.mg_file.tags['trkn'] = [(0, int(value))]
-        self.mark_as_modified()
+        self.mark_as_modified('totaltracknumber')
 
     @GObject.Property(type=int)
     def discnumber(self):
@@ -230,4 +231,4 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             value = 0
 
         self.mg_file.tags['disk'] = [(int(value), 0)]
-        self.mark_as_modified()
+        self.mark_as_modified('discnumber')

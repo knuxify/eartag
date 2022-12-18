@@ -64,6 +64,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         self._cover_path = None
         self.coverart_tempfile = None
         self.load_cover()
+        self.setup_original_values()
 
     def get_tag(self, tag_name):
         """Tries the lowercase, then uppercase representation of the tag."""
@@ -112,7 +113,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             tag_name = self._replaces[tag_name.lower()]
         if tag_name in self.mg_file.tags:
             del self.mg_file.tags[tag_name]
-        self.mark_as_modified()
+        self.mark_as_modified(tag_name)
 
     def __del__(self, *args):
         if self.coverart_tempfile:
@@ -155,7 +156,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
             self.mg_file["metadata_block_picture"] = [vcomment_value]
 
-        self.mark_as_modified()
+        self.mark_as_modified('cover_path')
 
     def load_cover(self):
         """Loads cover data from file."""
@@ -262,7 +263,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             ]
         else:
             self.mg_file.tags['TRACKNUMBER'] = [str(value)]
-        self.mark_as_modified()
+        self.mark_as_modified('tracknumber')
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
@@ -279,7 +280,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             ]
         else:
             self.mg_file.tags['TRACKNUMBER'] = ['0/{t}'.format(t=str(value))]
-        self.mark_as_modified()
+        self.mark_as_modified('totaltracknumber')
 
     @GObject.Property(type=int)
     def releaseyear(self):
@@ -297,4 +298,4 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             self.mg_file.tags['date'] = str(value)
         else:
             self.mg_file.tags['date'] = ''
-        self.mark_as_modified()
+        self.mark_as_modified('releaseyear')
