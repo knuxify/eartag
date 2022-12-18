@@ -109,11 +109,12 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def delete_tag(self, tag_name):
         """Deletes the tag with the given name from the file."""
+        _original_tag_name = tag_name
         if tag_name.lower() in self._replaces:
             tag_name = self._replaces[tag_name.lower()]
         if tag_name in self.mg_file.tags:
             del self.mg_file.tags[tag_name]
-        self.mark_as_modified(tag_name)
+        self.mark_as_modified(_original_tag_name)
 
     def __del__(self, *args):
         if self.coverart_tempfile:
