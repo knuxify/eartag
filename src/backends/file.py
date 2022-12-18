@@ -170,6 +170,8 @@ class EartagFile(GObject.Object):
             old_value = self.original_values[tag]
             if old_value == new_value or (not old_value and not new_value):
                 self.modified_tags.remove(tag)
+        elif not new_value and tag not in self.original_values:
+            self.modified_tags.remove(tag)
 
         if not self.modified_tags:
             self._is_modified = False
