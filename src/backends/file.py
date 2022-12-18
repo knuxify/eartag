@@ -115,10 +115,14 @@ class EartagFile(GObject.Object):
         """
         Sets up the list of original values to compare new values against.
         Run this every time the file is loaded or saved.
+
+        Call this only after setup_present_extra_tags and load_cover have been called.
         """
         self.original_values = {}
         for tag in set(tuple(self.handled_properties) + tuple(self.present_extra_tags)):
             self.original_values[tag] = self.get_property(tag)
+        if self._supports_album_covers:
+            self.original_values['cover_path'] = self.get_property('cover_path')
 
     def update_writability(self):
         """
@@ -152,13 +156,21 @@ class EartagFile(GObject.Object):
     def modified(self, tag):
         if not tag:
             return
+
+        new_value = self.get_property(tag)
+        if tag in self.supported_extra_tags:
+            if new_value and tag not in self.present_extra_tags:
+                self.present_extra_tags.append(tag)
+            elif not new_value and tag in self.present_extra_tags:
+                self.present_extra_tags.remove(tag)
+
         if tag not in self.modified_tags:
             self.modified_tags.append(tag)
         elif tag in self.original_values:
             old_value = self.original_values[tag]
-            new_value = self.get_property(tag)
             if old_value == new_value or (not old_value and not new_value):
                 self.modified_tags.remove(tag)
+
         if not self.modified_tags:
             self._is_modified = False
             self.notify('is_modified')
