@@ -208,8 +208,11 @@ class EartagFile(GObject.Object):
 
     @title.setter
     def title(self, value):
-        self.set_tag('title', value)
-        self.mark_as_modified('title')
+        if value:
+            self.set_tag('title', value)
+            self.mark_as_modified('title')
+        elif self.has_tag('title'):
+            self.delete_tag('title')
 
     @GObject.Property(type=str)
     def artist(self):
@@ -217,8 +220,11 @@ class EartagFile(GObject.Object):
 
     @artist.setter
     def artist(self, value):
-        self.set_tag('artist', value)
-        self.mark_as_modified('artist')
+        if value:
+            self.set_tag('artist', value)
+            self.mark_as_modified('artist')
+        elif self.has_tag('artist'):
+            self.delete_tag('artist')
 
     @GObject.Property(type=int)
     def tracknumber(self):
@@ -256,8 +262,11 @@ class EartagFile(GObject.Object):
 
     @album.setter
     def album(self, value):
-        self.set_tag('album', value)
-        self.mark_as_modified('album')
+        if value:
+            self.set_tag('album', value)
+            self.mark_as_modified('album')
+        elif self.has_tag('album'):
+            self.delete_tag('album')
 
     @GObject.Property(type=str)
     def albumartist(self):
@@ -265,8 +274,11 @@ class EartagFile(GObject.Object):
 
     @albumartist.setter
     def albumartist(self, value):
-        self.set_tag('albumartist', value)
-        self.mark_as_modified('albumartist')
+        if value:
+            self.set_tag('albumartist', value)
+            self.mark_as_modified('albumartist')
+        elif self.has_tag('albumartist'):
+            self.delete_tag('albumartist')
 
     @GObject.Property(type=str)
     def genre(self):
@@ -274,8 +286,11 @@ class EartagFile(GObject.Object):
 
     @genre.setter
     def genre(self, value):
-        self.set_tag('genre', value)
-        self.mark_as_modified('genre')
+        if value:
+            self.set_tag('genre', value)
+            self.mark_as_modified('genre')
+        elif self.has_tag('genre'):
+            self.delete_tag('genre')
 
     @GObject.Property(type=int)
     def releaseyear(self):
@@ -287,10 +302,10 @@ class EartagFile(GObject.Object):
     @releaseyear.setter
     def releaseyear(self, value):
         if value:
-            self.set_tag('releaseyear', int(value))
-        else:
-            self.set_tag('releaseyear', None)
-        self.mark_as_modified('releaseyear')
+            self.set_tag('releaseyear', value)
+            self.mark_as_modified('releaseyear')
+        elif self.has_tag('releaseyear'):
+            self.delete_tag('releaseyear')
 
     @GObject.Property(type=str)
     def comment(self):
@@ -298,8 +313,11 @@ class EartagFile(GObject.Object):
 
     @comment.setter
     def comment(self, value):
-        self.set_tag('comment', value)
-        self.mark_as_modified('comment')
+        if value:
+            self.set_tag('comment', value)
+            self.mark_as_modified('comment')
+        elif self.has_tag('comment'):
+            self.delete_tag('comment')
 
     # Additional tag properties.
 
@@ -317,9 +335,9 @@ class EartagFile(GObject.Object):
             return None
         if value:
             self.set_tag('bpm', int(value))
-        else:
-            self.set_tag('bpm', None)
-        self.mark_as_modified('bpm')
+            self.mark_as_modified('bpm')
+        elif self.has_tag('bpm'):
+            self.delete_tag('bpm')
 
     @GObject.Property(type=str)
     def compilation(self):
@@ -331,8 +349,11 @@ class EartagFile(GObject.Object):
     def compilation(self, value):
         if 'compilation' not in self.supported_extra_tags:
             return None
-        self.set_tag('compilation', value)
-        self.mark_as_modified('compilation')
+        if value:
+            self.set_tag('compilation', value)
+            self.mark_as_modified('compilation')
+        elif self.has_tag('compilation'):
+            self.delete_tag('compilation')
 
     @GObject.Property(type=str)
     def composer(self):
@@ -344,8 +365,11 @@ class EartagFile(GObject.Object):
     def composer(self, value):
         if 'composer' not in self.supported_extra_tags:
             return None
-        self.set_tag('composer', value)
-        self.mark_as_modified('composer')
+        if value:
+            self.set_tag('composer', value)
+            self.mark_as_modified('composer')
+        elif self.has_tag('composer'):
+            self.delete_tag('composer')
 
     @GObject.Property(type=str)
     def copyright(self):
@@ -357,8 +381,11 @@ class EartagFile(GObject.Object):
     def copyright(self, value):
         if 'copyright' not in self.supported_extra_tags:
             return None
-        self.set_tag('copyright', value)
-        self.mark_as_modified('copyright')
+        if value:
+            self.set_tag('copyright', value)
+            self.mark_as_modified('copyright')
+        elif self.has_tag('copyright'):
+            self.delete_tag('copyright')
 
     @GObject.Property(type=str)
     def encodedby(self):
@@ -370,8 +397,11 @@ class EartagFile(GObject.Object):
     def encodedby(self, value):
         if 'encodedby' not in self.supported_extra_tags:
             return None
-        self.set_tag('encodedby', value)
-        self.mark_as_modified('encodedby')
+        if value:
+            self.set_tag('encodedby', value)
+            self.mark_as_modified('encodedby')
+        elif self.has_tag('encodedby'):
+            self.delete_tag('encodedby')
 
     @GObject.Property(type=str)
     def mood(self):
@@ -383,8 +413,11 @@ class EartagFile(GObject.Object):
     def mood(self, value):
         if 'mood' not in self.supported_extra_tags:
             return None
-        self.set_tag('mood', value)
-        self.mark_as_modified('mood')
+        if value:
+            self.set_tag('mood', value)
+            self.mark_as_modified('mood')
+        elif self.has_tag('mood'):
+            self.delete_tag('mood')
 
     @GObject.Property(type=str)
     def conductor(self):
@@ -396,8 +429,11 @@ class EartagFile(GObject.Object):
     def conductor(self, value):
         if 'conductor' not in self.supported_extra_tags:
             return None
-        self.set_tag('conductor', value)
-        self.mark_as_modified('conductor')
+        if value:
+            self.set_tag('conductor', value)
+            self.mark_as_modified('conductor')
+        elif self.has_tag('conductor'):
+            self.delete_tag('conductor')
 
     @GObject.Property(type=str)
     def arranger(self):
@@ -409,8 +445,11 @@ class EartagFile(GObject.Object):
     def arranger(self, value):
         if 'arranger' not in self.supported_extra_tags:
             return None
-        self.set_tag('arranger', value)
-        self.mark_as_modified('arranger')
+        if value:
+            self.set_tag('arranger', value)
+            self.mark_as_modified('arranger')
+        elif self.has_tag('arranger'):
+            self.delete_tag('arranger')
 
     @GObject.Property(type=int)
     def discnumber(self):
@@ -426,9 +465,9 @@ class EartagFile(GObject.Object):
             return None
         if value:
             self.set_tag('discnumber', int(value))
-        else:
-            self.set_tag('discnumber', None)
-        self.mark_as_modified('discnumber')
+            self.mark_as_modified('discnumber')
+        elif self.has_tag('discnumber'):
+            self.delete_tag('discnumber')
 
     @GObject.Property(type=str)
     def publisher(self):
@@ -440,8 +479,11 @@ class EartagFile(GObject.Object):
     def publisher(self, value):
         if 'publisher' not in self.supported_extra_tags:
             return None
-        self.set_tag('publisher', value)
-        self.mark_as_modified('publisher')
+        if value:
+            self.set_tag('publisher', value)
+            self.mark_as_modified('publisher')
+        elif self.has_tag('publisher'):
+            self.delete_tag('publisher')
 
     @GObject.Property(type=str)
     def isrc(self):
@@ -453,8 +495,11 @@ class EartagFile(GObject.Object):
     def isrc(self, value):
         if 'isrc' not in self.supported_extra_tags:
             return None
-        self.set_tag('isrc', value)
-        self.mark_as_modified('isrc')
+        if value:
+            self.set_tag('isrc', value)
+            self.mark_as_modified('isrc')
+        elif self.has_tag('isrc'):
+            self.delete_tag('isrc')
 
     @GObject.Property(type=str)
     def language(self):
@@ -466,8 +511,11 @@ class EartagFile(GObject.Object):
     def language(self, value):
         if 'language' not in self.supported_extra_tags:
             return None
-        self.set_tag('language', value)
-        self.mark_as_modified('language')
+        if value:
+            self.set_tag('language', value)
+            self.mark_as_modified('language')
+        elif self.has_tag('language'):
+            self.delete_tag('language')
 
     @GObject.Property(type=str)
     def discsubtitle(self):
@@ -479,8 +527,11 @@ class EartagFile(GObject.Object):
     def discsubtitle(self, value):
         if 'discsubtitle' not in self.supported_extra_tags:
             return None
-        self.set_tag('discsubtitle', value)
-        self.mark_as_modified('discsubtitle')
+        if value:
+            self.set_tag('discsubtitle', value)
+            self.mark_as_modified('discsubtitle')
+        elif self.has_tag('discsubtitle'):
+            self.delete_tag('discsubtitle')
 
     # Sort order tags
 
@@ -494,8 +545,11 @@ class EartagFile(GObject.Object):
     def albumartistsort(self, value):
         if 'albumartistsort' not in self.supported_extra_tags:
             return None
-        self.set_tag('albumartistsort', value)
-        self.mark_as_modified('albumartistsort')
+        if value:
+            self.set_tag('albumartistsort', value)
+            self.mark_as_modified('albumartistsort')
+        elif self.has_tag('albumartistsort'):
+            self.delete_tag('albumartistsort')
 
     @GObject.Property(type=str)
     def albumsort(self):
@@ -507,8 +561,11 @@ class EartagFile(GObject.Object):
     def albumsort(self, value):
         if 'albumsort' not in self.supported_extra_tags:
             return None
-        self.set_tag('albumsort', value)
-        self.mark_as_modified('albumsort')
+        if value:
+            self.set_tag('albumsort', value)
+            self.mark_as_modified('albumsort')
+        elif self.has_tag('albumsort'):
+            self.delete_tag('albumsort')
 
     @GObject.Property(type=str)
     def composersort(self):
@@ -520,8 +577,11 @@ class EartagFile(GObject.Object):
     def composersort(self, value):
         if 'composersort' not in self.supported_extra_tags:
             return None
-        self.set_tag('composersort', value)
-        self.mark_as_modified('composersort')
+        if value:
+            self.set_tag('composersort', value)
+            self.mark_as_modified('composersort')
+        elif self.has_tag('composersort'):
+            self.delete_tag('composersort')
 
     @GObject.Property(type=str)
     def artistsort(self):
@@ -533,8 +593,11 @@ class EartagFile(GObject.Object):
     def artistsort(self, value):
         if 'artistsort' not in self.supported_extra_tags:
             return None
-        self.set_tag('artistsort', value)
-        self.mark_as_modified('artistsort')
+        if value:
+            self.set_tag('artistsort', value)
+            self.mark_as_modified('artistsort')
+        elif self.has_tag('artistsort'):
+            self.delete_tag('artistsort')
 
     @GObject.Property(type=str)
     def titlesort(self):
@@ -546,8 +609,11 @@ class EartagFile(GObject.Object):
     def titlesort(self, value):
         if 'titlesort' not in self.supported_extra_tags:
             return None
-        self.set_tag('titlesort', value)
-        self.mark_as_modified('titlesort')
+        if value:
+            self.set_tag('titlesort', value)
+            self.mark_as_modified('titlesort')
+        elif self.has_tag('titlesort'):
+            self.delete_tag('titlesort')
 
     @GObject.Property(type=str)
     def none(self):
