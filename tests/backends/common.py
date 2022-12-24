@@ -50,6 +50,14 @@ def run_backend_tests(file_class, extension, skip_channels=False):
     os.remove(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
 
     shutil.copyfile(
+        os.path.join(EXAMPLES_DIR, f'example-notags.{extension}'),
+        os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}')
+    )
+    file_write_items = file_class(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
+    backend_write_items(file_write_items, skip_channels)
+    os.remove(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
+
+    shutil.copyfile(
         os.path.join(EXAMPLES_DIR, f'example.{extension}'),
         os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
     )
@@ -147,6 +155,39 @@ def backend_write(file, skip_channels=False):
 
     file_class = type(file)
     backend_read(file_class(file.path), skip_channels)
+
+def backend_write_items(empty_file, skip_channels=False):
+    """Tests common backend write functions by writing each property separately."""
+    backend_read_empty(empty_file)
+    empty_file_path = empty_file.path
+    file_class = type(empty_file)
+    extension = os.path.splitext(empty_file_path)[1]
+
+    for prop in empty_file.handled_properties:
+        new_file_path = os.path.join(EXAMPLES_DIR, f'_example-notags-{prop}.{extension}')
+        shutil.copyfile(
+            empty_file_path,
+            new_file_path
+        )
+        target_value = prop_to_example_string[prop]
+        file = file_class(new_file_path)
+        file.set_property(prop, target_value)
+        try:
+            assert file.has_tag(prop)
+        except AssertionError:
+            raise ValueError(f'tag {prop} not found in file')
+        file.save()
+
+        file_read = file_class(new_file_path)
+        assert file_read.get_property(prop) == target_value
+        for _prop in empty_file.handled_properties:
+            if _prop != prop and prop != 'totaltracknumber':
+                try:
+                    assert not file.has_tag(_prop)
+                except:
+                    raise ValueError(f"file erroneously has tag {prop}")
+
+        os.remove(new_file_path)
 
 def backend_delete(file):
     """Tests common backend delete functions."""
