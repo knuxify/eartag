@@ -352,7 +352,6 @@ class EartagFileManager(GObject.Object):
             prev_item = item
         chunks[chunk_start] = prev_item
 
-
         offset = 0
         for raw_chunk_start, chunk_end in chunks.items():
             chunk_start = raw_chunk_start - offset
@@ -362,6 +361,8 @@ class EartagFileManager(GObject.Object):
             self.files.splice(chunk_start, chunk_length, [])
 
         if self._selection_removed:
+            for file in self.files:
+                file.setup_present_extra_tags()
             self.emit('selection-changed')
             self.emit('selection_override')
 
