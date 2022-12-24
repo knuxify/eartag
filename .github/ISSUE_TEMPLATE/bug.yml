@@ -9,12 +9,12 @@ body:
       description: Mention what was supposed to happen, and what happened instead.
     validations:
       required: true
-  #- type: textarea
-  #  id: debuginfo
-  #  attributes:
-  #    label: Debugging information
-  #    description: In Ear Tag, go to the "About" menu, click "Troubleshooting" > "Debugging information" and click the "Copy Text" button at the bottom, then paste in the contents here. **If your issue has to do with files, keep the files open when you do this.**
-  #    render: shell
+  - type: textarea
+    id: debuginfo
+    attributes:
+      label: Debugging information
+      description: In Ear Tag, go to the "About" menu, click "Troubleshooting" > "Debugging information" and click the "Copy Text" button at the bottom, then paste in the contents here. **If your issue has to do with files, keep the files open when you do this.**
+      render: shell
   - type: textarea
     id: notes
     attributes:
