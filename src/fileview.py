@@ -990,8 +990,9 @@ class EartagFileView(Gtk.Stack):
             return
         self.more_entries.remove(row)
         self.more_tags_expander.remove(row)
-        for file in row.files:
+        for file in row.files + self.bound_files:
             self.unbind_entry(file, row)
+        row.files = []
 
         # Update entry item filters
         if not EartagTagListMoreItem.skip_filter_change:
@@ -1019,10 +1020,11 @@ class EartagFileView(Gtk.Stack):
         function of the rows' delete button.
         """
         removed_tag = row.properties[0]
-        for file in self.bound_files:
-            if removed_tag in file.present_extra_tags:
-                file.present_extra_tags.remove(removed_tag)
-                file.delete_tag(removed_tag)
+        if removed_tag != 'none':
+            for file in self.bound_files:
+                if removed_tag in file.present_extra_tags:
+                    file.present_extra_tags.remove(removed_tag)
+                    file.delete_tag(removed_tag)
 
         self.remove_extra_row(row, skip_adding_none=skip_adding_none)
 

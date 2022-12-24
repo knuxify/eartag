@@ -58,7 +58,10 @@ class EartagFileCover:
         if not isinstance(other, EartagFileCover):
             return False
         if self.cover_path and other.cover_path:
-            return filecmp.cmp(self.cover_path, other.cover_path)
+            try:
+                return filecmp.cmp(self.cover_path, other.cover_path)
+            except FileNotFoundError:
+                return False
         else:
             if self.cover_path == other.cover_path:
                 return True

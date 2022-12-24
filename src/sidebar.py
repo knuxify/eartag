@@ -195,6 +195,20 @@ class EartagFileList(Gtk.ListView):
                         break
                     n += 1
                 self.selection_model.select_item(n, True)
+        else:
+            self.selection_model.unselect_all()
+            for item in self.file_manager.selected_files:
+                n = 0
+                found = False
+                fitem = self.selection_model.get_item(n)
+                while fitem:
+                    fitem = self.selection_model.get_item(n)
+                    if fitem == item:
+                        found = True
+                        break
+                    n += 1
+                if found:
+                    self.selection_model.select_item(n, False)
 
     def handle_select_first(self, *args):
         """
