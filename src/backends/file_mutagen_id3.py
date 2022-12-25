@@ -329,3 +329,18 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             self.mg_file.tags.setall('TDOR', [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
 
         self.mark_as_modified('releaseyear')
+
+    @GObject.Property(type=int)
+    def discnumber(self):
+        discnum_raw = self.get_tag('discnumber')
+        if not discnum_raw:
+            return None
+
+        if '/' in discnum_raw:
+            return int(discnum_raw.split('/')[0])
+        return int(discnum_raw)
+
+    @discnumber.setter
+    def discnumber(self, value):
+        self.set_tag('discnumber', f'{value}/{value}')
+        self.mark_as_modified('discnumber')
