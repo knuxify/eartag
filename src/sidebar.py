@@ -196,19 +196,9 @@ class EartagFileList(Gtk.ListView):
                     n += 1
                 self.selection_model.select_item(n, True)
         else:
-            self.selection_model.unselect_all()
-            for item in self.file_manager.selected_files:
-                n = 0
-                found = False
-                fitem = self.selection_model.get_item(n)
-                while fitem:
-                    fitem = self.selection_model.get_item(n)
-                    if fitem == item:
-                        found = True
-                        break
-                    n += 1
-                if found:
-                    self.selection_model.select_item(n, False)
+            self._ignore_unselect = True
+            self.selection_model.unselect_item(self.selection_model.get_selected())
+            self._ignore_unselect = False
 
     def handle_select_first(self, *args):
         """
@@ -217,6 +207,9 @@ class EartagFileList(Gtk.ListView):
         first item needs to be selected (when the currently selected item is
         removed), we have to select it manually here.
         """
+        if self.selection_mode:
+            return
+
         new_selection = self.selection_model.get_item(0)
         self.file_manager.selected_files = [new_selection]
         self.file_manager.emit('selection-changed')

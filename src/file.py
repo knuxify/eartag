@@ -366,6 +366,9 @@ class EartagFileManager(GObject.Object):
             self.emit('selection-changed')
             self.emit('selection_override')
 
+        if not self.selected_files and self.files:
+            self.emit('select-first')
+
         self._loading_progress = 0
         self.notify('loading_progress')
 
