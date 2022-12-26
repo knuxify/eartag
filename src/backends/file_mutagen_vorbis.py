@@ -300,3 +300,16 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         else:
             self.mg_file.tags['date'] = ''
         self.mark_as_modified('releaseyear')
+
+    @GObject.Property(type=int)
+    def discnumber(self):
+        if 'DISCNUMBER' in self.mg_file.tags:
+            if '/' in self.mg_file.tags['DISCNUMBER'][0]:
+                return int(self.mg_file.tags['DISCNUMBER'][0].split('/')[0])
+            return int(self.mg_file.tags['DISCNUMBER'][0])
+        return None
+
+    @discnumber.setter
+    def discnumber(self, value):
+        self.mg_file.tags['DISCNUMBER'] = [str(value)]
+        self.mark_as_modified('discnumber')
