@@ -51,6 +51,7 @@ VALID_AUDIO_MIMES = (
     'audio/x-ms-wma',
     'audio/x-vorbis+ogg',
     'audio/x-wav',
+    'video/mp4',
     'video/x-ms-asf',
     'video/x-wmv'
     )

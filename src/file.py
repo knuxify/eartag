@@ -61,7 +61,7 @@ def eartagfile_from_path(path):
         return EartagFileMutagenID3(path)
     elif is_type_bulk(path, ('audio/flac', 'audio/ogg', 'application/ogg', 'application/x-ogg', 'audio/x-flac', 'audio/x-vorbis+ogg')):
         return EartagFileMutagenVorbis(path)
-    elif is_type_bulk(path, ('audio/x-m4a', 'audio/aac', 'audio/mp4', 'audio/x-mpeg', 'audio/mpeg')):
+    elif is_type_bulk(path, ('audio/x-m4a', 'audio/aac', 'audio/mp4', 'audio/x-mpeg', 'audio/mpeg', 'video/mp4')):
         return EartagFileMutagenMP4(path)
     elif is_type_bulk(path, ('audio/x-ms-wma', 'audio/wma', 'video/x-ms-asf')):
         return EartagFileMutagenASF(path)
