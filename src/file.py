@@ -65,7 +65,10 @@ def eartagfile_from_path(path):
         return EartagFileMutagenMP4(path)
     elif is_type_bulk(path, ('audio/x-ms-wma', 'audio/wma', 'video/x-ms-asf')):
         return EartagFileMutagenASF(path)
-    raise ValueError(f"Unsupported file format for file {path}")
+
+    mimetypes_guess = mimetypes.guess_type(path)[0]
+    magic_guess = magic.from_file(path, mime=True)
+    raise ValueError(f"Unsupported file format for file {path} (mimetype: {mimetypes_guess} / {magic_guess})")
 
 class EartagFileManager(GObject.Object):
     """Contains information about the currently loaded files."""
