@@ -178,6 +178,21 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         self._cover_path = self.coverart_tempfile.name
 
     @GObject.Property(type=int)
+    def releaseyear(self):
+        _date = self.get_tag('releaseyear')
+        if _date:
+            try:
+                return int(_date[:4])
+            except:
+                return None
+        return None
+
+    @releaseyear.setter
+    def releaseyear(self, value):
+        self.set_tag('releaseyear', value)
+        self.mark_as_modified('releaseyear')
+
+    @GObject.Property(type=int)
     def tracknumber(self):
         if 'trkn' not in self.mg_file.tags:
             return None
