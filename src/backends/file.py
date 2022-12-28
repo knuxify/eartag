@@ -37,22 +37,25 @@ class EartagFileCover:
     def __init__(self, cover_path):
         self.cover_path = cover_path
         if cover_path:
-            with open(cover_path, 'rb') as cover_file:
-                self.cover_data = cover_file.read()
+            self.update_cover()
 
-            self.cover_small = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-                self.cover_path,
-                48,
-                48,
-                True
-            )
+    def update_cover(self):
+        with open(self.cover_path, 'rb') as cover_file:
+            self.cover_data = cover_file.read()
 
-            self.cover_large = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-                self.cover_path,
-                196,
-                196,
-                True
-            )
+        self.cover_small = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+            self.cover_path,
+            48,
+            48,
+            True
+        )
+
+        self.cover_large = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+            self.cover_path,
+            196,
+            196,
+            True
+        )
 
     def __eq__(self, other):
         if not isinstance(other, EartagFileCover):
@@ -153,6 +156,9 @@ class EartagFile(GObject.Object):
 
         if not self._cover:
             self._cover = EartagFileCover(self.cover_path)
+        elif self._cover.cover_path != self.cover_path:
+            self._cover.cover_path = self.cover_path
+            self._cover.update_cover()
         return self._cover
 
     @GObject.Signal(arg_types=(str,))
