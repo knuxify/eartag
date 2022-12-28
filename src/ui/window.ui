@@ -240,12 +240,14 @@
         <attribute name="action">app.open_folder</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Keyboard shortcuts</attribute>
-        <attribute name="action">app.shortcuts</attribute>
-      </item>
-      <item>
         <attribute name="label" translatable="yes">S_ave cover to file</attribute>
         <attribute name="action">app.save_cover</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Keyboard shortcuts</attribute>
+        <attribute name="action">app.shortcuts</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_About Ear Tag</attribute>
