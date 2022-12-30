@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 06:45+0100\n"
+"POT-Creation-Date: 2022-12-30 11:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,13 +35,13 @@ msgstr ""
 msgid "music;audio;tag;tagging;tagger;"
 msgstr ""
 
-#: data/app.drey.EarTag.appdata.xml.in:20
+#: data/app.drey.EarTag.appdata.xml.in:21
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
 msgstr ""
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -49,7 +49,7 @@ msgid ""
 "you just need to edit one file's data without any of the additional hassle."
 msgstr ""
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -102,14 +102,14 @@ msgid "O_pen folder"
 msgstr ""
 
 #: src/ui/window.ui:243
-msgid "_Keyboard shortcuts"
-msgstr ""
-
-#: src/ui/window.ui:247
 msgid "S_ave cover to file"
 msgstr ""
 
-#: src/ui/window.ui:251
+#: src/ui/window.ui:249
+msgid "_Keyboard shortcuts"
+msgstr ""
+
+#: src/ui/window.ui:253
 msgid "_About Ear Tag"
 msgstr ""
 
@@ -257,42 +257,42 @@ msgid "translator-credits"
 msgstr ""
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
-#: src/common.py:121
+#: src/common.py:122
 msgid "(multiple values)"
 msgstr ""
 
-#: src/file.py:135
+#: src/file.py:138
 msgid "Failed to load file"
 msgstr ""
 
-#: src/file.py:136
+#: src/file.py:139
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/file.py:139 src/file.py:270
+#: src/file.py:142 src/file.py:273
 msgid "OK"
 msgstr ""
 
-#: src/file.py:176
+#: src/file.py:179
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr ""
 
-#: src/file.py:225
+#: src/file.py:228
 msgid "Some of the opened files are read-only; changes cannot be saved."
 msgstr ""
 
-#: src/file.py:266
+#: src/file.py:269
 msgid "Failed to save file"
 msgstr ""
 
-#: src/file.py:267
+#: src/file.py:270
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 
-#: src/file.py:276
+#: src/file.py:279
 msgid "Saved changes to files"
 msgstr ""
 
@@ -354,47 +354,49 @@ msgstr ""
 msgid "Disc subtitle"
 msgstr ""
 
-#: src/fileview.py:391
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:392
 msgid "Album artist (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:392
+#: src/fileview.py:394
 msgid "Album (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:393
+#: src/fileview.py:396
 msgid "Composer (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:394
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:398
 msgid "Artist (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:395
+#: src/fileview.py:400
 msgid "Title (sort)"
 msgstr ""
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:686
+#: src/fileview.py:715
 msgid "(Multiple files selected)"
 msgstr ""
 
-#: src/fileview.py:707
+#: src/fileview.py:736
 msgid "File is read-only, saving is disabled"
 msgstr ""
 
-#: src/fileview.py:1014
+#: src/fileview.py:1062
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/fileview.py:1030
+#: src/fileview.py:1078
 msgid "Save Album Cover To…"
 msgstr ""
 
@@ -403,22 +405,22 @@ msgstr ""
 msgid "(No title)"
 msgstr ""
 
-#: src/sidebar.py:420
+#: src/sidebar.py:424
 msgid "No files selected"
 msgstr ""
 
-#: src/sidebar.py:424
+#: src/sidebar.py:428
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/window.py:242
+#: src/window.py:247
 msgid "Open Folder"
 msgstr ""
 
-#: src/window.py:246
+#: src/window.py:251
 msgid "Open File"
 msgstr ""
 

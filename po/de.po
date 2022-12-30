@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 21:51+0100\n"
+"POT-Creation-Date: 2022-12-30 11:55+0100\n"
 "PO-Revision-Date: 2022-12-16 13:22+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -35,7 +35,7 @@ msgstr "Kleiner und einfacher Musik-Tag-Editor"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;Musik;Audio;Tag;Schlagwort;"
 
-#: data/app.drey.EarTag.appdata.xml.in:20
+#: data/app.drey.EarTag.appdata.xml.in:21
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -43,7 +43,7 @@ msgstr ""
 "Ear Tag ist ein kleiner und einfacher Musik-Tag-Editor, der nicht versucht, "
 "Ihre gesamte Bibliothek zu verwalten."
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -56,7 +56,7 @@ msgstr ""
 "wollen, aber manchmal müssen Sie bloß die Daten einer einzigen Datei "
 "bearbeiten, ohne den ganzen zusätzlichen Aufwand."
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -112,14 +112,14 @@ msgid "O_pen folder"
 msgstr "_Ordner öffnen"
 
 #: src/ui/window.ui:243
-msgid "_Keyboard shortcuts"
-msgstr "Tasten_kürzel"
-
-#: src/ui/window.ui:247
 msgid "S_ave cover to file"
 msgstr "Albumbild in Datei speichern"
 
-#: src/ui/window.ui:251
+#: src/ui/window.ui:249
+msgid "_Keyboard shortcuts"
+msgstr "Tasten_kürzel"
+
+#: src/ui/window.ui:253
 msgid "_About Ear Tag"
 msgstr "_Info zu Ear Tag"
 
@@ -272,15 +272,15 @@ msgid "translator-credits"
 msgstr "Jürgen Benvenuti <gastornis@posteo.org>, 2022"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
-#: src/common.py:121
+#: src/common.py:122
 msgid "(multiple values)"
 msgstr "(Mehrere Werte)"
 
-#: src/file.py:135
+#: src/file.py:138
 msgid "Failed to load file"
 msgstr "Datei konnte nicht geladen werden"
 
-#: src/file.py:136
+#: src/file.py:139
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
@@ -288,34 +288,34 @@ msgstr ""
 "für weitere Informationen."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/file.py:139 src/file.py:270
+#: src/file.py:142 src/file.py:273
 msgid "OK"
 msgstr "OK"
 
-#: src/file.py:176
+#: src/file.py:179
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr ""
 "Die geöffnete Datei ist schreibgeschützt; Änderungen können nicht "
 "gespeichert werden."
 
-#: src/file.py:225
+#: src/file.py:228
 msgid "Some of the opened files are read-only; changes cannot be saved."
 msgstr ""
 "Einige der geöffneten Dateien sind schreibgeschützt; Änderungen können nicht "
 "gespeichert werden."
 
-#: src/file.py:266
+#: src/file.py:269
 msgid "Failed to save file"
 msgstr "Datei konnte nicht gespeichert werden"
 
-#: src/file.py:267
+#: src/file.py:270
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Datei {f} konnte nicht gespeichert werden. Schauen Sie in die "
 "Protokolldateien für weitere Informationen."
 
-#: src/file.py:276
+#: src/file.py:279
 msgid "Saved changes to files"
 msgstr "Änderungen wurden in Dateien gespeichert"
 
@@ -327,97 +327,99 @@ msgstr "Bild für Albumbild auswählen"
 msgid "(Select a tag)"
 msgstr "(Ein Tag auswählen)"
 
-#: src/fileview.py:375
+#. TRANSLATORS: Short for "beats per minute".
+#: src/fileview.py:376
 msgid "BPM"
 msgstr "BPM"
 
-#. TRANSLATORS: Short for "beats per minute".
-#: src/fileview.py:376
+#: src/fileview.py:377
 msgid "Compilation"
 msgstr "Kompilation"
 
-#: src/fileview.py:377
+#: src/fileview.py:378
 msgid "Composer"
 msgstr "Komponist"
 
-#: src/fileview.py:378
+#: src/fileview.py:379
 msgid "Copyright"
 msgstr "Copyright"
 
-#: src/fileview.py:379
+#: src/fileview.py:380
 msgid "Encoded by"
 msgstr "Kodiert von"
 
-#: src/fileview.py:380
+#: src/fileview.py:381
 msgid "Mood"
 msgstr "Stimmung"
 
-#: src/fileview.py:381
+#. TRANSLATORS: Orchestra conductor
+#: src/fileview.py:383
 msgid "Conductor"
 msgstr "Dirigent"
 
-#. TRANSLATORS: Orchestra conductor
-#: src/fileview.py:382
+#: src/fileview.py:384
 msgid "Arranger"
 msgstr "Arrangeur"
 
-#: src/fileview.py:383
+#: src/fileview.py:385
 msgid "Disc number"
 msgstr "CD-Nummer"
 
-#: src/fileview.py:384
+#: src/fileview.py:386
 msgid "Publisher"
 msgstr "Herausgeber"
 
-#: src/fileview.py:386
+#: src/fileview.py:388
 msgid "Language"
 msgstr "Sprache"
 
-#: src/fileview.py:387
+#: src/fileview.py:389
 msgid "Disc subtitle"
 msgstr "CD-Untertitel"
 
-#: src/fileview.py:389
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:392
 msgid "Album artist (sort)"
 msgstr "Albuminterpret (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:390
+#: src/fileview.py:394
 msgid "Album (sort)"
 msgstr "Album (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:391
+#: src/fileview.py:396
 msgid "Composer (sort)"
 msgstr "Komponist (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:392
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:398
 msgid "Artist (sort)"
 msgstr "Interpret (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:393
+#: src/fileview.py:400
 msgid "Title (sort)"
 msgstr "Titel (sortieren)"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:684
+#: src/fileview.py:715
 msgid "(Multiple files selected)"
 msgstr "(Mehrere Dateien ausgewählt)"
 
-#: src/fileview.py:705
+#: src/fileview.py:736
 msgid "File is read-only, saving is disabled"
 msgstr "Datei ist schreibgeschützt, Speichern ist deaktiviert"
 
-#: src/fileview.py:1012
+#: src/fileview.py:1062
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} Kanal"
 msgstr[1] "{n} Kanäle"
 
-#: src/fileview.py:1028
+#: src/fileview.py:1078
 msgid "Save Album Cover To…"
 msgstr "Albumbild speichern nach …"
 
@@ -426,22 +428,22 @@ msgstr "Albumbild speichern nach …"
 msgid "(No title)"
 msgstr "(Kein Titel)"
 
-#: src/sidebar.py:417
+#: src/sidebar.py:424
 msgid "No files selected"
 msgstr "Keine Dateien ausgewählt"
 
-#: src/sidebar.py:421
+#: src/sidebar.py:428
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} Datei ausgewählt"
 msgstr[1] "{n} Dateien ausgewählt"
 
-#: src/window.py:242
+#: src/window.py:247
 msgid "Open Folder"
 msgstr "Ordner öffnen"
 
-#: src/window.py:246
+#: src/window.py:251
 msgid "Open File"
 msgstr "Datei öffnen"
 

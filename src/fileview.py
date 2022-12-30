@@ -388,11 +388,16 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         "language": _("Language"),
         "discsubtitle": _("Disc subtitle"),
 
-        "albumartistsort": _("Album artist (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "albumsort": _("Album (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "albumartistsort": _("Album artist (sort)"),
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "albumsort": _("Album (sort)"),
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
         "composersort": _("Composer (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "artistsort": _("Artist (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "titlesort": _("Title (sort)") # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "artistsort": _("Artist (sort)"),
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "titlesort": _("Title (sort)")
     }
 
     handled_tags = []

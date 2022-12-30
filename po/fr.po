@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 06:45+0100\n"
+"POT-Creation-Date: 2022-12-30 11:55+0100\n"
 "PO-Revision-Date: 2022-12-16 17:38+0100\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
@@ -36,7 +36,7 @@ msgstr "Un petit éditeur de balises de fichiers musicaux, simple et efficace"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;données;"
 
-#: data/app.drey.EarTag.appdata.xml.in:20
+#: data/app.drey.EarTag.appdata.xml.in:21
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -44,7 +44,7 @@ msgstr ""
 "Ear Tag est un petit et simple éditeur de balises musicales qui n'essaie pas "
 "de gérer l’ensemble de votre bibliothèque."
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -58,7 +58,7 @@ msgstr ""
 "ayez juste besoin de modifier les données d’un fichier sans avoir à vous "
 "préoccuper du reste."
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -114,14 +114,14 @@ msgid "O_pen folder"
 msgstr "_Ouvrir le dossier"
 
 #: src/ui/window.ui:243
-msgid "_Keyboard shortcuts"
-msgstr "_Raccourcis clavier"
-
-#: src/ui/window.ui:247
 msgid "S_ave cover to file"
 msgstr "_Enregistrer la couverture dans le fichier"
 
-#: src/ui/window.ui:251
+#: src/ui/window.ui:249
+msgid "_Keyboard shortcuts"
+msgstr "_Raccourcis clavier"
+
+#: src/ui/window.ui:253
 msgid "_About Ear Tag"
 msgstr "À _propos de Ear Tag"
 
@@ -275,15 +275,15 @@ msgid "translator-credits"
 msgstr "Irénée Thirion"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
-#: src/common.py:121
+#: src/common.py:122
 msgid "(multiple values)"
 msgstr "(plusieurs valeurs)"
 
-#: src/file.py:135
+#: src/file.py:138
 msgid "Failed to load file"
 msgstr "Échec du chargement du fichier"
 
-#: src/file.py:136
+#: src/file.py:139
 #, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
@@ -291,34 +291,34 @@ msgstr ""
 "d’informations."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/file.py:139 src/file.py:270
+#: src/file.py:142 src/file.py:273
 msgid "OK"
 msgstr "OK"
 
-#: src/file.py:176
+#: src/file.py:179
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr ""
 "Le fichier ouvert est en lecture seule ; les modifications ne peuvent être "
 "enregistrées."
 
-#: src/file.py:225
+#: src/file.py:228
 msgid "Some of the opened files are read-only; changes cannot be saved."
 msgstr ""
 "Certains des fichiers ouverts sont en lecture seule ; les modifications ne "
 "peuvent être enregistrées."
 
-#: src/file.py:266
+#: src/file.py:269
 msgid "Failed to save file"
 msgstr "Échec de l’enregistrement du fichier"
 
-#: src/file.py:267
+#: src/file.py:270
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Impossible d’enregistrer le fichier {f}. Vérifiez les journaux pour plus "
 "d’informations."
 
-#: src/file.py:276
+#: src/file.py:279
 msgid "Saved changes to files"
 msgstr "Modifications enregistrées dans les fichiers"
 
@@ -380,47 +380,49 @@ msgstr "Langue"
 msgid "Disc subtitle"
 msgstr "Sous-titre du disque"
 
-#: src/fileview.py:391
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:392
 msgid "Album artist (sort)"
 msgstr "Artiste de l’album (tri)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:392
+#: src/fileview.py:394
 msgid "Album (sort)"
 msgstr "Album (tri)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:393
+#: src/fileview.py:396
 msgid "Composer (sort)"
 msgstr "Compositeur (tri)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:394
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+#: src/fileview.py:398
 msgid "Artist (sort)"
 msgstr "Artiste (tri)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:395
+#: src/fileview.py:400
 msgid "Title (sort)"
 msgstr "Titre (tri)"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:686
+#: src/fileview.py:715
 msgid "(Multiple files selected)"
 msgstr "(Plusieurs fichiers sélectionnés)"
 
-#: src/fileview.py:707
+#: src/fileview.py:736
 msgid "File is read-only, saving is disabled"
 msgstr "Le fichier est en lecture seule, l’enregistrement est désactivé"
 
-#: src/fileview.py:1014
+#: src/fileview.py:1062
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} canal"
 msgstr[1] "{n} canaux"
 
-#: src/fileview.py:1030
+#: src/fileview.py:1078
 msgid "Save Album Cover To…"
 msgstr "Enregistrer l’image de couverture de l’album vers…"
 
@@ -429,22 +431,22 @@ msgstr "Enregistrer l’image de couverture de l’album vers…"
 msgid "(No title)"
 msgstr "(Pas de titre)"
 
-#: src/sidebar.py:420
+#: src/sidebar.py:424
 msgid "No files selected"
 msgstr "Aucun fichier sélectionné"
 
-#: src/sidebar.py:424
+#: src/sidebar.py:428
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} fichier sélectionné"
 msgstr[1] "{n} fichiers sélectionnés"
 
-#: src/window.py:242
+#: src/window.py:247
 msgid "Open Folder"
 msgstr "Ouvrir le dossier"
 
-#: src/window.py:246
+#: src/window.py:251
 msgid "Open File"
 msgstr "Ouvrir un fichier"
 
