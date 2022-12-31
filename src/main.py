@@ -36,7 +36,7 @@ gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk, Gio
 
 from .common import is_valid_music_file
-from .window import EartagWindow, EartagShortcutsWindow
+from .window import EartagWindow
 from .file import EartagFileManager
 
 class Application(Adw.Application):
@@ -70,7 +70,6 @@ class Application(Adw.Application):
         if not win:
             win = EartagWindow(application=self, paths=self.paths)
         self.create_action('about', self.on_about_action)
-        self.create_action('shortcuts', self.on_shortcuts_action)
         self.create_action('open_file', self.on_open_file_action)
         self.set_accels_for_action('app.open_file', ('<Ctrl>o', None))
         self.create_action('save', self.on_save_action)
@@ -148,11 +147,6 @@ Opened files:
         about.set_transient_for(self.props.active_window)
 
         about.present()
-
-    def on_shortcuts_action(self, *args):
-        win = self.props.active_window
-        shortcuts = EartagShortcutsWindow(win)
-        shortcuts.present()
 
     def on_open_file_action(self, widget, _):
         window = self.get_active_window()

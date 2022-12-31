@@ -91,13 +91,6 @@ class EartagNoFile(Adw.Bin):
         window.open_mode = EartagFileManager.LOAD_OVERWRITE
         window.show_file_chooser(folders=True)
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/shortcuts.ui')
-class EartagShortcutsWindow(Gtk.ShortcutsWindow):
-    __gtype_name__ = 'EartagShortcutsWindow'
-
-    def __init__(self, parent):
-        super().__init__(transient_for=parent)
-
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/window.ui')
 class EartagWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'EartagWindow'
