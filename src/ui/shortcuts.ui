@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk" version="4.0"/>
-  <template class="EartagShortcutsWindow" parent="GtkShortcutsWindow">
-    <property name="modal">true</property>
+  <object class="GtkShortcutsWindow" id="help_overlay">
+    <property name="modal">True</property>
     <child>
       <object class="GtkShortcutsSection">
         <property name="section-name">shortcuts</property>
@@ -10,37 +9,44 @@
 
         <child>
           <object class="GtkShortcutsGroup">
-            <property name="title" translatable="yes">Files</property>
+            <property name="title" translatable="yes" context="shortcut window">General</property>
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="accelerator">&lt;ctrl&gt;O</property>
-                <property name="title" translatable="yes">Open files</property>
+                <property name="action-name">app.open_file</property>
+                <property name="title" translatable="yes" context="shortcut window">Open files</property>
               </object>
             </child>
 
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="accelerator">&lt;ctrl&gt;S</property>
-                <property name="title" translatable="yes">Save all modified files</property>
+                <property name="action-name">app.save</property>
+                <property name="title" translatable="yes" context="shortcut window">Save all modified files</property>
               </object>
             </child>
 
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="accelerator">&lt;ctrl&gt;J</property>
-                <property name="title" translatable="yes">Select previous file in sidebar</property>
+                <property name="action-name">app.previous_file</property>
+                <property name="title" translatable="yes" context="shortcut window">Select previous file in sidebar</property>
               </object>
             </child>
 
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="accelerator">&lt;ctrl&gt;L</property>
-                <property name="title" translatable="yes">Select next file in sidebar</property>
+                <property name="action-name">app.next_file</property>
+                <property name="title" translatable="yes" context="shortcut window">Select next file in sidebar</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="action-name">win.show-help-overlay</property>
+                <property name="title" translatable="yes" context="shortcut window">Keyboard shortcuts</property>
               </object>
             </child>
           </object>
         </child>
       </object>
     </child>
-  </template>
+  </object>
 </interface>
