@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-30 11:55+0100\n"
+"POT-Creation-Date: 2023-01-01 10:02+0100\n"
 "PO-Revision-Date: 2022-12-16 16:14+0100\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
@@ -36,7 +36,7 @@ msgstr "Mały i prosty edytor tagów plików muzyki"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "muzyka;audio;tag;znacznik;znaczniki;tagi;tagowanie;metadane;"
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -44,7 +44,7 @@ msgstr ""
 "Ear Tag to mały i prosty edytor tagów muzyki który nie próbuje zarządzać "
 "całą twoją biblioteką."
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -56,7 +56,7 @@ msgstr ""
 "przydatne, gdy chcesz utrzymać swoją bibliotekę w porządku, ale czasami "
 "musisz zmodyfikować dane tylko jednego pliku bez dodatkowych utrudnień."
 
-#: data/app.drey.EarTag.appdata.xml.in:23
+#: data/app.drey.EarTag.appdata.xml.in:24
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -103,19 +103,23 @@ msgid "Show file list"
 msgstr "Pokaż listę plików"
 
 #: src/ui/window.ui:235
-msgid "_Open file"
-msgstr "_Otwórz plik"
+#, fuzzy
+msgid "_Open File"
+msgstr "Otwórz plik"
 
 #: src/ui/window.ui:239
-msgid "O_pen folder"
-msgstr "O_twórz folder"
+#, fuzzy
+msgid "O_pen Folder"
+msgstr "Otwórz folder"
 
 #: src/ui/window.ui:243
-msgid "S_ave cover to file"
+#, fuzzy
+msgid "_Save Cover to File"
 msgstr "Zapisz okładkę do pliku"
 
 #: src/ui/window.ui:249
-msgid "_Keyboard shortcuts"
+#, fuzzy
+msgid "_Keyboard Shortcuts"
 msgstr "Skróty _klawiszowe"
 
 #: src/ui/window.ui:253
@@ -234,12 +238,12 @@ msgstr ""
 "Aby edytować tagi pliku, przeciągnij i upuść plik na te okno lub użyj "
 "przycisków poniżej."
 
-#: src/ui/nofile.ui:58
-msgid "Open a file"
+#: src/ui/nofile.ui:58 src/window.py:244
+msgid "Open File"
 msgstr "Otwórz plik"
 
-#: src/ui/nofile.ui:72
-msgid "Open a folder"
+#: src/ui/nofile.ui:72 src/window.py:240
+msgid "Open Folder"
 msgstr "Otwórz folder"
 
 #: src/ui/sidebar.ui:50
@@ -263,7 +267,7 @@ msgid "Remove selected files"
 msgstr "Usuń wybrane pliki"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:110 src/main.py:112
+#: src/main.py:109 src/main.py:111
 msgid "translator-credits"
 msgstr "knuxify <knuxify@gmail.com>"
 
@@ -436,34 +440,56 @@ msgstr[0] "Zaznaczono {n} plik"
 msgstr[1] "Zaznaczono {n} pliki"
 msgstr[2] "Zaznaczono {n} plików"
 
-#: src/window.py:247
-msgid "Open Folder"
-msgstr "Otwórz folder"
-
-#: src/window.py:251
-msgid "Open File"
-msgstr "Otwórz plik"
-
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
 msgstr "Okładka albumu"
 
-#: src/ui/shortcuts.ui:13
-msgid "Files"
-msgstr "Pliki"
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
 
-#: src/ui/shortcuts.ui:17
+#: src/ui/shortcuts.ui:16
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Open files"
 msgstr "Otwórz pliki"
 
-#: src/ui/shortcuts.ui:24
+#: src/ui/shortcuts.ui:23
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Zapisz wszystkie zmodyfikowane pliki"
 
-#: src/ui/shortcuts.ui:31
+#: src/ui/shortcuts.ui:30
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
 msgstr "Wybierz poprzedni plik na pasku bocznym"
 
-#: src/ui/shortcuts.ui:38
+#: src/ui/shortcuts.ui:37
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Wybierz następny plik na pasku bocznym"
+
+#: src/ui/shortcuts.ui:44
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Skróty _klawiszowe"
+
+#~ msgid "_Open file"
+#~ msgstr "_Otwórz plik"
+
+#~ msgid "O_pen folder"
+#~ msgstr "O_twórz folder"
+
+#~ msgid "Open a file"
+#~ msgstr "Otwórz plik"
+
+#~ msgid "Open a folder"
+#~ msgstr "Otwórz folder"
+
+#~ msgid "Files"
+#~ msgstr "Pliki"

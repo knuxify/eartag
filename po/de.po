@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-30 11:55+0100\n"
+"POT-Creation-Date: 2023-01-01 10:02+0100\n"
 "PO-Revision-Date: 2022-12-16 13:22+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -35,7 +35,7 @@ msgstr "Kleiner und einfacher Musik-Tag-Editor"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;Musik;Audio;Tag;Schlagwort;"
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -43,7 +43,7 @@ msgstr ""
 "Ear Tag ist ein kleiner und einfacher Musik-Tag-Editor, der nicht versucht, "
 "Ihre gesamte Bibliothek zu verwalten."
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -56,7 +56,7 @@ msgstr ""
 "wollen, aber manchmal müssen Sie bloß die Daten einer einzigen Datei "
 "bearbeiten, ohne den ganzen zusätzlichen Aufwand."
 
-#: data/app.drey.EarTag.appdata.xml.in:23
+#: data/app.drey.EarTag.appdata.xml.in:24
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -104,19 +104,23 @@ msgid "Show file list"
 msgstr "Dateiliste anzeigen"
 
 #: src/ui/window.ui:235
-msgid "_Open file"
-msgstr "_Datei öffnen"
+#, fuzzy
+msgid "_Open File"
+msgstr "Datei öffnen"
 
 #: src/ui/window.ui:239
-msgid "O_pen folder"
-msgstr "_Ordner öffnen"
+#, fuzzy
+msgid "O_pen Folder"
+msgstr "Ordner öffnen"
 
 #: src/ui/window.ui:243
-msgid "S_ave cover to file"
+#, fuzzy
+msgid "_Save Cover to File"
 msgstr "Albumbild in Datei speichern"
 
 #: src/ui/window.ui:249
-msgid "_Keyboard shortcuts"
+#, fuzzy
+msgid "_Keyboard Shortcuts"
 msgstr "Tasten_kürzel"
 
 #: src/ui/window.ui:253
@@ -238,13 +242,13 @@ msgstr ""
 "Um die Tags einer Datei zu bearbeiten, ziehen Sie die Datei auf dieses "
 "Fenster und legen Sie sie ab, oder verwenden Sie die Knöpfe unten."
 
-#: src/ui/nofile.ui:58
-msgid "Open a file"
-msgstr "Eine Datei öffnen"
+#: src/ui/nofile.ui:58 src/window.py:244
+msgid "Open File"
+msgstr "Datei öffnen"
 
-#: src/ui/nofile.ui:72
-msgid "Open a folder"
-msgstr "Einen Ordner öffnen"
+#: src/ui/nofile.ui:72 src/window.py:240
+msgid "Open Folder"
+msgstr "Ordner öffnen"
 
 #: src/ui/sidebar.ui:50
 msgid "No Files Opened"
@@ -267,7 +271,7 @@ msgid "Remove selected files"
 msgstr "Ausgewählte Dateien entfernen"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:110 src/main.py:112
+#: src/main.py:109 src/main.py:111
 msgid "translator-credits"
 msgstr "Jürgen Benvenuti <gastornis@posteo.org>, 2022"
 
@@ -439,37 +443,59 @@ msgid_plural "{n} files selected"
 msgstr[0] "{n} Datei ausgewählt"
 msgstr[1] "{n} Dateien ausgewählt"
 
-#: src/window.py:247
-msgid "Open Folder"
-msgstr "Ordner öffnen"
-
-#: src/window.py:251
-msgid "Open File"
-msgstr "Datei öffnen"
-
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
 msgstr "Albumbild"
 
-#: src/ui/shortcuts.ui:13
-msgid "Files"
-msgstr "Dateien"
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "General"
+msgstr ""
 
-#: src/ui/shortcuts.ui:17
+#: src/ui/shortcuts.ui:16
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Open files"
 msgstr "Dateien öffnen"
 
-#: src/ui/shortcuts.ui:24
+#: src/ui/shortcuts.ui:23
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Alle geänderten Dateien speichern"
 
-#: src/ui/shortcuts.ui:31
+#: src/ui/shortcuts.ui:30
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
 msgstr "Vorige Datei in Seitenleiste auswählen"
 
-#: src/ui/shortcuts.ui:38
+#: src/ui/shortcuts.ui:37
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Nächste Datei in Seitenleiste auswählen"
+
+#: src/ui/shortcuts.ui:44
+#, fuzzy
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Tasten_kürzel"
+
+#~ msgid "_Open file"
+#~ msgstr "_Datei öffnen"
+
+#~ msgid "O_pen folder"
+#~ msgstr "_Ordner öffnen"
+
+#~ msgid "Open a file"
+#~ msgstr "Eine Datei öffnen"
+
+#~ msgid "Open a folder"
+#~ msgstr "Einen Ordner öffnen"
+
+#~ msgid "Files"
+#~ msgstr "Dateien"
 
 #~ msgid "Close without saving"
 #~ msgstr "Schließen, ohne zu speichern"
