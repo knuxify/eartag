@@ -232,15 +232,15 @@
   <menu id="primary_menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">_Open file</attribute>
+        <attribute name="label" translatable="yes">_Open File</attribute>
         <attribute name="action">app.open_file</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">O_pen folder</attribute>
+        <attribute name="label" translatable="yes">O_pen Folder</attribute>
         <attribute name="action">app.open_folder</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">S_ave cover to file</attribute>
+        <attribute name="label" translatable="yes">_Save Cover to File</attribute>
         <attribute name="action">app.save_cover</attribute>
       </item>
     </section>

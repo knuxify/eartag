@@ -55,7 +55,7 @@
 
                 <child>
                   <object class="GtkButton" id="open_file">
-                    <property name="label" translatable="yes">Open a file</property>
+                    <property name="label" translatable="yes">Open File</property>
                     <property name="halign">center</property>
                     <signal name="clicked" handler="on_add_file"/>
 
@@ -69,7 +69,7 @@
 
                 <child>
                   <object class="GtkButton" id="open_folder">
-                    <property name="label" translatable="yes">Open a folder</property>
+                    <property name="label" translatable="yes">Open Folder</property>
                     <property name="halign">center</property>
                     <signal name="clicked" handler="on_add_folder"/>
 
