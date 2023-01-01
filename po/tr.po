@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-01 10:02+0100\n"
-"PO-Revision-Date: 2022-09-04 18:46+0300\n"
+"PO-Revision-Date: 2023-01-01 12:54+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -104,23 +104,20 @@ msgid "Show file list"
 msgstr "Dosya listesini göster"
 
 #: src/ui/window.ui:235
-#, fuzzy
 msgid "_Open File"
-msgstr "Dosya Aç"
+msgstr "Dosya _Aç"
 
 #: src/ui/window.ui:239
-#, fuzzy
 msgid "O_pen Folder"
-msgstr "Dosya Aç"
+msgstr "_Klasör Aç"
 
 #: src/ui/window.ui:243
-#, fuzzy
 msgid "_Save Cover to File"
-msgstr "Değişiklikler dosyaya kaydedildi"
+msgstr "Albüm Kapağını Dosyaya _Kaydet"
 
 #: src/ui/window.ui:249
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Klavye Kısayolları"
 
 #: src/ui/window.ui:253
 msgid "_About Ear Tag"
@@ -128,7 +125,7 @@ msgstr "Ear Tag _Hakkında"
 
 #: src/ui/fileview.ui:10
 msgid "Loading Files…"
-msgstr ""
+msgstr "Dosyalar Yükleniyor…"
 
 #: src/ui/fileview.ui:21
 msgid "Select a File"
@@ -140,16 +137,15 @@ msgstr "Açılan dosyalar listesinden düzenlemek istediğiniz dosyaları seçin
 
 #: src/ui/fileview.ui:58
 msgid "Previous file"
-msgstr ""
+msgstr "Önceki dosya"
 
 #: src/ui/fileview.ui:76
-#, fuzzy
 msgid "Next file"
-msgstr "Dosyaları sırala"
+msgstr "Sonraki dosya"
 
 #: src/ui/fileview.ui:95
 msgid "Title"
-msgstr "Parça Adı"
+msgstr "Parça adı"
 
 #: src/ui/fileview.ui:104
 msgid "Artist"
@@ -181,7 +177,7 @@ msgstr "Yorum"
 
 #: src/ui/fileview.ui:180
 msgid "More tags"
-msgstr ""
+msgstr "Daha fazla etiket"
 
 #: src/ui/closewarning.ui:5
 msgid "Save changes before closing?"
@@ -194,32 +190,28 @@ msgstr "Kaydetmezseniz tüm değişiklikleriniz kalıcı olarak yitecek."
 
 #: src/ui/closewarning.ui:12 src/ui/discardwarning.ui:12
 #: src/ui/removaldiscardwarning.ui:12
-#, fuzzy
 msgid "_Cancel"
-msgstr "İptal Et"
+msgstr "_İptal Et"
 
 #: src/ui/closewarning.ui:13 src/ui/removaldiscardwarning.ui:13
-#, fuzzy
 msgid "_Discard changes and close"
-msgstr "Değişikliklerden vazgeç ve kapat"
+msgstr "_Değişikliklerden vazgeç ve kapat"
 
 #: src/ui/closewarning.ui:14 src/ui/removaldiscardwarning.ui:14
-#, fuzzy
 msgid "_Save and close"
-msgstr "Değişikliklerden vazgeç ve kapat"
+msgstr "_Kaydet ve kapat"
 
 #: src/ui/discardwarning.ui:5
 msgid "Save changes before opening another file?"
 msgstr "Başka bir dosya açılmadan önce değişiklikler kaydedilsin mi?"
 
 #: src/ui/discardwarning.ui:13
-#, fuzzy
 msgid "_Discard changes and open"
-msgstr "Değişikliklerden vazgeç ve aç"
+msgstr "_Değişikliklerden vazgeç ve aç"
 
 #: src/ui/discardwarning.ui:14
 msgid "_Save and open"
-msgstr ""
+msgstr "_Kaydet ve aç"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:49
@@ -248,9 +240,8 @@ msgid "Open File"
 msgstr "Dosya Aç"
 
 #: src/ui/nofile.ui:72 src/window.py:240
-#, fuzzy
 msgid "Open Folder"
-msgstr "Dosya Aç"
+msgstr "Klasör Aç"
 
 #: src/ui/sidebar.ui:50
 msgid "No Files Opened"
@@ -295,16 +286,15 @@ msgstr "{f} dosyası yüklenemedi. Daha çok bilgi için günlükleri kontrol ed
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
 #: src/file.py:142 src/file.py:273
 msgid "OK"
-msgstr ""
+msgstr "Tamam"
 
 #: src/file.py:179
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr "Açılan dosya salt okunur; değişiklikler kaydedilemez."
 
 #: src/file.py:228
-#, fuzzy
 msgid "Some of the opened files are read-only; changes cannot be saved."
-msgstr "Açılan dosya salt okunur; değişiklikler kaydedilemez."
+msgstr "Açılan dosyalardan bazıları salt okunur; değişiklikler kaydedilemez."
 
 #: src/file.py:269
 msgid "Failed to save file"
@@ -317,98 +307,92 @@ msgstr ""
 "{f} dosyası kaydedilemedi. Daha çok bilgi için günlükleri kontrol edin."
 
 #: src/file.py:279
-#, fuzzy
 msgid "Saved changes to files"
-msgstr "Değişiklikler dosyaya kaydedildi"
+msgstr "Değişiklikler dosyalara kaydedildi"
 
 #: src/fileview.py:147
 msgid "Select Album Cover Image"
 msgstr "Albüm Kapak Resmi Seç"
 
 #: src/fileview.py:374
-#, fuzzy
 msgid "(Select a tag)"
-msgstr "Dosya Seç"
+msgstr "(Etiket seç)"
 
 #. TRANSLATORS: Short for "beats per minute".
 #: src/fileview.py:376
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: src/fileview.py:377
 msgid "Compilation"
-msgstr ""
+msgstr "Derleme"
 
 #: src/fileview.py:378
 msgid "Composer"
-msgstr ""
+msgstr "Besteci"
 
 #: src/fileview.py:379
 msgid "Copyright"
-msgstr ""
+msgstr "Telif hakkı"
 
 #: src/fileview.py:380
 msgid "Encoded by"
-msgstr ""
+msgstr "Kodlayıcı"
 
 #: src/fileview.py:381
 msgid "Mood"
-msgstr ""
+msgstr "Ruh hali"
 
 #. TRANSLATORS: Orchestra conductor
 #: src/fileview.py:383
 msgid "Conductor"
-msgstr ""
+msgstr "Yapımcı"
 
 #: src/fileview.py:384
 msgid "Arranger"
-msgstr ""
+msgstr "Aranjör"
 
 #: src/fileview.py:385
-#, fuzzy
 msgid "Disc number"
-msgstr "Parça numarası"
+msgstr "Disk numarası"
 
 #: src/fileview.py:386
 msgid "Publisher"
-msgstr ""
+msgstr "Yayıncı"
 
 #: src/fileview.py:388
 msgid "Language"
-msgstr ""
+msgstr "Dil"
 
 #: src/fileview.py:389
 msgid "Disc subtitle"
-msgstr ""
+msgstr "Disk alt yazısı"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:392
-#, fuzzy
 msgid "Album artist (sort)"
-msgstr "Albüm sanatçısı"
+msgstr "Albüm sanatçısı (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:394
-#, fuzzy
 msgid "Album (sort)"
-msgstr "Albüm kapağı"
+msgstr "Albüm (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:396
 msgid "Composer (sort)"
-msgstr ""
+msgstr "Besteci (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:398
-#, fuzzy
 msgid "Artist (sort)"
-msgstr "Sanatçı"
+msgstr "Sanatçı (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #: src/fileview.py:400
 msgid "Title (sort)"
-msgstr ""
+msgstr "Parça adı (sırala)"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/fileview.py:715
@@ -426,9 +410,8 @@ msgid_plural "{n} channels"
 msgstr[0] "{n} kanal"
 
 #: src/fileview.py:1078
-#, fuzzy
 msgid "Save Album Cover To…"
-msgstr "Albüm Kapak Resmi Seç"
+msgstr "Albüm Kapak Resmi Kaydet…"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
@@ -452,50 +435,47 @@ msgstr "Albüm kapağı"
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Genel"
 
 #: src/ui/shortcuts.ui:16
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Open files"
-msgstr "Dosya _aç"
+msgstr "Dosya aç"
 
 #: src/ui/shortcuts.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Save all modified files"
-msgstr "Tüm dosyaları seç"
+msgstr "Tüm değiştirilen dosyaları kaydet"
 
 #: src/ui/shortcuts.ui:30
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
-msgstr "Tüm dosyaları seç"
+msgstr "Kenar çubuğunda önceki dosyayı seç"
 
 #: src/ui/shortcuts.ui:37
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select next file in sidebar"
-msgstr "Tüm dosyaları seç"
+msgstr "Kenar çubuğunda sonraki dosyayı seç"
 
 #: src/ui/shortcuts.ui:44
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "Klavye kısayolları"
 
 #~ msgid "_Open file"
 #~ msgstr "Dosya _aç"
 
-#, fuzzy
 #~ msgid "O_pen folder"
-#~ msgstr "Dosya _aç"
+#~ msgstr "Klasör _aç"
 
 #~ msgid "Open a file"
 #~ msgstr "Dosya aç"
 
-#, fuzzy
 #~ msgid "Open a folder"
-#~ msgstr "Dosya aç"
+#~ msgstr "Klasör aç"
+
+#~ msgid "Files"
+#~ msgstr "Dosyalar"
 
 #~ msgid "Close without saving"
 #~ msgstr "Kaydetmeden kapat"
