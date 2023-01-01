@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-30 11:55+0100\n"
+"POT-Creation-Date: 2023-01-01 10:02+0100\n"
 "PO-Revision-Date: 2022-09-11 14:46+0200\n"
 "Last-Translator: Davide Ferracin <davide.ferracin@protonmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -36,7 +36,7 @@ msgstr ""
 "musica;audio;tag;etichetta;etichette;etichettare;etichettatore;"
 "etichettamento;"
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -44,7 +44,7 @@ msgstr ""
 "Ear Tag è un piccolo e semplice editor di etichette musicali che non intende "
 "gestire tutta la tua libreria."
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -57,7 +57,7 @@ msgstr ""
 "desidera gestire tutta la propria libreria, ma talvolta si ha bisogno "
 "soltanto di modificare le informazioni di un file senza complicazioni."
 
-#: data/app.drey.EarTag.appdata.xml.in:23
+#: data/app.drey.EarTag.appdata.xml.in:24
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -104,21 +104,22 @@ msgid "Show file list"
 msgstr "Mostra la lista dei file"
 
 #: src/ui/window.ui:235
-msgid "_Open file"
-msgstr "_Apri file"
+#, fuzzy
+msgid "_Open File"
+msgstr "Apri file"
 
 #: src/ui/window.ui:239
 #, fuzzy
-msgid "O_pen folder"
-msgstr "_Apri file"
+msgid "O_pen Folder"
+msgstr "Apri file"
 
 #: src/ui/window.ui:243
 #, fuzzy
-msgid "S_ave cover to file"
+msgid "_Save Cover to File"
 msgstr "Modifiche salvate sul file"
 
 #: src/ui/window.ui:249
-msgid "_Keyboard shortcuts"
+msgid "_Keyboard Shortcuts"
 msgstr ""
 
 #: src/ui/window.ui:253
@@ -244,14 +245,14 @@ msgstr ""
 "Per modificare le etichette di un file, trascinarlo in questa finestra "
 "oppure usare i pulsanti qui sotto."
 
-#: src/ui/nofile.ui:58
-msgid "Open a file"
-msgstr "Apri un file"
+#: src/ui/nofile.ui:58 src/window.py:244
+msgid "Open File"
+msgstr "Apri file"
 
-#: src/ui/nofile.ui:72
+#: src/ui/nofile.ui:72 src/window.py:240
 #, fuzzy
-msgid "Open a folder"
-msgstr "Apri un file"
+msgid "Open Folder"
+msgstr "Apri file"
 
 #: src/ui/sidebar.ui:50
 msgid "No Files Opened"
@@ -274,7 +275,7 @@ msgid "Remove selected files"
 msgstr "Rimuove i file selezionati"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:110 src/main.py:112
+#: src/main.py:109 src/main.py:111
 msgid "translator-credits"
 msgstr "Davide Ferracin <davide.ferracin@protonmail.com>, 2022"
 
@@ -452,41 +453,57 @@ msgid_plural "{n} files selected"
 msgstr[0] "{n} file selezionato"
 msgstr[1] "{n} file selezionati"
 
-#: src/window.py:247
-#, fuzzy
-msgid "Open Folder"
-msgstr "Apri file"
-
-#: src/window.py:251
-msgid "Open File"
-msgstr "Apri file"
-
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
 msgstr "Copertina dell'album"
 
-#: src/ui/shortcuts.ui:13
-msgid "Files"
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "General"
 msgstr ""
 
-#: src/ui/shortcuts.ui:17
+#: src/ui/shortcuts.ui:16
 #, fuzzy
+msgctxt "shortcut window"
 msgid "Open files"
 msgstr "_Apri file"
 
-#: src/ui/shortcuts.ui:24
+#: src/ui/shortcuts.ui:23
 #, fuzzy
+msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Seleziona tutti i file"
 
-#: src/ui/shortcuts.ui:31
-msgid "Select previous file in sidebar"
-msgstr ""
-
-#: src/ui/shortcuts.ui:38
+#: src/ui/shortcuts.ui:30
 #, fuzzy
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Seleziona tutti i file"
+
+#: src/ui/shortcuts.ui:37
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Seleziona tutti i file"
+
+#: src/ui/shortcuts.ui:44
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#~ msgid "_Open file"
+#~ msgstr "_Apri file"
+
+#, fuzzy
+#~ msgid "O_pen folder"
+#~ msgstr "_Apri file"
+
+#~ msgid "Open a file"
+#~ msgstr "Apri un file"
+
+#, fuzzy
+#~ msgid "Open a folder"
+#~ msgstr "Apri un file"
 
 #~ msgid "Close without saving"
 #~ msgstr "Chiudi senza salvare"

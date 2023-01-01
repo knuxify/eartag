@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-30 11:55+0100\n"
+"POT-Creation-Date: 2023-01-01 10:02+0100\n"
 "PO-Revision-Date: 2022-09-17 17:58+0200\n"
 "Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
@@ -35,7 +35,7 @@ msgstr "Kleine en eenvoudige muziek-tag-bewerker"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;muziek;taggen;metadata;"
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -43,7 +43,7 @@ msgstr ""
 "Ear Tag is een kleine en eenvoudige muziek-tag-bewerker die niet uw hele "
 "bibliotheek probeert te beheren."
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -55,7 +55,7 @@ msgstr ""
 "Dit kan handig zijn wanneer u uw hele bibliotheek bij wilt houden, maar soms "
 "is het nodig om één bestand te bewerken zonder extra gedoe."
 
-#: data/app.drey.EarTag.appdata.xml.in:23
+#: data/app.drey.EarTag.appdata.xml.in:24
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -104,21 +104,22 @@ msgid "Show file list"
 msgstr "Bestandslijst weergeven"
 
 #: src/ui/window.ui:235
-msgid "_Open file"
-msgstr "_Bestand openen"
+#, fuzzy
+msgid "_Open File"
+msgstr "Bestand openen"
 
 #: src/ui/window.ui:239
 #, fuzzy
-msgid "O_pen folder"
-msgstr "_Bestand openen"
+msgid "O_pen Folder"
+msgstr "Bestand openen"
 
 #: src/ui/window.ui:243
 #, fuzzy
-msgid "S_ave cover to file"
+msgid "_Save Cover to File"
 msgstr "Wijzigingen naar bestand opgeslagen"
 
 #: src/ui/window.ui:249
-msgid "_Keyboard shortcuts"
+msgid "_Keyboard Shortcuts"
 msgstr ""
 
 #: src/ui/window.ui:253
@@ -245,13 +246,13 @@ msgstr ""
 "Om tags van een bestand te bewerken, sleep deze naar dit venster of gebruik "
 "de knoppen hieronder."
 
-#: src/ui/nofile.ui:58
-msgid "Open a file"
+#: src/ui/nofile.ui:58 src/window.py:244
+msgid "Open File"
 msgstr "Bestand openen"
 
-#: src/ui/nofile.ui:72
+#: src/ui/nofile.ui:72 src/window.py:240
 #, fuzzy
-msgid "Open a folder"
+msgid "Open Folder"
 msgstr "Bestand openen"
 
 #: src/ui/sidebar.ui:50
@@ -275,7 +276,7 @@ msgid "Remove selected files"
 msgstr "Geselecteerde bestanden verwijderen"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:110 src/main.py:112
+#: src/main.py:109 src/main.py:111
 msgid "translator-credits"
 msgstr "Philip Goto <philip.goto@gmail.com>"
 
@@ -451,41 +452,57 @@ msgid_plural "{n} files selected"
 msgstr[0] "{n} bestand geselecteerd"
 msgstr[1] "{n} bestanden geselecteerd"
 
-#: src/window.py:247
-#, fuzzy
-msgid "Open Folder"
-msgstr "Bestand openen"
-
-#: src/window.py:251
-msgid "Open File"
-msgstr "Bestand openen"
-
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
 msgstr "Albumhoes"
 
-#: src/ui/shortcuts.ui:13
-msgid "Files"
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "General"
 msgstr ""
 
-#: src/ui/shortcuts.ui:17
+#: src/ui/shortcuts.ui:16
 #, fuzzy
+msgctxt "shortcut window"
 msgid "Open files"
 msgstr "_Bestand openen"
 
-#: src/ui/shortcuts.ui:24
+#: src/ui/shortcuts.ui:23
 #, fuzzy
+msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Alle bestanden selecteren"
 
-#: src/ui/shortcuts.ui:31
-msgid "Select previous file in sidebar"
-msgstr ""
-
-#: src/ui/shortcuts.ui:38
+#: src/ui/shortcuts.ui:30
 #, fuzzy
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Alle bestanden selecteren"
+
+#: src/ui/shortcuts.ui:37
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Alle bestanden selecteren"
+
+#: src/ui/shortcuts.ui:44
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#~ msgid "_Open file"
+#~ msgstr "_Bestand openen"
+
+#, fuzzy
+#~ msgid "O_pen folder"
+#~ msgstr "_Bestand openen"
+
+#~ msgid "Open a file"
+#~ msgstr "Bestand openen"
+
+#, fuzzy
+#~ msgid "Open a folder"
+#~ msgstr "Bestand openen"
 
 #~ msgid "Initial release."
 #~ msgstr "Initiële uitgave."

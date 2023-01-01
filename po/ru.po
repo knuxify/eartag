@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-30 11:55+0100\n"
+"POT-Creation-Date: 2023-01-01 10:02+0100\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -39,7 +39,7 @@ msgstr ""
 "music;audio;tag;tagging;tagger;музыка;аудио;тэг;тэгирование;тэггер;тег;"
 "тегирование;"
 
-#: data/app.drey.EarTag.appdata.xml.in:21
+#: data/app.drey.EarTag.appdata.xml.in:22
 msgid ""
 "Ear Tag is a small and simple music tag editor that doesn't try to manage "
 "your entire library."
@@ -47,7 +47,7 @@ msgstr ""
 "Ear Tag - это маленький и простой редактор музыкальных тегов, который не "
 "пытается управлять всей вашей библиотекой."
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.appdata.xml.in:23
 msgid ""
 "A lot of music tag editors are made to apply changes to entire music "
 "libraries. They require you to set up a music folder, etc. This is "
@@ -60,7 +60,7 @@ msgstr ""
 "вам нужно просто отредактировать данные одного файла без дополнительных "
 "хлопот."
 
-#: data/app.drey.EarTag.appdata.xml.in:23
+#: data/app.drey.EarTag.appdata.xml.in:24
 msgid ""
 "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
 "files as needed."
@@ -108,21 +108,22 @@ msgid "Show file list"
 msgstr ""
 
 #: src/ui/window.ui:235
-msgid "_Open file"
-msgstr "_Открыть файл"
+#, fuzzy
+msgid "_Open File"
+msgstr "Открыть файл"
 
 #: src/ui/window.ui:239
 #, fuzzy
-msgid "O_pen folder"
-msgstr "_Открыть файл"
+msgid "O_pen Folder"
+msgstr "Открыть файл"
 
 #: src/ui/window.ui:243
 #, fuzzy
-msgid "S_ave cover to file"
+msgid "_Save Cover to File"
 msgstr "Сохранить изменения в файл"
 
 #: src/ui/window.ui:249
-msgid "_Keyboard shortcuts"
+msgid "_Keyboard Shortcuts"
 msgstr ""
 
 #: src/ui/window.ui:253
@@ -244,15 +245,14 @@ msgid ""
 "buttons below."
 msgstr ""
 
-#: src/ui/nofile.ui:58
-#, fuzzy
-msgid "Open a file"
-msgstr "_Открыть файл"
+#: src/ui/nofile.ui:58 src/window.py:244
+msgid "Open File"
+msgstr "Открыть файл"
 
-#: src/ui/nofile.ui:72
+#: src/ui/nofile.ui:72 src/window.py:240
 #, fuzzy
-msgid "Open a folder"
-msgstr "_Открыть файл"
+msgid "Open Folder"
+msgstr "Открыть файл"
 
 #: src/ui/sidebar.ui:50
 msgid "No Files Opened"
@@ -275,7 +275,7 @@ msgid "Remove selected files"
 msgstr ""
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:110 src/main.py:112
+#: src/main.py:109 src/main.py:111
 msgid "translator-credits"
 msgstr ""
 
@@ -454,40 +454,57 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/window.py:247
-#, fuzzy
-msgid "Open Folder"
-msgstr "Открыть файл"
-
-#: src/window.py:251
-msgid "Open File"
-msgstr "Открыть файл"
-
 #: src/ui/albumcoverbutton.ui:73
 #, fuzzy
 msgid "Album cover"
 msgstr "Альбом"
 
-#: src/ui/shortcuts.ui:13
-msgid "Files"
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "General"
 msgstr ""
 
-#: src/ui/shortcuts.ui:17
+#: src/ui/shortcuts.ui:16
 #, fuzzy
+msgctxt "shortcut window"
 msgid "Open files"
 msgstr "_Открыть файл"
 
-#: src/ui/shortcuts.ui:24
+#: src/ui/shortcuts.ui:23
+#, fuzzy
+msgctxt "shortcut window"
 msgid "Save all modified files"
-msgstr ""
+msgstr "Сохранить изменения в файл"
 
-#: src/ui/shortcuts.ui:31
+#: src/ui/shortcuts.ui:30
+msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
 msgstr ""
 
-#: src/ui/shortcuts.ui:38
+#: src/ui/shortcuts.ui:37
+msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr ""
+
+#: src/ui/shortcuts.ui:44
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#~ msgid "_Open file"
+#~ msgstr "_Открыть файл"
+
+#, fuzzy
+#~ msgid "O_pen folder"
+#~ msgstr "_Открыть файл"
+
+#, fuzzy
+#~ msgid "Open a file"
+#~ msgstr "_Открыть файл"
+
+#, fuzzy
+#~ msgid "Open a folder"
+#~ msgstr "_Открыть файл"
 
 #~ msgid "Close without saving"
 #~ msgstr "Закрыть без сохранения"
