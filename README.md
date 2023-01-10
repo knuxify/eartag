@@ -1,16 +1,14 @@
 # Ear Tag
 
-Small and simple music tag editor that doesn't try to manage your entire library
+Small and simple audio file tag editor
 
 ![Screenshot](screenshot.png)
 
-## Why?
+## About
 
-A lot of music tag editors are made to apply changes to entire music libraries. They require you to set up a music folder, etc. This is convenient when you want to keep your entire library in check, but sometimes you just need to edit one file's data without any of the additional hassle.
+Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder.
 
-Thus, Ear Tag was made to be a simple tag editor that can edit singular files as needed.
-
-(Additionally, due to its compact design, it can be used on mobile Linux devices.)
+Ear Tag supports both desktop and mobile form factors.
 
 ## Installing
 

@@ -2,7 +2,8 @@
 <component type="desktop">
 	<!-- TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents, -->
 	<name>Ear Tag</name>
-	<summary>Small and simple music tag editor</summary>
+	<!-- TRANSLATORS: App description. -->
+	<summary>Edit audio file tags</summary>
 	<id>app.drey.EarTag.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>MIT</project_license>
@@ -19,9 +20,7 @@
 	</releases>
 	<url type="homepage">https://github.com/knuxify/eartag</url>
 	<description>
-	  <p>Ear Tag is a small and simple music tag editor that doesn't try to manage your entire library.</p>
-	  <p>A lot of music tag editors are made to apply changes to entire music libraries. They require you to set up a music folder, etc. This is convenient when you want to keep your entire library in check, but sometimes you just need to edit one file's data without any of the additional hassle.</p>
-	  <p>Thus, Ear Tag was made to be a simple tag editor that can edit singular files as needed.</p>
+	  <p>Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder.</p>
 	</description>
 	<screenshots>
 		<screenshot type="default">https://raw.githubusercontent.com/knuxify/eartag/main/data/screenshot-scaled.png</screenshot>
