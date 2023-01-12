@@ -1,5 +1,5 @@
 data/app.drey.EarTag.desktop.in
-data/app.drey.EarTag.appdata.xml.in
+data/app.drey.EarTag.metainfo.xml.in
 data/app.drey.EarTag.gschema.xml
 src/ui/window.ui
 src/ui/fileview.ui
