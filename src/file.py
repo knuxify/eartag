@@ -141,7 +141,9 @@ class EartagFileManager(GObject.Object):
             # TRANSLATORS: "Okay" button in the "failed to save file" dialog
             self.error_dialog.add_response("ok", _("OK"))
             self.error_dialog.connect('response', self.close_dialog)
-            self.error_dialog.show()
+            # If this happens when in load_multiple_files (which is a threaded function)
+            # and we don't do this in a GLib.idle_add, the whole UI freezes.
+            GLib.idle_add(lambda *args: self.error_dialog.show())
             return False
 
         _file.connect('modified', self.update_modified_status)
@@ -210,6 +212,7 @@ class EartagFileManager(GObject.Object):
                 self.files.splice(0, 0, self._files_buffer)
                 self._files_buffer = []
                 self.emit('files_loaded')
+                self.emit('select-first')
                 self.update_modified_status()
                 self._loading_progress = 0
                 GLib.idle_add(lambda *args: self.notify('loading_progress'))
