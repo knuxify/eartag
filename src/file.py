@@ -233,7 +233,7 @@ class EartagFileManager(GObject.Object):
 
         self.emit('files_loaded')
         self._loading_progress = 0
-        self.notify('loading_progress')
+        GLib.idle_add(lambda *args: self.notify('loading_progress'))
         self.update_modified_status()
         if mode == self.LOAD_OVERWRITE:
             self.emit('selection_override')
