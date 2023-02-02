@@ -238,8 +238,7 @@ class EartagFileManager(GObject.Object):
         if mode == self.LOAD_OVERWRITE:
             self.emit('selection_override')
         elif not len(self.selected_files) > 1:
-            self.selected_files = [_file]
-            self.emit('selection-changed')
+            self.emit('select-first')
         self._is_loading_multiple_files = False
 
     def load_multiple_files(self, *args, **kwargs):
