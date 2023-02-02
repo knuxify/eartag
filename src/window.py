@@ -172,14 +172,14 @@ class EartagWindow(Adw.ApplicationWindow):
         self.sidebar_search_button.set_sensitive(not is_loading)
         self.sort_button.set_sensitive(not is_loading)
         if self.file_manager.files.get_n_items() == 0 and is_loading:
-            self.container_stack.set_visible_child(self.toast_overlay)
+            self.container_stack.set_visible_child(self.container_flap)
 
     def toggle_fileview(self, *args):
         """
         Shows/hides the fileview/"no files" message depending on opened files.
         """
         if self.file_manager.files.get_n_items() > 0:
-            self.container_stack.set_visible_child(self.toast_overlay)
+            self.container_stack.set_visible_child(self.container_flap)
             if self.file_manager.loading_progress == 0:
                 self.select_multiple_button.set_sensitive(True)
                 self.sidebar_search_button.set_sensitive(True)
@@ -289,6 +289,10 @@ class EartagWindow(Adw.ApplicationWindow):
                             paths.append(_fpath)
                 else:
                     paths.append(_path)
+            if not paths:
+                toast = Adw.Toast.new(_("No supported files found in opened folder"))
+                self.toast_overlay.add_toast(toast)
+                return
             return self.open_files(paths)
 
     @Gtk.Template.Callback()

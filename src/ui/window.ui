@@ -65,30 +65,30 @@
         </child>
 
         <child>
-          <object class="GtkStack" id="container_stack">
-            <property name="transition-type">crossfade</property>
-
+          <object class="AdwToastOverlay" id="toast_overlay">
             <child>
-              <object class="GtkBox" id="no_file">
-                <property name="orientation">vertical</property>
+              <object class="GtkStack" id="container_stack">
+                <property name="transition-type">crossfade</property>
 
                 <child>
-                  <object class="AdwHeaderBar" id="empty_headerbar">
-                    <property name="title-widget"><object class="GtkLabel"/></property>
-                    <style>
-                      <class name="flat"/>
-                    </style>
+                  <object class="GtkBox" id="no_file">
+                    <property name="orientation">vertical</property>
+
+                    <child>
+                      <object class="AdwHeaderBar" id="empty_headerbar">
+                        <property name="title-widget"><object class="GtkLabel"/></property>
+                        <style>
+                          <class name="flat"/>
+                        </style>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="EartagNoFile"/>
+                    </child>
                   </object>
                 </child>
 
-                <child>
-                  <object class="EartagNoFile"/>
-                </child>
-              </object>
-            </child>
-
-            <child>
-              <object class="AdwToastOverlay" id="toast_overlay">
                 <child>
                   <object class="AdwFlap" id="container_flap">
                     <child type="flap">
