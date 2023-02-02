@@ -353,7 +353,8 @@ class EartagFile(GObject.Object):
         if 'bpm' in self.supported_extra_tags:
             value = self.get_tag('bpm')
             if value:
-                return int(self.get_tag('bpm'))
+                # Some BPMs can be floating point values; round them down
+                return int(float(self.get_tag('bpm')))
         return None
 
     @bpm.setter
