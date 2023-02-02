@@ -63,7 +63,12 @@ class EartagFileMutagenCommon(EartagFile):
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def bitrate(self):
         # in bps, needs conversion
-        return int(round(self.mg_file.info.bitrate / 1000, 0))
+        try:
+            return int(round(self.mg_file.info.bitrate / 1000, 0))
+        except AttributeError:
+            # For some files, Mutagen can't tell the bitrate
+            return -1
+
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def channels(self):

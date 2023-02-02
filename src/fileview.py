@@ -1061,10 +1061,15 @@ class EartagFileView(Gtk.Stack):
         else:
             channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels)
 
+        if file.bitrate > -1:
+            bitrate_readable = str(file.bitrate)
+        else:
+            bitrate_readable = "N/A"
+
         self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
             filetype=file.filetype,
             length=length_readable,
-            bitrate=file.bitrate,
+            bitrate=bitrate_readable,
             channels=channels_readable
         ))
 
