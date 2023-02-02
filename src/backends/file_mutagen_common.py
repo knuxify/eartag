@@ -40,9 +40,9 @@ class EartagFileMutagenCommon(EartagFile):
 
     def __init__(self, path):
         super().__init__(path)
+        self.coverart_tempfile = None
         self.mg_file = None
         self.mg_file = mutagen.File(path)
-        self.coverart_tempfile = None
         self.setup_present_extra_tags()
 
     def save(self):
