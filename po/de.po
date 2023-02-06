@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-01 10:02+0100\n"
+"POT-Creation-Date: 2023-02-06 18:45+0100\n"
 "PO-Revision-Date: 2022-12-16 13:22+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Poedit 3.1.1\n"
 
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
-#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -27,42 +27,22 @@ msgstr "Ear Tag"
 msgid "Tag Editor"
 msgstr "Tag-Editor"
 
-#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
-msgid "Small and simple music tag editor"
-msgstr "Kleiner und einfacher Musik-Tag-Editor"
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr ""
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;Musik;Audio;Tag;Schlagwort;"
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.metainfo.xml.in:23
 msgid ""
-"Ear Tag is a small and simple music tag editor that doesn't try to manage "
-"your entire library."
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder."
 msgstr ""
-"Ear Tag ist ein kleiner und einfacher Musik-Tag-Editor, der nicht versucht, "
-"Ihre gesamte Bibliothek zu verwalten."
-
-#: data/app.drey.EarTag.appdata.xml.in:23
-msgid ""
-"A lot of music tag editors are made to apply changes to entire music "
-"libraries. They require you to set up a music folder, etc. This is "
-"convenient when you want to keep your entire library in check, but sometimes "
-"you just need to edit one file's data without any of the additional hassle."
-msgstr ""
-"Viele Musik-Tag-Editoren sind dafür gemacht, Änderungen an gesamten Musik-"
-"Bibliotheken vorzunehmen. Dafür müssen Sie einen Musik-Ordner einrichten, "
-"etc. Das ist praktisch, wenn Sie Ihre gesamte Bibliothek geordnet halten "
-"wollen, aber manchmal müssen Sie bloß die Daten einer einzigen Datei "
-"bearbeiten, ohne den ganzen zusätzlichen Aufwand."
-
-#: data/app.drey.EarTag.appdata.xml.in:24
-msgid ""
-"Thus, Ear Tag was made to be a simple tag editor that can edit singular "
-"files as needed."
-msgstr ""
-"Deshalb wurde Ear Tag als einfacher Tag-Editor entworfen, der einzelne "
-"Dateien nach Bedarf bearbeiten kann."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
@@ -104,26 +84,30 @@ msgid "Show file list"
 msgstr "Dateiliste anzeigen"
 
 #: src/ui/window.ui:235
+msgid "_Open…"
+msgstr ""
+
+#: src/ui/window.ui:237
 #, fuzzy
 msgid "_Open File"
 msgstr "Datei öffnen"
 
-#: src/ui/window.ui:239
+#: src/ui/window.ui:241
 #, fuzzy
 msgid "O_pen Folder"
 msgstr "Ordner öffnen"
 
-#: src/ui/window.ui:243
+#: src/ui/window.ui:246
 #, fuzzy
 msgid "_Save Cover to File"
 msgstr "Albumbild in Datei speichern"
 
-#: src/ui/window.ui:249
+#: src/ui/window.ui:252
 #, fuzzy
 msgid "_Keyboard Shortcuts"
 msgstr "Tasten_kürzel"
 
-#: src/ui/window.ui:253
+#: src/ui/window.ui:256
 msgid "_About Ear Tag"
 msgstr "_Info zu Ear Tag"
 
@@ -292,34 +276,34 @@ msgstr ""
 "für weitere Informationen."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/file.py:142 src/file.py:273
+#: src/file.py:142 src/file.py:275
 msgid "OK"
 msgstr "OK"
 
-#: src/file.py:179
+#: src/file.py:181
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr ""
 "Die geöffnete Datei ist schreibgeschützt; Änderungen können nicht "
 "gespeichert werden."
 
-#: src/file.py:228
+#: src/file.py:231
 msgid "Some of the opened files are read-only; changes cannot be saved."
 msgstr ""
 "Einige der geöffneten Dateien sind schreibgeschützt; Änderungen können nicht "
 "gespeichert werden."
 
-#: src/file.py:269
+#: src/file.py:271
 msgid "Failed to save file"
 msgstr "Datei konnte nicht gespeichert werden"
 
-#: src/file.py:270
+#: src/file.py:272
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Datei {f} konnte nicht gespeichert werden. Schauen Sie in die "
 "Protokolldateien für weitere Informationen."
 
-#: src/file.py:279
+#: src/file.py:281
 msgid "Saved changes to files"
 msgstr "Änderungen wurden in Dateien gespeichert"
 
@@ -327,103 +311,103 @@ msgstr "Änderungen wurden in Dateien gespeichert"
 msgid "Select Album Cover Image"
 msgstr "Bild für Albumbild auswählen"
 
-#: src/fileview.py:374
+#: src/fileview.py:389
 msgid "(Select a tag)"
 msgstr "(Ein Tag auswählen)"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/fileview.py:376
+#: src/fileview.py:391
 msgid "BPM"
 msgstr "BPM"
 
-#: src/fileview.py:377
+#: src/fileview.py:392
 msgid "Compilation"
 msgstr "Kompilation"
 
-#: src/fileview.py:378
+#: src/fileview.py:393
 msgid "Composer"
 msgstr "Komponist"
 
-#: src/fileview.py:379
+#: src/fileview.py:394
 msgid "Copyright"
 msgstr "Copyright"
 
-#: src/fileview.py:380
+#: src/fileview.py:395
 msgid "Encoded by"
 msgstr "Kodiert von"
 
-#: src/fileview.py:381
+#: src/fileview.py:396
 msgid "Mood"
 msgstr "Stimmung"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/fileview.py:383
+#: src/fileview.py:398
 msgid "Conductor"
 msgstr "Dirigent"
 
-#: src/fileview.py:384
+#: src/fileview.py:399
 msgid "Arranger"
 msgstr "Arrangeur"
 
-#: src/fileview.py:385
+#: src/fileview.py:400
 msgid "Disc number"
 msgstr "CD-Nummer"
 
-#: src/fileview.py:386
+#: src/fileview.py:401
 msgid "Publisher"
 msgstr "Herausgeber"
 
-#: src/fileview.py:388
+#: src/fileview.py:403
 msgid "Language"
 msgstr "Sprache"
 
-#: src/fileview.py:389
+#: src/fileview.py:404
 msgid "Disc subtitle"
 msgstr "CD-Untertitel"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:392
+#: src/fileview.py:407
 msgid "Album artist (sort)"
 msgstr "Albuminterpret (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:394
+#: src/fileview.py:409
 msgid "Album (sort)"
 msgstr "Album (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:396
+#: src/fileview.py:411
 msgid "Composer (sort)"
 msgstr "Komponist (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:398
+#: src/fileview.py:413
 msgid "Artist (sort)"
 msgstr "Interpret (sortieren)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:400
+#: src/fileview.py:415
 msgid "Title (sort)"
 msgstr "Titel (sortieren)"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:715
+#: src/fileview.py:730
 msgid "(Multiple files selected)"
 msgstr "(Mehrere Dateien ausgewählt)"
 
-#: src/fileview.py:736
+#: src/fileview.py:751
 msgid "File is read-only, saving is disabled"
 msgstr "Datei ist schreibgeschützt, Speichern ist deaktiviert"
 
-#: src/fileview.py:1062
+#: src/fileview.py:1077
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} Kanal"
 msgstr[1] "{n} Kanäle"
 
-#: src/fileview.py:1078
+#: src/fileview.py:1098
 msgid "Save Album Cover To…"
 msgstr "Albumbild speichern nach …"
 
@@ -442,6 +426,10 @@ msgid "{n} file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} Datei ausgewählt"
 msgstr[1] "{n} Dateien ausgewählt"
+
+#: src/window.py:293
+msgid "No supported files found in opened folder"
+msgstr ""
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
@@ -481,6 +469,36 @@ msgstr "Nächste Datei in Seitenleiste auswählen"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Tasten_kürzel"
+
+#~ msgid "Small and simple music tag editor"
+#~ msgstr "Kleiner und einfacher Musik-Tag-Editor"
+
+#~ msgid ""
+#~ "Ear Tag is a small and simple music tag editor that doesn't try to manage "
+#~ "your entire library."
+#~ msgstr ""
+#~ "Ear Tag ist ein kleiner und einfacher Musik-Tag-Editor, der nicht "
+#~ "versucht, Ihre gesamte Bibliothek zu verwalten."
+
+#~ msgid ""
+#~ "A lot of music tag editors are made to apply changes to entire music "
+#~ "libraries. They require you to set up a music folder, etc. This is "
+#~ "convenient when you want to keep your entire library in check, but "
+#~ "sometimes you just need to edit one file's data without any of the "
+#~ "additional hassle."
+#~ msgstr ""
+#~ "Viele Musik-Tag-Editoren sind dafür gemacht, Änderungen an gesamten Musik-"
+#~ "Bibliotheken vorzunehmen. Dafür müssen Sie einen Musik-Ordner einrichten, "
+#~ "etc. Das ist praktisch, wenn Sie Ihre gesamte Bibliothek geordnet halten "
+#~ "wollen, aber manchmal müssen Sie bloß die Daten einer einzigen Datei "
+#~ "bearbeiten, ohne den ganzen zusätzlichen Aufwand."
+
+#~ msgid ""
+#~ "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
+#~ "files as needed."
+#~ msgstr ""
+#~ "Deshalb wurde Ear Tag als einfacher Tag-Editor entworfen, der einzelne "
+#~ "Dateien nach Bedarf bearbeiten kann."
 
 #~ msgid "_Open file"
 #~ msgstr "_Datei öffnen"

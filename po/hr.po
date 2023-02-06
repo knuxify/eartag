@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-01 10:02+0100\n"
+"POT-Creation-Date: 2023-02-06 18:45+0100\n"
 "PO-Revision-Date: 2022-12-17 14:52+0100\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 # Translators: Do NOT translate or transliterate this text
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
-#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.appdata.xml.in:4
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -29,42 +29,22 @@ msgstr "Ear Tag"
 msgid "Tag Editor"
 msgstr "Označivač glazbe"
 
-#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.appdata.xml.in:5
-msgid "Small and simple music tag editor"
-msgstr "Mali i jednostavni označivač glazbe"
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr ""
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "muzika;audio;oznaka;označavanje;označivač;"
 
-#: data/app.drey.EarTag.appdata.xml.in:22
+#: data/app.drey.EarTag.metainfo.xml.in:23
 msgid ""
-"Ear Tag is a small and simple music tag editor that doesn't try to manage "
-"your entire library."
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder."
 msgstr ""
-"Ear Tag je mali i jednostavni program za označavanje vaše glazbe koji ne "
-"pokušava upravljati vašom cijelom bibliotekom."
-
-#: data/app.drey.EarTag.appdata.xml.in:23
-msgid ""
-"A lot of music tag editors are made to apply changes to entire music "
-"libraries. They require you to set up a music folder, etc. This is "
-"convenient when you want to keep your entire library in check, but sometimes "
-"you just need to edit one file's data without any of the additional hassle."
-msgstr ""
-"Puno \"označivača\" za glazbu napravljeni su da mijenjaju cijelu vašu "
-"biblioteku glazbe.  Oni zahtjevaju da postavite folder sa glazbom, itd. Ovo "
-"je zgodno kada želite  držati cijelu vašu biblioteku pod kontrolom, ali "
-"nekada morate promijeniti samo podatke jedne datoteke bez ikakvih dodatnih "
-"problema."
-
-#: data/app.drey.EarTag.appdata.xml.in:24
-msgid ""
-"Thus, Ear Tag was made to be a simple tag editor that can edit singular "
-"files as needed."
-msgstr ""
-"Stoga, Ear Tag je napravljen da bude jednostavni uređivač oznaka koji može "
-"uređivati pojedinačne datoteke."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
@@ -106,25 +86,30 @@ msgstr "Prikaži listu datoteka"
 
 #: src/ui/window.ui:235
 #, fuzzy
+msgid "_Open…"
+msgstr "_Otvori"
+
+#: src/ui/window.ui:237
+#, fuzzy
 msgid "_Open File"
 msgstr "Otvori datoteku"
 
-#: src/ui/window.ui:239
+#: src/ui/window.ui:241
 #, fuzzy
 msgid "O_pen Folder"
 msgstr "Otvori mapu"
 
-#: src/ui/window.ui:243
+#: src/ui/window.ui:246
 #, fuzzy
 msgid "_Save Cover to File"
 msgstr "S_premi naslovnicu u datoteku"
 
-#: src/ui/window.ui:249
+#: src/ui/window.ui:252
 #, fuzzy
 msgid "_Keyboard Shortcuts"
 msgstr "_Tipkovnički prečaci"
 
-#: src/ui/window.ui:253
+#: src/ui/window.ui:256
 msgid "_About Ear Tag"
 msgstr "_O Ear Tagu"
 
@@ -289,30 +274,30 @@ msgstr ""
 "Nije moguće učitati datoteku {f}. Više informacija potražite u logovima."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/file.py:142 src/file.py:273
+#: src/file.py:142 src/file.py:275
 msgid "OK"
 msgstr "OK"
 
-#: src/file.py:179
+#: src/file.py:181
 msgid "Opened file is read-only; changes cannot be saved."
 msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
 
-#: src/file.py:228
+#: src/file.py:231
 msgid "Some of the opened files are read-only; changes cannot be saved."
 msgstr ""
 "Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti."
 
-#: src/file.py:269
+#: src/file.py:271
 msgid "Failed to save file"
 msgstr "Spremanje datoteke nije uspjelo"
 
-#: src/file.py:270
+#: src/file.py:272
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "Nije moguće spremiti datoteku {f}. Više informacija potražite u logovima."
 
-#: src/file.py:279
+#: src/file.py:281
 msgid "Saved changes to files"
 msgstr "Spremljene promjene datoteka"
 
@@ -320,96 +305,96 @@ msgstr "Spremljene promjene datoteka"
 msgid "Select Album Cover Image"
 msgstr "Odaberite sliku naslovnice albuma"
 
-#: src/fileview.py:374
+#: src/fileview.py:389
 msgid "(Select a tag)"
 msgstr "(odaberite oznaku)"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/fileview.py:376
+#: src/fileview.py:391
 msgid "BPM"
 msgstr "otkucaja u minuti"
 
-#: src/fileview.py:377
+#: src/fileview.py:392
 msgid "Compilation"
 msgstr "Kompilacija"
 
-#: src/fileview.py:378
+#: src/fileview.py:393
 msgid "Composer"
 msgstr "Skladatelj"
 
-#: src/fileview.py:379
+#: src/fileview.py:394
 msgid "Copyright"
 msgstr "Autorska prava"
 
-#: src/fileview.py:380
+#: src/fileview.py:395
 msgid "Encoded by"
 msgstr "Kodirano od strane"
 
-#: src/fileview.py:381
+#: src/fileview.py:396
 msgid "Mood"
 msgstr "Raspoloženje"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/fileview.py:383
+#: src/fileview.py:398
 msgid "Conductor"
 msgstr "Dirigent"
 
-#: src/fileview.py:384
+#: src/fileview.py:399
 msgid "Arranger"
 msgstr "Aranžer"
 
-#: src/fileview.py:385
+#: src/fileview.py:400
 msgid "Disc number"
 msgstr "Broj diska"
 
-#: src/fileview.py:386
+#: src/fileview.py:401
 msgid "Publisher"
 msgstr "Izdavač"
 
-#: src/fileview.py:388
+#: src/fileview.py:403
 msgid "Language"
 msgstr "Jezik"
 
-#: src/fileview.py:389
+#: src/fileview.py:404
 msgid "Disc subtitle"
 msgstr "Podnaslov diska"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:392
+#: src/fileview.py:407
 msgid "Album artist (sort)"
 msgstr "Izvođač albuma (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:394
+#: src/fileview.py:409
 msgid "Album (sort)"
 msgstr "Omot albuma (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:396
+#: src/fileview.py:411
 msgid "Composer (sort)"
 msgstr "Skladatelj (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:398
+#: src/fileview.py:413
 msgid "Artist (sort)"
 msgstr "Umjetnik (vrsta)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-#: src/fileview.py:400
+#: src/fileview.py:415
 msgid "Title (sort)"
 msgstr "Naslov (vrsta)"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:715
+#: src/fileview.py:730
 msgid "(Multiple files selected)"
 msgstr "(Više datoteka odabrano)"
 
-#: src/fileview.py:736
+#: src/fileview.py:751
 msgid "File is read-only, saving is disabled"
 msgstr "Datoteka je samo za čitanje, spremanje je onemogućeno"
 
-#: src/fileview.py:1062
+#: src/fileview.py:1077
 #, python-brace-format
 msgid "{n} channel"
 msgid_plural "{n} channels"
@@ -417,7 +402,7 @@ msgstr[0] "{n} kanal"
 msgstr[1] "{n} kanala"
 msgstr[2] "{n} kanala"
 
-#: src/fileview.py:1078
+#: src/fileview.py:1098
 msgid "Save Album Cover To…"
 msgstr "Spremi naslovnicu albuma u..."
 
@@ -437,6 +422,10 @@ msgid_plural "{n} files selected"
 msgstr[0] "{n} datoteka odabrana"
 msgstr[1] "{n} datoteka odabrano"
 msgstr[2] "{n} datoteka odabrano"
+
+#: src/window.py:293
+msgid "No supported files found in opened folder"
+msgstr ""
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
@@ -477,6 +466,36 @@ msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "_Tipkovnički prečaci"
 
+#~ msgid "Small and simple music tag editor"
+#~ msgstr "Mali i jednostavni označivač glazbe"
+
+#~ msgid ""
+#~ "Ear Tag is a small and simple music tag editor that doesn't try to manage "
+#~ "your entire library."
+#~ msgstr ""
+#~ "Ear Tag je mali i jednostavni program za označavanje vaše glazbe koji ne "
+#~ "pokušava upravljati vašom cijelom bibliotekom."
+
+#~ msgid ""
+#~ "A lot of music tag editors are made to apply changes to entire music "
+#~ "libraries. They require you to set up a music folder, etc. This is "
+#~ "convenient when you want to keep your entire library in check, but "
+#~ "sometimes you just need to edit one file's data without any of the "
+#~ "additional hassle."
+#~ msgstr ""
+#~ "Puno \"označivača\" za glazbu napravljeni su da mijenjaju cijelu vašu "
+#~ "biblioteku glazbe.  Oni zahtjevaju da postavite folder sa glazbom, itd. "
+#~ "Ovo je zgodno kada želite  držati cijelu vašu biblioteku pod kontrolom, "
+#~ "ali nekada morate promijeniti samo podatke jedne datoteke bez ikakvih "
+#~ "dodatnih problema."
+
+#~ msgid ""
+#~ "Thus, Ear Tag was made to be a simple tag editor that can edit singular "
+#~ "files as needed."
+#~ msgstr ""
+#~ "Stoga, Ear Tag je napravljen da bude jednostavni uređivač oznaka koji "
+#~ "može uređivati pojedinačne datoteke."
+
 #~ msgid "_Open file"
 #~ msgstr "_Otvori datoteku"
 
@@ -503,6 +522,3 @@ msgstr "_Tipkovnički prečaci"
 
 #~ msgid "Tag your music files in peace"
 #~ msgstr "Označite svoju glazbu na miru"
-
-#~ msgid "_Open"
-#~ msgstr "_Otvori"
