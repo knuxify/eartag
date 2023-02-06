@@ -16,3 +16,5 @@ output/
 gschemas.compiled
 
 _example-notags-fortest.*
+
+*.mo
