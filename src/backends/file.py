@@ -348,13 +348,16 @@ class EartagFile(GObject.Object):
 
     # Additional tag properties.
 
-    @GObject.Property(type=int)
+    @GObject.Property(type=float)
     def bpm(self):
         if 'bpm' in self.supported_extra_tags:
             value = self.get_tag('bpm')
             if value:
-                # Some BPMs can be floating point values; round them down
-                return int(float(self.get_tag('bpm')))
+                # Some BPMs can be floating point values, so we treat this as a float
+                try:
+                    return float(self.get_tag('bpm'))
+                except ValueError:
+                    return 0
         return None
 
     @bpm.setter
@@ -362,7 +365,7 @@ class EartagFile(GObject.Object):
         if 'bpm' not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('bpm', int(value))
+            self.set_tag('bpm', float(value))
             self.mark_as_modified('bpm')
         elif self.has_tag('bpm'):
             self.delete_tag('bpm')

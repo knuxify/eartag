@@ -208,12 +208,27 @@ class EartagAlbumCoverButton(Adw.Bin):
     def on_unhover(self, *args):
         self.highlight_revealer.set_reveal_child(False)
 
+def isfloat(value):
+    """Checks if the given value is a valid float."""
+    try:
+        float(value)
+    except ValueError:
+        return False
+    return True
+
 class EartagTagListItemBase:
     def on_destroy(self, *args):
         self.files = []
 
     def disallow_nonnumeric(self, entry, text, length, position, *args):
-        if text and not text.isdigit():
+        if not text:
+            return
+        if self.properties[0] == 'bpm':
+            if '.' in text and '.' in entry.get_text():
+                GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            if text != '.' and not isfloat(text):
+                GObject.signal_stop_emission_by_name(entry, 'insert-text')
+        elif not text.isdigit():
             GObject.signal_stop_emission_by_name(entry, 'insert-text')
 
     def _set_property(self, property, property_double=None):

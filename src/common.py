@@ -131,9 +131,14 @@ class EartagMultipleValueEntry:
             self.ignore_edit[property] = True
             value = file.get_property(property)
             if isinstance(value, int) and value != -1:
-                entry.set_text(str(file.get_property(property))) # Ignore this warning, PyGObject won't actually accept a non-string here
+                entry.set_text(str(value)) # Ignore this warning, PyGObject won't actually accept a non-string here
+            elif isinstance(value, float):
+                if str(value).endswith('.0'):
+                    entry.set_text(str(value)[:-2])
+                else:
+                    entry.set_text(str(value))
             elif value:
-                entry.set_text(str(file.get_property(property)))
+                entry.set_text(str(value))
             else:
                 entry.set_text('')
             self.ignore_edit[property] = False
@@ -168,7 +173,10 @@ class EartagMultipleValueEntry:
             value = entry.get_text()
             if self._is_numeric:
                 try:
-                    value = int(value)
+                    if property == 'bpm':
+                        value = float(value)
+                    else:
+                        value = int(value)
                 except ValueError:
                     value = -1
             for file in self.files:
