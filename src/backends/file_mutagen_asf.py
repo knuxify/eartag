@@ -146,6 +146,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     def __init__(self, path):
         super().__init__(path)
         self.load_cover()
+        self.setup_present_extra_tags()
         self.setup_original_values()
 
     def get_tag(self, tag_name):

@@ -64,6 +64,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         self._cover_path = None
         self.coverart_tempfile = None
         self.load_cover()
+        self.setup_present_extra_tags()
         self.setup_original_values()
 
     def get_tag(self, tag_name):

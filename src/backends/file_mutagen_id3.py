@@ -129,6 +129,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             except mutagen.id3._util.error:
                 pass
         self.load_cover()
+        self.setup_present_extra_tags()
         self.setup_original_values()
 
     def get_tag(self, tag_name):
