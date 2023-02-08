@@ -86,7 +86,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     def __init__(self, path):
         super().__init__(path)
-        if not self.mg_file.tags:
+        if self.mg_file.tags == None:
             self.mg_file.add_tags()
         self.load_cover()
         self.setup_present_extra_tags()
