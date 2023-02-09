@@ -1,14 +1,14 @@
 # GERMAN TRANSLATION FOR EAR TAG.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the app.drey.EarTag package.
-# Jürgen Benvenuti <gastornis@posteo.org>, 2022.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-06 18:45+0100\n"
-"PO-Revision-Date: 2022-12-16 13:22+0100\n"
+"PO-Revision-Date: 2023-02-08 15:25+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -30,7 +30,7 @@ msgstr "Tag-Editor"
 #. TRANSLATORS: App description.
 #: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
 msgid "Edit audio file tags"
-msgstr ""
+msgstr "Tags von Audio-Dateien bearbeiten"
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
@@ -43,6 +43,11 @@ msgid ""
 "tagging programs, Ear Tag does not require the user to set up a music "
 "library folder."
 msgstr ""
+"Ear Tag ist ein einfacher Tag-Editor für Audio-Dateien. Er ist vor allem auf "
+"rasches Bearbeiten oder Massenbearbeitungen von Titeln in Alben oder EPs "
+"ausgerichtet. Anders als bei anderen Tagging-Programmen ist es bei Ear Tag "
+"nicht notwendig, dass der Benutzer einen Ordner für die Musikbibliothek "
+"einrichtet."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
@@ -85,25 +90,21 @@ msgstr "Dateiliste anzeigen"
 
 #: src/ui/window.ui:235
 msgid "_Open…"
-msgstr ""
+msgstr "Ö_ffnen …"
 
 #: src/ui/window.ui:237
-#, fuzzy
 msgid "_Open File"
-msgstr "Datei öffnen"
+msgstr "_Datei öffnen"
 
 #: src/ui/window.ui:241
-#, fuzzy
 msgid "O_pen Folder"
-msgstr "Ordner öffnen"
+msgstr "_Ordner öffnen"
 
 #: src/ui/window.ui:246
-#, fuzzy
 msgid "_Save Cover to File"
-msgstr "Albumbild in Datei speichern"
+msgstr "Albumbild in Datei _speichern"
 
 #: src/ui/window.ui:252
-#, fuzzy
 msgid "_Keyboard Shortcuts"
 msgstr "Tasten_kürzel"
 
@@ -257,7 +258,7 @@ msgstr "Ausgewählte Dateien entfernen"
 #. TRANSLATORS: Add your name/nickname here
 #: src/main.py:109 src/main.py:111
 msgid "translator-credits"
-msgstr "Jürgen Benvenuti <gastornis@posteo.org>, 2022"
+msgstr "Jürgen Benvenuti <gastornis@posteo.org>, 2022, 2023"
 
 #. TRANSLATORS: Placeholder displayed when multiple files with different values are created
 #: src/common.py:122
@@ -429,7 +430,7 @@ msgstr[1] "{n} Dateien ausgewählt"
 
 #: src/window.py:293
 msgid "No supported files found in opened folder"
-msgstr ""
+msgstr "Keine unterstützten Dateien im geöffneten Ordner gefunden"
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
@@ -438,37 +439,32 @@ msgstr "Albumbild"
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: src/ui/shortcuts.ui:16
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Open files"
 msgstr "Dateien öffnen"
 
 #: src/ui/shortcuts.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Alle geänderten Dateien speichern"
 
 #: src/ui/shortcuts.ui:30
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
 msgstr "Vorige Datei in Seitenleiste auswählen"
 
 #: src/ui/shortcuts.ui:37
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Nächste Datei in Seitenleiste auswählen"
 
 #: src/ui/shortcuts.ui:44
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr "Tasten_kürzel"
+msgstr "Tastenkürzel"
 
 #~ msgid "Small and simple music tag editor"
 #~ msgstr "Kleiner und einfacher Musik-Tag-Editor"
