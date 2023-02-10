@@ -7,8 +7,17 @@
   <id>app.drey.EarTag</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
+
   <launchable type="desktop-id">app.drey.EarTag.desktop</launchable>
+
   <content_rating type="oars-1.1"/>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
   <releases>
     <release version="0.3.1" date="2022-12-30"/>
     <release version="0.3.0" date="2022-12-24"/>
@@ -19,17 +28,22 @@
       <description>Initial release.</description>
     </release>
   </releases>
+
   <url type="homepage">https://gitlab.gnome.org/knuxify/eartag</url>
+
   <description>
     <p>Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder.</p>
   </description>
+
   <categories>
     <category>AudioVideo</category>
   </categories>
+
   <kudos>
     <kudo>ModernToolkit</kudo>
     <kudo>HiDpiIcon</kudo>
   </kudos>
+
   <screenshots>
     <screenshot type="default">
       <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-scaled.png</image>
