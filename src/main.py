@@ -101,9 +101,9 @@ class Application(Adw.Application):
             developers=["knuxify"],
             artists=["Igor Dyatlov"],
             license_type=Gtk.License.MIT_X11,
-            issue_url="https://github.com/knuxify/eartag/issues",
+            issue_url="https://gitlab.gnome.org/knuxify/eartag/-/issues",
             version=self.version,
-            website="https://github.com/knuxify/eartag"
+            website="https://gitlab.gnome.org/knuxify/eartag"
         )
 
         if self._('translator-credits') != 'translator-credits':

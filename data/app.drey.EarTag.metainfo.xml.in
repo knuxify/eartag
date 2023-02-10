@@ -18,11 +18,11 @@
 			<description>Initial release.</description>
 		</release>
 	</releases>
-	<url type="homepage">https://github.com/knuxify/eartag</url>
+	<url type="homepage">https://gitlab.gnome.org/knuxify/eartag</url>
 	<description>
 	  <p>Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder.</p>
 	</description>
 	<screenshots>
-		<screenshot type="default">https://raw.githubusercontent.com/knuxify/eartag/main/data/screenshot-scaled.png</screenshot>
+		<screenshot type="default">https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-scaled.png</screenshot>
 	</screenshots>
 </component>
