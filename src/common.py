@@ -212,8 +212,18 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
         #        -> GtkLabel
         # We use "get_first_child" since that's the easiest way to get
         # the direct child of the object (EditableLabel has no get_child).
-        label = self.get_first_child().get_pages()[0].get_child()
-        editable = self.get_first_child().get_pages()[1].get_child()
+        stack = self.get_first_child()
+        label = stack.get_pages()[0].get_child()
+        editable = stack.get_pages()[1].get_child()
+
+        # If we make the editable label focusable, clicking on it to edit it
+        # then clicking on another field will cause the editable label to
+        # return the focus to itself. Making it unfocusable fixes it, but also
+        # makes it impossible to switch to it using the keyboard. So instead,
+        # we make the inner stack focusable, which avoids this behavior while
+        # still making the label selectable with the keyboard.
+        self.set_focusable(False)
+        stack.set_focusable(True)
 
         label.set_wrap(True)
         label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
