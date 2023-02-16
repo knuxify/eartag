@@ -1,14 +1,14 @@
 # Croatian translation for app.drey.EarTag.
 # Copyright (C) THE app.drey.EarTag'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the app.drey.EarTag package.
-# sheep <sheep@sheepdev.xyz>, 2022.
+# sheep <sheep@sheepdev.xyz>, 2022-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-06 18:45+0100\n"
-"PO-Revision-Date: 2022-12-17 14:52+0100\n"
+"PO-Revision-Date: 2023-02-16 11:23+0100\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
 "Language: hr\n"
@@ -32,7 +32,7 @@ msgstr "Označivač glazbe"
 #. TRANSLATORS: App description.
 #: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
 msgid "Edit audio file tags"
-msgstr ""
+msgstr "Uređivač oznaka audio datoteka"
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
@@ -45,6 +45,10 @@ msgid ""
 "tagging programs, Ear Tag does not require the user to set up a music "
 "library folder."
 msgstr ""
+"Ear Tag jednostavan je uređivač oznaka audio datoteka. Prvenstveno je "
+"namijenjen brzom uređivanju ili skupnom uređivanju pjesama u albumima/EP-"
+"ima. Za razliku od drugih programa za označavanje, Ear Tag ne zahtijeva od "
+"korisnika postavljanje mape glazbene knjižnice."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
@@ -85,29 +89,24 @@ msgid "Show file list"
 msgstr "Prikaži listu datoteka"
 
 #: src/ui/window.ui:235
-#, fuzzy
 msgid "_Open…"
-msgstr "_Otvori"
+msgstr "_Otvori..."
 
 #: src/ui/window.ui:237
-#, fuzzy
 msgid "_Open File"
-msgstr "Otvori datoteku"
+msgstr "_Otvori datoteku"
 
 #: src/ui/window.ui:241
-#, fuzzy
 msgid "O_pen Folder"
-msgstr "Otvori mapu"
+msgstr "O_tvori mapu"
 
 #: src/ui/window.ui:246
-#, fuzzy
 msgid "_Save Cover to File"
-msgstr "S_premi naslovnicu u datoteku"
+msgstr "_Spremi naslovnicu u datoteku"
 
 #: src/ui/window.ui:252
-#, fuzzy
 msgid "_Keyboard Shortcuts"
-msgstr "_Tipkovnički prečaci"
+msgstr "_Tipkovnički Prečaci"
 
 #: src/ui/window.ui:256
 msgid "_About Ear Tag"
@@ -425,7 +424,7 @@ msgstr[2] "{n} datoteka odabrano"
 
 #: src/window.py:293
 msgid "No supported files found in opened folder"
-msgstr ""
+msgstr "U otvorenoj mapi nisu pronađene podržane datoteke"
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
@@ -434,37 +433,32 @@ msgstr "Omot albuma"
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Općenito"
 
 #: src/ui/shortcuts.ui:16
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Open files"
 msgstr "Otvori datoteke"
 
 #: src/ui/shortcuts.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Spremite sve izmijenjene datoteke"
 
 #: src/ui/shortcuts.ui:30
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
 msgstr "Odaberite prethodnu datoteku na bočnoj traci"
 
 #: src/ui/shortcuts.ui:37
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Odaberite sljedeću datoteku na bočnoj traci"
 
 #: src/ui/shortcuts.ui:44
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr "_Tipkovnički prečaci"
+msgstr "Tipkovnički prečaci"
 
 #~ msgid "Small and simple music tag editor"
 #~ msgstr "Mali i jednostavni označivač glazbe"
