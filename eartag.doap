@@ -5,7 +5,7 @@
          xmlns="http://usefulinc.com/ns/doap#">
 
   <name xml:lang="en">Ear Tag</name>
-  <shortdesc xml:lang="en">Small and simple music tag editor</shortdesc>
+  <shortdesc xml:lang="en">Edit audio file tags</shortdesc>
   <homepage rdf:resource="https://gitlab.gnome.org/knuxify/eartag" />
   <bug-database rdf:resource="https://gitlab.gnome.org/knuxify/eartag/-/issues"/>
 
