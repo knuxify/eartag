@@ -974,6 +974,7 @@ class EartagFileView(Gtk.Stack):
             entry = self.unused_entries[0]
             self.unused_entries.remove(entry)
             entry._set_property(tag)
+            entry.set_sensitive(True)
         else:
             entry = EartagTagListMoreItem(tag)
         self.more_entries.append(entry)
