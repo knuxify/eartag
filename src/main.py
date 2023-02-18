@@ -84,9 +84,16 @@ class Application(Adw.Application):
         self.save_cover_action = Gio.SimpleAction.new('save_cover', None)
         self.save_cover_action.connect("activate", self.on_save_cover_action)
         self.add_action(self.save_cover_action)
+        self.save_cover_action.set_enabled(False)
 
         win.present()
         self._ = _
+
+    def create_action(self, name, callback):
+        """ Add an Action and connect to a callback """
+        action = Gio.SimpleAction.new(name, None)
+        action.connect("activate", callback)
+        self.add_action(action)
 
     def on_save_action(self, widget, _):
         self.get_active_window().file_view.save()
@@ -157,12 +164,6 @@ Opened files:
         window = self.get_active_window()
         window.open_mode = EartagFileManager.LOAD_OVERWRITE
         window.show_file_chooser(folders=True)
-
-    def create_action(self, name, callback):
-        """ Add an Action and connect to a callback """
-        action = Gio.SimpleAction.new(name, None)
-        action.connect("activate", callback)
-        self.add_action(action)
 
     def on_next_action(self, *args):
         win = self.props.active_window
