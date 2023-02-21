@@ -76,8 +76,13 @@ class EartagCloseWarningDialog(Adw.MessageDialog):
 class EartagNoFile(Adw.Bin):
     __gtype_name__ = 'EartagNoFile'
 
+    open_file = Gtk.Template.Child()
+
     def __init__(self):
         super().__init__()
+
+    def grab_button_focus(self, *args):
+        self.open_file.grab_focus()
 
     @Gtk.Template.Callback()
     def on_add_file(self, *args):
@@ -107,6 +112,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
+
+    no_file_widget = Gtk.Template.Child()
 
     toast_overlay = Gtk.Template.Child()
     overlay = Gtk.Template.Child()
@@ -186,6 +193,7 @@ class EartagWindow(Adw.ApplicationWindow):
                 self.sort_button.set_sensitive(True)
         else:
             self.container_stack.set_visible_child(self.no_file)
+            self.no_file_widget.grab_button_focus()
             self.select_multiple_button.set_sensitive(False)
             self.sidebar_search_button.set_sensitive(False)
             self.sort_button.set_sensitive(False)

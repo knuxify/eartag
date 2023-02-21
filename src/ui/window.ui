@@ -91,7 +91,7 @@
                     </child>
 
                     <child>
-                      <object class="EartagNoFile"/>
+                      <object class="EartagNoFile" id="no_file_widget"/>
                     </child>
                   </object>
                 </child>
