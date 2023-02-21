@@ -86,6 +86,9 @@ class Application(Adw.Application):
         self.add_action(self.save_cover_action)
         self.save_cover_action.set_enabled(False)
 
+        self.create_action('quit', self.on_quit_action)
+        self.set_accels_for_action('app.quit', ('<Ctrl>q', None))
+
         win.present()
         self._ = _
 
@@ -172,6 +175,10 @@ Opened files:
     def on_previous_action(self, *args):
         win = self.props.active_window
         win.sidebar.select_previous()
+
+    def on_quit_action(self, *args):
+        win = self.props.active_window
+        win.close()
 
 def main(version):
     app = Application(version)
