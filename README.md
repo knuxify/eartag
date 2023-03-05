@@ -42,7 +42,11 @@ For development purposes, this is automated in the provided `run` script.
 
 ## Contributing
 
-Project development happens on [GNOME's GitLab instance](https://gitlab.gnome.org/knuxify/eartag). For starters, check out the [open issues](https://gitlab.gnome.org/knuxify/eartag/-/issues), or pick something from the TODO list below.
+Project development happens on [GNOME's GitLab instance](https://gitlab.gnome.org/knuxify/eartag). For starters, check out the [open issues](https://gitlab.gnome.org/knuxify/eartag/-/issues).
+
+You are expected to follow the [GNOME Code of Conduct](https://wiki.gnome.org/Foundation/CodeOfConduct) when participating in project spaces.
+
+### Commit style
 
 **Please follow the following commit style:**
 
