@@ -40,6 +40,14 @@
 
             <child>
               <object class="GtkShortcutsShortcut">
+                <property name="action-name">app.close_selected</property>
+                <property name="title" translatable="yes" context="shortcut window">Remove selected files from file</property>
+                <property name="subtitle" translatable="yes" context="shortcut window">Closes the window if no files are present.</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkShortcutsShortcut">
                 <property name="action-name">win.show-help-overlay</property>
                 <property name="title" translatable="yes" context="shortcut window">Keyboard shortcuts</property>
               </object>

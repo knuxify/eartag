@@ -77,9 +77,11 @@ class Application(Adw.Application):
         self.create_action('open_folder', self.on_open_folder_action)
 
         self.create_action('next_file', self.on_next_action)
-        self.set_accels_for_action('app.next_file', ('<Ctrl>l', None))
+        self.set_accels_for_action('app.next_file', ('<Alt>Right', None))
         self.create_action('previous_file', self.on_previous_action)
-        self.set_accels_for_action('app.previous_file', ('<Ctrl>j', None))
+        self.set_accels_for_action('app.previous_file', ('<Alt>Left', None))
+        self.create_action('close_selected', self.on_close_selected_action)
+        self.set_accels_for_action('app.close_selected', ('<Ctrl>w', None))
 
         self.save_cover_action = Gio.SimpleAction.new('save_cover', None)
         self.save_cover_action.connect("activate", self.on_save_cover_action)
@@ -175,6 +177,13 @@ Opened files:
     def on_previous_action(self, *args):
         win = self.props.active_window
         win.sidebar.select_previous()
+
+    def on_close_selected_action(self, *args):
+        win = self.props.active_window
+        if win.file_manager.files:
+            win.sidebar.remove_selected()
+        else:
+            win.close()
 
     def on_quit_action(self, *args):
         win = self.props.active_window
