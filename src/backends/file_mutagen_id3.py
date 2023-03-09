@@ -71,7 +71,8 @@ KEY_TO_FRAME = {
     'isrc': 'TSRC',
     'discsubtitle': 'TSST',
     'language': 'TLAN',
-    'comment': 'COMM::eng'
+    'comment': 'COMM::eng',
+    'url': 'WXXX:',
 }
 
 KEY_TO_FRAME_CLASS = {
@@ -104,7 +105,8 @@ KEY_TO_FRAME_CLASS = {
     'isrc': mutagen.id3.TSRC,
     'discsubtitle': mutagen.id3.TSST,
     'language': mutagen.id3.TLAN,
-    'comment': mutagen.id3.COMM
+    'comment': mutagen.id3.COMM,
+    'url': mutagen.id3.WXXX
 }
 
 class EartagFileMutagenID3(EartagFileMutagenCommon):
@@ -115,7 +117,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     supported_extra_tags = (
         'bpm', 'compilation', 'composer', 'copyright', 'encodedby',
         'mood', 'conductor', 'arranger', 'discnumber', 'publisher',
-        'isrc', 'language', 'discsubtitle',
+        'isrc', 'language', 'discsubtitle', 'url',
 
         'albumartistsort', 'albumsort', 'composersort', 'artistsort',
         'titlesort'
@@ -168,6 +170,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         if tag_name == 'releaseyear':
             self.mg_file.tags.delall('TDRC')
             self.mg_file.tags.delall('TDOR')
+        elif tag_name == 'url':
+            self.mg_file.tags.delall('WXXX')
         else:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             self.mg_file.tags.delall(frame_name)
@@ -345,3 +349,19 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     def discnumber(self, value):
         self.set_tag('discnumber', f'{value}/{value}')
         self.mark_as_modified('discnumber')
+
+    @GObject.Property(type=str)
+    def url(self):
+        if 'WXXX' in self.mg_file.tags:
+            return self.mg_file.tags['WXXX'].url
+        elif 'WXXX:' in self.mg_file.tags:
+            return self.mg_file.tags['WXXX:'].url
+        return None
+
+    @url.setter
+    def url(self, value):
+        if value:
+            self.mg_file.tags.setall('WXXX', [mutagen.id3.WXXX(encoding=3, desc='', url=str(value))])
+            self.mark_as_modified('url')
+        else:
+            self.delete_tag('url')

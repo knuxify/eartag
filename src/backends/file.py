@@ -647,6 +647,22 @@ class EartagFile(GObject.Object):
             self.delete_tag('titlesort')
 
     @GObject.Property(type=str)
+    def url(self):
+        if 'url' in self.supported_extra_tags:
+            return self.get_tag('url')
+        return None
+
+    @url.setter
+    def url(self, value):
+        if 'url' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('url', value)
+            self.mark_as_modified('url')
+        elif self.has_tag('url'):
+            self.delete_tag('url')
+
+    @GObject.Property(type=str)
     def none(self):
         return ''
 

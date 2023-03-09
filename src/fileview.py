@@ -402,6 +402,7 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         "isrc": "ISRC",
         "language": _("Language"),
         "discsubtitle": _("Disc subtitle"),
+        "url": _("Website/URL"),
 
         # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
         "albumartistsort": _("Album artist (sort)"),
