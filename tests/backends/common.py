@@ -27,6 +27,7 @@ prop_to_example_string = {
     'isrc': 'Example-ISRC',
     'language': 'Example Language',
     'discsubtitle': 'Example Disc Subtitle',
+    'url': 'https://example.com',
 
     'albumartistsort': 'Example Album Artist (sort)',
     'albumsort': 'Example Album (sort)',
