@@ -300,7 +300,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             self.mg_file.tags.add(mutagen.id3.TCON(encoding=3, text=[value]))
         else:
             genre_raw.encoding = 3
-            genre_raw.frames = [value]
+            genre_raw.genres = [value]
         self.mark_as_modified('genre')
 
     @GObject.Property()
