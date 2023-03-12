@@ -306,6 +306,7 @@ class EartagWindow(Adw.ApplicationWindow):
     @Gtk.Template.Callback()
     def show_sidebar(self, *args):
         self.container_flap.set_reveal_flap(True)
+        self.sidebar.file_list.grab_focus()
 
     @Gtk.Template.Callback()
     def hide_sidebar(self, *args):
@@ -332,3 +333,4 @@ class EartagWindow(Adw.ApplicationWindow):
             self.close_request_dialog = EartagCloseWarningDialog(self)
             self.close_request_dialog.present()
             return True
+
