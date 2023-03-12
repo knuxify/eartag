@@ -167,9 +167,7 @@
                             <child type="end">
                               <object class="GtkToggleButton" id="sidebar_search_button">
                                 <property name="icon-name">edit-find-symbolic</property>
-                                <accessibility>
-                                  <property name="label" translatable="yes">Search</property>
-                                </accessibility>
+                                <property name="tooltip-text" translatable="yes">Search opened files</property>
                               </object>
                             </child>
                           </object>
