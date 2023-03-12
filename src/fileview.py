@@ -1083,7 +1083,7 @@ class EartagFileView(Gtk.Stack):
         else:
             bitrate_readable = "N/A"
 
-        self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
+        self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
             filetype=file.filetype,
             length=length_readable,
             bitrate=bitrate_readable,
