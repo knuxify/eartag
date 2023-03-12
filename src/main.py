@@ -111,7 +111,7 @@ class Application(Adw.Application):
             application_name="Ear Tag",
             application_icon="app.drey.EarTag",
             developers=["knuxify"],
-            artists=["Igor Dyatlov"],
+            artists=["Jakub Steiner", "Igor Dyatlov"],
             license_type=Gtk.License.MIT_X11,
             issue_url="https://gitlab.gnome.org/knuxify/eartag/-/issues",
             version=self.version,
