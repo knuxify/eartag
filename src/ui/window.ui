@@ -83,7 +83,7 @@
 
                         <child type="end">
                           <object class="GtkMenuButton">
-                            <property name="icon-name">view-more-symbolic</property>
+                            <property name="icon-name">open-menu-symbolic</property>
                             <property name="menu-model">primary_menu</property>
                           </object>
                         </child>
@@ -212,7 +212,7 @@
 
                             <child type="end">
                               <object class="GtkMenuButton">
-                                <property name="icon-name">view-more-symbolic</property>
+                                <property name="icon-name">open-menu-symbolic</property>
                                 <property name="menu-model">primary_menu</property>
                               </object>
                             </child>
