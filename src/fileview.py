@@ -292,11 +292,7 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
             return
         self._placeholder = text
         if text:
-            # TODO: it would be nice to have the placeholder text highlighted in bold,
-            # currently https://gitlab.gnome.org/GNOME/libadwaita/-/issues/579 is
-            # preventing us from doing that but i got a fix for it merged; revisit once
-            # the next minor libadwaita release is out
-            self.set_title(self.get_title() + ' ' + text)
+            self.set_title(self.get_title() + ' <b>' + text + '</b>')
         else:
             if self._title:
                 self.set_title(self._title)
