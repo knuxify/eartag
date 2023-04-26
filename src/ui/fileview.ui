@@ -30,6 +30,7 @@
             <property name="vexpand">true</property>
             <child>
               <object class="AdwClamp">
+                <property name="maximum-size">576</property>
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
@@ -38,8 +39,8 @@
 
                     <property name="margin-top">36</property>
                     <property name="margin-bottom">36</property>
-                    <property name="margin-start">24</property>
-                    <property name="margin-end">24</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
 
                     <child>
                       <object class="GtkOverlay" id="cover_overlay">
@@ -53,12 +54,18 @@
                             <property name="valign">center</property>
                             <property name="reveal-child">false</property>
                             <property name="transition-type">crossfade</property>
+
+                            <style>
+                              <class name="prev-next-button-container"/>
+                            </style>
+
                             <child>
                               <object class="GtkButton" id="previous_file_button">
                                 <property name="tooltip-text" translatable="yes">Previous file</property>
                                 <property name="icon-name">go-previous-symbolic</property>
                                 <style>
                                   <class name="osd"/>
+                                  <class name="prev-next-button"/>
                                 </style>
                               </object>
                             </child>
@@ -71,6 +78,11 @@
                             <property name="valign">center</property>
                             <property name="reveal-child">false</property>
                             <property name="transition-type">crossfade</property>
+
+                            <style>
+                              <class name="prev-next-button-container"/>
+                            </style>
+
                             <child>
                               <object class="GtkButton" id="next_file_button">
                                 <property name="tooltip-text" translatable="yes">Next file</property>

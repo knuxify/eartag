@@ -372,6 +372,8 @@ class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultip
             self.value_entry_double.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.value_entry_double.get_delegate().connect('insert-text', self.disallow_nonnumeric)
 
+more_item_size_group = Gtk.SizeGroup()
+
 class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultipleValueEntry):
     __gtype_name__ = 'EartagTagListMoreItem'
 
@@ -448,18 +450,21 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         self.tag_model.set_filter(self.tag_filter)
 
         self.tag_selector = Gtk.DropDown.new(model=self.tag_model)
+        self.tag_selector.set_size_request(180, 0)
         self.tag_selector.set_valign(Gtk.Align.CENTER)
         # I wish we could just use "DropDown:activate" but it never gets emitted,
         # but it is just a ToggleButton underneath!
         self.tag_selector.get_first_child().connect('clicked', self.refresh_filter)
         self.tag_selector.connect('notify::selected', self.on_tag_selector_select)
 
+        global more_item_size_group
+        more_item_size_group.add_widget(self.tag_selector)
+
         if property:
             self._set_property(property)
         self.on_tag_selector_select(self.tag_selector)
         self.add_prefix(self.tag_selector)
 
-        self.set_activatable_widget(self.value_entry)
         self.connect('destroy', self.on_destroy)
 
     @GObject.Property(type=bool, default=False)
