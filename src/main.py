@@ -69,36 +69,37 @@ class Application(Adw.Application):
         win = self.props.active_window
         if not win:
             win = EartagWindow(application=self, paths=self.paths)
-        self.create_action('about', self.on_about_action)
-        self.create_action('open_file', self.on_open_file_action)
-        self.set_accels_for_action('app.open_file', ('<Ctrl>o', None))
-        self.create_action('save', self.on_save_action)
-        self.set_accels_for_action('app.save', ('<Ctrl>s', None))
-        self.create_action('open_folder', self.on_open_folder_action)
+        self.create_action('about', self.on_about_action, None)
 
-        self.create_action('next_file', self.on_next_action)
-        self.set_accels_for_action('app.next_file', ('<Alt>Right', None))
-        self.create_action('previous_file', self.on_previous_action)
-        self.set_accels_for_action('app.previous_file', ('<Alt>Left', None))
-        self.create_action('close_selected', self.on_close_selected_action)
-        self.set_accels_for_action('app.close_selected', ('<Ctrl>w', None))
+        self.create_action('open_file', self.on_open_file_action, '<Ctrl>o')
+        self.create_action('save', self.on_save_action, '<Ctrl>s')
+        self.create_action('open_folder', self.on_open_folder_action, '<Ctrl>d')
+
+        self.create_action('next_file', self.on_next_action, '<Alt>Right')
+        self.create_action('previous_file', self.on_previous_action, '<Alt>Left')
+        self.create_action('close_selected', self.on_close_selected_action, '<Ctrl>w')
+        self.create_action('select_all', self.on_select_all_action, '<Ctrl><Shift>a')
+
+        self.create_action('toggle_sidebar', self.on_toggle_sidebar_action, 'F9')
+        self.create_action('open_menu', self.on_open_menu_action, 'F10')
 
         self.save_cover_action = Gio.SimpleAction.new('save_cover', None)
         self.save_cover_action.connect("activate", self.on_save_cover_action)
         self.add_action(self.save_cover_action)
         self.save_cover_action.set_enabled(False)
 
-        self.create_action('quit', self.on_quit_action)
-        self.set_accels_for_action('app.quit', ('<Ctrl>q', None))
+        self.create_action('quit', self.on_quit_action, '<Ctrl>q')
 
         win.present()
         self._ = _
 
-    def create_action(self, name, callback):
+    def create_action(self, name, callback, accel=None):
         """ Add an Action and connect to a callback """
         action = Gio.SimpleAction.new(name, None)
         action.connect("activate", callback)
         self.add_action(action)
+        if accel:
+            self.set_accels_for_action(f'app.{name}', (accel, None))
 
     def on_save_action(self, widget, _):
         self.get_active_window().file_view.save()
@@ -184,6 +185,31 @@ Opened files:
             win.sidebar.remove_selected()
         else:
             win.close()
+
+    def on_select_all_action(self, *args):
+        win = self.props.active_window
+        if win.container_stack.get_visible_child() != win.container_flap:
+            return
+        if not win.sidebar.selection_mode:
+            win.sidebar.props.selection_mode = True
+        win.sidebar.select_all()
+
+    def on_toggle_sidebar_action(self, *args):
+        win = self.props.active_window
+        if win.container_flap.get_folded():
+            if win.container_flap.get_reveal_flap():
+                win.hide_sidebar()
+            else:
+                win.show_sidebar()
+        else:
+            win.sidebar.file_list.grab_focus()
+
+    def on_open_menu_action(self, *args):
+        win = self.props.active_window
+        if win.container_stack.get_visible_child() == win.container_flap:
+            win.primary_menu_button.activate()
+        else:
+            win.empty_primary_menu_button.activate()
 
     def on_quit_action(self, *args):
         win = self.props.active_window

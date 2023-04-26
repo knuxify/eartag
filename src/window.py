@@ -119,6 +119,9 @@ class EartagWindow(Adw.ApplicationWindow):
     overlay = Gtk.Template.Child()
     drop_highlight_revealer = Gtk.Template.Child()
 
+    primary_menu_button = Gtk.Template.Child()
+    empty_primary_menu_button = Gtk.Template.Child()
+
     force_close = False
     file_chooser = None
 

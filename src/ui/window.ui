@@ -82,7 +82,7 @@
                         </style>
 
                         <child type="end">
-                          <object class="GtkMenuButton">
+                          <object class="GtkMenuButton" id="empty_primary_menu_button">
                             <property name="icon-name">open-menu-symbolic</property>
                             <property name="menu-model">primary_menu</property>
                           </object>
@@ -211,7 +211,7 @@
                             </child>
 
                             <child type="end">
-                              <object class="GtkMenuButton">
+                              <object class="GtkMenuButton" id="primary_menu_button">
                                 <property name="icon-name">open-menu-symbolic</property>
                                 <property name="menu-model">primary_menu</property>
                               </object>

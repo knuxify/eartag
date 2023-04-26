@@ -9,7 +9,7 @@
 
         <child>
           <object class="GtkShortcutsGroup">
-            <property name="title" translatable="yes" context="shortcut window">General</property>
+            <property name="title" translatable="yes" context="shortcut window">Files</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="action-name">app.open_file</property>
@@ -19,11 +19,23 @@
 
             <child>
               <object class="GtkShortcutsShortcut">
+                <property name="action-name">app.open_folder</property>
+                <property name="title" translatable="yes" context="shortcut window">Open folder</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkShortcutsShortcut">
                 <property name="action-name">app.save</property>
                 <property name="title" translatable="yes" context="shortcut window">Save all modified files</property>
               </object>
             </child>
+          </object>
+        </child>
 
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">Sidebar</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="action-name">app.previous_file</property>
@@ -40,12 +52,24 @@
 
             <child>
               <object class="GtkShortcutsShortcut">
-                <property name="action-name">app.close_selected</property>
-                <property name="title" translatable="yes" context="shortcut window">Remove selected files from file</property>
-                <property name="subtitle" translatable="yes" context="shortcut window">Closes the window if no files are present.</property>
+                <property name="action-name">app.select_all</property>
+                <property name="title" translatable="yes" context="shortcut window">Select all files in sidebar</property>
               </object>
             </child>
 
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="action-name">app.close_selected</property>
+                <property name="title" translatable="yes" context="shortcut window">Remove selected files from sidebar</property>
+                <property name="subtitle" translatable="yes" context="shortcut window">Closes the window if no files are present.</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="title" translatable="yes" context="shortcut window">Other</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="action-name">win.show-help-overlay</property>
