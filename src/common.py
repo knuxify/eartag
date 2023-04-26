@@ -247,6 +247,7 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
 
         self.label = label
         self.editable = editable
+        self.stack = stack
         self.display_placeholder()
 
         self.files = []
@@ -260,6 +261,7 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
             self.label.add_css_class('dim-label')
         else:
             self.label.remove_css_class('dim-label')
+        self.stack.update_property([Gtk.AccessibleProperty.LABEL], [self.label.get_label()])
 
     @GObject.Property(type=str)
     def placeholder(self):
