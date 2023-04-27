@@ -33,7 +33,7 @@ from .common import (
     EartagAlbumCoverImage,
     EartagMultipleValueEntry
 )
-from .backends.file import EartagFile
+from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path
@@ -381,39 +381,6 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
     _is_numeric = False
     _max_width_chars = -1
 
-    # I wish GTK had a built-in list type like StringList but for ID-human readable value pairs,
-    # but for now this will have to suffice:
-    tag_names = {
-        "none": _("(Select a tag)"),
-        # TRANSLATORS: Short for "beats per minute".
-        "bpm": _("BPM"),
-        "compilation": _("Compilation"),
-        "composer": _("Composer"),
-        "copyright": _("Copyright"),
-        "encodedby": _("Encoded by"),
-        "mood": _("Mood"),
-        # TRANSLATORS: Orchestra conductor
-        "conductor": _("Conductor"),
-        "arranger": _("Arranger"),
-        "discnumber": _("Disc number"),
-        "publisher": _("Publisher"),
-        "isrc": "ISRC",
-        "language": _("Language"),
-        "discsubtitle": _("Disc subtitle"),
-        "url": _("Website/URL"),
-
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "albumartistsort": _("Album artist (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "albumsort": _("Album (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "composersort": _("Composer (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "artistsort": _("Artist (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "titlesort": _("Title (sort)")
-    }
-
     handled_tags = []
     skip_filter_change = False
 
@@ -429,6 +396,10 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         self.ignore_edit = {}
         self._numeric_connect = None
         self.ignore_selector_select = False
+
+        self.tag_names = TAG_NAMES.copy()
+        for tag in BASIC_TAGS:
+            del self.tag_names[tag]
 
         self._tag_names_swapped = {}
         for k, v in self.tag_names.items():
@@ -805,7 +776,7 @@ class EartagFileView(Gtk.Stack):
 
         EartagTagListMoreItem.skip_filter_change = True
 
-        all_tags = EartagTagListMoreItem.tag_names.keys()
+        all_tags = EXTRA_TAGS
         more_entries_dict = dict([(entry.properties[0], entry) for entry in self.more_entries])
 
         banned_tags_list = []

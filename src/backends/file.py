@@ -32,6 +32,63 @@ from gi.repository import GObject, GdkPixbuf
 import filecmp
 import os
 
+BASIC_TAGS = (
+    'title', 'artist', 'album', 'albumartist', 'tracknumber',
+    'totaltracknumber', 'genre', 'releaseyear', 'comment'
+)
+
+EXTRA_TAGS = (
+    'bpm', 'compilation', 'composer', 'copyright', 'encodedby',
+    'mood', 'conductor', 'arranger', 'discnumber', 'publisher',
+    'isrc', 'language', 'discsubtitle', 'url',
+
+    'albumartistsort', 'albumsort', 'composersort', 'artistsort',
+    'titlesort'
+)
+
+# Human-readable tag names
+TAG_NAMES = {
+        "title": _("Title"),
+        "artist": _("Artist"),
+        "album": _("Album"),
+        "albumartist": _("Album artist"),
+        "tracknumber": _("Track number"),
+        "totaltracknumber": _("Total tracks"),
+        "genre": _("Genre"),
+        "releaseyear": _("Release year"),
+        "comment": _("Comment"),
+
+        "none": _("(Select a tag)"),
+        # TRANSLATORS: Short for "beats per minute".
+        "bpm": _("BPM"),
+        "compilation": _("Compilation"),
+        "composer": _("Composer"),
+        "copyright": _("Copyright"),
+        "encodedby": _("Encoded by"),
+        "mood": _("Mood"),
+        # TRANSLATORS: Orchestra conductor
+        "conductor": _("Conductor"),
+        "arranger": _("Arranger"),
+        "discnumber": _("Disc number"),
+        "publisher": _("Publisher"),
+        "isrc": "ISRC",
+        "language": _("Language"),
+        "discsubtitle": _("Disc subtitle"),
+        "url": _("Website/URL"),
+
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "albumartistsort": _("Album artist (sort)"),
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "albumsort": _("Album (sort)"),
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "composersort": _("Composer (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "artistsort": _("Artist (sort)"),
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        "titlesort": _("Title (sort)")
+    }
+
+
 class EartagFileCover:
     """This class is only used for comparing two covers on two files."""
     def __init__(self, cover_path):
