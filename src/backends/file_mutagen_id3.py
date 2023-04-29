@@ -123,8 +123,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         'titlesort'
     )
 
-    def __init__(self, path):
-        super().__init__(path)
+    def load_from_file(self, path):
+        super().load_from_file(path)
         if not self.mg_file.tags:
             try:
                 self.mg_file.add_tags()

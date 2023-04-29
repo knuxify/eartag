@@ -59,8 +59,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         'encodedby': 'encoder' # There's also ENCODED-BY, but confusingly it represents... the person doing the encoding?
     }
 
-    def __init__(self, path):
-        super().__init__(path)
+    def load_from_file(self, path):
+        super().load_from_file(path)
         self._cover_path = None
         self.coverart_tempfile = None
         self.load_cover()

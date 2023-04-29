@@ -67,6 +67,14 @@ def run_backend_tests(file_class, extension, skip_channels=False):
     os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
 
     shutil.copyfile(
+        os.path.join(EXAMPLES_DIR, f'example-notags.{extension}'),
+        os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}')
+    )
+    file_rename = file_class(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
+    backend_rename(file_rename)
+    # No need to remove; test function does this itself
+
+    shutil.copyfile(
         os.path.join(EXAMPLES_DIR, f'example.{extension}'),
         os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
     )

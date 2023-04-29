@@ -143,8 +143,8 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         'albumartistsort', 'albumsort', 'artistsort'
     )
 
-    def __init__(self, path):
-        super().__init__(path)
+    def load_from_file(self, path):
+        super().load_from_file(path)
         self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()

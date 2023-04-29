@@ -53,6 +53,9 @@ except NameError: _ = lambda x : x
 
 # Human-readable tag names
 TAG_NAMES = {
+        "length": _("Length"),
+        "bitrate": _("Bitrate"),
+
         "title": _("Title"),
         "artist": _("Artist"),
         "album": _("Album"),

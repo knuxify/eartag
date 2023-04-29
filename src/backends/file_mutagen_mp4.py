@@ -84,8 +84,8 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         'titlesort'
     )
 
-    def __init__(self, path):
-        super().__init__(path)
+    def load_from_file(self, path):
+        super().load_from_file(path)
         if self.mg_file.tags == None:
             self.mg_file.add_tags()
         self.load_cover()
