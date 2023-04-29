@@ -31,6 +31,7 @@ gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import GObject, GdkPixbuf
 import filecmp
 import os
+import shutil
 
 BASIC_TAGS = (
     'title', 'artist', 'album', 'albumartist', 'tracknumber',
@@ -45,6 +46,10 @@ EXTRA_TAGS = (
     'albumartistsort', 'albumsort', 'composersort', 'artistsort',
     'titlesort'
 )
+
+# Workaround for tests not having the _ variable available
+try: _
+except NameError: _ = lambda x : x
 
 # Human-readable tag names
 TAG_NAMES = {
@@ -155,7 +160,7 @@ class EartagFile(GObject.Object):
         """Initializes an EartagFile for the given file path."""
         super().__init__()
         self.notify('supports-album-covers')
-        self.path = path
+        self._path = path
         self.update_writability()
         self._cover = None
         self._cover_path = None
@@ -246,6 +251,25 @@ class EartagFile(GObject.Object):
         if not self.modified_tags:
             self._is_modified = False
             self.notify('is_modified')
+
+    @GObject.Property(type=str)
+    def path(self):
+        """Full path to the file."""
+        return self._path
+
+    @path.setter
+    def path(self, value):
+        """Moves the file to the new location."""
+        modifications = {}
+        for tag in self.modified_tags:
+            modifications[tag] = self.get_property(tag)
+
+        shutil.move(self._path, value)
+        self._path = value
+        self.load_from_file(value)
+
+        for tag, tag_value in modifications.items():
+            self.set_property(tag, tag_value)
 
     def mark_as_modified(self, tag):
         if not self._is_modified:

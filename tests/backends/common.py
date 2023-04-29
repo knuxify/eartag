@@ -66,6 +66,14 @@ def run_backend_tests(file_class, extension, skip_channels=False):
     backend_delete(file_delete)
     os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
 
+    shutil.copyfile(
+        os.path.join(EXAMPLES_DIR, f'example.{extension}'),
+        os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
+    )
+    file_rename = file_class(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
+    backend_rename(file_rename)
+    # No need to remove; test function does this itself
+
 def backend_read(file, skip_channels=False):
     """Tests common backend read functions."""
     for prop in file.handled_properties:
@@ -92,7 +100,7 @@ def backend_read(file, skip_channels=False):
 
     if file._supports_album_covers:
         try:
-            assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'))
+            assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'), shallow=False)
         except TypeError:
             raise ValueError('Cover art was not found in the provided file')
 
@@ -212,3 +220,29 @@ def backend_delete(file):
 
     file_class = type(file)
     backend_read_empty(file_class(file.path), skip_cover=True)
+
+def backend_rename(file):
+    """Tests the ability of the file to be renamed."""
+    original_path = file.props.path
+    orig_copy_path = original_path + '-orig'
+    shutil.copyfile(original_path, orig_copy_path)
+    new_path = original_path + '-moved'
+
+    file.set_property('title', 'Moved Title')
+
+    file.set_property('path', new_path)
+
+    assert not os.path.exists(original_path)
+    assert os.path.exists(new_path)
+    assert file.props.path == new_path
+    assert file.props.title == 'Moved Title'
+    assert filecmp.cmp(orig_copy_path, new_path, shallow=False)
+
+    file.save()
+    filecmp.clear_cache()
+    assert not os.path.exists(original_path)
+    assert os.path.exists(new_path)
+    assert not filecmp.cmp(orig_copy_path, new_path, shallow=False)
+
+    os.remove(orig_copy_path)
+    os.remove(new_path)
