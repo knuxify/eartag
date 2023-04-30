@@ -103,9 +103,6 @@
                               <object class="AdwEntryRow" id="preview_entry">
                                 <property name="title" translatable="yes">Preview</property>
                                 <property name="editable">false</property>
-                                <style>
-                                  <class name="no-edit-icon"/>
-                                </style>
                               </object>
                             </child>
                           </object>

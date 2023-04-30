@@ -59,8 +59,6 @@
 
 .filelist-item * { border-radius: 6px; }
 
-.entry.no-edit-icon .edit-icon { opacity: 0; -gtk-icon-size: 0; }
-
 /* Required to make the OSD button outline show up */
 .prev-next-button-container { padding: 6px; margin: -6px; }
 
