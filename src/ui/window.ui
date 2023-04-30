@@ -251,6 +251,10 @@
         <attribute name="label" translatable="yes">_Save Cover to File</attribute>
         <attribute name="action">app.save_cover</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">_Rename Selected Files</attribute>
+        <attribute name="action">app.rename</attribute>
+      </item>
     </section>
     <section>
       <item>

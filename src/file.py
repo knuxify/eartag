@@ -82,6 +82,7 @@ class EartagFileManager(GObject.Object):
     _loading_progress = 0
     _is_loading_multiple_files = False
     _halt_loading = False
+    _is_renaming_multiple_files = False
 
     def __init__(self, window):
         super().__init__()
@@ -114,6 +115,14 @@ class EartagFileManager(GObject.Object):
 
     @GObject.Signal
     def files_removed(self):
+        pass
+
+    @GObject.Signal
+    def files_renamed(self):
+        pass
+
+    @GObject.Signal
+    def file_rename_fail(self):
         pass
 
     def load_file(self, path, mode=0, emit_loaded=True, use_buffer=False):
@@ -188,12 +197,12 @@ class EartagFileManager(GObject.Object):
         self._files_buffer = []
         if not paths:
             self._loading_progress = 0
-            self.notify('loading_progress')
+            GLib.idle_add(lambda *args: self.notify('loading_progress'))
             return True
 
         self._is_loading_multiple_files = True
         self._loading_progress = 0
-        self.notify('loading_progress')
+        GLib.idle_add(lambda *args: self.notify('loading_progress'))
         if mode == self.LOAD_OVERWRITE:
             self.files.remove_all()
             self.file_paths = []
@@ -211,9 +220,9 @@ class EartagFileManager(GObject.Object):
             if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False, use_buffer=True):
                 self.files.splice(0, 0, self._files_buffer)
                 self._files_buffer = []
-                self.emit('files_loaded')
-                self.emit('select-first')
-                self.update_modified_status()
+                GLib.idle_add(lambda *args: self.emit('files_loaded'))
+                GLib.idle_add(lambda *args: self.emit('select-first'))
+                GLib.idle_add(lambda *args: self.update_modified_status())
                 self._loading_progress = 0
                 GLib.idle_add(lambda *args: self.notify('loading_progress'))
                 self._is_loading_multiple_files = False
@@ -234,7 +243,7 @@ class EartagFileManager(GObject.Object):
         self.files.splice(0, 0, self._files_buffer)
         self._files_buffer = []
 
-        self.emit('files_loaded')
+        GLib.idle_add(lambda *args: self.emit('files_loaded'))
         self._loading_progress = 0
         GLib.idle_add(lambda *args: self.notify('loading_progress'))
         self.update_modified_status()
@@ -381,6 +390,72 @@ class EartagFileManager(GObject.Object):
         self.update_modified_status()
 
         return True
+
+    def _rename_multiple_files(self, files, names):
+        """
+        Renames multiple files and adds some harnesses to prevent potential
+        data loss (for example due to overwriting an existing file).
+        """
+        self._is_renaming_multiple_files = True
+        self._loading_progress = 0
+        self.notify('loading_progress')
+        self._selection_removed = False
+        progress_step = 1 / len(files)
+
+        n = 0
+        for file in files:
+            new_path = names[n]
+            if file.props.path == new_path:
+                n += 1
+                continue
+
+            if os.path.exists(new_path):
+                _orig_new_path = new_path
+                i = 0
+                while os.path.exists(new_path):
+                    i += 1
+                    path_split = os.path.splitext(_orig_new_path)
+                    new_path = path_split[0] + f' ({i})' + path_split[1]
+
+            try:
+                file.props.path = new_path
+            except Exception as e:
+                self._is_renaming_multiple_files = False
+
+                self.error_dialog = Adw.MessageDialog(
+                                        modal=True,
+                                        transient_for=self.window,
+                                        heading=_("Failed to rename file"),
+                                        body=_("Could not rename file {f}. Check the logs for more information.").format(f=file.props.path)
+                )
+                # TRANSLATORS: "Okay" button in the "failed to save file" dialog
+                self.error_dialog.add_response("ok", _("OK"))
+                self.error_dialog.connect('response', self.close_dialog)
+                GLib.idle_add(lambda *args: self.error_dialog.show())
+
+                self._loading_progress = 0
+                self.notify('loading_progress')
+                self.emit('files-renamed')
+                self.emit('file-rename-fail')
+                raise e
+            n += 1
+            self._loading_progress += progress_step
+            self.notify('loading_progress')
+
+        self._loading_progress = 0
+        self.notify('loading_progress')
+
+        self.emit('files-renamed')
+
+        self._is_renaming_multiple_files = False
+
+        return True
+
+    def rename_multiple_files(self, *args, **kwargs):
+        while self._is_renaming_multiple_files:
+            time.sleep(0.25)
+        thread = threading.Thread(target=self._rename_multiple_files, daemon=True, args=args, kwargs=kwargs)
+        thread.start()
 
     def close_dialog(self, dialog, *args):
         dialog.close()

@@ -83,10 +83,13 @@ class Application(Adw.Application):
         self.create_action('toggle_sidebar', self.on_toggle_sidebar_action, 'F9')
         self.create_action('open_menu', self.on_open_menu_action, 'F10')
 
-        self.save_cover_action = Gio.SimpleAction.new('save_cover', None)
-        self.save_cover_action.connect("activate", self.on_save_cover_action)
-        self.add_action(self.save_cover_action)
+        self.save_cover_action = \
+            self.create_action('save_cover', self.on_save_cover_action, None)
         self.save_cover_action.set_enabled(False)
+
+        self.rename_action = \
+            self.create_action('rename', self.on_rename_action, None)
+        self.rename_action.set_enabled(False)
 
         self.create_action('quit', self.on_quit_action, '<Ctrl>q')
 
@@ -100,12 +103,16 @@ class Application(Adw.Application):
         self.add_action(action)
         if accel:
             self.set_accels_for_action(f'app.{name}', (accel, None))
+        return action
 
     def on_save_action(self, widget, _):
         self.get_active_window().file_view.save()
 
     def on_save_cover_action(self, widget, _):
         self.get_active_window().file_view.save_cover()
+
+    def on_rename_action(self, widget, _):
+        self.get_active_window().show_rename_dialog()
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(

@@ -67,6 +67,8 @@ class EartagFileListItem(Gtk.Box):
         self.select_button.connect('toggled', self.handle_select_button_change)
         self.bindings.append(self.file.bind_property('title', self, 'title',
             GObject.BindingFlags.SYNC_CREATE))
+        self.bindings.append(self.file.bind_property('path', self,
+            'filename', GObject.BindingFlags.SYNC_CREATE))
         self.bindings.append(self.file.bind_property('is-modified', self.modified_icon,
             'visible', GObject.BindingFlags.SYNC_CREATE))
         self.filename_label.set_label(os.path.basename(file.path))
@@ -114,6 +116,15 @@ class EartagFileListItem(Gtk.Box):
     def title(self, value):
         # TRANSLATORS: Placeholder for file sidebar items with no title set
         self.title_label.set_label(value or _('(No title)'))
+
+    @GObject.Property(type=str)
+    def filename(self):
+        return self._filename
+
+    @filename.setter
+    def filename(self, value):
+        self.filename_label.set_label(os.path.basename(value))
+        self._filename = os.path.basename(value)
 
     def show_selection_button(self, *args):
         self.cover_edit_stack.set_visible_child(self.select_button)

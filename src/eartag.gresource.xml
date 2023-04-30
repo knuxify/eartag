@@ -14,6 +14,7 @@
     <file>ui/filelistitem.ui</file>
     <file>ui/fileview.ui</file>
     <file>ui/removaldiscardwarning.ui</file>
+    <file>ui/rename.ui</file>
     <file>ui/sidebar.ui</file>
     <file alias="gtk/help-overlay.ui">ui/shortcuts.ui</file>
     <file>ui/nofile.ui</file>

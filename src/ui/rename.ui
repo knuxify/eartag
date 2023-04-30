@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagRenameDialog" parent="AdwWindow">
+    <property name="title" translatable="yes">Rename Selected Files</property>
+    <property name="content">
+      <object class="GtkWindowHandle">
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+
+            <child>
+              <object class="AdwHeaderBar">
+                  <property name="show-end-title-buttons">false</property>
+                  <property name="show-start-title-buttons">false</property>
+
+                  <child type="start">
+                    <object class="GtkButton" id="cancel_button">
+                      <property name="label" translatable="yes">Cancel</property>
+                      <property name="focusable">true</property>
+                      <signal name="clicked" handler="on_cancel"/>
+                    </object>
+                  </child>
+
+                  <child type="end">
+                    <object class="GtkButton" id="rename_button">
+                      <property name="label" translatable="yes">Rename</property>
+                      <property name="focusable">true</property>
+                      <signal name="clicked" handler="do_rename"/>
+                      <style>
+                        <class name="suggested-action"/>
+                      </style>
+                    </object>
+                  </child>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkOverlay">
+                <child type="overlay">
+                  <object class="GtkProgressBar" id="rename_progress">
+                    <property name="valign">start</property>
+                    <style>
+                      <class name="osd"/>
+                    </style>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="AdwClamp">
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="valign">center</property>
+                        <property name="vexpand">true</property>
+                        <property name="spacing">12</property>
+                        <property name="margin-start">12</property>
+                        <property name="margin-end">12</property>
+                        <property name="margin-top">24</property>
+                        <property name="margin-bottom">24</property>
+
+
+                        <child>
+                          <object class="AdwBanner">
+                            <property name="title" translatable="yes">Failed to rename files. Check the logs for more information.</property>
+                            <style>
+                              <class name="boxed-list"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkListBox">
+                            <property name="selection-mode">none</property>
+                            <style>
+                              <class name="boxed-list"/>
+                            </style>
+
+                            <child>
+                              <object class="AdwEntryRow" id="filename_entry">
+                                <property name="title" translatable="yes">Filename pattern</property>
+                                <signal name="changed" handler="update_preview"/>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="AdwEntryRow" id="preview_entry">
+                                <property name="title" translatable="yes">Preview</property>
+                                <property name="editable">false</property>
+                                <style>
+                                  <class name="no-edit-icon"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="wrap">true</property>
+                            <property name="use-markup">true</property>
+                            <property name="justify">center</property>
+                            <property name="label" translatable="yes">For a list of available placeholders, see the &lt;a href="https://gitlab.gnome.org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags"&gt;list of available tags&lt;/a&gt;.</property>
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

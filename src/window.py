@@ -30,6 +30,7 @@ from .common import is_valid_music_file, VALID_AUDIO_MIMES
 from .fileview import EartagFileView
 from .file import EartagFileManager
 from .sidebar import EartagSidebar
+from .rename import EartagRenameDialog
 
 from gi.repository import Adw, Gdk, GLib, Gio, Gtk, GObject
 import os
@@ -337,3 +338,6 @@ class EartagWindow(Adw.ApplicationWindow):
             self.close_request_dialog.present()
             return True
 
+    def show_rename_dialog(self, *args):
+        self.rename_dialog = EartagRenameDialog(self)
+        self.rename_dialog.present()

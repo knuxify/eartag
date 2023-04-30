@@ -619,6 +619,7 @@ class EartagFileView(Gtk.Stack):
         self.file_manager.connect('files_loaded', self.update_binds)
         self.file_manager.connect('selection_changed', self.update_binds)
         self.file_manager.connect('files_removed', self.update_binds)
+        self.file_manager.connect('files_renamed', self.update_binds)
         self.file_manager.connect('notify::loading-progress', self.update_loading)
 
         sidebar = self.get_native().sidebar
@@ -673,6 +674,7 @@ class EartagFileView(Gtk.Stack):
         selected_files_count = len(self.file_manager.selected_files)
         if selected_files_count <= 0:
             window.get_application().save_cover_action.set_enabled(False)
+            window.get_application().rename_action.set_enabled(False)
             window.set_title('Ear Tag')
             window.window_title.set_subtitle('')
             if self.file_manager.files:
@@ -705,6 +707,8 @@ class EartagFileView(Gtk.Stack):
             window.window_title.set_subtitle(_multiple_files)
             window.get_application().save_cover_action.set_enabled(False)
             self.file_info.set_label(_multiple_files)
+
+        window.get_application().rename_action.set_enabled(True)
 
         # Handle added and removed files
         self._unbind_files(removed_files)

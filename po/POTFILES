@@ -13,7 +13,10 @@ src/main.py
 src/common.py
 src/file.py
 src/fileview.py
+src/rename.py
 src/sidebar.py
 src/window.py
+src/backends/file.py
 src/ui/albumcoverbutton.ui
 src/ui/shortcuts.ui
+src/ui/rename.ui
