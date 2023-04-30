@@ -28,7 +28,7 @@
 
 from .backends.file import BASIC_TAGS, TAG_NAMES
 
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, Gtk, Gio
 import os
 import traceback
 import time
@@ -79,6 +79,11 @@ class EartagRenameDialog(Adw.Window):
         super().__init__(modal=True, transient_for=window)
         self.file_manager = window.file_manager
         self.files = list(self.file_manager.selected_files).copy()
+        config = window.get_application().config
+        config.bind('rename-placeholder',
+            self.filename_entry, 'text',
+            Gio.SettingsBindFlags.DEFAULT
+        )
 
     @Gtk.Template.Callback()
     def on_cancel(self, *args):

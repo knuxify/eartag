@@ -48,6 +48,8 @@ class Application(Adw.Application):
         self.paths = []
         self.connect('open', self.on_open)
 
+        self.config = Gio.Settings.new('app.drey.EarTag')
+
     def on_open(self, window, files, *args):
         for file in files:
             path = file.get_path()

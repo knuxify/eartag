@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="eartag">
 	<schema id="app.drey.EarTag" path="/app/drey/EarTag/">
+		<key name="rename-placeholder" type="s">
+			<default>"{tracknumber} {title} - {artist}"</default>
+			<summary>Rename placeholder</summary>
+		</key>
 	</schema>
 </schemalist>
