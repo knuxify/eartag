@@ -22,6 +22,18 @@
                       <property name="label" translatable="yes">Cancel</property>
                       <property name="focusable">true</property>
                       <signal name="clicked" handler="on_cancel"/>
+
+                      <child>
+                        <object class='GtkShortcutController'>
+                          <property name='scope'>managed</property>
+                          <child>
+                            <object class='GtkShortcut'>
+                              <property name='trigger'>Escape</property>
+                              <property name='action'>activate</property>
+                            </object>
+                          </child>
+                        </object>
+                      </child>
                     </object>
                   </child>
 
@@ -83,6 +95,7 @@
                               <object class="AdwEntryRow" id="filename_entry">
                                 <property name="title" translatable="yes">Filename pattern</property>
                                 <signal name="changed" handler="update_preview"/>
+                                <signal name="entry-activated" handler="do_rename"/>
                               </object>
                             </child>
 
