@@ -193,7 +193,7 @@ class EartagFileManager(GObject.Object):
             return True
 
         if mode == self.LOAD_OVERWRITE:
-            self.files.remove_all()
+            GLib.idle_add(lambda *args: self.files.remove_all())
             self.file_paths = []
             self._selected_files = []
 
