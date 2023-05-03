@@ -165,9 +165,7 @@ class EartagFileManager(GObject.Object):
             )
             return False
 
-        GLib.idle_add(lambda *args:
-            _file.connect('modified', self.update_modified_status)
-        )
+        _file.connect('modified', self.update_modified_status)
 
         if not self.selected_files:
             self.selected_files = []
