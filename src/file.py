@@ -243,6 +243,10 @@ class EartagFileManager(GObject.Object):
         if mode == self.LOAD_OVERWRITE:
             GLib.idle_add(lambda *args: self.emit('selection_override'))
 
+    #
+    # Removal
+    #
+
     def remove(self, file, force_discard=False, no_emit=False, use_buffer=False):
         """Removes a file from the opened file list."""
         if file.is_modified and not force_discard:
@@ -323,6 +327,10 @@ class EartagFileManager(GObject.Object):
         self.update_modified_status()
 
         return True
+
+    #
+    # Renaming
+    #
 
     def rename_files(self, *args, **kwargs):
         self.rename_task.wait_for_completion()
@@ -414,18 +422,6 @@ class EartagFileManager(GObject.Object):
     @GObject.Signal
     def select_first(self):
         """See EartagFileList.handle_select_first"""
-        pass
-
-    @GObject.Signal
-    def files_removed(self):
-        pass
-
-    @GObject.Signal
-    def files_renamed(self):
-        pass
-
-    @GObject.Signal
-    def file_rename_fail(self):
         pass
 
     def refresh_state(self):

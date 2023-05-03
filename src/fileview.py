@@ -620,9 +620,6 @@ class EartagFileView(Gtk.Stack):
         self.file_manager.connect('selection-changed', self.update_binds)
         self.file_manager.load_task.connect('notify::progress', self.update_loading)
 
-        self.file_manager.connect('files_removed', self.update_binds) # TODO delete
-        self.file_manager.connect('files_renamed', self.update_binds) # TODO delete
-
         sidebar = self.get_native().sidebar
         self.next_file_button.connect('clicked', sidebar.select_next)
         self.previous_file_button.connect('clicked', sidebar.select_previous)
