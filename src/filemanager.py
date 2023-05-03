@@ -144,6 +144,12 @@ class EartagFileManager(GObject.Object):
         # self.load_task is set up in the init functions
         self.load_task.stop()
         self.load_task.reset(kwargs={'paths': paths, 'mode': mode})
+
+        if mode == self.LOAD_OVERWRITE and self.files:
+            self.files.remove_all()
+            self.file_paths = []
+            self._selected_files = []
+
         self.load_task.run()
 
     def _load_single_file(self, path):
@@ -184,11 +190,6 @@ class EartagFileManager(GObject.Object):
         if not paths:
             task.emit_task_done()
             return True
-
-        if mode == self.LOAD_OVERWRITE and self.files:
-            GLib.idle_add(lambda *args: self.files.remove_all(), priority=100)
-            self.file_paths = []
-            self._selected_files = []
 
         file_count = len(paths)
         progress_step = 1 / file_count
