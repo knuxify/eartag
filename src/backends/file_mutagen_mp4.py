@@ -27,7 +27,6 @@
 # authorization.
 
 from gi.repository import GObject
-import base64
 import magic
 import mimetypes
 import tempfile
@@ -86,7 +85,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     def load_from_file(self, path):
         super().load_from_file(path)
-        if self.mg_file.tags == None:
+        if self.mg_file.tags is None:
             self.mg_file.add_tags()
         self.load_cover()
         self.setup_present_extra_tags()
@@ -158,8 +157,6 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
-        picture_data = None
-
         if 'covr' not in self.mg_file.tags:
             self._cover_path = None
             return None

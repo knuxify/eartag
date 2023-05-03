@@ -34,6 +34,7 @@ import os.path
 import magic
 import mimetypes
 import threading
+import time
 
 VALID_AUDIO_MIMES = (
     'application/ogg',
@@ -87,7 +88,7 @@ def is_valid_image_file(path):
         # Try to guess mimetype from filetype if magic fails
         mimetype = mimetypes.guess_type(path)[0]
 
-    if not mimetype or not mimetype in ['image/jpeg', 'image/png']:
+    if not mimetype or mimetype not in ['image/jpeg', 'image/png']:
         return False
     return True
 
@@ -210,7 +211,7 @@ class EartagMultipleValueEntry:
         has_multiple_files = len(self.files) > 1
 
         # TRANSLATORS: Placeholder displayed when multiple files with different values are created
-        _multiple_values =_('(multiple values)')
+        _multiple_values = _('(multiple values)')
 
         property = (is_double and self.properties[1]) or self.properties[0]
         if has_multiple_files and self._multiple_values_check(file, property):
@@ -222,7 +223,7 @@ class EartagMultipleValueEntry:
             self.ignore_edit[property] = True
             value = file.get_property(property)
             if isinstance(value, int) and value != -1:
-                entry.set_text(str(value)) # Ignore this warning, PyGObject won't actually accept a non-string here
+                entry.set_text(str(value)) # noqa E501 Ignore this warning, PyGObject won't actually accept a non-string here
             elif isinstance(value, float):
                 if str(value).endswith('.0'):
                     entry.set_text(str(value)[:-2])
@@ -274,7 +275,6 @@ class EartagMultipleValueEntry:
                 if file.get_property(property) != value:
                     if self._is_numeric and not value:
                         continue
-                        #file.set_property(property, -1)
                     file.set_property(property, value)
         else:
             return False

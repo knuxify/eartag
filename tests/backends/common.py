@@ -1,4 +1,3 @@
-from src.backends.file import EartagFile
 import os
 import shutil
 import filecmp

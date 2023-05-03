@@ -28,10 +28,8 @@
 
 from .backends.file import BASIC_TAGS, TAG_NAMES
 
-from gi.repository import Adw, Gdk, Gtk, Gio
+from gi.repository import Adw, Gtk, Gio
 import os
-import traceback
-import time
 
 def parse_placeholder_string(string, file):
     """

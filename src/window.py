@@ -28,12 +28,12 @@
 
 from .common import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
-from .fileview import EartagFileView
+from .fileview import EartagFileView # noqa: F401
 from .file import EartagFileManager
-from .sidebar import EartagSidebar
+from .sidebar import EartagSidebar  # noqa: F401
 from .rename import EartagRenameDialog
 
-from gi.repository import Adw, Gdk, GLib, Gio, Gtk, GObject
+from gi.repository import Adw, Gdk, GLib, Gtk, GObject
 import os
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
@@ -286,8 +286,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.show_file_chooser()
 
     def on_close_request(self, *args):
-        if self.force_close == False and list(self.file_manager.files) and \
-            self.file_manager._is_modified:
+        if not self.force_close and list(self.file_manager.files) and \
+                self.file_manager._is_modified:
             self.close_request_dialog = EartagCloseWarningDialog(self)
             self.close_request_dialog.present()
             return True

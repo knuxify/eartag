@@ -26,9 +26,9 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from .file_mutagen_vorbis import EartagFileMutagenVorbis
-from .file_mutagen_id3 import EartagFileMutagenID3
-from .file_mutagen_mp4 import EartagFileMutagenMP4
-from .file_mutagen_asf import EartagFileMutagenASF
+from .file_mutagen_vorbis import EartagFileMutagenVorbis # noqa: F401
+from .file_mutagen_id3 import EartagFileMutagenID3 # noqa: F401
+from .file_mutagen_mp4 import EartagFileMutagenMP4 # noqa: F401
+from .file_mutagen_asf import EartagFileMutagenASF # noqa: F401
 
-from .file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
+from .file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES # noqa: F401

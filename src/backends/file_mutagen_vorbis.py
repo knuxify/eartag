@@ -34,7 +34,6 @@ import mimetypes
 from PIL import Image
 
 from mutagen.flac import FLAC, Picture, error as FLACError
-from mutagen.oggvorbis import OggVorbis
 from mutagen.id3 import PictureType
 
 from .file_mutagen_common import EartagFileMutagenCommon
@@ -56,7 +55,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     _replaces = {
         'releaseyear': 'date',
-        'encodedby': 'encoder' # There's also ENCODED-BY, but confusingly it represents... the person doing the encoding?
+        # There's also ENCODED-BY, but confusingly it represents... the person doing the encoding?
+        'encodedby': 'encoder'
     }
 
     def load_from_file(self, path):
@@ -142,8 +142,10 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         with open(value, "rb") as cover_file:
             data = cover_file.read()
 
-        # shamelessly stolen from https://stackoverflow.com/questions/1996577/how-can-i-get-the-depth-of-a-jpg-file
-        mode_to_bpp = {"1": 1, "L": 8, "P": 8, "RGB": 24, "RGBA": 32, "CMYK": 32, "YCbCr": 24, "LAB": 24, "HSV": 24, "I": 32, "F": 32}
+        # shamelessly stolen from
+        # https://stackoverflow.com/questions/1996577/how-can-i-get-the-depth-of-a-jpg-file
+        mode_to_bpp = {"1": 1, "L": 8, "P": 8, "RGB": 24, "RGBA": 32, "CMYK": 32,
+            "YCbCr": 24, "LAB": 24, "HSV": 24, "I": 32, "F": 32}
 
         picture = Picture()
         picture.data = data
@@ -195,7 +197,6 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             else:
                 self.notify('cover_path')
                 return
-
 
             cover_extension = mimetypes.guess_extension(picture.mime)
             self.coverart_tempfile = tempfile.NamedTemporaryFile(

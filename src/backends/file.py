@@ -48,8 +48,10 @@ EXTRA_TAGS = (
 )
 
 # Workaround for tests not having the _ variable available
-try: _
-except NameError: _ = lambda x : x
+try:
+    _
+except NameError:
+    _ = lambda x: x
 
 # Human-readable tag names
 TAG_NAMES = {
@@ -84,15 +86,20 @@ TAG_NAMES = {
         "discsubtitle": _("Disc subtitle"),
         "url": _("Website/URL"),
 
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+        # software should treat this tag when sorting.
         "albumartistsort": _("Album artist (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+        # software should treat this tag when sorting.
         "albumsort": _("Album (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        "composersort": _("Composer (sort)"), # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+        # software should treat this tag when sorting.
+        "composersort": _("Composer (sort)"),
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+        # software should treat this tag when sorting.
         "artistsort": _("Artist (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music software should treat this tag when sorting.
+        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+        # software should treat this tag when sorting.
         "titlesort": _("Title (sort)")
     }
 
@@ -153,7 +160,8 @@ class EartagFile(GObject.Object):
     """
     __gtype_name__ = 'EartagFile'
 
-    handled_properties = ('title', 'artist', 'album', 'albumartist', 'tracknumber', 'totaltracknumber', 'genre', 'releaseyear', 'comment')
+    handled_properties = ('title', 'artist', 'album', 'albumartist', 'tracknumber',
+        'totaltracknumber', 'genre', 'releaseyear', 'comment')
     int_properties = ('tracknumber', 'totaltracknumber', 'releaseyear', 'bpm', 'discnumber')
     _supports_album_covers = False
     _is_modified = False

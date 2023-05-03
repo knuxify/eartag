@@ -27,13 +27,10 @@
 # authorization.
 
 from gi.repository import GObject
-import base64
 import magic
 import mimetypes
 import tempfile
 
-from mutagen.easyid3 import EasyID3
-from mutagen.id3 import PictureType
 import mutagen.id3
 
 from .file_mutagen_common import EartagFileMutagenCommon
@@ -196,7 +193,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         # Remove conflicting entries
         for tag in dict(self.mg_file.tags).copy():
             if tag.startswith('APIC') and self.mg_file.tags[tag].type in (0, 3):
-                del(self.mg_file.tags[tag])
+                del self.mg_file.tags[tag]
 
         self.mg_file.tags.add(
             mutagen.id3.APIC(
@@ -313,7 +310,9 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     @comment.setter
     def comment(self, value):
-        self.mg_file.tags.setall('COMM', [mutagen.id3.COMM(encoding=3, lang='eng', desc='', text=[str(value)])])
+        self.mg_file.tags.setall('COMM',
+            [mutagen.id3.COMM(encoding=3, lang='eng', desc='', text=[str(value)])]
+        )
         self.mark_as_modified('comment')
 
     # These set both TDRC (date) and TDOR (original date) for compatibility.
@@ -330,7 +329,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     @releaseyear.setter
     def releaseyear(self, value):
         self.mg_file.tags.setall('TDRC', [mutagen.id3.TDRC(encoding=3, text=[str(value)])])
-        if 'TDOR' not in self.mg_file.tags or self.mg_file.tags['TDOR'] == self.mg_file.tags['TDRC']:
+        if 'TDOR' not in self.mg_file.tags or \
+                self.mg_file.tags['TDOR'] == self.mg_file.tags['TDRC']:
             self.mg_file.tags.setall('TDOR', [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
 
         self.mark_as_modified('releaseyear')
@@ -361,7 +361,9 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     @url.setter
     def url(self, value):
         if value:
-            self.mg_file.tags.setall('WXXX', [mutagen.id3.WXXX(encoding=3, desc='', url=str(value))])
+            self.mg_file.tags.setall('WXXX',
+                [mutagen.id3.WXXX(encoding=3, desc='', url=str(value))]
+            )
             self.mark_as_modified('url')
         else:
             self.delete_tag('url')

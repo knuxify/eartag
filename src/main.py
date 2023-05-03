@@ -134,14 +134,14 @@ class Application(Adw.Application):
 
         lib_versions = []
 
-        lib_versions.append(f"gtk4: {Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}")
-        lib_versions.append(f"libadwaita: {Adw.get_major_version()}.{Adw.get_minor_version()}.{Adw.get_micro_version()}")
+        lib_versions.append(f"gtk4: {Gtk.get_major_version()}.{Gtk.get_minor_version()}.{Gtk.get_micro_version()}") # noqa: E501
+        lib_versions.append(f"libadwaita: {Adw.get_major_version()}.{Adw.get_minor_version()}.{Adw.get_micro_version()}") # noqa: E501
 
         import magic
         try:
             lib_versions.append(f"libmagic: {magic.version()}")
         except NotImplementedError:
-            lib_versions.append(f"libmagic: version data N/A")
+            lib_versions.append("libmagic: version data N/A")
         import mutagen
         lib_versions.append(f"mutagen: {mutagen.version_string}")
         import PIL
@@ -151,7 +151,7 @@ class Application(Adw.Application):
 
         opened_file_list = []
         for file in self.props.active_window.file_manager.files:
-            opened_file_list.append(f'{os.path.split(file.path)[-1]}, {magic.from_file(file.path, mime=True)}, {file.__gtype_name__}')
+            opened_file_list.append(f'{os.path.split(file.path)[-1]}, {magic.from_file(file.path, mime=True)}, {file.__gtype_name__}') # noqa: E501
 
         opened_file_list_str = '\n - '.join(opened_file_list) or 'None'
 

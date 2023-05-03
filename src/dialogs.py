@@ -26,7 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import Adw, Gtk, GLib
+from gi.repository import Adw, Gtk
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/closewarning.ui')
 class EartagCloseWarningDialog(Adw.MessageDialog):

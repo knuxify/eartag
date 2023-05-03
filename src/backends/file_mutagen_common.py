@@ -27,9 +27,6 @@
 # authorization.
 
 from gi.repository import GObject
-import base64
-import tempfile
-
 import mutagen
 
 from .file import EartagFile
@@ -70,7 +67,6 @@ class EartagFileMutagenCommon(EartagFile):
         except AttributeError:
             # For some files, Mutagen can't tell the bitrate
             return -1
-
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def channels(self):

@@ -27,7 +27,6 @@
 # authorization.
 
 from gi.repository import GObject
-import base64
 import magic
 import mimetypes
 import tempfile
@@ -133,7 +132,8 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
     # Copied from file.py, but excludes totaltracknumber, as ASF tags don't
     # have a way to specify it
-    handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre', 'releaseyear', 'comment']
+    handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre',
+        'releaseyear', 'comment']
 
     supported_extra_tags = (
         'bpm', 'composer', 'copyright', 'encodedby',
@@ -218,8 +218,6 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
-        picture_data = None
-
         if 'WM/Picture' not in self.mg_file.tags:
             self._cover_path = None
             return None

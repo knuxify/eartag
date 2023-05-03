@@ -26,13 +26,11 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import Adw, Gio, Gtk, GObject, GLib
+from gi.repository import Adw, Gio, GObject, GLib
 import magic
 import mimetypes
 import os.path
 import traceback
-import threading
-import time
 
 from .backends import (
     EartagFileMutagenVorbis,
@@ -62,16 +60,18 @@ def eartagfile_from_path(path):
 
     if is_type_bulk(path, ('audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/x-wav')):
         return EartagFileMutagenID3(path)
-    elif is_type_bulk(path, ('audio/flac', 'audio/ogg', 'application/ogg', 'application/x-ogg', 'audio/x-flac', 'audio/x-vorbis+ogg')):
+    elif is_type_bulk(path, ('audio/flac', 'audio/ogg', 'application/ogg', 'application/x-ogg',
+            'audio/x-flac', 'audio/x-vorbis+ogg')):
         return EartagFileMutagenVorbis(path)
-    elif is_type_bulk(path, ('audio/x-m4a', 'audio/aac', 'audio/mp4', 'audio/x-mpeg', 'audio/mpeg', 'video/mp4')):
+    elif is_type_bulk(path, ('audio/x-m4a', 'audio/aac', 'audio/mp4', 'audio/x-mpeg',
+            'audio/mpeg', 'video/mp4')):
         return EartagFileMutagenMP4(path)
     elif is_type_bulk(path, ('audio/x-ms-wma', 'audio/wma', 'video/x-ms-asf')):
         return EartagFileMutagenASF(path)
 
     mimetypes_guess = mimetypes.guess_type(path)[0]
     magic_guess = magic.from_file(path, mime=True)
-    raise ValueError(f"Unsupported file format for file {path} (mimetype: {mimetypes_guess} / {magic_guess})")
+    raise ValueError(f"Unsupported file format for file {path} (mimetype: {mimetypes_guess} / {magic_guess})") # noqa: E501
 
 class EartagFileManager(GObject.Object):
     """Contains information about the currently loaded files."""
@@ -111,7 +111,7 @@ class EartagFileManager(GObject.Object):
                                         modal=True,
                                         transient_for=self.window,
                                         heading=_("Failed to save file"),
-                                        body=_("Could not save file {f}. Check the logs for more information.").format(f=file_basename)
+                                        body=_("Could not save file {f}. Check the logs for more information.").format(f=file_basename) # noqa: E501
                 )
                 # TRANSLATORS: "Okay" button in the "failed to save file" dialog
                 self.error_dialog.add_response("ok", _("OK"))
@@ -154,7 +154,6 @@ class EartagFileManager(GObject.Object):
         if path in self.file_paths:
             return True
 
-        _selection_override = False
         file_basename = os.path.basename(path)
 
         try:
@@ -174,11 +173,9 @@ class EartagFileManager(GObject.Object):
             GLib.idle_add(lambda *args: self.files.remove_all())
             self.file_paths = []
             self.selected_files = []
-            _selection_override = True
 
         if not self.selected_files:
             self.selected_files = []
-            _selection_override = True
 
         self._files_buffer.append(_file)
 
@@ -230,7 +227,7 @@ class EartagFileManager(GObject.Object):
             if file_count == 1:
                 unwritable_msg = _("Opened file is read-only; changes cannot be saved")
             else:
-                unwritable_msg = _("Some of the opened files are read-only; changes cannot be saved")
+                unwritable_msg = _("Some of the opened files are read-only; changes cannot be saved") # noqa: E501
             GLib.idle_add(lambda *args: self.window.toast_overlay.add_toast(
                 Adw.Toast.new(unwritable_msg)
             ))
@@ -347,8 +344,9 @@ class EartagFileManager(GObject.Object):
         progress_step = 1 / len(files)
         n = 0
         for file in files:
+            old_path = files.props.path
             new_path = names[n]
-            if file.props.path == new_path:
+            if old_path == new_path:
                 n += 1
                 continue
 
@@ -367,7 +365,7 @@ class EartagFileManager(GObject.Object):
 
                 traceback.print_exc()
                 GLib.idle_add(lambda *args:
-                    EartagRenameFailureDialog(self.window, file_basename).present()
+                    EartagRenameFailureDialog(self.window, old_path).present()
                 )
 
                 task.emit_task_done()

@@ -310,7 +310,6 @@ class EartagFileList(Gtk.ListView):
         if self._ignore_unselect:
             return
 
-        unselected_file = None
         selected_file = None
         selected_file_pos = None
 
@@ -318,8 +317,6 @@ class EartagFileList(Gtk.ListView):
             if selection_model.is_selected(pos):
                 selected_file = self.filter_model.get_item(pos)
                 selected_file_pos = pos
-            else:
-                unselected_file = self.filter_model.get_item(pos)
 
         if self.selection_mode:
             if selected_file:
@@ -471,4 +468,6 @@ class EartagSidebar(Gtk.Box):
         if selected - 1 >= 0:
             self.file_list.selection_model.set_selected(selected - 1)
         else:
-            self.file_list.selection_model.set_selected(self.file_list.selection_model.get_n_items() - 1)
+            self.file_list.selection_model.set_selected(
+                self.file_list.selection_model.get_n_items() - 1
+            )

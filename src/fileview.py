@@ -26,8 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from .file import eartagfile_from_path
-from .common import (
+from .common import ( # noqa: F401
     EartagEditableLabel,
     is_valid_image_file,
     EartagAlbumCoverImage,
@@ -37,7 +36,6 @@ from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path
-import traceback
 import magic
 import mimetypes
 import shutil
@@ -272,7 +270,7 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
     @is_numeric.setter
     def is_numeric(self, value):
         self._is_numeric = value
-        if value == True:
+        if value:
             self.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
 
@@ -365,7 +363,7 @@ class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultip
     @is_numeric.setter
     def is_numeric(self, value):
         self._is_numeric = value
-        if value == True:
+        if value:
             self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
 
@@ -452,7 +450,9 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         if value is True:
             self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
             if not self._numeric_connect:
-                self._numeric_connect = self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+                self._numeric_connect = self.value_entry.get_delegate().connect(
+                    'insert-text', self.disallow_nonnumeric
+                )
         else:
             self.value_entry.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
             if self._numeric_connect:
@@ -460,7 +460,9 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
                 self._numeric_connect = None
 
     def tag_filter_func(self, _tag_name, *args):
-        present_tags = dict([(entry.properties[0], entry) for entry in EartagFileView.more_entries])
+        present_tags = dict(
+            [(entry.properties[0], entry) for entry in EartagFileView.more_entries]
+        )
 
         tag_name = _tag_name.get_string()
         tag_prop = self._tag_names_swapped[tag_name]
@@ -665,8 +667,10 @@ class EartagFileView(Gtk.Stack):
         self.update_buttons()
 
         # Get list of selected (added)/unselected (removed) files
-        added_files = [file for file in self.file_manager.selected_files if file not in self.bound_files]
-        removed_files = [file for file in self.bound_files if file not in self.file_manager.selected_files]
+        added_files = [file for file in self.file_manager.selected_files
+            if file not in self.bound_files]
+        removed_files = [file for file in self.bound_files
+            if file not in self.file_manager.selected_files]
 
         # Set up the active view (hide fileview if there are no selected files)
         selected_files_count = len(self.file_manager.selected_files)
@@ -839,7 +843,7 @@ class EartagFileView(Gtk.Stack):
             if tag in more_entries_dict:
                 entry = more_entries_dict[tag]
                 self.remove_extra_row(entry, skip_adding_none=True)
-                del(more_entries_dict[tag])
+                del more_entries_dict[tag]
 
         # Move "none" entry to the bottom
         none_entry = more_entries_dict['none']
@@ -863,7 +867,7 @@ class EartagFileView(Gtk.Stack):
         for file in files:
             for binding in self.bindings[file]:
                 binding.unbind()
-            del(self.bindings[file])
+            del self.bindings[file]
             self.bound_files.remove(file)
 
             filetype = file.__gtype_name__
@@ -891,13 +895,13 @@ class EartagFileView(Gtk.Stack):
         for tag, entry in more_entries_dict.copy().items():
             if tag not in all_present_extra_tags:
                 self.remove_extra_row(entry, skip_adding_none=True)
-                del(more_entries_dict[tag])
+                del more_entries_dict[tag]
 
         unbanned_filetypes = []
 
         for filetype, count in self.opened_filetypes.copy().items():
             if count <= 0:
-                del(self.opened_filetypes[filetype])
+                del self.opened_filetypes[filetype]
                 if filetype in self.banned_tags:
                     unbanned_filetypes.append(filetype)
 
@@ -924,7 +928,7 @@ class EartagFileView(Gtk.Stack):
                         self.add_extra_row(tag, skip_adding_none=True)
 
             for filetype in unbanned_filetypes:
-                del(self.banned_tags[filetype])
+                del self.banned_tags[filetype]
 
         none_entry = more_entries_dict['none']
         self.more_tags_expander.remove(none_entry)
@@ -1050,7 +1054,7 @@ class EartagFileView(Gtk.Stack):
         elif channels == 2:
             channels_readable = 'Stereo'
         else:
-            channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels)
+            channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels) # noqa: E501
 
         if file.bitrate > -1:
             bitrate_readable = str(file.bitrate)
