@@ -395,9 +395,10 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         self._numeric_connect = None
         self.ignore_selector_select = False
 
-        self.tag_names = TAG_NAMES.copy()
-        for tag in BASIC_TAGS:
-            del self.tag_names[tag]
+        self.tag_names = {}
+        for tag, tag_name in TAG_NAMES.items():
+            if tag == 'none' or tag in EXTRA_TAGS:
+                self.tag_names[tag] = tag_name
 
         self._tag_names_swapped = {}
         for k, v in self.tag_names.items():
