@@ -3,10 +3,7 @@ data/app.drey.EarTag.metainfo.xml.in
 data/app.drey.EarTag.gschema.xml
 src/ui/window.ui
 src/ui/fileview.ui
-src/ui/closewarning.ui
-src/ui/discardwarning.ui
 src/ui/filelistitem.ui
-src/ui/removaldiscardwarning.ui
 src/ui/nofile.ui
 src/ui/sidebar.ui
 src/main.py
@@ -20,3 +17,6 @@ src/backends/file.py
 src/ui/albumcoverbutton.ui
 src/ui/shortcuts.ui
 src/ui/rename.ui
+src/ui/dialogs/closewarning.ui
+src/ui/dialogs/discardwarning.ui
+src/ui/dialogs/removaldiscardwarning.ui

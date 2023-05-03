@@ -9,16 +9,16 @@
   <gresource prefix="/app/drey/EarTag">
     <file>ui/albumcoverbutton.ui</file>
     <file>ui/albumcoverimage.ui</file>
-    <file>ui/closewarning.ui</file>
-    <file>ui/discardwarning.ui</file>
     <file>ui/filelistitem.ui</file>
     <file>ui/fileview.ui</file>
-    <file>ui/removaldiscardwarning.ui</file>
     <file>ui/rename.ui</file>
     <file>ui/sidebar.ui</file>
     <file alias="gtk/help-overlay.ui">ui/shortcuts.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
+    <file>ui/dialogs/closewarning.ui</file>
+    <file>ui/dialogs/discardwarning.ui</file>
+    <file>ui/dialogs/removaldiscardwarning.ui</file>
     <file>style.css</file>
   </gresource>
 </gresources>

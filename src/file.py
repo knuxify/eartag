@@ -41,6 +41,7 @@ from .backends import (
     EartagFileMutagenASF
     )
 from .backends.file import EartagFile
+from .dialogs import EartagRemovalDiscardWarningDialog
 
 def is_type_bulk(path, types):
     mimetypes_guess = mimetypes.guess_type(path)[0]
@@ -485,22 +486,3 @@ class EartagFileManager(GObject.Object):
     @GObject.Property(type=float, default=0.0)
     def loading_progress(self):
         return self._loading_progress
-
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/removaldiscardwarning.ui')
-class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
-    __gtype_name__ = 'EartagRemovalDiscardWarningDialog'
-
-    def __init__(self, file_manager, file):
-        super().__init__(modal=True, transient_for=file_manager.window)
-        self.file_manager = file_manager
-        self.file = file
-
-    @Gtk.Template.Callback()
-    def handle_response(self, dialog, response):
-        if response == 'save':
-            if not self.file_manager.save():
-                return False
-        if response != 'cancel':
-            self.file_manager.remove(self.file, force_discard=True)
-        self.file = None
-        self.close()

@@ -28,6 +28,7 @@ configure_file(
 eartag_sources = [
   '__init__.py',
   'common.py',
+  'dialogs.py',
   'main.py',
   'file.py',
   'fileview.py',

@@ -27,6 +27,7 @@
 # authorization.
 
 from .common import is_valid_music_file, VALID_AUDIO_MIMES
+from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
 from .fileview import EartagFileView
 from .file import EartagFileManager
 from .sidebar import EartagSidebar
@@ -34,44 +35,6 @@ from .rename import EartagRenameDialog
 
 from gi.repository import Adw, Gdk, GLib, Gio, Gtk, GObject
 import os
-
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/discardwarning.ui')
-class EartagDiscardWarningDialog(Adw.MessageDialog):
-    __gtype_name__ = 'EartagDiscardWarningDialog'
-
-    def __init__(self, window, paths):
-        super().__init__(modal=True, transient_for=window)
-        self.paths = paths
-        self.file_manager = window.file_manager
-
-    @Gtk.Template.Callback()
-    def handle_response(self, dialog, response):
-        if response == 'save':
-            if not self.file_manager.save():
-                return False
-        if response != 'cancel':
-            self.file_manager.load_multiple_files(self.paths, mode=EartagFileManager.LOAD_OVERWRITE)
-        self.close()
-
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/closewarning.ui')
-class EartagCloseWarningDialog(Adw.MessageDialog):
-    __gtype_name__ = 'EartagCloseWarningDialog'
-
-    def __init__(self, window):
-        super().__init__(modal=True, transient_for=window)
-        self.window = window
-        self.file_manager = window.file_manager
-
-    @Gtk.Template.Callback()
-    def handle_response(self, dialog, response):
-        if response == 'discard':
-            self.window.force_close = True
-            self.window.close()
-        elif response == 'save':
-            if not self.file_manager.save():
-                return False
-            self.window.close()
-        self.close()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
