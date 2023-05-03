@@ -338,7 +338,7 @@ class EartagFileManager(GObject.Object):
         progress_step = 1 / len(files)
         n = 0
         for file in files:
-            old_path = files.props.path
+            old_path = file.props.path
             new_path = names[n]
             if old_path == new_path:
                 n += 1
