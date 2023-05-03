@@ -72,12 +72,21 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         if tag_name.lower() in self._replaces:
             tag_name = self._replaces[tag_name.lower()]
         try:
-            return self.mg_file.tags[tag_name.lower()][0]
+            if tag_name in self.int_properties:
+                return self.mg_file.tags[tag_name.lower()][0]
+            else:
+                return self.mg_file.tags[tag_name.lower()][0] or ''
         except KeyError:
             try:
-                return self.mg_file.tags[tag_name.upper()][0]
+                if tag_name in self.int_properties:
+                    return self.mg_file.tags[tag_name.upper()][0]
+                else:
+                    return self.mg_file.tags[tag_name.upper()][0] or ''
             except KeyError:
-                return None
+                if tag_name in self.int_properties:
+                    return None
+                else:
+                    return ''
 
     def set_tag(self, tag_name, value):
         """Sets the tag with the given name to the given value."""

@@ -97,9 +97,11 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         try:
             if frame_name.startswith('----'):
-                return self.mg_file.tags[frame_name][0].decode("utf-8")
-            else:
+                return self.mg_file.tags[frame_name][0].decode("utf-8") or ''
+            elif tag_name in self.int_properties:
                 return self.mg_file.tags[frame_name][0]
+            else:
+                return self.mg_file.tags[frame_name][0] or ''
         except KeyError:
             return ''
 
