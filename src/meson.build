@@ -30,7 +30,7 @@ eartag_sources = [
   'common.py',
   'dialogs.py',
   'main.py',
-  'file.py',
+  'filemanager.py',
   'fileview.py',
   'sidebar.py',
   'rename.py',

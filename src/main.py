@@ -37,7 +37,7 @@ from gi.repository import Adw, Gtk, Gio
 
 from .common import is_valid_music_file
 from .window import EartagWindow
-from .file import EartagFileManager
+from .filemanager import EartagFileManager
 
 class Application(Adw.Application):
     def __init__(self, version='dev'):

@@ -29,7 +29,7 @@
 from .common import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
 from .fileview import EartagFileView # noqa: F401
-from .file import EartagFileManager
+from .filemanager import EartagFileManager
 from .sidebar import EartagSidebar  # noqa: F401
 from .rename import EartagRenameDialog
 
