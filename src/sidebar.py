@@ -222,6 +222,8 @@ class EartagFileList(Gtk.ListView):
             return
 
         new_selection = self.selection_model.get_item(0)
+        if not new_selection:
+            return
         self.file_manager.selected_files = [new_selection]
         self.file_manager.emit('selection-changed')
         self.selection_model.select_item(0, True)

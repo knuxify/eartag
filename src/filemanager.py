@@ -146,7 +146,7 @@ class EartagFileManager(GObject.Object):
         self.load_task.reset(kwargs={'paths': paths, 'mode': mode})
         self.load_task.run()
 
-    def _load_single_file(self, path, mode=1):
+    def _load_single_file(self, path):
         """
         Loads a single file. Used internally in _load_multiple_files, which should be
         used for all file loading operations.
@@ -169,11 +169,6 @@ class EartagFileManager(GObject.Object):
             _file.connect('modified', self.update_modified_status)
         )
 
-        if mode == self.LOAD_OVERWRITE:
-            GLib.idle_add(lambda *args: self.files.remove_all())
-            self.file_paths = []
-            self.selected_files = []
-
         if not self.selected_files:
             self.selected_files = []
 
@@ -192,8 +187,8 @@ class EartagFileManager(GObject.Object):
             task.emit_task_done()
             return True
 
-        if mode == self.LOAD_OVERWRITE:
-            GLib.idle_add(lambda *args: self.files.remove_all())
+        if mode == self.LOAD_OVERWRITE and self.files:
+            GLib.idle_add(lambda *args: self.files.remove_all(), priority=100)
             self.file_paths = []
             self._selected_files = []
 
@@ -207,7 +202,7 @@ class EartagFileManager(GObject.Object):
                 task.emit_task_done()
                 return False
 
-            if not self._load_single_file(path, mode=self.LOAD_INSERT):
+            if not self._load_single_file(path):
                 self.files.splice(0, 0, self._files_buffer)
                 self._files_buffer = []
 

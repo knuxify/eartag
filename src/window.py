@@ -118,9 +118,6 @@ class EartagWindow(Adw.ApplicationWindow):
             flags=GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
 
-        if paths:
-            self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
-
         self.connect('close-request', self.on_close_request)
 
         self.drop_target = Gtk.DropTarget(
@@ -136,6 +133,9 @@ class EartagWindow(Adw.ApplicationWindow):
         self.toggle_fileview()
 
         self.connect('realize', self._late_init)
+
+        if paths:
+            self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
 
     def _late_init(self, *args):
         self.file_view.setup_resize_handler()
