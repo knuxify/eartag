@@ -616,11 +616,12 @@ class EartagFileView(Gtk.Stack):
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
-        self.file_manager.connect('files_loaded', self.update_binds)
-        self.file_manager.connect('selection_changed', self.update_binds)
-        self.file_manager.connect('files_removed', self.update_binds)
-        self.file_manager.connect('files_renamed', self.update_binds)
-        self.file_manager.connect('notify::loading-progress', self.update_loading)
+        self.file_manager.connect('refresh-needed', self.update_binds)
+        self.file_manager.connect('selection-changed', self.update_binds)
+        self.file_manager.load_task.connect('notify::progress', self.update_loading)
+
+        self.file_manager.connect('files_removed', self.update_binds) # TODO delete
+        self.file_manager.connect('files_renamed', self.update_binds) # TODO delete
 
         sidebar = self.get_native().sidebar
         self.next_file_button.connect('clicked', sidebar.select_next)
@@ -634,8 +635,8 @@ class EartagFileView(Gtk.Stack):
         surface.connect('layout', self.handle_resize)
         self.handle_resize()
 
-    def update_loading(self, *args):
-        if self.file_manager.loading_progress == 0:
+    def update_loading(self, task, *args):
+        if task.progress == 0:
             self.set_visible_child(self.content_stack)
         else:
             self.set_visible_child(self.loading)

@@ -20,3 +20,5 @@ src/ui/rename.ui
 src/ui/dialogs/closewarning.ui
 src/ui/dialogs/discardwarning.ui
 src/ui/dialogs/removaldiscardwarning.ui
+src/ui/dialogs/loadingfailure.ui
+src/ui/dialogs/renamefailure.ui

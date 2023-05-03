@@ -26,7 +26,7 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, Gtk, GLib
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/closewarning.ui')
 class EartagCloseWarningDialog(Adw.MessageDialog):
@@ -63,7 +63,7 @@ class EartagDiscardWarningDialog(Adw.MessageDialog):
             if not self.file_manager.save():
                 return False
         if response != 'cancel':
-            self.file_manager.load_multiple_files(
+            self.file_manager.load_files(
                 self.paths,
                 mode=self.file_manager.LOAD_OVERWRITE
             )
@@ -86,4 +86,28 @@ class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
         if response != 'cancel':
             self.file_manager.remove(self.file, force_discard=True)
         self.file = None
+        self.close()
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/loadingfailure.ui')
+class EartagLoadingFailureDialog(Adw.MessageDialog):
+    __gtype_name__ = 'EartagLoadingFailureDialog'
+
+    def __init__(self, window, filename):
+        super().__init__(modal=True, transient_for=window)
+        self.set_body(self.get_body().format(f=filename))
+
+    @Gtk.Template.Callback()
+    def handle_response(self, dialog, response):
+        self.close()
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/renamefailure.ui')
+class EartagRenameFailureDialog(Adw.MessageDialog):
+    __gtype_name__ = 'EartagRenameFailureDialog'
+
+    def __init__(self, window, filename):
+        super().__init__(modal=True, transient_for=window)
+        self.set_body(self.get_body().format(f=filename))
+
+    @Gtk.Template.Callback()
+    def handle_response(self, dialog, response):
         self.close()

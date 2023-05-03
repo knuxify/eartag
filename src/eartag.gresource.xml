@@ -19,6 +19,8 @@
     <file>ui/dialogs/closewarning.ui</file>
     <file>ui/dialogs/discardwarning.ui</file>
     <file>ui/dialogs/removaldiscardwarning.ui</file>
+    <file>ui/dialogs/loadingfailure.ui</file>
+    <file>ui/dialogs/renamefailure.ui</file>
     <file>style.css</file>
   </gresource>
 </gresources>

@@ -41,7 +41,9 @@ from .backends import (
     EartagFileMutagenASF
     )
 from .backends.file import EartagFile
-from .dialogs import EartagRemovalDiscardWarningDialog
+from .common import EartagBackgroundTask
+from .dialogs import (EartagRemovalDiscardWarningDialog,
+    EartagLoadingFailureDialog, EartagRenameFailureDialog)
 
 def is_type_bulk(path, types):
     mimetypes_guess = mimetypes.guess_type(path)[0]
@@ -80,10 +82,6 @@ class EartagFileManager(GObject.Object):
 
     _is_modified = False
     _selected_files = []
-    _loading_progress = 0
-    _is_loading_multiple_files = False
-    _halt_loading = False
-    _is_renaming_multiple_files = False
 
     def __init__(self, window):
         super().__init__()
@@ -94,175 +92,9 @@ class EartagFileManager(GObject.Object):
         self._files_buffer = []
         self._selection_removed = False
 
-    @GObject.Signal
-    def files_loaded(self):
-        pass
-
-    @GObject.Signal
-    def selection_changed(self):
-        pass
-
-    @GObject.Signal
-    def selection_override(self):
-        """
-        Internal signal used to communicate selection overrides to the sidebar.
-        """
-        pass
-
-    @GObject.Signal
-    def select_first(self):
-        """See EartagFileList.handle_select_first"""
-        pass
-
-    @GObject.Signal
-    def files_removed(self):
-        pass
-
-    @GObject.Signal
-    def files_renamed(self):
-        pass
-
-    @GObject.Signal
-    def file_rename_fail(self):
-        pass
-
-    def load_file(self, path, mode=0, emit_loaded=True, use_buffer=False):
-        """Loads a file."""
-        if path in self.file_paths:
-            return True
-
-        if not self._is_loading_multiple_files:
-            self._loading_progress = 0
-            self.notify('loading_progress')
-
-        _selection_override = False
-        file_basename = os.path.basename(path)
-
-        try:
-            _file = eartagfile_from_path(path)
-        except:
-            traceback.print_exc()
-            self.error_dialog = Adw.MessageDialog(
-                                    modal=True,
-                                    transient_for=self.window,
-                                    heading=_("Failed to load file"),
-                                    body=_("Could not load file {f}. Check the logs for more information.").format(f=file_basename)
-            )
-            # TRANSLATORS: "Okay" button in the "failed to save file" dialog
-            self.error_dialog.add_response("ok", _("OK"))
-            self.error_dialog.connect('response', self.close_dialog)
-            # If this happens when in load_multiple_files (which is a threaded function)
-            # and we don't do this in a GLib.idle_add, the whole UI freezes.
-            GLib.idle_add(lambda *args: self.error_dialog.show())
-            return False
-
-        _file.connect('modified', self.update_modified_status)
-
-        if mode == self.LOAD_OVERWRITE:
-            self.files.remove_all()
-            self.file_paths = []
-            self.selected_files = []
-            _selection_override = True
-
-        if not self.selected_files:
-            self.selected_files = []
-            _selection_override = True
-
-        if use_buffer:
-            self._files_buffer.append(_file)
-        else:
-            self.files.append(_file)
-
-        self.file_paths.append(_file.path)
-
-        if emit_loaded:
-            self.emit('files_loaded')
-            self.update_modified_status()
-
-            if _selection_override:
-                self.emit('selection_override')
-            elif not len(self.selected_files) > 1:
-                self.selected_files = [_file]
-                self.emit('selection_changed')
-                self.emit('selection_override')
-
-            if not _file.is_writable:
-                self.window.toast_overlay.add_toast(
-                    Adw.Toast.new(_("Opened file is read-only; changes cannot be saved."))
-                )
-
-        return True
-
-    def _load_multiple_files(self, paths, mode=1):
-        """Loads files with the provided paths."""
-        self._files_buffer = []
-        if not paths:
-            self._loading_progress = 0
-            GLib.idle_add(lambda *args: self.notify('loading_progress'))
-            return True
-
-        self._is_loading_multiple_files = True
-        self._loading_progress = 0
-        GLib.idle_add(lambda *args: self.notify('loading_progress'))
-        if mode == self.LOAD_OVERWRITE:
-            self.files.remove_all()
-            self.file_paths = []
-            self._selected_files = []
-
-        file_count = len(paths)
-        progress_step = 1 / file_count
-
-        for path in paths:
-            if self._halt_loading:
-                # We don't emit "files-loaded" here because the only case where loading is
-                # halted this way is if another load operation is about to begin
-                self._is_loading_multiple_files = False
-                return False
-            if not self.load_file(path, mode=self.LOAD_INSERT, emit_loaded=False, use_buffer=True):
-                self.files.splice(0, 0, self._files_buffer)
-                self._files_buffer = []
-                GLib.idle_add(lambda *args: self.emit('files_loaded'))
-                GLib.idle_add(lambda *args: self.emit('select-first'))
-                GLib.idle_add(lambda *args: self.update_modified_status())
-                self._loading_progress = 0
-                GLib.idle_add(lambda *args: self.notify('loading_progress'))
-                self._is_loading_multiple_files = False
-                return False
-            self._loading_progress += progress_step
-            GLib.idle_add(lambda *args: self.notify('loading_progress'))
-
-        has_unwritable = False
-        for file in self._files_buffer:
-            if not file.is_writable:
-                has_unwritable = True
-
-        if has_unwritable:
-            self.window.toast_overlay.add_toast(
-                Adw.Toast.new(_("Some of the opened files are read-only; changes cannot be saved."))
-            )
-
-        self.files.splice(0, 0, self._files_buffer)
-        self._files_buffer = []
-
-        GLib.idle_add(lambda *args: self.emit('files_loaded'))
-        self._loading_progress = 0
-        GLib.idle_add(lambda *args: self.notify('loading_progress'))
-        self.update_modified_status()
-        if mode == self.LOAD_OVERWRITE:
-            self.emit('selection_override')
-        elif not len(self.selected_files) > 1:
-            self.emit('select-first')
-        self._is_loading_multiple_files = False
-
-    def load_multiple_files(self, *args, **kwargs):
-        """Loads files with the provided paths."""
-        if self._is_loading_multiple_files:
-            self._halt_loading = True
-            while self._is_loading_multiple_files:
-                time.sleep(0.25)
-            self._halt_loading = False
-        thread = threading.Thread(target=self._load_multiple_files, daemon=True, args=args, kwargs=kwargs)
-        thread.start()
+        # Create background task runners
+        self.load_task = EartagBackgroundTask(self._load_files)
+        self.rename_task = EartagBackgroundTask(self._rename_files)
 
     def save(self):
         """Saves changes in all files."""
@@ -300,6 +132,117 @@ class EartagFileManager(GObject.Object):
                 return
         self.set_property('is_modified', False)
 
+    #
+    # Loading
+    #
+
+    def load_files(self, paths, mode):
+        """
+        Loads files with the provided paths. This is the recommended way for
+        users to load files.
+        """
+        # self.load_task is set up in the init functions
+        self.load_task.stop()
+        self.load_task.reset(kwargs={'paths': paths, 'mode': mode})
+        self.load_task.run()
+
+    def _load_single_file(self, path, mode=1):
+        """
+        Loads a single file. Used internally in _load_multiple_files, which should be
+        used for all file loading operations.
+        """
+        if path in self.file_paths:
+            return True
+
+        _selection_override = False
+        file_basename = os.path.basename(path)
+
+        try:
+            _file = eartagfile_from_path(path)
+        except:
+            traceback.print_exc()
+            GLib.idle_add(lambda *args:
+                EartagLoadingFailureDialog(self.window, file_basename).present()
+            )
+            return False
+
+        GLib.idle_add(lambda *args:
+            _file.connect('modified', self.update_modified_status)
+        )
+
+        if mode == self.LOAD_OVERWRITE:
+            GLib.idle_add(lambda *args: self.files.remove_all())
+            self.file_paths = []
+            self.selected_files = []
+            _selection_override = True
+
+        if not self.selected_files:
+            self.selected_files = []
+            _selection_override = True
+
+        self._files_buffer.append(_file)
+
+        self.file_paths.append(_file.path)
+
+        return True
+
+    def _load_files(self, paths, mode=1):
+        """Loads files with the provided paths."""
+        task = self.load_task
+        self._files_buffer = []
+
+        if not paths:
+            task.emit_task_done()
+            return True
+
+        if mode == self.LOAD_OVERWRITE:
+            self.files.remove_all()
+            self.file_paths = []
+            self._selected_files = []
+
+        file_count = len(paths)
+        progress_step = 1 / file_count
+
+        for path in paths:
+            if task.halt:
+                # We don't emit "task-done" here because the only case where loading is
+                # halted this way is if another load operation is about to begin
+                task.emit_task_done()
+                return False
+
+            if not self._load_single_file(path, mode=self.LOAD_INSERT):
+                self.files.splice(0, 0, self._files_buffer)
+                self._files_buffer = []
+
+                task.emit_task_done()
+                GLib.idle_add(lambda *args: self.refresh_state())
+                self.failed = True
+                return False
+
+            task.increment_progress(progress_step)
+
+        has_unwritable = False
+        for file in self._files_buffer:
+            if not file.is_writable:
+                has_unwritable = True
+
+        if has_unwritable:
+            if file_count == 1:
+                unwritable_msg = _("Opened file is read-only; changes cannot be saved")
+            else:
+                unwritable_msg = _("Some of the opened files are read-only; changes cannot be saved")
+            GLib.idle_add(lambda *args: self.window.toast_overlay.add_toast(
+                Adw.Toast.new(unwritable_msg)
+            ))
+
+        self.files.splice(0, 0, self._files_buffer)
+        self._files_buffer = []
+
+        task.emit_task_done()
+        GLib.idle_add(lambda *args: self.refresh_state())
+        if mode == self.LOAD_OVERWRITE:
+            GLib.idle_add(lambda *args: self.emit('selection_override'))
+
     def remove(self, file, force_discard=False, no_emit=False, use_buffer=False):
         """Removes a file from the opened file list."""
         if file.is_modified and not force_discard:
@@ -319,9 +262,9 @@ class EartagFileManager(GObject.Object):
                 if not self.selected_files and self.files:
                     self.emit('select-first')
                 self.emit('selection-changed')
-                self.emit('selection_override')
+                self.emit('selection-override')
         if not no_emit:
-            self.emit('files-removed')
+            self.refresh_state()
             self.update_modified_status()
         return True
 
@@ -337,22 +280,15 @@ class EartagFileManager(GObject.Object):
             self.files.remove_all()
             self.file_paths = []
             self.selected_files = []
-            self.emit('selection_changed')
-            self.emit('selection_override')
-            self.emit('files-removed')
+
+            self.refresh_state()
+            self.emit('selection-override')
             return True
 
-        self._loading_progress = 0
-        self.notify('loading_progress')
         self._selection_removed = False
-        progress_step = 1 / file_count
         for file in files:
             if not self.remove(file, force_discard=force_discard, no_emit=True, use_buffer=True):
-                self._loading_progress = 0
-                self.notify('loading_progress')
                 return False
-            self._loading_progress += progress_step
-            self.notify('loading_progress')
 
         # Split list into removed chunks, which will allow us to use .splice
         # (much faster than calling remove on each item individually)
@@ -378,31 +314,29 @@ class EartagFileManager(GObject.Object):
         if self._selection_removed:
             for file in self.files:
                 file.setup_present_extra_tags()
-            self.emit('selection-changed')
-            self.emit('selection_override')
+            self.emit('selection-override')
 
         if not self.selected_files and self.files:
             self.emit('select-first')
 
-        self._loading_progress = 0
-        self.notify('loading_progress')
-
-        self.emit('files-removed')
+        self.refresh_state()
         self.update_modified_status()
 
         return True
 
-    def _rename_multiple_files(self, files, names):
+    def rename_files(self, *args, **kwargs):
+        self.rename_task.wait_for_completion()
+        self.rename_task.reset(args=args, kwargs=kwargs)
+        self.rename_task.run()
+
+    def _rename_files(self, files, names):
         """
         Renames multiple files and adds some harnesses to prevent potential
         data loss (for example due to overwriting an existing file).
         """
-        self._is_renaming_multiple_files = True
-        self._loading_progress = 0
-        self.notify('loading_progress')
-        self._selection_removed = False
-        progress_step = 1 / len(files)
+        task = self.rename_task
 
+        progress_step = 1 / len(files)
         n = 0
         for file in files:
             new_path = names[n]
@@ -420,43 +354,22 @@ class EartagFileManager(GObject.Object):
 
             try:
                 file.props.path = new_path
-            except Exception as e:
+            except:
                 self._is_renaming_multiple_files = False
 
-                self.error_dialog = Adw.MessageDialog(
-                                        modal=True,
-                                        transient_for=self.window,
-                                        heading=_("Failed to rename file"),
-                                        body=_("Could not rename file {f}. Check the logs for more information.").format(f=file.props.path)
+                traceback.print_exc()
+                GLib.idle_add(lambda *args:
+                    EartagRenameFailureDialog(self.window, file_basename).present()
                 )
-                # TRANSLATORS: "Okay" button in the "failed to save file" dialog
-                self.error_dialog.add_response("ok", _("OK"))
-                self.error_dialog.connect('response', self.close_dialog)
-                GLib.idle_add(lambda *args: self.error_dialog.show())
 
-                self._loading_progress = 0
-                self.notify('loading_progress')
-                self.emit('files-renamed')
-                self.emit('file-rename-fail')
-                raise e
+                task.emit_task_done()
+                self.failed = True
+                return False
             n += 1
-            self._loading_progress += progress_step
-            self.notify('loading_progress')
+            task.increment_progress(progress_step)
 
-        self._loading_progress = 0
-        self.notify('loading_progress')
-
-        self.emit('files-renamed')
-
-        self._is_renaming_multiple_files = False
-
-        return True
-
-    def rename_multiple_files(self, *args, **kwargs):
-        while self._is_renaming_multiple_files:
-            time.sleep(0.25)
-        thread = threading.Thread(target=self._rename_multiple_files, daemon=True, args=args, kwargs=kwargs)
-        thread.start()
+        task.emit_task_done()
+        GLib.idle_add(lambda *args: self.refresh_state())
 
     def close_dialog(self, dialog, *args):
         dialog.close()
@@ -478,11 +391,45 @@ class EartagFileManager(GObject.Object):
         old_value = self._selected_files
         self._selected_files = value
         if old_value != value:
-            self.emit('selection_changed')
+            self.emit('selection-changed')
 
     def select_all(self, *args):
         self.selected_files = list(self.files)
 
-    @GObject.Property(type=float, default=0.0)
-    def loading_progress(self):
-        return self._loading_progress
+    @GObject.Signal
+    def refresh_needed(self):
+        pass
+
+    @GObject.Signal
+    def selection_changed(self):
+        pass
+
+    @GObject.Signal
+    def selection_override(self):
+        """
+        Internal signal used to communicate selection overrides to the sidebar.
+        """
+        pass
+
+    @GObject.Signal
+    def select_first(self):
+        """See EartagFileList.handle_select_first"""
+        pass
+
+    @GObject.Signal
+    def files_removed(self):
+        pass
+
+    @GObject.Signal
+    def files_renamed(self):
+        pass
+
+    @GObject.Signal
+    def file_rename_fail(self):
+        pass
+
+    def refresh_state(self):
+        """Convenience function to refresh the state of the UI"""
+        self.emit('refresh-needed')
+        self.emit('selection-changed')
+        self.emit('select-first')

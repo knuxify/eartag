@@ -78,6 +78,12 @@ class EartagRenameDialog(Adw.Window):
     def __init__(self, window):
         super().__init__(modal=True, transient_for=window)
         self.file_manager = window.file_manager
+
+        self.file_manager.rename_task.bind_property(
+            'progress', self.rename_progress, 'fraction'
+        )
+        self.file_manager.rename_task.connect('task-done', self.on_done)
+
         self.files = list(self.file_manager.selected_files).copy()
         self.application = window.get_application()
         config = self.application.config
@@ -101,12 +107,9 @@ class EartagRenameDialog(Adw.Window):
                     parse_placeholder_string(format, file) + file.props.filetype)
             )
 
-        self.file_manager.bind_property('loading-progress', self.rename_progress, 'fraction')
-        self.file_manager.connect('files_renamed', self.on_cancel)
-        self.file_manager.connect('file_rename_fail', self.on_error)
         self.set_sensitive(False)
 
-        self.file_manager.rename_multiple_files(self.files, names)
+        self.file_manager.rename_files(self.files, names)
 
     @Gtk.Template.Callback()
     def update_preview(self, *args):
@@ -117,5 +120,9 @@ class EartagRenameDialog(Adw.Window):
         )
         self.preview_entry.set_text(parsed_placeholder + example_file.props.filetype)
 
-    def on_error(self, *args):
-        self.set_sensitive(True)
+    def on_done(self, task, *args):
+        if task.failed:
+            self.set_sensitive(True)
+        else:
+            self.files = None
+            self.close()

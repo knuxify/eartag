@@ -70,6 +70,7 @@ class EartagWindow(Adw.ApplicationWindow):
     container_flap = Gtk.Template.Child()
 
     sidebar = Gtk.Template.Child()
+    sidebar_headerbar = Gtk.Template.Child()
     sidebar_search_button = Gtk.Template.Child()
     select_multiple_button = Gtk.Template.Child()
     sort_button = Gtk.Template.Child()
@@ -104,7 +105,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
                             GObject.BindingFlags.SYNC_CREATE)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
-        self.file_manager.connect('notify::loading-progress', self.update_loading_progress)
+        self.file_manager.load_task.connect('notify::progress', self.update_loading_progress)
         self.sidebar_search_button.bind_property(
             'active',
             self.sidebar.search_bar, 'search-mode-enabled',
@@ -118,7 +119,7 @@ class EartagWindow(Adw.ApplicationWindow):
         )
 
         if paths:
-            self.file_manager.load_multiple_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
+            self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
 
         self.connect('close-request', self.on_close_request)
 
@@ -139,12 +140,10 @@ class EartagWindow(Adw.ApplicationWindow):
     def _late_init(self, *args):
         self.file_view.setup_resize_handler()
 
-    def update_loading_progress(self, *args):
-        loading_progress = self.file_manager.get_property('loading-progress')
+    def update_loading_progress(self, task, *args):
+        loading_progress = task.progress
         is_loading = loading_progress != 0
-        self.select_multiple_button.set_sensitive(not is_loading)
-        self.sidebar_search_button.set_sensitive(not is_loading)
-        self.sort_button.set_sensitive(not is_loading)
+        self.sidebar_headerbar.set_sensitive(not is_loading)
         if self.file_manager.files.get_n_items() == 0 and is_loading:
             self.container_stack.set_visible_child(self.container_flap)
 
@@ -154,16 +153,11 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.container_stack.set_visible_child(self.container_flap)
-            if self.file_manager.loading_progress == 0:
-                self.select_multiple_button.set_sensitive(True)
-                self.sidebar_search_button.set_sensitive(True)
-                self.sort_button.set_sensitive(True)
+            self.sidebar_headerbar.set_sensitive(bool(self.file_manager.load_task.progress))
         else:
             self.container_stack.set_visible_child(self.no_file)
             self.no_file_widget.grab_button_focus()
-            self.select_multiple_button.set_sensitive(False)
-            self.sidebar_search_button.set_sensitive(False)
-            self.sort_button.set_sensitive(False)
+            self.sidebar_headerbar.set_sensitive(False)
             if self.sidebar.selection_mode:
                 self.select_multiple_button.set_active(False)
         self.sidebar.toggle_fileview()
@@ -233,7 +227,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def open_files(self, paths):
         """
-        Loads the file with the given path. Note that this does not perform
+        Loads the files with the given paths. Note that this does not perform
         any validation; caller functions are meant to check for this manually.
         """
         if self.open_mode != EartagFileManager.LOAD_INSERT and self.file_manager._is_modified:
@@ -241,10 +235,7 @@ class EartagWindow(Adw.ApplicationWindow):
             self.discard_warning.show()
             return False
 
-        if len(paths) == 1:
-            self.file_manager.load_file(paths[0], mode=self.open_mode)
-        else:
-            self.file_manager.load_multiple_files(paths, mode=self.open_mode)
+        self.file_manager.load_files(paths, mode=self.open_mode)
 
     def open_file_from_dialog(self, dialog, response):
         """

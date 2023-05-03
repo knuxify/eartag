@@ -368,17 +368,17 @@ class EartagSidebar(Gtk.Box):
         self.list_stack.set_visible_child(self.no_files)
         self.file_list.set_sidebar(self)
 
-        self.file_manager.connect('files-loaded', self.refresh_actionbar_button_state)
+        self.file_manager.connect('refresh-needed', self.refresh_actionbar_button_state)
         self.file_manager.files.connect('items-changed', self.refresh_actionbar_button_state)
         self.file_manager.connect('selection-changed', self.refresh_actionbar_button_state)
-        self.file_manager.connect('notify::loading-progress', self.update_loading_progressbar)
+        self.file_manager.load_task.connect('notify::progress', self.update_loading_progressbar)
         self.refresh_actionbar_button_state()
 
-    def update_loading_progressbar(self, *args):
+    def update_loading_progressbar(self, task, *args):
         """
         Updates the loading progressbar's position.
         """
-        loading_progress = self.file_manager.get_property('loading-progress')
+        loading_progress = task.progress
         self.loading_progressbar_revealer.set_reveal_child(not loading_progress == 0)
         self.set_sensitive(loading_progress == 0)
         self.file_list.set_visible(loading_progress == 0)
