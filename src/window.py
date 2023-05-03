@@ -153,7 +153,7 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.container_stack.set_visible_child(self.container_flap)
-            self.sidebar_headerbar.set_sensitive(bool(self.file_manager.load_task.progress))
+            self.sidebar_headerbar.set_sensitive(self.file_manager.load_task.progress in (0, 1))
         else:
             self.container_stack.set_visible_child(self.no_file)
             self.no_file_widget.grab_button_focus()
