@@ -92,6 +92,25 @@ def is_valid_image_file(path):
         return False
     return True
 
+def get_readable_length(length):
+    """Returns human-readable version of the length, given in seconds."""
+    length_min, length_sec = divmod(int(length), 60)
+    length_hour, length_min = divmod(length_min, 60)
+
+    if length_hour:
+        length_readable = '{h}∶{m}∶{s}'.format(
+            h=str(length_hour).rjust(2, '0'),
+            m=str(length_min).rjust(2, '0'),
+            s=str(length_sec).rjust(2, '0')
+        )
+    else:
+        length_readable = '{m}∶{s}'.format(
+            m=str(length_min).rjust(2, '0'),
+            s=str(length_sec).rjust(2, '0')
+        )
+
+    return length_readable
+
 class EartagBackgroundTask(GObject.Object):
     """
     Convenience class for creating tasks that run in the background

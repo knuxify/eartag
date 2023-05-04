@@ -27,6 +27,7 @@
 # authorization.
 
 from .backends.file import BASIC_TAGS, TAG_NAMES
+from .common import get_readable_length
 
 from gi.repository import Adw, Gtk, Gio
 import os
@@ -45,11 +46,13 @@ def parse_placeholder_string(string, file):
         else:
             null_value = 'Unknown ' + TAG_NAMES[tag]
 
-        if tag in file.int_properties:
+        if tag in file.int_properties + ('length', 'bitrate'):
             value = file.get_property(tag)
             if not value or value < 0:
                 value = 0
-            if tag == 'tracknumber' or tag == 'totaltracknumber':
+            if tag == 'length':
+                tag_replaced = get_readable_length(int(value))
+            elif tag == 'tracknumber' or tag == 'totaltracknumber':
                 tag_replaced = str(value).zfill(2)
             else:
                 tag_replaced = str(value)

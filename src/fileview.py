@@ -30,7 +30,8 @@ from .common import ( # noqa: F401
     EartagEditableLabel,
     is_valid_image_file,
     EartagAlbumCoverImage,
-    EartagMultipleValueEntry
+    EartagMultipleValueEntry,
+    get_readable_length
 )
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 
@@ -1030,21 +1031,7 @@ class EartagFileView(Gtk.Stack):
         self.remove_extra_row(row, skip_adding_none=skip_adding_none)
 
     def _set_info_label(self, file):
-        # Get human-readable version of length
-        length_min, length_sec = divmod(int(file.length), 60)
-        length_hour, length_min = divmod(length_min, 60)
-
-        if length_hour:
-            length_readable = '{h}∶{m}∶{s}'.format(
-                h=str(length_hour).rjust(2, '0'),
-                m=str(length_min).rjust(2, '0'),
-                s=str(length_sec).rjust(2, '0')
-            )
-        else:
-            length_readable = '{m}∶{s}'.format(
-                m=str(length_min).rjust(2, '0'),
-                s=str(length_sec).rjust(2, '0')
-            )
+        length_readable = get_readable_length(int(file.length))
 
         # Get human-readable version of channel count
         channels = file.channels
