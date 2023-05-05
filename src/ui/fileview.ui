@@ -175,9 +175,9 @@
                         </child>
 
                         <child>
-                          <object class="EartagTagListItem" id="releaseyear_entry">
-                            <property name="title" translatable="yes">Release year</property>
-                            <property name="is-numeric">true</property>
+                          <object class="EartagTagListItem" id="releasedate_entry">
+                            <property name="title" translatable="yes">Release date</property>
+                            <property name="is-date">true</property>
                           </object>
                         </child>
 

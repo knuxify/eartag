@@ -17,11 +17,11 @@ Every file object has GObject properties that represent its information.
 
 These tags are present in every file type (although some information may be inaccurate).
 
-* `path` - path to the file.
-* `filetype` - extension of the file, taken from the filename.
+* `path` - path to the file. *(This property is not available as a rename placeholder.)*
+* `filetype` - extension of the file, taken from the filename. *(This property is not available as a rename placeholder.)*
 * `length` - length of the audio, in seconds.
 * `bitrate` - bitrate of the audio, in kbps.
-* `channels` - amount of audio channels in the file (1 - mono, 2 - stereo...)
+* `channels` - amount of audio channels in the file (1 - mono, 2 - stereo...) *(This property is not available as a rename placeholder.)*
 
 ### Basic tags
 
@@ -33,14 +33,14 @@ These tags are present in every file type.
 * `totaltracknumber` - number of total tracks in the album.
 * `album` - name of the album.
 * `albumartist` - name of the album artist.
-* `releaseyear` - year of the track's release.
+* `releasedate` - date of the track's release, in YYYY-MM-DD format.
 * `genre` - the track's genre.
 * `comment` - a short comment.
 
 ### Cover art
 
-* `cover` - EartagFileCover object containing information about the cover image.
-* `cover_path` - path to the extracted cover image. For newly loaded files, this will be a location in a temporary directory; when the cover art is updated, this points to the location of the loaded image.
+* `cover` - EartagFileCover object containing information about the cover image. *(This property is not available as a rename placeholder.)*
+* `cover_path` - path to the extracted cover image. For newly loaded files, this will be a location in a temporary directory; when the cover art is updated, this points to the location of the loaded image. *(This property is not available as a rename placeholder.)*
 
 ### Extra tags
 

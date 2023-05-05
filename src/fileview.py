@@ -39,6 +39,7 @@ from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path
 import magic
 import mimetypes
+import re
 import shutil
 
 import gettext
@@ -230,6 +231,22 @@ class EartagTagListItemBase:
         elif not text.isdigit():
             GObject.signal_stop_emission_by_name(entry, 'insert-text')
 
+    def disallow_nondate(self, entry, text, length, position, *args):
+        if not text:
+            return
+        elif not re.match("^[0-9-]*$", text):
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
+        current_length = len(entry.get_buffer().get_text())
+        if current_length + length > 10:
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
+        if (entry.get_buffer().get_text() + text).count('-') > 2:
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
     def _set_property(self, property, property_double=None):
         if property_double:
             if not self._is_double:
@@ -245,6 +262,7 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
 
     _is_double = False
     _is_numeric = False
+    _is_date = False
 
     def __init__(self):
         super().__init__(use_markup=True)
@@ -274,6 +292,17 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
         if value:
             self.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+
+    @GObject.Property(type=bool, default=False)
+    def is_date(self):
+        return self._is_date
+
+    @is_date.setter
+    def is_date(self, value):
+        self._is_date = value
+        if value:
+            self.set_input_purpose(Gtk.InputPurpose.DIGITS)
+            self.get_delegate().connect('insert-text', self.disallow_nondate)
 
     def set_placeholder_text(self, text):
         """
@@ -592,7 +621,7 @@ class EartagFileView(Gtk.Stack):
     album_entry = Gtk.Template.Child()
     albumartist_entry = Gtk.Template.Child()
     genre_entry = Gtk.Template.Child()
-    releaseyear_entry = Gtk.Template.Child()
+    releasedate_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
 
     more_tags_expander = Gtk.Template.Child()
@@ -815,7 +844,7 @@ class EartagFileView(Gtk.Stack):
             self.setup_entry(file, self.album_entry, 'album')
             self.setup_entry(file, self.albumartist_entry, 'albumartist')
             self.setup_entry(file, self.genre_entry, 'genre')
-            self.setup_entry(file, self.releaseyear_entry, 'releaseyear')
+            self.setup_entry(file, self.releasedate_entry, 'releasedate')
             self.setup_entry(file, self.comment_entry, 'comment')
             self.album_cover.bind_to_file(file)
 
@@ -881,7 +910,7 @@ class EartagFileView(Gtk.Stack):
             self.unbind_entry(file, self.album_entry)
             self.unbind_entry(file, self.albumartist_entry)
             self.unbind_entry(file, self.genre_entry)
-            self.unbind_entry(file, self.releaseyear_entry)
+            self.unbind_entry(file, self.releasedate_entry)
             self.unbind_entry(file, self.comment_entry)
             self.album_cover.unbind_from_file(file)
 

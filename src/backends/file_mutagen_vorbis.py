@@ -42,6 +42,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for Voris Comment support."""
     __gtype_name__ = 'EartagFileMutagenVorbis'
     _supports_album_covers = True
+    _supports_full_dates = True
 
     # There's an official standard and semi-official considerations for tags,
     # plus some more documents linked from https://wiki.xiph.org/VorbisComment;
@@ -54,7 +55,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     )
 
     _replaces = {
-        'releaseyear': 'date',
+        'releasedate': 'date',
         # There's also ENCODED-BY, but confusingly it represents... the person doing the encoding?
         'encodedby': 'encoder'
     }
@@ -296,24 +297,6 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         else:
             self.set_tag('tracknumber', '0/{t}'.format(t=str(value)))
         self.mark_as_modified('totaltracknumber')
-
-    @GObject.Property(type=int)
-    def releaseyear(self):
-        _date = self.get_tag('date')
-        if _date:
-            try:
-                return int(_date[:4])
-            except:
-                return None
-        return None
-
-    @releaseyear.setter
-    def releaseyear(self, value):
-        if value >= 0:
-            self.mg_file.tags['date'] = str(value)
-        else:
-            self.mg_file.tags['date'] = ''
-        self.mark_as_modified('releaseyear')
 
     @GObject.Property(type=int)
     def discnumber(self):

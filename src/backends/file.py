@@ -35,7 +35,7 @@ import shutil
 
 BASIC_TAGS = (
     'title', 'artist', 'album', 'albumartist', 'tracknumber',
-    'totaltracknumber', 'genre', 'releaseyear', 'comment'
+    'totaltracknumber', 'genre', 'releasedate', 'comment'
 )
 
 EXTRA_TAGS = (
@@ -65,7 +65,7 @@ TAG_NAMES = {
         "tracknumber": _("Track number"),
         "totaltracknumber": _("Total tracks"),
         "genre": _("Genre"),
-        "releaseyear": _("Release year"),
+        "releasedate": _("Release date"),
         "comment": _("Comment"),
 
         "none": _("(Select a tag)"),
@@ -161,8 +161,8 @@ class EartagFile(GObject.Object):
     __gtype_name__ = 'EartagFile'
 
     handled_properties = ('title', 'artist', 'album', 'albumartist', 'tracknumber',
-        'totaltracknumber', 'genre', 'releaseyear', 'comment')
-    int_properties = ('tracknumber', 'totaltracknumber', 'releaseyear', 'bpm', 'discnumber')
+        'totaltracknumber', 'genre', 'releasedate', 'comment')
+    int_properties = ('tracknumber', 'totaltracknumber', 'bpm', 'discnumber')
     _supports_album_covers = False
     _is_modified = False
     _is_writable = False
@@ -411,20 +411,18 @@ class EartagFile(GObject.Object):
         elif self.has_tag('genre'):
             self.delete_tag('genre')
 
-    @GObject.Property(type=int)
-    def releaseyear(self):
-        value = self.get_tag('releaseyear')
-        if value:
-            return int(value)
-        return None
+    @GObject.Property(type=str)
+    def releasedate(self):
+        value = self.get_tag('releasedate')
+        return value
 
-    @releaseyear.setter
-    def releaseyear(self, value):
+    @releasedate.setter
+    def releasedate(self, value):
         if value:
-            self.set_tag('releaseyear', value)
-            self.mark_as_modified('releaseyear')
-        elif self.has_tag('releaseyear'):
-            self.delete_tag('releaseyear')
+            self.set_tag('releasedate', value)
+            self.mark_as_modified('releasedate')
+        elif self.has_tag('releasedate'):
+            self.delete_tag('releasedate')
 
     @GObject.Property(type=str)
     def comment(self):

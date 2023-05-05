@@ -10,7 +10,7 @@ prop_to_example_string = {
     'tracknumber': 1,
     'totaltracknumber': 99,
     'genre': 'Example Genre',
-    'releaseyear': 2022,
+    'releasedate': '2022',
     'comment': 'Example Comment',
 
     'bpm': 160,
@@ -80,6 +80,15 @@ def run_backend_tests(file_class, extension, skip_channels=False):
     file_rename = file_class(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
     backend_rename(file_rename)
     # No need to remove; test function does this itself
+
+    if file_class._supports_full_dates:
+        shutil.copyfile(
+            os.path.join(EXAMPLES_DIR, f'example.{extension}'),
+            os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
+        )
+        file_rename_path = os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
+        backend_full_releasedate(file_class, file_rename_path)
+        os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
 
 def backend_read(file, skip_channels=False):
     """Tests common backend read functions."""
@@ -253,3 +262,13 @@ def backend_rename(file):
 
     os.remove(orig_copy_path)
     os.remove(new_path)
+
+def backend_full_releasedate(file_class, path):
+    """Tests various values for the releasedate field"""
+    for value in ('', '0000', '2022', '2022-01', '2022-01-31'):
+        file = file_class(path)
+        file.set_property('releasedate', value)
+        assert file.is_modified
+        file.save()
+        file = file_class(path)
+        assert file.get_property('releasedate') == value, f'Invalid date value (expected "{value}", got "{file.get_property("releasedate")}")'

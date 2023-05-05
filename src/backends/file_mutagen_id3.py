@@ -110,6 +110,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for ID3 support."""
     __gtype_name__ = 'EartagFileMutagenID3'
     _supports_album_covers = True
+    _supports_full_dates = True
 
     supported_extra_tags = (
         'bpm', 'compilation', 'composer', 'copyright', 'encodedby',
@@ -153,7 +154,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return False
         if tag_name == 'totaltracknumber':
             return bool(self.totaltracknumber)
-        elif tag_name == 'releaseyear':
+        elif tag_name == 'releasedate':
             return 'TDRC' in self.mg_file.tags or 'TDOR' in self.mg_file.tags
         if tag_name not in KEY_TO_FRAME:
             return False
@@ -164,7 +165,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     def delete_tag(self, tag_name):
         """Deletes the tag with the given name from the file."""
-        if tag_name == 'releaseyear':
+        if tag_name == 'releasedate':
             self.mg_file.tags.delall('TDRC')
             self.mg_file.tags.delall('TDOR')
         elif tag_name == 'url':
@@ -216,7 +217,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         picture_data = None
 
         pictures = self.mg_file.tags.getall('APIC')
-        # Loop twice, first to get cover art (preffered), second to get "other"
+        # Loop twice, first to get cover art (preferred), second to get "other"
 
         for picture in pictures:
             if picture.type == 3:
@@ -316,24 +317,25 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         self.mark_as_modified('comment')
 
     # These set both TDRC (date) and TDOR (original date) for compatibility.
-    @GObject.Property(type=int)
-    def releaseyear(self):
-        _date = None
+    @GObject.Property(type=str)
+    def releasedate(self):
         if 'TDRC' in self.mg_file.tags:
-            _date = int(self.mg_file.tags['TDRC'].text[0].year)
+            return self.mg_file.tags['TDRC'].text[0].text
         elif 'TDOR' in self.mg_file.tags:
-            _date = int(self.mg_file.tags['TDOR'].text[0].year)
+            return self.mg_file.tags['TDOR'].text[0].text
+        return ''
 
-        return _date
+    @releasedate.setter
+    def releasedate(self, value):
+        if not value:
+            self.delete_tag('releasedate')
+        else:
+            self.mg_file.tags.setall('TDRC', [mutagen.id3.TDRC(encoding=3, text=[str(value)])])
+            if 'TDOR' not in self.mg_file.tags or \
+                    self.mg_file.tags['TDOR'] == self.mg_file.tags['TDRC']:
+                self.mg_file.tags.setall('TDOR', [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
 
-    @releaseyear.setter
-    def releaseyear(self, value):
-        self.mg_file.tags.setall('TDRC', [mutagen.id3.TDRC(encoding=3, text=[str(value)])])
-        if 'TDOR' not in self.mg_file.tags or \
-                self.mg_file.tags['TDOR'] == self.mg_file.tags['TDRC']:
-            self.mg_file.tags.setall('TDOR', [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
-
-        self.mark_as_modified('releaseyear')
+            self.mark_as_modified('releasedate')
 
     @GObject.Property(type=int)
     def discnumber(self):

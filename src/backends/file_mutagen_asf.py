@@ -65,7 +65,7 @@ KEY_TO_FRAME = {
     "musicbrainz_trmid": "MusicBrainz/TRM Id",
     "musicip_puid": "MusicIP/PUID",
     "musicbrainz_releasegroupid": "MusicBrainz/Release Group Id",
-    "releaseyear": "WM/Year",
+    "releasedate": "WM/Year",
     "originalartist": "WM/OriginalArtist",
     "originalalbum": "WM/OriginalAlbumTitle",
     "albumsort": "WM/AlbumSortOrder",
@@ -129,11 +129,12 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for ASF support."""
     __gtype_name__ = 'EartagFileMutagenASF'
     _supports_album_covers = True
+    _supports_full_dates = False
 
     # Copied from file.py, but excludes totaltracknumber, as ASF tags don't
     # have a way to specify it
     handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre',
-        'releaseyear', 'comment']
+        'releasedate', 'comment']
 
     supported_extra_tags = (
         'bpm', 'composer', 'copyright', 'encodedby',
@@ -239,6 +240,24 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         self.coverart_tempfile.write(data)
         self.coverart_tempfile.flush()
         self._cover_path = self.coverart_tempfile.name
+
+    @GObject.Property(type=str)
+    def releasedate(self):
+        return self.get_tag('releasedate')
+
+    @releasedate.setter
+    def releasedate(self, value):
+        if not value:
+            self.set_tag('releasedate', '')
+        else:
+            if len(value) >= 4:
+                try:
+                    self.set_tag('releasedate', value[:4])
+                except:
+                    self.set_tag('releasedate', '')
+            else:
+                self.set_tag('releasedate', value)
+        self.mark_as_modified('releasedate')
 
     @GObject.Property(type=int)
     def totaltracknumber(self):

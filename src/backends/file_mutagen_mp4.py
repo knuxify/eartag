@@ -41,7 +41,7 @@ KEY_TO_FRAME = {
     'album': '\xa9alb',
     'artist': '\xa9ART',
     'albumartist': 'aART',
-    'releaseyear': '\xa9day',
+    'releasedate': '\xa9day',
     'comment': '\xa9cmt',
     'description': 'desc',
     'grouping': '\xa9grp',
@@ -74,6 +74,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for MP4 support."""
     __gtype_name__ = 'EartagFileMutagenMP4'
     _supports_album_covers = True
+    _supports_full_dates = True
 
     supported_extra_tags = (
         'bpm', 'composer', 'copyright', 'encodedby',
@@ -177,20 +178,15 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         self.coverart_tempfile.flush()
         self._cover_path = self.coverart_tempfile.name
 
-    @GObject.Property(type=int)
-    def releaseyear(self):
-        _date = self.get_tag('releaseyear')
-        if _date:
-            try:
-                return int(_date[:4])
-            except:
-                return None
-        return None
+    @GObject.Property(type=str)
+    def releasedate(self):
+        _date = self.get_tag('releasedate')
+        return _date
 
-    @releaseyear.setter
-    def releaseyear(self, value):
-        self.set_tag('releaseyear', value)
-        self.mark_as_modified('releaseyear')
+    @releasedate.setter
+    def releasedate(self, value):
+        self.set_tag('releasedate', value)
+        self.mark_as_modified('releasedate')
 
     @GObject.Property(type=int)
     def tracknumber(self):
