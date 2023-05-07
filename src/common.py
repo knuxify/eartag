@@ -241,7 +241,7 @@ class EartagMultipleValueEntry:
         else:
             self.ignore_edit[property] = True
             value = file.get_property(property)
-            if isinstance(value, int) and value != -1:
+            if isinstance(value, int) and value is not None:
                 entry.set_text(str(value)) # noqa E501 Ignore this warning, PyGObject won't actually accept a non-string here
             elif isinstance(value, float):
                 if str(value).endswith('.0'):
@@ -289,7 +289,7 @@ class EartagMultipleValueEntry:
                     else:
                         value = int(value)
                 except ValueError:
-                    value = -1
+                    value = None
             for file in self.files:
                 if file.get_property(property) != value:
                     if self._is_numeric and not value:

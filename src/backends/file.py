@@ -496,7 +496,7 @@ class EartagFile(GObject.Object):
                 try:
                     return float(self.get_tag('bpm'))
                 except ValueError:
-                    return 0
+                    return None
         return None
 
     @bpm.setter

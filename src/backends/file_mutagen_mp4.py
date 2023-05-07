@@ -201,7 +201,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     @tracknumber.setter
     def tracknumber(self, value):
-        if int(value) == -1:
+        if int(value) == -1 or not value:
             value = 0
         if self.totaltracknumber:
             self.mg_file.tags['trkn'] = [(int(value), int(self.totaltracknumber))]
@@ -221,7 +221,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
-        if int(value) == -1:
+        if int(value) == -1 or not value:
             value = 0
 
         if self.tracknumber:
@@ -242,7 +242,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     @discnumber.setter
     def discnumber(self, value):
-        if int(value) == -1:
+        if int(value) == -1 or not value:
             value = 0
 
         self.mg_file.tags['disk'] = [(int(value), 0)]
