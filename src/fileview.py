@@ -33,7 +33,7 @@ from .common import ( # noqa: F401
     EartagMultipleValueEntry,
     get_readable_length
 )
-from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
+from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 import os.path

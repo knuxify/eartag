@@ -263,11 +263,12 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def toggle_save_button(self, *args):
         if self.file_manager.has_error:
-            self.save_button.set_tooltip_text(_("Some of the opened files have invalid values; cannot save"))
+            self.save_button.set_tooltip_text(_("Some of the opened files have invalid values; cannot save")) # noqa: E501
         else:
             self.save_button.set_tooltip_text('')
-        self.save_button.set_sensitive(self.file_manager.is_modified and
-                not self.file_manager.has_error)
+        self.save_button.set_sensitive(
+                self.file_manager.is_modified and not self.file_manager.has_error
+        )
 
     @Gtk.Template.Callback()
     def show_sidebar(self, *args):
