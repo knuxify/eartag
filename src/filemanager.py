@@ -93,6 +93,7 @@ class EartagFileManager(GObject.Object):
         self._files_buffer = []
         self._modified_files = []
         self._error_files = []
+        self._connections = {}
         self._selection_removed = False
 
         # Create background task runners
@@ -187,8 +188,10 @@ class EartagFileManager(GObject.Object):
             )
             return False
 
-        _file.connect('modified', self.update_modified_status)
-        _file.connect('notify::has-error', self.update_error_status)
+        self._connections[_file.id] = (
+            _file.connect('modified', self.update_modified_status),
+            _file.connect('notify::has-error', self.update_error_status)
+        )
 
         if not self.selected_files:
             self.selected_files = []
@@ -260,6 +263,8 @@ class EartagFileManager(GObject.Object):
         if file.is_modified and not force_discard:
             EartagRemovalDiscardWarningDialog(self, file).present()
             return False
+        for connection in self._connections[file.id]:
+            file.disconnect(connection)
         file.__del__()
         self.file_paths.remove(file.path)
         if use_buffer:
