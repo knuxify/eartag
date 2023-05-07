@@ -255,6 +255,10 @@
         <attribute name="label" translatable="yes">_Rename Selected Files</attribute>
         <attribute name="action">app.rename</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">_Identify Selected Files</attribute>
+        <attribute name="action">app.identify</attribute>
+      </item>
     </section>
     <section>
       <item>

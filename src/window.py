@@ -32,6 +32,7 @@ from .fileview import EartagFileView # noqa: F401
 from .filemanager import EartagFileManager
 from .sidebar import EartagSidebar  # noqa: F401
 from .rename import EartagRenameDialog
+from .acoustid import EartagAcoustIDDialog
 
 from gi.repository import Adw, Gdk, GLib, Gtk, GObject
 import os
@@ -304,3 +305,7 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_rename_dialog(self, *args):
         self.rename_dialog = EartagRenameDialog(self)
         self.rename_dialog.present()
+
+    def show_acoustid_dialog(self, *args):
+        self.acoustid_dialog = EartagAcoustIDDialog(self)
+        self.acoustid_dialog.present()

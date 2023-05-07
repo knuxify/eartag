@@ -732,6 +732,7 @@ class EartagFileView(Gtk.Stack):
         if selected_files_count <= 0:
             window.get_application().save_cover_action.set_enabled(False)
             window.get_application().rename_action.set_enabled(False)
+            window.get_application().identify_action.set_enabled(False)
             window.set_title('Ear Tag')
             window.window_title.set_subtitle('')
             if self.file_manager.files:
@@ -766,6 +767,7 @@ class EartagFileView(Gtk.Stack):
             self.file_info.set_label(_multiple_files)
 
         window.get_application().rename_action.set_enabled(True)
+        window.get_application().identify_action.set_enabled(True)
 
         # Handle added and removed files
         self._unbind_files(removed_files)

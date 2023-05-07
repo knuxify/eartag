@@ -35,6 +35,7 @@ import gettext
 import locale
 
 VERSION = '@VERSION@'
+ACOUSTID_API_KEY = "@ACOUSTID_API_KEY@"
 pkgdatadir = '@pkgdatadir@'
 localedir = '@localedir@'
 
@@ -53,6 +54,10 @@ if __name__ == '__main__':
     from gi.repository import Gio
     resource = Gio.Resource.load(os.path.join(pkgdatadir, 'eartag.gresource'))
     resource._register()
+
+    import eartag
+    eartag.VERSION = VERSION
+    eartag.ACOUSTID_API_KEY = ACOUSTID_API_KEY
 
     from eartag import main
     sys.exit(main.main(VERSION))

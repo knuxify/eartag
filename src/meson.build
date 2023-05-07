@@ -14,6 +14,7 @@ python = import('python')
 conf = configuration_data()
 conf.set('PYTHON', python.find_installation('python3').path())
 conf.set('VERSION', meson.project_version())
+conf.set('ACOUSTID_API_KEY', get_option('acoustid_api_key'))
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
 
@@ -27,6 +28,7 @@ configure_file(
 
 eartag_sources = [
   '__init__.py',
+  'acoustid.py',
   'common.py',
   'dialogs.py',
   'main.py',

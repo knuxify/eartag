@@ -7,6 +7,7 @@
     <file alias="selection-mode-symbolic.svg">assets/icons/selection-mode-symbolic.svg</file>
   </gresource>
   <gresource prefix="/app/drey/EarTag">
+    <file>ui/acoustid.ui</file>
     <file>ui/albumcoverbutton.ui</file>
     <file>ui/albumcoverimage.ui</file>
     <file>ui/filelistitem.ui</file>

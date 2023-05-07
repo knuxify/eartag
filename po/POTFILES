@@ -22,3 +22,5 @@ src/ui/dialogs/discardwarning.ui
 src/ui/dialogs/removaldiscardwarning.ui
 src/ui/dialogs/loadingfailure.ui
 src/ui/dialogs/renamefailure.ui
+src/ui/acoustid.ui
+src/acoustid.py

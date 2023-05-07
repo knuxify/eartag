@@ -150,10 +150,25 @@ class EartagBackgroundTask(GObject.Object):
         self.thread = None
         self.halt = False
         self.failed = False
-        self.thread = threading.Thread(
-            target=self.target, daemon=True,
-            args=args, kwargs=kwargs
-        )
+        if args and kwargs:
+            self.thread = threading.Thread(
+                target=self.target, daemon=True,
+                args=args, kwargs=kwargs
+            )
+        elif args:
+            self.thread = threading.Thread(
+                target=self.target, daemon=True,
+                args=args
+            )
+        elif kwargs:
+            self.thread = threading.Thread(
+                target=self.target, daemon=True,
+                kwargs=kwargs
+            )
+        else:
+            self.thread = threading.Thread(
+                target=self.target, daemon=True
+            )
 
     @GObject.Property(type=float, minimum=0, maximum=1)
     def progress(self):

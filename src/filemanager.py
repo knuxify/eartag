@@ -42,6 +42,7 @@ from .backends.file import EartagFile
 from .common import EartagBackgroundTask
 from .dialogs import (EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog, EartagRenameFailureDialog)
+from .acoustid import identify_file
 
 def is_type_bulk(path, types):
     mimetypes_guess = mimetypes.guess_type(path)[0]
@@ -431,6 +432,12 @@ class EartagFileManager(GObject.Object):
 
     def select_all(self, *args):
         self.selected_files = list(self.files)
+
+    def unselect_all(self, *args):
+        self.selected_files = []
+
+    def select_file(self, file):
+        self.selected_files = [file]
 
     @GObject.Signal
     def refresh_needed(self):

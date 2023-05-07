@@ -93,6 +93,10 @@ class Application(Adw.Application):
             self.create_action('rename', self.on_rename_action, None)
         self.rename_action.set_enabled(False)
 
+        self.identify_action = \
+            self.create_action('identify', self.on_identify_action, None)
+        self.identify_action.set_enabled(False)
+
         self.create_action('quit', self.on_quit_action, '<Ctrl>q')
 
         win.present()
@@ -115,6 +119,9 @@ class Application(Adw.Application):
 
     def on_rename_action(self, widget, _):
         self.get_active_window().show_rename_dialog()
+
+    def on_identify_action(self, widget, _):
+        self.get_active_window().show_acoustid_dialog()
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(
