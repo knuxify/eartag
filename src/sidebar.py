@@ -76,7 +76,7 @@ class EartagFileListItem(Gtk.Box):
             'visible', GObject.BindingFlags.SYNC_CREATE))
         self.bindings.append(self.file.bind_property('has-error', self.error_icon,
             'visible', GObject.BindingFlags.SYNC_CREATE))
-        self.file.connect('notify::has-error', self.handle_error)
+        self._error_connect = self.file.connect('notify::has-error', self.handle_error)
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
         self.handle_selection_change()
@@ -85,7 +85,7 @@ class EartagFileListItem(Gtk.Box):
         if self.bindings:
             for b in self.bindings:
                 b.unbind()
-        self.file.disconnect('notify::has-error')
+        self.file.disconnect(self._error_connect)
         self.file = None
 
     def handle_error(self, *args):
