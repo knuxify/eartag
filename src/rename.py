@@ -72,6 +72,7 @@ class EartagRenameDialog(Adw.Window):
     __gtype_name__ = 'EartagRenameDialog'
 
     rename_progress = Gtk.Template.Child()
+    error_banner = Gtk.Template.Child()
 
     filename_entry = Gtk.Template.Child()
     preview_entry = Gtk.Template.Child()
@@ -100,6 +101,7 @@ class EartagRenameDialog(Adw.Window):
 
     @Gtk.Template.Callback()
     def do_rename(self, *args):
+        self.error_banner.set_revealed(False)
         format = self.filename_entry.get_text()
         names = []
         for file in self.files:
@@ -124,6 +126,7 @@ class EartagRenameDialog(Adw.Window):
     def on_done(self, task, *args):
         if task.failed:
             self.set_sensitive(True)
+            self.error_banner.set_revealed(True)
         else:
             self.files = None
             self.close()

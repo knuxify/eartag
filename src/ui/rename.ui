@@ -76,7 +76,7 @@
 
 
                         <child>
-                          <object class="AdwBanner">
+                          <object class="AdwBanner" id="error_banner">
                             <property name="title" translatable="yes">Failed to rename files. Check the logs for more information.</property>
                             <style>
                               <class name="boxed-list"/>
