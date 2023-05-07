@@ -34,7 +34,10 @@ import gettext
 class EartagFileListItem(Gtk.Box):
     __gtype_name__ = 'EartagFileListItem'
 
+    status_icon_stack = Gtk.Template.Child()
     modified_icon = Gtk.Template.Child()
+    error_icon = Gtk.Template.Child()
+
     coverart_image = Gtk.Template.Child()
     title_label = Gtk.Template.Child()
     filename_label = Gtk.Template.Child()
@@ -71,6 +74,9 @@ class EartagFileListItem(Gtk.Box):
             'filename', GObject.BindingFlags.SYNC_CREATE))
         self.bindings.append(self.file.bind_property('is-modified', self.modified_icon,
             'visible', GObject.BindingFlags.SYNC_CREATE))
+        self.bindings.append(self.file.bind_property('has-error', self.error_icon,
+            'visible', GObject.BindingFlags.SYNC_CREATE))
+        self.file.connect('notify::has-error', self.handle_error)
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
         self.handle_selection_change()
@@ -79,7 +85,14 @@ class EartagFileListItem(Gtk.Box):
         if self.bindings:
             for b in self.bindings:
                 b.unbind()
+        self.file.disconnect('notify::has-error')
         self.file = None
+
+    def handle_error(self, *args):
+        if self.file.has_error:
+            self.status_icon_stack.set_visible_child(self.error_icon)
+        else:
+            self.status_icon_stack.set_visible_child(self.modified_icon)
 
     @GObject.Property(type=bool, default=False)
     def selected(self):

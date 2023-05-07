@@ -269,6 +269,7 @@ def backend_full_releasedate(file_class, path):
         file = file_class(path)
         file.set_property('releasedate', value)
         assert file.is_modified
+        assert file._releasedate_cached == value
         file.save()
         file = file_class(path)
         assert file.get_property('releasedate') == value, f'Invalid date value (expected "{value}", got "{file.get_property("releasedate")}")'

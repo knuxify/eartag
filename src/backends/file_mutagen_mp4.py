@@ -180,12 +180,16 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     @GObject.Property(type=str)
     def releasedate(self):
-        _date = self.get_tag('releasedate')
-        return _date
+        if not self._releasedate_cached:
+            self._releasedate_cached = self.get_tag('releasedate')
+        return self._releasedate_cached
 
     @releasedate.setter
     def releasedate(self, value):
-        self.set_tag('releasedate', value)
+        self.validate_date('releasedate', value)
+        self._releasedate_cached = value
+        if 'releasedate' not in self._error_fields:
+            self.set_tag('releasedate', value)
         self.mark_as_modified('releasedate')
 
     @GObject.Property(type=int)

@@ -81,6 +81,7 @@ class EartagFileManager(GObject.Object):
     LOAD_INSERT = 1
 
     _is_modified = False
+    _has_error = False
     _selected_files = []
 
     def __init__(self, window):
@@ -98,6 +99,9 @@ class EartagFileManager(GObject.Object):
 
     def save(self):
         """Saves changes in all files."""
+        if not self.is_modified or self.has_error:
+            return False
+
         for file in self.files:
             if not file.is_writable or not file.is_modified:
                 continue
@@ -131,6 +135,14 @@ class EartagFileManager(GObject.Object):
                 self.set_property('is_modified', True)
                 return
         self.set_property('is_modified', False)
+
+    def update_error_status(self, *args):
+        """Responsible for setting the has_error property."""
+        for file in self.files:
+            if file.has_error:
+                self.set_property('has_error', True)
+                return
+        self.set_property('has_error', False)
 
     #
     # Loading
@@ -172,6 +184,7 @@ class EartagFileManager(GObject.Object):
             return False
 
         _file.connect('modified', self.update_modified_status)
+        _file.connect('notify::has-error', self.update_error_status)
 
         if not self.selected_files:
             self.selected_files = []
@@ -381,6 +394,14 @@ class EartagFileManager(GObject.Object):
     @is_modified.setter
     def is_modified(self, value):
         self._is_modified = value
+
+    @GObject.Property(type=bool, default=False)
+    def has_error(self):
+        return self._has_error
+
+    @has_error.setter
+    def has_error(self, value):
+        self._has_error = value
 
     @GObject.Property
     def selected_files(self):

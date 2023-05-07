@@ -41,13 +41,27 @@
 
         <child>
           <object class="GtkBox">
-            <property name="spacing">3</property>
             <child>
-              <object class="GtkImage" id="modified_icon">
-                <property name="icon-name">file-modified-symbolic</property>
-                <!-- TRANSLATORS: Shown when hovering over the dot next to modified files on the file list -->
-                <property name="tooltip-text" translatable="yes">File has unsaved changes</property>
-                <property name="visible">false</property>
+              <object class="GtkStack" id="status_icon_stack">
+                <child>
+                  <object class="GtkImage" id="error_icon">
+                    <property name="icon-name">dialog-warning-symbolic</property>
+                    <!-- TRANSLATORS: Shown when hovering over the dot next to modified files on the file list -->
+                    <property name="tooltip-text" translatable="yes">File has invalid values</property>
+                    <property name="visible">false</property>
+                    <property name="margin-end">3</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkImage" id="modified_icon">
+                    <property name="icon-name">file-modified-symbolic</property>
+                    <!-- TRANSLATORS: Shown when hovering over the dot next to modified files on the file list -->
+                    <property name="tooltip-text" translatable="yes">File has unsaved changes</property>
+                    <property name="visible">false</property>
+                    <property name="margin-end">3</property>
+                  </object>
+                </child>
               </object>
             </child>
 

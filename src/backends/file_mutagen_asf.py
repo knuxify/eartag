@@ -247,6 +247,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
     @releasedate.setter
     def releasedate(self, value):
+        self.validate_date('releasedate', value)
         if not value:
             self.set_tag('releasedate', '')
         else:

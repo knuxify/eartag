@@ -231,22 +231,6 @@ class EartagTagListItemBase:
         elif not text.isdigit():
             GObject.signal_stop_emission_by_name(entry, 'insert-text')
 
-    def disallow_nondate(self, entry, text, length, position, *args):
-        if not text:
-            return
-        elif not re.match("^[0-9-]*$", text):
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-            return
-
-        current_length = len(entry.get_buffer().get_text())
-        if current_length + length > 10:
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-            return
-
-        if (entry.get_buffer().get_text() + text).count('-') > 2:
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-            return
-
     def _set_property(self, property, property_double=None):
         if property_double:
             if not self._is_double:
@@ -278,6 +262,15 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
         self.ignore_edit = {}
         self._placeholder = ''
 
+    def bind_to_file(self, file):
+        super().bind_to_file(file)
+        file.connect('notify::has-error', self.handle_error)
+        self.handle_error()
+
+    def unbind_from_file(self, file):
+        super().unbind_from_file(file)
+        self.handle_error()
+
     @GObject.Property(type=bool, default=False)
     def is_double(self):
         return False
@@ -292,6 +285,26 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
         if value:
             self.set_input_purpose(Gtk.InputPurpose.DIGITS)
             self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+
+    def disallow_nondate(self, entry, text, length, position, *args):
+        if not text:
+            return
+        elif not re.match("^[0-9-]*$", text):
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
+        current_text = entry.get_buffer().get_text()
+
+        current_length = len(current_text)
+        if current_length + length > 10:
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
+        sep_count = (current_text + text).count('-')
+
+        if sep_count > 2:
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
 
     @GObject.Property(type=bool, default=False)
     def is_date(self):
@@ -328,6 +341,17 @@ class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValue
                 # This if-else statement is a workaround for cases where the _title
                 # variable doesn't get initialized properly.
                 self._title = self.get_title()
+
+    def handle_error(self, *args):
+        has_error = False
+        for file in self.files:
+            if file.has_error and self.properties[0] in file._error_fields:
+                has_error = True
+                break
+        if has_error:
+            self.add_css_class('error')
+        else:
+            self.remove_css_class('error')
 
 class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultipleValueEntry):
     __gtype_name__ = 'EartagTagListDoubleItem'
@@ -754,18 +778,17 @@ class EartagFileView(Gtk.Stack):
             if not file.is_writable:
                 has_unwritable = True
                 break
+
         if has_unwritable:
             self.album_cover.set_sensitive(False)
             self.important_data_container.set_sensitive(False)
             self.tag_list.set_sensitive(False)
-            window.save_button.set_tooltip_text(_('File is read-only, saving is disabled'))
-            window.save_button.set_sensitive(False)
         else:
             self.album_cover.set_sensitive(True)
             self.important_data_container.set_sensitive(True)
             self.tag_list.set_sensitive(True)
-            window.save_button.set_tooltip_text('')
-            window.save_button.set_sensitive(self.file_manager.is_modified)
+
+        window.toggle_save_button()
 
         # Scroll to the top of the view
         adjust = self.content_scroll.get_vadjustment()

@@ -31,6 +31,7 @@ gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import GObject, GdkPixbuf
 import filecmp
 import os
+import re
 import shutil
 
 BASIC_TAGS = (
@@ -166,6 +167,7 @@ class EartagFile(GObject.Object):
     _supports_album_covers = False
     _is_modified = False
     _is_writable = False
+    _has_error = False
 
     def __init__(self, path):
         """Initializes an EartagFile for the given file path."""
@@ -177,6 +179,8 @@ class EartagFile(GObject.Object):
         self._cover_path = None
         self.modified_tags = []
         self.original_values = {}
+        self._error_fields = []
+        self._releasedate_cached = None
 
     def setup_present_extra_tags(self):
         """
@@ -216,6 +220,16 @@ class EartagFile(GObject.Object):
         else:
             self._is_writable = True
         self.notify('is_writable')
+
+    def set_error(self, field, has_error):
+        """Sets an error for the given field."""
+        if not has_error and field in self._error_fields:
+            self._error_fields.remove(field)
+        elif has_error and field not in self._error_fields:
+            self._error_fields.append(field)
+
+        self._has_error = has_error
+        self.notify('has-error')
 
     def __del__(self, *args):
         self._cover = None
@@ -299,6 +313,11 @@ class EartagFile(GObject.Object):
     def is_modified(self):
         """Returns whether the values have been modified or not."""
         return self._is_modified
+
+    @GObject.Property(type=bool, default=False)
+    def has_error(self):
+        """Returns whether or not there's an error with the file's values."""
+        return self._has_error
 
     @GObject.Property(type=bool, default=False)
     def supports_album_covers(self):
@@ -411,18 +430,46 @@ class EartagFile(GObject.Object):
         elif self.has_tag('genre'):
             self.delete_tag('genre')
 
+    # Release dates have custom handling, as invalid values don't get
+    # saved correctly, so we only save valid ones to the file itself,
+    # and the rest it stored internally:
+
+    def validate_date(self, field, value):
+        if not value:
+            self.set_error(field, False)
+            return
+
+        has_error = True
+        if '-' in value:
+            for format in ('^[0-9]{4}$', '^[0-9]{4}-[0-9]{2}$',
+                    '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'):
+                if re.match(format, value):
+                    has_error = False
+                    break
+        else:
+            has_error = False
+
+        self.set_error(field, has_error)
+
     @GObject.Property(type=str)
     def releasedate(self):
-        value = self.get_tag('releasedate')
-        return value
+        if not self._releasedate_cached:
+            value = self.get_tag('releasedate')
+            if value and len(value) > 10:
+                value = value[:10]
+            self._releasedate_cached = value
+        return self._releasedate_cached
 
     @releasedate.setter
     def releasedate(self, value):
-        if value:
-            self.set_tag('releasedate', value)
-            self.mark_as_modified('releasedate')
-        elif self.has_tag('releasedate'):
-            self.delete_tag('releasedate')
+        self.validate_date('releasedate', value)
+        self._releasedate_cached = value
+        if 'releasedate' not in self._error_fields:
+            if value:
+                self.set_tag('releasedate', value)
+            elif self.has_tag('releasedate'):
+                self.delete_tag('releasedate')
+        self.mark_as_modified('releasedate')
 
     @GObject.Property(type=str)
     def comment(self):

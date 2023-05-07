@@ -102,8 +102,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
         self.sidebar.set_file_manager(self.file_manager)
-        self.file_manager.bind_property('is_modified', self.save_button, 'sensitive',
-                            GObject.BindingFlags.SYNC_CREATE)
+        self.file_manager.connect('notify::is-modified', self.toggle_save_button)
+        self.file_manager.connect('notify::has-error', self.toggle_save_button)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
         self.file_manager.load_task.connect('notify::progress', self.update_loading_progress)
         self.sidebar_search_button.bind_property(
@@ -260,6 +260,14 @@ class EartagWindow(Adw.ApplicationWindow):
                 self.toast_overlay.add_toast(toast)
                 return
             return self.open_files(paths)
+
+    def toggle_save_button(self, *args):
+        if self.file_manager.has_error:
+            self.save_button.set_tooltip_text(_("Some of the opened files have invalid values; cannot save"))
+        else:
+            self.save_button.set_tooltip_text('')
+        self.save_button.set_sensitive(self.file_manager.is_modified and
+                not self.file_manager.has_error)
 
     @Gtk.Template.Callback()
     def show_sidebar(self, *args):

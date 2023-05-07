@@ -319,23 +319,28 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     # These set both TDRC (date) and TDOR (original date) for compatibility.
     @GObject.Property(type=str)
     def releasedate(self):
-        if 'TDRC' in self.mg_file.tags:
-            return self.mg_file.tags['TDRC'].text[0].text
-        elif 'TDOR' in self.mg_file.tags:
-            return self.mg_file.tags['TDOR'].text[0].text
-        return ''
+        if not self._releasedate_cached:
+            value = ''
+            if 'TDRC' in self.mg_file.tags:
+                value = self.mg_file.tags['TDRC'].text[0].text
+            elif 'TDOR' in self.mg_file.tags:
+                value = self.mg_file.tags['TDOR'].text[0].text
+            self._releasedate_cached = value
+        return self._releasedate_cached
 
     @releasedate.setter
     def releasedate(self, value):
+        self.validate_date('releasedate', value)
+        self._releasedate_cached = value
         if not value:
             self.delete_tag('releasedate')
-        else:
+        elif 'releasedate' not in self._error_fields:
             self.mg_file.tags.setall('TDRC', [mutagen.id3.TDRC(encoding=3, text=[str(value)])])
             if 'TDOR' not in self.mg_file.tags or \
                     self.mg_file.tags['TDOR'] == self.mg_file.tags['TDRC']:
                 self.mg_file.tags.setall('TDOR', [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
 
-            self.mark_as_modified('releasedate')
+        self.mark_as_modified('releasedate')
 
     @GObject.Property(type=int)
     def discnumber(self):
