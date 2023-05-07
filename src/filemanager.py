@@ -91,6 +91,8 @@ class EartagFileManager(GObject.Object):
         self.file_paths = []
         self.selected_files = []
         self._files_buffer = []
+        self._modified_files = []
+        self._error_files = []
         self._selection_removed = False
 
         # Create background task runners
@@ -128,21 +130,23 @@ class EartagFileManager(GObject.Object):
         )
         return True
 
-    def update_modified_status(self, *args):
+    def update_modified_status(self, file, *args):
         """Responsible for setting the is_modified property."""
-        for file in self.files:
-            if file.is_modified:
-                self.set_property('is_modified', True)
-                return
-        self.set_property('is_modified', False)
+        if file.is_modified and file.id not in self._modified_files:
+            self._modified_files.append(file.id)
+        elif not file.is_modified and file.id in self._modified_files:
+            self._modified_files.remove(file.id)
 
-    def update_error_status(self, *args):
+        self.set_property('is_modified', bool(self._modified_files))
+
+    def update_error_status(self, file, *args):
         """Responsible for setting the has_error property."""
-        for file in self.files:
-            if file.has_error:
-                self.set_property('has_error', True)
-                return
-        self.set_property('has_error', False)
+        if file.has_error and file.id not in self._error_files:
+            self._error_files.append(file.id)
+        elif not file.has_error and file.id in self._error_files:
+            self._error_files.remove(file.id)
+
+        self.set_property('has_error', bool(self._error_files))
 
     #
     # Loading
@@ -271,9 +275,14 @@ class EartagFileManager(GObject.Object):
                     self.emit('select-first')
                 self.emit('selection-changed')
                 self.emit('selection-override')
+        if file.id in self._modified_files:
+            self._modified_files.remove(file.id)
+        if file.id in self._error_files:
+            self._error_files.remove(file.id)
         if not no_emit:
+            self.set_property('is_modified', bool(self._modified_files))
+            self.set_property('has_error', bool(self._error_files))
             self.refresh_state()
-            self.update_modified_status()
         return True
 
     def remove_multiple(self, files, force_discard=False):
@@ -327,8 +336,9 @@ class EartagFileManager(GObject.Object):
         if not self.selected_files and self.files:
             self.emit('select-first')
 
+        self.set_property('is_modified', bool(self._modified_files))
+        self.set_property('has_error', bool(self._error_files))
         self.refresh_state()
-        self.update_modified_status()
 
         return True
 

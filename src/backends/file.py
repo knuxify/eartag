@@ -33,6 +33,7 @@ import filecmp
 import os
 import re
 import shutil
+import uuid
 
 BASIC_TAGS = (
     'title', 'artist', 'album', 'albumartist', 'tracknumber',
@@ -181,6 +182,7 @@ class EartagFile(GObject.Object):
         self.original_values = {}
         self._error_fields = []
         self._releasedate_cached = None
+        self.id = str(uuid.uuid4()) # Internal ID used for keeping track of files
 
     def setup_present_extra_tags(self):
         """
