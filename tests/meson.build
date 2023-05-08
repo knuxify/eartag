@@ -4,5 +4,5 @@ test('test_backends', python3,
   args: [
     '-m', 'pytest',
   ],
-  workdir: meson.source_root()
+  workdir: meson.project_source_root()
 )
