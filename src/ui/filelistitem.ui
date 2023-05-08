@@ -94,19 +94,43 @@
     </child>
 
     <child>
-      <object class="GtkButton" id="remove_button">
-        <property name="icon-name">list-remove-symbolic</property>
-        <signal name="clicked" handler="remove_item"/>
-        <property name="hexpand">true</property>
-        <property name="halign">end</property>
-        <property name="valign">center</property>
-        <!-- TRANSLATORS: Tooltip for button used to remove file from opened file list -->
-        <property name="tooltip-text" translatable="yes">Remove from list</property>
+      <object class="GtkBox" id="suffixes">
+        <property name="spacing">6</property>
 
-        <style>
-          <class name="flat"/>
-          <class name="circular"/>
-        </style>
+        <!-- AcoustID suffix: identification status -->
+        <child>
+          <object class="GtkStack" id="acoustid_info_stack">
+            <property name="visible">false</property>
+
+            <child>
+              <object class="GtkLabel" id="acoustid_info_label">
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkSpinner" id="acoustid_loading_icon">
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <!-- Sidebar buttons (default) -->
+        <child>
+          <object class="GtkButton" id="remove_button">
+            <property name="icon-name">list-remove-symbolic</property>
+            <signal name="clicked" handler="remove_item"/>
+            <property name="hexpand">true</property>
+            <property name="halign">end</property>
+            <property name="valign">center</property>
+            <!-- TRANSLATORS: Tooltip for button used to remove file from opened file list -->
+            <property name="tooltip-text" translatable="yes">Remove from list</property>
+
+            <style>
+              <class name="flat"/>
+              <class name="circular"/>
+            </style>
+          </object>
+        </child>
       </object>
     </child>
 

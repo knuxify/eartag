@@ -189,6 +189,12 @@ class EartagBackgroundTask(GObject.Object):
         self.reset_progress()
         self._is_done = True
 
+    @GObject.Property(type=bool, default=False)
+    def is_running(self):
+        if not self.thread:
+            return False
+        return self.thread.is_alive()
+
     def reset_progress(self):
         self.props.progress = 0
 

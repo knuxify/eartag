@@ -46,8 +46,15 @@ class EartagFileListItem(Gtk.Box):
 
     cover_edit_stack = Gtk.Template.Child()
     select_button = Gtk.Template.Child()
+    remove_button = Gtk.Template.Child()
+    suffixes = Gtk.Template.Child()
 
-    def __init__(self, filelist):
+    # AcoustID suffixes
+    acoustid_info_stack = Gtk.Template.Child()
+    acoustid_info_label = Gtk.Template.Child()
+    acoustid_loading_icon = Gtk.Template.Child()
+
+    def __init__(self, filelist, mode):
         super().__init__()
         self._selected = False
         self.filelist = filelist
@@ -58,6 +65,8 @@ class EartagFileListItem(Gtk.Box):
         self.filelist.connect('notify::selection-mode', self.toggle_selection_mode)
         self.connect('destroy', self.on_destroy)
         self.bindings = []
+        if mode == 'selected':
+            self.remove_button.set_visible(False)
 
     def bind_to_file(self, file):
         if self.bindings:
@@ -93,6 +102,10 @@ class EartagFileListItem(Gtk.Box):
             self.status_icon_stack.set_visible_child(self.error_icon)
         else:
             self.status_icon_stack.set_visible_child(self.modified_icon)
+
+    def add_suffix(self, widget):
+        """Adds a suffix widget."""
+        self.suffixes.append(widget)
 
     @GObject.Property(type=bool, default=False)
     def selected(self):
@@ -162,9 +175,10 @@ class EartagFileList(Gtk.ListView):
         self.sidebar_factory.connect('bind', self.bind)
         self.sidebar_factory.connect('unbind', self.bind)
         self.set_factory(self.sidebar_factory)
-        self.add_css_class('navigation-sidebar')
         self._selection_mode = False
         self._ignore_unselect = False
+        self.file_manager = None
+        self._widgets = {}
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -172,6 +186,7 @@ class EartagFileList(Gtk.ListView):
         self.file_manager.connect('select-first', self.handle_select_first)
 
     def set_sidebar(self, sidebar):
+        self.mode = 'sidebar'
         self.sidebar = sidebar
 
         # Set up sort model for sort button
@@ -189,13 +204,34 @@ class EartagFileList(Gtk.ListView):
 
         self.set_model(self.selection_model)
 
+    def setup_for_selected(self):
+        self.mode = 'selected'
+        # Set up sort model for sort button
+        self.sort_model = Gtk.SortListModel(model=self.file_manager.files)
+        self.sorter = Gtk.CustomSorter.new(self.sort_func, None)
+        self.sort_model.set_sorter(self.sorter)
+
+        # Set up filter model for only leaving selected items
+        self.filter_model = Gtk.FilterListModel(model=self.sort_model)
+        self.filter = Gtk.CustomFilter.new(self.selected_filter_func, self.filter_model)
+        self.filter_model.set_filter(self.filter)
+
+        self.selection_model = Gtk.NoSelection(model=self.filter_model)
+
+        self.set_model(self.selection_model)
+
     def setup(self, factory, list_item):
-        list_item.set_child(EartagFileListItem(self))
+        list_item.set_child(EartagFileListItem(self, self.mode))
 
     def bind(self, factory, list_item):
         child = list_item.get_child()
         file = list_item.get_item()
         child.bind_to_file(file)
+        self._widgets[file.id] = child
+
+    def unbind(self, factory, list_item):
+        file = list_item.get_item()
+        del self._widgets[file.id]
 
     def handle_selection_override(self, *args):
         """
@@ -282,6 +318,9 @@ class EartagFileList(Gtk.ListView):
             collate = GLib.utf8_collate(a_filename, b_filename)
 
         return collate
+
+    def selected_filter_func(self, file, *args):
+        return file in self.file_manager.selected_files
 
     def enable_selection_mode(self, *args):
         self.selection_model.set_can_unselect(True)

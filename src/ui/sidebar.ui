@@ -39,7 +39,11 @@
             <property name="max-content-width">400</property>
 
             <child>
-              <object class="EartagFileList" id="file_list"/>
+              <object class="EartagFileList" id="file_list">
+                <style>
+                  <class name="navigation-sidebar"/>
+                </style>
+              </object>
             </child>
           </object>
         </child>

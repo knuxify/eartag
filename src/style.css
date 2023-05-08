@@ -59,6 +59,11 @@
 
 .filelist-item * { border-radius: 6px; }
 
+.acoustid-filelist {
+	padding: 6px;
+	border-radius: 6px;
+}
+
 /* Required to make the OSD button outline show up */
 .prev-next-button-container { padding: 6px; margin: -6px; }
 
