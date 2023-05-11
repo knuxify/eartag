@@ -199,8 +199,6 @@ class EartagAcoustIDDialog(Adw.Window):
 
     def on_done(self, task, *args):
         self.file_manager.emit('refresh-needed')
-        self.file_manager.unselect_all()
-        self.file_manager.select_file(self.files[0])
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(_("Identified {identified} out of {total} tracks").format(
                 identified=self.identified_files, total=len(self.files)

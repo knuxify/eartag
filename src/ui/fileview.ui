@@ -103,8 +103,9 @@
                         <property name="spacing">6</property>
 
                         <child>
-                          <object class="EartagEditableLabel" id="title_entry">
-                            <property name="placeholder" translatable="yes">Title</property>
+                          <object class="EartagTagEditableLabel" id="title_entry">
+                            <property name="title" translatable="yes">Title</property>
+                            <property name="bound-property">title</property>
                             <style>
                               <class name="title-1"/>
                             </style>
@@ -112,8 +113,9 @@
                         </child>
 
                         <child>
-                          <object class="EartagEditableLabel" id="artist_entry">
-                            <property name="placeholder" translatable="yes">Artist</property>
+                          <object class="EartagTagEditableLabel" id="artist_entry">
+                            <property name="title" translatable="yes">Artist</property>
+                            <property name="bound-property">artist</property>
                             <style>
                               <class name="title-3"/>
                               <class name="artist"/>
@@ -122,15 +124,13 @@
                         </child>
 
                         <child>
-                          <object class="GtkLabel" id="file_info">
+                          <object class="EartagFileInfoLabel" id="file_info">
                             <property name="justify">center</property>
                             <property name="wrap">true</property>
                             <property name="margin-top">6</property>
 
                             <style>
-                              <class name="dim-label"/>
                               <class name="caption-header"/>
-                              <class name="numeric"/>
                             </style>
                           </object>
                         </child>
@@ -148,8 +148,10 @@
                         </style>
 
                         <child>
-                          <object class="EartagTagListDoubleItem" id="tracknumber_entry">
+                          <object class="EartagTagDoubleRow" id="tracknumber_entry">
                             <property name="title" translatable="yes">Track number</property>
+                            <property name="first-property">tracknumber</property>
+                            <property name="second-property">totaltracknumber</property>
                             <property name="max-width-chars">4</property>
                             <property name="double-separator">/</property>
                             <property name="is-numeric">true</property>
@@ -157,40 +159,43 @@
                         </child>
 
                         <child>
-                          <object class="EartagTagListItem" id="album_entry">
+                          <object class="EartagTagEntryRow" id="album_entry">
                             <property name="title" translatable="yes">Album</property>
+                            <property name="bound-property">album</property>
                           </object>
                         </child>
 
                         <child>
-                          <object class="EartagTagListItem" id="albumartist_entry">
+                          <object class="EartagTagEntryRow" id="albumartist_entry">
                             <property name="title" translatable="yes">Album artist</property>
+                            <property name="bound-property">albumartist</property>
                           </object>
                         </child>
 
                         <child>
-                          <object class="EartagTagListItem" id="genre_entry">
+                          <object class="EartagTagEntryRow" id="genre_entry">
                             <property name="title" translatable="yes">Genre</property>
+                            <property name="bound-property">genre</property>
                           </object>
                         </child>
 
                         <child>
-                          <object class="EartagTagListItem" id="releasedate_entry">
+                          <object class="EartagTagEntryRow" id="releasedate_entry">
                             <property name="title" translatable="yes">Release date</property>
+                            <property name="bound-property">releasedate</property>
                             <property name="is-date">true</property>
                           </object>
                         </child>
 
                         <child>
-                          <object class="EartagTagListItem" id="comment_entry">
+                          <object class="EartagTagEntryRow" id="comment_entry">
                             <property name="title" translatable="yes">Comment</property>
+                            <property name="bound-property">comment</property>
                           </object>
                         </child>
 
                         <child>
-                          <object class="AdwExpanderRow" id="more_tags_expander">
-                            <property name="title" translatable="yes">More tags</property>
-                          </object>
+                          <object class="EartagExtraTagsExpander" id="more_tags_expander"/>
                         </child>
                       </object>
                     </child>

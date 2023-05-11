@@ -26,21 +26,18 @@
 # use or other dealings in this Software without prior written
 # authorization.
 
-from .common import ( # noqa: F401
-    EartagEditableLabel,
-    is_valid_image_file,
-    EartagAlbumCoverImage,
-    EartagMultipleValueEntry,
-    get_readable_length
-)
 from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES
+from .common import ( # noqa: F401
+    get_readable_length,
+    is_valid_image_file,
+    EartagAlbumCoverImage
+)
+from .tagentry import ( # noqa: F401
+    EartagTagEntry, EartagTagEntryRow,
+    EartagTagEditableLabel
+)
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GObject
-import os.path
-import magic
-import mimetypes
-import re
-import shutil
 
 import gettext
 
@@ -208,188 +205,24 @@ class EartagAlbumCoverButton(Adw.Bin):
     def on_unhover(self, *args):
         self.highlight_revealer.set_reveal_child(False)
 
-def isfloat(value):
-    """Checks if the given value is a valid float."""
-    try:
-        float(value)
-    except ValueError:
-        return False
-    return True
+# ActionRow with two TagEntries, used for track numbers.
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/rows/tagdoublerow.ui')
+class EartagTagDoubleRow(Adw.ActionRow):
+    __gtype_name__ = 'EartagTagDoubleRow'
 
-class EartagTagListItemBase:
-    def on_destroy(self, *args):
-        self.files = []
-
-    def disallow_nonnumeric(self, entry, text, length, position, *args):
-        if not text:
-            return
-        if self.properties[0] == 'bpm':
-            if '.' in text and '.' in entry.get_text():
-                GObject.signal_stop_emission_by_name(entry, 'insert-text')
-            if text != '.' and not isfloat(text):
-                GObject.signal_stop_emission_by_name(entry, 'insert-text')
-        elif not text.isdigit():
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-
-    def _set_property(self, property, property_double=None):
-        if property_double:
-            if not self._is_double:
-                raise ValueError
-            self.properties = [property, property_double]
-            self.ignore_edit[property_double] = False
-        else:
-            self.properties = [property]
-        self.ignore_edit[property] = False
-
-class EartagTagListItem(Adw.EntryRow, EartagTagListItemBase, EartagMultipleValueEntry):
-    __gtype_name__ = 'EartagTagListItem'
-
-    _is_double = False
-    _is_numeric = False
-    _is_date = False
-
-    def __init__(self):
-        super().__init__(use_markup=True)
-        self._title = self.get_title()
-
-        self.value_entry = self # for compatibility
-
-        self.connect('changed', self.on_changed, False)
-        self.connect('destroy', self.on_destroy)
-
-        self.files = []
-        self.properties = []
-        self.ignore_edit = {}
-        self._placeholder = ''
-
-    def bind_to_file(self, file):
-        super().bind_to_file(file)
-        file.connect('notify::has-error', self.handle_error)
-        self.handle_error()
-
-    def unbind_from_file(self, file):
-        super().unbind_from_file(file)
-        self.handle_error()
-
-    @GObject.Property(type=bool, default=False)
-    def is_double(self):
-        return False
-
-    @GObject.Property(type=bool, default=False)
-    def is_numeric(self):
-        return self._is_numeric
-
-    @is_numeric.setter
-    def is_numeric(self, value):
-        self._is_numeric = value
-        if value:
-            self.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
-
-    def disallow_nondate(self, entry, text, length, position, *args):
-        if not text:
-            return
-        elif not re.match("^[0-9-]*$", text):
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-            return
-
-        current_text = entry.get_buffer().get_text()
-
-        current_length = len(current_text)
-        if current_length + length > 10:
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-            return
-
-        sep_count = (current_text + text).count('-')
-
-        if sep_count > 2:
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-            return
-
-    @GObject.Property(type=bool, default=False)
-    def is_date(self):
-        return self._is_date
-
-    @is_date.setter
-    def is_date(self, value):
-        self._is_date = value
-        if value:
-            self.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self.get_delegate().connect('insert-text', self.disallow_nondate)
-
-    def set_placeholder_text(self, text):
-        """
-        This is used by EartagMultipleValueEntry to show a placeholder value
-        when there are multiple files selected.
-
-        In the case of AdwEntryRows, the title acts as the placeholder,
-        but if we overrode the title, then the purpose of the field wouldn't
-        be displayed.
-
-        So, instead, we append the placeholder to the title, and remove it when
-        the state changes.
-        """
-        if self._placeholder and text:
-            return
-        self._placeholder = text
-        if text:
-            self.set_title(self.get_title() + ' <b>' + text + '</b>')
-        else:
-            if self._title:
-                self.set_title(self._title)
-            else:
-                # This if-else statement is a workaround for cases where the _title
-                # variable doesn't get initialized properly.
-                self._title = self.get_title()
-
-    def handle_error(self, *args):
-        has_error = False
-        for file in self.files:
-            if file.has_error and self.properties[0] in file._error_fields:
-                has_error = True
-                break
-        if has_error:
-            self.add_css_class('error')
-        else:
-            self.remove_css_class('error')
-
-class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultipleValueEntry):
-    __gtype_name__ = 'EartagTagListDoubleItem'
-
-    _is_double = True
-    _is_numeric = False
     _max_width_chars = -1
 
-    def __init__(self):
-        super().__init__(can_target=False, focusable=False, focus_on_click=False)
-        self.suffixes = Gtk.Box(valign=Gtk.Align.CENTER, halign=Gtk.Align.END, spacing=6)
-        self.add_suffix(self.suffixes)
-
-        self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
-        self.value_entry.connect('changed', self.on_changed, False)
-        self.suffixes.append(self.value_entry)
-
-        self.double_separator_label = Gtk.Label(valign=Gtk.Align.CENTER)
-        self.suffixes.append(self.double_separator_label)
-
-        self.value_entry_double = Gtk.Entry(valign=Gtk.Align.CENTER)
-        self.value_entry_double.connect('changed', self.on_changed, True)
-        self.suffixes.append(self.value_entry_double)
-
-        self.set_activatable_widget(self.value_entry)
-        self.connect('destroy', self.on_destroy)
-
-        self.files = []
-        self.properties = []
-        self.ignore_edit = {}
+    first_entry = Gtk.Template.Child()
+    double_separator_label = Gtk.Template.Child()
+    second_entry = Gtk.Template.Child()
+    suffixes = Gtk.Template.Child()
 
     @GObject.Property(type=str, default='')
     def double_separator(self):
-        return self._double_separator
+        return self.double_separator_label.get_label()
 
     @double_separator.setter
     def double_separator(self, value):
-        self._double_separator = value
         if value:
             self.double_separator_label.set_label(value)
             self.double_separator_label.set_visible(True)
@@ -407,47 +240,66 @@ class EartagTagListDoubleItem(Adw.ActionRow, EartagTagListItemBase, EartagMultip
     @max_width_chars.setter
     def max_width_chars(self, value):
         self._max_width_chars = value
-        self.value_entry.set_max_width_chars(value)
-        self.value_entry_double.set_max_width_chars(value)
+        self.first_entry.set_max_width_chars(value)
+        self.second_entry.set_max_width_chars(value)
 
     @GObject.Property(type=bool, default=False)
     def is_numeric(self):
-        return self._is_numeric
+        return self.first_entry.is_numeric
 
     @is_numeric.setter
     def is_numeric(self, value):
-        self._is_numeric = value
-        if value:
-            self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self.value_entry.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+        self.first_entry.is_numeric = value
+        self.second_entry.is_numeric = value
 
-            self.value_entry_double.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self.value_entry_double.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+    @GObject.Property(type=str, default=None)
+    def first_property(self):
+        return self.first_entry.bound_property
+
+    @first_property.setter
+    def first_property(self, value):
+        self.first_entry.bound_property = value
+
+    @GObject.Property(type=str, default=None)
+    def second_property(self):
+        return self.second_entry.bound_property
+
+    @second_property.setter
+    def second_property(self, value):
+        self.second_entry.bound_property = value
+
+    def bind_to_file(self, file):
+        self.first_entry.bind_to_file(file)
+        self.second_entry.bind_to_file(file)
+
+    def unbind_from_file(self, file):
+        self.first_entry.unbind_from_file(file)
+        self.second_entry.unbind_from_file(file)
 
 more_item_size_group = Gtk.SizeGroup()
 
-class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultipleValueEntry):
-    __gtype_name__ = 'EartagTagListMoreItem'
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/rows/extratagrow.ui')
+class EartagExtraTagRow(Adw.ActionRow):
+    __gtype_name__ = 'EartagExtraTagRow'
 
-    _is_double = False
-    _is_numeric = False
     _max_width_chars = -1
 
     handled_tags = []
     skip_filter_change = False
 
-    def __init__(self, property=None):
+    tag_selector = Gtk.Template.Child()
+    value_entry = Gtk.Template.Child()
+    row_remove_button = Gtk.Template.Child()
+
+    def __init__(self, property=None, parent=None):
         super().__init__()
-        self.add_css_class('more-item')
 
         self.files = []
         if property:
-            self.properties = [property]
-        else:
-            self.properties = []
+            self.value_entry.bound_property = property
         self.ignore_edit = {}
         self._numeric_connect = None
-        self.ignore_selector_select = False
+        self.parent = parent
 
         self.tag_names = {}
         for tag, tag_name in TAG_NAMES.items():
@@ -458,133 +310,62 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         for k, v in self.tag_names.items():
             self._tag_names_swapped[v] = k
 
-        self.value_entry = Gtk.Entry(valign=Gtk.Align.CENTER)
-        self.value_entry.connect('changed', self.on_changed, False)
-        self.add_suffix(self.value_entry)
-
-        self.remove_button = Gtk.Button(icon_name='list-remove-symbolic',
-            valign=Gtk.Align.CENTER, halign=Gtk.Align.END)
-        self.remove_button.connect('clicked', self.remove_row)
-        self.remove_button.add_css_class('flat')
-        self.add_suffix(self.remove_button)
+        if property:
+            self.value_entry.bound_property = property
+            self.ignore_selector_select = True
 
         tag_strings = Gtk.StringList.new(list(self.tag_names.values()))
         self.tag_model = Gtk.FilterListModel(model=tag_strings)
         self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
         self.tag_model.set_filter(self.tag_filter)
+        self.tag_selector.set_model(self.tag_model)
 
-        self.tag_selector = Gtk.DropDown.new(model=self.tag_model)
-        self.tag_selector.set_size_request(180, 0)
-        self.tag_selector.set_valign(Gtk.Align.CENTER)
         # I wish we could just use "DropDown:activate" but it never gets emitted,
         # but it is just a ToggleButton underneath!
         self.tag_selector.get_first_child().connect('clicked', self.refresh_filter)
-        self.tag_selector.connect('notify::selected', self.on_tag_selector_select)
 
         global more_item_size_group
         more_item_size_group.add_widget(self.tag_selector)
 
         if property:
-            self._set_property(property)
-        self.on_tag_selector_select(self.tag_selector)
-        self.add_prefix(self.tag_selector)
-
-        self.connect('destroy', self.on_destroy)
-
-    @GObject.Property(type=bool, default=False)
-    def is_double(self):
-        return False
-
-    @GObject.Property(type=bool, default=False)
-    def is_numeric(self):
-        return self._is_numeric
-
-    @is_numeric.setter
-    def is_numeric(self, value):
-        self._is_numeric = value
-        if value is True:
-            self.value_entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            if not self._numeric_connect:
-                self._numeric_connect = self.value_entry.get_delegate().connect(
-                    'insert-text', self.disallow_nonnumeric
-                )
-        else:
-            self.value_entry.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if self._numeric_connect:
-                self.value_entry.get_delegate().disconnect(self._numeric_connect)
-                self._numeric_connect = None
-
-    def tag_filter_func(self, _tag_name, *args):
-        present_tags = dict(
-            [(entry.properties[0], entry) for entry in EartagFileView.more_entries]
-        )
-
-        tag_name = _tag_name.get_string()
-        tag_prop = self._tag_names_swapped[tag_name]
-
-        if tag_prop == 'none' and 'none' in self.properties:
-            return True
-        if tag_prop in present_tags and tag_prop not in self.properties:
-            return False
-
-        banned_tags_list = []
-        for taglist in EartagFileView.banned_tags.values():
-            for tag in taglist:
-                if tag not in banned_tags_list:
-                    banned_tags_list.append(tag)
-
-        if tag_prop in banned_tags_list:
-            return False
-        return True
-
-    def _set_property(self, property, property_double=None):
-        super()._set_property(property, None)
-        self.refresh_filter()
-        n = 0
-        item = self.tag_model.get_item(n)
-        found = False
-        while item:
-            if item.get_string() == self.tag_names[property]:
-                found = True
-                break
-            n += 1
-            item = self.tag_model.get_item(n)
-
-        if found:
-            self.ignore_selector_select = True
-            self.tag_selector.set_selected(n)
-            self.set_handled_tag(property)
+            tag_pos = self.get_tag_position_in_selector(property)
+            if tag_pos >= 0:
+                self.tag_selector.set_selected(tag_pos)
             self.ignore_selector_select = False
 
-    def set_handled_tag(self, tag):
+    def bind_to_file(self, file):
+        self.value_entry.bind_to_file(file)
+
+    def unbind_from_file(self, file):
+        self.value_entry.unbind_from_file(file)
+
+    @GObject.Property(type=str)
+    def bound_property(self):
+        return self.value_entry.bound_property
+
+    @bound_property.setter
+    def bound_property(self, tag):
         old_tag = None
-        if self.properties:
-            old_tag = self.properties[0]
+        if self.value_entry.bound_property:
+            old_tag = self.value_entry.bound_property
 
-        if tag == 'none':
-            self.value_entry.set_sensitive(False)
-            self.remove_button.set_sensitive(False)
+        if tag == old_tag:
             return
-        self.value_entry.set_sensitive(True)
-        self.remove_button.set_sensitive(True)
-        self.properties = [tag]
-        if tag in EartagFile.int_properties and not self._is_numeric:
-            self.set_property('is_numeric', True)
-        elif tag not in EartagFile.int_properties and self._is_numeric:
-            self.set_property('is_numeric', False)
-        for file in self.files:
-            if tag not in file.present_extra_tags:
-                file.present_extra_tags.append(tag)
-            self.refresh_multiple_values(file)
-        if old_tag == 'none':
-            try:
-                self.get_native().file_view.add_empty_row()
-            except AttributeError:
-                pass
-        if not self.skip_filter_change:
-            for row in EartagFileView.more_entries:
-                row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
+        # For "Select a value" rows, make the entry and remove button
+        # unclickable
+        self.value_entry.set_sensitive(tag != 'none')
+        self.row_remove_button.set_sensitive(tag != 'none')
+
+        # Set up the value entry for this tag
+        self.value_entry.bound_property = tag
+        self.value_entry.is_numeric = tag in EartagFile.int_properties
+        self.value_entry.is_float = tag in EartagFile.float_properties
+
+        for row in self.parent._rows:
+            row.refresh_filter()
+
+    @Gtk.Template.Callback()
     def on_tag_selector_select(self, dropdown, *args):
         if self.ignore_selector_select:
             return
@@ -594,23 +375,46 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
             return
         tag = self._tag_names_swapped[selected_item.get_string()]
 
-        self.set_handled_tag(tag)
+        self.bound_property = tag
 
-    def remove_row(self, *args):
-        """Removes the row."""
-        self.ignore_selector_select = True
-        self.get_native().file_view.remove_and_unbind_extra_row(self)
-        self.ignore_selector_select = False
+        if tag != 'none':
+            self.parent.refresh_none_row()
+
+    def tag_filter_func(self, _tag_name, *args):
+        """Filter function for the tag dropdown."""
+        present_tags = list(self.parent.get_rows_sorted().keys())
+
+        tag_name = _tag_name.get_string()
+        tag_prop = self._tag_names_swapped[tag_name]
+
+        if tag_prop == 'none' and self.bound_property == 'none':
+            return True
+        if tag_prop in present_tags and self.bound_property != tag_prop:
+            return False
+        if tag_prop in self.parent.get_blocked_tags():
+            return False
+
+        return True
 
     def refresh_filter(self, *args):
-        do_ignore = False
-        if not self.ignore_selector_select:
-            do_ignore = True
-            self.ignore_selector_select = True
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-        if do_ignore:
-            self.ignore_selector_select = False
 
+    def get_tag_position_in_selector(self, tag):
+        item_count = self.tag_model.get_n_items()
+        tag_name = self.tag_names[tag]
+
+        for i in range(item_count):
+            if self.tag_model.get_item(i).get_string() == tag_name:
+                return i
+
+        return -1
+
+    @Gtk.Template.Callback()
+    def do_remove_row(self, *args):
+        """Removes the row."""
+        self.parent.remove_and_unbind_extra_row(self)
+
+    # TODO: use Adw.Breakpoint once libadwaita 1.4 comes out
     def make_compact(self, *args):
         """Makes the row compact."""
         self.add_css_class('compact')
@@ -624,6 +428,335 @@ class EartagTagListMoreItem(Adw.ActionRow, EartagTagListItemBase, EartagMultiple
         self.get_first_child().set_orientation(Gtk.Orientation.HORIZONTAL)
         self.tag_selector.set_hexpand(False)
         self.value_entry.set_hexpand(False)
+
+class EartagExtraTagsExpander(Adw.ExpanderRow):
+    """
+    Used for the "More tags" row in the FileView.
+    """
+    __gtype_name__ = 'EartagExtraTagsExpander'
+
+    def __init__(self):
+        super().__init__()
+        self.set_title(_('More tags'))
+        self._rows = []
+        self.bound_files = []
+        self.bound_file_ids = []
+        self.skip_filter_change = False
+        self._blocked_tags_cached = []
+        self._present_tags_cached = []
+        self._last_loaded_filetypes = []
+        self._last_present_tags = {} # id: tags
+
+        # We can select multiple files of multiple types at once, but
+        # they're not guaranteed to all have the same available extra tags.
+        # Thus, we assemble a list of "blocked tags" to ignore based on
+        # bound files. A list of these tags can be received by calling the
+        # get_blocked_tags method.
+        self.blocked_tags = {}      # type: tags
+        self.loaded_filetypes = {}  # type: count
+
+        # Initialize an initial "none" row
+        self.add_empty_row()
+
+    def set_fileview(self, fileview):
+        self.fileview = fileview
+
+    def get_rows_sorted(self):
+        rows = {}
+        for row in self._rows:
+            rows[row.bound_property] = row
+        return rows
+
+    #
+    # Row management functions
+    #
+
+    def add_empty_row(self, *args):
+        self.add_extra_row('none', skip_adding_none=True)
+
+    def refresh_none_row(self):
+        """Adds a 'none' row if needed, and moves it to the end."""
+        rows = self.get_rows_sorted()
+        if 'none' in rows:
+            self.remove(rows['none'])
+            self.add_row(rows['none'])
+        else:
+            self.add_empty_row()
+
+    def add_extra_row(self, tag, skip_adding_none=False):
+        """
+        Adds an extra row for the given tag. Consumers should make sure that
+        a row with this tag doesn't exist yet.
+
+        Returns the newly created row.
+        """
+        rows = self.get_rows_sorted()
+        if tag in rows:
+            return rows[tag]
+
+        row = EartagExtraTagRow(tag, self)
+        self._rows.append(row)
+        self.add_row(row)
+
+        for file in self.bound_files:
+            row.bind_to_file(file)
+
+        # Update row item filters
+        if not self.skip_filter_change:
+            for row in self._rows:
+                row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        row.value_entry.set_sensitive(not tag == 'none')
+        row.row_remove_button.set_sensitive(not tag == 'none')
+
+        # Move "none" row to the end
+        if not skip_adding_none and tag != 'none':
+            self.refresh_none_row()
+
+        return row
+
+    def remove_extra_row(self, row, skip_adding_none=False):
+        """
+        Removes a 'more tags' row from the fileview.
+        """
+        if row not in self._rows:
+            return
+
+        self._rows.remove(row)
+
+        for file in set(row.files + self.bound_files):
+            row.unbind_from_file(file)
+
+        self.remove(row)
+
+        row.value_entry.files = []
+
+        # Update row item filters
+        if not self.skip_filter_change:
+            for row in self._rows:
+                row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        # Move "none" row to the end
+        if not skip_adding_none:
+            self.refresh_none_row()
+
+    def remove_and_unbind_extra_row(self, row, skip_adding_none=False):
+        """
+        Removes a 'more tags' row from the fileview. Used in the callback
+        function of the rows' delete button.
+        """
+        removed_tag = row.value_entry.bound_property
+        if removed_tag != 'none':
+            for file in self.bound_files:
+                if removed_tag in file.present_extra_tags:
+                    file.present_extra_tags.remove(removed_tag)
+                    file.delete_tag(removed_tag)
+
+        self.remove_extra_row(row, skip_adding_none=skip_adding_none)
+
+    #
+    # File handling functions
+    #
+
+    def get_blocked_tags(self):
+        """
+        Shorthand to get a list of all blocked tags in opened files.
+        """
+        if self._last_loaded_filetypes != list(self.loaded_filetypes.keys()):
+            self._last_loaded_filetypes = list(self.loaded_filetypes.keys())
+            self._blocked_tags_cached = []
+            for filetype, blocklist in self.blocked_tags.items():
+                if filetype not in self.loaded_filetypes:
+                    continue
+                for tag in blocklist:
+                    if tag not in self._blocked_tags_cached:
+                        self._blocked_tags_cached.append(tag)
+
+            for row in self._rows:
+                row.refresh_filter()
+        return self._blocked_tags_cached
+
+    def get_present_tags(self):
+        """
+        Shorthand to get a list of all present tags in opened files.
+
+        This is only used in bind_to_file and unbind_from_file to add/prune
+        newly used/unused entries; for most other cases, you'll likely want
+        self.get_rows_sorted().keys() instead.
+        """
+        blocked_tags = self.get_blocked_tags()
+        last_present_ids = list(self._last_present_tags.keys())
+        if last_present_ids != self.bound_file_ids:
+            removed_files = set(last_present_ids) - set(self.bound_file_ids)
+            added_files = set(self.bound_file_ids) - set(last_present_ids)
+
+            for fid in removed_files:
+                del self._last_present_tags[fid]
+
+            # TODO: this is kinda slow, since we need to iterate over all files
+            # to find the ones with a given ID. Experiment with some ways to
+            # get a file by ID.
+            for fid in added_files:
+                for file in self.bound_files:
+                    if file.id == fid:
+                        break
+                self._last_present_tags[fid] = file.present_extra_tags
+
+            self._present_tags_cached = []
+            for taglist in self._last_present_tags.values():
+                for tag in taglist:
+                    if tag not in self._present_tags_cached and \
+                            tag not in blocked_tags:
+                        self._present_tags_cached.append(tag)
+
+        return self._present_tags_cached
+
+    def refresh_entries(self, old_blocked_tags=None):
+        """Adds missing entries and removes unused ones."""
+        blocked_tags = self.get_blocked_tags()
+        present_tags = self.get_present_tags()
+
+        for tag, row in self.get_rows_sorted().items():
+            if tag in blocked_tags or tag not in present_tags:
+                self.remove_extra_row(row, skip_adding_none=True)
+
+        for tag in present_tags:
+            if tag not in self._rows:
+                self.add_extra_row(tag, skip_adding_none=True)
+
+        if old_blocked_tags is not None and old_blocked_tags != blocked_tags:
+            found_tags = []
+            for tag in set(old_blocked_tags) - set(blocked_tags):
+                for file in self.bound_files:
+                    if tag in file.present_extra_tags:
+                        found_tags.append(tag)
+                        break
+                if tag in found_tags:
+                    continue
+            for tag in found_tags:
+                self.add_extra_row(tag, skip_adding_none=True)
+
+        self.refresh_none_row()
+
+    def bind_to_file(self, file, skip_refresh_entries=False):
+        if file in self.bound_files:
+            return
+
+        self.skip_filter_change = True
+        self.bound_files.append(file)
+        self.bound_file_ids.append(file.id)
+
+        if not skip_refresh_entries:
+            blocked_tags_before_unbind = self.get_blocked_tags()
+        filetype = file.__gtype_name__
+        if filetype not in self.loaded_filetypes:
+            self.loaded_filetypes[filetype] = 1
+
+            # We don't remove this later on purpose - this information is
+            # cached inside of this class for future reference.
+            if filetype not in self.blocked_tags:
+                self.blocked_tags[filetype] = []
+                for tag in set(EXTRA_TAGS) - set(file.supported_extra_tags):
+                    self.blocked_tags[filetype].append(tag)
+        else:
+            self.loaded_filetypes[filetype] += 1
+
+        for row in self._rows:
+            row.bind_to_file(file)
+
+        row_tags = self.get_rows_sorted().keys()
+        for tag in file.present_extra_tags:
+            if tag not in row_tags:
+                self.add_extra_row(tag)
+
+        # Add/remove entries
+        if not skip_refresh_entries:
+            self.refresh_entries(old_blocked_tags=blocked_tags_before_unbind)
+
+        self.skip_filter_change = False
+
+    def unbind_from_file(self, file, skip_refresh_entries=False):
+        if file not in self.bound_files:
+            return
+
+        if not skip_refresh_entries:
+            blocked_tags_before_unbind = self.get_blocked_tags()
+        self.skip_filter_change = True
+        self.bound_file_ids.remove(file.id)
+        self.bound_files.remove(file)
+
+        filetype = file.__gtype_name__
+        if filetype in self.loaded_filetypes:
+            self.loaded_filetypes[filetype] -= 1
+
+            if self.loaded_filetypes[filetype] == 0:
+                del self.loaded_filetypes[filetype]
+
+                for tag in set(EXTRA_TAGS) - set(file.supported_extra_tags):
+                    if tag in self.blocked_tags:
+                        self.blocked_tags.remove(tag)
+
+        for row in self._rows:
+            row.unbind_from_file(file)
+
+        # Add/remove entries
+        if not skip_refresh_entries:
+            self.refresh_entries(old_blocked_tags=blocked_tags_before_unbind)
+
+        self.skip_filter_change = False
+
+class EartagFileInfoLabel(Gtk.Label):
+    """Label showing information about opened files."""
+    __gtype_name__ = 'EartagFileInfoLabel'
+
+    def __init__(self):
+        super().__init__()
+        self.add_css_class('dim-label')
+        self.add_css_class('numeric')
+        self._files = []
+        self.refresh_label()
+
+    def bind_to_file(self, file):
+        self._files.append(file)
+        self.refresh_label()
+
+    def unbind_from_file(self, file):
+        self._files.remove(file)
+        self.refresh_label()
+
+    def refresh_label(self):
+        if len(self._files) == 0:
+            self.set_label('')
+        elif len(self._files) == 1:
+            self._set_info_label(self._files[0])
+        else:
+            self.set_label(_('(Multiple files selected)'))
+
+    def _set_info_label(self, file):
+        length_readable = get_readable_length(int(file.length))
+
+        # Get human-readable version of channel count
+        channels = file.channels
+        if channels == 0:
+            channels_readable = 'N/A'
+        elif channels == 1:
+            channels_readable = 'Mono'
+        elif channels == 2:
+            channels_readable = 'Stereo'
+        else:
+            channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels) # noqa: E501
+
+        if file.bitrate > -1:
+            bitrate_readable = str(file.bitrate)
+        else:
+            bitrate_readable = "N/A"
+
+        self.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
+            filetype=file.filetype,
+            length=length_readable,
+            bitrate=bitrate_readable,
+            channels=channels_readable
+        ))
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
@@ -647,7 +780,6 @@ class EartagFileView(Gtk.Stack):
     genre_entry = Gtk.Template.Child()
     releasedate_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
-
     more_tags_expander = Gtk.Template.Child()
 
     previous_file_button_revealer = Gtk.Template.Child()
@@ -656,20 +788,19 @@ class EartagFileView(Gtk.Stack):
     next_file_button = Gtk.Template.Child()
 
     writable = False
-    bindings = {}
     bound_files = []
-    more_entries = []
-    unused_entries = []
-    banned_tags = {}
-    opened_filetypes = {}
 
     def __init__(self):
         """Initializes the EartagFileView."""
         super().__init__()
-        self.previous_fileview_width = 0
 
-        # Initialize an initial "none" row
-        self.add_empty_row()
+        self.bindable_entries = (self.album_cover, self.title_entry, self.artist_entry,
+        self.tracknumber_entry, self.album_entry, self.albumartist_entry,
+        self.genre_entry, self.releasedate_entry, self.comment_entry,
+        self.file_info)
+
+        self.more_tags_expander.set_fileview(self)
+        self.previous_fileview_width = 0
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -682,12 +813,26 @@ class EartagFileView(Gtk.Stack):
         self.previous_file_button.connect('clicked', sidebar.select_previous)
         sidebar.connect('notify::selection-mode', self.update_buttons)
 
+    # TODO: rewrite this to use Adw.Breakpoint once libadwaita 1.4 is available
     def setup_resize_handler(self, *args):
         # There's no easy way to call a function whenever a singular widget is resized,
         # so we just call this on resize changes:
         surface = self.get_native().get_surface()
         surface.connect('layout', self.handle_resize)
         self.handle_resize()
+
+    def handle_resize(self, *args):
+        fileview_width = self.get_width()
+        if fileview_width == self.previous_fileview_width:
+            return
+        if fileview_width <= 430:
+            for entry in self.more_tags_expander._rows:
+                entry.make_compact()
+        else:
+            for entry in self.more_tags_expander._rows:
+                entry.make_noncompact()
+        self.previous_fileview_width = fileview_width
+    # ENDTODO
 
     def update_loading(self, task, *args):
         if task.progress == 0:
@@ -717,8 +862,6 @@ class EartagFileView(Gtk.Stack):
         Reads the file data from the file manager and applies it
         to the file view.
         """
-        window = self.get_native()
-
         self.update_buttons()
 
         # Get list of selected (added)/unselected (removed) files
@@ -727,48 +870,6 @@ class EartagFileView(Gtk.Stack):
         removed_files = [file for file in self.bound_files
             if file not in self.file_manager.selected_files]
 
-        # Set up the active view (hide fileview if there are no selected files)
-        selected_files_count = len(self.file_manager.selected_files)
-        if selected_files_count <= 0:
-            window.get_application().save_cover_action.set_enabled(False)
-            window.get_application().rename_action.set_enabled(False)
-            window.get_application().identify_action.set_enabled(False)
-            window.set_title('Ear Tag')
-            window.window_title.set_subtitle('')
-            if self.file_manager.files:
-                self.content_stack.set_visible_child(self.select_file)
-
-            self._unbind_files(self.bindings.copy().keys())
-
-            self.bindings = {}
-            self.bound_files = []
-
-            window.run_sort()
-            return False
-        else:
-            files = self.file_manager.selected_files
-
-        self.content_stack.set_visible_child(self.content_scroll)
-
-        # Set up window title and file info label
-        if len(files) == 1:
-            file = files[0]
-            file_basename = os.path.basename(file.path)
-            window.set_title('{f} — Ear Tag'.format(f=file_basename))
-            window.window_title.set_subtitle(file_basename)
-            window.get_application().save_cover_action.set_enabled(True)
-            self._set_info_label(file)
-        else:
-            # TRANSLATOR: Placeholder for file path when multiple files are selected
-            _multiple_files = _('(Multiple files selected)')
-            window.set_title('{f} — Ear Tag'.format(f=_multiple_files))
-            window.window_title.set_subtitle(_multiple_files)
-            window.get_application().save_cover_action.set_enabled(False)
-            self.file_info.set_label(_multiple_files)
-
-        window.get_application().rename_action.set_enabled(True)
-        window.get_application().identify_action.set_enabled(True)
-
         # Handle added and removed files
         self._unbind_files(removed_files)
         self._bind_files(added_files)
@@ -776,7 +877,7 @@ class EartagFileView(Gtk.Stack):
         # Make save/fields sensitive/insensitive based on whether selected files are
         # all writable
         has_unwritable = False
-        for file in files:
+        for file in self.file_manager.selected_files:
             if not file.is_writable:
                 has_unwritable = True
                 break
@@ -790,349 +891,40 @@ class EartagFileView(Gtk.Stack):
             self.important_data_container.set_sensitive(True)
             self.tag_list.set_sensitive(True)
 
-        window.toggle_save_button()
-
         # Scroll to the top of the view
         adjust = self.content_scroll.get_vadjustment()
         adjust.set_value(adjust.get_lower())
-
-    def handle_resize(self, *args):
-        fileview_width = self.get_width()
-        if fileview_width == self.previous_fileview_width:
-            return
-        if fileview_width <= 430:
-            for entry in set(self.unused_entries + self.more_entries):
-                entry.make_compact()
-        else:
-            for entry in set(self.unused_entries + self.more_entries):
-                entry.make_noncompact()
-        self.previous_fileview_width = fileview_width
-
-    def setup_entry(self, file, entry, property, property_double=None):
-        if isinstance(entry, EartagTagListItemBase):
-            if not isinstance(entry, EartagTagListMoreItem):
-                entry._set_property(property, property_double)
-            else:
-                if self.get_native().get_surface().get_width() <= 500:
-                    entry.make_compact()
-                else:
-                    entry.make_noncompact()
-            entry.bind_to_file(file)
-        elif isinstance(entry, EartagEditableLabel):
-            entry.properties = [property]
-            entry.ignore_edit = {property: False}
-            entry.bind_to_file(file)
-            entry.notify('text')
-
-    def unbind_entry(self, file, entry):
-        if isinstance(entry, EartagTagListItemBase):
-            entry.unbind_from_file(file)
-        elif isinstance(entry, EartagEditableLabel):
-            entry.unbind_from_file(file)
-            entry.notify('text')
 
     def _bind_files(self, files):
         """Binds a file to the fileview. Used internally in update_binds."""
         if not files:
             return
 
-        EartagTagListMoreItem.skip_filter_change = True
-
-        all_tags = EXTRA_TAGS
-        more_entries_dict = dict([(entry.properties[0], entry) for entry in self.more_entries])
-
-        banned_tags_list = []
-        for taglist in self.banned_tags.values():
-            for tag in taglist:
-                if tag not in banned_tags_list:
-                    banned_tags_list.append(tag)
-
-        all_present_extra_tags = ['none']
-        for file in set(self.bound_files + files):
-            for tag in file.present_extra_tags:
-                if tag not in all_present_extra_tags:
-                    all_present_extra_tags.append(tag)
-
-        for tag in all_present_extra_tags:
-            if tag not in more_entries_dict and tag not in banned_tags_list:
-                entry = self.add_extra_row(tag, skip_adding_none=True)
-                more_entries_dict[tag] = entry
-
+        old_blocked_tags = self.more_tags_expander.get_blocked_tags()
         for file in files:
-            if file not in self.bindings:
-                self.bindings[file] = []
+            if file in self.bound_files:
+                continue
             self.bound_files.append(file)
 
-            self.setup_entry(file, self.title_entry, 'title')
-            self.setup_entry(file, self.artist_entry, 'artist')
-            self.setup_entry(file, self.tracknumber_entry, 'tracknumber', 'totaltracknumber')
-            self.setup_entry(file, self.album_entry, 'album')
-            self.setup_entry(file, self.albumartist_entry, 'albumartist')
-            self.setup_entry(file, self.genre_entry, 'genre')
-            self.setup_entry(file, self.releasedate_entry, 'releasedate')
-            self.setup_entry(file, self.comment_entry, 'comment')
-            self.album_cover.bind_to_file(file)
+            for entry in self.bindable_entries:
+                entry.bind_to_file(file)
 
-            filetype = file.__gtype_name__
-            if filetype not in self.opened_filetypes:
-                self.opened_filetypes[filetype] = 1
-            else:
-                self.opened_filetypes[filetype] += 1
-
-            if filetype not in self.banned_tags:
-                for tag in all_tags:
-                    if tag == 'none':
-                        continue
-                    if tag not in file.supported_extra_tags:
-                        if tag not in banned_tags_list:
-                            banned_tags_list.append(tag)
-                        if filetype not in self.banned_tags:
-                            self.banned_tags[filetype] = [tag]
-                        else:
-                            self.banned_tags[filetype].append(tag)
-
-            for tag, entry in more_entries_dict.items():
-                if tag not in banned_tags_list:
-                    self.setup_entry(file, entry, tag)
-
-        for tag in banned_tags_list:
-            if tag in more_entries_dict:
-                entry = more_entries_dict[tag]
-                self.remove_extra_row(entry, skip_adding_none=True)
-                del more_entries_dict[tag]
-
-        # Move "none" entry to the bottom
-        none_entry = more_entries_dict['none']
-        self.more_tags_expander.remove(none_entry)
-        self.more_tags_expander.add_row(none_entry)
-
-        for entry in self.more_entries:
-            entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-
-        EartagTagListMoreItem.skip_filter_change = False
+            self.more_tags_expander.bind_to_file(file, skip_refresh_entries=True)
+        self.more_tags_expander.refresh_entries(old_blocked_tags=old_blocked_tags)
 
     def _unbind_files(self, files):
         """Unbinds a file from the fileview. Used internally in update_binds."""
         if not files:
             return
 
-        EartagTagListMoreItem.skip_filter_change = True
-
-        more_entries_dict = dict([(entry.properties[0], entry) for entry in self.more_entries])
-
+        old_blocked_tags = self.more_tags_expander.get_blocked_tags()
         for file in files:
-            for binding in self.bindings[file]:
-                binding.unbind()
-            del self.bindings[file]
+            if file not in self.bound_files:
+                continue
             self.bound_files.remove(file)
 
-            filetype = file.__gtype_name__
-            self.opened_filetypes[filetype] -= 1
+            for entry in self.bindable_entries:
+                entry.unbind_from_file(file)
 
-            self.unbind_entry(file, self.title_entry)
-            self.unbind_entry(file, self.artist_entry)
-            self.unbind_entry(file, self.tracknumber_entry)
-            self.unbind_entry(file, self.album_entry)
-            self.unbind_entry(file, self.albumartist_entry)
-            self.unbind_entry(file, self.genre_entry)
-            self.unbind_entry(file, self.releasedate_entry)
-            self.unbind_entry(file, self.comment_entry)
-            self.album_cover.unbind_from_file(file)
-
-            for entry in self.more_entries:
-                self.unbind_entry(file, entry)
-
-        all_present_extra_tags = ['none']
-        for file in self.bound_files:
-            for tag in file.present_extra_tags:
-                if tag not in all_present_extra_tags:
-                    all_present_extra_tags.append(tag)
-
-        for tag, entry in more_entries_dict.copy().items():
-            if tag not in all_present_extra_tags:
-                self.remove_extra_row(entry, skip_adding_none=True)
-                del more_entries_dict[tag]
-
-        unbanned_filetypes = []
-
-        for filetype, count in self.opened_filetypes.copy().items():
-            if count <= 0:
-                del self.opened_filetypes[filetype]
-                if filetype in self.banned_tags:
-                    unbanned_filetypes.append(filetype)
-
-        if unbanned_filetypes:
-            banned_tags_list = []
-            potentially_unbanned_tags_list = []
-            for ft, taglist in self.banned_tags.items():
-                if ft in unbanned_filetypes:
-                    for tag in taglist:
-                        if tag not in potentially_unbanned_tags_list:
-                            potentially_unbanned_tags_list.append(tag)
-                else:
-                    for tag in taglist:
-                        if tag not in banned_tags_list:
-                            banned_tags_list.append(tag)
-            unbanned_tags_list = []
-            for tag in potentially_unbanned_tags_list:
-                if tag not in banned_tags_list:
-                    unbanned_tags_list.append(tag)
-
-            for tag in unbanned_tags_list:
-                if tag in all_present_extra_tags:
-                    if tag not in more_entries_dict:
-                        self.add_extra_row(tag, skip_adding_none=True)
-
-            for filetype in unbanned_filetypes:
-                del self.banned_tags[filetype]
-
-        none_entry = more_entries_dict['none']
-        self.more_tags_expander.remove(none_entry)
-        self.more_tags_expander.add_row(none_entry)
-
-        for entry in self.more_entries:
-            entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-
-        EartagTagListMoreItem.skip_filter_change = False
-
-    def add_empty_row(self, *args):
-        self.add_extra_row('none')
-
-    def add_extra_row(self, tag, skip_adding_none=False):
-        """
-        Adds an extra row for the given tag. Consumers are required to make sure that
-        a row with this tag doesn't exist yet.
-
-        Returns the newly created row.
-        """
-        if self.unused_entries:
-            entry = self.unused_entries[0]
-            self.unused_entries.remove(entry)
-            entry._set_property(tag)
-            entry.set_sensitive(True)
-        else:
-            entry = EartagTagListMoreItem(tag)
-        self.more_entries.append(entry)
-        self.more_tags_expander.add_row(entry)
-
-        for file in self.bound_files:
-            self.setup_entry(file, entry, tag)
-
-        # Update entry item filters
-        if not EartagTagListMoreItem.skip_filter_change:
-            for entry in self.more_entries:
-                entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-
-        if not skip_adding_none and tag != 'none':
-            # Move "none" entry to the end
-            none_entry = None
-            for entry in self.more_entries:
-                if entry.properties and entry.properties[0] == 'none':
-                    none_entry = entry
-                    break
-            if none_entry:
-                self.more_tags_expander.remove(none_entry)
-                self.more_tags_expander.add_row(none_entry)
-            else:
-                self.add_empty_row()
-
-        return entry
-
-    def remove_extra_row(self, row, skip_adding_none=False):
-        """
-        Removes a 'more tags' row from the fileview.
-        """
-        if row not in self.more_entries:
-            return
-        self.more_entries.remove(row)
-        self.more_tags_expander.remove(row)
-        for file in row.files + self.bound_files:
-            self.unbind_entry(file, row)
-        row.files = []
-
-        # Update entry item filters
-        if not EartagTagListMoreItem.skip_filter_change:
-            for entry in self.more_entries:
-                entry.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-
-        # Move "none" entry to the end
-        if not skip_adding_none:
-            none_entry = None
-            for entry in self.more_entries:
-                if entry.properties and entry.properties[0] == 'none':
-                    none_entry = entry
-                    break
-            if none_entry:
-                self.more_tags_expander.remove(none_entry)
-                self.more_tags_expander.add_row(none_entry)
-            else:
-                self.add_empty_row()
-
-        self.unused_entries.append(row)
-
-    def remove_and_unbind_extra_row(self, row, skip_adding_none=False):
-        """
-        Removes a 'more tags' row from the fileview. Used in the callback
-        function of the rows' delete button.
-        """
-        removed_tag = row.properties[0]
-        if removed_tag != 'none':
-            for file in self.bound_files:
-                if removed_tag in file.present_extra_tags:
-                    file.present_extra_tags.remove(removed_tag)
-                    file.delete_tag(removed_tag)
-
-        self.remove_extra_row(row, skip_adding_none=skip_adding_none)
-
-    def _set_info_label(self, file):
-        length_readable = get_readable_length(int(file.length))
-
-        # Get human-readable version of channel count
-        channels = file.channels
-        if channels == 0:
-            channels_readable = 'N/A'
-        elif channels == 1:
-            channels_readable = 'Mono'
-        elif channels == 2:
-            channels_readable = 'Stereo'
-        else:
-            channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels) # noqa: E501
-
-        if file.bitrate > -1:
-            bitrate_readable = str(file.bitrate)
-        else:
-            bitrate_readable = "N/A"
-
-        self.file_info.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
-            filetype=file.filetype,
-            length=length_readable,
-            bitrate=bitrate_readable,
-            channels=channels_readable
-        ))
-
-    def save(self):
-        """Saves changes to the file."""
-        self.file_manager.save()
-
-    def save_cover(self, *args):
-        """Opens a file dialog to have the cover art to a file."""
-        self.file_chooser = Gtk.FileChooserNative(
-                                title=_("Save Album Cover To…"),
-                                transient_for=self.get_native(),
-                                action=Gtk.FileChooserAction.SAVE
-                                )
-
-        self.file_chooser.connect('response', self._save_cover_response)
-        self.file_chooser.show()
-
-    def _save_cover_response(self, dialog, response):
-        if response == Gtk.ResponseType.ACCEPT:
-            cover_path = self.file_manager.selected_files[0].cover_path
-            if cover_path:
-                save_path = dialog.get_file().get_path()
-                cover_mime = magic.from_file(cover_path, mime=True)
-                cover_extension = mimetypes.guess_extension(cover_mime)
-                if cover_extension and not save_path.endswith(cover_extension):
-                    save_path += cover_extension
-                shutil.copyfile(cover_path, save_path)
-        dialog.destroy()
+            self.more_tags_expander.unbind_from_file(file, skip_refresh_entries=True)
+        self.more_tags_expander.refresh_entries(old_blocked_tags=old_blocked_tags)

@@ -112,10 +112,10 @@ class Application(Adw.Application):
         return action
 
     def on_save_action(self, widget, _):
-        self.get_active_window().file_view.save()
+        self.get_active_window().file_manager.save()
 
     def on_save_cover_action(self, widget, _):
-        self.get_active_window().file_view.save_cover()
+        self.get_active_window().save_cover()
 
     def on_rename_action(self, widget, _):
         self.get_active_window().show_rename_dialog()
