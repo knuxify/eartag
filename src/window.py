@@ -36,6 +36,9 @@ from .acoustid import EartagAcoustIDDialog
 
 from gi.repository import Adw, Gdk, GLib, Gtk, GObject
 import os
+import magic
+import mimetypes
+import shutil
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
@@ -106,6 +109,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.connect('notify::is-modified', self.toggle_save_button)
         self.file_manager.connect('notify::has-error', self.toggle_save_button)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
+        self.file_manager.connect('refresh-needed', self.update_state)
+        self.file_manager.connect('selection-changed', self.update_state)
         self.file_manager.load_task.connect('notify::progress', self.update_loading_progress)
         self.sidebar_search_button.bind_property(
             'active',
@@ -147,6 +152,46 @@ class EartagWindow(Adw.ApplicationWindow):
         self.sidebar_headerbar.set_sensitive(not is_loading)
         if self.file_manager.files.get_n_items() == 0 and is_loading:
             self.container_stack.set_visible_child(self.container_flap)
+
+    def update_state(self, *args):
+        # Set up the active view (hide fileview if there are no selected files)
+        selected_files_count = len(self.file_manager.selected_files)
+        if selected_files_count <= 0:
+            self.get_application().save_cover_action.set_enabled(False)
+            self.get_application().rename_action.set_enabled(False)
+            self.get_application().identify_action.set_enabled(False)
+            self.set_title('Ear Tag')
+            self.window_title.set_subtitle('')
+            if self.file_manager.files:
+                self.file_view.content_stack.set_visible_child(self.file_view.select_file)
+
+            self.run_sort()
+            return False
+        else:
+            files = self.file_manager.selected_files
+
+        self.file_view.content_stack.set_visible_child(self.file_view.content_scroll)
+
+        # Set up window title and file info label
+        if len(files) == 1:
+            file = files[0]
+            file_basename = os.path.basename(file.path)
+            self.set_title('{f} — Ear Tag'.format(f=file_basename))
+            self.window_title.set_subtitle(file_basename)
+            self.get_application().save_cover_action.set_enabled(True)
+        else:
+            # TRANSLATOR: Placeholder for file path when multiple files are selected
+            _multiple_files = _('(Multiple files selected)')
+            self.set_title('{f} — Ear Tag'.format(f=_multiple_files))
+            self.window_title.set_subtitle(_multiple_files)
+            self.get_application().save_cover_action.set_enabled(False)
+
+        self.get_application().rename_action.set_enabled(True)
+        self.get_application().identify_action.set_enabled(True)
+
+        self.toggle_save_button()
+
+        self.file_view.update_binds()
 
     def toggle_fileview(self, *args):
         """
@@ -309,3 +354,26 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_acoustid_dialog(self, *args):
         self.acoustid_dialog = EartagAcoustIDDialog(self)
         self.acoustid_dialog.present()
+
+    def save_cover(self, *args):
+        """Opens a file dialog to have the cover art to a file."""
+        self.file_chooser = Gtk.FileChooserNative(
+                                title=_("Save Album Cover To…"),
+                                transient_for=self.get_native(),
+                                action=Gtk.FileChooserAction.SAVE
+                                )
+
+        self.file_chooser.connect('response', self._save_cover_response)
+        self.file_chooser.show()
+
+    def _save_cover_response(self, dialog, response):
+        if response == Gtk.ResponseType.ACCEPT:
+            cover_path = self.file_manager.selected_files[0].cover_path
+            if cover_path:
+                save_path = dialog.get_file().get_path()
+                cover_mime = magic.from_file(cover_path, mime=True)
+                cover_extension = mimetypes.guess_extension(cover_mime)
+                if cover_extension and not save_path.endswith(cover_extension):
+                    save_path += cover_extension
+                shutil.copyfile(cover_path, save_path)
+        dialog.destroy()

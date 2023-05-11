@@ -252,6 +252,7 @@ class EartagFileManager(GObject.Object):
 
         task.emit_task_done()
         GLib.idle_add(lambda *args: self.refresh_state())
+        GLib.idle_add(lambda *args: self.emit('select-first'))
         if mode == self.LOAD_OVERWRITE:
             GLib.idle_add(lambda *args: self.emit('selection_override'))
 
@@ -463,4 +464,3 @@ class EartagFileManager(GObject.Object):
         """Convenience function to refresh the state of the UI"""
         self.emit('refresh-needed')
         self.emit('selection-changed')
-        self.emit('select-first')

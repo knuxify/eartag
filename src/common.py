@@ -35,6 +35,7 @@ import magic
 import mimetypes
 import threading
 import time
+import re
 
 VALID_AUDIO_MIMES = (
     'application/ogg',
@@ -110,6 +111,22 @@ def get_readable_length(length):
         )
 
     return length_readable
+
+def inspect_prettyprint(stack):
+    """
+    Convenience function that pretty-prints the results of inspect.stack().
+
+    This is not used anywhere in the program; it's only here for debugging
+    purposes, since inspect is a pretty useful tool for finding optimization
+    issues, and ends up being used quite frequently.
+    """
+    print("--- Inspect trace: ---")
+
+    for frame in stack:
+        print(f'\033[1m{frame.filename}:{frame.lineno}\033[0m')
+        print(''.join(frame.code_context)) # already includes newlines
+
+    print("--- End trace ---")
 
 class EartagBackgroundTask(GObject.Object):
     """
@@ -222,104 +239,179 @@ class EartagBackgroundTask(GObject.Object):
         """
         GLib.idle_add(lambda *args: self.emit('task-done'))
 
-class EartagMultipleValueEntry:
-    """
-    A set of common functions used by entries that can have multiple values.
-
-    Usage instructions:
-      - Inherit from this class in the desired object.
-      - Set the properties list to contain the property the entry is bound to.
-      - Connect the on_changed signal to your entry's change.
-    """
-    def _multiple_values_check(self, checked_file, property):
-        """
-        Used internally in bind_to_property to figure out if there are
-        multiple values for a property.
-
-        Returns True if there are multiple values, False otherwise.
-        """
-        value = checked_file.get_property(property)
-        for _file in self.files:
-            if _file == checked_file:
-                continue
-
-            if _file.get_property(property) != value:
-                return True
+def isfloat(value):
+    """Checks if the given value is a valid float."""
+    try:
+        float(value)
+    except ValueError:
         return False
+    return True
 
-    def _setup_entry(self, entry, file, is_double):
-        has_multiple_files = len(self.files) > 1
+class EartagEntryLimiters(GObject.Object):
+    """
+    Common input validators for entries. Assumes inheriting object is a
+    descendant of GtkEditable (and thus has a get_delegate method and
+    insert-text signal).
 
-        # TRANSLATORS: Placeholder displayed when multiple files with different values are created
-        _multiple_values = _('(multiple values)')
+    Adds properties that can be quickly set/unset to connect/disconnect
+    an entry.
 
-        property = (is_double and self.properties[1]) or self.properties[0]
-        if has_multiple_files and self._multiple_values_check(file, property):
-            self.ignore_edit[property] = True
-            entry.set_text('')
-            self.ignore_edit[property] = False
-            entry.set_placeholder_text(_multiple_values)
-        else:
-            self.ignore_edit[property] = True
-            value = file.get_property(property)
-            if isinstance(value, int) and value is not None:
-                entry.set_text(str(value)) # noqa E501 Ignore this warning, PyGObject won't actually accept a non-string here
-            elif isinstance(value, float):
-                if str(value).endswith('.0'):
-                    entry.set_text(str(value)[:-2])
-                else:
-                    entry.set_text(str(value))
-            elif value:
-                entry.set_text(str(value))
-            else:
-                entry.set_text('')
-            self.ignore_edit[property] = False
-            entry.set_placeholder_text('')
+    You might be able to use multiple limiters at once, but this is
+    completely untested, and you will have to re-set the input purpose
+    manually since every property setter overrides it.
+    """
 
-    def refresh_multiple_values(self, file=None):
-        if not file:
-            try:
-                file = self.files[0]
-            except IndexError:
-                return False
+    def setup_limiters(self):
+        """
+        Call this **AFTER** the super().__init__() call in the inheritant.
+        """
+        self._limiter_connections = {}
+        self._limiter_connections['destroy'] = \
+            self.connect('destroy', self._break_limiter_connections)
 
-        self._setup_entry(self.value_entry, file, False)
-        if self._is_double:
-            self._setup_entry(self.value_entry_double, file, True)
+    def _break_limiter_connections(self, *args):
+        for conn_type in ('numeric', 'float', 'date'):
+            if conn_type in self._limiter_connections:
+                self.disconnect(self._limiter_connections[conn_type])
+        self.disconnect(self._limiter_connections['destroy'])
+        self._limiter_connections = {}
 
-    def bind_to_file(self, file):
-        if file in self.files:
-            return
-        self.files.append(file)
-        self.refresh_multiple_values(file)
+    #
+    # Numeric validator: allows only digits ([0-9]).
+    #
 
-    def unbind_from_file(self, file):
-        if file not in self.files:
-            return
-        self.files.remove(file)
-        self.refresh_multiple_values()
-
-    def on_changed(self, entry, is_double=False):
-        property = (is_double and self.properties[1]) or self.properties[0]
-        if property in self.ignore_edit and not self.ignore_edit[property]:
-            value = entry.get_text()
-            if self._is_numeric:
-                try:
-                    if property == 'bpm':
-                        value = float(value)
-                    else:
-                        value = int(value)
-                except ValueError:
-                    value = None
-            for file in self.files:
-                if file.get_property(property) != value:
-                    if self._is_numeric and not value:
-                        continue
-                    file.set_property(property, value)
-        else:
+    # https://gitlab.gnome.org/GNOME/pygobject/-/issues/577
+    """
+    @GObject.Property(type=bool, default=False)
+    def is_numeric(self):
+        try:
+            return self._is_numeric
+        except AttributeError:
+            self._is_numeric = False
             return False
 
-class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
+    @is_numeric.setter
+    def is_numeric(self, value):
+        try:
+            if value == self._is_numeric:
+                return
+        except AttributeError:
+            pass
+
+        self._is_numeric = value
+        if value:
+            self.set_input_purpose(Gtk.InputPurpose.DIGITS)
+            self._limiter_connections['numeric'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+        else:
+            self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
+            if 'numeric' in self._limiter_connections:
+                self.disconnect(self._limiter_connections['numeric'])
+                del self._limiter_connections['numeric']
+    """
+
+    def disallow_nonnumeric(self, entry, text, length, position, *args):
+        if not text:
+            return
+        if not text.isdigit():
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+
+    #
+    # Float validator: allows digits and one dot.
+    #
+
+    # https://gitlab.gnome.org/GNOME/pygobject/-/issues/577
+    """
+    @GObject.Property(type=bool, default=False)
+    def is_float(self):
+        try:
+            return self._is_float
+        except AttributeError:
+            self._is_float = False
+            return False
+
+    @is_float.setter
+    def is_float(self, value):
+        try:
+            if value == self._is_float:
+                return
+        except AttributeError:
+            pass
+
+        self._is_float = value
+        if value:
+            self.set_input_purpose(Gtk.InputPurpose.NUMBER)
+            self._limiter_connections['float'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nonfloat)
+        else:
+            self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
+            if 'float' in self._limiter_connections:
+                self.disconnect(self._limiter_connections['float'])
+                del self._limiter_connections['float']
+    """
+
+    def disallow_nonfloat(self, entry, text, length, position, *args):
+        if not text:
+            return
+        if '.' in text and '.' in entry.get_text():
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+        if text != '.' and not isfloat(text):
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+
+    #
+    # Date validator: allows YYYYYYYYY..., YYYY-MM or YYYY-MM-DD dates.
+    #
+
+    # https://gitlab.gnome.org/GNOME/pygobject/-/issues/577
+    """
+    @GObject.Property(type=bool, default=False)
+    def is_date(self):
+        try:
+            return self._is_date
+        except AttributeError:
+            self._is_date = False
+            return False
+
+    @is_date.setter
+    def is_date(self, value):
+        try:
+            if value == self._is_date:
+                return
+        except AttributeError:
+            pass
+
+        self._is_date = value
+        self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
+        if value:
+            self._limiter_connections['date'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nondate)
+        else:
+            if 'date' in self._limiter_connections:
+                self.disconnect(self._limiter_connections['date'])
+                del self._limiter_connections['date']
+    """
+
+    def disallow_nondate(self, entry, text, length, position, *args):
+        if not text:
+            return
+        elif not re.match("^[0-9-]*$", text):
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
+        current_text = entry.get_buffer().get_text()
+
+        current_length = len(current_text)
+        if current_length + length > 10:
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
+        sep_count = (current_text + text).count('-')
+
+        if sep_count > 2:
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            return
+
+class EartagEditableLabel(Gtk.EditableLabel):
     """
     Editable labels are missing a few nice features that we need
     (namely proper centering and word wrapping), but since they're
@@ -328,13 +420,10 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
     """
     __gtype_name__ = 'EartagEditableLabel'
 
-    _is_numeric = False
-    _is_double = False
-
-    _placeholder = ''
-
     def __init__(self):
         super().__init__()
+        self._placeholder = ''
+        self._original_placeholder = ''
 
         # The layout is:
         # GtkEditableLabel
@@ -365,56 +454,34 @@ class EartagEditableLabel(Gtk.EditableLabel, EartagMultipleValueEntry):
         label.set_cursor(Gdk.Cursor.new_from_name('text'))
         self.set_alignment(0.5)
 
-        self.bind_property('placeholder', editable, 'placeholder-text',
+        self.bind_property('placeholder-text', editable, 'placeholder-text',
             GObject.BindingFlags.SYNC_CREATE)
 
         self.connect('notify::editing', self.display_placeholder)
         self.connect('notify::text', self.display_placeholder)
-
-        # Setup necessary for EartagMultipleValueEntry
-        self.value_entry = self
-        self.connect('changed', self.on_changed)
-        self._original_placeholder = None
 
         self.label = label
         self.editable = editable
         self.stack = stack
         self.display_placeholder()
 
-        self.files = []
-        self.properties = []
-        self.ignore_edit = {}
-
     def display_placeholder(self, *args):
         """Displays/hides placeholder in non-editing mode as needed."""
         if not self.get_text():
-            self.label.set_label(self.placeholder)
+            self.label.set_label(self.placeholder_text)
             self.label.add_css_class('dim-label')
         else:
             self.label.remove_css_class('dim-label')
         self.stack.update_property([Gtk.AccessibleProperty.LABEL], [self.label.get_label()])
 
     @GObject.Property(type=str)
-    def placeholder(self):
+    def placeholder_text(self):
         """Placeholder to display when the text is empty."""
         return self._placeholder
 
-    @placeholder.setter
-    def placeholder(self, value):
-        if not self._original_placeholder:
-            self._original_placeholder = value
+    @placeholder_text.setter
+    def placeholder_text(self, value):
         self._placeholder = value
-
-    # Implemented for EartagMultipleValueEntry
-    def set_placeholder_text(self, value):
-        if value:
-            self.set_property('placeholder', value)
-        else:
-            self.set_property('placeholder', self._original_placeholder)
-        self.display_placeholder()
-
-    def _setup_entry(self, entry, file, is_double):
-        EartagMultipleValueEntry._setup_entry(self, entry, file, is_double)
         self.display_placeholder()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverimage.ui')

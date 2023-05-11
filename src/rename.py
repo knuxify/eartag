@@ -41,12 +41,12 @@ def parse_placeholder_string(string, file):
     for tag in BASIC_TAGS + file.supported_extra_tags + ('length', 'bitrate'):
         if tag == 'title':
             null_value = 'Untitled'
-        elif tag in file.int_properties:
+        elif tag in file.int_properties + file.float_properties:
             null_value = 0
         else:
             null_value = 'Unknown ' + TAG_NAMES[tag]
 
-        if tag in file.int_properties + ('length', 'bitrate'):
+        if tag in file.int_properties + file.float_properties + ('length', 'bitrate'):
             value = file.get_property(tag)
             if not value or value < 0:
                 value = 0
