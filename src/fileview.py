@@ -806,6 +806,7 @@ class EartagFileView(Gtk.Stack):
         self.file_manager = file_manager
         self.file_manager.connect('refresh-needed', self.update_binds)
         self.file_manager.connect('selection-changed', self.update_binds)
+        self.file_manager.connect('selection-override', self.update_binds)
         self.file_manager.load_task.connect('notify::progress', self.update_loading)
 
         sidebar = self.get_native().sidebar
