@@ -131,7 +131,7 @@ class EartagFileListItem(Gtk.Box):
 
     @Gtk.Template.Callback()
     def remove_item(self, *args):
-        if self.file_manager.remove(self.file):
+        if self.file_manager.remove_files([self.file]):
             self.on_destroy()
 
     @GObject.Property(type=str)
@@ -471,7 +471,7 @@ class EartagSidebar(Gtk.Box):
     @Gtk.Template.Callback()
     def remove_selected(self, *args):
         old_selected = self.file_manager.selected_files.copy()
-        self.file_manager.remove_multiple(old_selected)
+        self.file_manager.remove_files(old_selected)
 
     def refresh_actionbar_button_state(self, *args):
         if not self.file_manager.files or not self.selection_mode:

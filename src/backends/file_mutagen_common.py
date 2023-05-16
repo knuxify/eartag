@@ -50,7 +50,7 @@ class EartagFileMutagenCommon(EartagFile):
         self.setup_original_values()
         self.mark_as_unmodified()
 
-    def __del__(self, *args):
+    def on_remove(self, *args):
         self.mg_file = None
 
     # Main properties

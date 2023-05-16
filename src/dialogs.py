@@ -84,7 +84,7 @@ class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
             if not self.file_manager.save():
                 return False
         if response != 'cancel':
-            self.file_manager.remove(self.file, force_discard=True)
+            self.file_manager.remove_files([self.file], force_discard=True)
         self.file = None
         self.close()
 

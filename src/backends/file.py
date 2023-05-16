@@ -234,10 +234,6 @@ class EartagFile(GObject.Object):
         self._has_error = has_error
         self.notify('has-error')
 
-    def __del__(self, *args):
-        self._cover = None
-        super.__del__(*args)
-
     @property
     def cover(self):
         """Gets raw cover data. This is usually used for comparisons between two files."""

@@ -260,47 +260,45 @@ class EartagFileManager(GObject.Object):
     # Removal
     #
 
-    def remove(self, file, force_discard=False, no_emit=False, use_buffer=False):
-        """Removes a file from the opened file list."""
-        if file.is_modified and not force_discard:
-            EartagRemovalDiscardWarningDialog(self, file).present()
-            return False
+    def _remove_file(self, file):
+        """
+        Removes a single file from the opened file list. Used internally in remove_files;
+        use that function instead.
+        """
+
         for connection in self._connections[file.id]:
             file.disconnect(connection)
-        file.__del__()
         self.file_paths.remove(file.path)
-        if use_buffer:
-            self._removed_files_buffer.append(self.files.find(file)[1])
-        else:
-            self.files.remove(self.files.find(file)[1])
+
+        self._removed_files_buffer.append(self.files.find(file)[1])
+
         if file in self.selected_files:
-            if no_emit:
-                self._selection_removed = True
+            self._selection_removed = True
             self._selected_files.remove(file)
-            if not no_emit:
-                if not self.selected_files and self.files:
-                    self.emit('select-first')
-                self.emit('selection-changed')
-                self.emit('selection-override')
         if file.id in self._modified_files:
             self._modified_files.remove(file.id)
         if file.id in self._error_files:
             self._error_files.remove(file.id)
-        if not no_emit:
-            self.set_property('is_modified', bool(self._modified_files))
-            self.set_property('has_error', bool(self._error_files))
-            self.refresh_state()
+
+        file.on_remove()
+
         return True
 
-    def remove_multiple(self, files, force_discard=False):
+    def remove_files(self, files, force_discard=False):
         """Removes files from the opened file list."""
+        if not files:
+            return True
+
+        for file in files:
+            if file.is_modified and not force_discard:
+                EartagRemovalDiscardWarningDialog(self, file).present()
+                return False
+
+        self._selection_removed = False
         self._removed_files_buffer = []
-        file_count = len(files)
-        if file_count == 0:
-            return False
-        elif file_count == 1:
-            return self.remove(files[0], force_discard=force_discard)
-        elif file_count == self.files.get_n_items():
+
+        # Handle remove all scenario
+        if len(files) == self.files.get_n_items():
             self.files.remove_all()
             self.file_paths = []
             self.selected_files = []
@@ -309,43 +307,53 @@ class EartagFileManager(GObject.Object):
             self.emit('selection-override')
             return True
 
-        self._selection_removed = False
+        # Otherwise, remove all the files separately
         for file in files:
-            if not self.remove(file, force_discard=force_discard, no_emit=True, use_buffer=True):
+            if not self._remove_file(file):
                 return False
 
-        # Split list into removed chunks, which will allow us to use .splice
-        # (much faster than calling remove on each item individually)
-        self._removed_files_buffer.sort()
-        chunks = {}
-        chunk_start = self._removed_files_buffer[0]
-        prev_item = -1
-        for item in self._removed_files_buffer:
-            if item > prev_item + 1:
-                chunks[chunk_start] = prev_item
-                chunk_start = item
-            prev_item = item
-        chunks[chunk_start] = prev_item
+        # If we only have one file, then just remove it manually
+        if len(files) == 1:
+            self.files.remove(self._removed_files_buffer[0])
+        else:
+            # Split list into removed chunks, which will allow us to use .splice
+            # (much faster than calling remove on each item individually)
+            self._removed_files_buffer.sort()
+            chunks = {}
+            chunk_start = self._removed_files_buffer[0]
+            prev_item = -1
+            for item in self._removed_files_buffer:
+                if item > prev_item + 1:
+                    chunks[chunk_start] = prev_item
+                    chunk_start = item
+                prev_item = item
+            chunks[chunk_start] = prev_item
 
-        offset = 0
-        for raw_chunk_start, chunk_end in chunks.items():
-            chunk_start = raw_chunk_start - offset
-            chunk_length = chunk_end - raw_chunk_start + 1
-            offset += chunk_length
+            offset = 0
+            for raw_chunk_start, chunk_end in chunks.items():
+                chunk_start = raw_chunk_start - offset
+                chunk_length = chunk_end - raw_chunk_start + 1
+                offset += chunk_length
 
-            self.files.splice(chunk_start, chunk_length, [])
+                self.files.splice(chunk_start, chunk_length, [])
+
+        # Here, selection-override is used instead of selection-changed, as
+        # it's primarily consumed by the sidebar, and the sidebar already emits
+        # selection-changed multiple times throughout itself, so we'd just end
+        # up with more infinite emit loops than it's worth...
 
         if self._selection_removed:
-            for file in self.files:
-                file.setup_present_extra_tags()
             self.emit('selection-override')
 
-        if not self.selected_files and self.files:
+        elif not self.selected_files and self.files:
             self.emit('select-first')
 
         self.set_property('is_modified', bool(self._modified_files))
         self.set_property('has_error', bool(self._error_files))
         self.refresh_state()
+
+        self._selection_removed = False
+        self._removed_files_buffer = []
 
         return True
 

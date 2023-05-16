@@ -136,10 +136,10 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)
 
-    def __del__(self, *args):
+    def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
-        super().__del__()
+        super().on_remove()
 
     @GObject.Property(type=str)
     def cover_path(self):
