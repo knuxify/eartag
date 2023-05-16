@@ -718,11 +718,11 @@ class EartagFileInfoLabel(Gtk.Label):
 
     def bind_to_file(self, file):
         self._files.append(file)
-        self.refresh_label()
+        # Call refresh_label once all files are bound
 
     def unbind_from_file(self, file):
         self._files.remove(file)
-        self.refresh_label()
+        # Call refresh_label once all files are unbound
 
     def refresh_label(self):
         if len(self._files) == 0:
@@ -912,6 +912,8 @@ class EartagFileView(Gtk.Stack):
             self.more_tags_expander.bind_to_file(file, skip_refresh_entries=True)
         self.more_tags_expander.refresh_entries(old_blocked_tags=old_blocked_tags)
 
+        self.file_info.refresh_label()
+
     def _unbind_files(self, files):
         """Unbinds a file from the fileview. Used internally in update_binds."""
         if not files:
@@ -928,3 +930,5 @@ class EartagFileView(Gtk.Stack):
 
             self.more_tags_expander.unbind_from_file(file, skip_refresh_entries=True)
         self.more_tags_expander.refresh_entries(old_blocked_tags=old_blocked_tags)
+
+        self.file_info.refresh_label()
