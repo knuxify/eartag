@@ -161,7 +161,7 @@ class EartagAcoustIDDialog(Adw.Window):
             widget.acoustid_info_stack.set_visible_child(widget.acoustid_loading_icon)
             widget.acoustid_info_stack.set_visible(True)
 
-        self.files = list(self.file_manager.selected_files).copy()
+        self.files = list(self.selected_files_filelist.filter_model).copy()
         self._identify_order = [file.id for file in self.files]
         self.results = {}
         self.identify_task.reset()
