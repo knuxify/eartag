@@ -49,14 +49,7 @@
         </child>
 
         <child>
-          <object class="AdwStatusPage" id="no_files">
-            <property name="icon-name">list-add-symbolic</property>
-            <property name="title" translatable="yes">No Files Opened</property>
-            <property name="description">Use the "+" button on the top bar to open files to edit.</property>
-            <style>
-              <class name="compact"/>
-            </style>
-          </object>
+          <object class="GtkBox" id="no_files"/>
         </child>
 
         <child>
