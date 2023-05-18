@@ -112,6 +112,21 @@ def get_readable_length(length):
 
     return length_readable
 
+def find_in_model(model, item):
+    """
+    Gets the position of an item in the model, or None if not found.
+    Replacement for .find function in models that don't have it.
+    """
+    i = 0
+    while True:
+        found = model.get_item(i)
+        if not found:
+            break
+        if found == item:
+            return i
+        i += 1
+    return None
+
 def inspect_prettyprint(stack):
     """
     Convenience function that pretty-prints the results of inspect.stack().

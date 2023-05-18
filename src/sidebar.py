@@ -30,6 +30,8 @@ from gi.repository import GObject, Gtk, GLib
 import os.path
 import gettext
 
+from .common import find_in_model
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/filelistitem.ui')
 class EartagFileListItem(Gtk.Box):
     __gtype_name__ = 'EartagFileListItem'
@@ -201,6 +203,7 @@ class EartagFileList(Gtk.ListView):
 
         self.selection_model = Gtk.SingleSelection(model=self.filter_model)
         self.selection_model.connect('selection-changed', self.update_selection_from_model)
+        self.selection_model.set_autoselect(False)
 
         self.set_model(self.selection_model)
 
@@ -453,6 +456,16 @@ class EartagSidebar(Gtk.Box):
             self.list_stack.set_visible_child(self.no_results)
         else:
             self.toggle_fileview()
+
+        selected = self.file_list.selection_model.get_selected()
+        # TODO: some weird bug where a null selected value is read as 4294967295
+        # (looks like someone forgot to make an unsigned int signed...)
+        has_no_selected = selected < 0 or selected >= 4294967295
+        if not self.selection_mode and has_no_selected and self.file_manager.selected_files:
+            new_selection = find_in_model(self.file_list.filter_model,
+                self.file_manager.selected_files[0])
+            if new_selection is not None:
+                self.file_list.selection_model.set_selected(new_selection)
 
         # Scroll back to top of list
         vadjust = self.file_list.get_vadjustment()
