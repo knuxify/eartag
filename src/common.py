@@ -236,7 +236,7 @@ class EartagBackgroundTask(GObject.Object):
         around GLib.idle_add. This is the preferred way for users to set the
         progress variable.
         """
-        GLib.idle_add(lambda *args: self.set_property('progress', value))
+        GLib.idle_add(self.set_property, 'progress', value)
 
     def increment_progress(self, value):
         """
@@ -252,7 +252,7 @@ class EartagBackgroundTask(GObject.Object):
         GLib.idle_add. This is the preferred way for users to emit the
         task-done signal.
         """
-        GLib.idle_add(lambda *args: self.emit('task-done'))
+        GLib.idle_add(self.emit, 'task-done')
 
 def isfloat(value):
     """Checks if the given value is a valid float."""

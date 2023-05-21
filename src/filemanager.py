@@ -184,8 +184,8 @@ class EartagFileManager(GObject.Object):
             _file = eartagfile_from_path(path)
         except:
             traceback.print_exc()
-            GLib.idle_add(lambda *args:
-                EartagLoadingFailureDialog(self.window, file_basename).present()
+            GLib.idle_add(
+                EartagLoadingFailureDialog(self.window, file_basename).present
             )
             return False
 
@@ -223,11 +223,12 @@ class EartagFileManager(GObject.Object):
                 return False
 
             if not self._load_single_file(path):
-                self.files.splice(0, 0, self._files_buffer)
+                GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
+                            priority=GLib.PRIORITY_HIGH_IDLE + 30)
                 self._files_buffer = []
 
                 task.emit_task_done()
-                GLib.idle_add(lambda *args: self.refresh_state())
+                GLib.idle_add(self.refresh_state)
                 self.failed = True
                 return False
 
@@ -243,18 +244,19 @@ class EartagFileManager(GObject.Object):
                 unwritable_msg = _("Opened file is read-only; changes cannot be saved")
             else:
                 unwritable_msg = _("Some of the opened files are read-only; changes cannot be saved") # noqa: E501
-            GLib.idle_add(lambda *args: self.window.toast_overlay.add_toast(
+            GLib.idle_add(self.window.toast_overlay.add_toast,
                 Adw.Toast.new(unwritable_msg)
-            ))
+            )
 
-        self.files.splice(0, 0, self._files_buffer)
+        GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
+                            priority=GLib.PRIORITY_HIGH_IDLE + 30)
         self._files_buffer = []
 
         task.emit_task_done()
-        GLib.idle_add(lambda *args: self.refresh_state())
-        GLib.idle_add(lambda *args: self.emit('select-first'))
+        GLib.idle_add(self.refresh_state)
+        GLib.idle_add(self.emit, 'select-first')
         if mode == self.LOAD_OVERWRITE:
-            GLib.idle_add(lambda *args: self.emit('selection_override'))
+            GLib.idle_add(self.emit, 'selection_override')
 
     #
     # Removal
@@ -396,8 +398,8 @@ class EartagFileManager(GObject.Object):
                 self._is_renaming_multiple_files = False
 
                 traceback.print_exc()
-                GLib.idle_add(lambda *args:
-                    EartagRenameFailureDialog(self.window, old_path).present()
+                GLib.idle_add(
+                    EartagRenameFailureDialog(self.window, old_path).present
                 )
 
                 task.emit_task_done()
@@ -407,7 +409,7 @@ class EartagFileManager(GObject.Object):
             task.increment_progress(progress_step)
 
         task.emit_task_done()
-        GLib.idle_add(lambda *args: self.refresh_state())
+        GLib.idle_add(self.refresh_state)
 
     def close_dialog(self, dialog, *args):
         dialog.close()
