@@ -8,7 +8,7 @@ src/ui/nofile.ui
 src/ui/sidebar.ui
 src/main.py
 src/common.py
-src/file.py
+src/filemanager.py
 src/fileview.py
 src/rename.py
 src/sidebar.py
