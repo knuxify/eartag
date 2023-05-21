@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-21 20:43+0200\n"
+"POT-Creation-Date: 2023-05-21 20:51+0200\n"
 "PO-Revision-Date: 2023-01-01 12:54+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -43,10 +43,6 @@ msgid ""
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
 "tagging programs, Ear Tag does not require the user to set up a music "
 "library folder."
-msgstr ""
-
-#: data/app.drey.EarTag.gschema.xml:6
-msgid "Rename placeholder"
 msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-21 20:43+0200\n"
+"POT-Creation-Date: 2023-05-21 20:51+0200\n"
 "PO-Revision-Date: 2023-02-16 11:23+0100\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
@@ -49,10 +49,6 @@ msgstr ""
 "namijenjen brzom uređivanju ili skupnom uređivanju pjesama u albumima/EP-"
 "ima. Za razliku od drugih programa za označavanje, Ear Tag ne zahtijeva od "
 "korisnika postavljanje mape glazbene knjižnice."
-
-#: data/app.drey.EarTag.gschema.xml:6
-msgid "Rename placeholder"
-msgstr ""
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
