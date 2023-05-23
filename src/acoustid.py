@@ -45,8 +45,11 @@ def identify_file(file):
     fills it automatically. Returns False if a track could not be
     identified, the match confidence percentage otherwise.
     """
-    results = acoustid.match(ACOUSTID_API_KEY, file.path, parse=False)
-    if 'results' not in results or not results['results']:
+    try:
+        results = acoustid.match(ACOUSTID_API_KEY, file.path, parse=False)
+        if 'results' not in results or not results['results']:
+            return False
+    except:
         return False
 
     acoustid_data = results['results'][0]
@@ -54,11 +57,11 @@ def identify_file(file):
     musicbrainz_id = acoustid_data['recordings'][0]['id']
 
     headers = {"User-Agent": f'Ear Tag {VERSION} (https://gitlab.gnome.org/knuxify/eartag)'}
-    musicbrainz_request = urllib.request.Request(
-        f'https://musicbrainz.org/ws/2/recording/{musicbrainz_id}?inc=releases+genres+artist-credits+media&fmt=json', # noqa: E501
-        headers=headers
-    )
     try:
+        musicbrainz_request = urllib.request.Request(
+            f'https://musicbrainz.org/ws/2/recording/{musicbrainz_id}?inc=releases+genres+artist-credits+media&fmt=json', # noqa: E501
+            headers=headers
+        )
         with urllib.request.urlopen(musicbrainz_request) as musicbrainz_data_raw:
             musicbrainz_data = json.loads(musicbrainz_data_raw.read())
             assert 'error' not in musicbrainz_data
@@ -178,12 +181,16 @@ class EartagAcoustIDDialog(Adw.Window):
                 lambda *args: self.selected_files_filelist._widgets[file.id].\
                     acoustid_loading_icon.start()
             )
-            identify_result = identify_file(file)
-            if identify_result:
-                self.results[file.id] = identify_result
-                self.identified_files += 1
-            else:
+            try:
+                identify_result = identify_file(file)
+            except:
                 self.results[file.id] = 0.00
+            else:
+                if identify_result:
+                    self.results[file.id] = identify_result
+                    self.identified_files += 1
+                else:
+                    self.results[file.id] = 0.00
             self.identify_task.increment_progress(progress_step)
 
         self.identify_task.emit_task_done()
