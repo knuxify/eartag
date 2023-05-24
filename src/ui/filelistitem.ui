@@ -117,7 +117,7 @@
         <!-- Sidebar buttons (default) -->
         <child>
           <object class="GtkButton" id="remove_button">
-            <property name="icon-name">list-remove-symbolic</property>
+            <property name="icon-name">edit-delete-symbolic</property>
             <signal name="clicked" handler="remove_item"/>
             <property name="hexpand">true</property>
             <property name="halign">end</property>

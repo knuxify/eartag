@@ -129,7 +129,7 @@
                                 <property name="icon-name">view-sort-descending-symbolic</property>
                                 <signal name="clicked" handler="run_sort"/>
                                 <!-- TRANSLATORS: Tooltip for button used to sort files in the opened file list -->
-                                <property name="tooltip-text" translatable="yes">Sort files</property>
+                                <property name="tooltip-text" translatable="yes">Sort list alphabetically</property>
                               </object>
                             </child>
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-21 20:51+0200\n"
+"POT-Creation-Date: 2023-05-24 10:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
-msgid "Sort files"
+msgid "Sort list alphabetically"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
@@ -558,7 +558,7 @@ msgid ""
 "org\">Musicbrainz</a>."
 msgstr ""
 
-#: src/acoustid.py:203
+#: src/acoustid.py:210
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr ""
