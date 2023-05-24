@@ -34,7 +34,7 @@ from .sidebar import EartagSidebar  # noqa: F401
 from .rename import EartagRenameDialog
 from .acoustid import EartagAcoustIDDialog
 
-from gi.repository import Adw, Gdk, GLib, Gtk, GObject
+from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
 import magic
 import mimetypes
@@ -92,12 +92,15 @@ class EartagWindow(Adw.ApplicationWindow):
     empty_primary_menu_button = Gtk.Template.Child()
 
     force_close = False
-    file_chooser = None
+    file_chooser_mode = None
 
     open_mode = EartagFileManager.LOAD_OVERWRITE
 
     def __init__(self, application, paths=None):
         super().__init__(application=application, title='Ear Tag')
+
+        self.file_chooser = Gtk.FileDialog(modal=True)
+        self._cancellable = Gio.Cancellable.new()
 
         self.audio_file_filter = Gtk.FileFilter()
         for mime in VALID_AUDIO_MIMES:
@@ -252,30 +255,29 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_file_chooser(self, folders=False):
         """Shows the file chooser."""
-        if self.file_chooser:
+        if self.file_chooser_mode is not None:
             return
 
         if folders:
-            action = Gtk.FileChooserAction.SELECT_FOLDER
-            filter = None
             title = _("Open Folder")
+            self.file_chooser_mode = 'folders'
         else:
-            action = Gtk.FileChooserAction.OPEN
-            filter = self.audio_file_filter
             title = _("Open File")
+            self.file_chooser_mode = 'files'
 
-        self.file_chooser = Gtk.FileChooserNative(
-                                title=title,
-                                transient_for=self,
-                                action=action,
-                                select_multiple=True
-                                )
+        self.file_chooser.set_title(title)
 
-        if filter:
-            self.file_chooser.set_filter(filter)
+        if not folders:
+            _filters = Gio.ListStore.new(Gtk.FileFilter)
+            _filters.append(self.audio_file_filter)
+            self.file_chooser.set_filters(_filters)
 
-        self.file_chooser.connect('response', self.open_file_from_dialog)
-        self.file_chooser.show()
+        if folders:
+            self.file_chooser.select_multiple_folders(self, self._cancellable,
+                self.open_file_from_dialog)
+        else:
+            self.file_chooser.open_multiple(self, self._cancellable,
+                self.open_file_from_dialog)
 
     def open_files(self, paths):
         """
@@ -289,29 +291,45 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.file_manager.load_files(paths, mode=self.open_mode)
 
-    def open_file_from_dialog(self, dialog, response):
+    def open_file_from_dialog(self, dialog, result):
         """
         Callback for a FileChooser that takes the response and opens the file
         selected in the dialog.
         """
-        self.file_chooser.destroy()
-        self.file_chooser = None
-        if response == Gtk.ResponseType.ACCEPT:
-            paths = []
-            for file in list(dialog.get_files()):
-                _path = file.get_path()
-                if os.path.isdir(_path):
-                    for _file in os.listdir(_path):
-                        _fpath = os.path.join(_path, _file)
-                        if os.path.isfile(_fpath) and is_valid_music_file(_fpath):
-                            paths.append(_fpath)
-                else:
-                    paths.append(_path)
-            if not paths:
-                toast = Adw.Toast.new(_("No supported files found in opened folder"))
-                self.toast_overlay.add_toast(toast)
-                return
-            return self.open_files(paths)
+        try:
+            if self.file_chooser_mode == 'folders':
+                response = dialog.select_multiple_folders_finish(result)
+            elif self.file_chooser_mode == 'files':
+                response = dialog.open_multiple_finish(result)
+            else:
+                dialog.unref()
+                self.file_chooser_mode = None
+                return False
+        except GLib.GError:
+            dialog.unref()
+            self.file_chooser_mode = None
+            return False
+
+        self.file_chooser_mode = None
+
+        if not response:
+            return
+
+        paths = []
+        for file in response:
+            _path = file.get_path()
+            if os.path.isdir(_path):
+                for _file in os.listdir(_path):
+                    _fpath = os.path.join(_path, _file)
+                    if os.path.isfile(_fpath) and is_valid_music_file(_fpath):
+                        paths.append(_fpath)
+            else:
+                paths.append(_path)
+        if not paths:
+            toast = Adw.Toast.new(_("No supported files found in opened folder"))
+            self.toast_overlay.add_toast(toast)
+            return
+        return self.open_files(paths)
 
     def toggle_save_button(self, *args):
         if self.file_manager.has_error:
@@ -363,23 +381,25 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def save_cover(self, *args):
         """Opens a file dialog to have the cover art to a file."""
-        self.file_chooser = Gtk.FileChooserNative(
-                                title=_("Save Album Cover To…"),
-                                transient_for=self.get_native(),
-                                action=Gtk.FileChooserAction.SAVE
-                                )
+        file_chooser = Gtk.FileDialog(title=_("Save Album Cover To…"), modal=True)
+        _cancellable = Gio.Cancellable.new()
 
-        self.file_chooser.connect('response', self._save_cover_response)
-        self.file_chooser.show()
+        file_chooser.save(self, _cancellable, self._save_cover_response)
 
-    def _save_cover_response(self, dialog, response):
-        if response == Gtk.ResponseType.ACCEPT:
-            cover_path = self.file_manager.selected_files[0].cover_path
-            if cover_path:
-                save_path = dialog.get_file().get_path()
-                cover_mime = magic.from_file(cover_path, mime=True)
-                cover_extension = mimetypes.guess_extension(cover_mime)
-                if cover_extension and not save_path.endswith(cover_extension):
-                    save_path += cover_extension
-                shutil.copyfile(cover_path, save_path)
-        dialog.destroy()
+    def _save_cover_response(self, dialog, result):
+        try:
+            response = dialog.save_finish(result)
+        except GLib.GError:
+            return
+
+        if not response:
+            return
+
+        cover_path = self.file_manager.selected_files[0].cover_path
+        if cover_path:
+            save_path = response.get_path()
+            cover_mime = magic.from_file(cover_path, mime=True)
+            cover_extension = mimetypes.guess_extension(cover_mime)
+            if cover_extension and not save_path.endswith(cover_extension):
+                save_path += cover_extension
+            shutil.copyfile(cover_path, save_path)

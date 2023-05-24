@@ -37,7 +37,7 @@ from .tagentry import ( # noqa: F401
     EartagTagEditableLabel
 )
 
-from gi.repository import Adw, Gtk, Gdk, Gio, GObject
+from gi.repository import Adw, Gtk, Gdk, Gio, GLib, GObject
 
 import gettext
 
@@ -140,27 +140,36 @@ class EartagAlbumCoverButton(Adw.Bin):
     @Gtk.Template.Callback()
     def show_cover_file_chooser(self, *args):
         """Shows the file chooser."""
-        self.file_chooser = Gtk.FileChooserNative(
-                                title=_("Select Album Cover Image"),
-                                transient_for=self.get_native(),
-                                action=Gtk.FileChooserAction.OPEN,
-                                filter=self.image_file_filter
-                                )
+        file_chooser = Gtk.FileDialog(
+            title=_("Select Album Cover Image"),
+            modal=True
+        )
+        _cancellable = Gio.Cancellable.new()
 
-        self.file_chooser.connect('response', self.open_cover_file_from_dialog)
-        self.file_chooser.show()
+        _filters = Gio.ListStore.new(Gtk.FileFilter)
+        _filters.append(self.image_file_filter)
+        file_chooser.set_filters(_filters)
 
-    def open_cover_file_from_dialog(self, dialog, response):
+        file_chooser.open(self.get_native(), _cancellable,
+            self.open_cover_file_from_dialog)
+
+    def open_cover_file_from_dialog(self, dialog, result):
         """
         Callback for a FileChooser that takes the response and opens the file
         selected in the dialog.
         """
-        if response == Gtk.ResponseType.ACCEPT:
-            for file in self.files:
-                file.cover_path = dialog.get_file().get_path()
-                file.notify('cover-path')
-            self.cover_image.on_cover_change()
-        self.file_chooser.destroy()
+        try:
+            response = dialog.save_finish(result)
+        except GLib.GError:
+            return
+
+        if not response:
+            return
+
+        for file in self.files:
+            file.cover_path = response.get_path()
+            file.notify('cover-path')
+        self.cover_image.on_cover_change()
 
     # Drag-and-drop
 
