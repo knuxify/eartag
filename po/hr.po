@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 10:09+0200\n"
+"POT-Creation-Date: 2023-05-25 08:46+0200\n"
 "PO-Revision-Date: 2023-02-16 11:23+0100\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
@@ -61,7 +61,7 @@ msgstr "Spremi"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
-msgid "Sort list alphabetically"
+msgid "Sort files by track number, album, name"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
@@ -200,11 +200,11 @@ msgstr ""
 "Kako bih editirali oznake datoteke, drag-i-dropajte datoteku na ovaj prozor "
 "ili koristite dugme ispod."
 
-#: src/ui/nofile.ui:32 src/window.py:259
+#: src/ui/nofile.ui:32 src/window.py:260
 msgid "Open File"
 msgstr "Otvori datoteku"
 
-#: src/ui/nofile.ui:45 src/window.py:255
+#: src/ui/nofile.ui:45 src/window.py:256
 msgid "Open Folder"
 msgstr "Otvori mapu"
 
@@ -297,17 +297,17 @@ msgstr[0] "{n} datoteka odabrana"
 msgstr[1] "{n} datoteka odabrano"
 msgstr[2] "{n} datoteka odabrano"
 
-#: src/window.py:305
+#: src/window.py:306
 msgid "No supported files found in opened folder"
 msgstr "U otvorenoj mapi nisu pronađene podržane datoteke"
 
-#: src/window.py:312
+#: src/window.py:313
 #, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti."
 
-#: src/window.py:361
+#: src/window.py:362
 msgid "Save Album Cover To…"
 msgstr "Spremi naslovnicu albuma u..."
 

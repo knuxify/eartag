@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 10:09+0200\n"
+"POT-Creation-Date: 2023-05-25 08:46+0200\n"
 "PO-Revision-Date: 2022-09-11 14:46+0200\n"
 "Last-Translator: Davide Ferracin <davide.ferracin@protonmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -56,7 +56,7 @@ msgstr "Salva"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
-msgid "Sort list alphabetically"
+msgid "Sort files by track number, album, name"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
@@ -199,11 +199,11 @@ msgstr ""
 "Per modificare le etichette di un file, trascinarlo in questa finestra "
 "oppure usare i pulsanti qui sotto."
 
-#: src/ui/nofile.ui:32 src/window.py:259
+#: src/ui/nofile.ui:32 src/window.py:260
 msgid "Open File"
 msgstr "Apri file"
 
-#: src/ui/nofile.ui:45 src/window.py:255
+#: src/ui/nofile.ui:45 src/window.py:256
 #, fuzzy
 msgid "Open Folder"
 msgstr "Apri file"
@@ -298,17 +298,17 @@ msgid_plural "{n} files selected"
 msgstr[0] "{n} file selezionato"
 msgstr[1] "{n} file selezionati"
 
-#: src/window.py:305
+#: src/window.py:306
 msgid "No supported files found in opened folder"
 msgstr ""
 
-#: src/window.py:312
+#: src/window.py:313
 #, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Il file aperto è in sola lettura; le modifiche non possono essere salvate."
 
-#: src/window.py:361
+#: src/window.py:362
 #, fuzzy
 msgid "Save Album Cover To…"
 msgstr "Selezionare un'immagine di copertina dell'album"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 10:09+0200\n"
+"POT-Creation-Date: 2023-05-25 08:46+0200\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -60,7 +60,7 @@ msgstr "Сохранить"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
-msgid "Sort list alphabetically"
+msgid "Sort files by track number, album, name"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
@@ -199,11 +199,11 @@ msgid ""
 "buttons below."
 msgstr ""
 
-#: src/ui/nofile.ui:32 src/window.py:259
+#: src/ui/nofile.ui:32 src/window.py:260
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: src/ui/nofile.ui:45 src/window.py:255
+#: src/ui/nofile.ui:45 src/window.py:256
 #, fuzzy
 msgid "Open Folder"
 msgstr "Открыть файл"
@@ -300,17 +300,17 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/window.py:305
+#: src/window.py:306
 msgid "No supported files found in opened folder"
 msgstr ""
 
-#: src/window.py:312
+#: src/window.py:313
 #, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Открытый файл доступен только для чтения; изменения не могут быть сохранены."
 
-#: src/window.py:361
+#: src/window.py:362
 #, fuzzy
 msgid "Save Album Cover To…"
 msgstr "Выберите изображение обложки альбома"

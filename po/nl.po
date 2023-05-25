@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 10:09+0200\n"
+"POT-Creation-Date: 2023-05-25 08:46+0200\n"
 "PO-Revision-Date: 2022-09-17 17:58+0200\n"
 "Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
@@ -57,7 +57,7 @@ msgstr "Opslaan"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
-msgid "Sort list alphabetically"
+msgid "Sort files by track number, album, name"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
@@ -202,11 +202,11 @@ msgstr ""
 "Om tags van een bestand te bewerken, sleep deze naar dit venster of gebruik "
 "de knoppen hieronder."
 
-#: src/ui/nofile.ui:32 src/window.py:259
+#: src/ui/nofile.ui:32 src/window.py:260
 msgid "Open File"
 msgstr "Bestand openen"
 
-#: src/ui/nofile.ui:45 src/window.py:255
+#: src/ui/nofile.ui:45 src/window.py:256
 #, fuzzy
 msgid "Open Folder"
 msgstr "Bestand openen"
@@ -300,17 +300,17 @@ msgid_plural "{n} files selected"
 msgstr[0] "{n} bestand geselecteerd"
 msgstr[1] "{n} bestanden geselecteerd"
 
-#: src/window.py:305
+#: src/window.py:306
 msgid "No supported files found in opened folder"
 msgstr ""
 
-#: src/window.py:312
+#: src/window.py:313
 #, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Geopend bestand is alleen-lezen; wijzigingen kunnen niet worden opgeslagen."
 
-#: src/window.py:361
+#: src/window.py:362
 #, fuzzy
 msgid "Save Album Cover To…"
 msgstr "Albumhoesafbeelding selecteren"

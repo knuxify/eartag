@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-24 10:09+0200\n"
+"POT-Creation-Date: 2023-05-25 08:46+0200\n"
 "PO-Revision-Date: 2023-05-21 20:57+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
@@ -60,7 +60,7 @@ msgstr "Zapisz"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
-msgid "Sort list alphabetically"
+msgid "Sort files by track number, album, name"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
@@ -194,11 +194,11 @@ msgstr ""
 "Aby edytować tagi pliku, przeciągnij i upuść plik na te okno lub użyj "
 "przycisków poniżej."
 
-#: src/ui/nofile.ui:32 src/window.py:259
+#: src/ui/nofile.ui:32 src/window.py:260
 msgid "Open File"
 msgstr "Otwórz plik"
 
-#: src/ui/nofile.ui:45 src/window.py:255
+#: src/ui/nofile.ui:45 src/window.py:256
 msgid "Open Folder"
 msgstr "Otwórz folder"
 
@@ -292,17 +292,17 @@ msgstr[0] "Zaznaczono {n} plik"
 msgstr[1] "Zaznaczono {n} pliki"
 msgstr[2] "Zaznaczono {n} plików"
 
-#: src/window.py:305
+#: src/window.py:306
 msgid "No supported files found in opened folder"
 msgstr "Nie znaleziono wspieranych plików w otwartym folderze"
 
-#: src/window.py:312
+#: src/window.py:313
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Niektóre z otwartych plików mają nieprawidłowe wartości; zmiany nie mogą być "
 "zapisane"
 
-#: src/window.py:361
+#: src/window.py:362
 msgid "Save Album Cover To…"
 msgstr "Zapisz okładkę do…"
 
