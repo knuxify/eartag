@@ -206,9 +206,13 @@ Opened files:
         win = self.props.active_window
         if win.container_stack.get_visible_child() != win.container_flap:
             return
-        if not win.sidebar.selection_mode:
-            win.sidebar.props.selection_mode = True
-        win.sidebar.select_all()
+        if win.sidebar.file_list.all_selected():
+            win.select_multiple_button.set_active(False)
+            win.sidebar.file_list.unselect_all()
+            win.file_manager.emit('select-first')
+        else:
+            win.select_multiple_button.set_active(True)
+            win.sidebar.file_list.select_all()
 
     def on_toggle_sidebar_action(self, *args):
         win = self.props.active_window
