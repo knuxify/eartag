@@ -37,7 +37,7 @@
                     <child>
                       <object class="GtkImage">
                         <property name="icon-name">document-edit-symbolic</property>
-                        <property name="pixel-size">64</property>
+                        <property name="pixel-size">48</property>
                         <property name="valign">center</property>
                         <property name="halign">center</property>
                         <property name="hexpand">true</property>
@@ -55,7 +55,7 @@
                     <child>
                       <object class="GtkImage">
                         <property name="icon-name">document-send-symbolic</property>
-                        <property name="pixel-size">64</property>
+                        <property name="pixel-size">48</property>
                         <property name="valign">center</property>
                         <property name="halign">center</property>
                         <property name="hexpand">true</property>
