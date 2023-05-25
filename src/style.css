@@ -74,6 +74,7 @@
 
 /* Required to make the OSD button outline show up */
 .prev-next-button-container { padding: 6px; margin: -6px; }
+.prev-next-button-container button { outline-color: alpha(@accent_color, 0.5); }
 
 /* Apply focus colors to editable labels */
 editablelabel {
