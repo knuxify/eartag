@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="EartagRenameFailureDialog" parent="AdwMessageDialog">
-    <property name="heading" translatable="yes">Failed to rename file</property>
+    <property name="heading" translatable="yes">Failed to Rename File</property>
     <property name="body" translatable="yes">Could not rename file {f}. Check the logs for more information.</property>
     <property name="close-response">close</property>
     <property name="default-response">close</property>
