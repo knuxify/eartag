@@ -23,7 +23,7 @@
 
     <child type="suffix">
       <object class="GtkButton" id="row_remove_button">
-        <property name="icon-name">list-remove-symbolic</property>
+        <property name="icon-name">edit-delete-symbolic</property>
         <property name="valign">center</property>
         <property name="halign">end</property>
 
