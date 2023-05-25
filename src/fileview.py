@@ -785,9 +785,9 @@ class EartagFileView(Gtk.Stack):
         super().__init__()
 
         self.bindable_entries = (self.album_cover, self.title_entry, self.artist_entry,
-        self.tracknumber_entry, self.album_entry, self.albumartist_entry,
-        self.genre_entry, self.releasedate_entry, self.comment_entry,
-        self.file_info)
+            self.tracknumber_entry, self.album_entry, self.albumartist_entry,
+            self.genre_entry, self.releasedate_entry, self.comment_entry,
+            self.file_info)
 
         self.previous_fileview_width = 0
 
@@ -797,11 +797,20 @@ class EartagFileView(Gtk.Stack):
         self.file_manager.connect('selection-changed', self.update_binds)
         self.file_manager.connect('selection-override', self.update_binds)
         self.file_manager.load_task.connect('notify::progress', self.update_loading)
+        self.file_manager.connect('notify::has-error', self.update_error)
 
         sidebar = self.get_native().sidebar
         self.next_file_button.connect('clicked', sidebar.select_next)
         self.previous_file_button.connect('clicked', sidebar.select_previous)
         sidebar.connect('notify::selection-mode', self.update_buttons)
+
+    def update_error(self, *args):
+        # Currently this is only used by the releasedate entry. Expand this
+        # when needed.
+        if self.file_manager.has_error:
+            self.releasedate_entry.add_css_class('error')
+        else:
+            self.releasedate_entry.remove_css_class('error')
 
     # TODO: rewrite this to use Adw.Breakpoint once libadwaita 1.4 is available
     def setup_resize_handler(self, *args):
