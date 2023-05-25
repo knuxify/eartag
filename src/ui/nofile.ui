@@ -19,7 +19,7 @@
                   <object class="AdwStatusPage">
                     <property name="icon-name">app.drey.EarTag</property>
                     <property name="title">Ear Tag</property>
-                    <property name="description" translatable="yes">Open or drag audio files here to edit their metadata.</property>
+                    <property name="description" translatable="yes">Use the buttons below to open a file/folder, or drag audio files here to edit their metadata.</property>
                     <style>
                       <class name="nofiles"/>
                     </style>
