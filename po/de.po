@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 08:46+0200\n"
+"POT-Creation-Date: 2023-05-25 18:43+0200\n"
 "PO-Revision-Date: 2023-02-08 15:25+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -195,18 +195,14 @@ msgid "Remove from list"
 msgstr "Aus Liste entfernen"
 
 #: src/ui/nofile.ui:22
-msgid ""
-"To edit a file's tags, drag-and-drop the file onto this window or use the "
-"buttons below."
+msgid "Open or drag audio files here to edit their metadata."
 msgstr ""
-"Um die Tags einer Datei zu bearbeiten, ziehen Sie die Datei auf dieses "
-"Fenster und legen Sie sie ab, oder verwenden Sie die Knöpfe unten."
 
-#: src/ui/nofile.ui:32 src/window.py:260
+#: src/ui/nofile.ui:35 src/window.py:260
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/ui/nofile.ui:45 src/window.py:256
+#: src/ui/nofile.ui:48 src/window.py:256
 msgid "Open Folder"
 msgstr "Ordner öffnen"
 
@@ -521,9 +517,11 @@ msgid ""
 "of available tags</a>."
 msgstr ""
 
-#: src/ui/dialogs/closewarning.ui:5
-msgid "Save changes before closing?"
-msgstr "Änderungen speichern vor dem Schließen?"
+#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
+#: src/ui/dialogs/removaldiscardwarning.ui:5
+#, fuzzy
+msgid "Save Changes?"
+msgstr "Änderungen wurden in Dateien gespeichert"
 
 #: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
 #: src/ui/dialogs/removaldiscardwarning.ui:6
@@ -537,31 +535,28 @@ msgid "_Cancel"
 msgstr "A_bbrechen"
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
-msgid "_Discard changes and close"
+#, fuzzy
+msgid "_Discard and Close"
 msgstr "Änderungen _verwerfen und schließen"
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
-msgid "_Save and close"
+#, fuzzy
+msgid "_Save and Close"
 msgstr "_Speichern und schließen"
 
-#: src/ui/dialogs/discardwarning.ui:5
-msgid "Save changes before opening another file?"
-msgstr "Änderungen speichern vor dem Öffnen einer anderen Datei?"
-
 #: src/ui/dialogs/discardwarning.ui:13
-msgid "_Discard changes and open"
+#, fuzzy
+msgid "_Discard and Open"
 msgstr "Änderungen _verwerfen und öffnen"
 
 #: src/ui/dialogs/discardwarning.ui:14
-msgid "_Save and open"
+#, fuzzy
+msgid "_Save and Open"
 msgstr "_Speichern und öffnen"
 
-#: src/ui/dialogs/removaldiscardwarning.ui:5
-msgid "Save changes before closing file?"
-msgstr "Änderungen speichern vor dem Schließen der Datei?"
-
 #: src/ui/dialogs/loadingfailure.ui:5
-msgid "Failed to load file"
+#, fuzzy
+msgid "Failed to Load File"
 msgstr "Datei konnte nicht geladen werden"
 
 #: src/ui/dialogs/loadingfailure.ui:6
@@ -577,7 +572,7 @@ msgstr "OK"
 
 #: src/ui/dialogs/renamefailure.ui:5
 #, fuzzy
-msgid "Failed to rename file"
+msgid "Failed to Rename File"
 msgstr "Datei konnte nicht gespeichert werden"
 
 #: src/ui/dialogs/renamefailure.ui:6
@@ -607,6 +602,22 @@ msgstr ""
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr ""
+
+#~ msgid ""
+#~ "To edit a file's tags, drag-and-drop the file onto this window or use the "
+#~ "buttons below."
+#~ msgstr ""
+#~ "Um die Tags einer Datei zu bearbeiten, ziehen Sie die Datei auf dieses "
+#~ "Fenster und legen Sie sie ab, oder verwenden Sie die Knöpfe unten."
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Änderungen speichern vor dem Schließen?"
+
+#~ msgid "Save changes before opening another file?"
+#~ msgstr "Änderungen speichern vor dem Öffnen einer anderen Datei?"
+
+#~ msgid "Save changes before closing file?"
+#~ msgstr "Änderungen speichern vor dem Schließen der Datei?"
 
 #~ msgid "Sort files"
 #~ msgstr "Dateien sortieren"

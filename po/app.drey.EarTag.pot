@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 08:46+0200\n"
+"POT-Creation-Date: 2023-05-25 18:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -182,16 +182,14 @@ msgid "Remove from list"
 msgstr ""
 
 #: src/ui/nofile.ui:22
-msgid ""
-"To edit a file's tags, drag-and-drop the file onto this window or use the "
-"buttons below."
+msgid "Open or drag audio files here to edit their metadata."
 msgstr ""
 
-#: src/ui/nofile.ui:32 src/window.py:260
+#: src/ui/nofile.ui:35 src/window.py:260
 msgid "Open File"
 msgstr ""
 
-#: src/ui/nofile.ui:45 src/window.py:256
+#: src/ui/nofile.ui:48 src/window.py:256
 msgid "Open Folder"
 msgstr ""
 
@@ -485,8 +483,9 @@ msgid ""
 "of available tags</a>."
 msgstr ""
 
-#: src/ui/dialogs/closewarning.ui:5
-msgid "Save changes before closing?"
+#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
+#: src/ui/dialogs/removaldiscardwarning.ui:5
+msgid "Save Changes?"
 msgstr ""
 
 #: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
@@ -500,31 +499,23 @@ msgid "_Cancel"
 msgstr ""
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
-msgid "_Discard changes and close"
+msgid "_Discard and Close"
 msgstr ""
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
-msgid "_Save and close"
-msgstr ""
-
-#: src/ui/dialogs/discardwarning.ui:5
-msgid "Save changes before opening another file?"
+msgid "_Save and Close"
 msgstr ""
 
 #: src/ui/dialogs/discardwarning.ui:13
-msgid "_Discard changes and open"
+msgid "_Discard and Open"
 msgstr ""
 
 #: src/ui/dialogs/discardwarning.ui:14
-msgid "_Save and open"
-msgstr ""
-
-#: src/ui/dialogs/removaldiscardwarning.ui:5
-msgid "Save changes before closing file?"
+msgid "_Save and Open"
 msgstr ""
 
 #: src/ui/dialogs/loadingfailure.ui:5
-msgid "Failed to load file"
+msgid "Failed to Load File"
 msgstr ""
 
 #: src/ui/dialogs/loadingfailure.ui:6
@@ -536,7 +527,7 @@ msgid "_OK"
 msgstr ""
 
 #: src/ui/dialogs/renamefailure.ui:5
-msgid "Failed to rename file"
+msgid "Failed to Rename File"
 msgstr ""
 
 #: src/ui/dialogs/renamefailure.ui:6

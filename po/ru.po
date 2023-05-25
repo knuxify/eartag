@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 08:46+0200\n"
+"POT-Creation-Date: 2023-05-25 18:43+0200\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -194,16 +194,14 @@ msgid "Remove from list"
 msgstr ""
 
 #: src/ui/nofile.ui:22
-msgid ""
-"To edit a file's tags, drag-and-drop the file onto this window or use the "
-"buttons below."
+msgid "Open or drag audio files here to edit their metadata."
 msgstr ""
 
-#: src/ui/nofile.ui:32 src/window.py:260
+#: src/ui/nofile.ui:35 src/window.py:260
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: src/ui/nofile.ui:45 src/window.py:256
+#: src/ui/nofile.ui:48 src/window.py:256
 #, fuzzy
 msgid "Open Folder"
 msgstr "Открыть файл"
@@ -521,9 +519,11 @@ msgid ""
 "of available tags</a>."
 msgstr ""
 
-#: src/ui/dialogs/closewarning.ui:5
-msgid "Save changes before closing?"
-msgstr "Сохранить изменения перед закрытием?"
+#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
+#: src/ui/dialogs/removaldiscardwarning.ui:5
+#, fuzzy
+msgid "Save Changes?"
+msgstr "Сохранить изменения в файл"
 
 #: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
 #: src/ui/dialogs/removaldiscardwarning.ui:6
@@ -537,34 +537,27 @@ msgstr "_Отменить"
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
 #, fuzzy
-msgid "_Discard changes and close"
+msgid "_Discard and Close"
 msgstr "Отменить изменения и откройте"
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
 #, fuzzy
-msgid "_Save and close"
+msgid "_Save and Close"
 msgstr "Отменить изменения и откройте"
-
-#: src/ui/dialogs/discardwarning.ui:5
-msgid "Save changes before opening another file?"
-msgstr "Сохранить изменения перед открытием другого файла?"
 
 #: src/ui/dialogs/discardwarning.ui:13
 #, fuzzy
-msgid "_Discard changes and open"
+msgid "_Discard and Open"
 msgstr "Отменить изменения и откройте"
 
 #: src/ui/dialogs/discardwarning.ui:14
-msgid "_Save and open"
-msgstr ""
-
-#: src/ui/dialogs/removaldiscardwarning.ui:5
 #, fuzzy
-msgid "Save changes before closing file?"
-msgstr "Сохранить изменения перед закрытием?"
+msgid "_Save and Open"
+msgstr "Отменить изменения и откройте"
 
 #: src/ui/dialogs/loadingfailure.ui:5
-msgid "Failed to load file"
+#, fuzzy
+msgid "Failed to Load File"
 msgstr "Не удалось загрузить файл"
 
 #: src/ui/dialogs/loadingfailure.ui:6
@@ -579,7 +572,7 @@ msgstr ""
 
 #: src/ui/dialogs/renamefailure.ui:5
 #, fuzzy
-msgid "Failed to rename file"
+msgid "Failed to Rename File"
 msgstr "Не удалось сохранить файл"
 
 #: src/ui/dialogs/renamefailure.ui:6
@@ -608,6 +601,16 @@ msgstr ""
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr ""
+
+#~ msgid "Save changes before closing?"
+#~ msgstr "Сохранить изменения перед закрытием?"
+
+#~ msgid "Save changes before opening another file?"
+#~ msgstr "Сохранить изменения перед открытием другого файла?"
+
+#, fuzzy
+#~ msgid "Save changes before closing file?"
+#~ msgstr "Сохранить изменения перед закрытием?"
 
 #~ msgid "File is read-only, saving is disabled"
 #~ msgstr "Файл доступен только для чтения, сохранение отключено"
