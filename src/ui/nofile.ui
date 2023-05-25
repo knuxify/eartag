@@ -19,7 +19,10 @@
                   <object class="AdwStatusPage">
                     <property name="icon-name">app.drey.EarTag</property>
                     <property name="title">Ear Tag</property>
-                    <property name="description" translatable="yes">To edit a file's tags, drag-and-drop the file onto this window or use the buttons below.</property>
+                    <property name="description" translatable="yes">Open or drag audio files here to edit their metadata.</property>
+                    <style>
+                      <class name="nofiles"/>
+                    </style>
 
                     <child>
                       <object class="GtkBox">
