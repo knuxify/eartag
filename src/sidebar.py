@@ -347,7 +347,22 @@ class EartagFileList(Gtk.ListView):
         self.selection_model.set_can_unselect(False)
 
     def select_all(self, *args):
-        self.file_manager.select_all()
+        self.file_manager.selected_files = list(self.filter_model)
+
+    def unselect_all(self, *args):
+        _sel = self.file_manager.selected_files.copy()
+        for file in list(self.filter_model):
+            if file in _sel:
+                _sel.remove(file)
+        self.file_manager.selected_files = _sel
+
+    def all_selected(self):
+        n_items = len(list(self.filter_model))
+        n_selected = 0
+        for file in list(self.filter_model):
+            if file in self.file_manager.selected_files:
+                n_selected += 1
+        return n_items == n_selected
 
     @GObject.Property(type=bool, default=False)
     def selection_mode(self):
@@ -479,7 +494,10 @@ class EartagSidebar(Gtk.Box):
 
     @Gtk.Template.Callback()
     def select_all(self, *args):
-        self.file_list.select_all()
+        if self.file_list.all_selected():
+            self.file_list.unselect_all()
+        else:
+            self.file_list.select_all()
 
     @Gtk.Template.Callback()
     def remove_selected(self, *args):
