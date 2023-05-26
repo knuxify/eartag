@@ -236,17 +236,16 @@
 
   <menu id="primary_menu">
     <section>
-      <submenu>
-        <attribute name="label" translatable="yes">_Open…</attribute>
-        <item>
-          <attribute name="label" translatable="yes">_Open File</attribute>
-          <attribute name="action">app.open_file</attribute>
-        </item>
-        <item>
-          <attribute name="label" translatable="yes">O_pen Folder</attribute>
-          <attribute name="action">app.open_folder</attribute>
-        </item>
-      </submenu>
+      <item>
+        <attribute name="label" translatable="yes">_Open File</attribute>
+        <attribute name="action">app.open_file</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">O_pen Folder</attribute>
+        <attribute name="action">app.open_folder</attribute>
+      </item>
+    </section>
+    <section>
       <item>
         <attribute name="label" translatable="yes">_Save Cover to File</attribute>
         <attribute name="action">app.save_cover</attribute>
