@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-26 05:27+0300\n"
+"POT-Creation-Date: 2023-05-26 16:05+0200\n"
 "PO-Revision-Date: 2023-05-26 05:32+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -36,10 +36,6 @@ msgstr "Ses dosyası etiketlerini düzenle"
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "müzik;ses;etiket;ekitetleme;etiketleyici;"
-
-#: data/app.drey.EarTag.metainfo.xml.in:34
-msgid "Initial release."
-msgstr "İlk sürüm"
 
 #: data/app.drey.EarTag.metainfo.xml.in:41
 msgid ""
@@ -518,34 +514,30 @@ msgid "Show file list"
 msgstr "Dosya listesini göster"
 
 #: src/ui/window.ui:240
-msgid "_Open…"
-msgstr "_Aç…"
-
-#: src/ui/window.ui:242
 msgid "_Open File"
 msgstr "Dosya _Aç"
 
-#: src/ui/window.ui:246
+#: src/ui/window.ui:244
 msgid "O_pen Folder"
 msgstr "_Klasör Aç"
 
-#: src/ui/window.ui:251
+#: src/ui/window.ui:250
 msgid "_Save Cover to File"
 msgstr "Albüm Kapağını Dosyaya _Kaydet"
 
-#: src/ui/window.ui:255
+#: src/ui/window.ui:254
 msgid "_Rename Selected Files"
 msgstr "Seçilen Dosyaları _Yeniden Adlandır"
 
-#: src/ui/window.ui:259
+#: src/ui/window.ui:258
 msgid "_Identify Selected Files"
 msgstr "Seçilen Dosyaları _Tanıla"
 
-#: src/ui/window.ui:265
+#: src/ui/window.ui:264
 msgid "_Keyboard Shortcuts"
 msgstr "_Klavye Kısayolları"
 
-#: src/ui/window.ui:269
+#: src/ui/window.ui:268
 msgid "_About Ear Tag"
 msgstr "Ear Tag _Hakkında"
 
@@ -562,7 +554,6 @@ msgid "Failed to Load File"
 msgstr "Dosya Yüklenemedi"
 
 #: src/ui/dialogs/loadingfailure.ui:6
-#, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr "{f} dosyası yüklenemedi. Daha çok bilgi için günlükleri kontrol edin."
 
@@ -575,8 +566,13 @@ msgid "Failed to Rename File"
 msgstr "Dosya Yeniden Adlandırılamadı"
 
 #: src/ui/dialogs/renamefailure.ui:6
-#, python-brace-format
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
 "{f} dosyası yeniden adlandırılamadı. Daha çok bilgi için günlükleri kontrol "
 "edin."
+
+#~ msgid "Initial release."
+#~ msgstr "İlk sürüm"
+
+#~ msgid "_Open…"
+#~ msgstr "_Aç…"

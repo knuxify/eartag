@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-26 05:27+0300\n"
+"POT-Creation-Date: 2023-05-26 16:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,10 +34,6 @@ msgstr ""
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
-msgstr ""
-
-#: data/app.drey.EarTag.metainfo.xml.in:34
-msgid "Initial release."
 msgstr ""
 
 #: data/app.drey.EarTag.metainfo.xml.in:41
@@ -501,34 +497,30 @@ msgid "Show file list"
 msgstr ""
 
 #: src/ui/window.ui:240
-msgid "_Open…"
-msgstr ""
-
-#: src/ui/window.ui:242
 msgid "_Open File"
 msgstr ""
 
-#: src/ui/window.ui:246
+#: src/ui/window.ui:244
 msgid "O_pen Folder"
 msgstr ""
 
-#: src/ui/window.ui:251
+#: src/ui/window.ui:250
 msgid "_Save Cover to File"
 msgstr ""
 
-#: src/ui/window.ui:255
+#: src/ui/window.ui:254
 msgid "_Rename Selected Files"
 msgstr ""
 
-#: src/ui/window.ui:259
+#: src/ui/window.ui:258
 msgid "_Identify Selected Files"
 msgstr ""
 
-#: src/ui/window.ui:265
+#: src/ui/window.ui:264
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: src/ui/window.ui:269
+#: src/ui/window.ui:268
 msgid "_About Ear Tag"
 msgstr ""
 
@@ -545,7 +537,6 @@ msgid "Failed to Load File"
 msgstr ""
 
 #: src/ui/dialogs/loadingfailure.ui:6
-#, python-brace-format
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 
@@ -558,6 +549,5 @@ msgid "Failed to Rename File"
 msgstr ""
 
 #: src/ui/dialogs/renamefailure.ui:6
-#, python-brace-format
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""

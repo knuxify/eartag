@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-25 18:43+0200\n"
+"POT-Creation-Date: 2023-05-26 16:05+0200\n"
 "PO-Revision-Date: 2022-08-05 19:34+0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: Igor Dyatlov <dyatlov.igor@protonmail.com>\n"
@@ -48,183 +48,9 @@ msgid ""
 "library folder."
 msgstr ""
 
-#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
-#: src/ui/window.ui:52
-#, fuzzy
-msgid "Drop a file to add it to the opened file list"
-msgstr "Перетащите файл, чтобы отредактировать его"
-
-#: src/ui/window.ui:118
-msgid "Save"
-msgstr "Сохранить"
-
-#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:132
-msgid "Sort files by track number, album, name"
-msgstr ""
-
-#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:141
-msgid "Close file list"
-msgstr ""
-
-#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:155
-msgid "Add file"
-msgstr ""
-
-#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:163
-msgid "Select multiple files"
-msgstr ""
-
-#: src/ui/window.ui:170
-#, fuzzy
-msgid "Search opened files"
-msgstr "_Открыть файл"
-
-#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:199
-msgid "Show file list"
-msgstr ""
-
-#: src/ui/window.ui:240
-#, fuzzy
-msgid "_Open…"
-msgstr "_Открыть"
-
-#: src/ui/window.ui:242
-#, fuzzy
-msgid "_Open File"
-msgstr "Открыть файл"
-
-#: src/ui/window.ui:246
-#, fuzzy
-msgid "O_pen Folder"
-msgstr "Открыть файл"
-
-#: src/ui/window.ui:251
-#, fuzzy
-msgid "_Save Cover to File"
-msgstr "Сохранить изменения в файл"
-
-#: src/ui/window.ui:255
-msgid "_Rename Selected Files"
-msgstr ""
-
-#: src/ui/window.ui:259
-msgid "_Identify Selected Files"
-msgstr ""
-
-#: src/ui/window.ui:265
-msgid "_Keyboard Shortcuts"
-msgstr ""
-
-#: src/ui/window.ui:269
-msgid "_About Ear Tag"
-msgstr "Об Ear Tag"
-
-#: src/ui/fileview.ui:10
-msgid "Loading Files…"
-msgstr ""
-
-#: src/ui/fileview.ui:21
-msgid "Select a File"
-msgstr ""
-
-#: src/ui/fileview.ui:22
-msgid "Select the files you want to edit from the list of opened files."
-msgstr ""
-
-#: src/ui/fileview.ui:64
-msgid "Previous file"
-msgstr ""
-
-#: src/ui/fileview.ui:88
-#, fuzzy
-msgid "Next file"
-msgstr "_Открыть файл"
-
-#: src/ui/fileview.ui:107 src/backends/file.py:63
-msgid "Title"
-msgstr "Название"
-
-#: src/ui/fileview.ui:117 src/backends/file.py:64
-msgid "Artist"
-msgstr "Исполнитель"
-
-#: src/ui/fileview.ui:152 src/backends/file.py:67
-msgid "Track number"
-msgstr "Номер дорожки"
-
-#: src/ui/fileview.ui:163 src/backends/file.py:65
-msgid "Album"
-msgstr "Альбом"
-
-#: src/ui/fileview.ui:170 src/backends/file.py:66
-msgid "Album artist"
-msgstr "Исполнитель альбома"
-
-#: src/ui/fileview.ui:177 src/backends/file.py:69
-msgid "Genre"
-msgstr "Жанр"
-
-#: src/ui/fileview.ui:184 src/backends/file.py:70
-#, fuzzy
-msgid "Release date"
-msgstr "Год выпуска"
-
-#: src/ui/fileview.ui:192 src/backends/file.py:71
-msgid "Comment"
-msgstr "Комментарий"
-
-#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
-#: src/ui/filelistitem.ui:50
-msgid "File has invalid values"
-msgstr ""
-
-#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
-#: src/ui/filelistitem.ui:60
-msgid "File has unsaved changes"
-msgstr ""
-
-#. TRANSLATORS: Tooltip for button used to remove file from opened file list
-#: src/ui/filelistitem.ui:126
-msgid "Remove from list"
-msgstr ""
-
-#: src/ui/nofile.ui:22
-msgid "Open or drag audio files here to edit their metadata."
-msgstr ""
-
-#: src/ui/nofile.ui:35 src/window.py:260
-msgid "Open File"
-msgstr "Открыть файл"
-
-#: src/ui/nofile.ui:48 src/window.py:256
-#, fuzzy
-msgid "Open Folder"
-msgstr "Открыть файл"
-
-#: src/ui/sidebar.ui:58
-msgid "No Results Found"
-msgstr ""
-
-#: src/ui/sidebar.ui:59
-msgid "Try a different search query."
-msgstr ""
-
-#: src/ui/sidebar.ui:74
-msgid "Select all files"
-msgstr ""
-
-#: src/ui/sidebar.ui:90
-msgid "Remove selected files"
-msgstr ""
-
-#. TRANSLATORS: Add your name/nickname here
-#: src/main.py:138 src/main.py:140
-msgid "translator-credits"
+#: src/acoustid.py:210
+#, python-brace-format
+msgid "Identified {identified} out of {total} tracks"
 msgstr ""
 
 #: src/filemanager.py:121
@@ -281,16 +107,21 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:138 src/main.py:140
+msgid "translator-credits"
+msgstr ""
+
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:146
 msgid "(No title)"
 msgstr ""
 
-#: src/sidebar.py:499
+#: src/sidebar.py:517
 msgid "No files selected"
 msgstr ""
 
-#: src/sidebar.py:503
+#: src/sidebar.py:521
 #, python-brace-format
 msgid "{n} file selected"
 msgid_plural "{n} files selected"
@@ -298,17 +129,26 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/window.py:306
+#: src/window.py:255 src/ui/nofile.ui:48
+#, fuzzy
+msgid "Open Folder"
+msgstr "Открыть файл"
+
+#: src/window.py:259 src/ui/nofile.ui:35
+msgid "Open File"
+msgstr "Открыть файл"
+
+#: src/window.py:305
 msgid "No supported files found in opened folder"
 msgstr ""
 
-#: src/window.py:313
+#: src/window.py:312
 #, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Открытый файл доступен только для чтения; изменения не могут быть сохранены."
 
-#: src/window.py:362
+#: src/window.py:361
 #, fuzzy
 msgid "Save Album Cover To…"
 msgstr "Выберите изображение обложки альбома"
@@ -321,9 +161,42 @@ msgstr ""
 msgid "Bitrate"
 msgstr ""
 
+#: src/backends/file.py:63 src/ui/fileview.ui:107
+msgid "Title"
+msgstr "Название"
+
+#: src/backends/file.py:64 src/ui/fileview.ui:117
+msgid "Artist"
+msgstr "Исполнитель"
+
+#: src/backends/file.py:65 src/ui/fileview.ui:163
+msgid "Album"
+msgstr "Альбом"
+
+#: src/backends/file.py:66 src/ui/fileview.ui:170
+msgid "Album artist"
+msgstr "Исполнитель альбома"
+
+#: src/backends/file.py:67 src/ui/fileview.ui:152
+msgid "Track number"
+msgstr "Номер дорожки"
+
 #: src/backends/file.py:68
 msgid "Total tracks"
 msgstr ""
+
+#: src/backends/file.py:69 src/ui/fileview.ui:177
+msgid "Genre"
+msgstr "Жанр"
+
+#: src/backends/file.py:70 src/ui/fileview.ui:184
+#, fuzzy
+msgid "Release date"
+msgstr "Год выпуска"
+
+#: src/backends/file.py:71 src/ui/fileview.ui:192
+msgid "Comment"
+msgstr "Комментарий"
 
 #: src/backends/file.py:73
 msgid "(Select a tag)"
@@ -417,10 +290,97 @@ msgstr "Исполнитель"
 msgid "Title (sort)"
 msgstr ""
 
+#: src/ui/acoustid.ui:5
+msgid "Identify Selected Files"
+msgstr ""
+
+#: src/ui/acoustid.ui:24 src/ui/rename.ui:23
+msgid "Cancel"
+msgstr "Отменить"
+
+#: src/ui/acoustid.ui:44
+msgid "Identify"
+msgstr ""
+
+#: src/ui/acoustid.ui:100
+msgid ""
+"Files are identified using the <a href=\"https://acoustid.org\">AcoustID</a> "
+"service. Additional information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>."
+msgstr ""
+
 #: src/ui/albumcoverbutton.ui:73
 #, fuzzy
 msgid "Album cover"
 msgstr "Альбом"
+
+#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
+#: src/ui/dialogs/removaldiscardwarning.ui:5
+#, fuzzy
+msgid "Save Changes?"
+msgstr "Сохранить изменения в файл"
+
+#: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
+#: src/ui/dialogs/removaldiscardwarning.ui:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "Если вы не сохраните свои изменения, они будут безвозвратно утеряны."
+
+#: src/ui/dialogs/closewarning.ui:12 src/ui/dialogs/discardwarning.ui:12
+#: src/ui/dialogs/removaldiscardwarning.ui:12
+msgid "_Cancel"
+msgstr "_Отменить"
+
+#: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
+#, fuzzy
+msgid "_Discard and Close"
+msgstr "Отменить изменения и откройте"
+
+#: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
+#, fuzzy
+msgid "_Save and Close"
+msgstr "Отменить изменения и откройте"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:50
+msgid "File has invalid values"
+msgstr ""
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:60
+msgid "File has unsaved changes"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:126
+msgid "Remove from list"
+msgstr ""
+
+#: src/ui/fileview.ui:10
+msgid "Loading Files…"
+msgstr ""
+
+#: src/ui/fileview.ui:21
+msgid "Select a File"
+msgstr ""
+
+#: src/ui/fileview.ui:22
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
+
+#: src/ui/fileview.ui:64
+msgid "Previous file"
+msgstr ""
+
+#: src/ui/fileview.ui:88
+#, fuzzy
+msgid "Next file"
+msgstr "_Открыть файл"
+
+#: src/ui/nofile.ui:22
+msgid ""
+"Use the buttons below to open a file/folder, or drag audio files here to "
+"edit their metadata."
+msgstr ""
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -485,13 +445,25 @@ msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr ""
 
+#: src/ui/sidebar.ui:58
+msgid "No Results Found"
+msgstr ""
+
+#: src/ui/sidebar.ui:59
+msgid "Try a different search query."
+msgstr ""
+
+#: src/ui/sidebar.ui:74
+msgid "Select all files"
+msgstr ""
+
+#: src/ui/sidebar.ui:90
+msgid "Remove selected files"
+msgstr ""
+
 #: src/ui/rename.ui:5
 msgid "Rename Selected Files"
 msgstr ""
-
-#: src/ui/rename.ui:23 src/ui/acoustid.ui:24
-msgid "Cancel"
-msgstr "Отменить"
 
 #: src/ui/rename.ui:43
 msgid "Rename"
@@ -519,31 +491,76 @@ msgid ""
 "of available tags</a>."
 msgstr ""
 
-#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
-#: src/ui/dialogs/removaldiscardwarning.ui:5
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
 #, fuzzy
-msgid "Save Changes?"
+msgid "Drop a file to add it to the opened file list"
+msgstr "Перетащите файл, чтобы отредактировать его"
+
+#: src/ui/window.ui:118
+msgid "Save"
+msgstr "Сохранить"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:132
+msgid "Sort files by track number, album, name"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:141
+msgid "Close file list"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:155
+msgid "Add file"
+msgstr ""
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:163
+msgid "Select multiple files"
+msgstr ""
+
+#: src/ui/window.ui:170
+#, fuzzy
+msgid "Search opened files"
+msgstr "_Открыть файл"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:199
+msgid "Show file list"
+msgstr ""
+
+#: src/ui/window.ui:240
+#, fuzzy
+msgid "_Open File"
+msgstr "Открыть файл"
+
+#: src/ui/window.ui:244
+#, fuzzy
+msgid "O_pen Folder"
+msgstr "Открыть файл"
+
+#: src/ui/window.ui:250
+#, fuzzy
+msgid "_Save Cover to File"
 msgstr "Сохранить изменения в файл"
 
-#: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
-#: src/ui/dialogs/removaldiscardwarning.ui:6
-msgid "If you don't save your changes, they will be permanently lost."
-msgstr "Если вы не сохраните свои изменения, они будут безвозвратно утеряны."
+#: src/ui/window.ui:254
+msgid "_Rename Selected Files"
+msgstr ""
 
-#: src/ui/dialogs/closewarning.ui:12 src/ui/dialogs/discardwarning.ui:12
-#: src/ui/dialogs/removaldiscardwarning.ui:12
-msgid "_Cancel"
-msgstr "_Отменить"
+#: src/ui/window.ui:258
+msgid "_Identify Selected Files"
+msgstr ""
 
-#: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
-#, fuzzy
-msgid "_Discard and Close"
-msgstr "Отменить изменения и откройте"
+#: src/ui/window.ui:264
+msgid "_Keyboard Shortcuts"
+msgstr ""
 
-#: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
-#, fuzzy
-msgid "_Save and Close"
-msgstr "Отменить изменения и откройте"
+#: src/ui/window.ui:268
+msgid "_About Ear Tag"
+msgstr "Об Ear Tag"
 
 #: src/ui/dialogs/discardwarning.ui:13
 #, fuzzy
@@ -582,25 +599,9 @@ msgstr ""
 "Не удалось загрузить файл {f}. Проверьте логи для получения дополнительной "
 "информации."
 
-#: src/ui/acoustid.ui:5
-msgid "Identify Selected Files"
-msgstr ""
-
-#: src/ui/acoustid.ui:44
-msgid "Identify"
-msgstr ""
-
-#: src/ui/acoustid.ui:100
-msgid ""
-"Files are identified using the <a href=\"https://acoustid.org\">AcoustID</a> "
-"service. Additional information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>."
-msgstr ""
-
-#: src/acoustid.py:210
-#, python-brace-format
-msgid "Identified {identified} out of {total} tracks"
-msgstr ""
+#, fuzzy
+#~ msgid "_Open…"
+#~ msgstr "_Открыть"
 
 #~ msgid "Save changes before closing?"
 #~ msgstr "Сохранить изменения перед закрытием?"
