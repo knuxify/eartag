@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-27 18:04+0200\n"
+"POT-Creation-Date: 2023-05-27 21:12+0200\n"
 "PO-Revision-Date: 2022-09-17 17:58+0200\n"
 "Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
@@ -41,7 +41,7 @@ msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
 "tagging programs, Ear Tag does not require the user to set up a music "
-"library folder."
+"library folder. It can:"
 msgstr ""
 
 #: data/app.drey.EarTag.metainfo.xml.in:46
@@ -49,15 +49,18 @@ msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr ""
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
-msgid ""
-"Apply tag edits to multiple files at once, even across different filetypes"
+msgid "Modify metadata of multiple files at once"
 msgstr ""
 
 #: data/app.drey.EarTag.metainfo.xml.in:48
-msgid "Bulk rename audio tags or identify files using AcoustID"
+msgid "Rename files using information from present tags"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:50
+#: data/app.drey.EarTag.metainfo.xml.in:49
+msgid "Identify files using AcoustID"
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:51
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 
