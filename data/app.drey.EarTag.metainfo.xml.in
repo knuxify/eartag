@@ -23,6 +23,9 @@
   </requires>
 
   <releases>
+    <release version="0.4.0" date="2023-05-31">
+      <description>Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</description>
+    </release>
     <release version="0.3.3" date="2023-03-26"/>
     <release version="0.3.2" date="2023-02-16"/>
     <release version="0.3.1" date="2022-12-30"/>
@@ -39,6 +42,12 @@
 
   <description>
     <p>Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder.</p>
+    <ul>
+      <li>Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files</li>
+      <li>Apply tag edits to multiple files at once, even across different filetypes</li>
+      <li>Bulk rename audio tags or identify files using AcoustID</li>
+    </ul>
+    <p>Network access is only used for the "Identify selected files" option.</p>
   </description>
 
   <categories>
@@ -59,6 +68,12 @@
     </screenshot>
     <screenshot>
       <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-advanced.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-rename.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-identify.png</image>
     </screenshot>
     <screenshot>
       <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-empty.png</image>
