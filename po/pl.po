@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-27 18:04+0200\n"
-"PO-Revision-Date: 2023-05-21 20:57+0200\n"
+"POT-Creation-Date: 2023-05-27 21:12+0200\n"
+"PO-Revision-Date: 2023-05-27 21:13+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -42,29 +42,32 @@ msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
 "tagging programs, Ear Tag does not require the user to set up a music "
-"library folder."
+"library folder. It can:"
 msgstr ""
 "Ear Tag to prosty edytor tagów plików audio. Przystosowany jest głównie do "
 "wykonywania szybkich poprawek lub edytowania kilku utworów w albumie/EP "
 "jednocześnie. W przeciwieństwie do innych programów, Ear Tag nie wymaga "
-"ustawienia folderu biblioteki muzycznej."
+"ustawienia folderu biblioteki muzycznej. Potrafi:"
 
 #: data/app.drey.EarTag.metainfo.xml.in:46
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
-msgstr ""
+msgstr "Edytować tagi pików MP3, WAV, M4A, FLAC, OGG i WMA"
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
-msgid ""
-"Apply tag edits to multiple files at once, even across different filetypes"
-msgstr ""
+msgid "Modify metadata of multiple files at once"
+msgstr "Modyfikować metadane kilku plików na raz"
 
 #: data/app.drey.EarTag.metainfo.xml.in:48
-msgid "Bulk rename audio tags or identify files using AcoustID"
-msgstr ""
+msgid "Rename files using information from present tags"
+msgstr "Zmieniać nazwy plików używając informacji z ich tagów"
 
-#: data/app.drey.EarTag.metainfo.xml.in:50
+#: data/app.drey.EarTag.metainfo.xml.in:49
+msgid "Identify files using AcoustID"
+msgstr "Identyfikować pliki używając AcoustID"
+
+#: data/app.drey.EarTag.metainfo.xml.in:51
 msgid "Network access is only used for the \"Identify selected files\" option."
-msgstr ""
+msgstr "Dostęp do sieci jest używany tylko do funkcji identyfikacji plików."
 
 #: src/acoustid.py:210
 #, python-brace-format
@@ -327,9 +330,8 @@ msgstr "Okładka albumu"
 
 #: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
 #: src/ui/dialogs/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save Changes?"
-msgstr "Zapisano zmiany do plików"
+msgstr "Zapisać zmiany?"
 
 #: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
 #: src/ui/dialogs/removaldiscardwarning.ui:6
@@ -342,12 +344,10 @@ msgid "_Cancel"
 msgstr "_Anuluj"
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Close"
-msgstr "_Porzuć zmiany i zamknij"
+msgstr "_Porzuć i zamknij"
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
-#, fuzzy
 msgid "_Save and Close"
 msgstr "_Zapisz i zamknij"
 
@@ -388,7 +388,7 @@ msgstr "Następny plik"
 
 #: src/ui/nofile.ui:22
 msgid "Open or drag in some audio files to edit their metadata"
-msgstr ""
+msgstr "Otwórz lub wrzuć tutaj kilka plików audio, aby edytować ich metadane"
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -510,7 +510,7 @@ msgstr "Zapisz"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
 msgid "Sort files by track number, album, name"
-msgstr ""
+msgstr "Sortuj pliki według numeru ścieżki, albumu, nazwy"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:141
@@ -565,17 +565,14 @@ msgid "_About Ear Tag"
 msgstr "O _Ear Tag"
 
 #: src/ui/dialogs/discardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Open"
-msgstr "_Porzuć zmiany i otwórz"
+msgstr "_Porzuć i otwórz"
 
 #: src/ui/dialogs/discardwarning.ui:14
-#, fuzzy
 msgid "_Save and Open"
 msgstr "_Zapisz i otwórz"
 
 #: src/ui/dialogs/loadingfailure.ui:5
-#, fuzzy
 msgid "Failed to Load File"
 msgstr "Nie udało się załadować pliku"
 
@@ -590,9 +587,8 @@ msgid "_OK"
 msgstr "_OK"
 
 #: src/ui/dialogs/renamefailure.ui:5
-#, fuzzy
 msgid "Failed to Rename File"
-msgstr "Zmiana nazwy pliku nie powiodło się"
+msgstr "Zmiana nazwy pliku nie powiodła się"
 
 #: src/ui/dialogs/renamefailure.ui:6
 msgid "Could not rename file {f}. Check the logs for more information."
