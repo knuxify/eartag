@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-26 16:05+0200\n"
+"POT-Creation-Date: 2023-05-27 15:15+0200\n"
 "PO-Revision-Date: 2023-05-21 20:57+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
@@ -37,7 +37,7 @@ msgstr "Edytuj tagi plików audio"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "muzyka;audio;tag;znacznik;znaczniki;tagi;tagowanie;metadane;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:41
+#: data/app.drey.EarTag.metainfo.xml.in:44
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -48,6 +48,23 @@ msgstr ""
 "wykonywania szybkich poprawek lub edytowania kilku utworów w albumie/EP "
 "jednocześnie. W przeciwieństwie do innych programów, Ear Tag nie wymaga "
 "ustawienia folderu biblioteki muzycznej."
+
+#: data/app.drey.EarTag.metainfo.xml.in:46
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:47
+msgid ""
+"Apply tag edits to multiple files at once, even across different filetypes"
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:48
+msgid "Bulk rename audio tags or identify files using AcoustID"
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:50
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr ""
 
 #: src/acoustid.py:210
 #, python-brace-format
@@ -370,9 +387,7 @@ msgid "Next file"
 msgstr "Następny plik"
 
 #: src/ui/nofile.ui:22
-msgid ""
-"Use the buttons below to open a file/folder, or drag audio files here to "
-"edit their metadata."
+msgid "Open or drag in some audio files to edit their metadata"
 msgstr ""
 
 #: src/ui/shortcuts.ui:12
