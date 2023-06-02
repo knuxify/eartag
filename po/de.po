@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-27 21:12+0200\n"
-"PO-Revision-Date: 2023-02-08 15:25+0100\n"
+"PO-Revision-Date: 2023-06-02 21:29+0200\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
@@ -37,7 +37,6 @@ msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;Musik;Audio;Tag;Schlagwort;"
 
 #: data/app.drey.EarTag.metainfo.xml.in:44
-#, fuzzy
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -48,27 +47,29 @@ msgstr ""
 "rasches Bearbeiten oder Massenbearbeitungen von Titeln in Alben oder EPs "
 "ausgerichtet. Anders als bei anderen Tagging-Programmen ist es bei Ear Tag "
 "nicht notwendig, dass der Benutzer einen Ordner für die Musikbibliothek "
-"einrichtet."
+"einrichtet. Ear Tag kann:"
 
 #: data/app.drey.EarTag.metainfo.xml.in:46
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
-msgstr ""
+msgstr "Tags von MP3-, WAV-, M4A-, FLAC-, OGG- oder WMA-Dateien bearbeiten"
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
 msgid "Modify metadata of multiple files at once"
-msgstr ""
+msgstr "Metadaten von mehreren Dateien auf einmal ändern"
 
 #: data/app.drey.EarTag.metainfo.xml.in:48
 msgid "Rename files using information from present tags"
-msgstr ""
+msgstr "Dateien umbenennen unter Verwendung von Informationen vorhandener Tags"
 
 #: data/app.drey.EarTag.metainfo.xml.in:49
 msgid "Identify files using AcoustID"
-msgstr ""
+msgstr "Dateien identifizieren unter Verwendung von AcoustID"
 
 #: data/app.drey.EarTag.metainfo.xml.in:51
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
+"Netzwerkzugriff wird nur verwendet für die »Ausgewählte Dateien "
+"identifizieren«-Option."
 
 #: src/acoustid.py:210
 #, python-brace-format
@@ -391,8 +392,8 @@ msgstr "Nächste Datei"
 #: src/ui/nofile.ui:22
 msgid "Open or drag in some audio files to edit their metadata"
 msgstr ""
-"Verwenden Sie die Knöpfe unten, um eine Datei oder einen Ordner zu öffnen, "
-"oder ziehen Sie Audio-Dateien hierher, um deren Metadaten zu bearbeiten."
+"Öffnen Sie einige Audio-Dateien oder ziehen Sie sie hierher, um deren "
+"Metadaten zu bearbeiten"
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -498,9 +499,9 @@ msgid ""
 "org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
 "of available tags</a>."
 msgstr ""
-"Für eine Liste der verfügbaren Platzhalter besuchen Sie bitte <a href="
-"\"https://gitlab.gnome.org/knuxify/eartag/-/blob/main/src/backends/README."
-"md#available-tags\">list of available tags</a>."
+"Für eine Liste der verfügbaren Platzhalter besuchen Sie bitte <a "
+"href=\"https://gitlab.gnome.org/knuxify/eartag/-/blob/main/src/backends/"
+"README.md#available-tags\">list of available tags</a>."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
