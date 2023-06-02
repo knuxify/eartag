@@ -73,7 +73,7 @@ msgstr ""
 #: src/acoustid.py:210
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
-msgstr ""
+msgstr "Identifiziert wurden {identified} von {total} Titeln"
 
 #: src/filemanager.py:121
 msgid "Failed to save file"
@@ -96,18 +96,16 @@ msgid "Saved changes to files"
 msgstr "Änderungen wurden in Dateien gespeichert"
 
 #: src/filemanager.py:244
-#, fuzzy
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr ""
 "Die geöffnete Datei ist schreibgeschützt; Änderungen können nicht "
-"gespeichert werden."
+"gespeichert werden"
 
 #: src/filemanager.py:246
-#, fuzzy
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Einige der geöffneten Dateien sind schreibgeschützt; Änderungen können nicht "
-"gespeichert werden."
+"gespeichert werden"
 
 #: src/fileview.py:144
 msgid "Select Album Cover Image"
@@ -163,11 +161,9 @@ msgid "No supported files found in opened folder"
 msgstr "Keine unterstützten Dateien im geöffneten Ordner gefunden"
 
 #: src/window.py:312
-#, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
-"Einige der geöffneten Dateien sind schreibgeschützt; Änderungen können nicht "
-"gespeichert werden."
+"Einige der geöffneten Dateien haben ungültige Werte; Speichern nicht möglich"
 
 #: src/window.py:361
 msgid "Save Album Cover To…"
@@ -175,11 +171,11 @@ msgstr "Albumbild speichern nach …"
 
 #: src/backends/file.py:60
 msgid "Length"
-msgstr ""
+msgstr "Länge"
 
 #: src/backends/file.py:61
 msgid "Bitrate"
-msgstr ""
+msgstr "Bitrate"
 
 #: src/backends/file.py:63 src/ui/fileview.ui:107
 msgid "Title"
@@ -203,16 +199,15 @@ msgstr "Titelnummer"
 
 #: src/backends/file.py:68
 msgid "Total tracks"
-msgstr ""
+msgstr "Titel insgesamt"
 
 #: src/backends/file.py:69 src/ui/fileview.ui:177
 msgid "Genre"
 msgstr "Genre"
 
 #: src/backends/file.py:70 src/ui/fileview.ui:184
-#, fuzzy
 msgid "Release date"
-msgstr "Erscheinungsjahr"
+msgstr "Veröffentlichungsdatum"
 
 #: src/backends/file.py:71 src/ui/fileview.ui:192
 msgid "Comment"
@@ -274,7 +269,7 @@ msgstr "CD-Untertitel"
 
 #: src/backends/file.py:89
 msgid "Website/URL"
-msgstr ""
+msgstr "Webseite/Adresse"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
@@ -307,18 +302,16 @@ msgid "Title (sort)"
 msgstr "Titel (sortieren)"
 
 #: src/ui/acoustid.ui:5
-#, fuzzy
 msgid "Identify Selected Files"
-msgstr "Ausgewählte Dateien entfernen"
+msgstr "Ausgewählte Dateien identifizieren"
 
 #: src/ui/acoustid.ui:24 src/ui/rename.ui:23
-#, fuzzy
 msgid "Cancel"
-msgstr "A_bbrechen"
+msgstr "Abbrechen"
 
 #: src/ui/acoustid.ui:44
 msgid "Identify"
-msgstr ""
+msgstr "Identifizieren"
 
 #: src/ui/acoustid.ui:100
 msgid ""
@@ -326,6 +319,9 @@ msgid ""
 "service. Additional information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>."
 msgstr ""
+"Dateien werden identifiziert unter der Verwendung des <a href=\"https://"
+"acoustid.org\">AcoustID</a>-Dienstes. Zusätzliche Informationen werden durch "
+"<a href=\"https://musicbrainz.org\">Musicbrainz</a> zur Verfügung gestellt."
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
@@ -333,9 +329,8 @@ msgstr "Albumbild"
 
 #: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
 #: src/ui/dialogs/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save Changes?"
-msgstr "Änderungen wurden in Dateien gespeichert"
+msgstr "Änderungen speichern?"
 
 #: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
 #: src/ui/dialogs/removaldiscardwarning.ui:6
@@ -349,20 +344,17 @@ msgid "_Cancel"
 msgstr "A_bbrechen"
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Close"
-msgstr "Änderungen _verwerfen und schließen"
+msgstr "_Verwerfen und schließen"
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
-#, fuzzy
 msgid "_Save and Close"
 msgstr "_Speichern und schließen"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:50
-#, fuzzy
 msgid "File has invalid values"
-msgstr "Datei hat ungespeicherte Änderungen"
+msgstr "Datei hat ungültige Werte"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:60
@@ -399,9 +391,10 @@ msgstr "Nächste Datei"
 #: src/ui/nofile.ui:22
 msgid "Open or drag in some audio files to edit their metadata"
 msgstr ""
+"Verwenden Sie die Knöpfe unten, um eine Datei oder einen Ordner zu öffnen, "
+"oder ziehen Sie Audio-Dateien hierher, um deren Metadaten zu bearbeiten."
 
 #: src/ui/shortcuts.ui:12
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Files"
 msgstr "Dateien"
@@ -412,10 +405,9 @@ msgid "Open files"
 msgstr "Dateien öffnen"
 
 #: src/ui/shortcuts.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Open folder"
-msgstr "_Ordner öffnen"
+msgstr "Ordner öffnen"
 
 #: src/ui/shortcuts.ui:30
 msgctxt "shortcut window"
@@ -425,7 +417,7 @@ msgstr "Alle geänderten Dateien speichern"
 #: src/ui/shortcuts.ui:38
 msgctxt "shortcut window"
 msgid "Sidebar"
-msgstr ""
+msgstr "Seitenleiste"
 
 #: src/ui/shortcuts.ui:42
 msgctxt "shortcut window"
@@ -438,26 +430,24 @@ msgid "Select next file in sidebar"
 msgstr "Nächste Datei in Seitenleiste auswählen"
 
 #: src/ui/shortcuts.ui:56
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select all files in sidebar"
-msgstr "Nächste Datei in Seitenleiste auswählen"
+msgstr "Alle Dateien in der Seitenleiste auswählen"
 
 #: src/ui/shortcuts.ui:63
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Remove selected files from sidebar"
-msgstr "Ausgewählte Dateien entfernen"
+msgstr "Ausgewählte Dateien aus der Seitenleiste entfernen"
 
 #: src/ui/shortcuts.ui:64
 msgctxt "shortcut window"
 msgid "Closes the window if no files are present."
-msgstr ""
+msgstr "Schließt das Fenster, wenn keine Dateien vorhanden sind."
 
 #: src/ui/shortcuts.ui:72
 msgctxt "shortcut window"
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: src/ui/shortcuts.ui:76
 msgctxt "shortcut window"
@@ -481,29 +471,26 @@ msgid "Remove selected files"
 msgstr "Ausgewählte Dateien entfernen"
 
 #: src/ui/rename.ui:5
-#, fuzzy
 msgid "Rename Selected Files"
-msgstr "Ausgewählte Dateien entfernen"
+msgstr "Ausgewählte Dateien umbenennen"
 
 #: src/ui/rename.ui:43
 msgid "Rename"
-msgstr ""
+msgstr "Umbenennen"
 
 #: src/ui/rename.ui:81
-#, fuzzy
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
-"Datei {f} konnte nicht gespeichert werden. Schauen Sie in die "
-"Protokolldateien für weitere Informationen."
+"Dateien konnten nicht umbenannt werden. Schauen Sie in die Protokolldateien "
+"für weitere Informationen."
 
 #: src/ui/rename.ui:97
 msgid "Filename pattern"
-msgstr ""
+msgstr "Dateiname-Muster"
 
 #: src/ui/rename.ui:105
-#, fuzzy
 msgid "Preview"
-msgstr "Vorige Datei"
+msgstr "Vorschau"
 
 #: src/ui/rename.ui:117
 msgid ""
@@ -511,6 +498,9 @@ msgid ""
 "org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
 "of available tags</a>."
 msgstr ""
+"Für eine Liste der verfügbaren Platzhalter besuchen Sie bitte <a href="
+"\"https://gitlab.gnome.org/knuxify/eartag/-/blob/main/src/backends/README."
+"md#available-tags\">list of available tags</a>."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
@@ -525,7 +515,7 @@ msgstr "Speichern"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
 msgid "Sort files by track number, album, name"
-msgstr ""
+msgstr "Dateien sortieren nach Titelnummer, Album, Name"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:141
@@ -543,9 +533,8 @@ msgid "Select multiple files"
 msgstr "Mehrere Dateien auswählen"
 
 #: src/ui/window.ui:170
-#, fuzzy
 msgid "Search opened files"
-msgstr "Dateien öffnen"
+msgstr "Geöffnete Dateien durchsuchen"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:199
@@ -565,14 +554,12 @@ msgid "_Save Cover to File"
 msgstr "Albumbild in Datei _speichern"
 
 #: src/ui/window.ui:254
-#, fuzzy
 msgid "_Rename Selected Files"
-msgstr "Ausgewählte Dateien entfernen"
+msgstr "Ausgewählte Dateien _umbenennen"
 
 #: src/ui/window.ui:258
-#, fuzzy
 msgid "_Identify Selected Files"
-msgstr "Ausgewählte Dateien entfernen"
+msgstr "Ausgewählte Dateien _identifizieren"
 
 #: src/ui/window.ui:264
 msgid "_Keyboard Shortcuts"
@@ -583,17 +570,14 @@ msgid "_About Ear Tag"
 msgstr "_Info zu Ear Tag"
 
 #: src/ui/dialogs/discardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Open"
-msgstr "Änderungen _verwerfen und öffnen"
+msgstr "_Verwerfen und öffnen"
 
 #: src/ui/dialogs/discardwarning.ui:14
-#, fuzzy
 msgid "_Save and Open"
 msgstr "_Speichern und öffnen"
 
 #: src/ui/dialogs/loadingfailure.ui:5
-#, fuzzy
 msgid "Failed to Load File"
 msgstr "Datei konnte nicht geladen werden"
 
@@ -604,21 +588,18 @@ msgstr ""
 "für weitere Informationen."
 
 #: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
-#, fuzzy
 msgid "_OK"
-msgstr "OK"
+msgstr "_OK"
 
 #: src/ui/dialogs/renamefailure.ui:5
-#, fuzzy
 msgid "Failed to Rename File"
-msgstr "Datei konnte nicht gespeichert werden"
+msgstr "Datei konnte nicht umbenannt werden"
 
 #: src/ui/dialogs/renamefailure.ui:6
-#, fuzzy
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
-"Datei {f} konnte nicht gespeichert werden. Schauen Sie in die "
-"Protokolldateien für weitere Informationen."
+"Datei {f} konnte nicht umbenannt werden. Schauen Sie in die Protokolldateien "
+"für weitere Informationen."
 
 #~ msgid "_Open…"
 #~ msgstr "Ö_ffnen …"
