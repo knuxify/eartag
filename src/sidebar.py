@@ -280,6 +280,9 @@ class EartagFileList(Gtk.ListView):
         self.file_manager.emit('selection-changed')
         self.selection_model.select_item(0, True)
 
+        if self.sidebar:
+            self.sidebar.scroll_to_top()
+
     def filter_func(self, file, *args):
         """Custom filter for file search."""
         query = self.sidebar.search_entry.get_text()
@@ -556,3 +559,10 @@ class EartagSidebar(Gtk.Box):
             self.file_list.selection_model.set_selected(
                 self.file_list.selection_model.get_n_items() - 1
             )
+
+    def scroll_to_top(self):
+        """Scrolls to the top of the file list."""
+        GLib.idle_add(self._scroll_to_top)
+
+    def _scroll_to_top(self):
+        self.list_scroll.get_vadjustment().set_value(0)
