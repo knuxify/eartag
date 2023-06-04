@@ -4,7 +4,7 @@
   <template class="EartagAcoustIDDialog" parent="AdwWindow">
     <property name="title" translatable="yes">Identify Selected Files</property>
     <property name="default-width">600</property>
-    <property name="default-height">320</property>
+    <property name="default-height">330</property>
     <property name="content">
       <object class="GtkWindowHandle">
         <property name="hexpand">true</property>
@@ -26,12 +26,12 @@
                       <signal name="clicked" handler="on_cancel"/>
 
                       <child>
-                        <object class='GtkShortcutController'>
-                          <property name='scope'>managed</property>
+                        <object class="GtkShortcutController">
+                          <property name="scope">managed</property>
                           <child>
-                            <object class='GtkShortcut'>
-                              <property name='trigger'>Escape</property>
-                              <property name='action'>activate</property>
+                            <object class="GtkShortcut">
+                              <property name="trigger">Escape</property>
+                              <property name="action">activate</property>
                             </object>
                           </child>
                         </object>
@@ -64,45 +64,49 @@
                 </child>
 
                 <child>
-                  <object class="AdwClamp">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="valign">fill</property>
+                    <property name="vexpand">true</property>
+
                     <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="valign">center</property>
+                      <object class="GtkScrolledWindow">
+                        <property name="hscrollbar-policy">never</property>
                         <property name="vexpand">true</property>
-                        <property name="spacing">12</property>
-                        <property name="margin-start">12</property>
-                        <property name="margin-end">12</property>
-                        <property name="margin-top">24</property>
-                        <property name="margin-bottom">24</property>
 
                         <child>
-                          <object class="GtkScrolledWindow">
-                            <property name="hscrollbar-policy">never</property>
-                            <property name="height-request">160</property>
+                          <object class="AdwClampScrollable">
                             <child>
                               <object class="EartagFileList" id="selected_files_filelist">
+                                <property name="valign">center</property>
+                                <property name="vexpand">true</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
                                 <style>
-                                  <class name="view"/>
-                                  <class name="frame"/>
                                   <class name="acoustid-filelist"/>
+                                  <class name="listview-boxed-list"/>
                                 </style>
                               </object>
                             </child>
                           </object>
                         </child>
+                      </object>
+                    </child>
 
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="wrap">true</property>
-                            <property name="use-markup">true</property>
-                            <property name="justify">center</property>
-                            <property name="label" translatable="yes">Files are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service. Additional information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;.</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                        </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="wrap">true</property>
+                        <property name="use-markup">true</property>
+                        <property name="justify">center</property>
+                        <property name="label" translatable="yes">Files are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service. Additional information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;.</property>
+                        <property name="margin-start">12</property>
+                        <property name="margin-end">12</property>
+                        <property name="margin-top">6</property>
+                        <property name="margin-bottom">12</property>
+
+                        <style>
+                          <class name="dim-label"/>
+                        </style>
                       </object>
                     </child>
                   </object>

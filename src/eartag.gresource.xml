@@ -25,5 +25,6 @@
     <file>ui/rows/extratagrow.ui</file>
     <file>ui/rows/tagdoublerow.ui</file>
     <file>style.css</file>
+    <file>style-dark.css</file>
   </gresource>
 </gresources>

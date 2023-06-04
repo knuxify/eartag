@@ -1,0 +1,1 @@
+.listview-boxed-list > row { border-bottom: 1px solid alpha(@card_shade_color, 0.05); }

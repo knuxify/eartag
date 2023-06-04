@@ -68,8 +68,12 @@
 }
 
 .acoustid-filelist {
+	margin-top: 12px;
+	margin-bottom: 6px;
+}
+
+.acoustid-filelist .filelist-item {
 	padding: 6px;
-	border-radius: 6px;
 }
 
 /* Required to make the OSD button outline show up */
@@ -113,4 +117,49 @@ editablelabel:focus-within {
 
 .more-item.compact .suffixes {
 	margin-left: 0;
+}
+
+/* Listview boxed lists: because they said it couldn't be done:TM: */
+
+.listview-boxed-list {
+	background: transparent;
+	border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.03),
+                0 1px 3px 1px rgba(0,0,0,0.07),
+                0 2px 6px 2px rgba(0,0,0,0.03);
+}
+
+.listview-boxed-list > row {
+	background: @card_bg_color;
+	color: @card_fg_color;
+	border-bottom: 1px solid alpha(@card_shade_color, 0.75);
+	padding: 2px;
+	background-clip: padding-box;
+}
+
+.listview-boxed-list > row:hover {
+	background-image: image(alpha(@card_fg_color, 0.03));
+}
+
+.listview-boxed-list > row:active {
+	background-image: image(alpha(@card_fg_color, 0.08));
+}
+
+.listview-boxed-list > row.has-open-popup {
+	background: @view_hover_color;
+}
+
+.listview-boxed-list > row:selected { background: @view_selected_color; }
+.listview-boxed-list > row:selected:hover { background: @view_selected_hover_color; }
+.listview-boxed-list > row:selected:active { background: @view_selected_active_color; }
+
+.listview-boxed-list > row:first-child {
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+.listview-boxed-list > row:last-child {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom-width: 0;
 }
