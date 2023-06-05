@@ -64,22 +64,39 @@
                 </child>
 
                 <child>
-                  <object class="GtkBox">
-                    <property name="orientation">vertical</property>
-                    <property name="valign">fill</property>
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
                     <property name="vexpand">true</property>
 
                     <child>
-                      <object class="GtkScrolledWindow">
-                        <property name="hscrollbar-policy">never</property>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="valign">fill</property>
                         <property name="vexpand">true</property>
 
                         <child>
-                          <object class="AdwClampScrollable">
+                          <object class="GtkLabel">
+                            <property name="wrap">true</property>
+                            <property name="use-markup">true</property>
+                            <property name="justify">center</property>
+                            <property name="label" translatable="yes">Files are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service. Additional information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;.</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <property name="margin-top">18</property>
+                            <property name="margin-bottom">6</property>
+
+                            <style>
+                              <class name="dim-label"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="AdwClamp">
+                            <property name="margin-top">6</property>
+                            <property name="margin-bottom">12</property>
                             <child>
                               <object class="EartagFileList" id="selected_files_filelist">
-                                <property name="valign">center</property>
-                                <property name="vexpand">true</property>
                                 <property name="margin-start">6</property>
                                 <property name="margin-end">6</property>
                                 <style>
@@ -90,23 +107,6 @@
                             </child>
                           </object>
                         </child>
-                      </object>
-                    </child>
-
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="wrap">true</property>
-                        <property name="use-markup">true</property>
-                        <property name="justify">center</property>
-                        <property name="label" translatable="yes">Files are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service. Additional information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;.</property>
-                        <property name="margin-start">12</property>
-                        <property name="margin-end">12</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">12</property>
-
-                        <style>
-                          <class name="dim-label"/>
-                        </style>
                       </object>
                     </child>
                   </object>
