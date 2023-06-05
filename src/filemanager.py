@@ -250,13 +250,22 @@ class EartagFileManager(GObject.Object):
 
         GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
                             priority=GLib.PRIORITY_HIGH_IDLE + 30)
+        first_file = None
+        if self._files_buffer and mode == self.LOAD_INSERT:
+            first_file = self._files_buffer[0]
         self._files_buffer = []
 
         task.emit_task_done()
         GLib.idle_add(self.refresh_state)
-        GLib.idle_add(self.emit, 'select-first')
+        if mode == self.LOAD_INSERT:
+            if len(self.selected_files) < 2 and first_file:
+                GLib.idle_add(self.set_property, 'selected_files', [first_file], priority=GLib.PRIORITY_HIGH_IDLE)
+                GLib.idle_add(self.emit, 'selection-override')
+        else:
+            GLib.idle_add(self.emit, 'select-first')
+
         if mode == self.LOAD_OVERWRITE:
-            GLib.idle_add(self.emit, 'selection_override')
+            GLib.idle_add(self.emit, 'refresh-needed')
 
     #
     # Removal

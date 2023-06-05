@@ -238,30 +238,28 @@ class EartagFileList(Gtk.ListView):
 
     def handle_selection_override(self, *args):
         """
-        When files are loaded for the first time, the selection is empty;
-        we need to set the selection here since we only keep the information
-        about the display order in the filter list.
-
-        The file manager emits selection-override when this is needed.
+        Handle selection change from external source.
         """
+        self._ignore_unselect = True
+
         if not self.selection_mode:
-            self.selection_model.select_item(0, True)
-            if len(self.file_manager.selected_files) == 0 and self.file_manager.files:
-                self.update_selection_from_model(self.selection_model, 0, 1)
-            elif len(self.file_manager.selected_files) == 1:
-                selected_file = self.file_manager.selected_files[0]
-                n = 0
-                item = self.selection_model.get_item(n)
-                while item:
-                    item = self.selection_model.get_item(n)
-                    if item == selected_file:
-                        break
-                    n += 1
-                self.selection_model.select_item(n, True)
+            new_index = find_in_model(self.selection_model,
+                self.file_manager.selected_files[0])
+            if new_index is None:
+                self.selection_model.unselect_all()
+            else:
+                self.selection_model.select_item(new_index, True)
+
+            if self.sidebar:
+                self.sidebar.scroll_to_index(new_index)
         else:
-            self._ignore_unselect = True
-            self.selection_model.unselect_item(self.selection_model.get_selected())
-            self._ignore_unselect = False
+            self.selection_model.unselect_all()
+            for file in self.file_manager.selected_files:
+                new_index = find_in_model(self.selection_model, file)
+                if new_index is not None:
+                    self.selection_model.select_item(new_index, False)
+
+        self._ignore_unselect = False
 
     def handle_select_first(self, *args):
         """
@@ -566,3 +564,16 @@ class EartagSidebar(Gtk.Box):
 
     def _scroll_to_top(self):
         self.list_scroll.get_vadjustment().set_value(0)
+
+    def scroll_to_index(self, index):
+        """Scrolls to file at the specified index."""
+        GLib.idle_add(self._scroll_to_index, index)
+
+    def _scroll_to_index(self, index):
+        item_height = self.file_list.get_first_child().get_height()
+        vadjust = self.list_scroll.get_vadjustment()
+        new_value = item_height * (index + 1)
+        if new_value <= vadjust.get_upper():
+            vadjust.set_value(new_value)
+        else:
+            vadjust.set_value(vadjust.get_upper())
