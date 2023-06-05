@@ -23,7 +23,7 @@
   </requires>
 
   <releases>
-    <release version="0.4.0" date="2023-05-31">
+    <release version="0.4.0" date="2023-06-05">
       <description>Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</description>
     </release>
     <release version="0.3.3" date="2023-03-26"/>
