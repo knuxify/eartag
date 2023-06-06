@@ -242,7 +242,7 @@ class EartagFileList(Gtk.ListView):
         """
         self._ignore_unselect = True
 
-        if not self.selection_mode:
+        if not self.selection_mode and self.file_manager.selected_files:
             new_index = find_in_model(self.selection_model,
                 self.file_manager.selected_files[0])
             if new_index is None:
