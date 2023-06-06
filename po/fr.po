@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-27 21:12+0200\n"
-"PO-Revision-Date: 2022-12-16 17:38+0100\n"
+"PO-Revision-Date: 2023-06-06 15:09+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
@@ -31,7 +31,7 @@ msgstr "Éditeur de balises"
 #. TRANSLATORS: App description.
 #: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
 msgid "Edit audio file tags"
-msgstr ""
+msgstr "Éditez les balises de fichiers audio"
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
@@ -44,31 +44,39 @@ msgid ""
 "tagging programs, Ear Tag does not require the user to set up a music "
 "library folder. It can:"
 msgstr ""
+"Ear Tag est un simple éditeur de balises pour les fichiers audio. Il est "
+"principalement destiné à faire des éditions rapides ou à éditer des pistes "
+"en vrac dans des albums / EP. Contrairement à d’autres programmes de "
+"balisage, Ear Tag n’exige pas que l’utilisateur configure un dossier de "
+"bibliothèque musicale. Il peut :"
 
 #: data/app.drey.EarTag.metainfo.xml.in:46
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
-msgstr ""
+msgstr "Éditer les balises de fichiers MP3, WAV, M4A, FLAC, OGG et WMA"
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
 msgid "Modify metadata of multiple files at once"
-msgstr ""
+msgstr "Modifier les métadonnées de plusieurs fichiers à la fois"
 
 #: data/app.drey.EarTag.metainfo.xml.in:48
 msgid "Rename files using information from present tags"
 msgstr ""
+"Renommer les fichiers en utilisant les informations des présentes balises"
 
 #: data/app.drey.EarTag.metainfo.xml.in:49
 msgid "Identify files using AcoustID"
-msgstr ""
+msgstr "Identifier les fichiers en utilisant AcoustID"
 
 #: data/app.drey.EarTag.metainfo.xml.in:51
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
+"L’accès au réseau n’est utilisé que pour l’option « Identifier les fichiers "
+"sélectionnés »."
 
 #: src/acoustid.py:210
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
-msgstr ""
+msgstr "{identified} piste(s) identifiée(s) sur {total}"
 
 #: src/filemanager.py:121
 msgid "Failed to save file"
@@ -91,18 +99,16 @@ msgid "Saved changes to files"
 msgstr "Modifications enregistrées dans les fichiers"
 
 #: src/filemanager.py:244
-#, fuzzy
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr ""
 "Le fichier ouvert est en lecture seule ; les modifications ne peuvent être "
-"enregistrées."
+"enregistrées"
 
 #: src/filemanager.py:246
-#, fuzzy
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Certains des fichiers ouverts sont en lecture seule ; les modifications ne "
-"peuvent être enregistrées."
+"peuvent être enregistrées"
 
 #: src/fileview.py:144
 msgid "Select Album Cover Image"
@@ -155,14 +161,13 @@ msgstr "Ouvrir un fichier"
 
 #: src/window.py:305
 msgid "No supported files found in opened folder"
-msgstr ""
+msgstr "Aucun fichier pris en charge trouvé dans le dossier ouvert."
 
 #: src/window.py:312
-#, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
-"Certains des fichiers ouverts sont en lecture seule ; les modifications ne "
-"peuvent être enregistrées."
+"Certains des fichiers ouverts on des valeurs invalides ; impossible "
+"d’enregistrer."
 
 #: src/window.py:361
 msgid "Save Album Cover To…"
@@ -170,11 +175,11 @@ msgstr "Enregistrer l’image de couverture de l’album vers…"
 
 #: src/backends/file.py:60
 msgid "Length"
-msgstr ""
+msgstr "Longueur"
 
 #: src/backends/file.py:61
 msgid "Bitrate"
-msgstr ""
+msgstr "Débit"
 
 #: src/backends/file.py:63 src/ui/fileview.ui:107
 msgid "Title"
@@ -198,14 +203,13 @@ msgstr "Numéro de piste"
 
 #: src/backends/file.py:68
 msgid "Total tracks"
-msgstr ""
+msgstr "Total des pistes"
 
 #: src/backends/file.py:69 src/ui/fileview.ui:177
 msgid "Genre"
 msgstr "Genre"
 
 #: src/backends/file.py:70 src/ui/fileview.ui:184
-#, fuzzy
 msgid "Release date"
 msgstr "Année de sortie"
 
@@ -269,7 +273,7 @@ msgstr "Sous-titre du disque"
 
 #: src/backends/file.py:89
 msgid "Website/URL"
-msgstr ""
+msgstr "Site web/URL"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
@@ -302,18 +306,16 @@ msgid "Title (sort)"
 msgstr "Titre (tri)"
 
 #: src/ui/acoustid.ui:5
-#, fuzzy
 msgid "Identify Selected Files"
-msgstr "Supprimer les fichiers sélectionnés"
+msgstr "Identifier les fichiers sélectionnés"
 
 #: src/ui/acoustid.ui:24 src/ui/rename.ui:23
-#, fuzzy
 msgid "Cancel"
-msgstr "A_nnuler"
+msgstr "Annuler"
 
 #: src/ui/acoustid.ui:44
 msgid "Identify"
-msgstr ""
+msgstr "Identifier"
 
 #: src/ui/acoustid.ui:100
 msgid ""
@@ -321,6 +323,9 @@ msgid ""
 "service. Additional information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>."
 msgstr ""
+"Les fichiers sont identifiés avec le service <a href=\"https://acoustid."
+"org\">AcoustID</a>. Les informations supplémentaires sont fournies par <a "
+"href=\"https://musicbrainz.org\">Musicbrainz</a>."
 
 #: src/ui/albumcoverbutton.ui:73
 msgid "Album cover"
@@ -328,15 +333,14 @@ msgstr "Couverture d’album"
 
 #: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
 #: src/ui/dialogs/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save Changes?"
-msgstr "Modifications enregistrées dans les fichiers"
+msgstr "Enregistrer les modifications ?"
 
 #: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
 #: src/ui/dialogs/removaldiscardwarning.ui:6
 msgid "If you don't save your changes, they will be permanently lost."
 msgstr ""
-"Vos modifications seront perdues définitivement si vous ne les enregistrez "
+"Vos modifications seront définitivement perdues si vous ne les enregistrez "
 "pas."
 
 #: src/ui/dialogs/closewarning.ui:12 src/ui/dialogs/discardwarning.ui:12
@@ -345,20 +349,17 @@ msgid "_Cancel"
 msgstr "A_nnuler"
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Close"
-msgstr "_Abandonner les modifications et fermer"
+msgstr "_Abandonner et fermer"
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
-#, fuzzy
 msgid "_Save and Close"
 msgstr "_Enregistrer et fermer"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:50
-#, fuzzy
 msgid "File has invalid values"
-msgstr "Le fichier possède des modifications non enregistrées"
+msgstr "Le fichier possède des valeurs invalides"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:60
@@ -394,28 +395,24 @@ msgstr "Fichier suivant"
 
 #: src/ui/nofile.ui:22
 msgid "Open or drag in some audio files to edit their metadata"
-msgstr ""
+msgstr "Ouvrez ou déposez des fichiers audio pour modifier leurs métadonnées"
 
 #: src/ui/shortcuts.ui:12
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Files"
 msgstr "Fichiers"
 
 #: src/ui/shortcuts.ui:16
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Open files"
 msgstr "Ouvrir les fichiers"
 
 #: src/ui/shortcuts.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Open folder"
-msgstr "_Ouvrir le dossier"
+msgstr "Ouvrir le dossier"
 
 #: src/ui/shortcuts.ui:30
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Enregistrer tous les fichiers modifiés"
@@ -423,47 +420,42 @@ msgstr "Enregistrer tous les fichiers modifiés"
 #: src/ui/shortcuts.ui:38
 msgctxt "shortcut window"
 msgid "Sidebar"
-msgstr ""
+msgstr "Volet latéral"
 
 #: src/ui/shortcuts.ui:42
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
 msgstr "Sélectionner le fichier précédent dans le volet latéral"
 
 #: src/ui/shortcuts.ui:49
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Sélectionner le fichier suivant dans le volet latéral"
 
 #: src/ui/shortcuts.ui:56
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select all files in sidebar"
-msgstr "Sélectionner le fichier suivant dans le volet latéral"
+msgstr "Sélectionner tous les fichiers dans le volet latéral"
 
 #: src/ui/shortcuts.ui:63
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Remove selected files from sidebar"
-msgstr "Supprimer les fichiers sélectionnés"
+msgstr "Retirer les fichiers sélectionnés de la barre latérale"
 
 #: src/ui/shortcuts.ui:64
 msgctxt "shortcut window"
 msgid "Closes the window if no files are present."
-msgstr ""
+msgstr "Ferme la fenêtre si aucun fichier n’est présent."
 
 #: src/ui/shortcuts.ui:72
 msgctxt "shortcut window"
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: src/ui/shortcuts.ui:76
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr "_Raccourcis clavier"
+msgstr "Raccourcis clavier"
 
 #: src/ui/sidebar.ui:58
 msgid "No Results Found"
@@ -482,29 +474,26 @@ msgid "Remove selected files"
 msgstr "Supprimer les fichiers sélectionnés"
 
 #: src/ui/rename.ui:5
-#, fuzzy
 msgid "Rename Selected Files"
-msgstr "Supprimer les fichiers sélectionnés"
+msgstr "Renommer les fichiers sélectionnés"
 
 #: src/ui/rename.ui:43
 msgid "Rename"
-msgstr ""
+msgstr "Renommer"
 
 #: src/ui/rename.ui:81
-#, fuzzy
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
-"Impossible d’enregistrer le fichier {f}. Vérifiez les journaux pour plus "
+"Échec du renommage des fichiers. Vérifiez les journaux pour plus "
 "d’informations."
 
 #: src/ui/rename.ui:97
 msgid "Filename pattern"
-msgstr ""
+msgstr "Motif de nom de fichier"
 
 #: src/ui/rename.ui:105
-#, fuzzy
 msgid "Preview"
-msgstr "Fichier précédent"
+msgstr "Aperçu"
 
 #: src/ui/rename.ui:117
 msgid ""
@@ -512,6 +501,9 @@ msgid ""
 "org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
 "of available tags</a>."
 msgstr ""
+"Pour une liste des caractères génériques disponibles, voir la <a "
+"href=\"https://gitlab.gnome.org/knuxify/eartag/-/blob/main/src/backends/"
+"README.md#available-tags\">liste des balises disponibles</a>."
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:52
@@ -526,7 +518,7 @@ msgstr "Enregistrer"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:132
 msgid "Sort files by track number, album, name"
-msgstr ""
+msgstr "Trier les fichiers par numéro de piste, album, nom"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:141
@@ -544,9 +536,8 @@ msgid "Select multiple files"
 msgstr "Sélectionner plusieurs fichiers"
 
 #: src/ui/window.ui:170
-#, fuzzy
 msgid "Search opened files"
-msgstr "Ouvrir les fichiers"
+msgstr "Rechercher des fichiers ouverts"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:199
@@ -554,32 +545,26 @@ msgid "Show file list"
 msgstr "Afficher la liste des fichiers"
 
 #: src/ui/window.ui:240
-#, fuzzy
 msgid "_Open File"
-msgstr "Ouvrir un fichier"
+msgstr "_Ouvrir un fichier"
 
 #: src/ui/window.ui:244
-#, fuzzy
 msgid "O_pen Folder"
-msgstr "Ouvrir le dossier"
+msgstr "Ouvrir un _dossier"
 
 #: src/ui/window.ui:250
-#, fuzzy
 msgid "_Save Cover to File"
 msgstr "_Enregistrer la couverture dans le fichier"
 
 #: src/ui/window.ui:254
-#, fuzzy
 msgid "_Rename Selected Files"
-msgstr "Supprimer les fichiers sélectionnés"
+msgstr "_Renommer les fichiers sélectionnés"
 
 #: src/ui/window.ui:258
-#, fuzzy
 msgid "_Identify Selected Files"
-msgstr "Supprimer les fichiers sélectionnés"
+msgstr "_Identifier les fichiers sélectionnés"
 
 #: src/ui/window.ui:264
-#, fuzzy
 msgid "_Keyboard Shortcuts"
 msgstr "_Raccourcis clavier"
 
@@ -588,17 +573,14 @@ msgid "_About Ear Tag"
 msgstr "À _propos de Ear Tag"
 
 #: src/ui/dialogs/discardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Open"
-msgstr "_Abandonner les modifications et ouvrir"
+msgstr "_Abandonner et ouvrir"
 
 #: src/ui/dialogs/discardwarning.ui:14
-#, fuzzy
 msgid "_Save and Open"
 msgstr "_Enregistrer et ouvrir"
 
 #: src/ui/dialogs/loadingfailure.ui:5
-#, fuzzy
 msgid "Failed to Load File"
 msgstr "Échec du chargement du fichier"
 
@@ -609,20 +591,17 @@ msgstr ""
 "d’informations."
 
 #: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
-#, fuzzy
 msgid "_OK"
-msgstr "OK"
+msgstr "_D’accord"
 
 #: src/ui/dialogs/renamefailure.ui:5
-#, fuzzy
 msgid "Failed to Rename File"
-msgstr "Échec de l’enregistrement du fichier"
+msgstr "Échec du renommage du fichier"
 
 #: src/ui/dialogs/renamefailure.ui:6
-#, fuzzy
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
-"Impossible d’enregistrer le fichier {f}. Vérifiez les journaux pour plus "
+"Impossible de renommer le fichier {f}. Vérifiez les journaux pour plus "
 "d’informations."
 
 #~ msgid ""
