@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-27 21:12+0200\n"
-"PO-Revision-Date: 2023-05-26 05:32+0300\n"
+"PO-Revision-Date: 2023-06-07 08:55+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -38,7 +38,6 @@ msgid "music;audio;tag;tagging;tagger;"
 msgstr "müzik;ses;etiket;ekitetleme;etiketleyici;"
 
 #: data/app.drey.EarTag.metainfo.xml.in:44
-#, fuzzy
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -48,27 +47,29 @@ msgstr ""
 "Ear Tag, basit bir ses dosyası etiketi düzenleyicisidir. Temel olarak albüm/"
 "uzun çalar parçalarında hızlı düzenlemeler yapmak ya da toplu düzenlemeler "
 "yapmak için tasarlanmıştır. Diğer etiketleme programlarının aksine, Ear Tag "
-"kullanıcının bir müzik kütüphanesi klasörü kurmasını gerektirmez."
+"kullanıcının bir müzik kütüphanesi klasörü kurmasını gerektirmez. "
+"Yetenekleri şunlardır:"
 
 #: data/app.drey.EarTag.metainfo.xml.in:46
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
-msgstr ""
+msgstr "MP3, WAV, M4A, FLAC, OGG ve WMA dosyalarının etiketlerini düzenleme"
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
 msgid "Modify metadata of multiple files at once"
-msgstr ""
+msgstr "Birden fazla dosyanın üst verilerini aynı anda düzenleme"
 
 #: data/app.drey.EarTag.metainfo.xml.in:48
 msgid "Rename files using information from present tags"
-msgstr ""
+msgstr "Etiketlerdeki bilgileri kullanarak dosyaları yeniden adlandırma"
 
 #: data/app.drey.EarTag.metainfo.xml.in:49
 msgid "Identify files using AcoustID"
-msgstr ""
+msgstr "AcoustID kullanarak dosyaları tanılama"
 
 #: data/app.drey.EarTag.metainfo.xml.in:51
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
+"Ağ erişimi yalnızca \"Seçilen Dosyaları Tanıla\" seçeneği için kullanılır."
 
 #: src/acoustid.py:210
 #, python-brace-format
@@ -381,11 +382,8 @@ msgid "Next file"
 msgstr "Sonraki dosya"
 
 #: src/ui/nofile.ui:22
-#, fuzzy
 msgid "Open or drag in some audio files to edit their metadata"
-msgstr ""
-"Bir dosya/klasör açmak için aşağıdaki düğmeleri kullanın ya da üst "
-"verilerini düzenlemek için ses dosyalarını buraya sürükleyin."
+msgstr "Üst verilerini düzenlemek için ses dosyalarını buraya sürükleyin"
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -590,9 +588,3 @@ msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
 "{f} dosyası yeniden adlandırılamadı. Daha çok bilgi için günlükleri kontrol "
 "edin."
-
-#~ msgid "Initial release."
-#~ msgstr "İlk sürüm"
-
-#~ msgid "_Open…"
-#~ msgstr "_Aç…"
