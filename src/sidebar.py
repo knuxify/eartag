@@ -357,7 +357,9 @@ class EartagFileList(Gtk.ListView):
                     found_selected = True
                     break
             if not found_selected:
-                self.selection_model.unselect_all()
+                self.file_manager.emit('select-first')
+        else:
+            self.file_manager.emit('select-first')
 
         self.file_manager.emit('selection-changed')
         self.selection_model.set_can_unselect(False)
