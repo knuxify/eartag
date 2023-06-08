@@ -112,16 +112,16 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.connect('refresh-needed', self.update_state)
         self.file_manager.connect('selection-changed', self.update_state)
         self.file_manager.load_task.connect('notify::progress', self.update_loading_progress)
-        self.sidebar_search_button.bind_property(
-            'active',
-            self.sidebar.search_bar, 'search-mode-enabled',
-            flags=GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        self.sidebar.search_bar.bind_property(
+            'search-mode-enabled',
+            self.sidebar_search_button, 'active',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.select_multiple_button.bind_property('active', self.sidebar, 'selection-mode',
-            flags=GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self.select_multiple_button.bind_property('active', self.sidebar.action_bar, 'revealed',
-            flags=GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
 
         self.connect('close-request', self.on_close_request)
@@ -157,9 +157,12 @@ class EartagWindow(Adw.ApplicationWindow):
         # Set up the active view (hide fileview if there are no selected files)
         selected_files_count = len(self.file_manager.selected_files)
         if selected_files_count <= 0:
-            self.get_application().save_cover_action.set_enabled(False)
-            self.get_application().rename_action.set_enabled(False)
-            self.get_application().identify_action.set_enabled(False)
+            try:
+                self.get_application().save_cover_action.set_enabled(False)
+                self.get_application().rename_action.set_enabled(False)
+                self.get_application().identify_action.set_enabled(False)
+            except AttributeError:
+                return
             self.set_title('Ear Tag')
             self.window_title.set_subtitle('')
             if self.file_manager.files:
@@ -186,8 +189,11 @@ class EartagWindow(Adw.ApplicationWindow):
             self.window_title.set_subtitle(_multiple_files)
             self.get_application().save_cover_action.set_enabled(False)
 
-        self.get_application().rename_action.set_enabled(True)
-        self.get_application().identify_action.set_enabled(True)
+        try:
+            self.get_application().rename_action.set_enabled(True)
+            self.get_application().identify_action.set_enabled(True)
+        except AttributeError:
+            pass
 
         self.toggle_save_button()
 
