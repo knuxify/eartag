@@ -348,25 +348,29 @@ class EartagFileList(Gtk.ListView):
             first_selected_file = self.file_manager.selected_files[0]
             for file in self.file_manager.selected_files:
                 if file != first_selected_file:
-                    self.file_manager._selected_files.remove(file)
+                    self.file_manager.selected_files.remove(file)
 
+            found_selected = False
             for item_no in range(0, self.filter_model.get_n_items()):
                 if self.filter_model.get_item(item_no) == first_selected_file:
                     self.selection_model.select_item(item_no, True)
+                    found_selected = True
                     break
+            if not found_selected:
+                self.selection_model.unselect_all()
 
         self.file_manager.emit('selection-changed')
         self.selection_model.set_can_unselect(False)
 
     def select_all(self, *args):
         self.file_manager.selected_files = list(self.filter_model)
+        self.file_manager.emit('selection-changed')
 
     def unselect_all(self, *args):
-        _sel = self.file_manager.selected_files.copy()
         for file in list(self.filter_model):
-            if file in _sel:
-                _sel.remove(file)
-        self.file_manager.selected_files = _sel
+            if file in self.file_manager.selected_files:
+                self.file_manager.selected_files.remove(file)
+        self.file_manager.emit('selection-changed')
 
     def all_selected(self):
         n_items = len(list(self.filter_model))
@@ -416,18 +420,17 @@ class EartagFileList(Gtk.ListView):
                 selected_file = self.filter_model.get_item(pos)
 
         self.file_manager.selected_files = [selected_file]
+        self.file_manager.emit('selection-changed')
 
     def handle_activate(self, _, position):
         if not self.selection_mode:
             return
 
         item = self.selection_model.get_item(position)
-        selected = self.file_manager.selected_files
-        if item in selected:
-            selected.remove(item)
+        if item in self.file_manager.selected_files:
+            self.file_manager.selected_files.remove(item)
         else:
-            selected.append(item)
-        self.file_manager.selected_files = selected
+            self.file_manager.selected_files.append(item)
         self.file_manager.emit('selection-changed')
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')

@@ -83,7 +83,7 @@ class EartagFileManager(GObject.Object):
 
     _is_modified = False
     _has_error = False
-    _selected_files = []
+    selected_files = []
 
     def __init__(self, window):
         super().__init__()
@@ -166,7 +166,7 @@ class EartagFileManager(GObject.Object):
         if mode == self.LOAD_OVERWRITE and self.files:
             self.files.remove_all()
             self.file_paths = []
-            self._selected_files = []
+            self.selected_files = []
 
         self.load_task.run()
 
@@ -285,7 +285,7 @@ class EartagFileManager(GObject.Object):
 
         if file in self.selected_files:
             self._selection_removed = True
-            self._selected_files.remove(file)
+            self.selected_files.remove(file)
         if file.id in self._modified_files:
             self._modified_files.remove(file.id)
         if file.id in self._error_files:
@@ -438,17 +438,6 @@ class EartagFileManager(GObject.Object):
     @has_error.setter
     def has_error(self, value):
         self._has_error = value
-
-    @GObject.Property
-    def selected_files(self):
-        return self._selected_files
-
-    @selected_files.setter
-    def selected_files(self, value):
-        old_value = self._selected_files
-        self._selected_files = value
-        if old_value != value:
-            self.emit('selection-changed')
 
     def select_all(self, *args):
         self.selected_files = list(self.files)
