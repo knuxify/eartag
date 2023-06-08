@@ -172,6 +172,7 @@ class EartagFileList(Gtk.ListView):
 
     def __init__(self):
         super().__init__()
+        self.sidebar = None
         self.sidebar_factory = Gtk.SignalListItemFactory()
         self.sidebar_factory.connect('setup', self.setup)
         self.sidebar_factory.connect('bind', self.bind)
@@ -204,8 +205,12 @@ class EartagFileList(Gtk.ListView):
         self.selection_model = Gtk.SingleSelection(model=self.filter_model)
         self.selection_model.connect('selection-changed', self.update_selection_from_model)
         self.selection_model.set_autoselect(False)
+        self.selection_model.set_can_unselect(False)
 
         self.set_model(self.selection_model)
+
+        self.set_single_click_activate(False)
+        self.connect('activate', self.handle_activate)
 
     def setup_for_selected(self):
         self.mode = 'selected'
@@ -331,12 +336,14 @@ class EartagFileList(Gtk.ListView):
         return file in self.file_manager.selected_files
 
     def enable_selection_mode(self, *args):
+        self.set_single_click_activate(True)
         self.selection_model.set_can_unselect(True)
         self._ignore_unselect = True
         self.selection_model.unselect_item(self.selection_model.get_selected())
         self._ignore_unselect = False
 
     def disable_selection_mode(self, *args):
+        self.set_single_click_activate(False)
         if self.file_manager.selected_files:
             first_selected_file = self.file_manager.selected_files[0]
             for file in self.file_manager.selected_files:
@@ -382,31 +389,46 @@ class EartagFileList(Gtk.ListView):
         else:
             self.disable_selection_mode()
 
+    # We use two separate mechanisms to handle selecting files on the sidebar:
+    # - Non-selection-mode: uses the selection model on the listview.
+    # - Selection mode: uses handle_activate.
+    #
+    # This fixes an issue where moving around with arrow keys on the sidebar
+    # while in selection mode would select/deselect the item that was navigated
+    # onto, making properly selecting these impossible.
+    #
+    # However, using that same approach in non-selection-mode caused the
+    # selected item to no longer be highlighted as selected in the sidebar
+    # (even with a manual call to set_selected). Thus, we use the old mechanism
+    # for single selection mode, and the new mechanism for multiple selection
+    # mode.
+
     def update_selection_from_model(self, selection_model, position, n_items):
-        """Updates the selected files."""
-        if self._ignore_unselect:
+        if self.selection_mode:
+            self.selection_model.unselect_all()
             return
 
-        selected_file = None
-        selected_file_pos = None
+        if self._ignore_unselect:
+            return
 
         for pos in (position, position + n_items - 1):
             if selection_model.is_selected(pos):
                 selected_file = self.filter_model.get_item(pos)
-                selected_file_pos = pos
 
-        if self.selection_mode:
-            if selected_file:
-                self._ignore_unselect = True
-                self.selection_model.unselect_item(selected_file_pos)
-                self._ignore_unselect = False
-                if selected_file not in self.file_manager.selected_files:
-                    self.file_manager.selected_files.append(selected_file)
-                else:
-                    self.file_manager.selected_files.remove(selected_file)
-                self.file_manager.emit('selection-changed')
+        self.file_manager.selected_files = [selected_file]
+
+    def handle_activate(self, _, position):
+        if not self.selection_mode:
+            return
+
+        item = self.selection_model.get_item(position)
+        selected = self.file_manager.selected_files
+        if item in selected:
+            selected.remove(item)
         else:
-            self.file_manager.selected_files = [selected_file]
+            selected.append(item)
+        self.file_manager.selected_files = selected
+        self.file_manager.emit('selection-changed')
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')
 class EartagSidebar(Gtk.Box):
