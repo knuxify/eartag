@@ -259,7 +259,8 @@ class EartagFileManager(GObject.Object):
         GLib.idle_add(self.refresh_state)
         if mode == self.LOAD_INSERT:
             if len(self.selected_files) < 2 and first_file:
-                GLib.idle_add(self.set_property, 'selected_files', [first_file], priority=GLib.PRIORITY_HIGH_IDLE)
+                self.selected_files = [first_file]
+                GLib.idle_add(self.emit, 'selection-changed', priority=GLib.PRIORITY_HIGH_IDLE)
                 GLib.idle_add(self.emit, 'selection-override')
         else:
             GLib.idle_add(self.emit, 'select-first')
