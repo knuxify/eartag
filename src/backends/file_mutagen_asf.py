@@ -160,7 +160,15 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     def set_tag(self, tag_name, value):
         """Sets a tag's value using the KEY_TO_FRAME list as a guideline."""
         frame_name = KEY_TO_FRAME[tag_name.lower()]
-        self.mg_file.tags[frame_name] = [str(value)]
+
+        # For float values that do not have numbers after the decimal point,
+        # trim the trailing .0
+        if tag_name in self.float_properties and value % 1 == 0:
+            stringified = str(int(value))
+        else:
+            stringified = str(value)
+
+        self.mg_file.tags[frame_name] = [stringified]
 
     def has_tag(self, tag_name):
         """
