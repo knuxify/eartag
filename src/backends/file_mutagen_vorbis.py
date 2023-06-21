@@ -150,7 +150,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
         picture = Picture()
         picture.data = data
-        picture.type = 17
+        picture.type = PictureType.COVER_FRONT
         picture.mime = magic.from_file(value, mime=True)
         img = Image.open(value)
         picture.width = img.width
