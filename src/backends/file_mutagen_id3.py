@@ -315,6 +315,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return self.mg_file.tags['COMM::XXX'].text[0]
         elif 'COMM::eng' in self.mg_file.tags:
             return self.mg_file.tags['COMM::eng'].text[0]
+        elif 'TXXX:comment' in self.mg_file.tags:
+            return self.mg_file.tags['TXXX:comment'].text[0]
         return None
 
     @comment.setter
@@ -371,11 +373,16 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return self.mg_file.tags['WXXX'].url
         elif 'WXXX:' in self.mg_file.tags:
             return self.mg_file.tags['WXXX:'].url
+        elif 'TXXX:purl' in self.mg_file.tags:
+            return self.mg_file.tags['TXXX:purl'].text[0]
         return None
 
     @url.setter
     def url(self, value):
         if value:
+            self.mg_file.tags.setall('TXXX:purl',
+                [mutagen.id3.TXXX(encoding=3, desc='purl', text=str(value))]
+            )
             self.mg_file.tags.setall('WXXX',
                 [mutagen.id3.WXXX(encoding=3, desc='', url=str(value))]
             )
