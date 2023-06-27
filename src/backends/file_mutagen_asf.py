@@ -164,9 +164,15 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         # For float values that do not have numbers after the decimal point,
         # trim the trailing .0
         if tag_name in self.float_properties and value % 1 == 0:
-            stringified = str(int(value))
+            if value:
+                stringified = str(int(value))
+            else:
+                stringified = ''
         else:
-            stringified = str(value)
+            if value:
+                stringified = str(value)
+            else:
+                stringified = ''
 
         self.mg_file.tags[frame_name] = [stringified]
 
@@ -187,6 +193,8 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     def delete_tag(self, tag_name):
         """Deletes the tag with the given name from the file."""
         frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if tag_name == 'tracknumber':
+            print(frame_name, frame_name in self.mg_file.tags, self.mg_file.tags)
         if frame_name in self.mg_file.tags:
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)
@@ -256,9 +264,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     @releasedate.setter
     def releasedate(self, value):
         self.validate_date('releasedate', value)
-        if not value:
-            self.set_tag('releasedate', '')
-        else:
+        if value:
             if len(value) >= 4:
                 try:
                     self.set_tag('releasedate', value[:4])
@@ -266,7 +272,9 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
                     self.set_tag('releasedate', '')
             else:
                 self.set_tag('releasedate', value)
-        self.mark_as_modified('releasedate')
+            self.mark_as_modified('releasedate')
+        else:
+            self.delete_tag('releasedate')
 
     @GObject.Property(type=int)
     def totaltracknumber(self):

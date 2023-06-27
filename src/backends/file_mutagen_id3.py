@@ -306,13 +306,16 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     @genre.setter
     def genre(self, value):
-        try:
-            genre_raw = self.mg_file.tags['TCON']
-        except KeyError:
-            self.mg_file.tags.add(mutagen.id3.TCON(encoding=3, text=[value]))
+        if value:
+            try:
+                genre_raw = self.mg_file.tags['TCON']
+            except KeyError:
+                self.mg_file.tags.add(mutagen.id3.TCON(encoding=3, text=[value]))
+            else:
+                genre_raw.encoding = 3
+                genre_raw.genres = [value]
         else:
-            genre_raw.encoding = 3
-            genre_raw.genres = [value]
+            self.delete_tag('genre')
         self.mark_as_modified('genre')
 
     @GObject.Property()
@@ -327,9 +330,12 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     @comment.setter
     def comment(self, value):
-        self.mg_file.tags.setall('COMM',
-            [mutagen.id3.COMM(encoding=3, lang='eng', desc='', text=[str(value)])]
-        )
+        if value:
+            self.mg_file.tags.setall('COMM',
+                [mutagen.id3.COMM(encoding=3, lang='eng', desc='', text=[str(value)])]
+            )
+        else:
+            self.delete_tag('comment')
         self.mark_as_modified('comment')
 
     # These set both TDRC (date) and TDOR (original date) for compatibility.

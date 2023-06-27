@@ -61,6 +61,14 @@ def run_backend_tests(file_class, extension, skip_channels=False):
         os.path.join(EXAMPLES_DIR, f'example.{extension}'),
         os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
     )
+    file_write_empty = file_class(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
+    backend_write_empty(file_write_empty, skip_channels)
+    os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
+
+    shutil.copyfile(
+        os.path.join(EXAMPLES_DIR, f'example.{extension}'),
+        os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
+    )
     file_delete = file_class(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
     backend_delete(file_delete)
     os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
@@ -213,6 +221,78 @@ def backend_write_items(empty_file, skip_channels=False):
                     raise ValueError(f"file erroneously has tag {prop}")
 
         os.remove(new_file_path)
+
+def backend_write_empty(file, skip_channels=False):
+    """Tests whether writing empty values removes the tag from the file."""
+    for prop in file.handled_properties:
+        # tracknumber/totaltracknumber have separate handling as they're stored
+        # as a single value in pretty much every file format. skip them for now
+        if prop in ('tracknumber', 'totaltracknumber'):
+            continue
+        if prop in file.int_properties or prop in file.float_properties:
+            file.set_property(prop, 0)
+        else:
+            file.set_property(prop, '')
+        try:
+            assert not file.has_tag(prop)
+        except AssertionError:
+            raise ValueError(f'cleared tag {prop} found in file')
+
+    for prop in file.supported_extra_tags:
+        if prop in file.int_properties or prop in file.float_properties:
+            file.set_property(prop, 0)
+        else:
+            file.set_property(prop, '')
+        try:
+            assert not file.has_tag(prop)
+        except AssertionError:
+            raise ValueError(f'cleared tag {prop} found in file')
+
+    if 'totaltracknumber' in file.handled_properties:
+        file.set_property('tracknumber', 0)
+        file.set_property('totaltracknumber', 0)
+
+        try:
+            assert not file.has_tag('tracknumber')
+        except AssertionError:
+            raise ValueError('cleared tag tracknumber found in file')
+
+        file.set_property('tracknumber', 1)
+        assert file.has_tag('tracknumber')
+        file.set_property('totaltracknumber', 1)
+        assert file.has_tag('tracknumber')
+        file.set_property('tracknumber', 0)
+        assert file.has_tag('tracknumber')
+        file.set_property('totaltracknumber', 0)
+        assert not file.has_tag('tracknumber')
+
+        file.set_property('tracknumber', 1)
+        file.set_property('totaltracknumber', 1)
+        file.set_property('totaltracknumber', 0)
+        assert file.has_tag('tracknumber')
+        file.set_property('tracknumber', 0)
+        assert not file.has_tag('tracknumber')
+
+    else:
+        file.set_property('tracknumber', 0)
+        try:
+            assert not file.has_tag('tracknumber')
+        except AssertionError:
+            raise ValueError('cleared tag tracknumber found in file')
+
+    assert file.get_property('is_modified') == True
+
+    if file._supports_album_covers:
+        file.set_property('cover_path', os.path.join(EXAMPLES_DIR, f'cover.png'))
+        assert file.get_property('cover_path')
+
+    file.save()
+
+    assert file.get_property('is_modified') == False
+    assert not file.modified_tags
+
+    file_class = type(file)
+    backend_read_empty(file_class(file.path), skip_cover=True)
 
 def backend_delete(file):
     """Tests common backend delete functions."""

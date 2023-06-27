@@ -374,9 +374,9 @@ class EartagFile(GObject.Object):
     def tracknumber(self, value):
         if value:
             self.set_tag('tracknumber', int(value))
+            self.mark_as_modified('tracknumber')
         else:
-            self.set_tag('tracknumber', None)
-        self.mark_as_modified('tracknumber')
+            self.delete_tag('tracknumber')
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
@@ -389,9 +389,9 @@ class EartagFile(GObject.Object):
     def totaltracknumber(self, value):
         if value:
             self.set_tag('totaltracknumber', int(value))
+            self.mark_as_modified('totaltracknumber')
         else:
-            self.set_tag('totaltracknumber', None)
-        self.mark_as_modified('totaltracknumber')
+            self.delete_tag('totaltracknumber')
 
     @GObject.Property(type=str)
     def album(self):
