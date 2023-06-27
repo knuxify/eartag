@@ -102,7 +102,7 @@ def run_backend_tests(file_class, extension, skip_channels=False):
 
     # Test full-length release date and validation
     if file_class._supports_full_dates:
-        with TestFile('test_full_releasedate', extension, 'alltags', remove=False) as file_full_releasedate:
+        with TestFile('test_full_releasedate', extension, 'alltags') as file_full_releasedate:
             backend_full_releasedate(file_class(file_full_releasedate))
 
 def backend_read(file, skip_channels=False):
@@ -143,6 +143,8 @@ def backend_write(file, skip_channels=False):
 
     for prop in file.handled_properties + file.supported_extra_tags:
         file.set_property(prop, prop_to_example_string[prop])
+        assert file.is_modified
+        assert prop in file.modified_tags
         assert file.has_tag(prop), f'tag {prop} not found in file'
 
     if file._supports_album_covers:
