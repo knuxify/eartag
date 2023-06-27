@@ -117,13 +117,13 @@ class EartagTagEntryBase(GObject.Object):
                 try:
                     file.set_property(self.bound_property, int(self.get_text()))
                 except ValueError:
-                    file.set_property(self.bound_property, None)
+                    file.set_property(self.bound_property, 0)
         elif self.bound_property in EartagFile.float_properties:
             for file in self.files:
                 try:
                     file.set_property(self.bound_property, float(self.get_text()))
                 except ValueError:
-                    file.set_property(self.bound_property, None)
+                    file.set_property(self.bound_property, 0.0)
         else:
             for file in self.files:
                 file.set_property(self.bound_property, self.get_text())

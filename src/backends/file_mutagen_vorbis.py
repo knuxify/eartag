@@ -276,7 +276,10 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 n=str(value), t=str(self.totaltracknumber))
             )
         else:
-            self.set_tag('tracknumber', str(value))
+            if value:
+                self.set_tag('tracknumber', str(value))
+            elif self.has_tag('tracknumber'):
+                self.delete_tag('tracknumber')
         self.mark_as_modified('tracknumber')
 
     @GObject.Property(type=int)
@@ -295,7 +298,10 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 n=str(self.tracknumber), t=str(value))
             )
         else:
-            self.set_tag('tracknumber', '0/{t}'.format(t=str(value)))
+            if value:
+                self.set_tag('tracknumber', '0/{t}'.format(t=str(value)))
+            elif self.has_tag('tracknumber'):
+                self.delete_tag('tracknumber')
         self.mark_as_modified('totaltracknumber')
 
     @GObject.Property(type=int)
@@ -309,5 +315,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     @discnumber.setter
     def discnumber(self, value):
-        self.set_tag('discnumber', str(value))
+        if value:
+            self.set_tag('discnumber', str(value))
+        elif self.has_tag('discnumber'):
+            self.delete_tag('discnumber')
         self.mark_as_modified('discnumber')

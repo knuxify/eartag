@@ -206,7 +206,10 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if self.totaltracknumber:
             self.mg_file.tags['trkn'] = [(int(value), int(self.totaltracknumber))]
         else:
-            self.mg_file.tags['trkn'] = [(int(value), 0)]
+            if value:
+                self.mg_file.tags['trkn'] = [(int(value), 0)]
+            elif self.has_tag('tracknumber'):
+                self.delete_tag('tracknumber')
         self.mark_as_modified('tracknumber')
 
     @GObject.Property(type=int)
@@ -227,7 +230,10 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if self.tracknumber:
             self.mg_file.tags['trkn'] = [(int(self.tracknumber), int(value))]
         else:
-            self.mg_file.tags['trkn'] = [(0, int(value))]
+            if value:
+                self.mg_file.tags['trkn'] = [(0, int(value))]
+            elif self.has_tag('tracknumber'):
+                self.delete_tag('tracknumber')
         self.mark_as_modified('totaltracknumber')
 
     @GObject.Property(type=int)
@@ -245,5 +251,8 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if int(value) == -1 or not value:
             value = 0
 
-        self.mg_file.tags['disk'] = [(int(value), 0)]
+        if value:
+            self.mg_file.tags['disk'] = [(int(value), 0)]
+        elif self.has_tag('discnumber'):
+            self.delete_tag('discnumber')
         self.mark_as_modified('discnumber')

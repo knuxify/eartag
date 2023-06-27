@@ -266,7 +266,10 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
                 '{n}/{t}'.format(n=str(value), t=str(self.totaltracknumber))
             )
         else:
-            self.set_tag('tracknumber', value)
+            if value:
+                self.set_tag('tracknumber', value)
+            elif self.has_tag('tracknumber'):
+                self.delete_tag('tracknumber')
         self.mark_as_modified('tracknumber')
 
     @GObject.Property(type=int)
@@ -286,7 +289,10 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
                 '{n}/{t}'.format(n=str(self.tracknumber), t=str(value))
             )
         else:
-            self.set_tag('tracknumber', '0/{t}'.format(t=str(value)))
+            if value:
+                self.set_tag('tracknumber', '0/{t}'.format(t=str(value)))
+            elif self.has_tag('tracknumber'):
+                self.delete_tag('tracknumber')
         self.mark_as_modified('totaltracknumber')
 
     @GObject.Property()
@@ -364,7 +370,10 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     @discnumber.setter
     def discnumber(self, value):
-        self.set_tag('discnumber', f'{value}/{value}')
+        if value:
+            self.set_tag('discnumber', f'{value}/{value}')
+        elif self.has_tag('discnumber'):
+            self.delete_tag('discnumber')
         self.mark_as_modified('discnumber')
 
     @GObject.Property(type=str)
