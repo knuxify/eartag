@@ -44,6 +44,7 @@ Added the ability to rename files using a specific pattern, file identification 
   </releases>
 
   <url type="homepage">https://gitlab.gnome.org/knuxify/eartag</url>
+  <url type="bugtracker">https://gitlab.gnome.org/knuxify/eartag/-/issues</url>
 
   <description>
     <p>Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder. It can:</p>
