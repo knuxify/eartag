@@ -66,6 +66,11 @@ Added the ability to rename files using a specific pattern, file identification 
     <kudo>HiDpiIcon</kudo>
   </kudos>
 
+  <custom>
+    <value key="Purism::form_factor">workstation</value>
+    <value key="Purism::form_factor">mobile</value>
+  </custom>
+
   <screenshots>
     <screenshot type="default">
       <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-scaled.png</image>
