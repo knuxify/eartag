@@ -132,6 +132,8 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
     def delete_tag(self, tag_name):
         """Deletes the tag with the given name from the file."""
         frame_name = KEY_TO_FRAME[tag_name.lower()]
+        if tag_name.lower() == 'releasedate':
+            self._releasedate_cached = ''
         if frame_name in self.mg_file.tags:
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)
@@ -192,7 +194,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             if 'releasedate' not in self._error_fields:
                 self.set_tag('releasedate', value)
         else:
-            self._releasedate_cached = ''
+            self._releasedate_cached = None
             self.delete_tag('releasedate')
         self.mark_as_modified('releasedate')
 

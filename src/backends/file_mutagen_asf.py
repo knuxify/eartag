@@ -133,8 +133,8 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
     # Copied from file.py, but excludes totaltracknumber, as ASF tags don't
     # have a way to specify it
-    handled_properties = ['title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre',
-        'releasedate', 'comment']
+    handled_properties = ('title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre',
+        'releasedate', 'comment')
 
     supported_extra_tags = (
         'bpm', 'composer', 'copyright', 'encodedby',
@@ -193,8 +193,6 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     def delete_tag(self, tag_name):
         """Deletes the tag with the given name from the file."""
         frame_name = KEY_TO_FRAME[tag_name.lower()]
-        if tag_name == 'tracknumber':
-            print(frame_name, frame_name in self.mg_file.tags, self.mg_file.tags)
         if frame_name in self.mg_file.tags:
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)

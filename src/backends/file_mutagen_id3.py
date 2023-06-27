@@ -173,10 +173,11 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     def delete_tag(self, tag_name):
         """Deletes the tag with the given name from the file."""
-        if tag_name == 'releasedate':
+        if tag_name.lower() == 'releasedate':
             self.mg_file.tags.delall('TDRC')
             self.mg_file.tags.delall('TDOR')
-        elif tag_name == 'url':
+            self._releasedate_cached = ''
+        elif tag_name.lower() == 'url':
             self.mg_file.tags.delall('WXXX')
         else:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
@@ -341,7 +342,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     # These set both TDRC (date) and TDOR (original date) for compatibility.
     @GObject.Property(type=str)
     def releasedate(self):
-        if not self._releasedate_cached:
+        if not self._releasedate_cached and self.has_tag('releasedate'):
             value = ''
             if 'TDRC' in self.mg_file.tags:
                 value = self.mg_file.tags['TDRC'].text[0].text
@@ -361,7 +362,6 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             if 'TDOR' not in self.mg_file.tags or \
                     self.mg_file.tags['TDOR'] == self.mg_file.tags['TDRC']:
                 self.mg_file.tags.setall('TDOR', [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
-
         self.mark_as_modified('releasedate')
 
     @GObject.Property(type=int)

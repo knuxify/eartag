@@ -452,7 +452,7 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=str)
     def releasedate(self):
-        if not self._releasedate_cached:
+        if not self._releasedate_cached and self.has_tag('releasedate'):
             value = self.get_tag('releasedate')
             if value and len(value) > 10:
                 value = value[:10]
@@ -467,6 +467,7 @@ class EartagFile(GObject.Object):
             if value:
                 self.set_tag('releasedate', value)
             elif self.has_tag('releasedate'):
+                self._releasedate_cached = None
                 self.delete_tag('releasedate')
         self.mark_as_modified('releasedate')
 

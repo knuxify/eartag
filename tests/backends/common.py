@@ -2,6 +2,42 @@ import os
 import shutil
 import filecmp
 
+# Boilerplate for handling example files
+
+EXAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'examples')
+
+# Example files dict, for use with get_test_file (type: filename without extension)
+EXAMPLES = {
+    "alltags": "example",
+    "notags": "example-notags"
+    }
+
+class TestFile:
+    """Class for generating test files. Use with the "with" keyword."""
+
+    def __init__(self, test_name, extension, example_type, remove=True):
+        if example_type not in EXAMPLES:
+            raise ValueError(f"Incorrect type {example_type} for get_test_file")
+        example = EXAMPLES[example_type]
+
+        source_path = os.path.join(EXAMPLES_DIR, f'{example}.{extension}')
+        target_path = os.path.join(EXAMPLES_DIR, f'_{test_name}_{example}.{extension}')
+        shutil.copyfile(source_path, target_path)
+
+        self.path = target_path
+        self.remove = remove
+
+    def __enter__(self):
+        return self.path
+
+    def __exit__(self, type, value, tb):
+        if tb:
+            return None
+        if self.remove:
+            os.remove(self.path)
+
+# Example values
+
 prop_to_example_string = {
     'title': 'Example Title',
     'artist': 'Example Artist',
@@ -35,98 +71,53 @@ prop_to_example_string = {
     'titlesort': 'Example Title (sort)'
 }
 
-EXAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'examples')
+# Actual test functions will follow
 
 def run_backend_tests(file_class, extension, skip_channels=False):
+    # Simple read test
     file_read = file_class(os.path.join(EXAMPLES_DIR, f'example.{extension}'))
     backend_read(file_read, skip_channels)
 
-    shutil.copyfile(
-        os.path.join(EXAMPLES_DIR, f'example-notags.{extension}'),
-        os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}')
-    )
-    file_write = file_class(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
-    backend_write(file_write, skip_channels)
-    os.remove(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
+    # Simple write test
+    with TestFile('test_write', extension, 'notags') as file_write:
+        backend_write(file_class(file_write), skip_channels)
 
-    shutil.copyfile(
-        os.path.join(EXAMPLES_DIR, f'example-notags.{extension}'),
-        os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}')
-    )
-    file_write_items = file_class(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
-    backend_write_items(file_write_items, skip_channels)
-    os.remove(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
+    # One-by-one write test
+    with TestFile('test_write_individual', extension, 'notags') as file_write_individual:
+        backend_write_individual(file_class(file_write_individual), skip_channels)
 
-    shutil.copyfile(
-        os.path.join(EXAMPLES_DIR, f'example.{extension}'),
-        os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
-    )
-    file_write_empty = file_class(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
-    backend_write_empty(file_write_empty, skip_channels)
-    os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
+    # Tag deletion test
+    with TestFile('test_delete', extension, 'alltags') as file_delete:
+        backend_delete(file_class(file_delete))
 
-    shutil.copyfile(
-        os.path.join(EXAMPLES_DIR, f'example.{extension}'),
-        os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
-    )
-    file_delete = file_class(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
-    backend_delete(file_delete)
-    os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
+    # Make sure tags are deleted when set to empty values
+    with TestFile('test_write_empty', extension, 'alltags') as file_write_empty:
+        backend_write_empty(file_class(file_write_empty), skip_channels)
 
-    shutil.copyfile(
-        os.path.join(EXAMPLES_DIR, f'example-notags.{extension}'),
-        os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}')
-    )
-    file_rename = file_class(os.path.join(EXAMPLES_DIR, f'_example-notags-fortest.{extension}'))
-    backend_rename(file_rename)
-    # No need to remove; test function does this itself
+    # File rename test; do this twice: once for no tags, once for all tags
+    with TestFile('test_rename', extension, 'notags', remove=False) as file_rename:
+        backend_rename(file_class(file_rename))
+    with TestFile('test_rename', extension, 'alltags', remove=False) as file_rename:
+        backend_rename(file_class(file_rename))
 
-    shutil.copyfile(
-        os.path.join(EXAMPLES_DIR, f'example.{extension}'),
-        os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
-    )
-    file_rename = file_class(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
-    backend_rename(file_rename)
-    # No need to remove; test function does this itself
-
+    # Test full-length release date and validation
     if file_class._supports_full_dates:
-        shutil.copyfile(
-            os.path.join(EXAMPLES_DIR, f'example.{extension}'),
-            os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
-        )
-        file_rename_path = os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}')
-        backend_full_releasedate(file_class, file_rename_path)
-        os.remove(os.path.join(EXAMPLES_DIR, f'_example-fortest.{extension}'))
+        with TestFile('test_full_releasedate', extension, 'alltags', remove=False) as file_full_releasedate:
+            backend_full_releasedate(file_class(file_full_releasedate))
 
 def backend_read(file, skip_channels=False):
     """Tests common backend read functions."""
-    for prop in file.handled_properties:
-        try:
-            assert file.get_property(prop) == prop_to_example_string[prop]
-        except AssertionError:
-            raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})')
+    for prop in file.handled_properties + file.supported_extra_tags:
+        assert file.get_property(prop) == prop_to_example_string[prop], f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})'
 
-        try:
-            assert file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'tag {prop} not found in file')
-
-    for prop in file.supported_extra_tags:
-        try:
-            assert file.get_property(prop) == prop_to_example_string[prop]
-        except AssertionError:
-            raise ValueError(f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})')
-
-        try:
-            assert file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'tag {prop} not found in file')
+        assert file.has_tag(prop), f'tag {prop} not found in file'
 
     if file._supports_album_covers:
         try:
-            assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'), shallow=False)
+            assert file.get_property('cover_path'), 'cover art not found in file'
+            assert filecmp.cmp(file.get_property('cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'), shallow=False), 'cover art not found in file'
         except TypeError:
-            raise ValueError('Cover art was not found in the provided file')
+            raise ValueError('cover art not found in file')
 
     assert file.get_property('is_modified') == False
     if not skip_channels: # mutagen-mp4, at least with the m4a file, has some trouble with this step
@@ -135,14 +126,7 @@ def backend_read(file, skip_channels=False):
     assert file.get_property('bitrate') != 0
 
 def backend_read_empty(file, skip_cover=False):
-    for prop in file.handled_properties:
-        try:
-            assert not file.get_property(prop)
-            assert not file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')
-
-    for prop in file.supported_extra_tags:
+    for prop in file.handled_properties + file.supported_extra_tags:
         try:
             assert not file.get_property(prop)
             assert not file.has_tag(prop)
@@ -157,19 +141,9 @@ def backend_write(file, skip_channels=False):
     """Tests common backend write functions."""
     backend_read_empty(file)
 
-    for prop in file.handled_properties:
+    for prop in file.handled_properties + file.supported_extra_tags:
         file.set_property(prop, prop_to_example_string[prop])
-        try:
-            assert file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'tag {prop} not found in file')
-
-    for prop in file.supported_extra_tags:
-        file.set_property(prop, prop_to_example_string[prop])
-        try:
-            assert file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'tag {prop} not found in file')
+        assert file.has_tag(prop), f'tag {prop} not found in file'
 
     if file._supports_album_covers:
         file.set_property('cover_path', os.path.join(EXAMPLES_DIR, f'cover.png'))
@@ -189,7 +163,7 @@ def backend_write(file, skip_channels=False):
     file_class = type(file)
     backend_read(file_class(file.path), skip_channels)
 
-def backend_write_items(empty_file, skip_channels=False):
+def backend_write_individual(empty_file, skip_channels=False):
     """Tests common backend write functions by writing each property separately."""
     backend_read_empty(empty_file)
     empty_file_path = empty_file.path
@@ -205,26 +179,22 @@ def backend_write_items(empty_file, skip_channels=False):
         target_value = prop_to_example_string[prop]
         file = file_class(new_file_path)
         file.set_property(prop, target_value)
-        try:
-            assert file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'tag {prop} not found in file')
+
+        assert file.has_tag(prop), f'tag {prop} not found in file'
+
         file.save()
 
         file_read = file_class(new_file_path)
         assert file_read.get_property(prop) == target_value
         for _prop in empty_file.handled_properties:
             if _prop != prop and prop != 'totaltracknumber':
-                try:
-                    assert not file.has_tag(_prop)
-                except:
-                    raise ValueError(f"file erroneously has tag {prop}")
+                assert not file.has_tag(_prop), f"file erroneously has tag {prop}"
 
         os.remove(new_file_path)
 
 def backend_write_empty(file, skip_channels=False):
     """Tests whether writing empty values removes the tag from the file."""
-    for prop in file.handled_properties:
+    for prop in file.handled_properties + file.supported_extra_tags:
         # tracknumber/totaltracknumber have separate handling as they're stored
         # as a single value in pretty much every file format. skip them for now
         if prop in ('tracknumber', 'totaltracknumber'):
@@ -233,29 +203,13 @@ def backend_write_empty(file, skip_channels=False):
             file.set_property(prop, 0)
         else:
             file.set_property(prop, '')
-        try:
-            assert not file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'cleared tag {prop} found in file')
-
-    for prop in file.supported_extra_tags:
-        if prop in file.int_properties or prop in file.float_properties:
-            file.set_property(prop, 0)
-        else:
-            file.set_property(prop, '')
-        try:
-            assert not file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'cleared tag {prop} found in file')
+        assert not file.has_tag(prop), f'cleared tag {prop} found in file'
 
     if 'totaltracknumber' in file.handled_properties:
         file.set_property('tracknumber', 0)
         file.set_property('totaltracknumber', 0)
 
-        try:
-            assert not file.has_tag('tracknumber')
-        except AssertionError:
-            raise ValueError('cleared tag tracknumber found in file')
+        assert not file.has_tag('tracknumber'), 'cleared tag tracknumber found in file'
 
         file.set_property('tracknumber', 1)
         assert file.has_tag('tracknumber')
@@ -275,10 +229,7 @@ def backend_write_empty(file, skip_channels=False):
 
     else:
         file.set_property('tracknumber', 0)
-        try:
-            assert not file.has_tag('tracknumber')
-        except AssertionError:
-            raise ValueError('cleared tag tracknumber found in file')
+        assert not file.has_tag('tracknumber'), 'cleared tag tracknumber found in file'
 
     assert file.get_property('is_modified') == True
 
@@ -296,19 +247,10 @@ def backend_write_empty(file, skip_channels=False):
 
 def backend_delete(file):
     """Tests common backend delete functions."""
-    for prop in file.handled_properties:
+    for prop in file.handled_properties + file.supported_extra_tags:
         file.delete_tag(prop)
-        try:
-            assert not file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'tag {prop} erroneously found in file')
-
-    for prop in file.supported_extra_tags:
-        file.delete_tag(prop)
-        try:
-            assert not file.has_tag(prop)
-        except AssertionError:
-            raise ValueError(f'tag {prop} erroneously found in file')
+        assert not file.has_tag(prop), f'tag {prop} erroneously found in file'
+        assert not file.get_property(prop), f'tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}'
 
     assert file.get_property('is_modified') == True
 
@@ -343,9 +285,11 @@ def backend_rename(file):
     os.remove(orig_copy_path)
     os.remove(new_path)
 
-def backend_full_releasedate(file_class, path):
+def backend_full_releasedate(file):
     """Tests various values for the releasedate field"""
-    for value in ('', '0000', '2022', '2022-01', '2022-01-31'):
+    path = file.props.path
+    file_class = type(file)
+    for value in ('0000', '2022', '2022-01', '2022-01-31'):
         file = file_class(path)
         file.set_property('releasedate', value)
         assert file.is_modified

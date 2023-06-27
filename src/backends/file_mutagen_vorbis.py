@@ -121,6 +121,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     def delete_tag(self, tag_name):
         """Deletes the tag with the given name from the file."""
         _original_tag_name = tag_name
+        if tag_name.lower() == 'releasedate':
+            self._releasedate_cached = ''
         if tag_name.lower() in self._replaces:
             tag_name = self._replaces[tag_name.lower()]
         if tag_name in self.mg_file.tags:
