@@ -194,7 +194,6 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             if 'releasedate' not in self._error_fields:
                 self.set_tag('releasedate', value)
         else:
-            self._releasedate_cached = None
             self.delete_tag('releasedate')
         self.mark_as_modified('releasedate')
 
