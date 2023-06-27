@@ -132,6 +132,21 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         self.setup_present_extra_tags()
         self.setup_original_values()
 
+        # Work around ID3v1 handling issues. Mutagen assumes ID3v1.1, which
+        # uses the last bit of the comment field as a track number. There
+        # doesn't seem to be a way to check if a file is ID3v1 or ID3v1.1,
+        # but we can make an educated guess based on the length of the ID3v1
+        # comment field - if it goes the entire 29 characters, then it's
+        # fairly likely to be 30 characters long.
+        #
+        # (I assume, by the extremely vague description of the header on
+        # id3.org, that an ID3v1 comment field would go up to 28 characters,
+        # as the last bit would be 0 (tags are supposed to end with 0s)...)
+
+        if 'COMM:ID3v1 Comment:eng' in self.mg_file.tags and \
+                len(self.mg_file.tags['COMM:ID3v1 Comment:eng'].text[0]) == 29:
+            self.set_tag('tracknumber', '')
+
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""
         try:
