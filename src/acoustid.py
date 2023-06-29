@@ -56,7 +56,7 @@ def identify_file(file):
 
     musicbrainz_id = acoustid_data['recordings'][0]['id']
 
-    headers = {"User-Agent": f'Ear Tag {VERSION} (https://gitlab.gnome.org/knuxify/eartag)'}
+    headers = {"User-Agent": f'Ear Tag {VERSION} (https://gitlab.gnome.org/World/eartag)'}
     try:
         musicbrainz_request = urllib.request.Request(
             f'https://musicbrainz.org/ws/2/recording/{musicbrainz_id}?inc=releases+genres+artist-credits+media&fmt=json', # noqa: E501

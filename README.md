@@ -43,7 +43,7 @@ For development purposes, this is automated in the provided `run` script.
 
 ## Contributing
 
-Project development happens on [GNOME's GitLab instance](https://gitlab.gnome.org/knuxify/eartag). For starters, check out the [open issues](https://gitlab.gnome.org/knuxify/eartag/-/issues).
+Project development happens on [GNOME's GitLab instance](https://gitlab.gnome.org/World/eartag). For starters, check out the [open issues](https://gitlab.gnome.org/World/eartag/-/issues).
 
 You are expected to follow the [GNOME Code of Conduct](https://wiki.gnome.org/Foundation/CodeOfConduct) when participating in project spaces.
 
@@ -60,6 +60,6 @@ You are expected to follow the [GNOME Code of Conduct](https://wiki.gnome.org/Fo
 
 ## TODO
 
-While Ear Tag is ready to use as-is, there are a few nice features that may be added in the near future. You can find them in our [bug tracker](https://gitlab.gnome.org/knuxify/eartag/-/issues/?label_name%5B%5D=feature%20request).
+While Ear Tag is ready to use as-is, there are a few nice features that may be added in the near future. You can find them in our [bug tracker](https://gitlab.gnome.org/World/eartag/-/issues/?label_name%5B%5D=feature%20request).
 
 The project's fully open-source, so if you feel like you could try to implement one of these features, feel free to do so and send a patch to us!

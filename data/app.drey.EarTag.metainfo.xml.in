@@ -45,8 +45,8 @@ Added the ability to rename files using a specific pattern, file identification 
     </release>
   </releases>
 
-  <url type="homepage">https://gitlab.gnome.org/knuxify/eartag</url>
-  <url type="bugtracker">https://gitlab.gnome.org/knuxify/eartag/-/issues</url>
+  <url type="homepage">https://gitlab.gnome.org/World/eartag</url>
+  <url type="bugtracker">https://gitlab.gnome.org/World/eartag/-/issues</url>
 
   <description>
     <p>Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder. It can:</p>
@@ -75,22 +75,22 @@ Added the ability to rename files using a specific pattern, file identification 
 
   <screenshots>
     <screenshot type="default">
-      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-scaled.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/main/data/screenshot-scaled.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-mobile.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/main/data/screenshot-mobile.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-advanced.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/main/data/screenshot-advanced.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-rename.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/main/data/screenshot-rename.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-identify.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/main/data/screenshot-identify.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/knuxify/eartag/-/raw/main/data/screenshot-empty.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/main/data/screenshot-empty.png</image>
     </screenshot>
   </screenshots>
 </component>
