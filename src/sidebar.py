@@ -525,7 +525,7 @@ class EartagSidebar(Gtk.Box):
                 self.remove_selected_button.set_sensitive(False)
             else:
                 selected_message = gettext.ngettext(
-                    "{n} file selected", "{n} files selected", selected_file_count).\
+                    "1 file selected", "{n} files selected", selected_file_count).\
                         format(n=selected_file_count)
                 self.remove_selected_button.set_sensitive(True)
 

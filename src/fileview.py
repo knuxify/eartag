@@ -718,7 +718,7 @@ class EartagFileInfoLabel(Gtk.Label):
         elif channels == 2:
             channels_readable = 'Stereo'
         else:
-            channels_readable = gettext.ngettext("{n} channel", "{n} channels", channels).format(n=channels) # noqa: E501
+            channels_readable = gettext.ngettext("1 channel", "{n} channels", channels).format(n=channels) # noqa: E501
 
         if file.bitrate > -1:
             bitrate_readable = str(file.bitrate)
