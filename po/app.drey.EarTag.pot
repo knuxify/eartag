@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-27 21:12+0200\n"
+"POT-Creation-Date: 2023-07-07 11:10+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr ""
 msgid "music;audio;tag;tagging;tagger;"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:44
+#: data/app.drey.EarTag.metainfo.xml.in:57
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -44,247 +44,247 @@ msgid ""
 "library folder. It can:"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:46
+#: data/app.drey.EarTag.metainfo.xml.in:59
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:47
+#: data/app.drey.EarTag.metainfo.xml.in:60
 msgid "Modify metadata of multiple files at once"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:48
+#: data/app.drey.EarTag.metainfo.xml.in:61
 msgid "Rename files using information from present tags"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:49
+#: data/app.drey.EarTag.metainfo.xml.in:62
 msgid "Identify files using AcoustID"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:51
+#: data/app.drey.EarTag.metainfo.xml.in:64
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 
-#: src/acoustid.py:210
+#: src/acoustid.py:185
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr ""
 
-#: src/filemanager.py:121
+#: src/filemanager.py:96
 msgid "Failed to save file"
 msgstr ""
 
-#: src/filemanager.py:122
+#: src/filemanager.py:97
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:125
+#: src/filemanager.py:100
 msgid "OK"
 msgstr ""
 
-#: src/filemanager.py:131
+#: src/filemanager.py:106
 msgid "Saved changes to files"
 msgstr ""
 
-#: src/filemanager.py:244
+#: src/filemanager.py:219
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr ""
 
-#: src/filemanager.py:246
+#: src/filemanager.py:221
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 
-#: src/fileview.py:144
+#: src/fileview.py:119
 msgid "Select Album Cover Image"
 msgstr ""
 
-#: src/fileview.py:436
+#: src/fileview.py:420
 msgid "More tags"
 msgstr ""
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:723 src/window.py:184
+#: src/fileview.py:707 src/window.py:165
 msgid "(Multiple files selected)"
 msgstr ""
 
-#: src/fileview.py:737
+#: src/fileview.py:721
 #, python-brace-format
-msgid "{n} channel"
+msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] ""
 msgstr[1] ""
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:138 src/main.py:140
+#: src/main.py:113 src/main.py:115
 msgid "translator-credits"
 msgstr ""
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/sidebar.py:146
+#: src/sidebar.py:121
 msgid "(No title)"
 msgstr ""
 
-#: src/sidebar.py:517
+#: src/sidebar.py:524
 msgid "No files selected"
 msgstr ""
 
-#: src/sidebar.py:521
+#: src/sidebar.py:528
 #, python-brace-format
-msgid "{n} file selected"
+msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/window.py:255 src/ui/nofile.ui:48
+#: src/window.py:237 src/ui/nofile.ui:48
 msgid "Open Folder"
 msgstr ""
 
-#: src/window.py:259 src/ui/nofile.ui:35
+#: src/window.py:240 src/ui/nofile.ui:35
 msgid "Open File"
 msgstr ""
 
-#: src/window.py:305
+#: src/window.py:304
 msgid "No supported files found in opened folder"
 msgstr ""
 
-#: src/window.py:312
+#: src/window.py:311
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 
-#: src/window.py:361
+#: src/window.py:359
 msgid "Save Album Cover To…"
 msgstr ""
 
-#: src/backends/file.py:60
+#: src/backends/file.py:35
 msgid "Length"
 msgstr ""
 
-#: src/backends/file.py:61
+#: src/backends/file.py:36
 msgid "Bitrate"
 msgstr ""
 
-#: src/backends/file.py:63 src/ui/fileview.ui:107
+#: src/backends/file.py:38 src/ui/fileview.ui:107
 msgid "Title"
 msgstr ""
 
-#: src/backends/file.py:64 src/ui/fileview.ui:117
+#: src/backends/file.py:39 src/ui/fileview.ui:117
 msgid "Artist"
 msgstr ""
 
-#: src/backends/file.py:65 src/ui/fileview.ui:163
+#: src/backends/file.py:40 src/ui/fileview.ui:163
 msgid "Album"
 msgstr ""
 
-#: src/backends/file.py:66 src/ui/fileview.ui:170
+#: src/backends/file.py:41 src/ui/fileview.ui:170
 msgid "Album artist"
 msgstr ""
 
-#: src/backends/file.py:67 src/ui/fileview.ui:152
+#: src/backends/file.py:42 src/ui/fileview.ui:152
 msgid "Track number"
 msgstr ""
 
-#: src/backends/file.py:68
+#: src/backends/file.py:43
 msgid "Total tracks"
 msgstr ""
 
-#: src/backends/file.py:69 src/ui/fileview.ui:177
+#: src/backends/file.py:44 src/ui/fileview.ui:177
 msgid "Genre"
 msgstr ""
 
-#: src/backends/file.py:70 src/ui/fileview.ui:184
+#: src/backends/file.py:45 src/ui/fileview.ui:184
 msgid "Release date"
 msgstr ""
 
-#: src/backends/file.py:71 src/ui/fileview.ui:192
+#: src/backends/file.py:46 src/ui/fileview.ui:192
 msgid "Comment"
 msgstr ""
 
-#: src/backends/file.py:73
+#: src/backends/file.py:48
 msgid "(Select a tag)"
 msgstr ""
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:75
+#: src/backends/file.py:50
 msgid "BPM"
 msgstr ""
 
-#: src/backends/file.py:76
+#: src/backends/file.py:51
 msgid "Compilation"
 msgstr ""
 
-#: src/backends/file.py:77
+#: src/backends/file.py:52
 msgid "Composer"
 msgstr ""
 
-#: src/backends/file.py:78
+#: src/backends/file.py:53
 msgid "Copyright"
 msgstr ""
 
-#: src/backends/file.py:79
+#: src/backends/file.py:54
 msgid "Encoded by"
 msgstr ""
 
-#: src/backends/file.py:80
+#: src/backends/file.py:55
 msgid "Mood"
 msgstr ""
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:82
+#: src/backends/file.py:57
 msgid "Conductor"
 msgstr ""
 
-#: src/backends/file.py:83
+#: src/backends/file.py:58
 msgid "Arranger"
 msgstr ""
 
-#: src/backends/file.py:84
+#: src/backends/file.py:59
 msgid "Disc number"
 msgstr ""
 
-#: src/backends/file.py:85
+#: src/backends/file.py:60
 msgid "Publisher"
 msgstr ""
 
-#: src/backends/file.py:87
+#: src/backends/file.py:62
 msgid "Language"
 msgstr ""
 
-#: src/backends/file.py:88
+#: src/backends/file.py:63
 msgid "Disc subtitle"
 msgstr ""
 
-#: src/backends/file.py:89
+#: src/backends/file.py:64
 msgid "Website/URL"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:93
+#: src/backends/file.py:68
 msgid "Album artist (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:96
+#: src/backends/file.py:71
 msgid "Album (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:99
+#: src/backends/file.py:74
 msgid "Composer (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:102
+#: src/backends/file.py:77
 msgid "Artist (sort)"
 msgstr ""
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:105
+#: src/backends/file.py:80
 msgid "Title (sort)"
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 msgid "Identify"
 msgstr ""
 
-#: src/ui/acoustid.ui:100
+#: src/ui/acoustid.ui:82
 msgid ""
 "Files are identified using the <a href=\"https://acoustid.org\">AcoustID</a> "
 "service. Additional information is provided by <a href=\"https://musicbrainz."
