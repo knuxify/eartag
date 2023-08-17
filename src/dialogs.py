@@ -48,10 +48,10 @@ class EartagDiscardWarningDialog(Adw.MessageDialog):
 class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagRemovalDiscardWarningDialog'
 
-    def __init__(self, file_manager, file):
+    def __init__(self, file_manager, files):
         super().__init__(modal=True, transient_for=file_manager.window)
         self.file_manager = file_manager
-        self.file = file
+        self.files = files
 
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
@@ -59,7 +59,7 @@ class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
             if not self.file_manager.save():
                 return False
         if response != 'cancel':
-            self.file_manager.remove_files([self.file], force_discard=True)
+            self.file_manager.remove_files(self.files, force_discard=True)
         self.file = None
         self.close()
 

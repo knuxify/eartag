@@ -278,7 +278,7 @@ class EartagFileManager(GObject.Object):
 
         for file in files:
             if file.is_modified and not force_discard:
-                EartagRemovalDiscardWarningDialog(self, file).present()
+                EartagRemovalDiscardWarningDialog(self, files).present()
                 return False
 
         self._selection_removed = False
