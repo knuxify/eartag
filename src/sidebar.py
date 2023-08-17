@@ -321,10 +321,9 @@ class EartagFileList(Gtk.ListView):
         self.set_single_click_activate(False)
         if self.file_manager.selected_files:
             first_selected_file = self.file_manager.selected_files[0]
-            for file in self.file_manager.selected_files:
+            for file in self.file_manager.selected_files.copy():
                 if file != first_selected_file:
                     self.file_manager.selected_files.remove(file)
-
             found_selected = False
             for item_no in range(0, self.filter_model.get_n_items()):
                 if self.filter_model.get_item(item_no) == first_selected_file:
