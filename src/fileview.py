@@ -134,7 +134,7 @@ class EartagAlbumCoverButton(Adw.Bin):
         selected in the dialog.
         """
         try:
-            response = dialog.save_finish(result)
+            response = dialog.open_finish(result)
         except GLib.GError:
             return
 
