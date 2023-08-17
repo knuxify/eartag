@@ -139,9 +139,7 @@ class EartagFileManager(GObject.Object):
         self.load_task.reset(kwargs={'paths': paths, 'mode': mode})
 
         if mode == self.LOAD_OVERWRITE and self.files:
-            self.files.remove_all()
-            self.file_paths = []
-            self.selected_files = []
+            self.remove_all()
 
         self.load_task.run()
 
@@ -286,13 +284,7 @@ class EartagFileManager(GObject.Object):
 
         # Handle remove all scenario
         if len(files) == self.files.get_n_items():
-            self.files.remove_all()
-            self.file_paths = []
-            self.selected_files = []
-
-            self.refresh_state()
-            self.emit('selection-override')
-            return True
+            return self.remove_all()
 
         # Otherwise, remove all the files separately
         for file in files:
@@ -341,6 +333,22 @@ class EartagFileManager(GObject.Object):
 
         self._selection_removed = False
         self._removed_files_buffer = []
+
+        return True
+
+    def remove_all(self):
+        """Clear the opened file ist.."""
+        self.files.remove_all()
+        self.file_paths = []
+        self.selected_files = []
+
+        self._modified_files = []
+        self._error_files = []
+        self.set_property('is_modified', bool(self._modified_files))
+        self.set_property('has_error', bool(self._error_files))
+
+        self.refresh_state()
+        self.emit('selection-override')
 
         return True
 
