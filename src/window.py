@@ -136,7 +136,7 @@ class EartagWindow(Adw.ApplicationWindow):
         selected_files_count = len(self.file_manager.selected_files)
         if selected_files_count <= 0:
             try:
-                self.get_application().save_cover_action.set_enabled(False)
+                self.file_view.album_cover.save_cover_button.set_sensitive(False)
                 self.get_application().rename_action.set_enabled(False)
                 self.get_application().identify_action.set_enabled(False)
             except AttributeError:
@@ -159,13 +159,13 @@ class EartagWindow(Adw.ApplicationWindow):
             file_basename = os.path.basename(file.path)
             self.set_title('{f} — Ear Tag'.format(f=file_basename))
             self.window_title.set_subtitle(file_basename)
-            self.get_application().save_cover_action.set_enabled(True)
+            self.file_view.album_cover.save_cover_button.set_sensitive(True)
         else:
             # TRANSLATOR: Placeholder for file path when multiple files are selected
             _multiple_files = _('(Multiple files selected)')
             self.set_title('{f} — Ear Tag'.format(f=_multiple_files))
             self.window_title.set_subtitle(_multiple_files)
-            self.get_application().save_cover_action.set_enabled(False)
+            self.file_view.album_cover.save_cover_button.set_sensitive(False)
 
         try:
             self.get_application().rename_action.set_enabled(True)
@@ -376,3 +376,6 @@ class EartagWindow(Adw.ApplicationWindow):
             if cover_extension and not save_path.endswith(cover_extension):
                 save_path += cover_extension
             shutil.copyfile(cover_path, save_path)
+
+        toast = Adw.Toast.new(_("Saved cover to {path}").format(path=save_path))
+        self.toast_overlay.add_toast(toast)

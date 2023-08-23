@@ -31,6 +31,8 @@ class EartagAlbumCoverButton(Adw.Bin):
     handling_undefined_drag = False
     image_file_filter = Gtk.Template.Child()
 
+    save_cover_button = Gtk.Template.Child()
+
     def __init__(self):
         super().__init__()
         self.connect('destroy', self.on_destroy)
@@ -127,6 +129,10 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         file_chooser.open(self.get_native(), _cancellable,
             self.open_cover_file_from_dialog)
+
+    @Gtk.Template.Callback()
+    def save_cover(self, *args):
+        self.get_native().save_cover()
 
     @Gtk.Template.Callback()
     def remove_cover(self, *args):

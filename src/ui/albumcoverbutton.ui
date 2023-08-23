@@ -92,7 +92,7 @@
         <property name="spacing">3</property>
 
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="load_cover_button">
             <property name="child">
               <object class="AdwButtonContent">
                 <property name="icon-name">insert-image-symbolic</property>
@@ -105,7 +105,20 @@
         </child>
 
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="save_cover_button">
+            <property name="child">
+              <object class="AdwButtonContent">
+                <property name="icon-name">document-save-symbolic</property>
+                <property name="label" translatable="yes">_Save cover to file</property>
+                <property name="use-underline">True</property>
+              </object>
+            </property>
+            <signal name="clicked" handler="save_cover"/>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton" id="remove_cover_button">
             <property name="child">
               <object class="AdwButtonContent">
                 <property name="icon-name">user-trash-symbolic</property>
