@@ -69,9 +69,9 @@
         </child>
 
         <child>
-          <object class="GtkButton" id="button">
+          <object class="GtkMenuButton" id="button">
             <property name="tooltip-text" translatable="yes">Album cover</property>
-            <signal name="clicked" handler="show_cover_file_chooser"/>
+            <property name="popover">menu_popover</property>
 
             <child>
               <object class="EartagAlbumCoverImage" id="cover_image">
@@ -83,6 +83,55 @@
       </object>
     </child>
   </template>
+
+  <object class="GtkPopover" id="menu_popover">
+    <style><class name="album-cover-popover"/></style>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">3</property>
+
+        <child>
+          <object class="GtkButton">
+            <property name="child">
+              <object class="AdwButtonContent">
+                <property name="icon-name">insert-image-symbolic</property>
+                <property name="label" translatable="yes">_Load cover from file</property>
+                <property name="use-underline">True</property>
+              </object>
+            </property>
+            <signal name="clicked" handler="show_cover_file_chooser"/>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkButton">
+            <property name="child">
+              <object class="AdwButtonContent">
+                <property name="icon-name">user-trash-symbolic</property>
+                <property name="label" translatable="yes">_Remove cover</property>
+                <property name="use-underline">True</property>
+              </object>
+            </property>
+            <signal name="clicked" handler="remove_cover"/>
+          </object>
+        </child>
+
+        <!--<child>
+          <object class="GtkDropDown" id="type_dropdown">
+            <property name="model">
+              <object class="GtkStringList">
+                <items>
+                  <item translatable="yes">Front cover</item>
+                  <item translatable="yes">Back cover</item>
+                </items>
+              </object>
+            </property>
+          </object>
+        </child>-->
+      </object>
+    </child>
+  </object>
 
   <object class="GtkFileFilter" id="image_file_filter">
     <mime-types>

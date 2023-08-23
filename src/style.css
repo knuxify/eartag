@@ -44,6 +44,10 @@
 	color: #fff;
 }
 
+.album-cover-popover button {
+	padding: 5px 10px;
+}
+
 .sidebar {
 	border-left: @border;
 }

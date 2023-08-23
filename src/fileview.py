@@ -128,6 +128,11 @@ class EartagAlbumCoverButton(Adw.Bin):
         file_chooser.open(self.get_native(), _cancellable,
             self.open_cover_file_from_dialog)
 
+    @Gtk.Template.Callback()
+    def remove_cover(self, *args):
+        for file in self.files:
+            file.delete_cover()
+
     def open_cover_file_from_dialog(self, dialog, result):
         """
         Callback for a FileChooser that takes the response and opens the file

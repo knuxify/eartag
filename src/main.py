@@ -72,6 +72,10 @@ class Application(Adw.Application):
             self.create_action('identify', self.on_identify_action, None)
         self.identify_action.set_enabled(False)
 
+        # Album cover button actions
+        self.create_action('show_cover_file_chooser', self.on_show_cover_file_chooser_action, None)
+        self.create_action('remove_cover', self.on_remove_cover_action, None)
+
         self.create_action('quit', self.on_quit_action, '<Ctrl>q')
 
         win.present()
@@ -97,6 +101,12 @@ class Application(Adw.Application):
 
     def on_identify_action(self, widget, _):
         self.get_active_window().show_acoustid_dialog()
+
+    def on_show_cover_file_chooser_action(self, *args):
+        self.get_active_window().file_view.album_cover.show_cover_file_chooser()
+
+    def on_remove_cover_action(self, *args):
+        self.get_active_window().file_view.album_cover.remove_cover()
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(
