@@ -135,7 +135,9 @@ def backend_read_empty(file, skip_cover=False):
 
     assert file.get_property('is_modified') == False
     if not skip_cover:
-        assert not file.get_property('cover_path')
+        if file.get_property('cover_path'):
+            shutil.copyfile(file.get_property('cover_path'), file.path + '.png')
+        assert not file.get_property('cover_path'), file.get_property('cover_path')
 
 def backend_write(file, skip_channels=False):
     """Tests common backend write functions."""
@@ -258,8 +260,20 @@ def backend_delete(file):
 
     file.save()
 
+    assert file.get_property('is_modified') == False
+
+    if file._supports_album_covers:
+        file.delete_cover()
+        assert not file.has_tag('cover-path')
+        assert not file.cover_path
+        assert not file.cover.cover_path
+
+        assert file.get_property('is_modified') == True
+        file.save()
+        assert file.get_property('is_modified') == False
+
     file_class = type(file)
-    backend_read_empty(file_class(file.path), skip_cover=True)
+    backend_read_empty(file_class(file.path))
 
 def backend_rename(file):
     """Tests the ability of the file to be renamed."""

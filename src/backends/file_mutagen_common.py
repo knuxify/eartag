@@ -28,6 +28,14 @@ class EartagFileMutagenCommon(EartagFile):
     def on_remove(self, *args):
         self.mg_file = None
 
+    def _cleanup_cover(self):
+        """Common cleanup steps after delete_cover."""
+        if self.coverart_tempfile:
+            self.coverart_tempfile.close()
+        self._cover_path = ''
+        self.mark_as_modified('cover_path')
+        self.notify('cover-path')
+
     # Main properties
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)

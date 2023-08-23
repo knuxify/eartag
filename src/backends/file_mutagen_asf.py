@@ -172,6 +172,21 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)
 
+    def delete_cover(self, clear_only=False):
+        """Deletes the cover from the file."""
+        pictures = []
+        if 'WM/Picture' in self.mg_file.tags:
+            pictures = self.mg_file.tags['WM/Picture']
+        if pictures:
+            for picture in pictures.copy():
+                picture_type = unpack_image(picture.value)[3]
+                if picture_type in (0, 3):
+                    pictures.remove(picture)
+        self.mg_file.tags['WM/Picture'] = pictures
+
+        if not clear_only:
+            self._cleanup_cover()
+
     def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
@@ -183,6 +198,9 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
     @cover_path.setter
     def cover_path(self, value):
+        if not value:
+            self.delete_cover()
+            return
         self._cover_path = value
 
         with open(value, "rb") as cover_file:
@@ -192,12 +210,8 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         if 'WM/Picture' in self.mg_file.tags:
             pictures = self.mg_file.tags['WM/Picture']
 
-        # Remove all conflicting covers
-        if pictures:
-            for picture in pictures.copy():
-                picture_type = unpack_image(picture.value)[3]
-                if picture_type != 3:
-                    pictures.remove(picture)
+        # Remove all conflicting pictures
+        self.delete_cover(clear_only=True)
 
         packed_data = pack_image(data)
         pictures.append(mutagen.asf.ASFValue(packed_data, mutagen.asf.BYTEARRAY))

@@ -101,7 +101,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         if not self.mg_file.tags:
             try:
                 self.mg_file.add_tags()
-            except mutagen.id3._util.error:
+            except (mutagen.id3._util.error, mutagen.wave.error):
                 pass
         self.load_cover()
         self.setup_present_extra_tags()
@@ -172,7 +172,16 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         else:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             self.mg_file.tags.delall(frame_name)
+
         self.mark_as_modified(tag_name)
+
+    def delete_cover(self, clear_only=False):
+        """Deletes the cover from the file."""
+        for tag in dict(self.mg_file.tags).copy():
+            if tag.startswith('APIC') and self.mg_file.tags[tag].type in (0, 3):
+                del self.mg_file.tags[tag]
+        if not clear_only:
+            self._cleanup_cover()
 
     def on_remove(self, *args):
         if self.coverart_tempfile:
@@ -185,15 +194,17 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     @cover_path.setter
     def cover_path(self, value):
+        if not value:
+            self.delete_cover()
+            return
+
         self._cover_path = value
 
         with open(value, "rb") as cover_file:
             data = cover_file.read()
 
-        # Remove conflicting entries
-        for tag in dict(self.mg_file.tags).copy():
-            if tag.startswith('APIC') and self.mg_file.tags[tag].type in (0, 3):
-                del self.mg_file.tags[tag]
+        # Remove conflicting covers
+        self.delete_cover(clear_only=True)
 
         self.mg_file.tags.add(
             mutagen.id3.APIC(

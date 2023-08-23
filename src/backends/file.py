@@ -89,6 +89,9 @@ class EartagFileCover:
             self.update_cover()
 
     def update_cover(self):
+        if not self.cover_path:
+            return
+
         with open(self.cover_path, 'rb') as cover_file:
             self.cover_data = cover_file.read()
 
@@ -159,6 +162,7 @@ class EartagFile(GObject.Object):
         self._error_fields = []
         self._releasedate_cached = None
         self.id = str(uuid.uuid4()) # Internal ID used for keeping track of files
+        self.connect('notify::cover-path', self._update_cover)
 
     def setup_present_extra_tags(self):
         """
@@ -221,6 +225,9 @@ class EartagFile(GObject.Object):
             self._cover.cover_path = self.cover_path
             self._cover.update_cover()
         return self._cover
+
+    def _update_cover(self, *args):
+        return self.cover  # handles all updates
 
     @GObject.Signal(arg_types=(str,))
     def modified(self, tag):

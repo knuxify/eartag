@@ -104,6 +104,40 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             del self.mg_file.tags[tag_name]
         self.mark_as_modified(_original_tag_name)
 
+    def delete_cover(self, clear_only=False):
+        """Deletes the cover from the file."""
+        if isinstance(self.mg_file, FLAC):
+            pic_list = list(self.mg_file.pictures)
+            for _pic in pic_list.copy():
+                if _pic.type in (PictureType.COVER_FRONT, PictureType.OTHER):
+                    pic_list.remove(_pic)
+
+            # There's no way to remove a picture, so we have to clear and re-add
+            # all the existing ones:
+            self.mg_file.clear_pictures()
+            for _pic in pic_list:
+                self.mg_file.add_picture(_pic)
+        else:
+            pic_list = list(self.mg_file.get("metadata_block_picture", []))
+            for b64_data in pic_list.copy():
+                try:
+                    data = base64.b64decode(b64_data)
+                except (TypeError, ValueError):
+                    continue
+
+                try:
+                    cover_picture = Picture(data)
+                except FLACError:
+                    continue
+
+                if cover_picture.type in (0, 3):
+                    pic_list.remove(b64_data)
+
+            self.mg_file["metadata_block_picture"] = pic_list
+
+        if not clear_only:
+            self._cleanup_cover()
+
     def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
@@ -115,6 +149,9 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     @cover_path.setter
     def cover_path(self, value):
+        if not value:
+            self.delete_cover()
+            return
         self._cover_path = value
 
         with open(value, "rb") as cover_file:
@@ -134,18 +171,21 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         picture.height = img.height
         picture.depth = mode_to_bpp[img.mode]
 
+        # Remove all conflicting pictures
+        self.delete_cover(clear_only=True)
+
         if isinstance(self.mg_file, FLAC):
             picture.type = PictureType.COVER_FRONT
-            for _pic in self.mg_file.pictures:
-                if _pic.type in (PictureType.COVER_FRONT, PictureType.OTHER):
-                    self.mg_file.pictures.remove(_pic)
             self.mg_file.add_picture(picture)
         else:
             picture_data = picture.write()
             encoded_data = base64.b64encode(picture_data)
             vcomment_value = encoded_data.decode("ascii")
-
-            self.mg_file["metadata_block_picture"] = [vcomment_value]
+            if 'metadata_block_picture' in self.mg_file:
+                self.mg_file["metadata_block_picture"] = \
+                    [vcomment_value] + self.mg_file["metadata_block_picture"]
+            else:
+                self.mg_file["metadata_block_picture"] = [vcomment_value]
 
         self.mark_as_modified('cover_path')
 

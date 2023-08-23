@@ -113,6 +113,14 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)
 
+    def delete_cover(self, clear_only=False):
+        """Deletes the cover from the file."""
+        if 'covr' in self.mg_file.tags:
+            del self.mg_file.tags['covr']
+
+        if not clear_only:
+            self._cleanup_cover()
+
     def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
@@ -124,6 +132,10 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     @cover_path.setter
     def cover_path(self, value):
+        if not value:
+            self.delete_cover()
+            return
+
         self._cover_path = value
 
         with open(value, "rb") as cover_file:
