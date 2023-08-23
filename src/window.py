@@ -277,11 +277,9 @@ class EartagWindow(Adw.ApplicationWindow):
             elif self.file_chooser_mode == 'files':
                 response = dialog.open_multiple_finish(result)
             else:
-                dialog.unref()
                 self.file_chooser_mode = None
                 return False
         except GLib.GError:
-            dialog.unref()
             self.file_chooser_mode = None
             return False
 
