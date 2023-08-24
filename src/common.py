@@ -13,6 +13,8 @@ import time
 import re
 from itertools import groupby
 
+from .backends.file import CoverType
+
 def all_equal(iterable):
     """
     Check if all elements in a list are equal. Source:
@@ -494,6 +496,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
     def __init__(self):
         super().__init__()
+        self._cover_type = CoverType.FRONT
         self.connect('destroy', self.on_destroy)
 
     def on_destroy(self, *args):
@@ -505,6 +508,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
         if file.supports_album_covers:
             self.on_cover_change()
             self.file.connect('notify::front-cover-path', self.on_cover_change)
+            self.file.connect('notify::back-cover-path', self.on_cover_change)
         else:
             self.cover_image.set_from_file(None)
             self.on_cover_change()
@@ -525,12 +529,25 @@ class EartagAlbumCoverImage(Gtk.Stack):
         self.on_cover_change()
 
     def on_cover_change(self, *args):
-        if self.file and self.file.front_cover_path and os.path.exists(self.file.front_cover_path):
+        if not self.file:
+            self.set_visible_child(self.no_cover)
+            return
+
+        if self.cover_type == CoverType.FRONT:
+            path = self.file.front_cover_path
+            cover = self.file.front_cover
+        elif self.cover_type == CoverType.BACK:
+            path = self.file.back_cover_path
+            cover = self.file.back_cover
+        else:
+            raise ValueError(self.cover_type)
+
+        if path and os.path.exists(path):
             self.set_visible_child(self.cover_image)
             if self.cover_image.get_pixel_size() <= 48:
-                pixbuf = self.file.front_cover.cover_small
+                pixbuf = cover.cover_small
             else:
-                pixbuf = self.file.front_cover.cover_large
+                pixbuf = cover.cover_large
 
             self.cover_image.set_from_pixbuf(pixbuf)
         else:
@@ -550,3 +567,13 @@ class EartagAlbumCoverImage(Gtk.Stack):
                 self.no_cover.set_pixel_size(value - 4)
         else:
             self.no_cover.set_pixel_size(96)
+
+    @GObject.Property(type=int)
+    def cover_type(self):
+        """Whether to display the front or back cover."""
+        return self._cover_type
+
+    @cover_type.setter
+    def cover_type(self, value):
+        self._cover_type = value
+        self.on_cover_change()

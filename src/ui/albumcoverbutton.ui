@@ -130,7 +130,7 @@
           </object>
         </child>
 
-        <!--<child>
+        <child>
           <object class="GtkDropDown" id="type_dropdown">
             <property name="model">
               <object class="GtkStringList">
@@ -141,7 +141,7 @@
               </object>
             </property>
           </object>
-        </child>-->
+        </child>
       </object>
     </child>
   </object>

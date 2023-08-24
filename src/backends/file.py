@@ -10,7 +10,6 @@ import re
 import shutil
 import tempfile
 import uuid
-from enum import Enum
 
 BASIC_TAGS = (
     'title', 'artist', 'album', 'albumartist', 'tracknumber',
@@ -26,7 +25,7 @@ EXTRA_TAGS = (
     'titlesort'
 )
 
-class CoverType(Enum):
+class CoverType:
     FRONT = 0
     BACK = 1
 
@@ -339,6 +338,14 @@ class EartagFile(GObject.Object):
 
     def _update_back_cover(self, *args):
         return self.back_cover  # handles all updates
+
+    def get_cover(self, cover_type: CoverType):
+        """Gets a cover for the given cover type."""
+        if cover_type == CoverType.FRONT:
+            return self.front_cover
+        elif cover_type == CoverType.BACK:
+            return self.back_cover
+        raise ValueError("Incorrect cover type")
 
     def _get_cover_tempfile_for_type(self, cover_type: CoverType):
         """Returns the cover tempfile for the given cover type."""

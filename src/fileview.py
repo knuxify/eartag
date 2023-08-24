@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES
+from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES, CoverType
 from .common import ( # noqa: F401
     all_equal,
     get_readable_length,
@@ -37,9 +37,12 @@ class EartagAlbumCoverButton(Adw.Bin):
     image_file_filter = Gtk.Template.Child()
 
     save_cover_button = Gtk.Template.Child()
+    type_dropdown = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
+        self._cover_type = CoverType.FRONT
+
         self.connect('destroy', self.on_destroy)
         self.drop_target = Gtk.DropTarget(
             actions=Gdk.DragAction.COPY,
@@ -57,13 +60,31 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.hover_controller.connect('leave', self.on_unhover)
         self.add_controller(self.hover_controller)
 
+        self.bind_property('cover-type', self.cover_image, 'cover-type')
+        self.type_dropdown.bind_property('selected', self, 'cover-type')
+
         self.files = []
+
+    @GObject.Property(type=int)
+    def cover_type(self):
+        """Whether to display the front or back cover."""
+        return self._cover_type
+
+    @cover_type.setter
+    def cover_type(self, value):
+        self._cover_type = value
 
     def bind_to_file(self, file):
         self.files.append(file)
-        self.save_cover_button.set_sensitive(
-            len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
-        )
+
+        if self.cover_type == CoverType.FRONT:
+            self.save_cover_button.set_sensitive(
+                len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
+            )
+        elif self.cover_type == CoverType.BACK:
+            self.save_cover_button.set_sensitive(
+                len(self.files) == 1 or all_equal([f.back_cover for f in self.files])
+            )
 
         if len(self.files) < 2:
             if not file.supports_album_covers:
@@ -75,7 +96,7 @@ class EartagAlbumCoverButton(Adw.Bin):
             self.cover_image.mark_as_nonempty()
         else:
             covers_different = False
-            our_cover = file.front_cover
+            our_cover = file.get_cover(self.cover_type)
 
             if False in [f.supports_album_covers for f in self.files]:
                 self.set_visible(False)
@@ -83,7 +104,7 @@ class EartagAlbumCoverButton(Adw.Bin):
                 self.set_visible(True)
 
             for _file in self.files:
-                if _file.front_cover != our_cover:
+                if _file.get_cover(self.cover_type) != our_cover:
                     covers_different = True
                     self.cover_image.mark_as_empty()
                     break
@@ -92,9 +113,15 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def unbind_from_file(self, file):
         self.files.remove(file)
-        self.save_cover_button.set_sensitive(
-            len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
-        )
+
+        if self.cover_type == CoverType.FRONT:
+            self.save_cover_button.set_sensitive(
+                len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
+            )
+        elif self.cover_type == CoverType.BACK:
+            self.save_cover_button.set_sensitive(
+                len(self.files) == 1 or all_equal([f.back_cover for f in self.files])
+            )
 
         for _file in self.files:
             if not _file.supports_album_covers:
@@ -105,9 +132,9 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         if len(self.files) > 1:
             covers_different = False
-            our_cover = self.files[0].front_cover
+            our_cover = self.files[0].get_cover(self.cover_type)
             for _file in self.files:
-                if _file.front_cover != our_cover:
+                if _file.get_cover(self.cover_type) != our_cover:
                     covers_different = True
                     if _file.supports_album_covers and _file.front_cover:
                         self.cover_image.bind_to_file(_file)
@@ -115,7 +142,8 @@ class EartagAlbumCoverButton(Adw.Bin):
                     break
             if not covers_different:
                 self.cover_image.mark_as_nonempty()
-                if self.files[0].supports_album_covers and self.files[0].front_cover:
+                if self.files[0].supports_album_covers and \
+                        self.files[0].get_cover(self.cover_type):
                     self.cover_image.bind_to_file(self.files[0])
 
         elif len(self.files) == 1:
@@ -145,7 +173,10 @@ class EartagAlbumCoverButton(Adw.Bin):
     def save_cover(self, *args):
         """Opens a file dialog to have the cover art to a file."""
 
-        cover_path = self.files[0].front_cover_path
+        if self.cover_type == CoverType.FRONT:
+            cover_path = self.files[0].front_cover_path
+        elif self.cover_type == CoverType.BACK:
+            cover_path = self.files[0].back_cover_path
         if not cover_path:
             return
 
@@ -169,7 +200,11 @@ class EartagAlbumCoverButton(Adw.Bin):
         if not response:
             return
 
-        cover_path = self.files[0].front_cover_path
+        if self.cover_type == CoverType.FRONT:
+            cover_path = self.files[0].front_cover_path
+        elif self.cover_type == CoverType.BACK:
+            cover_path = self.files[0].back_cover_path
+
         if cover_path:
             save_path = response.get_path()
             cover_mime = magic.from_file(cover_path, mime=True)
@@ -184,7 +219,7 @@ class EartagAlbumCoverButton(Adw.Bin):
     @Gtk.Template.Callback()
     def remove_cover(self, *args):
         for file in self.files:
-            file.delete_cover()
+            file.delete_cover(self.cover_type)
 
     def open_cover_file_from_dialog(self, dialog, result):
         """
@@ -199,9 +234,15 @@ class EartagAlbumCoverButton(Adw.Bin):
         if not response:
             return
 
-        for file in self.files:
-            file.front_cover_path = response.get_path()
-            file.notify('front-cover-path')
+        if self.cover_type == CoverType.FRONT:
+            for file in self.files:
+                file.front_cover_path = response.get_path()
+                file.notify('front-cover-path')
+        elif self.cover_type == CoverType.BACK:
+            for file in self.files:
+                file.back_cover_path = response.get_path()
+                file.notify('back-cover-path')
+
         self.cover_image.on_cover_change()
 
     # Drag-and-drop
@@ -232,9 +273,14 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
-        for file in self.files:
-            file.front_cover_path = path
-            file.notify('front-cover-path')
+        if self.cover_type == CoverType.FRONT:
+            for file in self.files:
+                file.front_cover_path = path
+                file.notify('front-cover-path')
+        elif self.cover_type == CoverType.BACK:
+            for file in self.files:
+                file.back_cover_path = path
+                file.notify('back-cover-path')
         self.cover_image.on_cover_change()
         self.on_drag_unhover()
 
