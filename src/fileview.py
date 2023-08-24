@@ -18,6 +18,7 @@ import gettext
 import magic
 import mimetypes
 import shutil
+import os.path
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):
@@ -136,7 +137,18 @@ class EartagAlbumCoverButton(Adw.Bin):
     @Gtk.Template.Callback()
     def save_cover(self, *args):
         """Opens a file dialog to have the cover art to a file."""
-        file_chooser = Gtk.FileDialog(title=_("Save Album Cover To…"), modal=True)
+
+        cover_path = self.files[0].front_cover_path
+        if not cover_path:
+            return
+
+        cover_mime = magic.from_file(cover_path, mime=True)
+        cover_extension = mimetypes.guess_extension(cover_mime)
+        target_folder, target_filename = os.path.split(self.files[0].path)
+        target_filename = os.path.splitext(target_filename)[0] + cover_extension
+
+        file_chooser = Gtk.FileDialog(title=_("Save Album Cover To…"), modal=True,
+            initial_folder=Gio.File.new_for_path(target_folder), initial_name=target_filename)
         _cancellable = Gio.Cancellable.new()
 
         file_chooser.save(self.get_native(), _cancellable, self._save_cover_response)
