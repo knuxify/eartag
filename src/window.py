@@ -133,7 +133,6 @@ class EartagWindow(Adw.ApplicationWindow):
         selected_files_count = len(self.file_manager.selected_files)
         if selected_files_count <= 0:
             try:
-                self.file_view.album_cover.save_cover_button.set_sensitive(False)
                 self.get_application().rename_action.set_enabled(False)
                 self.get_application().identify_action.set_enabled(False)
             except AttributeError:
@@ -156,13 +155,11 @@ class EartagWindow(Adw.ApplicationWindow):
             file_basename = os.path.basename(file.path)
             self.set_title('{f} — Ear Tag'.format(f=file_basename))
             self.window_title.set_subtitle(file_basename)
-            self.file_view.album_cover.save_cover_button.set_sensitive(True)
         else:
             # TRANSLATOR: Placeholder for file path when multiple files are selected
             _multiple_files = _('(Multiple files selected)')
             self.set_title('{f} — Ear Tag'.format(f=_multiple_files))
             self.window_title.set_subtitle(_multiple_files)
-            self.file_view.album_cover.save_cover_button.set_sensitive(False)
 
         try:
             self.get_application().rename_action.set_enabled(True)

@@ -11,6 +11,15 @@ import mimetypes
 import threading
 import time
 import re
+from itertools import groupby
+
+def all_equal(iterable):
+    """
+    Check if all elements in a list are equal. Source:
+    https://stackoverflow.com/questions/3844801/check-if-all-elements-in-a-list-are-identical
+    """
+    g = groupby(iterable)
+    return next(g, True) and not next(g, False)
 
 VALID_AUDIO_MIMES = (
     'application/ogg',

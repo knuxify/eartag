@@ -3,6 +3,7 @@
 
 from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES
 from .common import ( # noqa: F401
+    all_equal,
     get_readable_length,
     is_valid_image_file,
     EartagAlbumCoverImage
@@ -60,6 +61,9 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def bind_to_file(self, file):
         self.files.append(file)
+        self.save_cover_button.set_sensitive(
+            len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
+        )
 
         if len(self.files) < 2:
             if not file.supports_album_covers:
@@ -71,7 +75,7 @@ class EartagAlbumCoverButton(Adw.Bin):
             self.cover_image.mark_as_nonempty()
         else:
             covers_different = False
-            our_cover = file.cover
+            our_cover = file.front_cover
 
             if False in [f.supports_album_covers for f in self.files]:
                 self.set_visible(False)
@@ -79,7 +83,7 @@ class EartagAlbumCoverButton(Adw.Bin):
                 self.set_visible(True)
 
             for _file in self.files:
-                if _file.cover != our_cover:
+                if _file.front_cover != our_cover:
                     covers_different = True
                     self.cover_image.mark_as_empty()
                     break
@@ -88,6 +92,9 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def unbind_from_file(self, file):
         self.files.remove(file)
+        self.save_cover_button.set_sensitive(
+            len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
+        )
 
         for _file in self.files:
             if not _file.supports_album_covers:
@@ -98,17 +105,17 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         if len(self.files) > 1:
             covers_different = False
-            our_cover = self.files[0].cover
+            our_cover = self.files[0].front_cover
             for _file in self.files:
-                if _file.cover != our_cover:
+                if _file.front_cover != our_cover:
                     covers_different = True
-                    if _file.supports_album_covers and _file.cover:
+                    if _file.supports_album_covers and _file.front_cover:
                         self.cover_image.bind_to_file(_file)
                     self.cover_image.mark_as_empty()
                     break
             if not covers_different:
                 self.cover_image.mark_as_nonempty()
-                if self.files[0].supports_album_covers and self.files[0].cover:
+                if self.files[0].supports_album_covers and self.files[0].front_cover:
                     self.cover_image.bind_to_file(self.files[0])
 
         elif len(self.files) == 1:
