@@ -11,9 +11,6 @@ from .acoustid import EartagAcoustIDDialog
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
-import magic
-import mimetypes
-import shutil
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
@@ -351,31 +348,3 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_acoustid_dialog(self, *args):
         self.acoustid_dialog = EartagAcoustIDDialog(self)
         self.acoustid_dialog.present()
-
-    def save_cover(self, *args):
-        """Opens a file dialog to have the cover art to a file."""
-        file_chooser = Gtk.FileDialog(title=_("Save Album Cover To…"), modal=True)
-        _cancellable = Gio.Cancellable.new()
-
-        file_chooser.save(self, _cancellable, self._save_cover_response)
-
-    def _save_cover_response(self, dialog, result):
-        try:
-            response = dialog.save_finish(result)
-        except GLib.GError:
-            return
-
-        if not response:
-            return
-
-        cover_path = self.file_manager.selected_files[0].front_cover_path
-        if cover_path:
-            save_path = response.get_path()
-            cover_mime = magic.from_file(cover_path, mime=True)
-            cover_extension = mimetypes.guess_extension(cover_mime)
-            if cover_extension and not save_path.endswith(cover_extension):
-                save_path += cover_extension
-            shutil.copyfile(cover_path, save_path)
-
-        toast = Adw.Toast.new(_("Saved cover to {path}").format(path=save_path))
-        self.toast_overlay.add_toast(toast)

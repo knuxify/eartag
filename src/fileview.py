@@ -15,6 +15,9 @@ from .tagentry import ( # noqa: F401
 from gi.repository import Adw, Gtk, Gdk, Gio, GLib, GObject
 
 import gettext
+import magic
+import mimetypes
+import shutil
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):
@@ -132,7 +135,32 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     @Gtk.Template.Callback()
     def save_cover(self, *args):
-        self.get_native().save_cover()
+        """Opens a file dialog to have the cover art to a file."""
+        file_chooser = Gtk.FileDialog(title=_("Save Album Cover To…"), modal=True)
+        _cancellable = Gio.Cancellable.new()
+
+        file_chooser.save(self.get_native(), _cancellable, self._save_cover_response)
+
+    def _save_cover_response(self, dialog, result):
+        try:
+            response = dialog.save_finish(result)
+        except GLib.GError:
+            return
+
+        if not response:
+            return
+
+        cover_path = self.files[0].front_cover_path
+        if cover_path:
+            save_path = response.get_path()
+            cover_mime = magic.from_file(cover_path, mime=True)
+            cover_extension = mimetypes.guess_extension(cover_mime)
+            if cover_extension and not save_path.endswith(cover_extension):
+                save_path += cover_extension
+            shutil.copyfile(cover_path, save_path)
+
+        toast = Adw.Toast.new(_("Saved cover to {path}").format(path=save_path))
+        self.get_native().toast_overlay.add_toast(toast)
 
     @Gtk.Template.Callback()
     def remove_cover(self, *args):
