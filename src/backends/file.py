@@ -8,7 +8,9 @@ import filecmp
 import os
 import re
 import shutil
+import tempfile
 import uuid
+from enum import Enum
 
 BASIC_TAGS = (
     'title', 'artist', 'album', 'albumartist', 'tracknumber',
@@ -23,6 +25,10 @@ EXTRA_TAGS = (
     'albumartistsort', 'albumsort', 'composersort', 'artistsort',
     'titlesort'
 )
+
+class CoverType(Enum):
+    FRONT = 0
+    BACK = 1
 
 # Workaround for tests not having the _ variable available
 try:
@@ -157,12 +163,17 @@ class EartagFile(GObject.Object):
         self.update_writability()
         self._front_cover = None
         self._front_cover_path = None
+        self._back_cover = None
+        self._back_cover_path = None
+        self.front_cover_tempfile = None
+        self.back_cover_tempfile = None
         self.modified_tags = []
         self.original_values = {}
         self._error_fields = []
         self._releasedate_cached = None
         self.id = str(uuid.uuid4()) # Internal ID used for keeping track of files
         self.connect('notify::front-cover-path', self._update_front_cover)
+        self.connect('notify::back-cover-path', self._update_back_cover)
 
     def setup_present_extra_tags(self):
         """
@@ -188,6 +199,7 @@ class EartagFile(GObject.Object):
             self.original_values[tag] = self.get_property(tag)
         if self._supports_album_covers:
             self.original_values['front_cover_path'] = self.get_property('front_cover_path')
+            self.original_values['back_cover_path'] = self.get_property('back_cover_path')
 
     def update_writability(self):
         """
@@ -212,22 +224,6 @@ class EartagFile(GObject.Object):
 
         self._has_error = has_error
         self.notify('has-error')
-
-    @property
-    def front_cover(self):
-        """Gets raw cover data. This is usually used for comparisons between two files."""
-        if not self._supports_album_covers:
-            return False
-
-        if not self._front_cover:
-            self._front_cover = EartagFileCover(self.front_cover_path)
-        elif self._front_cover.cover_path != self.front_cover_path:
-            self._front_cover.cover_path = self.front_cover_path
-            self._front_cover.update_cover()
-        return self._front_cover
-
-    def _update_front_cover(self, *args):
-        return self.front_cover  # handles all updates
 
     @GObject.Signal(arg_types=(str,))
     def modified(self, tag):
@@ -310,16 +306,115 @@ class EartagFile(GObject.Object):
         """Returns whether the file can be written to."""
         return self._is_writable
 
+    # Cover art handling functions
+
+    @property
+    def front_cover(self):
+        """Gets raw cover data. This is usually used for comparisons between two files."""
+        if not self._supports_album_covers:
+            return False
+
+        if not self._front_cover:
+            self._front_cover = EartagFileCover(self.front_cover_path)
+        elif self._front_cover.cover_path != self.front_cover_path:
+            self._front_cover.cover_path = self.front_cover_path
+            self._front_cover.update_cover()
+        return self._front_cover
+
+    def _update_front_cover(self, *args):
+        return self.front_cover  # handles all updates
+
+    @property
+    def back_cover(self):
+        """Gets raw cover data. This is usually used for comparisons between two files."""
+        if not self._supports_album_covers:
+            return False
+
+        if not self._back_cover:
+            self._back_cover = EartagFileCover(self.back_cover_path)
+        elif self._back_cover.cover_path != self.back_cover_path:
+            self._back_cover.cover_path = self.back_cover_path
+            self._back_cover.update_cover()
+        return self._back_cover
+
+    def _update_back_cover(self, *args):
+        return self.back_cover  # handles all updates
+
+    def _get_cover_tempfile_for_type(self, cover_type: CoverType):
+        """Returns the cover tempfile for the given cover type."""
+        if cover_type == CoverType.FRONT:
+            return self.front_cover_tempfile
+        elif cover_type == CoverType.BACK:
+            return self.back_cover_tempfile
+        raise ValueError("Incorrect cover type")
+
+    def create_cover_tempfile(self, cover_type: CoverType, data, extension):
+        """Writes data to the cover tempfile for the given cover type."""
+        _tempfile = tempfile.NamedTemporaryFile(suffix=extension)
+        _tempfile.write(data)
+        _tempfile.flush()
+
+        if cover_type == CoverType.FRONT:
+            self.front_cover_tempfile = _tempfile
+            self._front_cover_path = _tempfile.name
+        elif cover_type == CoverType.BACK:
+            self.back_cover_tempfile = _tempfile
+            self._back_cover_path = _tempfile.name
+
+    def _cleanup_front_cover(self):
+        """Common cleanup steps after delete_front_cover."""
+        if self.front_cover_tempfile:
+            self.front_cover_tempfile.close()
+        self._front_cover_path = ''
+        self.mark_as_modified('front_cover_path')
+        self.notify('front-cover-path')
+
+    def _cleanup_back_cover(self):
+        """Common cleanup steps after delete_back_cover."""
+        if self.back_cover_tempfile:
+            self.back_cover_tempfile.close()
+        self._back_cover_path = ''
+        self.mark_as_modified('back_cover_path')
+        self.notify('back-cover-path')
+
+    def _cleanup_cover(self, cover_type: CoverType):
+        """Common cleanup steps after delete_cover."""
+        if cover_type == CoverType.FRONT:
+            return self._cleanup_front_cover()
+        elif cover_type == CoverType.BACK:
+            return self._cleanup_back_cover()
+        raise ValueError
+
+    @GObject.Property(type=str)
+    def front_cover_path(self):
+        if not self._supports_album_covers:
+            return None
+        return self._front_cover_path
+
+    @front_cover_path.setter
+    def front_cover_path(self, value):
+        if not self._supports_album_covers:
+            return None
+        self.set_cover_path(CoverType.FRONT, value)
+
+    @GObject.Property(type=str)
+    def back_cover_path(self):
+        if not self._supports_album_covers:
+            return None
+        return self._back_cover_path
+
+    @back_cover_path.setter
+    def back_cover_path(self, value):
+        if not self._supports_album_covers:
+            return None
+        self.set_cover_path(CoverType.BACK, value)
+
     # Properties, used for bindings; backends must implement get_tag and set_tag options
     # that take these property names, or redefine the properties
 
     @GObject.Property(type=str, flags=GObject.ParamFlags.READABLE)
     def filetype(self):
         return os.path.splitext(self.path)[-1]
-
-    @GObject.Property(type=str)
-    def front_cover_path(self):
-        return None
 
     @GObject.Property(type=str)
     def title(self):

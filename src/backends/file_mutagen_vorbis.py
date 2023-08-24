@@ -3,7 +3,6 @@
 
 from gi.repository import GObject
 import base64
-import tempfile
 import magic
 import mimetypes
 from PIL import Image
@@ -11,6 +10,7 @@ from PIL import Image
 from mutagen.flac import FLAC, Picture, error as FLACError
 from mutagen.id3 import PictureType
 
+from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
 
 class EartagFileMutagenVorbis(EartagFileMutagenCommon):
@@ -104,12 +104,18 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             del self.mg_file.tags[tag_name]
         self.mark_as_modified(_original_tag_name)
 
-    def delete_cover(self, clear_only=False):
-        """Deletes the cover from the file."""
+    def delete_cover(self, cover_type: CoverType, clear_only=False):
+        if cover_type == CoverType.FRONT:
+            pictypes = (PictureType.OTHER, PictureType.COVER_FRONT)
+        elif cover_type == CoverType.BACK:
+            pictypes = (PictureType.COVER_BACK, )
+        else:
+            raise ValueError
+
         if isinstance(self.mg_file, FLAC):
             pic_list = list(self.mg_file.pictures)
             for _pic in pic_list.copy():
-                if _pic.type in (PictureType.COVER_FRONT, PictureType.OTHER):
+                if _pic.type in pictypes:
                     pic_list.remove(_pic)
 
             # There's no way to remove a picture, so we have to clear and re-add
@@ -130,29 +136,33 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 except FLACError:
                     continue
 
-                if cover_picture.type in (0, 3):
+                if cover_picture.type in pictypes:
                     pic_list.remove(b64_data)
 
             self.mg_file["metadata_block_picture"] = pic_list
 
         if not clear_only:
-            self._cleanup_cover()
+            self._cleanup_cover(cover_type)
 
     def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
         super().on_remove()
 
-    @GObject.Property(type=str)
-    def front_cover_path(self):
-        return self._front_cover_path
-
-    @front_cover_path.setter
-    def front_cover_path(self, value):
+    def set_cover_path(self, cover_type: CoverType, value):
         if not value:
-            self.delete_cover()
-            return
-        self._front_cover_path = value
+            return self.delete_cover(cover_type)
+
+        if cover_type == CoverType.FRONT:
+            pictype = PictureType.COVER_FRONT
+            prop = 'front_cover_path'
+            self._front_cover_path = value
+        elif cover_type == CoverType.BACK:
+            pictype = PictureType.COVER_BACK
+            prop = 'back_cover_path'
+            self._back_cover_path = value
+        else:
+            raise ValueError
 
         with open(value, "rb") as cover_file:
             data = cover_file.read()
@@ -164,7 +174,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
         picture = Picture()
         picture.data = data
-        picture.type = PictureType.COVER_FRONT
+        picture.type = pictype
         picture.mime = magic.from_file(value, mime=True)
         img = Image.open(value)
         picture.width = img.width
@@ -172,10 +182,9 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         picture.depth = mode_to_bpp[img.mode]
 
         # Remove all conflicting pictures
-        self.delete_cover(clear_only=True)
+        self.delete_cover(cover_type, clear_only=True)
 
         if isinstance(self.mg_file, FLAC):
-            picture.type = PictureType.COVER_FRONT
             self.mg_file.add_picture(picture)
         else:
             picture_data = picture.write()
@@ -187,45 +196,61 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             else:
                 self.mg_file["metadata_block_picture"] = [vcomment_value]
 
-        self.mark_as_modified('front_cover_path')
+        self.mark_as_modified(prop)
 
-    def load_cover(self):
+    def _load_cover(self, cover_type: CoverType):
         """Loads cover data from file."""
+        if cover_type == CoverType.FRONT:
+            prop = 'front_cover_path'
+        elif cover_type == CoverType.BACK:
+            prop = 'back_cover_path'
+        else:
+            raise ValueError
+
         # See https://mutagen.readthedocs.io/en/latest/user/vcomment.html.
         # There are three ways to get the cover image:
 
         # 1. Using `mutagen.flac.FLAC.pictures`
         if isinstance(self.mg_file, FLAC) and self.mg_file.pictures:
+            picture = None
             picture_cover = None
             picture_other = None
+            picture_back = None
 
-            # We run this in two loops so that we can prio
-            for picture in self.mg_file.pictures:
-                if picture.type == PictureType.COVER_FRONT:
-                    picture_cover = picture
+            if cover_type == CoverType.FRONT:
+                for _picture in self.mg_file.pictures:
+                    if _picture.type == PictureType.COVER_FRONT:
+                        picture_cover = _picture
 
-                elif picture.type == PictureType.OTHER:
-                    picture_other = picture
-                    return
+                    elif _picture.type == PictureType.OTHER:
+                        picture_other = _picture
 
-            if picture_cover:
-                picture = picture_cover
-            elif picture_other:
-                picture = picture_other
-            else:
-                self.notify('front_cover_path')
-                return
+                if picture_cover:
+                    picture = picture_cover
+                elif picture_other:
+                    picture = picture_other
+                else:
+                    self.notify('front_cover_path')
 
-            cover_extension = mimetypes.guess_extension(picture.mime)
-            self.coverart_tempfile = tempfile.NamedTemporaryFile(
-                suffix=cover_extension
-            )
-            self.coverart_tempfile.write(picture.data)
-            self.coverart_tempfile.flush()
-            self._front_cover_path = self.coverart_tempfile.name
+                if picture:
+                    cover_extension = mimetypes.guess_extension(picture.mime)
+                    self.create_cover_tempfile(cover_type, picture.data, cover_extension)
+            elif cover_type == CoverType.BACK:
+                for _picture in self.mg_file.pictures:
+                    if _picture.type == PictureType.COVER_BACK:
+                        picture_back = _picture
+                        break
+
+                if picture_back:
+                    cover_extension = mimetypes.guess_extension(picture_back.mime)
+                    self.create_cover_tempfile(cover_type, picture_back.data, cover_extension)
 
         # 2. Using metadata_block_picture
         elif self.mg_file.get("metadata_block_picture", []):
+            cover_front = None
+            covers_other = []
+            cover_back = None
+
             for b64_data in self.mg_file.get("metadata_block_picture", []):
                 try:
                     data = base64.b64decode(b64_data)
@@ -237,17 +262,31 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 except FLACError:
                     continue
 
-                cover_extension = mimetypes.guess_extension(cover_picture.mime)
+                if cover_type == CoverType.FRONT:
+                    if cover_picture.type == PictureType.COVER_FRONT:
+                        cover_front = cover_picture
+                        break
+                    elif cover_picture.type == PictureType.OTHER:
+                        covers_other.append(cover_picture)
 
-                self.coverart_tempfile = tempfile.NamedTemporaryFile(
-                    suffix=cover_extension
-                )
-                self.coverart_tempfile.write(cover_picture.data)
-                self.coverart_tempfile.flush()
-                self._front_cover_path = self.coverart_tempfile.name
+                elif cover_type == CoverType.BACK:
+                    if cover_picture.type == PictureType.COVER_BACK:
+                        cover_back = cover_picture
+                        break
+
+            if not cover_front and covers_other:
+                cover_front = covers_other[0]
+
+            if cover_front:
+                cover_extension = mimetypes.guess_extension(cover_front.mime)
+                self.create_cover_tempfile(CoverType.FRONT, cover_front.data, cover_extension)
+
+            if cover_back:
+                cover_extension = mimetypes.guess_extension(cover_back.mime)
+                self.create_cover_tempfile(CoverType.BACK, cover_back.data, cover_extension)
 
         # 3. Using the coverart field (and optionally covermime)
-        else:
+        elif cover_type == CoverType.FRONT:
             covers = self.mg_file.get("coverart", [])
             mimes = self.mg_file.get("coverartmime", [])
 
@@ -267,15 +306,14 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 if not cover_extension and mimes and len(mimes) == len(covers):
                     cover_extension = mimes[n]
 
-                self.coverart_tempfile = tempfile.NamedTemporaryFile(
-                    suffix=cover_extension
-                )
-                self.coverart_tempfile.write(data)
-                self.coverart_tempfile.flush()
-                self._front_cover_path = self.coverart_tempfile.name
+                self.create_cover_tempfile(cover_type, data, cover_extension)
                 n += 1
 
-        self.notify('front_cover_path')
+        self.notify(prop)
+
+    def load_cover(self):
+        for cover_type in (CoverType.FRONT, CoverType.BACK):
+            self._load_cover(cover_type)
 
     @GObject.Property(type=int)
     def tracknumber(self):

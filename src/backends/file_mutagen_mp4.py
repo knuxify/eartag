@@ -2,13 +2,19 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject
+import base64
 import magic
 import mimetypes
-import tempfile
 
 from mutagen.mp4 import MP4Cover
 
+from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+
+EMPTY_COVER = MP4Cover(base64.b64decode(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NgAAIAAAUAAR4f7BQAAAAASUVORK5CYII='  # noqa: E501
+    ), MP4Cover.FORMAT_PNG)
+
 
 # These are copied from the code for Mutagen's EasyMP4 functions:
 KEY_TO_FRAME = {
@@ -113,59 +119,135 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)
 
-    def delete_cover(self, clear_only=False):
+    def delete_cover(self, cover_type: CoverType, clear_only=False):
         """Deletes the cover from the file."""
-        if 'covr' in self.mg_file.tags:
-            del self.mg_file.tags['covr']
+        if 'covr' not in self.mg_file.tags:
+            if not clear_only:
+                self._cleanup_cover(cover_type)
+            return
+
+        cover_val = self.mg_file.tags['covr']
+        if not cover_val:
+            if not clear_only:
+                self._cleanup_cover(cover_type)
+            return
+
+        if cover_type == CoverType.FRONT:
+            if len(cover_val) == 1:
+                del self.mg_file.tags['covr']
+                if not clear_only:
+                    self._cleanup_cover(cover_type)
+                return
+            elif len(cover_val) >= 2:
+                cover_val[0] = EMPTY_COVER
+
+        elif cover_type == CoverType.BACK:
+            if len(cover_val) == 1:
+                if not clear_only:
+                    self._cleanup_cover(cover_type)
+                return
+            elif len(cover_val) == 2:
+                cover_val = [cover_val[0]]
+            elif len(cover_val) > 2:
+                cover_val[1] = EMPTY_COVER
+
+        try:
+            if cover_val[0] == EMPTY_COVER and cover_val[1] == EMPTY_COVER:
+                cover_val = []
+        except IndexError:
+            pass
+
+        self.mg_file.tags['covr'] = cover_val
 
         if not clear_only:
-            self._cleanup_cover()
+            self._cleanup_cover(cover_type)
 
     def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
         super().on_remove()
 
-    @GObject.Property(type=str)
-    def front_cover_path(self):
-        return self._front_cover_path
-
-    @front_cover_path.setter
-    def front_cover_path(self, value):
+    def set_cover_path(self, cover_type: CoverType, value):
         if not value:
             self.delete_cover()
             return
 
-        self._front_cover_path = value
-
         with open(value, "rb") as cover_file:
             data = cover_file.read()
 
-        self.mg_file.tags['covr'] = (MP4Cover(data, MP4Cover.FORMAT_PNG),)
+        cover_val = []
+        if 'covr' in self.mg_file.tags:
+            cover_val = self.mg_file.tags['covr']
 
-        self.mark_as_modified('front_cover_path')
+        if cover_type == CoverType.FRONT:
+            try:
+                cover_val[0] = MP4Cover(data, MP4Cover.FORMAT_PNG)
+            except IndexError:
+                cover_val.append(MP4Cover(data, MP4Cover.FORMAT_PNG))
+            self.mg_file.tags['covr'] = cover_val
+            self._front_cover_path = value
+            self.mark_as_modified('front_cover_path')
+
+        elif cover_type == CoverType.BACK:
+            # I can't figure out how to specify a back cover in MP4 tags -
+            # I found one forum post on a closed-source tagger's forum that
+            # claims MP4 supports front and back covers, but I can't find
+            # anything in Mutagen that would allow me to specify which one
+            # to use... so we just set the second cover in the cover list
+            # instead.
+            if len(cover_val) == 0:
+                # In general, this should never happen... if someone is setting
+                # a back cover, then they probably set a front cover as well,
+                # but let's handle this just in case.
+                #
+                # Set the front cover to a transparent 1x1 pixel.
+                cover_val = [
+                    EMPTY_COVER,
+                    MP4Cover(data, MP4Cover.FORMAT_PNG)
+                ]
+            elif len(cover_val) == 1:
+                cover_val.append(MP4Cover(data, MP4Cover.FORMAT_PNG))
+            elif len(cover_val) >= 2:
+                cover_val[1] = MP4Cover(data, MP4Cover.FORMAT_PNG)
+
+            self.mg_file.tags['covr'] = cover_val
+            self._back_cover_path = value
+            self.mark_as_modified('back_cover_path')
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
-        if 'covr' not in self.mg_file.tags:
+        if 'covr' not in self.mg_file.tags or not self.mg_file.tags['covr']:
             self._front_cover_path = None
+            self._back_cover_path = None
             return None
 
         picture = self.mg_file.tags['covr'][0]
+        if picture != EMPTY_COVER:
+            if picture.imageformat == MP4Cover.FORMAT_JPEG:
+                cover_extension = '.jpg'
+            elif picture.imageformat == MP4Cover.FORMAT_PNG:
+                cover_extension = '.png'
+            else:
+                cover_extension = mimetypes.guess_extension(magic.from_buffer(picture, mime=True))
 
-        if picture.imageformat == MP4Cover.FORMAT_JPEG:
-            cover_extension = '.jpg'
-        elif picture.imageformat == MP4Cover.FORMAT_PNG:
-            cover_extension = '.png'
+            self.create_cover_tempfile(CoverType.FRONT, picture, cover_extension)
+
+        try:
+            picture_back = self.mg_file.tags['covr'][1]
+            assert picture_back != EMPTY_COVER
+        except (AssertionError, IndexError):
+            pass
         else:
-            cover_extension = mimetypes.guess_extension(magic.from_buffer(picture, mime=True))
+            if picture_back.imageformat == MP4Cover.FORMAT_JPEG:
+                cover_extension = '.jpg'
+            elif picture_back.imageformat == MP4Cover.FORMAT_PNG:
+                cover_extension = '.png'
+            else:
+                cover_extension = mimetypes.guess_extension(
+                    magic.from_buffer(picture_back, mime=True)
+                )
 
-        self.coverart_tempfile = tempfile.NamedTemporaryFile(
-            suffix=cover_extension
-        )
-        self.coverart_tempfile.write(picture)
-        self.coverart_tempfile.flush()
-        self._front_cover_path = self.coverart_tempfile.name
+            self.create_cover_tempfile(CoverType.BACK, picture_back, cover_extension)
 
     @GObject.Property(type=str)
     def releasedate(self):

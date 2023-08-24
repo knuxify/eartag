@@ -4,10 +4,11 @@
 from gi.repository import GObject
 import magic
 import mimetypes
-import tempfile
 
 import mutagen.id3
+from mutagen.id3 import PictureType
 
+from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
 
 # These are copied from the code for Mutagen's EasyID3 functions:
@@ -169,87 +170,117 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             self._releasedate_cached = ''
         elif tag_name.lower() == 'url':
             self.mg_file.tags.delall('WXXX')
+            self.mg_file.tags.delall('WXXX:')
+            self.mg_file.tags.delall('TXXX:purl')
         else:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             self.mg_file.tags.delall(frame_name)
 
         self.mark_as_modified(tag_name)
 
-    def delete_cover(self, clear_only=False):
-        """Deletes the cover from the file."""
+    def delete_cover(self, cover_type: CoverType, clear_only=False):
+        """Delets the cover of the specified type from the file."""
+        if cover_type == CoverType.FRONT:
+            pictypes = (PictureType.OTHER, PictureType.COVER_FRONT)
+        elif cover_type == CoverType.BACK:
+            pictypes = (PictureType.COVER_BACK, )
+        else:
+            raise ValueError
+
         for tag in dict(self.mg_file.tags).copy():
-            if tag.startswith('APIC') and self.mg_file.tags[tag].type in (0, 3):
+            if tag.startswith('APIC') and self.mg_file.tags[tag].type in pictypes:
                 del self.mg_file.tags[tag]
+
         if not clear_only:
-            self._cleanup_cover()
+            self._cleanup_cover(cover_type)
 
     def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
         super().on_remove()
 
-    @GObject.Property(type=str)
-    def front_cover_path(self):
-        return self._front_cover_path
-
-    @front_cover_path.setter
-    def front_cover_path(self, value):
+    def set_cover_path(self, cover_type: CoverType, value):
         if not value:
-            self.delete_cover()
-            return
+            return self.delete_cover(cover_type)
 
-        self._front_cover_path = value
+        if cover_type == CoverType.FRONT:
+            prop = 'front_cover_path'
+            self._front_cover_path = value
+        elif cover_type == CoverType.BACK:
+            prop = 'back_cover_path'
+            self._back_cover_path = value
+        else:
+            raise ValueError
 
         with open(value, "rb") as cover_file:
             data = cover_file.read()
 
+        mime = magic.from_file(value, mime=True)
+
         # Remove conflicting covers
-        self.delete_cover(clear_only=True)
+        self.delete_cover(cover_type, clear_only=True)
 
-        self.mg_file.tags.add(
-            mutagen.id3.APIC(
-                encoding=3, desc='Cover', mime=magic.from_file(value, mime=True), data=data, type=3
+        if cover_type == CoverType.FRONT:
+            self.mg_file.tags.add(
+                mutagen.id3.APIC(
+                    encoding=3, desc='Front Cover', mime=mime, data=data,
+                    type=PictureType.COVER_FRONT
+                )
             )
-        )
 
-        # Also set as "Other" cover art, for compatibility
-        # Would be nice if we could let the user decide whether or not to do this...
-        self.mg_file.tags.add(
-            mutagen.id3.APIC(
-                encoding=3, desc='Cover', mime=magic.from_file(value, mime=True), data=data, type=0
+            self.mg_file.tags.add(
+                mutagen.id3.APIC(
+                    encoding=3, desc='Cover', mime=mime, data=data,
+                    type=PictureType.OTHER
+                )
             )
-        )
 
-        self.mark_as_modified('front_cover_path')
+        elif cover_type == CoverType.BACK:
+            self.mg_file.tags.add(
+                mutagen.id3.APIC(
+                    encoding=3, desc='Back Cover', mime=mime, data=data,
+                    type=PictureType.COVER_BACK
+                )
+            )
+
+        self.mark_as_modified(prop)
 
     def load_cover(self):
-        """Loads the cover from the file and saves it to a temporary file."""
-        picture_data = None
+        """Loads the covers from the file and saves them to a temporary file."""
+        front_picture = None
+        back_picture = None
 
         pictures = self.mg_file.tags.getall('APIC')
         # Loop twice, first to get cover art (preferred), second to get "other"
 
         for picture in pictures:
-            if picture.type == 3:
-                picture_data = picture.data
+            if picture.type == PictureType.COVER_FRONT:
+                front_picture = picture
                 break
 
-        if not picture_data:
+        if not front_picture:
             for picture in pictures:
-                if picture.type == 0:
-                    picture_data = picture.data
+                if picture.type == PictureType.OTHER:
+                    front_picture = picture
                     break
 
-        if not picture_data:
-            return None
+        if front_picture:
+            cover_extension = mimetypes.guess_extension(front_picture.mime)
+            self.create_cover_tempfile(
+                CoverType.FRONT, front_picture.data, cover_extension
+            )
 
-        cover_extension = mimetypes.guess_extension(picture.mime)
-        self.coverart_tempfile = tempfile.NamedTemporaryFile(
-            suffix=cover_extension
-        )
-        self.coverart_tempfile.write(picture_data)
-        self.coverart_tempfile.flush()
-        self._front_cover_path = self.coverart_tempfile.name
+        # Get back cover
+        for picture in pictures:
+            if picture.type == PictureType.COVER_BACK:
+                back_picture = picture
+                break
+
+        if back_picture:
+            cover_extension = mimetypes.guess_extension(back_picture.mime)
+            self.create_cover_tempfile(
+                CoverType.BACK, back_picture.data, cover_extension
+            )
 
     @GObject.Property(type=int)
     def tracknumber(self):

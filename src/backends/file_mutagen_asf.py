@@ -4,11 +4,12 @@
 from gi.repository import GObject
 import magic
 import mimetypes
-import tempfile
 import struct
 
 import mutagen.asf
+from mutagen.id3 import PictureType
 
+from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
 
 # These are copied from the code for Quod Libet's wma handling:
@@ -172,36 +173,47 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
             del self.mg_file.tags[frame_name]
         self.mark_as_modified(tag_name)
 
-    def delete_cover(self, clear_only=False):
+    def delete_cover(self, cover_type: CoverType, clear_only=False):
         """Deletes the cover from the file."""
+        if cover_type == CoverType.FRONT:
+            pictypes = (PictureType.OTHER, PictureType.COVER_FRONT)
+        elif cover_type == CoverType.BACK:
+            pictypes = (PictureType.COVER_BACK, )
+        else:
+            raise ValueError
+
         pictures = []
         if 'WM/Picture' in self.mg_file.tags:
             pictures = self.mg_file.tags['WM/Picture']
         if pictures:
             for picture in pictures.copy():
                 picture_type = unpack_image(picture.value)[3]
-                if picture_type in (0, 3):
+                if picture_type in pictypes:
                     pictures.remove(picture)
         self.mg_file.tags['WM/Picture'] = pictures
 
         if not clear_only:
-            self._cleanup_cover()
+            self._cleanup_cover(cover_type)
 
     def on_remove(self, *args):
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
         super().on_remove()
 
-    @GObject.Property(type=str)
-    def front_cover_path(self):
-        return self._front_cover_path
-
-    @front_cover_path.setter
-    def front_cover_path(self, value):
+    def set_cover_path(self, cover_type: CoverType, value):
         if not value:
-            self.delete_cover()
-            return
-        self._front_cover_path = value
+            return self.delete_cover(cover_type)
+
+        if cover_type == CoverType.FRONT:
+            pictype = PictureType.COVER_FRONT
+            prop = 'front_cover_path'
+            self._front_cover_path = value
+        elif cover_type == CoverType.BACK:
+            pictype = PictureType.COVER_BACK
+            prop = 'back_cover_path'
+            self._back_cover_path = value
+        else:
+            raise ValueError
 
         with open(value, "rb") as cover_file:
             data = cover_file.read()
@@ -211,38 +223,40 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
             pictures = self.mg_file.tags['WM/Picture']
 
         # Remove all conflicting pictures
-        self.delete_cover(clear_only=True)
+        self.delete_cover(cover_type, clear_only=True)
 
-        packed_data = pack_image(data)
+        packed_data = pack_image(data, image_type=pictype)
         pictures.append(mutagen.asf.ASFValue(packed_data, mutagen.asf.BYTEARRAY))
 
         self.mg_file.tags['WM/Picture'] = pictures
 
-        self.mark_as_modified('front_cover_path')
+        self.mark_as_modified(prop)
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
         if 'WM/Picture' not in self.mg_file.tags:
-            self._front_cover_path = None
             return None
+
+        front_cover = None
+        back_cover = None
 
         pictures = self.mg_file.tags['WM/Picture']
 
         for picture in pictures:
             raw_data = picture.value
             mime, description, data, picture_type = unpack_image(raw_data)
-            if picture_type != 3: # FRONT_COVER
-                continue
-            break
+            if picture_type == PictureType.COVER_FRONT and not front_cover:
+                front_cover = (data, mime)
+            elif picture_type == PictureType.COVER_BACK and not back_cover:
+                back_cover = (data, mime)
 
-        cover_extension = mimetypes.guess_extension(mime)
+        if front_cover:
+            cover_extension = mimetypes.guess_extension(front_cover[1])
+            self.create_cover_tempfile(CoverType.FRONT, front_cover[0], cover_extension)
 
-        self.coverart_tempfile = tempfile.NamedTemporaryFile(
-            suffix=cover_extension
-        )
-        self.coverart_tempfile.write(data)
-        self.coverart_tempfile.flush()
-        self._front_cover_path = self.coverart_tempfile.name
+        if back_cover:
+            cover_extension = mimetypes.guess_extension(back_cover[1])
+            self.create_cover_tempfile(CoverType.BACK, back_cover[0], cover_extension)
 
     @GObject.Property(type=str)
     def releasedate(self):

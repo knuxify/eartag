@@ -12,7 +12,6 @@ class EartagFileMutagenCommon(EartagFile):
 
     def __init__(self, path):
         super().__init__(path)
-        self.coverart_tempfile = None
         self.mg_file = None
         self.load_from_file(path)
 
@@ -27,14 +26,6 @@ class EartagFileMutagenCommon(EartagFile):
 
     def on_remove(self, *args):
         self.mg_file = None
-
-    def _cleanup_cover(self):
-        """Common cleanup steps after delete_cover."""
-        if self.coverart_tempfile:
-            self.coverart_tempfile.close()
-        self._front_cover_path = ''
-        self.mark_as_modified('front_cover_path')
-        self.notify('front-cover-path')
 
     # Main properties
 
