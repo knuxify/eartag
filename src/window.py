@@ -368,7 +368,7 @@ class EartagWindow(Adw.ApplicationWindow):
         if not response:
             return
 
-        cover_path = self.file_manager.selected_files[0].cover_path
+        cover_path = self.file_manager.selected_files[0].front_cover_path
         if cover_path:
             save_path = response.get_path()
             cover_mime = magic.from_file(cover_path, mime=True)

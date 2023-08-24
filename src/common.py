@@ -495,7 +495,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
         if file.supports_album_covers:
             self.on_cover_change()
-            self.file.connect('notify::cover-path', self.on_cover_change)
+            self.file.connect('notify::front-cover-path', self.on_cover_change)
         else:
             self.cover_image.set_from_file(None)
             self.on_cover_change()
@@ -516,12 +516,12 @@ class EartagAlbumCoverImage(Gtk.Stack):
         self.on_cover_change()
 
     def on_cover_change(self, *args):
-        if self.file and self.file.cover_path and os.path.exists(self.file.cover_path):
+        if self.file and self.file.front_cover_path and os.path.exists(self.file.front_cover_path):
             self.set_visible_child(self.cover_image)
             if self.cover_image.get_pixel_size() <= 48:
-                pixbuf = self.file.cover.cover_small
+                pixbuf = self.file.front_cover.cover_small
             else:
-                pixbuf = self.file.cover.cover_large
+                pixbuf = self.file.front_cover.cover_large
 
             self.cover_image.set_from_pixbuf(pixbuf)
         else:

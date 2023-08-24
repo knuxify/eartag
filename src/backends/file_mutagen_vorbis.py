@@ -37,7 +37,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def load_from_file(self, path):
         super().load_from_file(path)
-        self._cover_path = None
+        self._front_cover_path = None
         self.coverart_tempfile = None
         self.load_cover()
         self.setup_present_extra_tags()
@@ -144,15 +144,15 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         super().on_remove()
 
     @GObject.Property(type=str)
-    def cover_path(self):
-        return self._cover_path
+    def front_cover_path(self):
+        return self._front_cover_path
 
-    @cover_path.setter
-    def cover_path(self, value):
+    @front_cover_path.setter
+    def front_cover_path(self, value):
         if not value:
             self.delete_cover()
             return
-        self._cover_path = value
+        self._front_cover_path = value
 
         with open(value, "rb") as cover_file:
             data = cover_file.read()
@@ -187,7 +187,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             else:
                 self.mg_file["metadata_block_picture"] = [vcomment_value]
 
-        self.mark_as_modified('cover_path')
+        self.mark_as_modified('front_cover_path')
 
     def load_cover(self):
         """Loads cover data from file."""
@@ -213,7 +213,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             elif picture_other:
                 picture = picture_other
             else:
-                self.notify('cover_path')
+                self.notify('front_cover_path')
                 return
 
             cover_extension = mimetypes.guess_extension(picture.mime)
@@ -222,7 +222,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             )
             self.coverart_tempfile.write(picture.data)
             self.coverart_tempfile.flush()
-            self._cover_path = self.coverart_tempfile.name
+            self._front_cover_path = self.coverart_tempfile.name
 
         # 2. Using metadata_block_picture
         elif self.mg_file.get("metadata_block_picture", []):
@@ -244,7 +244,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 )
                 self.coverart_tempfile.write(cover_picture.data)
                 self.coverart_tempfile.flush()
-                self._cover_path = self.coverart_tempfile.name
+                self._front_cover_path = self.coverart_tempfile.name
 
         # 3. Using the coverart field (and optionally covermime)
         else:
@@ -272,10 +272,10 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 )
                 self.coverart_tempfile.write(data)
                 self.coverart_tempfile.flush()
-                self._cover_path = self.coverart_tempfile.name
+                self._front_cover_path = self.coverart_tempfile.name
                 n += 1
 
-        self.notify('cover_path')
+        self.notify('front_cover_path')
 
     @GObject.Property(type=int)
     def tracknumber(self):

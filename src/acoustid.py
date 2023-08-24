@@ -92,7 +92,7 @@ def identify_file(file):
         )
         coverart_tempfile.write(coverart_data)
         coverart_tempfile.flush()
-        file.cover_path = coverart_tempfile.name
+        file.front_cover_path = coverart_tempfile.name
     file.releasedate = musicbrainz_data['first-release-date']
 
     return acoustid_data['score']

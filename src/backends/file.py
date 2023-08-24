@@ -155,14 +155,14 @@ class EartagFile(GObject.Object):
         self.notify('supports-album-covers')
         self._path = path
         self.update_writability()
-        self._cover = None
-        self._cover_path = None
+        self._front_cover = None
+        self._front_cover_path = None
         self.modified_tags = []
         self.original_values = {}
         self._error_fields = []
         self._releasedate_cached = None
         self.id = str(uuid.uuid4()) # Internal ID used for keeping track of files
-        self.connect('notify::cover-path', self._update_cover)
+        self.connect('notify::front-cover-path', self._update_front_cover)
 
     def setup_present_extra_tags(self):
         """
@@ -187,7 +187,7 @@ class EartagFile(GObject.Object):
         for tag in set(tuple(self.handled_properties) + tuple(self.present_extra_tags)):
             self.original_values[tag] = self.get_property(tag)
         if self._supports_album_covers:
-            self.original_values['cover_path'] = self.get_property('cover_path')
+            self.original_values['front_cover_path'] = self.get_property('front_cover_path')
 
     def update_writability(self):
         """
@@ -214,20 +214,20 @@ class EartagFile(GObject.Object):
         self.notify('has-error')
 
     @property
-    def cover(self):
+    def front_cover(self):
         """Gets raw cover data. This is usually used for comparisons between two files."""
         if not self._supports_album_covers:
             return False
 
-        if not self._cover:
-            self._cover = EartagFileCover(self.cover_path)
-        elif self._cover.cover_path != self.cover_path:
-            self._cover.cover_path = self.cover_path
-            self._cover.update_cover()
-        return self._cover
+        if not self._front_cover:
+            self._front_cover = EartagFileCover(self.front_cover_path)
+        elif self._front_cover.cover_path != self.front_cover_path:
+            self._front_cover.cover_path = self.front_cover_path
+            self._front_cover.update_cover()
+        return self._front_cover
 
-    def _update_cover(self, *args):
-        return self.cover  # handles all updates
+    def _update_front_cover(self, *args):
+        return self.front_cover  # handles all updates
 
     @GObject.Signal(arg_types=(str,))
     def modified(self, tag):
@@ -318,7 +318,7 @@ class EartagFile(GObject.Object):
         return os.path.splitext(self.path)[-1]
 
     @GObject.Property(type=str)
-    def cover_path(self):
+    def front_cover_path(self):
         return None
 
     @GObject.Property(type=str)

@@ -189,16 +189,16 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         super().on_remove()
 
     @GObject.Property(type=str)
-    def cover_path(self):
-        return self._cover_path
+    def front_cover_path(self):
+        return self._front_cover_path
 
-    @cover_path.setter
-    def cover_path(self, value):
+    @front_cover_path.setter
+    def front_cover_path(self, value):
         if not value:
             self.delete_cover()
             return
 
-        self._cover_path = value
+        self._front_cover_path = value
 
         with open(value, "rb") as cover_file:
             data = cover_file.read()
@@ -220,7 +220,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             )
         )
 
-        self.mark_as_modified('cover_path')
+        self.mark_as_modified('front_cover_path')
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
@@ -249,7 +249,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         )
         self.coverart_tempfile.write(picture_data)
         self.coverart_tempfile.flush()
-        self._cover_path = self.coverart_tempfile.name
+        self._front_cover_path = self.coverart_tempfile.name
 
     @GObject.Property(type=int)
     def tracknumber(self):

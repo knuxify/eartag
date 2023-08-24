@@ -153,8 +153,8 @@ class EartagAlbumCoverButton(Adw.Bin):
             return
 
         for file in self.files:
-            file.cover_path = response.get_path()
-            file.notify('cover-path')
+            file.front_cover_path = response.get_path()
+            file.notify('front-cover-path')
         self.cover_image.on_cover_change()
 
     # Drag-and-drop
@@ -186,8 +186,8 @@ class EartagAlbumCoverButton(Adw.Bin):
     def on_drag_drop(self, drop_target, value, *args):
         path = value.get_path()
         for file in self.files:
-            file.cover_path = path
-            file.notify('cover-path')
+            file.front_cover_path = path
+            file.notify('front-cover-path')
         self.cover_image.on_cover_change()
         self.on_drag_unhover()
 

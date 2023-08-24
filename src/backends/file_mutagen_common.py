@@ -32,9 +32,9 @@ class EartagFileMutagenCommon(EartagFile):
         """Common cleanup steps after delete_cover."""
         if self.coverart_tempfile:
             self.coverart_tempfile.close()
-        self._cover_path = ''
-        self.mark_as_modified('cover_path')
-        self.notify('cover-path')
+        self._front_cover_path = ''
+        self.mark_as_modified('front_cover_path')
+        self.notify('front-cover-path')
 
     # Main properties
 
