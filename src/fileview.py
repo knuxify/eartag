@@ -6,7 +6,8 @@ from .common import ( # noqa: F401
     all_equal,
     get_readable_length,
     is_valid_image_file,
-    EartagAlbumCoverImage
+    EartagAlbumCoverImage,
+    EartagPopoverButton
 )
 from .tagentry import ( # noqa: F401
     EartagTagEntry, EartagTagEntryRow,
@@ -25,6 +26,7 @@ import os.path
 class EartagAlbumCoverButton(Adw.Bin):
     __gtype_name__ = 'EartagAlbumCoverButton'
 
+    button = Gtk.Template.Child()
     cover_image = Gtk.Template.Child()
 
     highlight_revealer = Gtk.Template.Child()
@@ -62,8 +64,15 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         self.bind_property('cover-type', self.cover_image, 'cover-type')
         self.type_dropdown.bind_property('selected', self, 'cover-type')
+        self.type_dropdown.connect('notify::selected', self._dropdown_lockup_workaround)
 
         self.files = []
+
+    def _dropdown_lockup_workaround(self, *args):
+        """
+        Lazy workaround for https://gitlab.gnome.org/GNOME/gtk/-/issues/5568
+        """
+        self.button.popover.set_visible(False)
 
     @GObject.Property(type=int)
     def cover_type(self):

@@ -129,6 +129,44 @@ def inspect_prettyprint(stack):
 
     print("--- End trace ---")
 
+class EartagPopoverButton(Gtk.Box):
+    """
+    Re-implementation of GtkMenuButton that doesn't have the same issues as
+    it does. Notably:
+
+    - doesn't prevent arrow navigation from working correctly
+    - doesn't suffer from https://gitlab.gnome.org/GNOME/gtk/-/issues/5568
+      (though that one is actually worked around in the AlbumCoverButton)
+    """
+    __gtype_name__ = 'EartagPopoverButton'
+
+    def __init__(self):
+        super().__init__()
+        self._popover = None
+        self.toggle_button = Gtk.ToggleButton()
+        self.append(self.toggle_button)
+
+    @GObject.Property(type=Gtk.Widget)
+    def child(self):
+        return self.toggle_button.get_child()
+
+    @child.setter
+    def child(self, value):
+        return self.toggle_button.set_child(value)
+
+    @GObject.Property(type=Gtk.Popover)
+    def popover(self):
+        """The popover to display."""
+        return self._popover
+
+    @popover.setter
+    def popover(self, value):
+        if self._popover:
+            self.remove(self._popover)
+        self._popover = value
+        self.toggle_button.bind_property('active', self.popover, 'visible', GObject.BindingFlags.BIDIRECTIONAL)
+        self.append(self._popover)
+
 class EartagBackgroundTask(GObject.Object):
     """
     Convenience class for creating tasks that run in the background

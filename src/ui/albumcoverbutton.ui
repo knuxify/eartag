@@ -69,15 +69,15 @@
         </child>
 
         <child>
-          <object class="GtkMenuButton" id="button">
-            <property name="tooltip-text" translatable="yes">Album cover</property>
+          <object class="EartagPopoverButton" id="button">
+            <!--<property name="tooltip-text" translatable="yes">Album cover</property>-->
             <property name="popover">menu_popover</property>
 
-            <child>
+            <property name="child">
               <object class="EartagAlbumCoverImage" id="cover_image">
                 <property name="pixel-size">196</property>
               </object>
-            </child>
+            </property>
           </object>
         </child>
       </object>
