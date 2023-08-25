@@ -64,15 +64,16 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         self.bind_property('cover-type', self.cover_image, 'cover-type')
         self.type_dropdown.bind_property('selected', self, 'cover-type')
-        self.type_dropdown.connect('notify::selected', self._dropdown_lockup_workaround)
+        self.type_dropdown.get_first_child().connect('notify::active', self._dropdown_lockup_workaround)
 
         self.files = []
 
-    def _dropdown_lockup_workaround(self, *args):
+    def _dropdown_lockup_workaround(self, toggle, *args):
         """
-        Lazy workaround for https://gitlab.gnome.org/GNOME/gtk/-/issues/5568
+        Workaround for https://gitlab.gnome.org/GNOME/gtk/-/issues/5568
         """
-        self.button.popover.set_visible(False)
+        if not toggle.get_active():
+            self.button.popover.popdown()
 
     @GObject.Property(type=int)
     def cover_type(self):
