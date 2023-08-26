@@ -17,7 +17,6 @@ from .backends.file import EartagFile
 from .common import EartagBackgroundTask
 from .dialogs import (EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog, EartagRenameFailureDialog)
-from .acoustid import identify_file
 
 def is_type_bulk(path, types):
     mimetypes_guess = mimetypes.guess_type(path)[0]

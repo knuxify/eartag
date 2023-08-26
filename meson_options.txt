@@ -1,3 +1,7 @@
 option('acoustid_api_key', type : 'string', value : 'b\'Kqy8kqI8',
        description : 'API key to use for AcoustID (used for audio' +
                      'identification function).')
+
+option('enable_networked_tests', type : 'boolean', value : false,
+       description : 'Enable MusicBrainz/AcoustID tests.')
+

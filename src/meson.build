@@ -32,6 +32,7 @@ eartag_sources = [
   'common.py',
   'dialogs.py',
   'main.py',
+  'musicbrainz.py',
   'filemanager.py',
   'fileview.py',
   'rename.py',

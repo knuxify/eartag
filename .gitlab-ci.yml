@@ -5,7 +5,7 @@ stages:
 .build-common:
   stage: build-and-test
   script:
-    - meson setup _build
+    - meson setup _build -Denable_networked_tests=true
     - meson compile -C _build
     - meson test -v -C _build
     - meson install -C _build

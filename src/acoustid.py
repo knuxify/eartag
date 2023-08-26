@@ -1,101 +1,15 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from . import ACOUSTID_API_KEY, VERSION
-import acoustid
-import json
-import urllib
-import tempfile
-import traceback
-import magic
-import mimetypes
+"""
+The actual AcoustID integration has been moved to the musicbrainz.py file.
+"""
+
 from gi.repository import Adw, Gtk, GLib
 
 from .common import EartagBackgroundTask
+from .musicbrainz import acoustid_identify_file
 from .sidebar import EartagFileList # noqa: F401
-
-def identify_file(file):
-    """
-    Uses AcoustID and Chromaprint to identify a track's data, and
-    fills it automatically. Returns False if a track could not be
-    identified, the match confidence percentage otherwise.
-    """
-    try:
-        results = acoustid.match(ACOUSTID_API_KEY, file.path, parse=False)
-        if 'results' not in results or not results['results']:
-            return False
-    except:
-        return False
-
-    acoustid_data = results['results'][0]
-
-    musicbrainz_id = acoustid_data['recordings'][0]['id']
-
-    headers = {"User-Agent": f'Ear Tag {VERSION} (https://gitlab.gnome.org/World/eartag)'}
-    try:
-        musicbrainz_request = urllib.request.Request(
-            f'https://musicbrainz.org/ws/2/recording/{musicbrainz_id}?inc=releases+genres+artist-credits+media&fmt=json', # noqa: E501
-            headers=headers
-        )
-        with urllib.request.urlopen(musicbrainz_request) as musicbrainz_data_raw:
-            musicbrainz_data = json.loads(musicbrainz_data_raw.read())
-            assert 'error' not in musicbrainz_data
-    except:
-        traceback.print_exc()
-        return False
-
-    has_releases = False
-    if 'releases' in musicbrainz_data and musicbrainz_data['releases']:
-        has_releases = True
-
-        musicbrainz_release = musicbrainz_data['releases'][0]
-
-        coverart_request = urllib.request.Request(
-            f'https://coverartarchive.org/release/{musicbrainz_release["id"]}/front',
-            headers=headers
-        )
-        has_coverart = True
-        try:
-            with urllib.request.urlopen(coverart_request) as coverart_data_raw:
-                coverart_data = coverart_data_raw.read()
-        except:
-            has_coverart = False
-            pass
-
-    file.title = acoustid_data['recordings'][0]['title']
-    file.artist = acoustid_data['recordings'][0]['artists'][0]['name']
-
-    if has_releases:
-        file.album = musicbrainz_release['title']
-        if musicbrainz_release['artist-credit']:
-            file.albumartist = musicbrainz_release['artist-credit'][0]['artist']['name']
-        if 'media' in musicbrainz_release and musicbrainz_release['media'] and \
-                'tracks' in musicbrainz_release['media'][0]:
-            file.tracknumber = int(musicbrainz_release['media'][0]['tracks'][0]['number'])
-            file.totaltracknumber = musicbrainz_release['media'][0]['track-count']
-
-    if 'genres' in musicbrainz_data and musicbrainz_data['genres']:
-        file.genre = ' '.join([
-            x.isupper() and x or x.capitalize()
-            for x in musicbrainz_data['genres'][0]['name'].split(' ')
-        ])
-    elif has_releases and 'genres' in musicbrainz_release and musicbrainz_release['genres']:
-        file.genre = ' '.join([
-            x.isupper() and x or x.capitalize()
-            for x in musicbrainz_release['genres'][0]['name'].split(' ')
-        ])
-
-    if has_coverart:
-        cover_extension = mimetypes.guess_extension(magic.from_buffer(coverart_data))
-        coverart_tempfile = tempfile.NamedTemporaryFile(
-            suffix=cover_extension
-        )
-        coverart_tempfile.write(coverart_data)
-        coverart_tempfile.flush()
-        file.front_cover_path = coverart_tempfile.name
-    file.releasedate = musicbrainz_data['first-release-date']
-
-    return acoustid_data['score']
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/acoustid.ui')
 class EartagAcoustIDDialog(Adw.Window):
@@ -153,11 +67,11 @@ class EartagAcoustIDDialog(Adw.Window):
                 self.identify_task.emit_task_done()
                 return
             GLib.idle_add(
-                lambda *args: self.selected_files_filelist._widgets[file.id].\
+                lambda *args: self.selected_files_filelist._widgets[file.id].
                     acoustid_loading_icon.start()
             )
             try:
-                identify_result = identify_file(file)
+                identify_result = acoustid_identify_file(file)
             except:
                 self.results[file.id] = 0.00
             else:

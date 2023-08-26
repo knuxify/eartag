@@ -5,12 +5,10 @@ if [ -e output ]; then rm -r output; fi
 if [ -e '/tmp/eartag' ]; then rm -r '/tmp/eartag'; fi
 
 set -e
-meson setup --prefix=/tmp/eartag . output
+meson setup --prefix=/tmp/eartag -Denable_networked_tests=true . output
 meson compile -C output
-meson install -C output
-set +e
-
-GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas GTK_DEBUG=interactive /tmp/eartag/bin/eartag
+meson test -v -C output
 ret=$?
+set +e
 
 exit $ret
