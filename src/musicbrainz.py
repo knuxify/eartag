@@ -376,8 +376,10 @@ def acoustid_identify_file(file):
     try:
         results = acoustid.match(ACOUSTID_API_KEY, file.path, parse=False)
         if 'results' not in results or not results['results']:
+            print(results)
             return False
     except:
+        traceback.print_exc()
         return False
 
     acoustid_data = results['results'][0]
