@@ -9,5 +9,6 @@ test('Run tests', python3,
   args: [
     '-m', 'pytest', networked,
   ],
+  timeout: 180,
   workdir: meson.project_source_root()
 )
