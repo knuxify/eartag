@@ -171,15 +171,14 @@ def acoustid_file():
 
     file = os.path.join(os.path.dirname(__file__), 'Sneaky_Snitch.mp3')
     if not os.path.exists(file):
-        # We steal the MusicBrain module's download function since it's neat!
-        data = make_request('https://incompetech.com/music/royalty-free/mp3-royaltyfree/Sneaky%20Snitch.mp3', raw=True)  # noqa: E501
-        with open(file, 'wb') as file_writable:
-            file_writable.write(data)
+        return None
     return EartagFileMutagenID3(file)
 
 @pytest.mark.networked_tests
 def test_acoustid_identify(acoustid_file):
     """Tests the AcoustID identification function."""
+    if not acoustid_file:
+        pytest.skip("Download tests/Sneaky_Snitch.mp3 from https://incompetech.com/music/royalty-free/mp3-royaltyfree/Sneaky%20Snitch.mp3")
     assert acoustid_identify_file(acoustid_file)
     assert acoustid_file.title == 'Sneaky Snitch'
     assert acoustid_file.artist == 'Kevin MacLeod'
