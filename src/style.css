@@ -44,10 +44,6 @@
 	color: #fff;
 }
 
-.album-cover-popover button {
-	padding: 5px 10px;
-}
-
 .sidebar {
 	border-left: @border;
 }
@@ -103,6 +99,8 @@ editablelabel:focus-within {
 	outline: 2px solid alpha(@accent_color, 0.5);
 	outline-offset: 0;
 }
+
+.cover-switch-box checkbutton { margin: 3px 5px; }
 
 /* Tweaks for "compact" "more item" entries */
 .more-item.compact .header {

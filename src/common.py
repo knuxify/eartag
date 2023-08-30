@@ -4,7 +4,7 @@
 # This file contains various functions/classes used in multiple places that
 # were generic enough to be split into a single file.
 
-from gi.repository import Gdk, GLib, Gtk, GObject, Pango
+from gi.repository import Gdk, GLib, Gtk, Gio, GObject, Pango
 import os.path
 import magic
 import mimetypes
@@ -566,6 +566,10 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def mark_as_nonempty(self):
         self.on_cover_change()
 
+    @GObject.Signal
+    def cover_changed(self):
+        pass
+
     def on_cover_change(self, *args):
         if not self.file:
             self.set_visible_child(self.no_cover)
@@ -590,6 +594,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
             self.cover_image.set_from_pixbuf(pixbuf)
         else:
             self.set_visible_child(self.no_cover)
+        self.emit('cover_changed')
 
     @GObject.Property(type=int, default=196)
     def pixel_size(self):

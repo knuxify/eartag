@@ -128,6 +128,9 @@ class EartagFileCover:
             else:
                 return False
 
+    def is_empty(self):
+        return not bool(self.cover_path)
+
 class EartagFile(GObject.Object):
     """
     Generic base for GObject wrappers that provide information about a music

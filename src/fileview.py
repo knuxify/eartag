@@ -7,7 +7,7 @@ from .common import ( # noqa: F401
     get_readable_length,
     is_valid_image_file,
     EartagAlbumCoverImage,
-    EartagPopoverButton
+    EartagPopoverButton,
 )
 from .tagentry import ( # noqa: F401
     EartagTagEntry, EartagTagEntryRow,
@@ -38,8 +38,7 @@ class EartagAlbumCoverButton(Adw.Bin):
     handling_undefined_drag = False
     image_file_filter = Gtk.Template.Child()
 
-    save_cover_button = Gtk.Template.Child()
-    type_dropdown = Gtk.Template.Child()
+    front_toggle = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -62,9 +61,19 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.hover_controller.connect('leave', self.on_unhover)
         self.add_controller(self.hover_controller)
 
+        self.front_toggle.connect('notify::active', self.update_from_switcher)
+        self.front_toggle.set_active(True)
+
+        self.cover_image.connect('cover-changed', self.update_coverbutton_save_availability)
+        self.cover_image.connect('notify::cover-type', self.update_coverbutton_save_availability)
+
         self.bind_property('cover-type', self.cover_image, 'cover-type')
-        self.type_dropdown.bind_property('selected', self, 'cover-type')
-        self.type_dropdown.get_first_child().connect('notify::active', self._dropdown_lockup_workaround)
+
+        # Register actions for popover menu
+        self.install_action('albumcoverbutton.load', None, self.show_cover_file_chooser)
+        self.install_action('albumcoverbutton.save', None, self.save_cover)
+        self.action_set_enabled('albumcoverbutton.save', False)
+        self.install_action('albumcoverbutton.remove', None, self.remove_cover)
 
         self.files = []
 
@@ -75,6 +84,13 @@ class EartagAlbumCoverButton(Adw.Bin):
         if not toggle.get_active():
             self.button.popover.popdown()
 
+    def update_from_switcher(self, toggle, *args):
+        """Sets the displayed cover by checking the cover switcher."""
+        if toggle.get_active():
+            self.cover_type = CoverType.FRONT
+        else:
+            self.cover_type = CoverType.BACK
+
     @GObject.Property(type=int)
     def cover_type(self):
         """Whether to display the front or back cover."""
@@ -84,17 +100,21 @@ class EartagAlbumCoverButton(Adw.Bin):
     def cover_type(self, value):
         self._cover_type = value
 
+    def update_coverbutton_save_availability(self, *args):
+        if self.cover_type == CoverType.FRONT:
+            cover = 'front_cover'
+        else:
+            cover = 'back_cover'
+
+        self.action_set_enabled('albumcoverbutton.save',
+            (len(self.files) == 1 or all_equal([getattr(f, cover) for f in self.files])) and \
+            not getattr(self.files[0], cover).is_empty()
+        )
+
     def bind_to_file(self, file):
         self.files.append(file)
 
-        if self.cover_type == CoverType.FRONT:
-            self.save_cover_button.set_sensitive(
-                len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
-            )
-        elif self.cover_type == CoverType.BACK:
-            self.save_cover_button.set_sensitive(
-                len(self.files) == 1 or all_equal([f.back_cover for f in self.files])
-            )
+        self.update_coverbutton_save_availability()
 
         if len(self.files) < 2:
             if not file.supports_album_covers:
@@ -124,14 +144,7 @@ class EartagAlbumCoverButton(Adw.Bin):
     def unbind_from_file(self, file):
         self.files.remove(file)
 
-        if self.cover_type == CoverType.FRONT:
-            self.save_cover_button.set_sensitive(
-                len(self.files) == 1 or all_equal([f.front_cover for f in self.files])
-            )
-        elif self.cover_type == CoverType.BACK:
-            self.save_cover_button.set_sensitive(
-                len(self.files) == 1 or all_equal([f.back_cover for f in self.files])
-            )
+        self.update_coverbutton_save_availability()
 
         for _file in self.files:
             if not _file.supports_album_covers:
@@ -163,7 +176,6 @@ class EartagAlbumCoverButton(Adw.Bin):
     def on_destroy(self, *args):
         self.files = None
 
-    @Gtk.Template.Callback()
     def show_cover_file_chooser(self, *args):
         """Shows the file chooser."""
         file_chooser = Gtk.FileDialog(
@@ -179,7 +191,6 @@ class EartagAlbumCoverButton(Adw.Bin):
         file_chooser.open(self.get_native(), _cancellable,
             self.open_cover_file_from_dialog)
 
-    @Gtk.Template.Callback()
     def save_cover(self, *args):
         """Opens a file dialog to have the cover art to a file."""
 
@@ -226,7 +237,6 @@ class EartagAlbumCoverButton(Adw.Bin):
         toast = Adw.Toast.new(_("Saved cover to {path}").format(path=save_path))
         self.get_native().toast_overlay.add_toast(toast)
 
-    @Gtk.Template.Callback()
     def remove_cover(self, *args):
         for file in self.files:
             file.delete_cover(self.cover_type)

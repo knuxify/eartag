@@ -84,66 +84,64 @@
     </child>
   </template>
 
-  <object class="GtkPopover" id="menu_popover">
-    <style><class name="album-cover-popover"/></style>
-    <child>
-      <object class="GtkBox">
+  <menu id="options_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Load Image…</attribute>
+        <attribute name="icon">insert-image-symbolic</attribute>
+        <attribute name="action">albumcoverbutton.load</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Save as Image…</attribute>
+        <attribute name="icon">user-trash-symbolic</attribute>
+        <attribute name="action">albumcoverbutton.save</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Remove Cover</attribute>
+        <attribute name="icon">user-trash-symbolic</attribute>
+        <attribute name="action">albumcoverbutton.remove</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="custom">type_switcher</attribute>
+      </item>
+    </section>
+  </menu>
+
+  <object class="GtkPopoverMenu" id="menu_popover">
+    <property name="menu-model">options_menu</property>
+
+    <child type="type_switcher">
+      <object class="GtkBox" id="cover_switch_box">
+        <property name="hexpand">true</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">3</property>
+        <style><class name="cover-switch-box"/></style>
 
         <child>
-          <object class="GtkButton" id="load_cover_button">
-            <property name="child">
-              <object class="AdwButtonContent">
-                <property name="icon-name">insert-image-symbolic</property>
-                <property name="label" translatable="yes">_Load cover from file</property>
-                <property name="use-underline">True</property>
-              </object>
-            </property>
-            <signal name="clicked" handler="show_cover_file_chooser"/>
+          <object class="GtkCheckButton" id="front_toggle">
+            <property name="label" translatable="yes">Front</property>
+            <property name="group">back_toggle</property>
           </object>
         </child>
 
         <child>
-          <object class="GtkButton" id="save_cover_button">
-            <property name="child">
-              <object class="AdwButtonContent">
-                <property name="icon-name">document-save-symbolic</property>
-                <property name="label" translatable="yes">_Save cover to file</property>
-                <property name="use-underline">True</property>
-              </object>
-            </property>
-            <signal name="clicked" handler="save_cover"/>
+          <object class="GtkCheckButton" id="back_toggle">
+            <property name="label" translatable="yes">Back</property>
           </object>
         </child>
 
-        <child>
-          <object class="GtkButton" id="remove_cover_button">
-            <property name="child">
-              <object class="AdwButtonContent">
-                <property name="icon-name">user-trash-symbolic</property>
-                <property name="label" translatable="yes">_Remove cover</property>
-                <property name="use-underline">True</property>
-              </object>
-            </property>
-            <signal name="clicked" handler="remove_cover"/>
-          </object>
-        </child>
-
-        <child>
-          <object class="GtkDropDown" id="type_dropdown">
-            <property name="model">
-              <object class="GtkStringList">
-                <items>
-                  <item translatable="yes">Front cover</item>
-                  <item translatable="yes">Back cover</item>
-                </items>
-              </object>
-            </property>
-          </object>
-        </child>
       </object>
     </child>
+
+  </object>
+
+  <object class="GtkSizeGroup" id="cover_switch_button_size">
+    <property name="mode">horizontal</property>
+    <widgets>
+      <widget name="front_toggle"/>
+      <widget name="back_toggle"/>
+    </widgets>
   </object>
 
   <object class="GtkFileFilter" id="image_file_filter">
