@@ -87,12 +87,12 @@
   <menu id="options_menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">_Load Image…</attribute>
+        <attribute name="label" translatable="yes">_Choose Image…</attribute>
         <attribute name="icon">insert-image-symbolic</attribute>
         <attribute name="action">albumcoverbutton.load</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Save as Image…</attribute>
+        <attribute name="label" translatable="yes">_Save Image…</attribute>
         <attribute name="icon">user-trash-symbolic</attribute>
         <attribute name="action">albumcoverbutton.save</attribute>
       </item>
