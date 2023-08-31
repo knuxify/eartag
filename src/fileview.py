@@ -66,6 +66,7 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         self.cover_image.connect('cover-changed', self.update_coverbutton_save_availability)
         self.cover_image.connect('notify::cover-type', self.update_coverbutton_save_availability)
+        self.cover_image.connect('notify::is-empty', self.update_coverbutton_save_availability)
 
         self.bind_property('cover-type', self.cover_image, 'cover-type')
 
@@ -106,19 +107,23 @@ class EartagAlbumCoverButton(Adw.Bin):
         else:
             cover = 'back_cover'
 
-        self.action_set_enabled('albumcoverbutton.save',
-            (len(self.files) == 1 or all_equal([getattr(f, cover) for f in self.files])) and \
-            not getattr(self.files[0], cover).is_empty()
-        )
+        self.action_set_enabled('albumcoverbutton.save', not self.cover_image.is_empty)
+
+        enable_remove = False
+        for file in self.files:
+            if not getattr(file, cover).is_empty():
+                enable_remove = True
+            break
+
+        self.action_set_enabled('albumcoverbutton.remove', enable_remove)
 
     def bind_to_file(self, file):
         self.files.append(file)
 
-        self.update_coverbutton_save_availability()
-
         if len(self.files) < 2:
             if not file.supports_album_covers:
                 self.set_visible(False)
+                self.update_coverbutton_save_availability()
                 return False
             else:
                 self.set_visible(True)
@@ -144,11 +149,10 @@ class EartagAlbumCoverButton(Adw.Bin):
     def unbind_from_file(self, file):
         self.files.remove(file)
 
-        self.update_coverbutton_save_availability()
-
         for _file in self.files:
             if not _file.supports_album_covers:
                 self.set_visible(False)
+                self.update_coverbutton_save_availability()
                 break
             else:
                 self.set_visible(True)

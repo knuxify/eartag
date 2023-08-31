@@ -561,10 +561,16 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
     def mark_as_empty(self):
         """In some cases, we need to force the cover to be shown as empty."""
-        self.set_visible_child(self.no_cover)
+        if self.get_visible_child() is not self.no_cover:
+            self.set_visible_child(self.no_cover)
+            self.notify('is-empty')
 
     def mark_as_nonempty(self):
         self.on_cover_change()
+
+    @GObject.Property(type=bool, default=True)
+    def is_empty(self):
+        return self.get_visible_child() == self.no_cover
 
     @GObject.Signal
     def cover_changed(self):
@@ -572,7 +578,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
     def on_cover_change(self, *args):
         if not self.file:
-            self.set_visible_child(self.no_cover)
+            self.mark_as_empty()
             return
 
         if self.cover_type == CoverType.FRONT:
@@ -585,7 +591,10 @@ class EartagAlbumCoverImage(Gtk.Stack):
             raise ValueError(self.cover_type)
 
         if path and os.path.exists(path):
-            self.set_visible_child(self.cover_image)
+            if self.get_visible_child() is not self.cover_image:
+                self.set_visible_child(self.cover_image)
+                self.notify('is-empty')
+
             if self.cover_image.get_pixel_size() <= 48:
                 pixbuf = cover.cover_small
             else:
@@ -593,7 +602,8 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
             self.cover_image.set_from_pixbuf(pixbuf)
         else:
-            self.set_visible_child(self.no_cover)
+            self.mark_as_empty()
+
         self.emit('cover_changed')
 
     @GObject.Property(type=int, default=196)
