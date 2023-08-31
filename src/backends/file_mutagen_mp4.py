@@ -175,8 +175,6 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             self._cleanup_cover(cover_type)
 
     def on_remove(self, *args):
-        if self.coverart_tempfile:
-            self.coverart_tempfile.close()
         super().on_remove()
 
     def set_cover_path(self, cover_type: CoverType, value):

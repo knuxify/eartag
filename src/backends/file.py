@@ -187,6 +187,12 @@ class EartagFile(GObject.Object):
         self.connect('notify::front-cover-path', self._update_front_cover)
         self.connect('notify::back-cover-path', self._update_back_cover)
 
+    def on_remove(self, *args):
+        if self.front_cover_tempfile:
+            self.front_cover_tempfile.close()
+        if self.back_cover_tempfile:
+            self.back_cover_tempfile.close()
+
     def setup_present_extra_tags(self):
         """
         For performance reasons, each file keeps a list of present extra tags.

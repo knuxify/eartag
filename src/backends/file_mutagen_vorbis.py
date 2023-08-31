@@ -44,8 +44,6 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     def load_from_file(self, path):
         super().load_from_file(path)
-        self._front_cover_path = None
-        self.coverart_tempfile = None
         self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()
@@ -152,8 +150,6 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             self._cleanup_cover(cover_type)
 
     def on_remove(self, *args):
-        if self.coverart_tempfile:
-            self.coverart_tempfile.close()
         super().on_remove()
 
     def set_cover_path(self, cover_type: CoverType, value):

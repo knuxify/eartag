@@ -25,6 +25,7 @@ class EartagFileMutagenCommon(EartagFile):
         self.mark_as_unmodified()
 
     def on_remove(self, *args):
+        super().on_remove()
         self.mg_file = None
 
     # Main properties
