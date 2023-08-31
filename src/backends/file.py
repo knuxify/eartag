@@ -22,7 +22,11 @@ EXTRA_TAGS = (
     'isrc', 'language', 'discsubtitle', 'url',
 
     'albumartistsort', 'albumsort', 'composersort', 'artistsort',
-    'titlesort'
+    'titlesort',
+
+    'musicbrainz_artistid', 'musicbrainz_albumid',
+    'musicbrainz_albumartistid', 'musicbrainz_trackid',
+    'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
 )
 
 class CoverType:
@@ -82,9 +86,15 @@ TAG_NAMES = {
         "artistsort": _("Artist (sort)"),
         # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
         # software should treat this tag when sorting.
-        "titlesort": _("Title (sort)")
-    }
+        "titlesort": _("Title (sort)"),
 
+        "musicbrainz_artistid": _("MusicBrainz Artist ID"),
+        "musicbrainz_albumid": _("MusicBrainz Album ID"),
+        "musicbrainz_albumartistid": _("MusicBrainz Album Artist ID"),
+        "musicbrainz_trackid": _("MusicBrainz Release Track ID"),
+        "musicbrainz_recordingid": _("MusicBrainz Recording ID"),
+        "musicbrainz_releasegroupid": _("MusicBrainz Release Group ID"),
+    }
 
 class EartagFileCover:
     """This class is only used for comparing two covers on two files."""
@@ -885,6 +895,104 @@ class EartagFile(GObject.Object):
             self.mark_as_modified('url')
         elif self.has_tag('url'):
             self.delete_tag('url')
+
+    # MusicBrainz tags
+
+    @GObject.Property(type=str)
+    def musicbrainz_artistid(self):
+        if 'musicbrainz_artistid' in self.supported_extra_tags:
+            return self.get_tag('musicbrainz_artistid')
+        return None
+
+    @musicbrainz_artistid.setter
+    def musicbrainz_artistid(self, value):
+        if 'musicbrainz_artistid' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('musicbrainz_artistid', value)
+            self.mark_as_modified('musicbrainz_artistid')
+        elif self.has_tag('musicbrainz_artistid'):
+            self.delete_tag('musicbrainz_artistid')
+
+    @GObject.Property(type=str)
+    def musicbrainz_albumid(self):
+        if 'musicbrainz_albumid' in self.supported_extra_tags:
+            return self.get_tag('musicbrainz_albumid')
+        return None
+
+    @musicbrainz_albumid.setter
+    def musicbrainz_albumid(self, value):
+        if 'musicbrainz_albumid' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('musicbrainz_albumid', value)
+            self.mark_as_modified('musicbrainz_albumid')
+        elif self.has_tag('musicbrainz_albumid'):
+            self.delete_tag('musicbrainz_albumid')
+
+    @GObject.Property(type=str)
+    def musicbrainz_albumartistid(self):
+        if 'musicbrainz_albumartistid' in self.supported_extra_tags:
+            return self.get_tag('musicbrainz_albumartistid')
+        return None
+
+    @musicbrainz_albumartistid.setter
+    def musicbrainz_albumartistid(self, value):
+        if 'musicbrainz_albumartistid' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('musicbrainz_albumartistid', value)
+            self.mark_as_modified('musicbrainz_albumartistid')
+        elif self.has_tag('musicbrainz_albumartistid'):
+            self.delete_tag('musicbrainz_albumartistid')
+
+    @GObject.Property(type=str)
+    def musicbrainz_trackid(self):
+        if 'musicbrainz_trackid' in self.supported_extra_tags:
+            return self.get_tag('musicbrainz_trackid')
+        return None
+
+    @musicbrainz_trackid.setter
+    def musicbrainz_trackid(self, value):
+        if 'musicbrainz_trackid' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('musicbrainz_trackid', value)
+            self.mark_as_modified('musicbrainz_trackid')
+        elif self.has_tag('musicbrainz_trackid'):
+            self.delete_tag('musicbrainz_trackid')
+
+    @GObject.Property(type=str)
+    def musicbrainz_recordingid(self):
+        if 'musicbrainz_recordingid' in self.supported_extra_tags:
+            return self.get_tag('musicbrainz_recordingid')
+        return None
+
+    @musicbrainz_recordingid.setter
+    def musicbrainz_recordingid(self, value):
+        if 'musicbrainz_recordingid' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('musicbrainz_recordingid', value)
+            self.mark_as_modified('musicbrainz_recordingid')
+        elif self.has_tag('musicbrainz_recordingid'):
+            self.delete_tag('musicbrainz_recordingid')
+
+    @GObject.Property(type=str)
+    def musicbrainz_releasegroupid(self):
+        if 'musicbrainz_releasegroupid' in self.supported_extra_tags:
+            return self.get_tag('musicbrainz_releasegroupid')
+        return None
+
+    @musicbrainz_releasegroupid.setter
+    def musicbrainz_releasegroupid(self, value):
+        if 'musicbrainz_releasegroupid' not in self.supported_extra_tags:
+            return None
+        if value:
+            self.set_tag('musicbrainz_releasegroupid', value)
+            self.mark_as_modified('musicbrainz_releasegroupid')
+        elif self.has_tag('musicbrainz_releasegroupid'):
+            self.delete_tag('musicbrainz_releasegroupid')
 
     @GObject.Property(type=str)
     def none(self):

@@ -29,7 +29,11 @@ class EartagDummyFile(EartagFile):
         'isrc', 'language', 'discsubtitle', 'url',
 
         'albumartistsort', 'albumsort', 'composersort', 'artistsort',
-        'titlesort'
+        'titlesort',
+
+        'musicbrainz_artistid', 'musicbrainz_albumid',
+        'musicbrainz_albumartistid', 'musicbrainz_trackid',
+        'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
     )
 
     def __init__(self, path):

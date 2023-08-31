@@ -82,6 +82,14 @@ KEY_TO_FRAME_CLASS = {
     'url': mutagen.id3.WXXX
 }
 
+FREEFORM_KEYS = {
+    'musicbrainz_artistid': 'MusicBrainz Artist Id',
+    'musicbrainz_albumid': 'MusicBrainz Album Id',
+    'musicbrainz_albumartistid': 'MusicBrainz Album Artist Id',
+    'musicbrainz_trackid': 'MusicBrainz Release Track Id',
+    'musicbrainz_releasegroupid': 'MusicBrainz Release Group Id'
+}
+
 class EartagFileMutagenID3(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for ID3 support."""
     __gtype_name__ = 'EartagFileMutagenID3'
@@ -94,7 +102,11 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         'isrc', 'language', 'discsubtitle', 'url',
 
         'albumartistsort', 'albumsort', 'composersort', 'artistsort',
-        'titlesort'
+        'titlesort',
+
+        'musicbrainz_artistid', 'musicbrainz_albumid',
+        'musicbrainz_albumartistid', 'musicbrainz_trackid',
+        'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
     )
 
     def load_from_file(self, path):
@@ -125,24 +137,51 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     def get_tag(self, tag_name):
         """Gets a tag's value using the KEY_TO_FRAME list as a guideline."""
-        try:
-            return self.mg_file.tags[KEY_TO_FRAME[tag_name.lower()]].text[0]
-        except KeyError:
+        tag_name = tag_name.lower()
+
+        if tag_name in KEY_TO_FRAME:
+            try:
+                return self.mg_file.tags[KEY_TO_FRAME[tag_name]].text[0]
+            except KeyError:
+                return ''
+        elif tag_name in FREEFORM_KEYS:
+            try:
+                return self.mg_file.tags['TXXX:' + FREEFORM_KEYS[tag_name]].text[0]
+            except KeyError:
+                return ''
+        elif tag_name == 'musicbrainz_recordingid':
+            for key, frame in list(self.mg_file.tags.items()):
+                if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
+                    return self.mg_file.tags[key].data.decode('ascii', 'ignore')
             return ''
+
+        raise ValueError
 
     def set_tag(self, tag_name, value):
         """Sets a tag's value using the KEY_TO_FRAME list as a guideline."""
-        frame_name = KEY_TO_FRAME[tag_name.lower()]
-        frame_class = KEY_TO_FRAME_CLASS[tag_name.lower()]
+        tag_name = tag_name.lower()
 
-        # For float values that do not have numbers after the decimal point,
-        # trim the trailing .0
-        if tag_name in self.float_properties and value % 1 == 0:
-            stringified = str(int(value))
+        if tag_name in KEY_TO_FRAME:
+            frame_name = KEY_TO_FRAME[tag_name.lower()]
+            frame_class = KEY_TO_FRAME_CLASS[tag_name.lower()]
+
+            # For float values that do not have numbers after the decimal point,
+            # trim the trailing .0
+            if tag_name in self.float_properties and value % 1 == 0:
+                stringified = str(int(value))
+            else:
+                stringified = str(value)
+
+            self.mg_file.tags.setall(frame_name, [frame_class(encoding=3, text=[stringified])])
+        elif tag_name in FREEFORM_KEYS:
+            txxx = mutagen.id3.TXXX(encoding=3, desc=FREEFORM_KEYS[tag_name], text=[value])
+            self.mg_file.tags.setall('TXXX:' + FREEFORM_KEYS[tag_name], [txxx])
+            print(self.mg_file.tags)
+        elif tag_name == 'musicbrainz_recordingid':
+            ufid = mutagen.id3.UFID(owner='http://musicbrainz.org', data=bytes(value, 'ascii'))
+            self.mg_file.tags.add(ufid)
         else:
-            stringified = str(value)
-
-        self.mg_file.tags.setall(frame_name, [frame_class(encoding=3, text=[stringified])])
+            raise ValueError
 
     def has_tag(self, tag_name):
         """
@@ -155,11 +194,17 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return bool(self.totaltracknumber)
         elif tag_name == 'releasedate':
             return 'TDRC' in self.mg_file.tags or 'TDOR' in self.mg_file.tags
-        if tag_name not in KEY_TO_FRAME:
+        elif tag_name in KEY_TO_FRAME:
+            frame_name = KEY_TO_FRAME[tag_name.lower()]
+            return frame_name in self.mg_file.tags
+        elif tag_name in FREEFORM_KEYS:
+            return 'TXXX:' + FREEFORM_KEYS[tag_name] in self.mg_file.tags
+        elif tag_name == 'musicbrainz_recordingid':
+            for key, frame in list(self.mg_file.tags.items()):
+                if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
+                    return True
             return False
-        frame_name = KEY_TO_FRAME[tag_name.lower()]
-        if frame_name in self.mg_file.tags:
-            return True
+
         return False
 
     def delete_tag(self, tag_name):
@@ -172,9 +217,15 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             self.mg_file.tags.delall('WXXX')
             self.mg_file.tags.delall('WXXX:')
             self.mg_file.tags.delall('TXXX:purl')
-        else:
+        elif tag_name.lower() in KEY_TO_FRAME:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             self.mg_file.tags.delall(frame_name)
+        elif tag_name.lower() in FREEFORM_KEYS:
+            self.mg_file.tags.delall('TXXX:' + FREEFORM_KEYS[tag_name.lower()])
+        elif tag_name.lower() == 'musicbrainz_recordingid':
+            for key, frame in list(self.mg_file.tags.items()):
+                if frame.FrameID == 'UFID' and frame.owner == 'http://musicbrainz.org':
+                    del self.mg_file.tags[key]
 
         self.mark_as_modified(tag_name)
 

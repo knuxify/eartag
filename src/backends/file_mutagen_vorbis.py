@@ -26,13 +26,20 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         'composer', 'copyright', 'encodedby', 'mood', 'discnumber', 'publisher',
         'isrc',
 
-        'albumartistsort', 'albumsort', 'composersort', 'artistsort', 'titlesort'
+        'albumartistsort', 'albumsort', 'composersort', 'artistsort', 'titlesort',
+
+        'musicbrainz_artistid', 'musicbrainz_albumid',
+        'musicbrainz_albumartistid', 'musicbrainz_trackid',
+        'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
     )
 
     _replaces = {
         'releasedate': 'date',
         # There's also ENCODED-BY, but confusingly it represents... the person doing the encoding?
-        'encodedby': 'encoder'
+        'encodedby': 'encoder',
+        # Matching Picard behavior:
+        'musicbrainz_trackid': 'musicbrainz_releasetrackid',
+        'musicbrainz_recordingid': 'musicbrainz_trackid'
     }
 
     def load_from_file(self, path):

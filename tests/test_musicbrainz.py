@@ -139,15 +139,17 @@ def test_musicbrainz_file_set(dummy_file):
 def test_musicbrainz_file_update(dummy_file):
     """Tests updating a file's tags."""
 
-    dummy_file.musicbrainz_recording_id = ''
-    dummy_file.musicbrainz_release_id = ''
+    dummy_file.props.musicbrainz_recordingid = ''
+    dummy_file.props.musicbrainz_albumid = ''
 
     try: update_from_musicbrainz(dummy_file)
     except ValueError: pass
     else: raise AssertionError
 
-    dummy_file.musicbrainz_recording_id = 'e7bff259-a244-4cd9-986c-60ad162ae4df'
-    dummy_file.musicbrainz_release_id = '57c61c03-438e-4b62-b53f-38bbee7d82f6'
+    dummy_file.props.musicbrainz_recordingid = 'e7bff259-a244-4cd9-986c-60ad162ae4df'
+    dummy_file.props.musicbrainz_albumid = '57c61c03-438e-4b62-b53f-38bbee7d82f6'
+    assert dummy_file.props.musicbrainz_recordingid
+    assert dummy_file.props.musicbrainz_albumid
 
     assert update_from_musicbrainz(dummy_file)
 

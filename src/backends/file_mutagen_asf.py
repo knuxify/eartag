@@ -33,8 +33,8 @@ KEY_TO_FRAME = {
     "isrc": "WM/ISRC",
     "mood": "WM/Mood",
     "encodedby": "WM/EncodedBy",
-    "musicbrainz_trackid": "MusicBrainz/Track Id",
-    "musicbrainz_releasetrackid": "MusicBrainz/Release Track Id",
+    "musicbrainz_recordingid": "MusicBrainz/Track Id",
+    "musicbrainz_trackid": "MusicBrainz/Release Track Id",
     "musicbrainz_albumid": "MusicBrainz/Album Id",
     "musicbrainz_artistid": "MusicBrainz/Artist Id",
     "musicbrainz_albumartistid": "MusicBrainz/Album Artist Id",
@@ -117,7 +117,11 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         'mood', 'conductor', 'discnumber', 'publisher',
         'isrc', 'discsubtitle',
 
-        'albumartistsort', 'albumsort', 'artistsort'
+        'albumartistsort', 'albumsort', 'artistsort',
+
+        'musicbrainz_artistid', 'musicbrainz_albumid',
+        'musicbrainz_albumartistid', 'musicbrainz_trackid',
+        'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
     )
 
     def load_from_file(self, path):

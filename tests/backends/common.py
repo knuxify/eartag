@@ -7,6 +7,7 @@ from src.backends.file import CoverType
 # Boilerplate for handling example files
 
 EXAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'examples')
+REGENERATE_EXAMPLES = False
 
 # Example files dict, for use with get_test_file (type: filename without extension)
 EXAMPLES = {
@@ -70,15 +71,23 @@ prop_to_example_string = {
     'albumsort': 'Example Album (sort)',
     'composersort': 'Example Composer (sort)',
     'artistsort': 'Example Artist (sort)',
-    'titlesort': 'Example Title (sort)'
+    'titlesort': 'Example Title (sort)',
+
+    'musicbrainz_artistid': 'musicbrainz-artist-id',
+    'musicbrainz_albumid': 'musicbrainz-album-id',
+    'musicbrainz_albumartistid': 'musicbrainz-album-artist-id',
+    'musicbrainz_trackid': 'musicbrainz-track-id',
+    'musicbrainz_recordingid': 'musicbrainz-recording-id',
+    'musicbrainz_releasegroupid': 'musicbrainz-release-group-id'
 }
 
 # Actual test functions will follow
 
 def run_backend_tests(file_class, extension, skip_channels=False):
     # Simple read test
-    file_read = file_class(os.path.join(EXAMPLES_DIR, f'example.{extension}'))
-    backend_read(file_read, skip_channels)
+    if not REGENERATE_EXAMPLES:
+        file_read = file_class(os.path.join(EXAMPLES_DIR, f'example.{extension}'))
+        backend_read(file_read, skip_channels)
 
     # Simple write test
     with TestFile('test_write', extension, 'notags') as file_write:
@@ -155,7 +164,7 @@ def backend_write(file, skip_channels=False):
     for prop in file.handled_properties + file.supported_extra_tags:
         file.set_property(prop, prop_to_example_string[prop])
         assert file.is_modified
-        assert prop in file.modified_tags
+        assert prop in file.modified_tags, prop
         assert file.has_tag(prop), f'tag {prop} not found in file'
 
     if file._supports_album_covers:
@@ -180,6 +189,13 @@ def backend_write(file, skip_channels=False):
     file_class = type(file)
     backend_read(file_class(file.path), skip_channels)
 
+    if REGENERATE_EXAMPLES:
+        extension = os.path.splitext(file.path)[1]
+        shutil.copyfile(
+            file.path,
+            os.path.join(EXAMPLES_DIR, f'example{extension}')
+        )
+
 def backend_write_individual(empty_file, skip_channels=False):
     """Tests common backend write functions by writing each property separately."""
     backend_read_empty(empty_file)
@@ -197,6 +213,8 @@ def backend_write_individual(empty_file, skip_channels=False):
         file = file_class(new_file_path)
         file.set_property(prop, target_value)
 
+        assert file.is_modified
+        assert prop in file.modified_tags, prop
         assert file.has_tag(prop), f'tag {prop} not found in file'
 
         file.save()

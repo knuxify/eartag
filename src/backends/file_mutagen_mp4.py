@@ -45,8 +45,16 @@ KEY_TO_FRAME = {
     'conductor': '----:com.apple.iTunes:CONDUCTOR',
     'discsubtitle': '----:com.apple.iTunes:DISCSUBTITLE',
     'language': '----:com.apple.iTunes:LANGUAGE',
-    'mood': '----:com.apple.iTunes:MOOD'
+    'mood': '----:com.apple.iTunes:MOOD',
+
+    'musicbrainz_recordingid': '----:com.apple.iTunes:MusicBrainz Track Id',
+    'musicbrainz_artistid': '----:com.apple.iTunes:MusicBrainz Artist Id',
+    'musicbrainz_albumid': '----:com.apple.iTunes:MusicBrainz Album Id',
+    'musicbrainz_albumartistid': '----:com.apple.iTunes:MusicBrainz Album Artist Id',
+    'musicbrainz_releasegroupid': '----:com.apple.iTunes:MusicBrainz Release Group Id',
+    'musicbrainz_trackid': '----:com.apple.iTunes:MusicBrainz Release Track Id',
 }
+
 # Annoyingly, there's no central MP4 tag standard; most software just tries to
 # do what iTunes does (or did at some point... apparently they've had since 2005
 # or even earlier to figure it out...)
@@ -62,7 +70,11 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         'mood', 'conductor', 'discnumber', 'language', 'discsubtitle',
 
         'albumartistsort', 'albumsort', 'composersort', 'artistsort',
-        'titlesort'
+        'titlesort',
+
+        'musicbrainz_artistid', 'musicbrainz_albumid',
+        'musicbrainz_albumartistid', 'musicbrainz_trackid',
+        'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
     )
 
     def load_from_file(self, path):
