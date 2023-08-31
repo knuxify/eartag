@@ -333,9 +333,9 @@ class EartagFile(GObject.Object):
             return False
 
         if not self._front_cover:
-            self._front_cover = EartagFileCover(self.front_cover_path)
-        elif self._front_cover.cover_path != self.front_cover_path:
-            self._front_cover.cover_path = self.front_cover_path
+            self._front_cover = EartagFileCover(self._front_cover_path)
+        elif self._front_cover.cover_path != self._front_cover_path:
+            self._front_cover.cover_path = self._front_cover_path
             self._front_cover.update_cover()
         return self._front_cover
 
@@ -349,9 +349,9 @@ class EartagFile(GObject.Object):
             return False
 
         if not self._back_cover:
-            self._back_cover = EartagFileCover(self.back_cover_path)
-        elif self._back_cover.cover_path != self.back_cover_path:
-            self._back_cover.cover_path = self.back_cover_path
+            self._back_cover = EartagFileCover(self._back_cover_path)
+        elif self._back_cover.cover_path != self._back_cover_path:
+            self._back_cover.cover_path = self._back_cover_path
             self._back_cover.update_cover()
         return self._back_cover
 
@@ -364,6 +364,14 @@ class EartagFile(GObject.Object):
             return self.front_cover
         elif cover_type == CoverType.BACK:
             return self.back_cover
+        raise ValueError("Incorrect cover type")
+
+    def get_cover_path(self, cover_type: CoverType):
+        """Gets a cover path for the given cover type."""
+        if cover_type == CoverType.FRONT:
+            return self.front_cover_path
+        elif cover_type == CoverType.BACK:
+            return self.back_cover_path
         raise ValueError("Incorrect cover type")
 
     def _get_cover_tempfile_for_type(self, cover_type: CoverType):

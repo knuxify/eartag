@@ -455,3 +455,4 @@ class EartagFileManager(GObject.Object):
         """Convenience function to refresh the state of the UI"""
         self.emit('refresh-needed')
         self.emit('selection-changed')
+

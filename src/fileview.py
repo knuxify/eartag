@@ -21,6 +21,7 @@ import magic
 import mimetypes
 import shutil
 import os.path
+import tempfile
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):
@@ -43,6 +44,7 @@ class EartagAlbumCoverButton(Adw.Bin):
     def __init__(self):
         super().__init__()
         self._cover_type = CoverType.FRONT
+        self._remove_undo_buffer = {}
 
         self.connect('destroy', self.on_destroy)
         self.drop_target = Gtk.DropTarget(
@@ -242,8 +244,77 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.get_native().toast_overlay.add_toast(toast)
 
     def remove_cover(self, *args):
+        self._remove_undo_budder = {}
+        self._remove_undo_buffer['type'] = self.cover_type
+
+        if self.cover_type == CoverType.FRONT:
+            cover_path_prop = 'front_cover_path'
+        elif self.cover_type == CoverType.BACK:
+            cover_path_prop = 'back_cover_path'
+
         for file in self.files:
-            file.delete_cover(self.cover_type)
+            self._remove_undo_buffer[file.id] = file.get_property(cover_path_prop)
+            # HACK: Instead of setting the cover path directly (which will
+            # call delete_cover) we set the underlying property instead.
+            # That was we can still recover the tempfile-based covers if the
+            # remove gets undone. We call delete_cover later on.
+            setattr(file, '_' + cover_path_prop, '')
+            file.mark_as_modified(cover_path_prop)
+            file.notify(cover_path_prop)
+
+        remove_msg = gettext.ngettext(
+            "Removed cover from file",
+            "Removed covers from {n} files",
+            len(self.files)).format(n=len(self.files))
+        toast = Adw.Toast.new(remove_msg)
+        toast.set_button_label(_("Undo"))
+        toast.connect('button-clicked', self._remove_undo)
+        toast.connect('dismissed', self._remove_undo_clear)
+        self.get_native().toast_overlay.add_toast(toast)
+
+    def _remove_undo(self, *args):
+        if self._remove_undo_buffer['type'] == CoverType.FRONT:
+            cover_path_prop = 'front_cover_path'
+        elif self._remove_undo_buffer['type'] == CoverType.BACK:
+            cover_path_prop = 'back_cover_path'
+
+        file_manager = self.get_native().file_manager
+        for file in file_manager.files:
+            if file.id not in self._remove_undo_buffer:
+                continue
+            file.set_property(cover_path_prop, self._remove_undo_buffer[file.id])
+
+        for _file in self.files:
+            if _file.get_cover(self.cover_type) != self.files[0]:
+                covers_different = True
+                self.cover_image.mark_as_empty()
+                break
+        self._remove_undo_buffer = {}
+
+    def _remove_undo_clear(self, *args):
+        if 'type' not in self._remove_undo_buffer:
+            return
+
+        if self._remove_undo_buffer['type'] == CoverType.FRONT:
+            cover_path_prop = 'front_cover_path'
+        elif self._remove_undo_buffer['type'] == CoverType.BACK:
+            cover_path_prop = 'back_cover_path'
+
+        file_manager = self.get_native().file_manager
+        for file in file_manager.files:
+            if file.id not in self._remove_undo_buffer:
+                continue
+            if file.get_property(cover_path_prop) != self._remove_undo_buffer[file.id]:
+                continue
+            file.delete_cover(self._remove_undo_buffer['type'])
+
+        for _file in self.files:
+            if _file.get_cover(self.cover_type) != self.files[0]:
+                covers_different = True
+                self.cover_image.mark_as_empty()
+                break
+
+        self._remove_undo_buffer = {}
 
     def open_cover_file_from_dialog(self, dialog, result):
         """

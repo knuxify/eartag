@@ -554,9 +554,6 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def unbind_from_file(self, file=None):
         if not self.file or (file and file != self.file):
             return False
-        if self.image_file_binding:
-            self.image_file_binding.unbind()
-        self.image_file_binding = None
         self.file = None
 
     def mark_as_empty(self):
