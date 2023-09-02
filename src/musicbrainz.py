@@ -243,12 +243,10 @@ class MusicBrainzRelease(GObject.Object):
         }
         self.update_thumbnail()
 
-    """
     def dispose(self):
         for tempfile in self.cover_tempfiles.values():
-            if tempfile:
+            if tempfile and tempfile != MusicBrainzRelease.NEED_UPDATE_COVER:
                 tempfile.close()
-    """
 
     @GObject.Property(type=str)
     def release_id(self):

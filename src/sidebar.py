@@ -26,11 +26,6 @@ class EartagFileListItem(Gtk.Box):
     remove_button = Gtk.Template.Child()
     suffixes = Gtk.Template.Child()
 
-    # AcoustID suffixes
-    acoustid_info_stack = Gtk.Template.Child()
-    acoustid_info_label = Gtk.Template.Child()
-    acoustid_loading_icon = Gtk.Template.Child()
-
     def __init__(self, filelist, mode):
         super().__init__()
         self._selected = False

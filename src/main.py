@@ -89,7 +89,7 @@ class Application(Adw.Application):
         self.get_active_window().show_rename_dialog()
 
     def on_identify_action(self, widget, _):
-        self.get_active_window().show_acoustid_dialog()
+        self.get_active_window().show_identify_dialog()
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(

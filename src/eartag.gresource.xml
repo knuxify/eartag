@@ -7,7 +7,6 @@
     <file alias="selection-mode-symbolic.svg">assets/icons/selection-mode-symbolic.svg</file>
   </gresource>
   <gresource prefix="/app/drey/EarTag">
-    <file>ui/acoustid.ui</file>
     <file>ui/albumcoverbutton.ui</file>
     <file>ui/albumcoverimage.ui</file>
     <file>ui/filelistitem.ui</file>
@@ -17,6 +16,9 @@
     <file alias="gtk/help-overlay.ui">ui/shortcuts.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
+    <file>ui/identify.ui</file>
+    <file>ui/identifyitemrow.ui</file>
+    <file>ui/identifymusicbrainzrow.ui</file>
     <file>ui/dialogs/closewarning.ui</file>
     <file>ui/dialogs/discardwarning.ui</file>
     <file>ui/dialogs/removaldiscardwarning.ui</file>

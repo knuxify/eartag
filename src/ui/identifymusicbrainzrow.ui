@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagIdentifyMusicBrainzRow" parent="AdwActionRow">
+    <child type="prefix">
+      <object class="EartagAlbumCoverImage" id="coverart_image">
+        <property name="pixel-size">48</property>
+        <property name="hexpand">false</property>
+      </object>
+    </child>
+
+    <child type="suffix">
+      <object class="GtkToggleButton" id="select_button"/>
+    </child>
+  </template>
+</interface>

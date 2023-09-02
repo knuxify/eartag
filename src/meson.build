@@ -28,9 +28,9 @@ configure_file(
 
 eartag_sources = [
   '__init__.py',
-  'acoustid.py',
   'common.py',
   'dialogs.py',
+  'identify.py',
   'main.py',
   'musicbrainz.py',
   'filemanager.py',
