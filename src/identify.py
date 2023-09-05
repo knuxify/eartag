@@ -57,17 +57,17 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self._bindings = []
         self.obj = None
 
-    def bind_to_obj(self, obj):
-        """Takes a MusicBrainzRecording or MusicBrainzRelease and binds to it."""
-        self.obj = obj
+    def bind_to_release(self, release):
+        """Takes a MusicBrainzRelease and binds to it."""
+        self.release = release
         self.unbind()
         self._bindings = [
-            self.obj.bind_property('thumbnail_path', self.cover_image, 'cover_path'),
-            self.obj.bind_property('title', self, 'title'),
+            self.release.bind_property('thumbnail_path', self.cover_image, 'cover_path'),
+            self.release.bind_property('title', self, 'title'),
         ]
         self._connections = [
-            self.obj.connect('notify::artist', self.update_subtitle),
-            self.obj.connect('notify::album', self.update_subtitle),
+            self.release.connect('notify::artist', self.update_subtitle),
+            self.release.connect('notify::album', self.update_subtitle),
         ]
         self.update_subtitle()
 
@@ -76,12 +76,12 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             binding.unbind()
 
         for conn in self._connections:
-            self.obj.disconnect(conn)
+            self.release.disconnect(conn)
 
-        self.obj = None
+        self.release = None
 
     def update_subtitle(self, *args):
-        self._subtitle = self.obj.artist + ' • ' + self.obj.album
+        self._subtitle = self.release.artist + ' • ' + self.release.album
         self.set_subtitle(self._subtitle)
 
 
@@ -101,7 +101,7 @@ class EartagIdentifyFileRow(Adw.ActionRow):
     def __init__(self, file):
         super().__init__()
         self._bindings = []
-        self.obj = None
+        self.file = None
 
         self.connect('destroy', self.unbind)
 
@@ -161,7 +161,8 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         return False
 
     def update_subtitle(self, *args):
-        self._subtitle = self.file.artist + ' • ' + self.file.album
+        self._subtitle = f'{self.file.artist or 'N/A'} • {self.file.album or 'N/A'}' \
+            + f' ({os.path.basename(file.path)})'
         self.set_subtitle(self._subtitle)
 
     def start_loading(self):
@@ -200,6 +201,7 @@ class EartagIdentifyDialog(Adw.Window):
         )
         self.recordings = {}  # file.id: EartagMusicBrainzRecording
         self.apply_files = []
+        self.release_rows = {}  # release.id: EartagIdentifyReleaseRow
 
         self.identified_files = 0
         self.identify_task = EartagBackgroundTask(self.identify_files)
@@ -284,7 +286,14 @@ class EartagIdentifyDialog(Adw.Window):
                     recordings = [id_recording]
 
             if recordings:
-                self.recordings[file.id] = recordings[0]
+                rec = recordings[0]
+                self.recordings[file.id] = rec
+
+                if rec.release.release_id in self.release_rows:
+                    self.release_rows[rec.release.release_id].update_filter()
+                else:
+                    self.release_rows[rec.release.release_id] = \
+                        EartagIdentifyReleaseRow(rec.release)
 
                 GLib.idle_add(
                     self.unidentified_filter.changed,
