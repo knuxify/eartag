@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagIdentifyFileRow" parent="AdwActionRow">
+    <child type="prefix">
+      <object class="EartagIdentifyCoverImage" id="cover_image">
+        <property name="hexpand">false</property>
+      </object>
+    </child>
+
+    <child type="suffix">
+      <object class="GtkStack" id="suffix_stack">
+        <property name="visible">false</property>
+
+        <child>
+          <object class="GtkSpinner" id="loading_icon"/>
+        </child>
+
+        <child>
+          <object class="GtkImage" id="not_found_icon">
+            <property name="icon-name">dialog-question-symbolic</property>
+            <property name="tooltip-text" translatable="yes">File could not be identified</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

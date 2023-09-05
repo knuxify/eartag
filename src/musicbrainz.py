@@ -24,6 +24,9 @@ else:
     USER_AGENT = f'Ear Tag/{VERSION} (https://gitlab.gnome.org/World/eartag)'
     TEST_SUITE = False
 
+# TODO: this should be configurable
+MUSICBRAINZ_CONFIDENCE_TRESHOLD = 85
+
 def title_case_preserve_uppercase(text: str):
     return ' '.join([
         x.isupper() and x or x.capitalize()
@@ -89,9 +92,12 @@ def get_recordings_for_file(file):
     if 'recordings' not in search_data or not search_data['recordings']:
         return []
 
+    for r in search_data['recordings']:
+        print(r['id'], r['score'])
+
     return [
-        MusicBrainzRecording(r['id'], file) for r in search_data['recordings']
-        if r['score'] >= 75
+        MusicBrainzRecording(r['id'], file=file) for r in search_data['recordings']
+        if r['score'] >= MUSICBRAINZ_CONFIDENCE_TRESHOLD
     ]
 
 class MusicBrainzRecording(GObject.Object):
@@ -99,9 +105,10 @@ class MusicBrainzRecording(GObject.Object):
 
     SELECT_RELEASE_FIRST = -1
 
-    def __init__(self, recording_id=None, file=None):
+    def __init__(self, recording_id=None, release_id=None, file=None):
         super().__init__()
         self._recording_id = None
+        self._prefill_release_id = release_id
         if file:
             self._album = file.album
         else:
@@ -127,6 +134,11 @@ class MusicBrainzRecording(GObject.Object):
             album_rels = [r for r in self.available_releases if r.title == self._album]
             if len(album_rels) == 1:
                 self.release = album_rels[0]
+        if len(self.available_releases) > 1 and self._prefill_release_id:
+            for rel in self.available_releases:
+                if rel.release_id == self._prefill_release_id:
+                    self.release = rel
+                    break
 
     def apply_data_to_file(self, file):
         """
@@ -232,6 +244,7 @@ class MusicBrainzRelease(GObject.Object):
     NEED_UPDATE_COVER = -2
 
     cover_cache = {}
+    full_data_cache = {}
 
     def __init__(self, release_data):
         super().__init__()
@@ -242,6 +255,14 @@ class MusicBrainzRelease(GObject.Object):
             'back': MusicBrainzRelease.NEED_UPDATE_COVER
         }
         self.update_thumbnail()
+
+        # Get full release data
+        if self.release_id not in MusicBrainzRelease.full_data_cache:
+            MusicBrainzRelease.full_data_cache[self.release_id] = make_request(
+                build_url('release', self.release_id)
+            )
+
+        self.full_data = MusicBrainzRelease.full_data_cache[self.release_id]
 
     def dispose(self):
         for tempfile in self.cover_tempfiles.values():
@@ -271,6 +292,12 @@ class MusicBrainzRelease(GObject.Object):
         if 'first-release-date' in self.mb_data:
             return self.mb_data['first-release-date']
         return ''
+
+    @property
+    def tracks(self):
+        return self.full_data['media'][0]['tracks']
+
+    # Covers
 
     @GObject.Property(type=str)
     def thumbnail_path(self):
@@ -378,24 +405,25 @@ def update_from_musicbrainz(file):
 
 def acoustid_identify_file(file):
     """
-    Uses AcoustID and Chromaprint to identify a track's data, and
-    fills it automatically. Returns False if a track could not be
-    identified, the match confidence percentage otherwise.
+    Uses AcoustID and Chromaprint to identify a track's data.
+
+    Returns a tuple containing the confidence and MusicBrainzRecording
+    object for the file, or (0.0, None) if it couldn't be found.
     """
     try:
         results = acoustid.match(ACOUSTID_API_KEY, file.path, parse=False)
         if 'results' not in results or not results['results']:
-            print(results)
-            return False
+            return (0.0, None)
     except:
         traceback.print_exc()
-        return False
+        return (0.0, None)
 
     acoustid_data = results['results'][0]
 
-    musicbrainz_id = acoustid_data['recordings'][0]['id']
+    if 'recordings' in acoustid_data:
+        musicbrainz_id = acoustid_data['recordings'][0]['id']
+        rec = MusicBrainzRecording(musicbrainz_id)
 
-    rec = MusicBrainzRecording(musicbrainz_id)
-    rec.apply_data_to_file(file)
+        return (rec, acoustid_data['score'])
 
-    return acoustid_data['score']
+    return (0.0, None)
