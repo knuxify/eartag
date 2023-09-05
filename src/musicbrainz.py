@@ -33,8 +33,11 @@ def title_case_preserve_uppercase(text: str):
         for x in text.split(' ')
     ])
 
-def make_request(url, raw=False):
+def make_request(url, raw=False, _recursion=0):
     """Wrapper for urllib.request.Request that handles the setup."""
+    if _recursion > 3:
+        return None
+
     headers = {"User-Agent": USER_AGENT}
     try:
         request = urllib.request.Request(url, headers=headers)
@@ -52,6 +55,9 @@ def make_request(url, raw=False):
         else:
             traceback.print_exc()
             return None
+    except urllib.error.URLError:
+        time.sleep(3)
+        return make_request(url, raw=raw, _recursion=_recursion+1)
     except:
         traceback.print_exc()
         return None
@@ -89,7 +95,7 @@ def get_recordings_for_file(file):
         ))
     )
 
-    if 'recordings' not in search_data or not search_data['recordings']:
+    if not search_data or 'recordings' not in search_data or not search_data['recordings']:
         return []
 
     for r in search_data['recordings']:
@@ -139,6 +145,7 @@ class MusicBrainzRecording(GObject.Object):
                 if rel.release_id == self._prefill_release_id:
                     self.release = rel
                     break
+        self.release = self.available_releases[0]
 
     def apply_data_to_file(self, file):
         """
@@ -147,6 +154,7 @@ class MusicBrainzRecording(GObject.Object):
         try:
             self.release
         except ValueError:
+            print("No release")
             return False
 
         self.release.update_covers()
@@ -424,6 +432,6 @@ def acoustid_identify_file(file):
         musicbrainz_id = acoustid_data['recordings'][0]['id']
         rec = MusicBrainzRecording(musicbrainz_id)
 
-        return (rec, acoustid_data['score'])
+        return (acoustid_data['score'], rec)
 
     return (0.0, None)

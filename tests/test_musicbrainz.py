@@ -182,7 +182,10 @@ def acoustid_file():
 @pytest.mark.networked_tests
 def test_acoustid_identify(acoustid_file):
     """Tests the AcoustID identification function."""
-    assert acoustid_identify_file(acoustid_file)
+    ident = acoustid_identify_file(acoustid_file)
+    assert ident
+    assert ident[1]
+    ident[1].apply_data_to_file(acoustid_file)
     assert acoustid_file.title == 'Sneaky Snitch'
     assert acoustid_file.artist == 'Kevin MacLeod'
     assert acoustid_file.album == 'Mystery'

@@ -199,10 +199,11 @@ class EartagIdentifyDialog(Adw.Window):
             filter=self.unidentified_filter
         )
         self.recordings = {}  # file.id: EartagMusicBrainzRecording
+        self.apply_files = []
 
         self.identified_files = 0
         self.identify_task = EartagBackgroundTask(self.identify_files)
-        #self.apply_task = EartagBackgroundTask(self.apply_found)
+        self.apply_task = EartagBackgroundTask(self.apply_func)
 
         # For some reason we can't create this from the template, so it
         # has to be added here:
@@ -219,6 +220,11 @@ class EartagIdentifyDialog(Adw.Window):
         )
         self.identify_task.connect('task-done', self.on_identify_done)
 
+        self.apply_task.bind_property(
+            'progress', self.id_progress, 'fraction'
+        )
+        self.apply_task.connect('task-done', self.on_apply_done)
+
         self.files.splice(0, self.files.get_n_items(), self.file_manager.selected_files.copy())
 
     def unidentified_row_create(self, file, *args):
@@ -228,9 +234,10 @@ class EartagIdentifyDialog(Adw.Window):
     def on_cancel(self, *args):
         if self.identify_task.is_running:
             self.identify_task.stop()
-        else:
-            self.files = None
-            self.close()
+        if self.apply_task.is_running:
+            self.apply_task.stop()
+        self.files = None
+        self.close()
 
     @Gtk.Template.Callback()
     def do_identify(self, *args):
@@ -277,13 +284,13 @@ class EartagIdentifyDialog(Adw.Window):
                     recordings = [id_recording]
 
             if recordings:
-                print(recordings, [rec.recording_id for rec in recordings])
                 self.recordings[file.id] = recordings[0]
 
                 GLib.idle_add(
                     self.unidentified_filter.changed,
                     Gtk.FilterChange.MORE_STRICT
                 )
+                self.apply_files.append(file.id)
             else:
                 GLib.idle_add(unid_row.mark_as_unidentified)
 
@@ -291,18 +298,30 @@ class EartagIdentifyDialog(Adw.Window):
 
         self.identify_task.emit_task_done()
 
+    def on_identify_done(self, task, *args):
+        self.apply_button.set_sensitive(True)
+        # TODO: add toggle for all files
+
     @Gtk.Template.Callback()
     def do_apply(self, *args):
         self.apply_button.set_sensitive(False)
+        self.content_listbox.set_sensitive(False)
 
-        self.identify_task.reset()
-        self.identify_task.run()
+        self.apply_task.reset()
+        self.apply_task.run()
 
-    def on_identify_done(self, task, *args):
-        self.done_button.set_sensitive(True)
-        # TODO: add toggle for all files
+    def apply_func(self, *args, **kwargs):
+        files = [file for file in self.files if file.id in self.apply_files]
+        progress_step = 1 / len(files)
 
-        """
+        for file in files:
+            rec = self.recordings[file.id]
+            rec.apply_data_to_file(file)
+            self.apply_task.increment_progress(progress_step)
+
+        self.apply_task.emit_task_done()
+
+    def on_apply_done(self, *args):
         self.file_manager.emit('refresh-needed')
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(_("Identified {identified} out of {total} tracks").format(
@@ -310,9 +329,9 @@ class EartagIdentifyDialog(Adw.Window):
             ))
         )
         self.files = None
-        self.identify_task = None
+        #self.identify_task = None
+        #self.apply_task = None
         #self.close()
-        """
 
     def unidentified_filter_func(self, file, *args):
         return file.id not in self.recordings
