@@ -650,7 +650,6 @@ class EartagModelExpanderRow(Adw.ExpanderRow):
         # get_template_child and use the model binding functions there.
 
         self.list = self.get_template_child(Adw.ExpanderRow, 'list')
-        self.list.append(Gtk.Label(label='test'))
 
     def bind_model(self, *args, **kwargs):
         """See Gtk.ListBox.bind_model"""

@@ -19,7 +19,7 @@
     <file>ui/identify.ui</file>
     <file>ui/identifycoverimage.ui</file>
     <file>ui/identifyfilerow.ui</file>
-    <file>ui/identifyreleaserow.ui</file>
+    <file>ui/identifyrecordingrow.ui</file>
     <file>ui/dialogs/closewarning.ui</file>
     <file>ui/dialogs/discardwarning.ui</file>
     <file>ui/dialogs/removaldiscardwarning.ui</file>

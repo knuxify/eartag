@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagIdentifyRecordingRow" parent="AdwActionRow">
+    <child type="prefix">
+      <object class="EartagIdentifyCoverImage" id="cover_image">
+        <property name="hexpand">false</property>
+      </object>
+    </child>
+
+    <child type="suffix">
+      <object class="GtkStack" id="suffix_stack">
+        <child>
+          <object class="GtkCheckButton" id="apply_checkbox">
+            <property name="active">true</property>
+            <property name="sensitive">false</property>
+            <style><class name="selection-mode"/></style>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSpinner" id="loading_icon"/>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
