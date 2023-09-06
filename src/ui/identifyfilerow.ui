@@ -2,6 +2,8 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="EartagIdentifyFileRow" parent="AdwActionRow">
+    <style><class name="identify-file-row"/></style>
+
     <child type="prefix">
       <object class="EartagIdentifyCoverImage" id="cover_image">
         <property name="hexpand">false</property>

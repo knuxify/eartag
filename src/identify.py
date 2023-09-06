@@ -56,11 +56,21 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.obj = None
 
         # Unfortunately we can't set the parent to EartagModelExpanderRow
-        # for some weird reason, so we have to set this up manually here:
+        # in a template for some weird reason, so we have to set this widget
+        # up manually here:
+
+        self.add_css_class('identify-release-row')
 
         self.cover_image = EartagIdentifyCoverImage()
         self.cover_image.set_hexpand(False)
         self.add_prefix(self.cover_image)
+
+        self.apply_checkbox = Gtk.CheckButton()
+        self.apply_checkbox.set_active(True)
+        self.apply_checkbox.connect('notify::active', self.toggle_row_checkboxes)
+        self.apply_checkbox.add_css_class('selection-mode')
+        # TODO: switch to add_suffix once libadwaita 1.4 is out
+        self.add_action(self.apply_checkbox)
 
         if release:
             self.bind_to_release(release)
@@ -111,7 +121,9 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         return recording.release.release_id == self.release.release_id
 
     def row_create(self, recording, *args):
-        return EartagIdentifyRecordingRow(self, recording)
+        row = EartagIdentifyRecordingRow(self, recording)
+        row.apply_checkbox.connect('notify::active', self.toggle_make_inconsistent)
+        return row
 
     def toggle_apply_sensitivity(self, value):
         n = 0
@@ -120,6 +132,29 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             row.apply_checkbox.set_sensitive(value)
             n += 1
             row = self.get_row_at_index(n)
+
+    def toggle_row_checkboxes(self, toggle, *args):
+        toggle.set_inconsistent(False)
+        n = 0
+        row = self.get_row_at_index(n)
+        while row:
+            row.apply_checkbox.set_active(toggle.props.active)
+            n += 1
+            row = self.get_row_at_index(n)
+
+    def toggle_make_inconsistent(self, *args):
+        n = 0
+        row = self.get_row_at_index(n)
+        active = row.apply_checkbox.get_active()
+        while row:
+            if row.apply_checkbox.get_active() != active:
+                self.apply_checkbox.set_inconsistent(True)
+                return
+            n += 1
+            row = self.get_row_at_index(n)
+        self.apply_checkbox.set_inconsistent(False)
+        if active != self.apply_checkbox.props.active:
+            self.apply_checkbox.set_active(active)
 
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identifyfilerow.ui')
@@ -252,8 +287,10 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     def toggle_apply(self, toggle, *args):
         if toggle.props.active and self.file_id not in self.parent.parent.apply_files:
             self.parent.parent.apply_files.append(self.file_id)
+            self.parent.parent.apply_files_changed()
         elif not toggle.props.active and self.file_id in self.parent.parent.apply_files:
             self.parent.parent.apply_files.remove(self.file_id)
+            self.parent.parent.apply_files_changed()
 
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identify.ui')
@@ -364,7 +401,7 @@ class EartagIdentifyDialog(Adw.Window):
 
             if not recordings or len(recordings) > 1:
                 id_confidence, id_recording = acoustid_identify_file(file)
-                if id_confidence >= ACOUSTID_CONFIDENCE_TRESHOLD and id_recording:
+                if id_recording:
                     recordings = [id_recording]
 
             if recordings:
@@ -438,3 +475,6 @@ class EartagIdentifyDialog(Adw.Window):
 
     def unidentified_filter_func(self, file, *args):
         return file.id not in self.recordings
+
+    def apply_files_changed(self, *args):
+        self.apply_button.set_sensitive(bool(self.apply_files))

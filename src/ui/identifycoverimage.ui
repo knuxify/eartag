@@ -2,7 +2,9 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="EartagIdentifyCoverImage" parent="GtkStack">
-    <property name="hexpand">true</property>
+    <property name="hexpand">false</property>
+    <property name="vexpand">false</property>
+    <property name="valign">center</property>
     <property name="visible-child">no_cover</property>
     <style>
       <class name="cover-image"/>

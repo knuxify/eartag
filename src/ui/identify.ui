@@ -5,6 +5,7 @@
     <property name="title" translatable="yes">Identify Selected Files</property>
     <property name="default-width">600</property>
     <property name="default-height">330</property>
+    <style><class name="identify-dialog"/></style>
     <property name="content">
       <object class="GtkWindowHandle">
         <property name="hexpand">true</property>

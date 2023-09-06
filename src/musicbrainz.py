@@ -35,6 +35,15 @@ def title_case_preserve_uppercase(text: str):
         for x in text.split(' ')
     ])
 
+def simplified_string(text: str):
+    """
+    Returns a "simplified string" that throws away non-alphanumeric
+    characters for more accurate searches and comparisons.
+    """
+    return ''.join([
+        l for l in text.lower() if l.isalnum() or l == ' '
+    ])
+
 def make_request(url, raw=False, _recursion=0):
     """Wrapper for urllib.request.Request that handles the setup."""
     if _recursion > 3:
