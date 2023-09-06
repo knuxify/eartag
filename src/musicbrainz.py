@@ -26,6 +26,7 @@ else:
     TEST_SUITE = False
 
 # TODO: this should be configurable
+ACOUSTID_CONFIDENCE_TRESHOLD = 85.0
 MUSICBRAINZ_CONFIDENCE_TRESHOLD = 85
 
 def title_case_preserve_uppercase(text: str):
@@ -146,7 +147,6 @@ class MusicBrainzRecording(GObject.Object):
                 if rel.release_id == self._prefill_release_id:
                     self.release = rel
                     break
-        self.release = self.available_releases[0]
 
     def apply_data_to_file(self, file):
         """
@@ -428,6 +428,9 @@ def acoustid_identify_file(file):
         return (0.0, None)
 
     acoustid_data = results['results'][0]
+
+    if acoustid_data['score'] < ACOUSTID_CONFIDENCE_TRESHOLD:
+        return (0.0, None)
 
     if 'recordings' in acoustid_data:
         musicbrainz_id = acoustid_data['recordings'][0]['id']

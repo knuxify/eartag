@@ -15,6 +15,7 @@
             <property name="active">true</property>
             <property name="sensitive">false</property>
             <style><class name="selection-mode"/></style>
+            <signal name="notify::active" handler="toggle_apply"/>
           </object>
         </child>
 

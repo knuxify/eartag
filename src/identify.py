@@ -10,9 +10,6 @@ from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicB
 from .sidebar import EartagFileList # noqa: F401
 from .backends.file import EartagFile
 
-# TODO: this should be configurable
-ACOUSTID_CONFIDENCE_TRESHOLD = 85.0
-
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identifycoverimage.ui')
 class EartagIdentifyCoverImage(Gtk.Stack):
     __gtype_name__ = 'EartagIdentifyCoverImage'
@@ -114,7 +111,15 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         return recording.release.release_id == self.release.release_id
 
     def row_create(self, recording, *args):
-        return EartagIdentifyRecordingRow(recording)
+        return EartagIdentifyRecordingRow(self, recording)
+
+    def toggle_apply_sensitivity(self, value):
+        n = 0
+        row = self.get_row_at_index(n)
+        while row:
+            row.apply_checkbox.set_sensitive(value)
+            n += 1
+            row = self.get_row_at_index(n)
 
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identifyfilerow.ui')
@@ -154,8 +159,11 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         self.update_subtitle()
 
     def unbind(self, *args):
-        for row in self.recording_rows + self.release_rows:
-            row.unbind()
+        for binding in self._bindings:
+            binding.unbind()
+
+        for conn in self._connections:
+            self.release.disconnect(conn)
 
         self.file = None
 
@@ -187,11 +195,18 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     apply_checkbox = Gtk.Template.Child()
     loading_icon = Gtk.Template.Child()
 
-    def __init__(self, recording):
+    def __init__(self, parent, recording):
         super().__init__()
         self._bindings = []
         self._connections = []
         self.recording = None
+        file_id = None
+        self.parent = parent
+        assert self.parent
+        for file_id, _rec in self.parent.parent.recordings.items():
+            if _rec.recording_id == recording.recording_id:
+                break
+        self.file_id = file_id
 
         self.connect('destroy', self.unbind)
 
@@ -211,10 +226,14 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.update_subtitle()
 
     def unbind(self, *args):
-        for row in self.recording_rows + self.release_rows:
-            row.unbind()
+        for binding in self._bindings:
+            binding.unbind()
+
+        for conn in self._connections:
+            self.release.disconnect(conn)
 
         self.recording = None
+        self.parent = None
 
     def update_subtitle(self, *args):
         self._subtitle = f'{self.recording.artist or "N/A"} • {self.recording.album or "N/A"}'
@@ -228,6 +247,13 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     def mark_as_unidentified(self):
         self.suffix_stack.set_visible_child(self.not_found_icon)
         self.loading_icon.stop()
+
+    @Gtk.Template.Callback()
+    def toggle_apply(self, toggle, *args):
+        if toggle.props.active and self.file_id not in self.parent.parent.apply_files:
+            self.parent.parent.apply_files.append(self.file_id)
+        elif not toggle.props.active and self.file_id in self.parent.parent.apply_files:
+            self.parent.parent.apply_files.remove(self.file_id)
 
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identify.ui')
@@ -345,6 +371,10 @@ class EartagIdentifyDialog(Adw.Window):
                 rec = recordings[0]
                 self.recordings[file.id] = rec
                 self.recordings_model.append(rec)
+                try:
+                    rec.release
+                except ValueError:
+                    rec.release = rec.available_releases[0]
 
                 if rec.release.release_id in self.release_rows:
                     self.release_rows[rec.release.release_id].update_filter()
@@ -367,18 +397,24 @@ class EartagIdentifyDialog(Adw.Window):
 
     def on_identify_done(self, task, *args):
         self.apply_button.set_sensitive(True)
-        # TODO: add toggle for all files
+        for relrow in self.release_rows.values():
+            relrow.toggle_apply_sensitivity(True)
 
     @Gtk.Template.Callback()
     def do_apply(self, *args):
         self.apply_button.set_sensitive(False)
-        self.content_listbox.set_sensitive(False)
+        for relrow in self.release_rows.values():
+            relrow.toggle_apply_sensitivity(False)
 
         self.apply_task.reset()
         self.apply_task.run()
 
     def apply_func(self, *args, **kwargs):
         files = [file for file in self.files if file.id in self.apply_files]
+        if not files:
+            self.apply_task.emit_task_done()
+            return
+
         progress_step = 1 / len(files)
 
         for file in files:
