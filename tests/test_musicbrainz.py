@@ -101,37 +101,37 @@ def test_musicbrainz_file_set(dummy_file):
     else: raise AssertionError
 
     # Test with dummy data
-    dummy_file.title = 'Lips'
+    dummy_file.title = 'Royal Blue Walls'
     dummy_file.artist = 'Jane Remover'
 
     recordings = get_recordings_for_file(dummy_file)
     assert recordings
     assert len(recordings) == 1
 
-    # https://musicbrainz.org/recording/e7bff259-a244-4cd9-986c-60ad162ae4df
+    # https://musicbrainz.org/recording/4f734ae1-c363-454e-939e-a1964ae23d0b
     rec = None
     for r in recordings:
-        if r.recording_id == 'e7bff259-a244-4cd9-986c-60ad162ae4df':
+        if r.recording_id == '4f734ae1-c363-454e-939e-a1964ae23d0b':
             rec = r
             break
     assert rec, NOT_FOUND_STR
 
-    # https://musicbrainz.org/release/57c61c03-438e-4b62-b53f-38bbee7d82f6
+    # https://musicbrainz.org/release/e1e584c2-a1a3-4fa1-8ddb-b7f972f3a8e4
     rel = None
     for r in rec.available_releases:
-        if r.release_id == '57c61c03-438e-4b62-b53f-38bbee7d82f6':
+        if r.release_id == 'e1e584c2-a1a3-4fa1-8ddb-b7f972f3a8e4':
             rel = r
             break
     assert rel, NOT_FOUND_STR
 
     rec.apply_data_to_file(dummy_file)
 
-    assert dummy_file.title == 'Lips'
+    assert dummy_file.title == 'Royal Blue Walls'
     assert dummy_file.artist == 'Jane Remover'
-    assert dummy_file.album == 'Lips'
+    assert dummy_file.album == 'Royal Blue Walls'
     assert dummy_file.albumartist == 'Jane Remover'
     assert dummy_file.tracknumber == 1
-    assert dummy_file.totaltracknumber == 1
+    assert dummy_file.totaltracknumber == 2
     assert dummy_file.front_cover_path
     assert not dummy_file.back_cover_path
 

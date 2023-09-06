@@ -26,7 +26,7 @@ else:
     TEST_SUITE = False
 
 # TODO: this should be configurable
-ACOUSTID_CONFIDENCE_TRESHOLD = 85.0
+ACOUSTID_CONFIDENCE_TRESHOLD = 85
 MUSICBRAINZ_CONFIDENCE_TRESHOLD = 85
 
 def title_case_preserve_uppercase(text: str):
@@ -256,6 +256,9 @@ class MusicBrainzRecording(GObject.Object):
     def back_cover_path(self):
         return self.release.back_cover_path
 
+    def __str__(self):
+        return f'MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})'
+
 class MusicBrainzRelease(GObject.Object):
     __gtype_name__ = 'MusicBrainzRelease'
 
@@ -384,6 +387,9 @@ class MusicBrainzRelease(GObject.Object):
             self.cover_tempfiles[cover].flush()
             MusicBrainzRelease.cover_cache[url] = self.cover_tempfiles[cover]
 
+    def __str__(self):
+        return f'MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})'
+
 
 def update_from_musicbrainz(file):
     """
@@ -438,7 +444,7 @@ def acoustid_identify_file(file):
 
     acoustid_data = results['results'][0]
 
-    if acoustid_data['score'] < ACOUSTID_CONFIDENCE_TRESHOLD:
+    if acoustid_data['score'] * 100 < ACOUSTID_CONFIDENCE_TRESHOLD:
         return (0.0, None)
 
     if 'recordings' in acoustid_data:
