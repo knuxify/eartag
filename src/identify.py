@@ -346,7 +346,6 @@ class EartagIdentifyDialog(Adw.Window):
         self.apply_files = []
         self.release_rows = {}  # release.id: EartagIdentifyReleaseRow
 
-        self.identified_files = 0
         self.identify_task = EartagBackgroundTask(self.identify_files)
         self.apply_task = EartagBackgroundTask(self.apply_func)
 
@@ -504,7 +503,8 @@ class EartagIdentifyDialog(Adw.Window):
         self.identify_task.emit_task_done()
 
     def on_identify_done(self, task, *args):
-        self.apply_button.set_sensitive(True)
+        identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
+        self.apply_button.set_sensitive(bool(identified))
         for relrow in self.release_rows.values():
             relrow.toggle_apply_sensitivity(True)
 
@@ -535,9 +535,10 @@ class EartagIdentifyDialog(Adw.Window):
 
     def on_apply_done(self, *args):
         self.file_manager.emit('refresh-needed')
+        identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(_("Identified {identified} out of {total} tracks").format(
-                identified=self.identified_files, total=len(self.files)
+                identified=identified, total=self.files.get_n_items()
             ))
         )
         self.files = None

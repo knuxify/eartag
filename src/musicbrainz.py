@@ -151,6 +151,42 @@ def get_recordings_for_file(file):
 
     return ret
 
+def get_recording_from_file_id(file):
+    """
+    Takes an EartagFile with MusicBrainz ID tags set and updates the tags
+    of the file to match.
+    """
+    if not file.musicbrainz_recordingid:
+        raise ValueError("Missing recording ID")
+
+    if not file.musicbrainz_albumid:
+        raise ValueError("Missing album ID")
+
+    try:
+        rec = MusicBrainzRecording(file.musicbrainz_recordingid)
+    except ValueError:
+        return None
+    if not rec:
+        return None
+
+    if len(rec.available_releases) > 1:
+        rel = None
+        for r in rec.available_releases:
+            if r.release_id == file.musicbrainz_albumid:
+                rel = r
+                break
+        if not rel:
+            rel = rec.available_releases[0]
+            rec.release = rel
+            file.musicbrainz_albumid = rel.release_id
+    else:
+        rel = rec.release
+
+    if not rel:
+        return None
+
+    return rec
+
 class MusicBrainzRecording(GObject.Object):
     __gtype_name__ = 'MusicBrainzRecording'
 
@@ -430,45 +466,6 @@ class MusicBrainzRelease(GObject.Object):
 
     def __str__(self):
         return f'MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})'
-
-
-def update_from_musicbrainz(file):
-    """
-    Takes an EartagFile with MusicBrainz ID tags set and updates the tags
-    of the file to match.
-    """
-    if not file.musicbrainz_recordingid:
-        raise ValueError("Missing recording ID")
-
-    if not file.musicbrainz_albumid:
-        raise ValueError("Missing album ID")
-
-    try:
-        rec = MusicBrainzRecording(file.musicbrainz_recordingid)
-    except ValueError:
-        return False
-    if not rec:
-        return False
-
-    if len(rec.available_releases) > 1:
-        rel = None
-        for r in rec.available_releases:
-            if r.release_id == file.musicbrainz_albumid:
-                rel = r
-                break
-        if not rel:
-            rel = rec.available_releases[0]
-            rec.release = rel
-            file.musicbrainz_albumid = rel.release_id
-    else:
-        rel = rec.release
-
-    if not rel:
-        return False
-
-    rec.apply_data_to_file(file)
-
-    return True
 
 
 def acoustid_identify_file(file):
