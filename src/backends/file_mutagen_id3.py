@@ -176,7 +176,6 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         elif tag_name in FREEFORM_KEYS:
             txxx = mutagen.id3.TXXX(encoding=3, desc=FREEFORM_KEYS[tag_name], text=[value])
             self.mg_file.tags.setall('TXXX:' + FREEFORM_KEYS[tag_name], [txxx])
-            print(self.mg_file.tags)
         elif tag_name == 'musicbrainz_recordingid':
             ufid = mutagen.id3.UFID(owner='http://musicbrainz.org', data=bytes(value, 'ascii'))
             self.mg_file.tags.add(ufid)

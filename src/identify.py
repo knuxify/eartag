@@ -4,9 +4,11 @@
 from gi.repository import Adw, Gtk, GLib, Gio, GObject, GdkPixbuf
 
 import os
+import time
+import html
 
 from .common import EartagBackgroundTask, EartagModelExpanderRow, find_in_model
-from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicBrainzRecording, MusicBrainzRelease
+from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicBrainzRecording, MusicBrainzRelease, simplify_compare
 from .sidebar import EartagFileList # noqa: F401
 from .backends.file import EartagFile
 
@@ -67,6 +69,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
 
         self.apply_checkbox = Gtk.CheckButton()
         self.apply_checkbox.set_active(True)
+        self.apply_checkbox.set_sensitive(False)
         self.apply_checkbox.connect('notify::active', self.toggle_row_checkboxes)
         self.apply_checkbox.add_css_class('selection-mode')
         # TODO: switch to add_suffix once libadwaita 1.4 is out
@@ -89,12 +92,13 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
 
         self._bindings = [
             self.release.bind_property('thumbnail_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
-            self.release.bind_property('title', self, 'title', GObject.BindingFlags.SYNC_CREATE),
         ]
         self._connections = [
+            self.release.connect('notify::title', self.update_title),
             self.release.connect('notify::artist', self.update_subtitle),
             self.release.connect('notify::releasedate', self.update_subtitle),
         ]
+        self.update_title()
         self.update_subtitle()
 
     def unbind(self):
@@ -106,8 +110,11 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
 
         self.release = None
 
+    def update_title(self, *args):
+        self.set_title(html.escape(self.release.title))
+
     def update_subtitle(self, *args):
-        self._subtitle = self.release.artist + ' • ' + self.release.releasedate
+        self._subtitle = html.escape(self.release.artist)
         self.set_subtitle(self._subtitle)
 
     def update_filter(self):
@@ -132,6 +139,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             row.apply_checkbox.set_sensitive(value)
             n += 1
             row = self.get_row_at_index(n)
+        self.apply_checkbox.set_sensitive(value)
 
     def toggle_row_checkboxes(self, toggle, *args):
         toggle.set_inconsistent(False)
@@ -185,12 +193,13 @@ class EartagIdentifyFileRow(Adw.ActionRow):
 
         self._bindings = [
             self.file.bind_property('front_cover_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
-            self.file.bind_property('title', self, 'title', GObject.BindingFlags.SYNC_CREATE),
         ]
         self._connections = [
+            self.file.connect('notify::title', self.update_title),
             self.file.connect('notify::artist', self.update_subtitle),
             self.file.connect('notify::album', self.update_subtitle),
         ]
+        self.update_title()
         self.update_subtitle()
 
     def unbind(self, *args):
@@ -202,10 +211,13 @@ class EartagIdentifyFileRow(Adw.ActionRow):
 
         self.file = None
 
+    def update_title(self, *args):
+        self.set_title(html.escape(self.file.title))
+
     def update_subtitle(self, *args):
         self._subtitle = f'{self.file.artist or "N/A"} • {self.file.album or "N/A"}' \
             + f' ({os.path.basename(self.file.path)})'
-        self.set_subtitle(self._subtitle)
+        self.set_subtitle(html.escape(self._subtitle))
 
     def start_loading(self):
         self.suffix_stack.set_visible(True)
@@ -243,6 +255,13 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
                 break
         self.file_id = file_id
 
+        self.file_name = ''
+        if file_id:
+            for file in self.parent.parent.files:
+                if file.id == self.file_id:
+                    self.file_name = os.path.basename(file.path)
+                    break
+
         self.connect('destroy', self.unbind)
 
         self.bind_to_recording(recording)
@@ -252,12 +271,13 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
 
         self._bindings = [
             self.recording.bind_property('thumbnail_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
-            self.recording.bind_property('title', self, 'title', GObject.BindingFlags.SYNC_CREATE),
         ]
         self._connections = [
+            self.recording.connect('notify::title', self.update_title),
             self.recording.connect('notify::artist', self.update_subtitle),
             self.recording.connect('notify::album', self.update_subtitle),
         ]
+        self.update_title()
         self.update_subtitle()
 
     def unbind(self, *args):
@@ -270,9 +290,12 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.recording = None
         self.parent = None
 
+    def update_title(self, *args):
+        self.set_title(html.escape(self.recording.title))
+
     def update_subtitle(self, *args):
-        self._subtitle = f'{self.recording.artist or "N/A"} • {self.recording.album or "N/A"}'
-        self.set_subtitle(self._subtitle)
+        self._subtitle = f'{self.recording.artist or "N/A"} • {self.recording.album or "N/A"} ({self.file_name or "N/A"})'
+        self.set_subtitle(html.escape(self._subtitle))
 
     def start_loading(self):
         self.suffix_stack.set_visible(True)
@@ -313,6 +336,7 @@ class EartagIdentifyDialog(Adw.Window):
         self.files = Gio.ListStore(item_type=EartagFile)
         self.unidentified_filter = Gtk.CustomFilter()
         self.unidentified_filter.set_filter_func(self.unidentified_filter_func)
+        self.unidentified_filter.connect('changed', self.mark_unidentified_filter_as_changed)
         self.files_unidentified = Gtk.FilterListModel(
             model=self.files,
             filter=self.unidentified_filter
@@ -369,6 +393,39 @@ class EartagIdentifyDialog(Adw.Window):
         self.identify_task.reset()
         self.identify_task.run()
 
+    def _identify_set_recording(self, file, rec):
+        self.recordings[file.id] = rec
+        self.recordings_model.append(rec)
+
+        try:
+            rec.release
+        except ValueError:
+            rec.release = rec.available_releases[0]
+
+        if rec.release.release_id in self.release_rows:
+            self.release_rows[rec.release.release_id].update_filter()
+        else:
+            self.release_rows[rec.release.release_id] = \
+                EartagIdentifyReleaseRow(self, rec.release)
+            GLib.idle_add(
+                self.content_listbox.prepend,
+                self.release_rows[rec.release.release_id]
+            )
+
+        self._filter_changed = False
+        GLib.idle_add(
+            self.unidentified_filter.changed,
+            Gtk.FilterChange.DIFFERENT
+        )
+
+        self.apply_files.append(file.id)
+
+        # Prevent weird errors by waiting a bit for the filter to update
+        while not self._filter_changed:
+            time.sleep(0.5)
+
+        self._filter_changed = False
+
     def identify_files(self, *args, **kwargs):
         progress_step = 1 / len(self.files)
 
@@ -385,6 +442,7 @@ class EartagIdentifyDialog(Adw.Window):
                     if _file.id == file.id:
                         unid_index = n
                         break
+                    n += 1
                     _file = self.files_unidentified.get_item(n)
 
             if unid_index < 0:
@@ -406,27 +464,40 @@ class EartagIdentifyDialog(Adw.Window):
 
             if recordings:
                 rec = recordings[0]
-                self.recordings[file.id] = rec
-                self.recordings_model.append(rec)
-                try:
-                    rec.release
-                except ValueError:
-                    rec.release = rec.available_releases[0]
-
-                if rec.release.release_id in self.release_rows:
-                    self.release_rows[rec.release.release_id].update_filter()
-                else:
-                    self.release_rows[rec.release.release_id] = \
-                        EartagIdentifyReleaseRow(self, rec.release)
-                    self.content_listbox.prepend(self.release_rows[rec.release.release_id])
-
-                GLib.idle_add(
-                    self.unidentified_filter.changed,
-                    Gtk.FilterChange.MORE_STRICT
-                )
-                self.apply_files.append(file.id)
+                self._identify_set_recording(file, rec)
+                self.identify_task.increment_progress(progress_step)
             else:
                 GLib.idle_add(unid_row.mark_as_unidentified)
+
+        # Once we have identified all the files we could, check in
+        # the releases we have to make sure we can't find other tracks
+        # (MusicBrainz lookups tend to lose a few tracks on the way):
+        for file in list(self.files_unidentified).copy():
+            for row in self.release_rows.values():
+                rel = row.release
+
+                # Check if the release matches our artist and album
+                if rel.artist != file.artist and \
+                        not simplify_compare(rel.artist, file.artist):
+                    continue
+
+                if file.album:
+                    if rel.title != file.album and \
+                            not simplify_compare(rel.title, file.album):
+                        continue
+
+                rec = None
+                for track in row.release.tracks:
+                    if track['title'] == file.title or \
+                        simplify_compare(track['title'], file.title):
+                        rec = MusicBrainzRecording(track['recording']['id'])
+                        if rec:
+                            self._identify_set_recording(file, rec)
+                            break
+                if rec:
+                    break
+            if rec:
+                continue
 
             self.identify_task.increment_progress(progress_step)
 
@@ -456,7 +527,8 @@ class EartagIdentifyDialog(Adw.Window):
 
         for file in files:
             rec = self.recordings[file.id]
-            rec.apply_data_to_file(file)
+            rec.release.update_covers()
+            GLib.idle_add(rec.apply_data_to_file, file)
             self.apply_task.increment_progress(progress_step)
 
         self.apply_task.emit_task_done()
@@ -471,10 +543,18 @@ class EartagIdentifyDialog(Adw.Window):
         self.files = None
         self.identify_task = None
         self.apply_task = None
-        #self.close()
+        self.close()
 
     def unidentified_filter_func(self, file, *args):
         return file.id not in self.recordings
 
     def apply_files_changed(self, *args):
         self.apply_button.set_sensitive(bool(self.apply_files))
+
+    def mark_unidentified_filter_as_changed(self, *args):
+        """
+        Since we call a filter change from a thread, we have to wait for it
+        to finish first to allow the unidentified rows to refresh, else we
+        get weird errors in the identify loop.
+        """
+        self._filter_changed = True

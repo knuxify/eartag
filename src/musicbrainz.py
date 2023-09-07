@@ -12,6 +12,8 @@ import traceback
 import urllib
 import urllib.parse
 import urllib.request
+import unicodedata
+import re
 
 from gi.repository import GObject
 
@@ -35,14 +37,28 @@ def title_case_preserve_uppercase(text: str):
         for x in text.split(' ')
     ])
 
-def simplified_string(text: str):
+def simplify_string(text: str):
     """
     Returns a "simplified string" that throws away non-alphanumeric
     characters for more accurate searches and comparisons.
     """
-    return ''.join([
-        l for l in text.lower() if l.isalnum() or l == ' '
-    ])
+    # Step 1: Normalize Unicode characters
+    instr = unicodedata.normalize('NFKC', text)
+    # Step 2: Only leave lowercase alphanumeric letters
+    instr = ''.join([
+        l for l in instr.lower() if l.isalnum() or l == ' '
+    ]).strip()
+    # Step 3: Remove repeating spaces
+    instr = re.sub(' +', ' ', instr)
+
+    return instr
+
+def simplify_compare(string1: str, string2: str):
+    """
+    Compares simplified representations of two strings and returns
+    whether they're equal.
+    """
+    return simplify_string(string1) == simplify_string(string2)
 
 def make_request(url, raw=False, _recursion=0):
     """Wrapper for urllib.request.Request that handles the setup."""
@@ -61,8 +77,8 @@ def make_request(url, raw=False, _recursion=0):
         if e.code in (403, 404):
             return None
         elif e.code == 503:
-            # TODO: retry?
-            return None
+            time.sleep(3)
+            return make_request(url, raw=raw, _recursion=_recursion+1)
         else:
             traceback.print_exc()
             return None
@@ -107,15 +123,33 @@ def get_recordings_for_file(file):
     )
 
     if not search_data or 'recordings' not in search_data or not search_data['recordings']:
-        return []
+        # Try to use simplified title/artist:
+        query_data['title'] = simplify_string(file.title)
+        if not query_data['title']:
+            return []
+        query_data['artist'] = simplify_string(file.title)
+        if not query_data['artist']:
+            return []
 
+        search_data = make_request(
+            build_url('recording', '', query=' AND '.join(
+                [f'{k}:{urllib.parse.quote_plus(v)}' for k, v in query_data.items() if v]
+            ))
+        )
+        if not search_data or 'recordings' not in search_data or not search_data['recordings']:
+            return []
+
+    ret = []
     for r in search_data['recordings']:
-        print(r['id'], r['score'])
+        if r['score'] < MUSICBRAINZ_CONFIDENCE_TRESHOLD:
+            continue
 
-    return [
-        MusicBrainzRecording(r['id'], file=file) for r in search_data['recordings']
-        if r['score'] >= MUSICBRAINZ_CONFIDENCE_TRESHOLD
-    ]
+        try:
+            ret.append(MusicBrainzRecording(r['id'], file=file))
+        except ValueError:
+            pass
+
+    return ret
 
 class MusicBrainzRecording(GObject.Object):
     __gtype_name__ = 'MusicBrainzRecording'
@@ -144,6 +178,9 @@ class MusicBrainzRecording(GObject.Object):
             )
         )
 
+        if not self.mb_data:
+            raise ValueError("Could not get recording data")
+
         self.available_releases = self.get_releases()
         if len(self.available_releases) == 1:
             self.release = self.available_releases[0]
@@ -167,7 +204,7 @@ class MusicBrainzRecording(GObject.Object):
             print("No release")
             return False
 
-        self.release.update_covers()
+        self.release.update_covers(if_needed=True)
         for prop in ('title', 'artist', 'album', 'genre', 'albumartist', 'releasedate',
                 'tracknumber', 'totaltracknumber', 'front_cover_path', 'back_cover_path'):
             if self.get_property(prop):
@@ -195,8 +232,9 @@ class MusicBrainzRecording(GObject.Object):
     def get_releases(self):
         """Returns a list of MusicBrainzRelease object that match the file."""
         releases = []
-        for release in self.mb_data['releases']:
-            releases.append(MusicBrainzRelease(release))
+        if 'releases' in self.mb_data:
+            for release in self.mb_data['releases']:
+                releases.append(MusicBrainzRelease(release))
         return releases
 
     @GObject.Property()
@@ -280,7 +318,7 @@ class MusicBrainzRelease(GObject.Object):
         # Get full release data
         if self.release_id not in MusicBrainzRelease.full_data_cache:
             MusicBrainzRelease.full_data_cache[self.release_id] = make_request(
-                build_url('release', self.release_id)
+                build_url('release', self.release_id, inc=['recordings'])
             )
 
         self.full_data = MusicBrainzRelease.full_data_cache[self.release_id]
@@ -361,8 +399,11 @@ class MusicBrainzRelease(GObject.Object):
         self.cover_tempfiles['thumbnail'].flush()
         MusicBrainzRelease.cover_cache[url] = self.cover_tempfiles['thumbnail']
 
-    def update_covers(self):
+    def update_covers(self, if_needed=False):
         """Downloads the covers for the release from coverartarchive.org"""
+        if if_needed and self.cover_tempfiles['front'] != MusicBrainzRelease.NEED_UPDATE_COVER:
+            return
+
         for cover in ('front', 'back'):
             url = f'https://coverartarchive.org/release/{self.release_id}/{cover}'
             if TEST_SUITE:
@@ -402,7 +443,10 @@ def update_from_musicbrainz(file):
     if not file.musicbrainz_albumid:
         raise ValueError("Missing album ID")
 
-    rec = MusicBrainzRecording(file.musicbrainz_recordingid)
+    try:
+        rec = MusicBrainzRecording(file.musicbrainz_recordingid)
+    except ValueError:
+        return False
     if not rec:
         return False
 
