@@ -16,6 +16,7 @@
     <file alias="gtk/help-overlay.ui">ui/shortcuts.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
+    <file>ui/settings.ui</file>
     <file>ui/identify.ui</file>
     <file>ui/identifycoverimage.ui</file>
     <file>ui/identifyfilerow.ui</file>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagSettingsWindow" parent="AdwPreferencesWindow">
+    <child>
+      <object class="AdwPreferencesPage">
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">File identification</property>
+
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">MusicBrainz confidence treshold</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">AcoustID confidence treshold</property>
+              </object>
+            </child>
+
+            <child>
+              <object class="AdwComboRow">
+                <property name="title" translatable="yes">Downloaded cover art size</property>
+
+                <property name="model">
+                  <object class="GtkStringList">
+                    <items>
+                      <item translatable="yes">Do not download covers</item>
+                      <item translatable="yes">200px</item>
+                      <item translatable="yes">500px</item>
+                      <item translatable="yes">1200px</item>
+                      <item translatable="yes">Maximum size</item>
+                    </items>
+                  </object>
+                </property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

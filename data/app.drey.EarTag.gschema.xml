@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="eartag">
-	<schema id="app.drey.EarTag" path="/app/drey/EarTag/">
-		<key name="rename-placeholder" type="s">
-			<default>"{tracknumber} {title} - {artist}"</default>
-			<summary>Rename placeholder</summary>
-		</key>
-	</schema>
+  <enum id="app.drey.EarTag.enums.dlcoversize">
+    <value nick="Do not download covers" value="0"/>
+    <value nick="250" value="250"/>
+    <value nick="500" value="500"/>
+    <value nick="1200" value="1200"/>
+    <value nick="Max size" value="2000"/>
+  </enum>
+
+  <schema id="app.drey.EarTag" path="/app/drey/EarTag/">
+    <key name="rename-placeholder" type="s">
+      <default>"{tracknumber} {title} - {artist}"</default>
+      <summary>Rename placeholder</summary>
+    </key>
+
+    <key name="musicbrainz-confidence-treshold" type="i">
+      <range min="0" max="100"/>
+      <default>85</default>
+      <summary>MusicBrainz confidence treshold</summary>
+    </key>
+
+    <key name="acoustid-confidence-treshold" type="i">
+      <range min="0" max="100"/>
+      <default>85</default>
+      <summary>AcoustID confidence treshold</summary>
+    </key>
+
+    <key name="musicbrainz-cover-size" enum="app.drey.EarTag.enums.dlcoversize">
+      <default>"1200"</default>
+      <summary>MusicBrainz release cover size</summary>
+    </key>
+  </schema>
 </schemalist>

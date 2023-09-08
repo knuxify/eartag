@@ -345,3 +345,7 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_identify_dialog(self, *args):
         self.identify_dialog = EartagIdentifyDialog(self)
         self.identify_dialog.present()
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/settings.ui')
+class EartagSettingsWindow(Adw.PreferencesWindow):
+    __gtype_name__ = 'EartagSettingsWindow'

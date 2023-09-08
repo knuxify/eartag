@@ -471,6 +471,11 @@ class EartagIdentifyDialog(Adw.Window):
                 if recordings:
                     print("identify.identify_files: found recordings in musicbrainz")
 
+            # Halt again if needed; the previous operation takes a while
+            if self.identify_task.halt:
+                self.identify_task.emit_task_done()
+                return
+
             if not recordings or len(recordings) > 1:
                 print("identify.identify_files: performing acoustid lookup")
                 id_confidence, id_recording = acoustid_identify_file(file)
@@ -487,6 +492,11 @@ class EartagIdentifyDialog(Adw.Window):
                     if match:
                         recordings = [id_recording]
 
+            # Halt again if needed; the previous operation takes a while
+            if self.identify_task.halt:
+                self.identify_task.emit_task_done()
+                return
+
             if recordings:
                 rec = recordings[0]
                 self._identify_set_recording(file, rec)
@@ -498,6 +508,11 @@ class EartagIdentifyDialog(Adw.Window):
         # the releases we have to make sure we can't find other tracks
         # (MusicBrainz lookups tend to lose a few tracks on the way):
         for file in list(self.files_unidentified).copy():
+            if self.identify_task.halt:
+                self.identify_task.emit_task_done()
+                return
+
+            rec = None
             for row in self.release_rows.values():
                 rel = row.release
 
@@ -511,8 +526,12 @@ class EartagIdentifyDialog(Adw.Window):
                             not simplify_compare(rel.title, file.album):
                         continue
 
-                rec = None
                 for track in row.release.tracks:
+                    # Halt again if needed; the previous operation takes a while
+                    if self.identify_task.halt:
+                        self.identify_task.emit_task_done()
+                        return
+
                     if track['title'] == file.title or \
                         simplify_compare(track['title'], file.title):
                         rec = MusicBrainzRecording(track['recording']['id'], file=file)
@@ -529,7 +548,10 @@ class EartagIdentifyDialog(Adw.Window):
         self.identify_task.emit_task_done()
 
     def on_identify_done(self, task, *args):
-        identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
+        try:
+            identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
+        except AttributeError:  # this happens when the operation is cancelled
+            return
         self.apply_button.set_sensitive(bool(identified))
         for relrow in self.release_rows.values():
             relrow.toggle_apply_sensitivity(True)
@@ -552,6 +574,10 @@ class EartagIdentifyDialog(Adw.Window):
         progress_step = 1 / len(files)
 
         for file in files:
+            if self.apply_task.halt:
+                self.apply_task.emit_task_done()
+                return
+
             rec = self.recordings[file.id]
             rec.release.update_covers()
             GLib.idle_add(rec.apply_data_to_file, file)
@@ -561,7 +587,10 @@ class EartagIdentifyDialog(Adw.Window):
 
     def on_apply_done(self, *args):
         self.file_manager.emit('refresh-needed')
-        identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
+        try:
+            identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
+        except AttributeError:  # this happens when the operation is cancelled
+            return
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(_("Identified {identified} out of {total} tracks").format(
                 identified=identified, total=self.files.get_n_items()
