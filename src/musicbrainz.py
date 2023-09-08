@@ -225,8 +225,8 @@ class MusicBrainzRecording(GObject.Object):
                     rels.append(rel)
                     checked_ids.append(rel.group.relgroup_id)
 
-        missing = list(set(self.available_releases) - set(rels) - set(comps))
-        rels = rels + comps + missing
+        missing = list(set(self.available_releases) - set(rels))
+        rels = list(set(rels + missing))
 
         if self._album:
             for rel in rels.copy():

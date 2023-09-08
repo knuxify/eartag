@@ -28,9 +28,9 @@
                   <object class="GtkStringList">
                     <items>
                       <item translatable="yes">Do not download covers</item>
-                      <item translatable="yes">200px</item>
-                      <item translatable="yes">500px</item>
-                      <item translatable="yes">1200px</item>
+                      <item translatable="yes">250 px</item>
+                      <item translatable="yes">500 px</item>
+                      <item translatable="yes">1200 px</item>
                       <item translatable="yes">Maximum size</item>
                     </items>
                   </object>

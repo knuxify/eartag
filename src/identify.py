@@ -487,8 +487,20 @@ class EartagIdentifyDialog(Adw.Window):
                     match = True
                     if file.title and not reg_and_simple_cmp(id_recording.title, file.title):
                         match = False
-                    if file.album and not reg_and_simple_cmp(id_recording.album, file.album):
-                        match = False
+
+                    if file.album:
+                        try:
+                            id_recording.release
+                        except ValueError:  # multiple releases
+                            match = False
+                            for rel in id_recording.available_releases:
+                                if reg_and_simple_cmp(rel.title, file.album):
+                                    match = True
+                                    break
+                        else:
+                            if not reg_and_simple_cmp(id_recording.album, file.album):
+                                match = False
+
                     if match:
                         recordings = [id_recording]
 
