@@ -60,6 +60,9 @@ def simplify_compare(string1: str, string2: str):
     """
     return simplify_string(string1) == simplify_string(string2)
 
+def reg_and_simple_cmp(string1: str, string2: str):
+    return string1 == string2 or simplify_compare(string1, string2)
+
 def make_request(url, raw=False, _recursion=0):
     """Wrapper for urllib.request.Request that handles the setup."""
     if _recursion > 3:
@@ -154,17 +157,10 @@ def get_recordings_for_file(file):
             for rel in rec.available_releases:
                 if rel.title == file.album or simplify_compare(rel.title, file.album):
                     ret.insert(0, rec)
-                    try:
-                        rec.release
-                    except ValueError:
-                        print("setting release as main")
-                        rec.release = rel
-                    else:
-                        print("setting release as priority")
-                        rec.release = rel
-                        rec.available_releases.insert(0,
-                            rec.available_releases.pop(rec.available_releases.index(rel))
-                        )
+                    rec.release = rel
+                    rec.available_releases.insert(0,
+                        rec.available_releases.pop(rec.available_releases.index(rel))
+                    )
                     _break = True
                     break
             if _break:
@@ -173,42 +169,6 @@ def get_recordings_for_file(file):
         ret.append(rec)
 
     return ret
-
-def get_recording_from_file_id(file):
-    """
-    Takes an EartagFile with MusicBrainz ID tags set and updates the tags
-    of the file to match.
-    """
-    if not file.musicbrainz_recordingid:
-        raise ValueError("Missing recording ID")
-
-    if not file.musicbrainz_albumid:
-        raise ValueError("Missing album ID")
-
-    try:
-        rec = MusicBrainzRecording(file.musicbrainz_recordingid)
-    except ValueError:
-        return None
-    if not rec:
-        return None
-
-    if len(rec.available_releases) > 1:
-        rel = None
-        for r in rec.available_releases:
-            if r.release_id == file.musicbrainz_albumid:
-                rel = r
-                break
-        if not rel:
-            rel = rec.available_releases[0]
-            rec.release = rel
-            file.musicbrainz_albumid = rel.release_id
-    else:
-        rel = rec.release
-
-    if not rel:
-        return None
-
-    return rec
 
 class MusicBrainzRecording(GObject.Object):
     __gtype_name__ = 'MusicBrainzRecording'
@@ -223,7 +183,6 @@ class MusicBrainzRecording(GObject.Object):
             self._album = file.album
         else:
             self._album = None
-        print(self._album, file.title if file else 'None')
         self._release = MusicBrainzRecording.SELECT_RELEASE_FIRST
         self.recording_id = recording_id
 
@@ -245,11 +204,11 @@ class MusicBrainzRecording(GObject.Object):
 
         # Sort available releases by usefulness. Prefer albums (digital),
         # then albums (physical media), then singles, then compilations.
-        # Discard bootlegs.
         comps = []
         for rel in self.available_releases.copy():
             if rel.status != 'official':
                 self.available_releases.remove(rel)
+                comps.append(rel)
                 continue
             if 'compilation' in rel.group.secondary_types:
                 self.available_releases.remove(rel)
@@ -265,6 +224,9 @@ class MusicBrainzRecording(GObject.Object):
                 if rel.group.primary_type == reltype:
                     rels.append(rel)
                     checked_ids.append(rel.group.relgroup_id)
+
+        missing = list(set(self.available_releases) - set(rels) - set(comps))
+        rels = rels + comps + missing
 
         if self._album:
             for rel in rels.copy():
@@ -388,6 +350,9 @@ class MusicBrainzRecording(GObject.Object):
 
     def __str__(self):
         return f'MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})'
+
+    def __repr__(self):
+        return self.__str__()
 
 class MusicBrainzRelease(GObject.Object):
     __gtype_name__ = 'MusicBrainzRelease'
@@ -530,6 +495,9 @@ class MusicBrainzRelease(GObject.Object):
 
     def __str__(self):
         return f'MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})'
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class MusicBrainzReleaseGroup(GObject.Object):

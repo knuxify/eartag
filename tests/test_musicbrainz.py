@@ -3,15 +3,14 @@ Tests MusicBrainz functions.
 """
 
 from src.musicbrainz import (MusicBrainzRecording, MusicBrainzRelease,
-    get_recordings_for_file, update_from_musicbrainz,
-    acoustid_identify_file, make_request)
+    get_recordings_for_file, acoustid_identify_file, make_request)
 from src.backends.file_mutagen_id3 import EartagFileMutagenID3
 from .common import dummy_file
 
 import pytest
 import os
 
-NOT_FOUND_STR = 'Could not find one of the required releases (did something move at MusicBrainz, or do we have no internet?'  # noqa: E501
+NOT_FOUND_STR = 'Could not find one of the required releases (did something move at MusicBrainz, or do we have no internet?)'  # noqa: E501
 
 @pytest.mark.networked_tests
 def test_musicbrainz_onerel():
@@ -134,29 +133,6 @@ def test_musicbrainz_file_set(dummy_file):
     assert dummy_file.totaltracknumber == 2
     assert dummy_file.front_cover_path
     assert not dummy_file.back_cover_path
-
-@pytest.mark.networked_tests
-def test_musicbrainz_file_update(dummy_file):
-    """Tests updating a file's tags."""
-
-    dummy_file.props.musicbrainz_recordingid = ''
-    dummy_file.props.musicbrainz_albumid = ''
-
-    try: update_from_musicbrainz(dummy_file)
-    except ValueError: pass
-    else: raise AssertionError
-
-    dummy_file.props.musicbrainz_recordingid = 'e7bff259-a244-4cd9-986c-60ad162ae4df'
-    dummy_file.props.musicbrainz_albumid = '57c61c03-438e-4b62-b53f-38bbee7d82f6'
-    assert dummy_file.props.musicbrainz_recordingid
-    assert dummy_file.props.musicbrainz_albumid
-
-    assert update_from_musicbrainz(dummy_file)
-
-    assert dummy_file.title == 'Lips'
-    assert dummy_file.artist == 'Jane Remover'
-    assert dummy_file.album == 'Lips'
-    assert dummy_file.albumartist == 'Jane Remover'
 
 @pytest.fixture
 def acoustid_file():

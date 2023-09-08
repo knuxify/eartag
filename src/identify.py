@@ -8,7 +8,7 @@ import time
 import html
 
 from .common import EartagBackgroundTask, EartagModelExpanderRow, find_in_model
-from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicBrainzRecording, MusicBrainzRelease, simplify_compare
+from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicBrainzRecording, MusicBrainzRelease, simplify_compare, reg_and_simple_cmp
 from .sidebar import EartagFileList # noqa: F401
 from .backends.file import EartagFile
 
@@ -81,10 +81,18 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self._file_filter = Gtk.CustomFilter()
         self._file_filter.set_filter_func(self._file_filter_func)
         self._file_filter_model = Gtk.FilterListModel(
-            model = self.parent.recordings_model,
-            filter = self._file_filter
+            model=self.parent.recordings_model,
+            filter=self._file_filter
         )
-        self.bind_model(self._file_filter_model, self.row_create)
+
+        self._file_sorter = Gtk.CustomSorter()
+        self._file_sorter.set_sort_func(self._file_sorter_func)
+        self._file_sorter_model = Gtk.SortListModel(
+            model=self._file_filter_model,
+            sorter=self._file_sorter
+        )
+
+        self.bind_model(self._file_sorter_model, self.row_create)
 
     def bind_to_release(self, release):
         """Takes a MusicBrainzRelease and binds to it."""
@@ -126,6 +134,9 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         except (AttributeError, ValueError, AssertionError):
             return False
         return recording.release.release_id == self.release.release_id
+
+    def _file_sorter_func(self, rec1, rec2, *args):
+        return rec1.tracknumber - rec2.tracknumber
 
     def row_create(self, recording, *args):
         row = EartagIdentifyRecordingRow(self, recording)
@@ -451,15 +462,30 @@ class EartagIdentifyDialog(Adw.Window):
             unid_row = self.unidentified_row.get_row_at_index(unid_index)
             GLib.idle_add(unid_row.start_loading)
 
+            print("identify.identify_files: ready to start identifying")
+
             recordings = []
 
             if file.title and file.artist:
                 recordings = get_recordings_for_file(file)
+                if recordings:
+                    print("identify.identify_files: found recordings in musicbrainz")
 
             if not recordings or len(recordings) > 1:
+                print("identify.identify_files: performing acoustid lookup")
                 id_confidence, id_recording = acoustid_identify_file(file)
+                print("identify.identify_files: acoustid result:", id_confidence, id_recording)
+
+                # Make sure the recording we got from AcoustID matches the
+                # file we have:
                 if id_recording:
-                    recordings = [id_recording]
+                    match = True
+                    if file.title and not reg_and_simple_cmp(id_recording.title, file.title):
+                        match = False
+                    if file.album and not reg_and_simple_cmp(id_recording.album, file.album):
+                        match = False
+                    if match:
+                        recordings = [id_recording]
 
             if recordings:
                 rec = recordings[0]
