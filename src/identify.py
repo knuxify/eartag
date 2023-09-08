@@ -489,7 +489,7 @@ class EartagIdentifyDialog(Adw.Window):
                 for track in row.release.tracks:
                     if track['title'] == file.title or \
                         simplify_compare(track['title'], file.title):
-                        rec = MusicBrainzRecording(track['recording']['id'])
+                        rec = MusicBrainzRecording(track['recording']['id'], file=file)
                         if rec:
                             self._identify_set_recording(file, rec)
                             break

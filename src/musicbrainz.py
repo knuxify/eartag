@@ -145,9 +145,32 @@ def get_recordings_for_file(file):
             continue
 
         try:
-            ret.append(MusicBrainzRecording(r['id'], file=file))
+            rec = MusicBrainzRecording(r['id'], file=file)
         except ValueError:
-            pass
+            continue
+
+        if file.album:
+            _break = False
+            for rel in rec.available_releases:
+                if rel.title == file.album or simplify_compare(rel.title, file.album):
+                    ret.insert(0, rec)
+                    try:
+                        rec.release
+                    except ValueError:
+                        print("setting release as main")
+                        rec.release = rel
+                    else:
+                        print("setting release as priority")
+                        rec.release = rel
+                        rec.available_releases.insert(0,
+                            rec.available_releases.pop(rec.available_releases.index(rel))
+                        )
+                    _break = True
+                    break
+            if _break:
+                continue
+
+        ret.append(rec)
 
     return ret
 
@@ -200,6 +223,7 @@ class MusicBrainzRecording(GObject.Object):
             self._album = file.album
         else:
             self._album = None
+        print(self._album, file.title if file else 'None')
         self._release = MusicBrainzRecording.SELECT_RELEASE_FIRST
         self.recording_id = recording_id
 
@@ -218,12 +242,44 @@ class MusicBrainzRecording(GObject.Object):
             raise ValueError("Could not get recording data")
 
         self.available_releases = self.get_releases()
+
+        # Sort available releases by usefulness. Prefer albums (digital),
+        # then albums (physical media), then singles, then compilations.
+        # Discard bootlegs.
+        comps = []
+        for rel in self.available_releases.copy():
+            if rel.status != 'official':
+                self.available_releases.remove(rel)
+                continue
+            if 'compilation' in rel.group.secondary_types:
+                self.available_releases.remove(rel)
+                comps.append(rel)
+                continue
+
+        rels = []
+        for reltype in ('album', 'ep', 'single', 'other'):
+            checked_ids = []
+            for rel in self.available_releases + comps:
+                if rel.group.relgroup_id in checked_ids:
+                    continue
+                if rel.group.primary_type == reltype:
+                    rels.append(rel)
+                    checked_ids.append(rel.group.relgroup_id)
+
+        if self._album:
+            for rel in rels.copy():
+                if rel.title == self._album or simplify_compare(rel.title, self._album):
+                    rels.insert(0, rels.pop(rels.index(rel)))
+
+        self.available_releases = rels
+
         if len(self.available_releases) == 1:
             self.release = self.available_releases[0]
         elif self._album:
             album_rels = [r for r in self.available_releases if r.title == self._album]
             if len(album_rels) == 1:
                 self.release = album_rels[0]
+
         if len(self.available_releases) > 1 and self._prefill_release_id:
             for rel in self.available_releases:
                 if rel.release_id == self._prefill_release_id:
@@ -248,7 +304,7 @@ class MusicBrainzRecording(GObject.Object):
 
         file.props.musicbrainz_recordingid = self.recording_id
         file.props.musicbrainz_albumid = self.release.release_id
-        file.props.musicbrainz_releasegroupid = self.release.mb_data['release-group']['id']
+        file.props.musicbrainz_releasegroupid = self.release.group.relgroup_id
         file.props.musicbrainz_trackid = self.release.mb_data['media'][0]['tracks'][0]['id']
         file.props.musicbrainz_artistid = self.mb_data['artist-credit'][0]['artist']['id']
 
@@ -359,6 +415,8 @@ class MusicBrainzRelease(GObject.Object):
 
         self.full_data = MusicBrainzRelease.full_data_cache[self.release_id]
 
+        self.group = MusicBrainzReleaseGroup(self.mb_data['release-group'])
+
     def dispose(self):
         for tempfile in self.cover_tempfiles.values():
             if tempfile and tempfile != MusicBrainzRelease.NEED_UPDATE_COVER:
@@ -384,13 +442,19 @@ class MusicBrainzRelease(GObject.Object):
 
     @GObject.Property(type=str)
     def releasedate(self):
-        if 'first-release-date' in self.mb_data:
-            return self.mb_data['first-release-date']
+        if 'first-release-date' in self.group.mb_data:
+            return self.group.mb_data['first-release-date']
+        if 'date' in self.mb_data:
+            return self.mb_data['date']
         return ''
 
     @property
     def tracks(self):
         return self.full_data['media'][0]['tracks']
+
+    @GObject.Property(type=str)
+    def status(self):
+        return self.mb_data['status'].lower()
 
     # Covers
 
@@ -468,6 +532,27 @@ class MusicBrainzRelease(GObject.Object):
         return f'MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})'
 
 
+class MusicBrainzReleaseGroup(GObject.Object):
+    """A container for release group information, as found in the release query."""
+    __gtype_name__ = 'MusicBrainzReleaseGroup'
+
+    def __init__(self, relgroup_data):
+        super().__init__()
+        self.mb_data = relgroup_data
+
+    @GObject.Property(type=str)
+    def relgroup_id(self):
+        return self.mb_data['id']
+
+    @GObject.Property(type=str)
+    def primary_type(self):
+        return self.mb_data['primary-type'].lower()
+
+    @GObject.Property(type=str)
+    def secondary_types(self):
+        return [t.lower() for t in self.mb_data['secondary-types']]
+
+
 def acoustid_identify_file(file):
     """
     Uses AcoustID and Chromaprint to identify a track's data.
@@ -490,7 +575,7 @@ def acoustid_identify_file(file):
 
     if 'recordings' in acoustid_data:
         musicbrainz_id = acoustid_data['recordings'][0]['id']
-        rec = MusicBrainzRecording(musicbrainz_id)
+        rec = MusicBrainzRecording(musicbrainz_id, file=file)
 
         return (acoustid_data['score'], rec)
 
