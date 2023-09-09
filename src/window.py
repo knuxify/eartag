@@ -2,6 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .common import is_valid_music_file, VALID_AUDIO_MIMES
+from .config import config, DLCoverSize
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
 from .fileview import EartagFileView # noqa: F401
 from .filemanager import EartagFileManager
@@ -346,6 +347,48 @@ class EartagWindow(Adw.ApplicationWindow):
         self.identify_dialog = EartagIdentifyDialog(self)
         self.identify_dialog.present()
 
+    def show_settings_dialog(self, *args):
+        self.settings_dialog = EartagSettingsWindow(self)
+        self.settings_dialog.present()
+
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/settings.ui')
 class EartagSettingsWindow(Adw.PreferencesWindow):
     __gtype_name__ = 'EartagSettingsWindow'
+
+    mb_confidence_spinbutton = Gtk.Template.Child()
+    aid_confidence_spinbutton = Gtk.Template.Child()
+    cover_size_comborow = Gtk.Template.Child()
+
+    def __init__(self, parent):
+        super().__init__(transient_for=parent, modal=True)
+
+        config.bind(
+            'musicbrainz-confidence-treshold',
+            self.mb_confidence_spinbutton, 'value',
+            flags=Gio.SettingsBindFlags.DEFAULT
+        )
+        config.bind(
+            'acoustid-confidence-treshold',
+            self.aid_confidence_spinbutton, 'value',
+            flags=Gio.SettingsBindFlags.DEFAULT
+        )
+
+        self.bind_property('cover-size-setting', self.cover_size_comborow, 'selected',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        )
+
+    @GObject.Property(type=int)
+    def cover_size_setting(self):
+        if config.get_enum('musicbrainz-cover-size') == 0:
+            return 0
+        elif config.get_enum('musicbrainz-cover-size') == 250:
+            return 1
+        elif config.get_enum('musicbrainz-cover-size') == 500:
+            return 2
+        elif config.get_enum('musicbrainz-cover-size') == 1200:
+            return 3
+        return 4
+
+    @cover_size_setting.setter
+    def cover_size_setting(self, value):
+        config.set_enum('musicbrainz-cover-size', int(DLCoverSize.index_to_item(value)))

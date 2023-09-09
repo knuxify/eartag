@@ -24,8 +24,6 @@ class Application(Adw.Application):
         self.paths = []
         self.connect('open', self.on_open)
 
-        self.config = Gio.Settings.new('app.drey.EarTag')
-
     def on_open(self, window, files, *args):
         for file in files:
             path = file.get_path()
@@ -47,6 +45,7 @@ class Application(Adw.Application):
         win = self.props.active_window
         if not win:
             win = EartagWindow(application=self, paths=self.paths)
+        self.create_action('settings', self.on_settings_action, None)
         self.create_action('about', self.on_about_action, None)
 
         self.create_action('open_file', self.on_open_file_action, '<Ctrl>o')
@@ -91,6 +90,9 @@ class Application(Adw.Application):
 
     def on_identify_action(self, widget, _):
         self.get_active_window().show_identify_dialog()
+
+    def on_settings_action(self, widget, _):
+        self.get_active_window().show_settings_dialog()
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(

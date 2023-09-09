@@ -20,16 +20,14 @@ from gi.repository import GObject
 try:
     from . import ACOUSTID_API_KEY, VERSION
 except ImportError:  # handle test suite import
-    from tests.common import ACOUSTID_API_KEY, VERSION
+    from tests.common import ACOUSTID_API_KEY, VERSION, config
+
     USER_AGENT = f'Ear Tag (Test suite)/{VERSION} (https://gitlab.gnome.org/World/eartag)'
     TEST_SUITE = True
 else:
+    from .config import config
     USER_AGENT = f'Ear Tag/{VERSION} (https://gitlab.gnome.org/World/eartag)'
     TEST_SUITE = False
-
-# TODO: this should be configurable
-ACOUSTID_CONFIDENCE_TRESHOLD = 85
-MUSICBRAINZ_CONFIDENCE_TRESHOLD = 85
 
 def title_case_preserve_uppercase(text: str):
     return ' '.join([
@@ -144,7 +142,7 @@ def get_recordings_for_file(file):
 
     ret = []
     for r in search_data['recordings']:
-        if r['score'] < MUSICBRAINZ_CONFIDENCE_TRESHOLD:
+        if r['score'] < config['musicbrainz-confidence-treshold']:
             continue
 
         try:
@@ -469,13 +467,20 @@ class MusicBrainzRelease(GObject.Object):
         if if_needed and self.cover_tempfiles['front'] != MusicBrainzRelease.NEED_UPDATE_COVER:
             return
 
+        if config.get_enum('musicbrainz-cover-size') == 0:
+            self.cover_tempfiles['front'] = ''
+            self.cover_tempfiles['back'] = ''
+            return
+
         for cover in ('front', 'back'):
+            if config.get_enum('musicbrainz-cover-size') == 0:
+                continue
+
             url = f'https://coverartarchive.org/release/{self.release_id}/{cover}'
-            if TEST_SUITE:
-                # For the test suite, we don't want to download the full-size images,
-                # because this takes a significant amount of time and bandwidth -
-                # not ideal for rapid testing.
-                url += '-250'
+
+            if config.get_enum('musicbrainz-cover-size') in (250, 500, 1200):
+                url += '-' + str(config.get_enum('musicbrainz-cover-size'))
+
             if url in MusicBrainzRelease.cover_cache:
                 self.cover_tempfiles[cover] = MusicBrainzRelease.cover_cache[url]
                 continue
@@ -538,7 +543,7 @@ def acoustid_identify_file(file):
 
     acoustid_data = results['results'][0]
 
-    if acoustid_data['score'] * 100 < ACOUSTID_CONFIDENCE_TRESHOLD:
+    if acoustid_data['score'] * 100 < config['acoustid-confidence-treshold']:
         return (0.0, None)
 
     if 'recordings' in acoustid_data:

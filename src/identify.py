@@ -462,14 +462,10 @@ class EartagIdentifyDialog(Adw.Window):
             unid_row = self.unidentified_row.get_row_at_index(unid_index)
             GLib.idle_add(unid_row.start_loading)
 
-            print("identify.identify_files: ready to start identifying")
-
             recordings = []
 
             if file.title and file.artist:
                 recordings = get_recordings_for_file(file)
-                if recordings:
-                    print("identify.identify_files: found recordings in musicbrainz")
 
             # Halt again if needed; the previous operation takes a while
             if self.identify_task.halt:
@@ -477,9 +473,7 @@ class EartagIdentifyDialog(Adw.Window):
                 return
 
             if not recordings or len(recordings) > 1:
-                print("identify.identify_files: performing acoustid lookup")
                 id_confidence, id_recording = acoustid_identify_file(file)
-                print("identify.identify_files: acoustid result:", id_confidence, id_recording)
 
                 # Make sure the recording we got from AcoustID matches the
                 # file we have:
