@@ -382,6 +382,13 @@ class EartagIdentifyDialog(Adw.Window):
 
         self.files.splice(0, self.files.get_n_items(), self.file_manager.selected_files.copy())
 
+        self.connect('close-request', self.on_close_request)
+
+    def on_close_request(self, *args):
+        for rec in self.recordings.values():
+            if rec.release.cover_tempfiles['thumbnail']:
+                rec.release.cover_tempfiles['thumbnail'].close()
+
     def unidentified_row_create(self, file, *args):
         return EartagIdentifyFileRow(file)
 

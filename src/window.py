@@ -339,6 +339,9 @@ class EartagWindow(Adw.ApplicationWindow):
             self.close_request_dialog.present()
             return True
 
+        for file in self.file_manager.files:
+            file.on_remove()
+
     def show_rename_dialog(self, *args):
         self.rename_dialog = EartagRenameDialog(self)
         self.rename_dialog.present()

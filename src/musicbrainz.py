@@ -246,6 +246,17 @@ class MusicBrainzRecording(GObject.Object):
                     self.release = rel
                     break
 
+        try:
+            self.release
+        except ValueError:
+            pass
+        else:
+            for rel in self.available_releases:
+                if rel == self.release:
+                    continue
+                if rel.cover_tempfiles['thumbnail']:
+                    rel.cover_tempfiles['thumbnail'].close()
+
     def apply_data_to_file(self, file):
         """
         Takes an EartagFile and applies the data from this recording to it.
