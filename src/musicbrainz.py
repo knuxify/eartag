@@ -371,9 +371,10 @@ class MusicBrainzRelease(GObject.Object):
     cover_cache = {}
     full_data_cache = {}
 
-    def __init__(self, release_data):
+    def __init__(self, release_data, from_id=False):
         super().__init__()
         self.mb_data = release_data
+        self._from_id = from_id
         self.cover_tempfiles = {
             'thumbnail': None,
             'front': MusicBrainzRelease.NEED_UPDATE_COVER,
@@ -384,10 +385,12 @@ class MusicBrainzRelease(GObject.Object):
         # Get full release data
         if self.release_id not in MusicBrainzRelease.full_data_cache:
             MusicBrainzRelease.full_data_cache[self.release_id] = make_request(
-                build_url('release', self.release_id, inc=['recordings'])
+                build_url('release', self.release_id, inc=['artist-credits', 'recordings', 'release-groups', 'genres', 'media'])
             )
 
         self.full_data = MusicBrainzRelease.full_data_cache[self.release_id]
+        if from_id:
+            self.mb_data = self.full_data
 
         self.group = MusicBrainzReleaseGroup(self.mb_data['release-group'])
 
@@ -398,6 +401,8 @@ class MusicBrainzRelease(GObject.Object):
 
     @GObject.Property(type=str)
     def release_id(self):
+        if self._from_id:
+            return self._from_id
         return self.mb_data['id']
 
     @GObject.Property(type=str)
@@ -421,6 +426,10 @@ class MusicBrainzRelease(GObject.Object):
         if 'date' in self.mb_data:
             return self.mb_data['date']
         return ''
+
+    @GObject.Property(type=int)
+    def totaltracknumber(self):
+        return int(self.mb_data['media'][0]['track-count'])
 
     @property
     def tracks(self):
@@ -509,6 +518,12 @@ class MusicBrainzRelease(GObject.Object):
             self.cover_tempfiles[cover].flush()
             MusicBrainzRelease.cover_cache[url] = self.cover_tempfiles[cover]
 
+    @classmethod
+    def clear_tempfiles(cls):
+        """Closes all cover tempfiles."""
+        for tmp in cls.cover_cache:
+            tmp.close()
+
     def __str__(self):
         return f'MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})'
 
@@ -520,9 +535,25 @@ class MusicBrainzReleaseGroup(GObject.Object):
     """A container for release group information, as found in the release query."""
     __gtype_name__ = 'MusicBrainzReleaseGroup'
 
-    def __init__(self, relgroup_data):
+    full_data_cache = {}
+
+    def __init__(self, relgroup_data, from_id=False):
         super().__init__()
-        self.mb_data = relgroup_data
+
+        if relgroup_data:
+            groupid = relgroup_data['id']
+        elif from_id:
+            groupid = from_id
+
+        if groupid not in MusicBrainzReleaseGroup.full_data_cache:
+            MusicBrainzReleaseGroup.full_data_cache[groupid] = make_request(
+                build_url('release-group', groupid, inc=['releases'])
+            )
+
+        if not MusicBrainzReleaseGroup.full_data_cache[groupid]:
+            MusicBrainzReleaseGroup.full_data_cache[groupid] = relgroup_data
+
+        self.mb_data = MusicBrainzReleaseGroup.full_data_cache[groupid]
 
     @GObject.Property(type=str)
     def relgroup_id(self):
@@ -535,6 +566,10 @@ class MusicBrainzReleaseGroup(GObject.Object):
     @GObject.Property(type=str)
     def secondary_types(self):
         return [t.lower() for t in self.mb_data['secondary-types']]
+
+    @GObject.Property
+    def release_ids(self):
+        return [r['id'] for r in self.mb_data['releases']]
 
 
 def acoustid_identify_file(file):

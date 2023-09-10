@@ -4,6 +4,7 @@
 from .common import is_valid_music_file, VALID_AUDIO_MIMES
 from .config import config, DLCoverSize
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
+from .musicbrainz import MusicBrainzRelease
 from .fileview import EartagFileView # noqa: F401
 from .filemanager import EartagFileManager
 from .sidebar import EartagSidebar  # noqa: F401
@@ -338,6 +339,8 @@ class EartagWindow(Adw.ApplicationWindow):
             self.close_request_dialog = EartagCloseWarningDialog(self)
             self.close_request_dialog.present()
             return True
+
+        MusicBrainzRelease.clear_tempfiles()
 
         for file in self.file_manager.files:
             file.on_remove()
