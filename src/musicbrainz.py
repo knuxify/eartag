@@ -223,8 +223,8 @@ class MusicBrainzRecording(GObject.Object):
                     rels.append(rel)
                     checked_ids.append(rel.group.relgroup_id)
 
-        missing = list(set(self.available_releases) - set(rels))
-        rels = list(set(rels + missing))
+        missing = [rel for rel in self.available_releases if rel not in rels]
+        rels = rels + missing
 
         if self._album:
             for rel in rels.copy():
@@ -367,6 +367,9 @@ class MusicBrainzRecording(GObject.Object):
         if not isinstance(other, MusicBrainzRecording):
             return False
         return self.recording_id == other.recording_id
+
+    def __hash__(self):
+        return id(self)
 
 
 class MusicBrainzRelease(GObject.Object):
@@ -551,6 +554,9 @@ class MusicBrainzRelease(GObject.Object):
             return False
         return self.release_id == other.release_id
 
+    def __hash__(self):
+        return id(self)
+
 
 class MusicBrainzReleaseGroup(GObject.Object):
     """A container for release group information, as found in the release query."""
@@ -613,6 +619,9 @@ class MusicBrainzReleaseGroup(GObject.Object):
         if not isinstance(other, MusicBrainzReleaseGroup):
             return False
         return self.relgroup_id == other.relgroup_id
+
+    def __hash__(self):
+        return id(self)
 
 def acoustid_identify_file(file):
     """

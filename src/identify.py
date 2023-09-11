@@ -560,6 +560,9 @@ class EartagIdentifyDialog(Adw.Window):
 
         # At the very end, go back through available release groups and try
         # to find common releases to group together.
+        # TODO: This code could probably be modified to use less loops,
+        # but this current iteration is focused more on accuracy and clear
+        # code than speed.
 
         groups = {}  # group ID: releases for this group
         for rel in [row.release for row in self.release_rows.values()]:
@@ -578,21 +581,17 @@ class EartagIdentifyDialog(Adw.Window):
                 continue
             releases = group.releases.copy()
 
+            # (Explaination of the rf variable: this allows us to preserve the
+            # loop order, since just doing a list.insert(list.pop(list.index(...)))
+            # manouver would cause the releases to go in backwards order which would
+            # throw off our existing order.)
+
             # Prioritize releases we already found
             rf = []
             for rel in releases.copy():
                 if rel in our_releases:
                     rf.append(rel)
             releases = rf + [r for r in releases if r not in rf]
-
-            # Order by release type
-            rf = []
-            for reltype in ('album', 'ep', 'single', 'other'):
-                rf = []
-                for rel in releases.copy():
-                    if rel.group.primary_type == reltype:
-                        rf.append(rel)
-                releases = rf + [r for r in releases if r not in rf]
 
             # The previous operation might take a while, halt if needed
             if self.identify_task.halt:
@@ -603,11 +602,11 @@ class EartagIdentifyDialog(Adw.Window):
 
             # Get a list of recordings for this release group, and the files
             # they represent
-            for rel in our_releases.values():
-                for file_id, rec in self.recordings.values():
+            for rel in our_releases:
+                for file_id, rec in self.recordings.items():
                     for file in self.files:
                         if file.id == file_id:
-                            rel_recordings[rec] = [file]
+                            rel_recordings[rec] = file
 
             #rel_files = dict((v,k) for k,v in rel_recordings.items())
 
@@ -624,18 +623,42 @@ class EartagIdentifyDialog(Adw.Window):
             # amount of matching recordings, so long as that number is
             # plausibly high (> 2).)
 
-            _total_tracks = self.files[0].totaltracknumber
-                            if all_equal([f.totaltracknumber for f in rel_recordings.values()])
-                            else None
-            if _total_tracks is None and len(rel_recordings) > 2:
+            _total_tracks = None
+
+            if all_equal([f.totaltracknumber for f in rel_recordings.values()]):
+                _total_tracks = self.files[0].totaltracknumber
+
+            if not _total_tracks and len(rel_recordings) > 2:
                 _total_tracks = len(rel_recordings)
+
             if _total_tracks:
+                rf = []
                 for rel in releases.copy():
                     if rel.totaltracknumber == _total_tracks:
-                        releases.insert(0, releases.pop(releases.index(rel)))
+                        rf.append(rel)
+                releases = rf + [r for r in releases if r not in rf]
 
             # HEURISTIC 2
-            # 
+            # If our files have an album name, and if it's the same for all
+            # of them, prioritize the releases that match the album name
+            # (in simple match or not).
+
+            if all_equal([f.album for f in rel_recordings.values()]) and \
+                    list(rel_recordings.values())[0].album:
+                _album = list(rel_recordings.values())[0].album
+
+                rf = []
+                for rel in releases.copy():
+                    if rel.title == _album:
+                        rf.append(rel)
+                releases = rf + [r for r in releases if r not in rf]
+
+            # Once we have ran our releases list through all the releases,
+            # pick the first one we got:
+
+            preferred_release = releases[0]
+
+            # This release will now be applied to all matching recordings.
 
             for rec in rel_recordings:
                 rec.release = preferred_release
