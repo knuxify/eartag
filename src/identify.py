@@ -7,7 +7,7 @@ import os
 import time
 import html
 
-from .common import EartagBackgroundTask, EartagModelExpanderRow, find_in_model
+from .common import EartagBackgroundTask, EartagModelExpanderRow, find_in_model, all_equal
 from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicBrainzRecording, MusicBrainzRelease, simplify_compare, reg_and_simple_cmp, MusicBrainzReleaseGroup
 from .sidebar import EartagFileList # noqa: F401
 from .backends.file import EartagFile
@@ -559,152 +559,83 @@ class EartagIdentifyDialog(Adw.Window):
             self.identify_task.increment_progress(progress_step)
 
         # At the very end, go back through available release groups and try
-        # to find common releases to group together. The most accurate release
-        # to choose is selected by looking at the amount of identified tracks
-        # and their titles. Similarities are scaled by the longest album,
-        # not by a percentage relative to the smaller release, since doing
-        # the latter would cause smaller releases to get preferred over
-        # larger ones even when a larger release is more accurate.
+        # to find common releases to group together.
 
-        groups = {}  # group: releases
-        all_releases = [row.release for row in self.release_rows.values()]
-
-        for rel in all_releases:
-            if rel.group.relgroup_id in groups:
-                groups[rel.group.relgroup_id].append(rel)
-            else:
+        groups = {}  # group ID: releases for this group
+        for rel in [row.release for row in self.release_rows.values()]:
+            if rel.group.relgroup_id not in groups:
                 groups[rel.group.relgroup_id] = [rel]
+            else:
+                groups[rel.group.relgroup_id].append(rel)
 
-        for group_id, _rels in groups.items():
-            releases = list(_rels).copy()
-
+        for group_id, our_releases in groups.items():
             if self.identify_task.halt:
                 self.identify_task.emit_task_done()
                 return
 
-            group = MusicBrainzReleaseGroup({}, from_id=group_id)
-            group.releases = []
-            our_releases = []    # release IDs
-            rel_recordings = []  # recordings we've identified for this release group
-
-            for relid in group.release_ids:
-                if relid not in self.release_rows:
-                    group.releases.append(MusicBrainzRelease({}, from_id=relid))
-                else:
-                    group.releases.append(self.release_rows[relid].release)
-                    our_releases.append(relid)
-
-                # The previous operation might take a while, halt if needed
-                if self.identify_task.halt:
-                    self.identify_task.emit_task_done()
-                    return
-
+            group = MusicBrainzReleaseGroup.setup_from_id(group_id)
             if len(group.releases) == 1:
-                print("only one release")
                 continue
+            releases = group.releases.copy()
 
-            # Get a list of recordings for this release group
-            for relid in our_releases:
-                rel_recordings += [rec for rec in self.recordings.values()
-                                   if rec.release.release_id == relid]
+            # Prioritize releases we already found
+            rf = []
+            for rel in releases.copy():
+                if rel in our_releases:
+                    rf.append(rel)
+            releases = rf + [r for r in releases if r not in rf]
 
-            # Now that we have all releases for the group in a way we can
-            # look through, and we know which tracks from them we've identified,
-            # figure out which one fits our tracks the best.
-            #
-            # To do this, we need to gather the following bits of information,
-            # from the file itself and from the current match:
-            #
-            # - Track number of each recording
-            # - Title of each recording
+            # Order by release type
+            rf = []
+            for reltype in ('album', 'ep', 'single', 'other'):
+                rf = []
+                for rel in releases.copy():
+                    if rel.group.primary_type == reltype:
+                        rf.append(rel)
+                releases = rf + [r for r in releases if r not in rf]
 
-            # trackid: {'title', 'trackno'} where each item has (rec, file)
-            track_info = {}  # ^
-            files_for_rec = {}  # recid, file
-            for file in self.files:
-                if file.id in self.recordings and self.recordings[file.id] in rel_recordings:
-                    files_for_rec[self.recordings[file.id].recording_id] = file
+            # The previous operation might take a while, halt if needed
+            if self.identify_task.halt:
+                self.identify_task.emit_task_done()
+                return
 
-            rel_difftracks = []  # recording IDs for tracks with different track numbers for rec/file
-            rel_albums = {}  # album value ( (rec, file) format ) : how many times it appears
-            _break = False
-            for rec in rel_recordings:
-                if rec.recording_id in track_info:
-                    # Duplicate recording - this will throw off our calculations,
-                    # skip for now
-                    print('duplicate recording', rec)
-                    _break = True
-                    break
+            rel_recordings = {}  # recording: file
 
-                track_info[rec.recording_id] = {
-                    'title': (rec.title, files_for_rec[rec.recording_id].title),
-                    'trackno': (rec.tracknumber, files_for_rec[rec.recording_id].tracknumber),
-                    'album': (rec.release.title, files_for_rec[rec.recording_id].album)
-                }
-                if track_info[rec.recording_id]['trackno'][0] != track_info[rec.recording_id]['trackno'][1]:
-                    rel_difftracks.append(rec.recording_id)
+            # Get a list of recordings for this release group, and the files
+            # they represent
+            for rel in our_releases.values():
+                for file_id, rec in self.recordings.values():
+                    for file in self.files:
+                        if file.id == file_id:
+                            rel_recordings[rec] = [file]
 
-                if track_info[rec.recording_id]['album'] in rel_albums:
-                    rel_albums[track_info[rec.recording_id]['album']] += 1
-                else:
-                    rel_albums[track_info[rec.recording_id]['album']] = 1
-            if _break is True:
-                continue
+            #rel_files = dict((v,k) for k,v in rel_recordings.items())
 
-            # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value#613218
-            rel_albums_sorted = {
-                k: v for k, v in sorted(rel_albums.items(), key=lambda item: item[1])
-            }
-
-            print(rel_recordings)
-
-            # Sort releases by usefulness
-            _sorted_releases = []
-            for rel in group.releases.copy():
-                if rel.title == list(rel_albums_sorted.keys())[0]:
-                    _sorted_releases.insert(0, rel)
-                    continue
-
-                print(rel.title, list(rel_albums_sorted.keys())[0])
-                _sorted_releases.append(rel)
-
-            group.releases = _sorted_releases
+            # Now that we have all the data we need, proceed with the
+            # grouping heuristics:
 
             preferred_release = None
 
-            for rel in group.releases:
-                if rel.totaltracknumber == len(rel_recordings):
-                    preferred_release = rel
-                    break
+            # HEURISTIC 1
+            # If our files have a total track number, and if it's the same
+            # for all of them, prioritize the releases with the same amount
+            # of tracks.
+            # (If we don't have a total track number, try to guess from the
+            # amount of matching recordings, so long as that number is
+            # plausibly high (> 2).)
 
-                if rel_difftracks:
-                    info = track_info[rec.recording_id]
-                    for recid in rel_difftracks:
-                        if rel['tracks'][info['trackno'][1]]['title'] in info['title']:
-                            preferred_release = rel
-                            break
+            _total_tracks = self.files[0].totaltracknumber
+                            if all_equal([f.totaltracknumber for f in rel_recordings.values()])
+                            else None
+            if _total_tracks is None and len(rel_recordings) > 2:
+                _total_tracks = len(rel_recordings)
+            if _total_tracks:
+                for rel in releases.copy():
+                    if rel.totaltracknumber == _total_tracks:
+                        releases.insert(0, releases.pop(releases.index(rel)))
 
-            if not preferred_release and not rel_difftracks:
-                max_trackno = 0
-                for track in track_info.values():
-                    if track['trackno'][0] and track['trackno'][0] > max_trackno:
-                        max_trackno = track['trackno'][0]
-
-                # if the track numbers don't match we ignore them
-                for rel in group.releases.copy():
-                    if rel.totaltracknumber < max_trackno:
-                        group.releases.remove(rel)
-                        if rel in releases:
-                            releases.remove(rel)
-
-                # if we end up with no releases then something went wrong, fall back
-                # to the releases we already got
-                if not group.releases:
-                    group.releases = list(_rels).copy()
-                    releases = list(_rels).copy()
-
-            if not preferred_release:
-                preferred_release = releases[0]
+            # HEURISTIC 2
+            # 
 
             for rec in rel_recordings:
                 rec.release = preferred_release

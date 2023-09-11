@@ -363,6 +363,12 @@ class MusicBrainzRecording(GObject.Object):
     def __repr__(self):
         return self.__str__()
 
+    def __eq__(self, other):
+        if not isinstance(other, MusicBrainzRecording):
+            return False
+        return self.recording_id == other.recording_id
+
+
 class MusicBrainzRelease(GObject.Object):
     __gtype_name__ = 'MusicBrainzRelease'
 
@@ -370,6 +376,7 @@ class MusicBrainzRelease(GObject.Object):
 
     cover_cache = {}
     full_data_cache = {}
+    obj_cache = {}  # id: MusicBrainzRelease
 
     def __init__(self, release_data, from_id=False):
         super().__init__()
@@ -392,7 +399,16 @@ class MusicBrainzRelease(GObject.Object):
         if from_id:
             self.mb_data = self.full_data
 
+        if self.release_id not in MusicBrainzRelease.obj_cache:
+            MusicBrainzRelease.obj_cache[self.release_id] = self
+
         self.group = MusicBrainzReleaseGroup(self.mb_data['release-group'])
+
+    @classmethod
+    def setup_from_id(cls, id):
+        if id in cls.obj_cache:
+            return cls.obj_cache[id]
+        return cls.__init__({}, from_id=id)
 
     def dispose(self):
         for tempfile in self.cover_tempfiles.values():
@@ -530,15 +546,22 @@ class MusicBrainzRelease(GObject.Object):
     def __repr__(self):
         return self.__str__()
 
+    def __eq__(self, other):
+        if not isinstance(other, MusicBrainzRelease):
+            return False
+        return self.release_id == other.release_id
+
 
 class MusicBrainzReleaseGroup(GObject.Object):
     """A container for release group information, as found in the release query."""
     __gtype_name__ = 'MusicBrainzReleaseGroup'
 
     full_data_cache = {}
+    obj_cache = {}
 
     def __init__(self, relgroup_data, from_id=False):
         super().__init__()
+        self._releases = None
 
         if relgroup_data:
             groupid = relgroup_data['id']
@@ -554,6 +577,15 @@ class MusicBrainzReleaseGroup(GObject.Object):
             MusicBrainzReleaseGroup.full_data_cache[groupid] = relgroup_data
 
         self.mb_data = MusicBrainzReleaseGroup.full_data_cache[groupid]
+
+        if groupid not in MusicBrainzReleaseGroup.obj_cache:
+            MusicBrainzReleaseGroup.obj_cache[groupid] = self
+
+    @classmethod
+    def setup_from_id(cls, id):
+        if id in cls.obj_cache:
+            return cls.obj_cache[id]
+        return cls.__init__({}, from_id=id)
 
     @GObject.Property(type=str)
     def relgroup_id(self):
@@ -571,6 +603,16 @@ class MusicBrainzReleaseGroup(GObject.Object):
     def release_ids(self):
         return [r['id'] for r in self.mb_data['releases']]
 
+    @GObject.Property
+    def releases(self):
+        if not self._releases:
+            self._releases = [MusicBrainzRelease.setup_from_id(id) for id in self.release_ids]
+        return self._releases
+
+    def __eq__(self, other):
+        if not isinstance(other, MusicBrainzReleaseGroup):
+            return False
+        return self.relgroup_id == other.relgroup_id
 
 def acoustid_identify_file(file):
     """
