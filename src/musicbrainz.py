@@ -602,11 +602,17 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
     @GObject.Property(type=str)
     def primary_type(self):
-        return self.mb_data['primary-type'].lower()
+        try:
+            return self.mb_data['primary-type'].lower()
+        except AttributeError:
+            return 'other'
 
     @GObject.Property(type=str)
     def secondary_types(self):
-        return [t.lower() for t in self.mb_data['secondary-types']]
+        try:
+            return [t.lower() for t in self.mb_data['secondary-types']]
+        except AttributeError:
+            return []
 
     @GObject.Property
     def release_ids(self):

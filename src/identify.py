@@ -414,13 +414,17 @@ class EartagIdentifyDialog(Adw.Window):
         self.identify_task.run()
 
     def _identify_set_recording(self, file, rec):
-        self.recordings[file.id] = rec
-        self.recordings_model.append(rec)
-
         try:
             rec.release
         except ValueError:
-            rec.release = rec.available_releases[0]
+            try:
+                rec.release = rec.available_releases[0]
+            except IndexError:
+                print("FIXME: no release?")
+                return
+
+        self.recordings[file.id] = rec
+        self.recordings_model.append(rec)
 
         if rec.release.release_id in self.release_rows:
             row = self.release_rows[rec.release.release_id]
@@ -613,9 +617,10 @@ class EartagIdentifyDialog(Adw.Window):
             # they represent
             for rel in our_releases:
                 for file_id, rec in self.recordings.items():
-                    for file in self.files:
-                        if file.id == file_id:
-                            rel_recordings[rec] = file
+                    if rec.release == rel:
+                        for file in self.files:
+                            if file.id == file_id:
+                                rel_recordings[rec] = file
 
             #rel_files = dict((v,k) for k,v in rel_recordings.items())
 
