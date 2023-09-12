@@ -785,6 +785,23 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
 
         return self._present_tags_cached
 
+    def refresh_present_tags(self):
+        """
+        Like the update function of get_present_tags, but handles only
+        existing files, and checks for changes in present extra tags.
+        """
+        blocked_tags = self.get_blocked_tags()
+
+        for file in self.bound_files:
+            self._last_present_tags[file.id] = file.present_extra_tags
+
+        self._present_tags_cached = []
+        for taglist in self._last_present_tags.values():
+            for tag in taglist:
+                if tag not in self._present_tags_cached and \
+                        tag not in blocked_tags:
+                    self._present_tags_cached.append(tag)
+
     def refresh_entries(self, old_blocked_tags=None):
         """Adds missing entries and removes unused ones."""
         blocked_tags = self.get_blocked_tags()
@@ -811,6 +828,11 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
                 self.add_extra_row(tag, skip_adding_none=True)
 
         self.refresh_none_row()
+
+    def slow_refresh_entries(self):
+        """Like refresh_entries, but forces an update of present tags."""
+        self.refresh_present_tags()
+        self.refresh_entries()
 
     def bind_to_file(self, file, skip_refresh_entries=False):
         if file in self.bound_files:

@@ -541,7 +541,10 @@ class MusicBrainzRelease(GObject.Object):
     def clear_tempfiles(cls):
         """Closes all cover tempfiles."""
         for tmp in cls.cover_cache:
-            tmp.close()
+            try:
+                tmp.close()
+            except AttributeError:
+                pass
 
     def __str__(self):
         return f'MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})'

@@ -126,7 +126,9 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.set_subtitle(self._subtitle)
 
     def update_filter(self):
+        self._filter_changed = False
         self._file_filter.changed(Gtk.FilterChange.DIFFERENT)
+        self._filter_changed = True
 
     def _file_filter_func(self, recording):
         try:
@@ -388,6 +390,7 @@ class EartagIdentifyDialog(Adw.Window):
         for row in self.release_rows.values():
             row.unbind()
         self.release_rows = {}
+        self.parent.file_view.more_tags_expander.slow_refresh_entries()
 
     def unidentified_row_create(self, file, *args):
         return EartagIdentifyFileRow(file)
@@ -420,7 +423,13 @@ class EartagIdentifyDialog(Adw.Window):
             rec.release = rec.available_releases[0]
 
         if rec.release.release_id in self.release_rows:
+            row = self.release_rows[rec.release.release_id]
+            row._filter_changed = False
+            GLib.idle_add(row.update_filter)
+            while not row._filter_changed:
+                time.sleep(0.5)
             self.release_rows[rec.release.release_id].update_filter()
+            row._filter_changed = False
         else:
             self.release_rows[rec.release.release_id] = \
                 EartagIdentifyReleaseRow(self, rec.release)
@@ -616,6 +625,21 @@ class EartagIdentifyDialog(Adw.Window):
             preferred_release = None
 
             # HEURISTIC 1
+            # If our files have an album name, and if it's the same for all
+            # of them, prioritize the releases that match the album name
+            # (in simple match or not).
+
+            if all_equal([f.album for f in rel_recordings.values()]) and \
+                    list(rel_recordings.values())[0].album:
+                _album = list(rel_recordings.values())[0].album
+
+                rf = []
+                for rel in releases.copy():
+                    if simplify_compare(rel.title, _album):
+                        rf.append(rel)
+                releases = rf + [r for r in releases if r not in rf]
+
+            # HEURISTIC 2
             # If our files have a total track number, and if it's the same
             # for all of them, prioritize the releases with the same amount
             # of tracks.
@@ -635,21 +659,6 @@ class EartagIdentifyDialog(Adw.Window):
                 rf = []
                 for rel in releases.copy():
                     if rel.totaltracknumber == _total_tracks:
-                        rf.append(rel)
-                releases = rf + [r for r in releases if r not in rf]
-
-            # HEURISTIC 2
-            # If our files have an album name, and if it's the same for all
-            # of them, prioritize the releases that match the album name
-            # (in simple match or not).
-
-            if all_equal([f.album for f in rel_recordings.values()]) and \
-                    list(rel_recordings.values())[0].album:
-                _album = list(rel_recordings.values())[0].album
-
-                rf = []
-                for rel in releases.copy():
-                    if rel.title == _album:
                         rf.append(rel)
                 releases = rf + [r for r in releases if r not in rf]
 
