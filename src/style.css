@@ -67,14 +67,16 @@
       -1px 0 rgba(0,0,0,0.1);
 }
 
-.acoustid-filelist {
-	margin-top: 12px;
-	margin-bottom: 6px;
+.identify-dialog .cover-image, .identify-dialog .cover-image image {
+	border-radius: 6px;
 }
 
-.acoustid-filelist .filelist-item {
-	padding: 6px;
-}
+.identify-dialog row row .header { margin-top: 3px; margin-bottom: 3px; }
+.identify-dialog row row .header:dir(ltr) { margin-left: 6px; }
+.identify-dialog row row .header:dir(rtl) { margin-right: 6px; }
+
+.identify-dialog .identify-recording-row .header:dir(ltr) { margin-right: 6px; }
+.identify-dialog .identify-recording-row .header:dir(rtl) { margin-left: 6px; }
 
 /* Required to make the OSD button outline show up */
 .prev-next-button-container { padding: 6px; margin: -6px; }

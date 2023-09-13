@@ -7,6 +7,7 @@ import os.path
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
+gi.require_version('GdkPixbuf', '2.0')
 
 from gi.repository import Adw, Gtk, Gio
 
@@ -22,8 +23,6 @@ class Application(Adw.Application):
         self.version = version
         self.paths = []
         self.connect('open', self.on_open)
-
-        self.config = Gio.Settings.new('app.drey.EarTag')
 
     def on_open(self, window, files, *args):
         for file in files:
@@ -46,6 +45,7 @@ class Application(Adw.Application):
         win = self.props.active_window
         if not win:
             win = EartagWindow(application=self, paths=self.paths)
+        self.create_action('settings', self.on_settings_action, None)
         self.create_action('about', self.on_about_action, None)
 
         self.create_action('open_file', self.on_open_file_action, '<Ctrl>o')
@@ -89,7 +89,10 @@ class Application(Adw.Application):
         self.get_active_window().show_rename_dialog()
 
     def on_identify_action(self, widget, _):
-        self.get_active_window().show_acoustid_dialog()
+        self.get_active_window().show_identify_dialog()
+
+    def on_settings_action(self, widget, _):
+        self.get_active_window().show_settings_dialog()
 
     def on_about_action(self, widget, _):
         about = Adw.AboutWindow(

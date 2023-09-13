@@ -4,7 +4,7 @@
 # This file contains various functions/classes used in multiple places that
 # were generic enough to be split into a single file.
 
-from gi.repository import Gdk, GLib, Gtk, Gio, GObject, Pango
+from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject, Pango
 import os.path
 import magic
 import mimetypes
@@ -100,7 +100,7 @@ def get_readable_length(length):
 
 def find_in_model(model, item):
     """
-    Gets the position of an item in the model, or None if not found.
+    Gets the position of an item in the model, or -1 if not found.
     Replacement for .find function in models that don't have it.
     """
     i = 0
@@ -111,7 +111,7 @@ def find_in_model(model, item):
         if found == item:
             return i
         i += 1
-    return None
+    return -1
 
 def inspect_prettyprint(stack):
     """
@@ -627,3 +627,34 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def cover_type(self, value):
         self._cover_type = value
         self.on_cover_change()
+
+class EartagModelExpanderRow(Adw.ExpanderRow):
+    """
+    Subclass of AdwExpanderRow that automatically fills rows based on
+    a list model, and exposes some nice-to-have information about child
+    rows.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.model = None
+
+        # In today's episode of "fun facts about GTK/Adw internals:
+        # did you know that an AdwExpanderRow consists of not one, but *two*
+        # listboxes? That's right - the expander row appears to be a ListBox
+        # of its own, and right below it is a GtkRevealer with *another*
+        # ListBox in it, simply named "list".
+
+        # Anyways, most of this isn't relevant here. What's relevant is that
+        # this is, after all, a listbox inside, so we can just grab it with
+        # get_template_child and use the model binding functions there.
+
+        self.list = self.get_template_child(Adw.ExpanderRow, 'list')
+
+    def bind_model(self, *args, **kwargs):
+        """See Gtk.ListBox.bind_model"""
+        return self.list.bind_model(*args, **kwargs)
+
+    def get_row_at_index(self, *args, **kwargs):
+        """See Gtk.ListBox.get_row_at_index"""
+        return self.list.get_row_at_index(*args, **kwargs)

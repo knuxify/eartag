@@ -261,6 +261,10 @@
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
+        <attribute name="label" translatable="yes">_Settings</attribute>
+        <attribute name="action">app.settings</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">_About Ear Tag</attribute>
         <attribute name="action">app.about</attribute>
       </item>

@@ -26,11 +26,6 @@ class EartagFileListItem(Gtk.Box):
     remove_button = Gtk.Template.Child()
     suffixes = Gtk.Template.Child()
 
-    # AcoustID suffixes
-    acoustid_info_stack = Gtk.Template.Child()
-    acoustid_info_label = Gtk.Template.Child()
-    acoustid_loading_icon = Gtk.Template.Child()
-
     def __init__(self, filelist, mode):
         super().__init__()
         self._selected = False
@@ -229,7 +224,7 @@ class EartagFileList(Gtk.ListView):
                 return
             new_index = find_in_model(self.selection_model,
                 self.file_manager.selected_files[0])
-            if new_index is None:
+            if new_index < 0:
                 self.selection_model.unselect_all()
             else:
                 self.selection_model.select_item(new_index, True)
@@ -240,7 +235,7 @@ class EartagFileList(Gtk.ListView):
             self.selection_model.unselect_all()
             for file in self.file_manager.selected_files:
                 new_index = find_in_model(self.selection_model, file)
-                if new_index is not None:
+                if new_index > -1:
                     self.selection_model.select_item(new_index, False)
 
         self._ignore_unselect = False
@@ -485,7 +480,7 @@ class EartagSidebar(Gtk.Box):
         if not self.selection_mode and has_no_selected and self.file_manager.selected_files:
             new_selection = find_in_model(self.file_list.filter_model,
                 self.file_manager.selected_files[0])
-            if new_selection is not None:
+            if new_selection > -1:
                 self.file_list.selection_model.set_selected(new_selection)
 
         # Scroll back to top of list

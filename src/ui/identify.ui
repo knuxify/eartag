@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="EartagAcoustIDDialog" parent="AdwWindow">
+  <template class="EartagIdentifyDialog" parent="AdwWindow">
     <property name="title" translatable="yes">Identify Selected Files</property>
     <property name="default-width">600</property>
     <property name="default-height">330</property>
+    <style><class name="identify-dialog"/></style>
     <property name="content">
       <object class="GtkWindowHandle">
         <property name="hexpand">true</property>
@@ -16,39 +17,54 @@
 
             <child>
               <object class="AdwHeaderBar">
-                  <property name="show-end-title-buttons">false</property>
-                  <property name="show-start-title-buttons">false</property>
+                <property name="show-end-title-buttons">false</property>
+                <property name="show-start-title-buttons">false</property>
 
-                  <child type="start">
-                    <object class="GtkButton" id="cancel_button">
-                      <property name="label" translatable="yes">Cancel</property>
-                      <property name="focusable">true</property>
-                      <signal name="clicked" handler="on_cancel"/>
+                <child type="start">
+                  <object class="GtkButton" id="cancel_button">
+                    <property name="label" translatable="yes">Cancel</property>
+                    <property name="focusable">true</property>
+                    <signal name="clicked" handler="on_cancel"/>
 
-                      <child>
-                        <object class="GtkShortcutController">
-                          <property name="scope">managed</property>
-                          <child>
-                            <object class="GtkShortcut">
-                              <property name="trigger">Escape</property>
-                              <property name="action">activate</property>
-                            </object>
-                          </child>
-                        </object>
-                      </child>
-                    </object>
-                  </child>
+                    <child>
+                      <object class="GtkShortcutController">
+                        <property name="scope">managed</property>
+                        <child>
+                          <object class="GtkShortcut">
+                            <property name="trigger">Escape</property>
+                            <property name="action">activate</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
 
-                  <child type="end">
-                    <object class="GtkButton" id="rename_button">
-                      <property name="label" translatable="yes">Identify</property>
-                      <property name="focusable">true</property>
-                      <signal name="clicked" handler="do_identify"/>
-                      <style>
-                        <class name="suggested-action"/>
-                      </style>
-                    </object>
-                  </child>
+                <child type="end">
+                  <object class="GtkStack" id="end_button_stack">
+                    <child>
+                      <object class="GtkButton" id="identify_button">
+                        <property name="label" translatable="yes">Identify</property>
+                        <property name="focusable">true</property>
+                        <signal name="clicked" handler="do_identify"/>
+                        <style>
+                          <class name="suggested-action"/>
+                        </style>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="GtkButton" id="apply_button">
+                        <property name="label" translatable="yes">Apply</property>
+                        <property name="focusable">true</property>
+                        <signal name="clicked" handler="do_apply"/>
+                        <style>
+                          <class name="suggested-action"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
 
@@ -79,7 +95,7 @@
                             <property name="wrap">true</property>
                             <property name="use-markup">true</property>
                             <property name="justify">center</property>
-                            <property name="label" translatable="yes">Files are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service. Additional information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;.</property>
+                            <property name="label" translatable="yes">Track information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;. Files without metadata are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service.</property>
                             <property name="margin-start">12</property>
                             <property name="margin-end">12</property>
                             <property name="margin-top">18</property>
@@ -96,12 +112,12 @@
                             <property name="margin-top">6</property>
                             <property name="margin-bottom">12</property>
                             <child>
-                              <object class="EartagFileList" id="selected_files_filelist">
+                              <object class="GtkListBox" id="content_listbox">
                                 <property name="margin-start">6</property>
                                 <property name="margin-end">6</property>
+                                <property name="selection-mode">none</property>
                                 <style>
-                                  <class name="acoustid-filelist"/>
-                                  <class name="listview-boxed-list"/>
+                                  <class name="boxed-list"/>
                                 </style>
                               </object>
                             </child>

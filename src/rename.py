@@ -3,6 +3,7 @@
 
 from .backends.file import BASIC_TAGS, TAG_NAMES
 from .common import get_readable_length
+from .config import config
 
 from gi.repository import Adw, Gtk, Gio
 import os
@@ -62,8 +63,6 @@ class EartagRenameDialog(Adw.Window):
         self.file_manager.rename_task.connect('task-done', self.on_done)
 
         self.files = list(self.file_manager.selected_files).copy()
-        self.application = window.get_application()
-        config = self.application.config
         config.bind('rename-placeholder',
             self.filename_entry, 'text',
             Gio.SettingsBindFlags.DEFAULT
