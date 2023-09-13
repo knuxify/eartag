@@ -17,11 +17,11 @@
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
     <file>ui/settings.ui</file>
-    <file>ui/identify.ui</file>
-    <file>ui/identifyaltreleaserow.ui</file>
-    <file>ui/identifycoverimage.ui</file>
-    <file>ui/identifyfilerow.ui</file>
-    <file>ui/identifyrecordingrow.ui</file>
+    <file>ui/identify/identify.ui</file>
+    <file>ui/identify/altreleaserow.ui</file>
+    <file>ui/identify/coverimage.ui</file>
+    <file>ui/identify/filerow.ui</file>
+    <file>ui/identify/recordingrow.ui</file>
     <file>ui/dialogs/closewarning.ui</file>
     <file>ui/dialogs/discardwarning.ui</file>
     <file>ui/dialogs/removaldiscardwarning.ui</file>

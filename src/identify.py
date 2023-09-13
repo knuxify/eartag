@@ -12,7 +12,7 @@ from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicB
 from .sidebar import EartagFileList # noqa: F401
 from .backends.file import EartagFile
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identifycoverimage.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/coverimage.ui')
 class EartagIdentifyCoverImage(Gtk.Stack):
     __gtype_name__ = 'EartagIdentifyCoverImage'
 
@@ -236,7 +236,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.update_filter()
 
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identifyaltreleaserow.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/altreleaserow.ui')
 class EartagIdentifyAltReleaseRow(Adw.ActionRow):
     """
     Representation of releases for the release switcher dropdown.
@@ -295,7 +295,7 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
         self.suffix_stack.set_visible_child(self.not_found_icon)
         self.loading_icon.stop()
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identifyfilerow.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/filerow.ui')
 class EartagIdentifyFileRow(Adw.ActionRow):
     """
     Representation of files for the identify dialog.
@@ -359,7 +359,7 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         self.loading_icon.stop()
 
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identifyrecordingrow.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/recordingrow.ui')
 class EartagIdentifyRecordingRow(Adw.ActionRow):
     """
     Representation of recordings for the identify dialog.
@@ -446,7 +446,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
             self.parent.parent.apply_files_changed()
 
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify.ui')
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/identify.ui')
 class EartagIdentifyDialog(Adw.Window):
     __gtype_name__ = 'EartagIdentifyDialog'
 
