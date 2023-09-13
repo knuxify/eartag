@@ -311,6 +311,11 @@ class MusicBrainzRecording(GObject.Object):
     def release(self, value):
         self._release = value
 
+        # Update everything that depends on the release:
+        for prop in ('album', 'albumartist', 'genre', 'tracknumber', 'totaltracknumber',
+                    'releasedate', 'thumbnail_path', 'front_cover_path', 'back_cover_path'):
+            self.notify(prop)
+
     @GObject.Property(type=str)
     def title(self):
         return self.mb_data['title']

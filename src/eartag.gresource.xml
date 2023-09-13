@@ -18,6 +18,7 @@
     <file>ui/window.ui</file>
     <file>ui/settings.ui</file>
     <file>ui/identify.ui</file>
+    <file>ui/identifyaltreleaserow.ui</file>
     <file>ui/identifycoverimage.ui</file>
     <file>ui/identifyfilerow.ui</file>
     <file>ui/identifyrecordingrow.ui</file>

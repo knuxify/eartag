@@ -78,21 +78,40 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         if release:
             self.bind_to_release(release)
 
-        self._file_filter = Gtk.CustomFilter()
-        self._file_filter.set_filter_func(self._file_filter_func)
-        self._file_filter_model = Gtk.FilterListModel(
+        self._rec_filter = Gtk.CustomFilter()
+        self._rec_filter.set_filter_func(self._rec_filter_func)
+        self._rec_filter_model = Gtk.FilterListModel(
             model=self.parent.recordings_model,
-            filter=self._file_filter
+            filter=self._rec_filter
         )
 
-        self._file_sorter = Gtk.CustomSorter()
-        self._file_sorter.set_sort_func(self._file_sorter_func)
-        self._file_sorter_model = Gtk.SortListModel(
-            model=self._file_filter_model,
-            sorter=self._file_sorter
+        self._rec_sorter = Gtk.CustomSorter()
+        self._rec_sorter.set_sort_func(self._rec_sorter_func)
+        self._rec_sorter_model = Gtk.SortListModel(
+            model=self._rec_filter_model,
+            sorter=self._rec_sorter
         )
 
-        self.bind_model(self._file_sorter_model, self.row_create)
+        self.bind_model(self._rec_sorter_model, self.row_create)
+
+        # Release chooser filter setup
+        self._rel_model = Gio.ListStore(item_type=MusicBrainzRelease)
+
+        self.release_popover = Gtk.Popover()
+        self.release_popover_list = Gtk.ListBox()
+        self.release_popover_list.bind_model(self._rel_model, self.rel_row_create)
+        self.release_popover_list.add_css_class('boxed-list')
+        self.release_popover_list.set_selection_mode(Gtk.SelectionMode.NONE)
+        self.release_popover.set_child(self.release_popover_list)
+        self._relswitch_first_row = None
+
+        self.release_popover_toggle = Gtk.MenuButton(popover=self.release_popover)
+        self.release_popover_toggle.set_valign(Gtk.Align.CENTER)
+        self.release_popover_toggle.set_sensitive(False)
+        # TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+        # This allows the user to switch between different releases of an album, EP, etc.
+        self.release_popover.set_tooltip_text(_('Other releases'))
+        self.add_action(self.release_popover_toggle)
 
     def bind_to_release(self, release):
         """Takes a MusicBrainzRelease and binds to it."""
@@ -123,21 +142,23 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
 
     def update_subtitle(self, *args):
         self._subtitle = html.escape(self.release.artist)
+        if self.release.releasedate:
+            self._subtitle += ' • ' + self.release.releasedate
         self.set_subtitle(self._subtitle)
 
     def update_filter(self):
         self._filter_changed = False
-        self._file_filter.changed(Gtk.FilterChange.DIFFERENT)
+        self._rec_filter.changed(Gtk.FilterChange.DIFFERENT)
         self._filter_changed = True
 
-    def _file_filter_func(self, recording):
+    def _rec_filter_func(self, recording):
         try:
             assert recording.release
         except (AttributeError, ValueError, AssertionError):
             return False
         return recording.release.release_id == self.release.release_id
 
-    def _file_sorter_func(self, rec1, rec2, *args):
+    def _rec_sorter_func(self, rec1, rec2, *args):
         return rec1.tracknumber - rec2.tracknumber
 
     def row_create(self, recording, *args):
@@ -153,6 +174,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             n += 1
             row = self.get_row_at_index(n)
         self.apply_checkbox.set_sensitive(value)
+        self.release_popover_toggle.set_sensitive(value)
 
     def toggle_row_checkboxes(self, toggle, *args):
         toggle.set_inconsistent(False)
@@ -177,6 +199,101 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         if active != self.apply_checkbox.props.active:
             self.apply_checkbox.set_active(active)
 
+    def refresh_alternative_releases(self, releases):
+        """
+        Used by the identification process to fill in the release switcher
+        button model.
+        """
+        GLib.idle_add(
+            self._rel_model.splice,
+            0, self._rel_model.get_n_items(), releases
+        )
+
+    def rel_row_create(self, rel, *args):
+        row = EartagIdentifyAltReleaseRow(self, rel)
+        if self._relswitch_first_row:
+            row.apply_checkbox.set_active(False)
+            self._relswitch_first_row.apply_checkbox.set_group(row.apply_checkbox)
+            self._relswitch_first_row.set_sensitive(True)
+        else:
+            self._relswitch_first_row = row
+            row.set_sensitive(False)
+        row.apply_checkbox.connect('notify::active', self.set_release_from_selector, rel.release_id)
+        return row
+
+    def set_release_from_selector(self, _t1, _t2, rel_id):
+        rel = None
+        for rel in self._rel_model:
+            if rel.release_id == rel_id:
+                break
+        self.unbind()
+        self.bind_to_release(rel)
+        for rec in self._rec_sorter_model:
+            for _rel in rec.available_releases:
+                if _rel.release_id == rel.release_id:
+                    rec.release = _rel
+                    break
+        self.update_filter()
+
+
+@Gtk.Template(resource_path='/app/drey/EarTag/ui/identifyaltreleaserow.ui')
+class EartagIdentifyAltReleaseRow(Adw.ActionRow):
+    """
+    Representation of releases for the release switcher dropdown.
+    """
+    __gtype_name__ = 'EartagIdentifyAltReleaseRow'
+
+    cover_image = Gtk.Template.Child()
+    apply_checkbox = Gtk.Template.Child()
+
+    def __init__(self, parent, release):
+        super().__init__()
+        self._bindings = []
+        self._connections = []
+        self.release = release
+
+        self.bind_to_release(release)
+
+    def bind_to_release(self, release):
+        self.release = release
+
+        self._bindings = [
+            self.release.bind_property('thumbnail_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
+        ]
+        self._connections = [
+            self.release.connect('notify::title', self.update_title),
+            self.release.connect('notify::artist', self.update_subtitle),
+        ]
+        self.update_title()
+        self.update_subtitle()
+
+    def unbind(self, *args):
+        for binding in self._bindings:
+            binding.unbind()
+
+        for conn in self._connections:
+            self.release.disconnect(conn)
+
+        self.release = None
+        self.parent = None
+
+    def update_title(self, *args):
+        self.set_title(html.escape(self.release.title))
+
+    def update_subtitle(self, *args):
+        self._subtitle = html.escape(self.release.artist)
+        if self.release.releasedate:
+            self._subtitle += ' • ' + self.release.releasedate
+        self.set_subtitle(self._subtitle)
+
+    def start_loading(self):
+        self.suffix_stack.set_visible(True)
+        self.suffix_stack.set_visible_child(self.loading_icon)
+        self.loading_icon.start()
+
+    def mark_as_unidentified(self):
+        self.suffix_stack.set_visible_child(self.not_found_icon)
+        self.loading_icon.stop()
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identifyfilerow.ui')
 class EartagIdentifyFileRow(Adw.ActionRow):
@@ -417,11 +534,7 @@ class EartagIdentifyDialog(Adw.Window):
         try:
             rec.release
         except ValueError:
-            try:
-                rec.release = rec.available_releases[0]
-            except IndexError:
-                print("FIXME: no release?")
-                return
+            rec.release = rec.available_releases[0]
 
         self.recordings[file.id] = rec
         self.recordings_model.append(rec)
@@ -525,8 +638,11 @@ class EartagIdentifyDialog(Adw.Window):
 
             if recordings:
                 rec = recordings[0]
-                self._identify_set_recording(file, rec)
-                self.identify_task.increment_progress(progress_step)
+                if not rec.available_releases:
+                    GLib.idle_add(unid_row.mark_as_unidentified)
+                else:
+                    self._identify_set_recording(file, rec)
+                    self.identify_task.increment_progress(progress_step)
             else:
                 GLib.idle_add(unid_row.mark_as_unidentified)
 
@@ -570,6 +686,31 @@ class EartagIdentifyDialog(Adw.Window):
                 continue
 
             self.identify_task.increment_progress(progress_step)
+
+        # Sometimes, a single track will end up getting misidentified as part
+        # of another release; look through "small releases" and try to group
+        # them into larger releases.
+
+        small_rels = []
+        big_rels = []
+        for rel in [row.release for row in self.release_rows.values()]:
+            if rel.totaltracknumber < 2:
+                small_rels.append(rel)
+            else:
+                big_rels.append(rel)
+
+        for s_rel in small_rels:
+            for s_track in s_rel.tracks:
+                for b_rel in big_rels:
+                    for b_track in b_rel.tracks:
+                        if simplify_compare(s_track['title'], b_track['title']):
+                            for rec in self.release_rows[s_rel.release_id].recordings:
+                                rec.release = b_rel
+                            GLib.idle_add(
+                                self.content_listbox.remove,
+                                self.release_rows[s_rel.release_id]
+                            )
+                            del self.release_rows[s_rel.release_id]
 
         # At the very end, go back through available release groups and try
         # to find common releases to group together.
@@ -667,6 +808,17 @@ class EartagIdentifyDialog(Adw.Window):
                         rf.append(rel)
                 releases = rf + [r for r in releases if r not in rf]
 
+            # HEURISTIC 3:
+            # Remove releases that aren't present in all recordings.
+            for rec in rel_recordings:
+                for rel in releases.copy():
+                    if rel.release_id not in [r.release_id for r in rec.available_releases]:
+                        releases.remove(rel)
+
+            # If we end up with no releases after this, continue.
+            if not releases:
+                continue
+
             # Once we have ran our releases list through all the releases,
             # pick the first one we got:
 
@@ -687,10 +839,14 @@ class EartagIdentifyDialog(Adw.Window):
                         self.release_rows[rec.release.release_id]
                     )
 
+            self.release_rows[preferred_release.release_id].refresh_alternative_releases(
+                [rel for rel in releases if rel.totaltracknumber >= len(rel_recordings)]
+            )
+
             for k, row in list(self.release_rows.items()).copy():
                 row.update_filter()
 
-                if row._file_filter_model.get_n_items() == 0:
+                if row._rec_filter_model.get_n_items() == 0:
                     del self.release_rows[k]
                     GLib.idle_add(self.content_listbox.remove, row)
 
