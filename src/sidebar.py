@@ -283,16 +283,18 @@ class EartagFileList(Gtk.ListView):
 
     def sort_func(self, a, b, *args):
         """Custom sort function implementation for file sorting."""
+
         # Step 1. Compare album names
         a_album = GLib.utf8_casefold(a.albumsort or a.album or '', -1)
         b_album = GLib.utf8_casefold(b.albumsort or b.album or '', -1)
         collate = GLib.utf8_collate(a_album, b_album)
 
         # Step 2. Compare track numbers
-        if (a.tracknumber or -1) > (b.tracknumber or -1):
-            collate += 2
-        elif (a.tracknumber or -1) < (b.tracknumber or -1):
-            collate -= 2
+        if collate == 0:
+            if (a.tracknumber or -1) > (b.tracknumber or -1):
+                collate = 1
+            elif (a.tracknumber or -1) < (b.tracknumber or -1):
+                collate = -1
 
         # Step 3. If the result is inconclusive, compare filenames
         if collate == 0:
