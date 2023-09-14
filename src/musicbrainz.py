@@ -119,7 +119,7 @@ def get_recordings_for_file(file):
 
     search_data = make_request(
         build_url('recording', '', query=' AND '.join(
-            [f'{k}:{urllib.parse.quote_plus(v)}' for k, v in query_data.items() if v]
+            [f'{k}:{v}' for k, v in query_data.items() if v]
         ))
     )
 
@@ -134,7 +134,7 @@ def get_recordings_for_file(file):
 
         search_data = make_request(
             build_url('recording', '', query=' AND '.join(
-                [f'{k}:{urllib.parse.quote_plus(v)}' for k, v in query_data.items() if v]
+                [f'{k}:{v}' for k, v in query_data.items() if v]
             ))
         )
         if not search_data or 'recordings' not in search_data or not search_data['recordings']:
