@@ -2,8 +2,8 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .backends.file import BASIC_TAGS, TAG_NAMES
-from .common import get_readable_length
 from .config import config
+from .utils import get_readable_length
 
 from gi.repository import Adw, Gtk, Gio
 import os

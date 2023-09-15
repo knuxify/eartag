@@ -11,7 +11,7 @@ gi.require_version('GdkPixbuf', '2.0')
 
 from gi.repository import Adw, Gtk, Gio
 
-from .common import is_valid_music_file
+from .utils.validation import is_valid_music_file
 from .window import EartagWindow
 from .filemanager import EartagFileManager
 

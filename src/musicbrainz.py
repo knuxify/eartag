@@ -12,8 +12,6 @@ import traceback
 import urllib
 import urllib.parse
 import urllib.request
-import unicodedata
-import re
 
 from gi.repository import GObject
 
@@ -29,37 +27,7 @@ else:
     USER_AGENT = f'Ear Tag/{VERSION} (https://gitlab.gnome.org/World/eartag)'
     TEST_SUITE = False
 
-def title_case_preserve_uppercase(text: str):
-    return ' '.join([
-        x.isupper() and x or x.capitalize()
-        for x in text.split(' ')
-    ])
-
-def simplify_string(text: str):
-    """
-    Returns a "simplified string" that throws away non-alphanumeric
-    characters for more accurate searches and comparisons.
-    """
-    # Step 1: Normalize Unicode characters
-    instr = unicodedata.normalize('NFKC', text)
-    # Step 2: Only leave lowercase alphanumeric letters
-    instr = ''.join([
-        l for l in instr.lower() if l.isalnum() or l == ' '
-    ]).strip()
-    # Step 3: Remove repeating spaces
-    instr = re.sub(' +', ' ', instr)
-
-    return instr
-
-def simplify_compare(string1: str, string2: str):
-    """
-    Compares simplified representations of two strings and returns
-    whether they're equal.
-    """
-    return simplify_string(string1) == simplify_string(string2)
-
-def reg_and_simple_cmp(string1: str, string2: str):
-    return string1 == string2 or simplify_compare(string1, string2)
+from .utils import simplify_string, simplify_compare, title_case_preserve_uppercase
 
 def make_request(url, raw=False, _recursion=0):
     """Wrapper for urllib.request.Request that handles the setup."""

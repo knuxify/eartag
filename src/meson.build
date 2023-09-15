@@ -28,7 +28,6 @@ configure_file(
 
 eartag_sources = [
   '__init__.py',
-  'common.py',
   'config.py',
   'dialogs.py',
   'identify.py',
@@ -43,5 +42,6 @@ eartag_sources = [
 ]
 
 subdir('backends')
+subdir('utils')
 
 install_data(eartag_sources, install_dir: moduledir)

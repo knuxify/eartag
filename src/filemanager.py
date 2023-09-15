@@ -14,7 +14,7 @@ from .backends import (
     EartagFileMutagenASF
     )
 from .backends.file import EartagFile
-from .common import EartagBackgroundTask
+from .utils.bgtask import EartagBackgroundTask
 from .dialogs import (EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog, EartagRenameFailureDialog)
 

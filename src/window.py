@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from .common import is_valid_music_file, VALID_AUDIO_MIMES
 from .config import config, DLCoverSize
+from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
 from .musicbrainz import MusicBrainzRelease
 from .fileview import EartagFileView # noqa: F401

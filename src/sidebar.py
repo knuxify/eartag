@@ -5,7 +5,7 @@ from gi.repository import GObject, Gtk, GLib
 import os.path
 import gettext
 
-from .common import find_in_model
+from .utils import find_in_model
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/filelistitem.ui')
 class EartagFileListItem(Gtk.Box):

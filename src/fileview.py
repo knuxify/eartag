@@ -2,13 +2,9 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES, CoverType
-from .common import ( # noqa: F401
-    all_equal,
-    get_readable_length,
-    is_valid_image_file,
-    EartagAlbumCoverImage,
-    EartagPopoverButton,
-)
+from .utils import get_readable_length
+from .utils.validation import is_valid_image_file
+from .utils.widgets import EartagAlbumCoverImage, EartagPopoverButton  # noqa: F401
 from .tagentry import ( # noqa: F401
     EartagTagEntry, EartagTagEntryRow,
     EartagTagEditableLabel
@@ -21,7 +17,6 @@ import magic
 import mimetypes
 import shutil
 import os.path
-import tempfile
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):

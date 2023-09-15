@@ -3,7 +3,8 @@
 
 from gi.repository import Adw, GObject, Gtk
 
-from .common import EartagEditableLabel, EartagEntryLimiters
+from .utils.limiters import EartagEntryLimiters
+from .utils.widgets import EartagEditableLabel
 from .backends.file import EartagFile
 
 class EartagTagEntryBase(GObject.Object):

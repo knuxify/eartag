@@ -7,8 +7,13 @@ import os
 import time
 import html
 
-from .common import EartagBackgroundTask, EartagModelExpanderRow, find_in_model, all_equal
-from .musicbrainz import acoustid_identify_file, get_recordings_for_file, MusicBrainzRecording, MusicBrainzRelease, simplify_compare, reg_and_simple_cmp, MusicBrainzReleaseGroup
+from .musicbrainz import (
+    acoustid_identify_file, get_recordings_for_file,
+    MusicBrainzRecording, MusicBrainzRelease, MusicBrainzReleaseGroup,
+)
+from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equal
+from .utils.bgtask import EartagBackgroundTask
+from .utils.widgets import EartagModelExpanderRow
 from .sidebar import EartagFileList # noqa: F401
 from .backends.file import EartagFile
 
