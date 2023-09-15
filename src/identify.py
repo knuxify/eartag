@@ -733,6 +733,10 @@ class EartagIdentifyDialog(Adw.Window):
 
             group = MusicBrainzReleaseGroup.setup_from_id(group_id)
             if len(group.releases) == 1:
+                self.release_rows[group.releases[0].release_id].refresh_alternative_releases(
+                    [group.releases[0]]
+                )
+
                 continue
             releases = group.releases.copy()
 

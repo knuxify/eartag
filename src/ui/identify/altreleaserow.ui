@@ -14,7 +14,7 @@
     <child>
       <object class="GtkCheckButton" id="apply_checkbox">
         <property name="active">true</property>
-        <style><class name="selection-mode"/></style>
+        <style><class name="selection-mode"/><class name="circular"/></style>
       </object>
     </child>
   </template>
