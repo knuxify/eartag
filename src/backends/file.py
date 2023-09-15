@@ -162,6 +162,7 @@ class EartagFile(GObject.Object):
         'totaltracknumber', 'genre', 'releasedate', 'comment')
     int_properties = ('tracknumber', 'totaltracknumber', 'discnumber')
     float_properties = ('bpm',)
+    supported_extra_tags = []
     _supports_album_covers = False
     _is_modified = False
     _is_writable = False
@@ -192,6 +193,26 @@ class EartagFile(GObject.Object):
             self.front_cover_tempfile.close()
         if self.back_cover_tempfile:
             self.back_cover_tempfile.close()
+
+    def save(self):
+        """Saves tag changes to the file. Must be implemented by the backend."""
+        raise NotImplementedError
+
+    def get_tag(self, tag_name):
+        """Gets a tag for a specific property. Must be implemented by the backend."""
+        raise NotImplementedError
+
+    def set_tag(self, tag_name, value):
+        """Sets a tag for a specific property. Must be implemented by the backend."""
+        raise NotImplementedError
+
+    def has_tag(self, tag_name):
+        """Returns whether a tag is present in a file. Must be implemented by the backend."""
+        raise NotImplementedError
+
+    def delete_tag(self, tag_name):
+        """Deletes the tag from the file. Must be implemented by the backend."""
+        raise NotImplementedError
 
     def setup_present_extra_tags(self):
         """

@@ -295,15 +295,6 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
             self._subtitle += ' • ' + self.release.releasedate
         self.set_subtitle(self._subtitle)
 
-    def start_loading(self):
-        self.suffix_stack.set_visible(True)
-        self.suffix_stack.set_visible_child(self.loading_icon)
-        self.loading_icon.start()
-
-    def mark_as_unidentified(self):
-        self.suffix_stack.set_visible_child(self.not_found_icon)
-        self.loading_icon.stop()
-
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/filerow.ui')
 class EartagIdentifyFileRow(Adw.ActionRow):
     """
