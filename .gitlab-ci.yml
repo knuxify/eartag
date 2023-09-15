@@ -30,4 +30,4 @@ lint-alpine:
     - apk add build-base gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-magic py3-mutagen py3-pillow desktop-file-utils appstream-glib gettext py3-pytest py3-flake8
   script:
     - flake8 . --count --select=E9,F63,F7,F82,F821 --show-source --statistics
-    - flake8 . --count --exit-zero --max-complexity=10 --statistics
+    - flake8 . --count --exit-zero --statistics
