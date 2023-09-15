@@ -124,21 +124,22 @@ def run_backend_tests(file_class, extension, skip_channels=False):
 def backend_read(file, skip_channels=False):
     """Tests common backend read functions."""
     for prop in file.handled_properties + file.supported_extra_tags:
-        assert file.get_property(prop) == prop_to_example_string[prop], f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})'
+        assert file.get_property(prop) == prop_to_example_string[prop], \
+            f'Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})'  # noqa: E501
 
         assert file.has_tag(prop), f'tag {prop} not found in file'
 
     if file._supports_album_covers:
         try:
             assert file.get_property('front_cover_path'), 'cover art not found in file'
-            assert filecmp.cmp(file.get_property('front_cover_path'), os.path.join(EXAMPLES_DIR, f'cover.png'), shallow=False), 'cover art not found in file'
+            assert filecmp.cmp(file.get_property('front_cover_path'), os.path.join(EXAMPLES_DIR, 'cover.png'), shallow=False), 'cover art not found in file'  # noqa: E501
 
             assert file.get_property('back_cover_path'), 'back cover not found in file'
-            assert filecmp.cmp(file.get_property('back_cover_path'), os.path.join(EXAMPLES_DIR, f'cover_back.png'), shallow=False), 'back cover not found in file'
+            assert filecmp.cmp(file.get_property('back_cover_path'), os.path.join(EXAMPLES_DIR, 'cover_back.png'), shallow=False), 'back cover not found in file'  # noqa: E501
         except TypeError:
             raise ValueError('cover art not found in file')
 
-    assert file.get_property('is_modified') == False
+    assert file.get_property('is_modified') is False
     if not skip_channels: # mutagen-mp4, at least with the m4a file, has some trouble with this step
         assert file.get_property('channels') == 1
     assert file.get_property('length') == 1
@@ -150,9 +151,9 @@ def backend_read_empty(file, skip_cover=False):
             assert not file.get_property(prop)
             assert not file.has_tag(prop)
         except AssertionError:
-            raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')
+            raise ValueError(f'example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend.')  # noqa: E501
 
-    assert file.get_property('is_modified') == False
+    assert file.get_property('is_modified') is False
     if not skip_cover:
         assert not file.get_property('front_cover_path'), file.get_property('front_cover_path')
         assert not file.get_property('back_cover_path'), file.get_property('back_cover_path')
@@ -168,13 +169,13 @@ def backend_write(file, skip_channels=False):
         assert file.has_tag(prop), f'tag {prop} not found in file'
 
     if file._supports_album_covers:
-        file.set_property('front_cover_path', os.path.join(EXAMPLES_DIR, f'cover.png'))
+        file.set_property('front_cover_path', os.path.join(EXAMPLES_DIR, 'cover.png'))
         assert file.get_property('front_cover_path')
 
-        file.set_property('back_cover_path', os.path.join(EXAMPLES_DIR, f'cover_back.png'))
+        file.set_property('back_cover_path', os.path.join(EXAMPLES_DIR, 'cover_back.png'))
         assert file.get_property('back_cover_path')
 
-    assert file.get_property('is_modified') == True
+    assert file.get_property('is_modified') is True
     props_set = set(tuple(file.handled_properties) + tuple(file.supported_extra_tags))
     if file._supports_album_covers:
         props_set.add('front_cover_path')
@@ -183,7 +184,7 @@ def backend_write(file, skip_channels=False):
 
     file.save()
 
-    assert file.get_property('is_modified') == False
+    assert file.get_property('is_modified') is False
     assert not file.modified_tags
 
     file_class = type(file)
@@ -266,18 +267,18 @@ def backend_write_empty(file, skip_channels=False):
         file.set_property('tracknumber', 0)
         assert not file.has_tag('tracknumber'), 'cleared tag tracknumber found in file'
 
-    assert file.get_property('is_modified') == True
+    assert file.get_property('is_modified') is True
 
     if file._supports_album_covers:
-        file.set_property('front_cover_path', os.path.join(EXAMPLES_DIR, f'cover.png'))
+        file.set_property('front_cover_path', os.path.join(EXAMPLES_DIR, 'cover.png'))
         assert file.get_property('front_cover_path')
 
-        file.set_property('back_cover_path', os.path.join(EXAMPLES_DIR, f'cover_back.png'))
+        file.set_property('back_cover_path', os.path.join(EXAMPLES_DIR, 'cover_back.png'))
         assert file.get_property('back_cover_path')
 
     file.save()
 
-    assert file.get_property('is_modified') == False
+    assert file.get_property('is_modified') is False
     assert not file.modified_tags
 
     file_class = type(file)
@@ -288,13 +289,13 @@ def backend_delete(file):
     for prop in file.handled_properties + file.supported_extra_tags:
         file.delete_tag(prop)
         assert not file.has_tag(prop), f'tag {prop} erroneously found in file'
-        assert not file.get_property(prop), f'tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}'
+        assert not file.get_property(prop), f'tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}'  # noqa: E501
 
-    assert file.get_property('is_modified') == True
+    assert file.get_property('is_modified') is True
 
     file.save()
 
-    assert file.get_property('is_modified') == False
+    assert file.get_property('is_modified') is False
 
     if file._supports_album_covers:
         file.delete_cover(CoverType.FRONT)
@@ -302,18 +303,18 @@ def backend_delete(file):
         assert not file.front_cover_path
         assert not file.front_cover.cover_path
 
-        assert file.get_property('is_modified') == True
+        assert file.get_property('is_modified') is True
         file.save()
-        assert file.get_property('is_modified') == False
+        assert file.get_property('is_modified') is False
 
         file.delete_cover(CoverType.BACK)
         assert not file.has_tag('back-cover-path')
         assert not file.back_cover_path
         assert not file.back_cover.cover_path
 
-        assert file.get_property('is_modified') == True
+        assert file.get_property('is_modified') is True
         file.save()
-        assert file.get_property('is_modified') == False
+        assert file.get_property('is_modified') is False
 
     file_class = type(file)
     backend_read_empty(file_class(file.path))
@@ -355,7 +356,7 @@ def backend_full_releasedate(file):
         assert file._releasedate_cached == value
         file.save()
         file = file_class(path)
-        assert file.get_property('releasedate') == value, f'Invalid date value (expected "{value}", got "{file.get_property("releasedate")}")'
+        assert file.get_property('releasedate') == value, f'Invalid date value (expected "{value}", got "{file.get_property("releasedate")}")'  # noqa: E501
 
 def backend_test_covers(file):
     """
@@ -378,13 +379,13 @@ def backend_test_covers(file):
     except AttributeError:
         raise AttributeError("Missing function: delete_cover")
     try:
-        assert file._front_cover_path == None
-        assert file._back_cover_path == None
+        assert file._front_cover_path is None
+        assert file._back_cover_path is None
     except AttributeError:
         raise AttributeError("Missing _{front,back}_cover_path variables")
 
     # Set cover art
-    front_cover_path = os.path.join(EXAMPLES_DIR, f'cover.png')
+    front_cover_path = os.path.join(EXAMPLES_DIR, 'cover.png')
     file.set_cover_path(CoverType.FRONT, front_cover_path)
     assert file.props.front_cover_path == file._front_cover_path
     assert file.props.front_cover_path == front_cover_path
@@ -402,7 +403,7 @@ def backend_test_covers(file):
     del reloaded_file
 
     # Set back cover
-    back_cover_path = os.path.join(EXAMPLES_DIR, f'cover_back.png')
+    back_cover_path = os.path.join(EXAMPLES_DIR, 'cover_back.png')
     file.set_cover_path(CoverType.BACK, back_cover_path)
     assert file.props.back_cover_path == file._back_cover_path
     assert file.props.back_cover_path == back_cover_path
@@ -468,7 +469,7 @@ def backend_test_covers(file):
     assert 'front_cover_path' not in file.modified_tags
 
     # Add both covers, now in reverse order!
-    back_cover_path = os.path.join(EXAMPLES_DIR, f'cover_back.png')
+    back_cover_path = os.path.join(EXAMPLES_DIR, 'cover_back.png')
     file.set_cover_path(CoverType.BACK, back_cover_path)
     assert file.props.back_cover_path == file._back_cover_path
     assert file.props.back_cover_path == back_cover_path
@@ -485,7 +486,7 @@ def backend_test_covers(file):
     assert filecmp.cmp(reloaded_file.props.back_cover_path, back_cover_path, shallow=False)
     del reloaded_file
 
-    front_cover_path = os.path.join(EXAMPLES_DIR, f'cover.png')
+    front_cover_path = os.path.join(EXAMPLES_DIR, 'cover.png')
     file.set_cover_path(CoverType.FRONT, front_cover_path)
     assert file.props.front_cover_path == file._front_cover_path
     assert file.props.front_cover_path == front_cover_path

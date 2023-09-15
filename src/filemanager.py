@@ -221,7 +221,7 @@ class EartagFileManager(GObject.Object):
             )
 
         GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
-                            priority=GLib.PRIORITY_HIGH_IDLE + 30)
+                      priority=GLib.PRIORITY_HIGH_IDLE + 30)
         first_file = None
         if self._files_buffer and mode == self.LOAD_INSERT:
             first_file = self._files_buffer[0]
@@ -455,4 +455,3 @@ class EartagFileManager(GObject.Object):
         """Convenience function to refresh the state of the UI"""
         self.emit('refresh-needed')
         self.emit('selection-changed')
-

@@ -281,7 +281,6 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         for _file in self.files:
             if _file.get_cover(self.cover_type) != self.files[0]:
-                covers_different = True
                 self.cover_image.mark_as_empty()
                 break
         self._remove_undo_buffer = {}
@@ -305,7 +304,6 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         for _file in self.files:
             if _file.get_cover(self.cover_type) != self.files[0]:
-                covers_different = True
                 self.cover_image.mark_as_empty()
                 break
 
@@ -457,10 +455,10 @@ class EartagTagDoubleRow(Adw.ActionRow):
 more_item_size_group = Gtk.SizeGroup()
 
 extra_tag_names = dict(
-    [(k,v) for k,v in TAG_NAMES.items() if k in ['none'] + list(EXTRA_TAGS)]
+    [(k, v) for k, v in TAG_NAMES.items() if k in ['none'] + list(EXTRA_TAGS)]
 )
 extra_tag_names_swapped = dict(
-    [(v, k) for k,v in extra_tag_names.items()]
+    [(v, k) for k, v in extra_tag_names.items()]
 )
 more_item_tag_strings = Gtk.StringList.new(list(extra_tag_names.values()))
 

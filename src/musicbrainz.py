@@ -47,13 +47,13 @@ def make_request(url, raw=False, _recursion=0):
             return None
         elif e.code == 503:
             time.sleep(3)
-            return make_request(url, raw=raw, _recursion=_recursion+1)
+            return make_request(url, raw=raw, _recursion=(_recursion + 1))
         else:
             traceback.print_exc()
             return None
     except urllib.error.URLError:
         time.sleep(3)
-        return make_request(url, raw=raw, _recursion=_recursion+1)
+        return make_request(url, raw=raw, _recursion=(_recursion + 1))
     except:
         traceback.print_exc()
         return None
@@ -368,7 +368,9 @@ class MusicBrainzRelease(GObject.Object):
         # Get full release data
         if self.release_id not in MusicBrainzRelease.full_data_cache:
             MusicBrainzRelease.full_data_cache[self.release_id] = make_request(
-                build_url('release', self.release_id, inc=['artist-credits', 'recordings', 'release-groups', 'genres', 'media'])
+                build_url('release', self.release_id,
+                    inc=['artist-credits', 'recordings', 'release-groups', 'genres', 'media']
+                )
             )
 
         self.full_data = MusicBrainzRelease.full_data_cache[self.release_id]
@@ -387,9 +389,9 @@ class MusicBrainzRelease(GObject.Object):
         return cls.__init__({}, from_id=id)
 
     def dispose(self):
-        for tempfile in self.cover_tempfiles.values():
-            if tempfile and tempfile != MusicBrainzRelease.NEED_UPDATE_COVER:
-                tempfile.close()
+        for temp in self.cover_tempfiles.values():
+            if temp and temp != MusicBrainzRelease.NEED_UPDATE_COVER:
+                temp.close()
 
     @GObject.Property(type=str)
     def release_id(self):

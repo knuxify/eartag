@@ -2,7 +2,7 @@
 Shim for global config access.
 """
 
-from gi.repository import Gio, Gtk
+from gi.repository import Gio
 from enum import IntEnum
 
 config = Gio.Settings.new('app.drey.EarTag')

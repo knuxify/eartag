@@ -70,7 +70,7 @@ def simplify_string(text: str):
     instr = unicodedata.normalize('NFKC', text)
     # Step 2: Only leave lowercase alphanumeric letters
     instr = ''.join([
-        l for l in instr.lower() if l.isalnum() or l == ' '
+        letter for letter in instr.lower() if letter.isalnum() or letter == ' '
     ]).strip()
     # Step 3: Remove repeating spaces
     instr = re.sub(' +', ' ', instr)

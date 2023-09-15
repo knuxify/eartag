@@ -123,7 +123,8 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.release = release
 
         self._bindings = [
-            self.release.bind_property('thumbnail_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
+            self.release.bind_property('thumbnail_path', self.cover_image, 'cover_path',
+                                       GObject.BindingFlags.SYNC_CREATE),
         ]
         self._connections = [
             self.release.connect('notify::title', self.update_title),
@@ -223,7 +224,9 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         else:
             self._relswitch_first_row = row
             row.set_sensitive(False)
-        row.apply_checkbox.connect('notify::active', self.set_release_from_selector, rel.release_id)
+        row.apply_checkbox.connect(
+            'notify::active', self.set_release_from_selector, rel.release_id
+        )
         return row
 
     def set_release_from_selector(self, _t1, _t2, rel_id):
@@ -263,7 +266,8 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
         self.release = release
 
         self._bindings = [
-            self.release.bind_property('thumbnail_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
+            self.release.bind_property('thumbnail_path', self.cover_image, 'cover_path',
+                                       GObject.BindingFlags.SYNC_CREATE),
         ]
         self._connections = [
             self.release.connect('notify::title', self.update_title),
@@ -327,7 +331,8 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         self.file = file
 
         self._bindings = [
-            self.file.bind_property('front_cover_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
+            self.file.bind_property('front_cover_path', self.cover_image, 'cover_path',
+                                    GObject.BindingFlags.SYNC_CREATE),
         ]
         self._connections = [
             self.file.connect('notify::title', self.update_title),
@@ -405,7 +410,8 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.recording = recording
 
         self._bindings = [
-            self.recording.bind_property('thumbnail_path', self.cover_image, 'cover_path', GObject.BindingFlags.SYNC_CREATE),
+            self.recording.bind_property('thumbnail_path', self.cover_image, 'cover_path',
+                                         GObject.BindingFlags.SYNC_CREATE),
         ]
         self._connections = [
             self.recording.connect('notify::title', self.update_title),
@@ -429,7 +435,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.set_title(html.escape(self.recording.title))
 
     def update_subtitle(self, *args):
-        self._subtitle = f'{self.recording.artist or "N/A"} • {self.recording.album or "N/A"} ({self.file_name or "N/A"})'
+        self._subtitle = f'{self.recording.artist or "N/A"} • {self.recording.album or "N/A"} ({self.file_name or "N/A"})'  # noqa: E501
         self.set_subtitle(html.escape(self._subtitle))
 
     def start_loading(self):
@@ -679,8 +685,7 @@ class EartagIdentifyDialog(Adw.Window):
                         self.identify_task.emit_task_done()
                         return
 
-                    if track['title'] == file.title or \
-                        simplify_compare(track['title'], file.title):
+                    if reg_and_simple_cmp(track['title'], file.title):
                         rec = MusicBrainzRecording(track['recording']['id'], file=file)
                         if rec:
                             self._identify_set_recording(file, rec)
@@ -768,7 +773,7 @@ class EartagIdentifyDialog(Adw.Window):
                             if file.id == file_id:
                                 rel_recordings[rec] = file
 
-            #rel_files = dict((v,k) for k,v in rel_recordings.items())
+            # rel_files = dict((v,k) for k,v in rel_recordings.items())
 
             # Now that we have all the data we need, proceed with the
             # grouping heuristics:

@@ -2,10 +2,12 @@
 Tests MusicBrainz functions.
 """
 
-from src.musicbrainz import (MusicBrainzRecording, MusicBrainzRelease,
-    get_recordings_for_file, acoustid_identify_file, make_request)
+from src.musicbrainz import (
+    MusicBrainzRecording, get_recordings_for_file,
+    acoustid_identify_file, make_request
+)
 from src.backends.file_mutagen_id3 import EartagFileMutagenID3
-from .common import dummy_file
+from .common import dummy_file  # noqa: F401; flake8 doesn't understand fixtures
 
 import pytest
 import os
@@ -16,7 +18,7 @@ NOT_FOUND_STR = 'Could not find one of the required releases (did something move
 def test_musicbrainz_onerel():
     # Recording with one release, no cover path
 
-    # https://musicbrainz.org/recording/cad1f61b-a1f1-4d00-9e01-bcd193eac54b
+    # https://musicbrainz.org/recording/cad1f61b-a1f1-4d00-9e01-bcd193eac54b
     rec = MusicBrainzRecording('cad1f61b-a1f1-4d00-9e01-bcd193eac54b')
     assert rec, NOT_FOUND_STR
     # https://musicbrainz.org/release/46fee5ba-49cb-4ebd-a6bc-71bbf03a210d
@@ -35,12 +37,17 @@ def test_musicbrainz_multirel():
     rec = MusicBrainzRecording('812aed4e-776f-41d5-aefc-bad0e9226526')
     assert rec, NOT_FOUND_STR
     assert rec._release == MusicBrainzRecording.SELECT_RELEASE_FIRST
-    try: rec.release
-    except ValueError: pass
-    else: raise AssertionError
+    try:
+        rec.release
+    except ValueError:
+        pass
+    else:
+        raise AssertionError
 
-    rel1 = None  # streaming release, https://musicbrainz.org/release/5cfa8773-e8b4-4a5d-b858-4d8230aa27ed
-    rel2 = None  # bandcamp release, https://musicbrainz.org/release/acdcb0a3-3d4d-4eb8-b7f5-c0749d003e8c
+    # streaming release, https://musicbrainz.org/release/5cfa8773-e8b4-4a5d-b858-4d8230aa27ed
+    rel1 = None
+    # bandcamp release, https://musicbrainz.org/release/acdcb0a3-3d4d-4eb8-b7f5-c0749d003e8c
+    rel2 = None
     for release in rec.available_releases:
         if release.release_id == '5cfa8773-e8b4-4a5d-b858-4d8230aa27ed':
             rel1 = release
@@ -78,26 +85,35 @@ def test_musicbrainz_covers():
             break
     assert rel, NOT_FOUND_STR
 
-    try: rel.front_cover_path
-    except ValueError: pass
-    else: raise AssertionError
+    try:
+        rel.front_cover_path
+    except ValueError:
+        pass
+    else:
+        raise AssertionError
 
-    try: rel.back_cover_path
-    except ValueError: pass
-    else: raise AssertionError
+    try:
+        rel.back_cover_path
+    except ValueError:
+        pass
+    else:
+        raise AssertionError
 
     rel.update_covers()
     assert rel.front_cover_path
     assert rel.back_cover_path
 
 @pytest.mark.networked_tests
-def test_musicbrainz_file_set(dummy_file):
+def test_musicbrainz_file_set(dummy_file):  # noqa: F811; flake8 doesn't understand fixtures
     """Tests the MusicBrainz file wrappers."""
 
     # Test with not enough data
-    try: get_recordings_for_file(dummy_file)
-    except ValueError: pass
-    else: raise AssertionError
+    try:
+        get_recordings_for_file(dummy_file)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError
 
     # Test with dummy data
     dummy_file.title = 'Royal Blue Walls'
