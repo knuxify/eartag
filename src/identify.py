@@ -338,7 +338,7 @@ class EartagIdentifyFileRow(Adw.ActionRow):
             binding.unbind()
 
         for conn in self._connections:
-            self.release.disconnect(conn)
+            self.file.disconnect(conn)
 
         self.file = None
 
@@ -417,7 +417,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
             binding.unbind()
 
         for conn in self._connections:
-            self.release.disconnect(conn)
+            self.recording.disconnect(conn)
 
         self.recording = None
         self.parent = None

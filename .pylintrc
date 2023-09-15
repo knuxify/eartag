@@ -441,7 +441,7 @@ disable=raw-checker-failed,
         attribute-defined-outside-init,
         unused-import,  # flake8 already checks for this
         # And a handful of style checks we will handle later:
-        no-else-return, wrong-import-position, consider-using-f-string, too-many-branches, line-too-long, bare-except, invalid-name, too-many-instance-attributes, too-many-lines, too-few-public-methods, too-many-locals, wrong-import-order, too-many-return-statements, no-else-continue, import-outside-toplevel, too-many-nested-blocks, too-many-statements, superfluous-parens, too-many-public-methods
+        no-else-return, wrong-import-position, consider-using-f-string, too-many-branches, line-too-long, bare-except, invalid-name, too-many-instance-attributes, too-many-lines, too-few-public-methods, too-many-locals, wrong-import-order, too-many-return-statements, no-else-continue, import-outside-toplevel, too-many-nested-blocks, too-many-statements, superfluous-parens, too-many-public-methods, protected-access
 
 
 # Enable the message, report, category or checker with the given id(s). You can
