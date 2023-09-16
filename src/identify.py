@@ -112,10 +112,11 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
 
         self.release_popover_toggle = Gtk.MenuButton(popover=self.release_popover)
         self.release_popover_toggle.set_valign(Gtk.Align.CENTER)
-        self.release_popover_toggle.set_sensitive(False)
+        self.release_popover_toggle.set_visible(False)
         # TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
         # This allows the user to switch between different releases of an album, EP, etc.
         self.release_popover_toggle.set_tooltip_text(_('Other releases'))
+        self.release_popover_toggle.set_icon_name('view-more-symbolic')
         self.add_action(self.release_popover_toggle)
 
     def bind_to_release(self, release):
@@ -150,7 +151,8 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             opacity = 0.55
             if Adw.StyleManager.get_default().get_high_contrast():
                 opacity = 0.9
-            title += f'<span alpha="{int(opacity * 100)}%">(' + html.escape(self.release.disambiguation) + ')</span>'
+            title += f' <span alpha="{int(opacity * 100)}%">(' \
+                     + html.escape(self.release.disambiguation) + ')</span>'
         self.set_title(title)
 
     def update_subtitle(self, *args):
@@ -188,6 +190,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             row = self.get_row_at_index(n)
         self.apply_checkbox.set_sensitive(value)
         self.release_popover_toggle.set_sensitive(value)
+        self.release_popover_toggle.set_visible(bool(self._rel_model.get_n_items() > 1))
 
     def toggle_row_checkboxes(self, toggle, *args):
         toggle.set_inconsistent(False)
@@ -299,7 +302,8 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
             opacity = 0.55
             if Adw.StyleManager.get_default().get_high_contrast():
                 opacity = 0.9
-            title += f'<span alpha="{int(opacity * 100)}%">(' + html.escape(self.release.disambiguation) + ')</span>'
+            title += f' <span alpha="{int(opacity * 100)}%">(' \
+                     + html.escape(self.release.disambiguation) + ')</span>'
         self.set_title(title)
 
     def update_subtitle(self, *args):
