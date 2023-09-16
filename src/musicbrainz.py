@@ -29,10 +29,21 @@ else:
 
 from .utils import simplify_string, simplify_compare, title_case_preserve_uppercase
 
+LAST_REQUEST = 0
+
 def make_request(url, raw=False, _recursion=0):
     """Wrapper for urllib.request.Request that handles the setup."""
+    global LAST_REQUEST
+
     if _recursion > 3:
         return None
+
+    # MusicBrainz requires a cooldown of max. 1 request per second.
+    # Try to adjust to this cooldown as best as possible.
+    while (time.time() - LAST_REQUEST) <= 1:
+        time.sleep(0.1)
+
+    LAST_REQUEST = time.time()
 
     headers = {"User-Agent": USER_AGENT}
     try:
