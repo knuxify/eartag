@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-27 21:12+0200\n"
+"POT-Creation-Date: 2023-09-16 22:13+0200\n"
 "PO-Revision-Date: 2023-06-07 08:55+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -18,6 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.2.2\n"
+
+# Keep it
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:109 src/main.py:111
+msgid "translator-credits"
+msgstr "Sabri Ünal <libreajans@gmail.com>"
 
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
@@ -37,7 +43,32 @@ msgstr "Ses dosyası etiketlerini düzenle"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "müzik;ses;etiket;ekitetleme;etiketleyici;"
 
+#: data/app.drey.EarTag.metainfo.xml.in:29
+msgid ""
+"Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
+"ability to rename files using a specific pattern, file identification using "
+"AcoustID and the option to set a full release date."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:34
+#: data/app.drey.EarTag.metainfo.xml.in:39
+msgid ""
+"Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
+"using a specific pattern, file identification using AcoustID and the option "
+"to set a full release date."
+msgstr ""
+
 #: data/app.drey.EarTag.metainfo.xml.in:44
+msgid ""
+"Added the ability to rename files using a specific pattern, file "
+"identification using AcoustID and the option to set a full release date."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:54
+msgid "Initial release."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:62
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -50,278 +81,430 @@ msgstr ""
 "kullanıcının bir müzik kütüphanesi klasörü kurmasını gerektirmez. "
 "Yetenekleri şunlardır:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:46
+#: data/app.drey.EarTag.metainfo.xml.in:64
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "MP3, WAV, M4A, FLAC, OGG ve WMA dosyalarının etiketlerini düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:47
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid "Modify metadata of multiple files at once"
 msgstr "Birden fazla dosyanın üst verilerini aynı anda düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:48
+#: data/app.drey.EarTag.metainfo.xml.in:66
 msgid "Rename files using information from present tags"
 msgstr "Etiketlerdeki bilgileri kullanarak dosyaları yeniden adlandırma"
 
-#: data/app.drey.EarTag.metainfo.xml.in:49
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Identify files using AcoustID"
 msgstr "AcoustID kullanarak dosyaları tanılama"
 
-#: data/app.drey.EarTag.metainfo.xml.in:51
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Ağ erişimi yalnızca \"Seçilen Dosyaları Tanıla\" seçeneği için kullanılır."
 
-#: src/acoustid.py:210
-#, python-brace-format
-msgid "Identified {identified} out of {total} tracks"
-msgstr "{identified} / {total} parça tanılandı"
+#: src/window.py:82
+msgid "All supported audio files"
+msgstr ""
 
-#: src/filemanager.py:121
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/window.py:163 src/fileview.py:921
+msgid "(Multiple files selected)"
+msgstr "(Birden fazla dosya seçildi)"
+
+#: src/window.py:234 src/ui/nofile.ui:48
+msgid "Open Folder"
+msgstr "Klasör Aç"
+
+#: src/window.py:237 src/ui/nofile.ui:35
+msgid "Open File"
+msgstr "Dosya Aç"
+
+#: src/window.py:299
+msgid "No supported files found in opened folder"
+msgstr "Açılan klasörde desteklenen dosya bulunamadı"
+
+#: src/window.py:306
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr ""
+"Açılan dosyalardan bazılarının geçersiz değerleri var; değişiklikler "
+"kaydedilemez"
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
+msgid "Drop a file to add it to the opened file list"
+msgstr "Açılan dosya listesine eklemek için bir dosya bırakın"
+
+#: src/ui/window.ui:118
+msgid "Save"
+msgstr "Kaydet"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:132
+msgid "Sort files by track number, album, name"
+msgstr "Dosyaları parça numarasına, albüme, ada göre sırala"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:141
+msgid "Close file list"
+msgstr "Dosya listesini kapat"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:155
+msgid "Add file"
+msgstr "Dosya ekle"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:163
+msgid "Select multiple files"
+msgstr "Birden çok dosya seç"
+
+#: src/ui/window.ui:170
+msgid "Search opened files"
+msgstr "Açık dosyaları ara"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:199
+msgid "Show file list"
+msgstr "Dosya listesini göster"
+
+#: src/ui/window.ui:240
+msgid "_Open File"
+msgstr "Dosya _Aç"
+
+#: src/ui/window.ui:244
+msgid "O_pen Folder"
+msgstr "_Klasör Aç"
+
+#: src/ui/window.ui:250
+msgid "_Rename Selected Files"
+msgstr "Seçilen Dosyaları _Yeniden Adlandır"
+
+#: src/ui/window.ui:254
+msgid "_Identify Selected Files"
+msgstr "Seçilen Dosyaları _Tanıla"
+
+#: src/ui/window.ui:260
+msgid "_Keyboard Shortcuts"
+msgstr "_Klavye Kısayolları"
+
+#: src/ui/window.ui:264
+msgid "_Settings"
+msgstr ""
+
+#: src/ui/window.ui:268
+msgid "_About Ear Tag"
+msgstr "Ear Tag _Hakkında"
+
+#: src/ui/nofile.ui:22
+msgid "Open or drag in some audio files to edit their metadata"
+msgstr "Üst verilerini düzenlemek için ses dosyalarını buraya sürükleyin"
+
+#: src/filemanager.py:95
 msgid "Failed to save file"
 msgstr "Dosya kaydedilemedi"
 
-#: src/filemanager.py:122
+#: src/filemanager.py:96
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
 "{f} dosyası kaydedilemedi. Daha çok bilgi için günlükleri kontrol edin."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:125
+#: src/filemanager.py:99
 msgid "OK"
 msgstr "Tamam"
 
-#: src/filemanager.py:131
+#: src/filemanager.py:105
 msgid "Saved changes to files"
 msgstr "Değişiklikler dosyalara kaydedildi"
 
-#: src/filemanager.py:244
+#: src/filemanager.py:216
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "Açılan dosya salt okunur; değişiklikler kaydedilemez"
 
-#: src/filemanager.py:246
+#: src/filemanager.py:218
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "Açılan dosyalardan bazıları salt okunur; değişiklikler kaydedilemez"
 
-#: src/fileview.py:144
-msgid "Select Album Cover Image"
-msgstr "Albüm Kapak Resmi Seç"
-
-#: src/fileview.py:436
-msgid "More tags"
-msgstr "Daha fazla etiket"
-
-#. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:723 src/window.py:184
-msgid "(Multiple files selected)"
-msgstr "(Birden fazla dosya seçildi)"
-
-#: src/fileview.py:737
-#, python-brace-format
-msgid "{n} channel"
-msgid_plural "{n} channels"
-msgstr[0] "{n} kanal"
-
-# Keep it
-#. TRANSLATORS: Add your name/nickname here
-#: src/main.py:138 src/main.py:140
-msgid "translator-credits"
-msgstr "Sabri Ünal <libreajans@gmail.com>"
-
-#. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/sidebar.py:146
-msgid "(No title)"
-msgstr "(Başlıksız)"
-
-#: src/sidebar.py:517
-msgid "No files selected"
-msgstr "Hiçbir dosya seçilmedi"
-
-#: src/sidebar.py:521
-#, python-brace-format
-msgid "{n} file selected"
-msgid_plural "{n} files selected"
-msgstr[0] "{n} dosya seçildi"
-
-#: src/window.py:255 src/ui/nofile.ui:48
-msgid "Open Folder"
-msgstr "Klasör Aç"
-
-#: src/window.py:259 src/ui/nofile.ui:35
-msgid "Open File"
-msgstr "Dosya Aç"
-
-#: src/window.py:305
-msgid "No supported files found in opened folder"
-msgstr "Açılan klasörde desteklenen dosya bulunamadı"
-
-#: src/window.py:312
-msgid "Some of the opened files have invalid values; cannot save"
-msgstr ""
-"Açılan dosyalardan bazılarının geçersiz değerleri var; değişiklikler "
-"kaydedilemez"
-
-#: src/window.py:361
-msgid "Save Album Cover To…"
-msgstr "Albüm Kapak Resmi Kaydet…"
-
-#: src/backends/file.py:60
+#: src/backends/file.py:44
 msgid "Length"
 msgstr "Uzunluk"
 
-#: src/backends/file.py:61
+#: src/backends/file.py:45
 msgid "Bitrate"
 msgstr "Bit oranı"
 
-#: src/backends/file.py:63 src/ui/fileview.ui:107
+#: src/backends/file.py:47 src/ui/fileview.ui:107
 msgid "Title"
 msgstr "Parça adı"
 
-#: src/backends/file.py:64 src/ui/fileview.ui:117
+#: src/backends/file.py:48 src/ui/fileview.ui:117
 msgid "Artist"
 msgstr "Sanatçı"
 
-#: src/backends/file.py:65 src/ui/fileview.ui:163
+#: src/backends/file.py:49 src/ui/fileview.ui:163
 msgid "Album"
 msgstr "Albüm"
 
-#: src/backends/file.py:66 src/ui/fileview.ui:170
+#: src/backends/file.py:50 src/ui/fileview.ui:170
 msgid "Album artist"
 msgstr "Albüm sanatçısı"
 
-#: src/backends/file.py:67 src/ui/fileview.ui:152
+#: src/backends/file.py:51 src/ui/fileview.ui:152
 msgid "Track number"
 msgstr "Parça numarası"
 
-#: src/backends/file.py:68
+#: src/backends/file.py:52
 msgid "Total tracks"
 msgstr "Toplam parça"
 
-#: src/backends/file.py:69 src/ui/fileview.ui:177
+#: src/backends/file.py:53 src/ui/fileview.ui:177
 msgid "Genre"
 msgstr "Tarz"
 
-#: src/backends/file.py:70 src/ui/fileview.ui:184
+#: src/backends/file.py:54 src/ui/fileview.ui:184
 msgid "Release date"
 msgstr "Yayın tarihi"
 
-#: src/backends/file.py:71 src/ui/fileview.ui:192
+#: src/backends/file.py:55 src/ui/fileview.ui:192
 msgid "Comment"
 msgstr "Yorum"
 
-#: src/backends/file.py:73
+#: src/backends/file.py:57
 msgid "(Select a tag)"
 msgstr "(Etiket seç)"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:75
+#: src/backends/file.py:59
 msgid "BPM"
 msgstr "BPM"
 
-#: src/backends/file.py:76
+#: src/backends/file.py:60
 msgid "Compilation"
 msgstr "Derleme"
 
-#: src/backends/file.py:77
+#: src/backends/file.py:61
 msgid "Composer"
 msgstr "Besteci"
 
-#: src/backends/file.py:78
+#: src/backends/file.py:62
 msgid "Copyright"
 msgstr "Telif hakkı"
 
-#: src/backends/file.py:79
+#: src/backends/file.py:63
 msgid "Encoded by"
 msgstr "Kodlayıcı"
 
-#: src/backends/file.py:80
+#: src/backends/file.py:64
 msgid "Mood"
 msgstr "Ruh hali"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:82
+#: src/backends/file.py:66
 msgid "Conductor"
 msgstr "Yapımcı"
 
-#: src/backends/file.py:83
+#: src/backends/file.py:67
 msgid "Arranger"
 msgstr "Aranjör"
 
-#: src/backends/file.py:84
+#: src/backends/file.py:68
 msgid "Disc number"
 msgstr "Disk numarası"
 
-#: src/backends/file.py:85
+#: src/backends/file.py:69
 msgid "Publisher"
 msgstr "Yayıncı"
 
-#: src/backends/file.py:87
+#: src/backends/file.py:71
 msgid "Language"
 msgstr "Dil"
 
-#: src/backends/file.py:88
+#: src/backends/file.py:72
 msgid "Disc subtitle"
 msgstr "Disk alt yazısı"
 
-#: src/backends/file.py:89
+#: src/backends/file.py:73
 msgid "Website/URL"
 msgstr "Web sitesi/URL"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:93
+#: src/backends/file.py:77
 msgid "Album artist (sort)"
 msgstr "Albüm sanatçısı (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:96
+#: src/backends/file.py:80
 msgid "Album (sort)"
 msgstr "Albüm (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:99
+#: src/backends/file.py:83
 msgid "Composer (sort)"
 msgstr "Besteci (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:102
+#: src/backends/file.py:86
 msgid "Artist (sort)"
 msgstr "Sanatçı (sırala)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:105
+#: src/backends/file.py:89
 msgid "Title (sort)"
 msgstr "Parça adı (sırala)"
 
-#: src/ui/acoustid.ui:5
-msgid "Identify Selected Files"
-msgstr "Seçilen Dosyaları Tanıla"
-
-#: src/ui/acoustid.ui:24 src/ui/rename.ui:23
-msgid "Cancel"
-msgstr "İptal Et"
-
-#: src/ui/acoustid.ui:44
-msgid "Identify"
-msgstr "Tanıla"
-
-#: src/ui/acoustid.ui:100
-msgid ""
-"Files are identified using the <a href=\"https://acoustid.org\">AcoustID</a> "
-"service. Additional information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>."
+#: src/backends/file.py:91
+msgid "MusicBrainz Artist ID"
 msgstr ""
-"Dosyalar, <a href=\"https://acoustid.org\">AcoustID</a> hizmeti kullanılarak "
-"tanılanır. Ek bilgiler <a href=\"https://musicbrainz.org\">Musicbrainz</a> "
-"tarafından sağlanmaktadır."
 
-#: src/ui/albumcoverbutton.ui:73
-msgid "Album cover"
-msgstr "Albüm kapağı"
+#: src/backends/file.py:92
+msgid "MusicBrainz Album ID"
+msgstr ""
+
+#: src/backends/file.py:93
+msgid "MusicBrainz Album Artist ID"
+msgstr ""
+
+#: src/backends/file.py:94
+msgid "MusicBrainz Release Track ID"
+msgstr ""
+
+#: src/backends/file.py:95
+msgid "MusicBrainz Recording ID"
+msgstr ""
+
+#: src/backends/file.py:96
+msgid "MusicBrainz Release Group ID"
+msgstr ""
+
+#: src/fileview.py:183
+msgid "Select Album Cover Image"
+msgstr "Albüm Kapak Resmi Seç"
+
+#: src/fileview.py:210
+msgid "Save Album Cover To…"
+msgstr "Albüm Kapak Resmi Kaydet…"
+
+#: src/fileview.py:238
+#, fuzzy, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "Albüm Kapağını Dosyaya _Kaydet"
+
+#: src/fileview.py:261
+#, fuzzy, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "Listeden kaldır"
+
+#: src/fileview.py:265
+msgid "Undo"
+msgstr ""
+
+#: src/fileview.py:612
+msgid "More tags"
+msgstr "Daha fazla etiket"
+
+#: src/fileview.py:935
+#, fuzzy, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "{n} kanal"
+
+#: src/ui/fileview.ui:10
+msgid "Loading Files…"
+msgstr "Dosyalar Yükleniyor…"
+
+#: src/ui/fileview.ui:21
+msgid "Select a File"
+msgstr "Dosya Seç"
+
+#: src/ui/fileview.ui:22
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "Açılan dosyalar listesinden düzenlemek istediğiniz dosyaları seçin."
+
+#: src/ui/fileview.ui:64
+msgid "Previous file"
+msgstr "Önceki dosya"
+
+#: src/ui/fileview.ui:88
+msgid "Next file"
+msgstr "Sonraki dosya"
+
+#: src/ui/albumcoverbutton.ui:90
+msgid "_Choose Image…"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:95
+msgid "_Save Image…"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:100
+msgid "_Remove Cover"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:123
+msgid "Front"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:130
+msgid "Back"
+msgstr ""
+
+#: src/tagentry.py:128
+#, fuzzy
+msgid "(multiple values)"
+msgstr "Birden çok dosya seç"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/sidebar.py:116
+msgid "(No title)"
+msgstr "(Başlıksız)"
+
+#: src/sidebar.py:520
+msgid "No files selected"
+msgstr "Hiçbir dosya seçilmedi"
+
+#: src/sidebar.py:524
+#, fuzzy, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "{n} dosya seçildi"
+
+#: src/ui/sidebar.ui:58
+msgid "No Results Found"
+msgstr "Hiçbir Sonuç Bulunamadı"
+
+#: src/ui/sidebar.ui:59
+msgid "Try a different search query."
+msgstr "Farklı bir arama deneyin."
+
+#: src/ui/sidebar.ui:74
+msgid "Select all files"
+msgstr "Tüm dosyaları seç"
+
+#: src/ui/sidebar.ui:90
+msgid "Remove selected files"
+msgstr "Seçilen dosyaları kaldır"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:50
+msgid "File has invalid values"
+msgstr "Dosyada geçersiz değerler var"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:60
+msgid "File has unsaved changes"
+msgstr "Dosyada kaydedilmemiş değişiklikler var"
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:126
+msgid "Remove from list"
+msgstr "Listeden kaldır"
 
 #: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
 #: src/ui/dialogs/removaldiscardwarning.ui:5
@@ -346,44 +529,155 @@ msgstr "_Değişikliklerden Vazgeç ve Kapat"
 msgid "_Save and Close"
 msgstr "_Kaydet ve Kapat"
 
-#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
-#: src/ui/filelistitem.ui:50
-msgid "File has invalid values"
-msgstr "Dosyada geçersiz değerler var"
+#: src/ui/dialogs/discardwarning.ui:13
+msgid "_Discard and Open"
+msgstr "_Değişikliklerden Vazgeç ve Aç"
 
-#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
-#: src/ui/filelistitem.ui:60
-msgid "File has unsaved changes"
-msgstr "Dosyada kaydedilmemiş değişiklikler var"
+#: src/ui/dialogs/discardwarning.ui:14
+msgid "_Save and Open"
+msgstr "_Kaydet ve Aç"
 
-#. TRANSLATORS: Tooltip for button used to remove file from opened file list
-#: src/ui/filelistitem.ui:126
-msgid "Remove from list"
-msgstr "Listeden kaldır"
+#: src/ui/dialogs/loadingfailure.ui:5
+msgid "Failed to Load File"
+msgstr "Dosya Yüklenemedi"
 
-#: src/ui/fileview.ui:10
-msgid "Loading Files…"
-msgstr "Dosyalar Yükleniyor…"
+#: src/ui/dialogs/loadingfailure.ui:6
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr "{f} dosyası yüklenemedi. Daha çok bilgi için günlükleri kontrol edin."
 
-#: src/ui/fileview.ui:21
-msgid "Select a File"
-msgstr "Dosya Seç"
+#: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
+msgid "_OK"
+msgstr "_Tamam"
 
-#: src/ui/fileview.ui:22
-msgid "Select the files you want to edit from the list of opened files."
-msgstr "Açılan dosyalar listesinden düzenlemek istediğiniz dosyaları seçin."
+#: src/ui/dialogs/renamefailure.ui:5
+msgid "Failed to Rename File"
+msgstr "Dosya Yeniden Adlandırılamadı"
 
-#: src/ui/fileview.ui:64
-msgid "Previous file"
-msgstr "Önceki dosya"
+#: src/ui/dialogs/renamefailure.ui:6
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr ""
+"{f} dosyası yeniden adlandırılamadı. Daha çok bilgi için günlükleri kontrol "
+"edin."
 
-#: src/ui/fileview.ui:88
-msgid "Next file"
-msgstr "Sonraki dosya"
+#: src/ui/rename.ui:5
+msgid "Rename Selected Files"
+msgstr "Seçilen Dosyaları Yeniden Adlandır"
 
-#: src/ui/nofile.ui:22
-msgid "Open or drag in some audio files to edit their metadata"
-msgstr "Üst verilerini düzenlemek için ses dosyalarını buraya sürükleyin"
+#: src/ui/rename.ui:23 src/ui/identify/identify.ui:25
+msgid "Cancel"
+msgstr "İptal Et"
+
+#: src/ui/rename.ui:43
+msgid "Rename"
+msgstr "Yeniden Adlandır"
+
+#: src/ui/rename.ui:81
+msgid "Failed to rename files. Check the logs for more information."
+msgstr ""
+"Dosyalar yeniden adlandırılamadı. Daha çok bilgi için günlükleri kontrol "
+"edin."
+
+#: src/ui/rename.ui:97
+msgid "Filename pattern"
+msgstr "Dosya adı deseni"
+
+#: src/ui/rename.ui:105
+msgid "Preview"
+msgstr "Önizleme"
+
+#: src/ui/rename.ui:117
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
+"of available tags</a>."
+msgstr ""
+"Kullanılabilir etiketlerin listesi için <a href=\"https://gitlab.gnome.org/"
+"knuxify/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">kullanılabilir etiketler listesine</a> bakınız."
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:118
+msgid "Other releases"
+msgstr ""
+
+#: src/identify.py:493
+#, fuzzy
+msgid "Unidentified Files"
+msgstr "Seçilen Dosyaları Tanıla"
+
+#: src/identify.py:915
+#, python-brace-format
+msgid "Identified {identified} out of {total} tracks"
+msgstr "{identified} / {total} parça tanılandı"
+
+#: src/ui/identify/identify.ui:5
+msgid "Identify Selected Files"
+msgstr "Seçilen Dosyaları Tanıla"
+
+#: src/ui/identify/identify.ui:47
+msgid "Identify"
+msgstr "Tanıla"
+
+#: src/ui/identify/identify.ui:58
+msgid "Apply"
+msgstr ""
+
+#: src/ui/identify/identify.ui:91
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+
+#: src/ui/identify/filerow.ui:24
+msgid "File could not be identified"
+msgstr ""
+
+#: data/app.drey.EarTag.gschema.xml:14
+#, fuzzy
+msgid "Rename placeholder"
+msgstr "Seçilen Dosyaları Yeniden Adlandır"
+
+#: data/app.drey.EarTag.gschema.xml:20 src/ui/settings.ui:14
+msgid "MusicBrainz confidence treshold"
+msgstr ""
+
+#: data/app.drey.EarTag.gschema.xml:26 src/ui/settings.ui:35
+msgid "AcoustID confidence treshold"
+msgstr ""
+
+#: data/app.drey.EarTag.gschema.xml:31
+msgid "MusicBrainz release cover size"
+msgstr ""
+
+#: src/ui/settings.ui:9
+msgid "File identification"
+msgstr ""
+
+#: src/ui/settings.ui:56
+msgid "Downloaded cover art size"
+msgstr ""
+
+#: src/ui/settings.ui:61
+msgid "Do not download covers"
+msgstr ""
+
+#: src/ui/settings.ui:62
+msgid "250 px"
+msgstr ""
+
+#: src/ui/settings.ui:63
+msgid "500 px"
+msgstr ""
+
+#: src/ui/settings.ui:64
+msgid "1200 px"
+msgstr ""
+
+#: src/ui/settings.ui:65
+msgid "Maximum size"
+msgstr ""
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -445,146 +739,14 @@ msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Klavye kısayolları"
 
-#: src/ui/sidebar.ui:58
-msgid "No Results Found"
-msgstr "Hiçbir Sonuç Bulunamadı"
+#~ msgid ""
+#~ "Files are identified using the <a href=\"https://acoustid.org\">AcoustID</"
+#~ "a> service. Additional information is provided by <a href=\"https://"
+#~ "musicbrainz.org\">Musicbrainz</a>."
+#~ msgstr ""
+#~ "Dosyalar, <a href=\"https://acoustid.org\">AcoustID</a> hizmeti "
+#~ "kullanılarak tanılanır. Ek bilgiler <a href=\"https://musicbrainz."
+#~ "org\">Musicbrainz</a> tarafından sağlanmaktadır."
 
-#: src/ui/sidebar.ui:59
-msgid "Try a different search query."
-msgstr "Farklı bir arama deneyin."
-
-#: src/ui/sidebar.ui:74
-msgid "Select all files"
-msgstr "Tüm dosyaları seç"
-
-#: src/ui/sidebar.ui:90
-msgid "Remove selected files"
-msgstr "Seçilen dosyaları kaldır"
-
-#: src/ui/rename.ui:5
-msgid "Rename Selected Files"
-msgstr "Seçilen Dosyaları Yeniden Adlandır"
-
-#: src/ui/rename.ui:43
-msgid "Rename"
-msgstr "Yeniden Adlandır"
-
-#: src/ui/rename.ui:81
-msgid "Failed to rename files. Check the logs for more information."
-msgstr ""
-"Dosyalar yeniden adlandırılamadı. Daha çok bilgi için günlükleri kontrol "
-"edin."
-
-#: src/ui/rename.ui:97
-msgid "Filename pattern"
-msgstr "Dosya adı deseni"
-
-#: src/ui/rename.ui:105
-msgid "Preview"
-msgstr "Önizleme"
-
-#: src/ui/rename.ui:117
-msgid ""
-"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
-"of available tags</a>."
-msgstr ""
-"Kullanılabilir etiketlerin listesi için <a href=\"https://gitlab.gnome.org/"
-"knuxify/eartag/-/blob/main/src/backends/README.md#available-"
-"tags\">kullanılabilir etiketler listesine</a> bakınız."
-
-#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
-#: src/ui/window.ui:52
-msgid "Drop a file to add it to the opened file list"
-msgstr "Açılan dosya listesine eklemek için bir dosya bırakın"
-
-#: src/ui/window.ui:118
-msgid "Save"
-msgstr "Kaydet"
-
-#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:132
-msgid "Sort files by track number, album, name"
-msgstr "Dosyaları parça numarasına, albüme, ada göre sırala"
-
-#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:141
-msgid "Close file list"
-msgstr "Dosya listesini kapat"
-
-#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:155
-msgid "Add file"
-msgstr "Dosya ekle"
-
-#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:163
-msgid "Select multiple files"
-msgstr "Birden çok dosya seç"
-
-#: src/ui/window.ui:170
-msgid "Search opened files"
-msgstr "Açık dosyaları ara"
-
-#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:199
-msgid "Show file list"
-msgstr "Dosya listesini göster"
-
-#: src/ui/window.ui:240
-msgid "_Open File"
-msgstr "Dosya _Aç"
-
-#: src/ui/window.ui:244
-msgid "O_pen Folder"
-msgstr "_Klasör Aç"
-
-#: src/ui/window.ui:250
-msgid "_Save Cover to File"
-msgstr "Albüm Kapağını Dosyaya _Kaydet"
-
-#: src/ui/window.ui:254
-msgid "_Rename Selected Files"
-msgstr "Seçilen Dosyaları _Yeniden Adlandır"
-
-#: src/ui/window.ui:258
-msgid "_Identify Selected Files"
-msgstr "Seçilen Dosyaları _Tanıla"
-
-#: src/ui/window.ui:264
-msgid "_Keyboard Shortcuts"
-msgstr "_Klavye Kısayolları"
-
-#: src/ui/window.ui:268
-msgid "_About Ear Tag"
-msgstr "Ear Tag _Hakkında"
-
-#: src/ui/dialogs/discardwarning.ui:13
-msgid "_Discard and Open"
-msgstr "_Değişikliklerden Vazgeç ve Aç"
-
-#: src/ui/dialogs/discardwarning.ui:14
-msgid "_Save and Open"
-msgstr "_Kaydet ve Aç"
-
-#: src/ui/dialogs/loadingfailure.ui:5
-msgid "Failed to Load File"
-msgstr "Dosya Yüklenemedi"
-
-#: src/ui/dialogs/loadingfailure.ui:6
-msgid "Could not load file {f}. Check the logs for more information."
-msgstr "{f} dosyası yüklenemedi. Daha çok bilgi için günlükleri kontrol edin."
-
-#: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
-msgid "_OK"
-msgstr "_Tamam"
-
-#: src/ui/dialogs/renamefailure.ui:5
-msgid "Failed to Rename File"
-msgstr "Dosya Yeniden Adlandırılamadı"
-
-#: src/ui/dialogs/renamefailure.ui:6
-msgid "Could not rename file {f}. Check the logs for more information."
-msgstr ""
-"{f} dosyası yeniden adlandırılamadı. Daha çok bilgi için günlükleri kontrol "
-"edin."
+#~ msgid "Album cover"
+#~ msgstr "Albüm kapağı"

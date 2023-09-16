@@ -1,32 +1,51 @@
+# Translator credits
+src/main.py
+
+# Metadata of the app: .desktop file, metainfo
 data/app.drey.EarTag.desktop.in
 data/app.drey.EarTag.metainfo.xml.in
-src/common.py
-src/filemanager.py
-src/fileview.py
-src/ui/albumcoverbutton.ui
-src/main.py
-src/rename.py
-src/sidebar.py
+
+# Strings for the main window itself
 src/window.py
+src/ui/window.ui
+src/ui/nofile.ui
+
+# Backend bits; mostly for error strings, but also human-readable tag names
+src/filemanager.py
 src/backends/file.py
 
+# Fileview
+src/fileview.py
+src/ui/fileview.ui
+src/ui/albumcoverbutton.ui
+src/tagentry.py
+
+# Sidebar
+src/sidebar.py
+src/ui/sidebar.ui
+src/ui/filelistitem.ui
+
+# Error dialogs
+src/ui/dialogs/closewarning.ui
+src/ui/dialogs/discardwarning.ui
+src/ui/dialogs/removaldiscardwarning.ui
+src/ui/dialogs/loadingfailure.ui
+src/ui/dialogs/renamefailure.ui
+
+# Rename dialog
+src/rename.py
+src/ui/rename.ui
+
+# Identify dialog
 src/identify.py
 src/ui/identify/identify.ui
 src/ui/identify/filerow.ui
 src/ui/identify/altreleaserow.ui
 src/ui/identify/recordingrow.ui
 
-src/ui/dialogs/closewarning.ui
-src/ui/filelistitem.ui
-src/ui/fileview.ui
-src/ui/nofile.ui
-src/ui/shortcuts.ui
-src/ui/sidebar.ui
-src/ui/rename.ui
-src/ui/window.ui
-src/ui/settings.ui
+# Settings
 data/app.drey.EarTag.gschema.xml
-src/ui/dialogs/discardwarning.ui
-src/ui/dialogs/loadingfailure.ui
-src/ui/dialogs/renamefailure.ui
-src/ui/dialogs/removaldiscardwarning.ui
+src/ui/settings.ui
+
+# Shortcut list
+src/ui/shortcuts.ui

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-07 11:23+0800\n"
+"POT-Creation-Date: 2023-09-16 22:13+0200\n"
 "PO-Revision-Date: 2023-07-07 11:25+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
@@ -17,6 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: Gtranslator 42.0\n"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:109 src/main.py:111
+msgid "translator-credits"
+msgstr "lumingzh <lumingzh@qq.com>, 2023."
 
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
@@ -36,7 +41,32 @@ msgstr "编辑音频文件标签"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;音乐;音频;标签;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:57
+#: data/app.drey.EarTag.metainfo.xml.in:29
+msgid ""
+"Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
+"ability to rename files using a specific pattern, file identification using "
+"AcoustID and the option to set a full release date."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:34
+#: data/app.drey.EarTag.metainfo.xml.in:39
+msgid ""
+"Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
+"using a specific pattern, file identification using AcoustID and the option "
+"to set a full release date."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:44
+msgid ""
+"Added the ability to rename files using a specific pattern, file "
+"identification using AcoustID and the option to set a full release date."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:54
+msgid "Initial release."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:62
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -47,272 +77,426 @@ msgstr ""
 "唱片中的曲目。不像其它标签编辑程序，Ear Tag 不需要用户设置一个音乐库文件夹。"
 "它可以："
 
-#: data/app.drey.EarTag.metainfo.xml.in:59
+#: data/app.drey.EarTag.metainfo.xml.in:64
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "编辑 MP3、WAV、M4A、FLAC、OGG 和 WMA 文件的标签"
 
-#: data/app.drey.EarTag.metainfo.xml.in:60
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid "Modify metadata of multiple files at once"
 msgstr "同时修改多个文件的元数据"
 
-#: data/app.drey.EarTag.metainfo.xml.in:61
+#: data/app.drey.EarTag.metainfo.xml.in:66
 msgid "Rename files using information from present tags"
 msgstr "使用来自呈现标签的信息重命名文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Identify files using AcoustID"
 msgstr "使用 AcoustID 识别文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
-#: src/acoustid.py:185
-#, python-brace-format
-msgid "Identified {identified} out of {total} tracks"
-msgstr "已识别 {identified} 共 {total} 首曲目"
+#: src/window.py:82
+msgid "All supported audio files"
+msgstr ""
 
-#: src/filemanager.py:96
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/window.py:163 src/fileview.py:921
+msgid "(Multiple files selected)"
+msgstr "（已选择多个文件）"
+
+#: src/window.py:234 src/ui/nofile.ui:48
+msgid "Open Folder"
+msgstr "打开文件夹"
+
+#: src/window.py:237 src/ui/nofile.ui:35
+msgid "Open File"
+msgstr "打开文件"
+
+#: src/window.py:299
+msgid "No supported files found in opened folder"
+msgstr "在打开的文件夹中未发现支持的文件"
+
+#: src/window.py:306
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr "部分打开的文件具有无效值；无法保存"
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:52
+msgid "Drop a file to add it to the opened file list"
+msgstr "拖拽文件来将其添加到打开的文件列表"
+
+#: src/ui/window.ui:118
+msgid "Save"
+msgstr "保存"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:132
+msgid "Sort files by track number, album, name"
+msgstr "按曲目编号、专辑、名称排序文件"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:141
+msgid "Close file list"
+msgstr "关闭文件列表"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:155
+msgid "Add file"
+msgstr "添加文件"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:163
+msgid "Select multiple files"
+msgstr "选择多个文件"
+
+#: src/ui/window.ui:170
+msgid "Search opened files"
+msgstr "搜索打开的文件"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:199
+msgid "Show file list"
+msgstr "显示文件列表"
+
+#: src/ui/window.ui:240
+msgid "_Open File"
+msgstr "打开文件(_O)"
+
+#: src/ui/window.ui:244
+msgid "O_pen Folder"
+msgstr "打开文件夹(_P)"
+
+#: src/ui/window.ui:250
+msgid "_Rename Selected Files"
+msgstr "重命名选中文件(_R)"
+
+#: src/ui/window.ui:254
+msgid "_Identify Selected Files"
+msgstr "识别选中文件(_I)"
+
+#: src/ui/window.ui:260
+msgid "_Keyboard Shortcuts"
+msgstr "键盘快捷键(_K)"
+
+#: src/ui/window.ui:264
+msgid "_Settings"
+msgstr ""
+
+#: src/ui/window.ui:268
+msgid "_About Ear Tag"
+msgstr "关于 Ear Tag(_A)"
+
+#: src/ui/nofile.ui:22
+msgid "Open or drag in some audio files to edit their metadata"
+msgstr "打开或拖拽一些音频文件来编辑它们的元数据"
+
+#: src/filemanager.py:95
 msgid "Failed to save file"
 msgstr "保存文件失败"
 
-#: src/filemanager.py:97
+#: src/filemanager.py:96
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr "无法保存文件 {f}。请检查日志获取更多信息。"
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:100
+#: src/filemanager.py:99
 msgid "OK"
 msgstr "确定"
 
-#: src/filemanager.py:106
+#: src/filemanager.py:105
 msgid "Saved changes to files"
 msgstr "已将修改保存到文件"
 
-#: src/filemanager.py:219
+#: src/filemanager.py:216
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "打开的文件为只读；修改无法保存"
 
-#: src/filemanager.py:221
+#: src/filemanager.py:218
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "部分打开的文件为只读；修改无法保存"
 
-#: src/fileview.py:119
-msgid "Select Album Cover Image"
-msgstr "选择专辑封面图像"
-
-#: src/fileview.py:420
-msgid "More tags"
-msgstr "更多标签"
-
-#. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/fileview.py:707 src/window.py:165
-msgid "(Multiple files selected)"
-msgstr "（已选择多个文件）"
-
-#: src/fileview.py:721
-#, python-brace-format
-msgid "1 channel"
-msgid_plural "{n} channels"
-msgstr[0] "{n} 声道"
-
-#. TRANSLATORS: Add your name/nickname here
-#: src/main.py:113 src/main.py:115
-msgid "translator-credits"
-msgstr "lumingzh <lumingzh@qq.com>, 2023."
-
-#. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/sidebar.py:121
-msgid "(No title)"
-msgstr "（无标题）"
-
-#: src/sidebar.py:524
-msgid "No files selected"
-msgstr "未选择文件"
-
-#: src/sidebar.py:528
-#, python-brace-format
-msgid "1 file selected"
-msgid_plural "{n} files selected"
-msgstr[0] "已选择 {n} 个文件"
-
-#: src/window.py:237 src/ui/nofile.ui:48
-msgid "Open Folder"
-msgstr "打开文件夹"
-
-#: src/window.py:240 src/ui/nofile.ui:35
-msgid "Open File"
-msgstr "打开文件"
-
-#: src/window.py:304
-msgid "No supported files found in opened folder"
-msgstr "在打开的文件夹中未发现支持的文件"
-
-#: src/window.py:311
-msgid "Some of the opened files have invalid values; cannot save"
-msgstr "部分打开的文件具有无效值；无法保存"
-
-#: src/window.py:359
-msgid "Save Album Cover To…"
-msgstr "保存专辑封面至…"
-
-#: src/backends/file.py:35
+#: src/backends/file.py:44
 msgid "Length"
 msgstr "时长"
 
-#: src/backends/file.py:36
+#: src/backends/file.py:45
 msgid "Bitrate"
 msgstr "比特率"
 
-#: src/backends/file.py:38 src/ui/fileview.ui:107
+#: src/backends/file.py:47 src/ui/fileview.ui:107
 msgid "Title"
 msgstr "标题"
 
-#: src/backends/file.py:39 src/ui/fileview.ui:117
+#: src/backends/file.py:48 src/ui/fileview.ui:117
 msgid "Artist"
 msgstr "艺人"
 
-#: src/backends/file.py:40 src/ui/fileview.ui:163
+#: src/backends/file.py:49 src/ui/fileview.ui:163
 msgid "Album"
 msgstr "专辑"
 
-#: src/backends/file.py:41 src/ui/fileview.ui:170
+#: src/backends/file.py:50 src/ui/fileview.ui:170
 msgid "Album artist"
 msgstr "专辑艺人"
 
-#: src/backends/file.py:42 src/ui/fileview.ui:152
+#: src/backends/file.py:51 src/ui/fileview.ui:152
 msgid "Track number"
 msgstr "曲目编号"
 
-#: src/backends/file.py:43
+#: src/backends/file.py:52
 msgid "Total tracks"
 msgstr "全部曲目"
 
-#: src/backends/file.py:44 src/ui/fileview.ui:177
+#: src/backends/file.py:53 src/ui/fileview.ui:177
 msgid "Genre"
 msgstr "流派"
 
-#: src/backends/file.py:45 src/ui/fileview.ui:184
+#: src/backends/file.py:54 src/ui/fileview.ui:184
 msgid "Release date"
 msgstr "发行日期"
 
-#: src/backends/file.py:46 src/ui/fileview.ui:192
+#: src/backends/file.py:55 src/ui/fileview.ui:192
 msgid "Comment"
 msgstr "注释"
 
-#: src/backends/file.py:48
+#: src/backends/file.py:57
 msgid "(Select a tag)"
 msgstr "（选择标签）"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:50
+#: src/backends/file.py:59
 msgid "BPM"
 msgstr "BPM"
 
-#: src/backends/file.py:51
+#: src/backends/file.py:60
 msgid "Compilation"
 msgstr "选辑"
 
-#: src/backends/file.py:52
+#: src/backends/file.py:61
 msgid "Composer"
 msgstr "作曲"
 
-#: src/backends/file.py:53
+#: src/backends/file.py:62
 msgid "Copyright"
 msgstr "版权"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:63
 msgid "Encoded by"
 msgstr "编码人"
 
-#: src/backends/file.py:55
+#: src/backends/file.py:64
 msgid "Mood"
 msgstr "情绪"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:57
+#: src/backends/file.py:66
 msgid "Conductor"
 msgstr "指挥"
 
-#: src/backends/file.py:58
+#: src/backends/file.py:67
 msgid "Arranger"
 msgstr "编曲"
 
-#: src/backends/file.py:59
+#: src/backends/file.py:68
 msgid "Disc number"
 msgstr "盘片序号"
 
-#: src/backends/file.py:60
+#: src/backends/file.py:69
 msgid "Publisher"
 msgstr "出版商"
 
-#: src/backends/file.py:62
+#: src/backends/file.py:71
 msgid "Language"
 msgstr "语言"
 
-#: src/backends/file.py:63
+#: src/backends/file.py:72
 msgid "Disc subtitle"
 msgstr "盘片次标题"
 
-#: src/backends/file.py:64
+#: src/backends/file.py:73
 msgid "Website/URL"
 msgstr "网站/URL"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:68
+#: src/backends/file.py:77
 msgid "Album artist (sort)"
 msgstr "专辑艺人（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:71
+#: src/backends/file.py:80
 msgid "Album (sort)"
 msgstr "专辑（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:74
+#: src/backends/file.py:83
 msgid "Composer (sort)"
 msgstr "作曲（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:77
+#: src/backends/file.py:86
 msgid "Artist (sort)"
 msgstr "艺人（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:80
+#: src/backends/file.py:89
 msgid "Title (sort)"
 msgstr "标题（排序）"
 
-#: src/ui/acoustid.ui:5
-msgid "Identify Selected Files"
-msgstr "识别选中文件"
-
-#: src/ui/acoustid.ui:24 src/ui/rename.ui:23
-msgid "Cancel"
-msgstr "取消"
-
-#: src/ui/acoustid.ui:44
-msgid "Identify"
-msgstr "识别"
-
-#: src/ui/acoustid.ui:82
-msgid ""
-"Files are identified using the <a href=\"https://acoustid.org\">AcoustID</a> "
-"service. Additional information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>."
+#: src/backends/file.py:91
+msgid "MusicBrainz Artist ID"
 msgstr ""
-"文件是通过使用 <a href=\"https://acoustid.org\">AcoustID</a> 服务来识别的。附"
-"加信息由 <a href=\"https://musicbrainz.org\">Musicbrainz</a> 提供。"
 
-#: src/ui/albumcoverbutton.ui:73
-msgid "Album cover"
-msgstr "专辑封面"
+#: src/backends/file.py:92
+msgid "MusicBrainz Album ID"
+msgstr ""
+
+#: src/backends/file.py:93
+msgid "MusicBrainz Album Artist ID"
+msgstr ""
+
+#: src/backends/file.py:94
+msgid "MusicBrainz Release Track ID"
+msgstr ""
+
+#: src/backends/file.py:95
+msgid "MusicBrainz Recording ID"
+msgstr ""
+
+#: src/backends/file.py:96
+msgid "MusicBrainz Release Group ID"
+msgstr ""
+
+#: src/fileview.py:183
+msgid "Select Album Cover Image"
+msgstr "选择专辑封面图像"
+
+#: src/fileview.py:210
+msgid "Save Album Cover To…"
+msgstr "保存专辑封面至…"
+
+#: src/fileview.py:238
+#, fuzzy, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "保存封面至文件(_S)"
+
+#: src/fileview.py:261
+#, fuzzy, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "从列表移除"
+
+#: src/fileview.py:265
+msgid "Undo"
+msgstr ""
+
+#: src/fileview.py:612
+msgid "More tags"
+msgstr "更多标签"
+
+#: src/fileview.py:935
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "{n} 声道"
+
+#: src/ui/fileview.ui:10
+msgid "Loading Files…"
+msgstr "正在加载文件…"
+
+#: src/ui/fileview.ui:21
+msgid "Select a File"
+msgstr "选择文件"
+
+#: src/ui/fileview.ui:22
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "从打开的文件列表选择您想要编辑的文件。"
+
+#: src/ui/fileview.ui:64
+msgid "Previous file"
+msgstr "上个文件"
+
+#: src/ui/fileview.ui:88
+msgid "Next file"
+msgstr "下个文件"
+
+#: src/ui/albumcoverbutton.ui:90
+msgid "_Choose Image…"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:95
+msgid "_Save Image…"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:100
+msgid "_Remove Cover"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:123
+msgid "Front"
+msgstr ""
+
+#: src/ui/albumcoverbutton.ui:130
+msgid "Back"
+msgstr ""
+
+#: src/tagentry.py:128
+#, fuzzy
+msgid "(multiple values)"
+msgstr "选择多个文件"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/sidebar.py:116
+msgid "(No title)"
+msgstr "（无标题）"
+
+#: src/sidebar.py:520
+msgid "No files selected"
+msgstr "未选择文件"
+
+#: src/sidebar.py:524
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "已选择 {n} 个文件"
+
+#: src/ui/sidebar.ui:58
+msgid "No Results Found"
+msgstr "未找到结果"
+
+#: src/ui/sidebar.ui:59
+msgid "Try a different search query."
+msgstr "尝试不同的搜索关键词。"
+
+#: src/ui/sidebar.ui:74
+msgid "Select all files"
+msgstr "选择所有文件"
+
+#: src/ui/sidebar.ui:90
+msgid "Remove selected files"
+msgstr "移除选中文件"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:50
+msgid "File has invalid values"
+msgstr "文件具有无效值"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:60
+msgid "File has unsaved changes"
+msgstr "文件有未保存的更改"
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:126
+msgid "Remove from list"
+msgstr "从列表移除"
 
 #: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
 #: src/ui/dialogs/removaldiscardwarning.ui:5
@@ -337,44 +521,150 @@ msgstr "丢弃并关闭(_D)"
 msgid "_Save and Close"
 msgstr "保存并关闭(_S)"
 
-#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
-#: src/ui/filelistitem.ui:50
-msgid "File has invalid values"
-msgstr "文件具有无效值"
+#: src/ui/dialogs/discardwarning.ui:13
+msgid "_Discard and Open"
+msgstr "丢弃并打开(_D)"
 
-#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
-#: src/ui/filelistitem.ui:60
-msgid "File has unsaved changes"
-msgstr "文件有未保存的更改"
+#: src/ui/dialogs/discardwarning.ui:14
+msgid "_Save and Open"
+msgstr "保存并打开(_S)"
 
-#. TRANSLATORS: Tooltip for button used to remove file from opened file list
-#: src/ui/filelistitem.ui:126
-msgid "Remove from list"
-msgstr "从列表移除"
+#: src/ui/dialogs/loadingfailure.ui:5
+msgid "Failed to Load File"
+msgstr "加载文件失败"
 
-#: src/ui/fileview.ui:10
-msgid "Loading Files…"
-msgstr "正在加载文件…"
+#: src/ui/dialogs/loadingfailure.ui:6
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr "无法加载文件 {f}。请检查日志获取更多信息。"
 
-#: src/ui/fileview.ui:21
-msgid "Select a File"
-msgstr "选择文件"
+#: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
+msgid "_OK"
+msgstr "确定(_O)"
 
-#: src/ui/fileview.ui:22
-msgid "Select the files you want to edit from the list of opened files."
-msgstr "从打开的文件列表选择您想要编辑的文件。"
+#: src/ui/dialogs/renamefailure.ui:5
+msgid "Failed to Rename File"
+msgstr "重命名文件失败"
 
-#: src/ui/fileview.ui:64
-msgid "Previous file"
-msgstr "上个文件"
+#: src/ui/dialogs/renamefailure.ui:6
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr "无法重命名文件 {f}。请检查日志获取更多信息。"
 
-#: src/ui/fileview.ui:88
-msgid "Next file"
-msgstr "下个文件"
+#: src/ui/rename.ui:5
+msgid "Rename Selected Files"
+msgstr "重命名选中文件"
 
-#: src/ui/nofile.ui:22
-msgid "Open or drag in some audio files to edit their metadata"
-msgstr "打开或拖拽一些音频文件来编辑它们的元数据"
+#: src/ui/rename.ui:23 src/ui/identify/identify.ui:25
+msgid "Cancel"
+msgstr "取消"
+
+#: src/ui/rename.ui:43
+msgid "Rename"
+msgstr "重命名"
+
+#: src/ui/rename.ui:81
+msgid "Failed to rename files. Check the logs for more information."
+msgstr "重命名文件失败。请检查日志获取更多信息。"
+
+#: src/ui/rename.ui:97
+msgid "Filename pattern"
+msgstr "文件名方案"
+
+#: src/ui/rename.ui:105
+msgid "Preview"
+msgstr "预览"
+
+#: src/ui/rename.ui:117
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
+"of available tags</a>."
+msgstr ""
+"要获取可用的占位符列表，参见<a href=\"https://gitlab.gnome.org/knuxify/"
+"eartag/-/blob/main/src/backends/README.md#available-tags\">可用标签列表</a>。"
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:118
+msgid "Other releases"
+msgstr ""
+
+#: src/identify.py:493
+#, fuzzy
+msgid "Unidentified Files"
+msgstr "识别选中文件"
+
+#: src/identify.py:915
+#, python-brace-format
+msgid "Identified {identified} out of {total} tracks"
+msgstr "已识别 {identified} 共 {total} 首曲目"
+
+#: src/ui/identify/identify.ui:5
+msgid "Identify Selected Files"
+msgstr "识别选中文件"
+
+#: src/ui/identify/identify.ui:47
+msgid "Identify"
+msgstr "识别"
+
+#: src/ui/identify/identify.ui:58
+msgid "Apply"
+msgstr ""
+
+#: src/ui/identify/identify.ui:91
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+
+#: src/ui/identify/filerow.ui:24
+msgid "File could not be identified"
+msgstr ""
+
+#: data/app.drey.EarTag.gschema.xml:14
+#, fuzzy
+msgid "Rename placeholder"
+msgstr "重命名选中文件"
+
+#: data/app.drey.EarTag.gschema.xml:20 src/ui/settings.ui:14
+msgid "MusicBrainz confidence treshold"
+msgstr ""
+
+#: data/app.drey.EarTag.gschema.xml:26 src/ui/settings.ui:35
+msgid "AcoustID confidence treshold"
+msgstr ""
+
+#: data/app.drey.EarTag.gschema.xml:31
+msgid "MusicBrainz release cover size"
+msgstr ""
+
+#: src/ui/settings.ui:9
+msgid "File identification"
+msgstr ""
+
+#: src/ui/settings.ui:56
+msgid "Downloaded cover art size"
+msgstr ""
+
+#: src/ui/settings.ui:61
+msgid "Do not download covers"
+msgstr ""
+
+#: src/ui/settings.ui:62
+msgid "250 px"
+msgstr ""
+
+#: src/ui/settings.ui:63
+msgid "500 px"
+msgstr ""
+
+#: src/ui/settings.ui:64
+msgid "1200 px"
+msgstr ""
+
+#: src/ui/settings.ui:65
+msgid "Maximum size"
+msgstr ""
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -436,141 +726,13 @@ msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "键盘快捷键"
 
-#: src/ui/sidebar.ui:58
-msgid "No Results Found"
-msgstr "未找到结果"
+#~ msgid ""
+#~ "Files are identified using the <a href=\"https://acoustid.org\">AcoustID</"
+#~ "a> service. Additional information is provided by <a href=\"https://"
+#~ "musicbrainz.org\">Musicbrainz</a>."
+#~ msgstr ""
+#~ "文件是通过使用 <a href=\"https://acoustid.org\">AcoustID</a> 服务来识别"
+#~ "的。附加信息由 <a href=\"https://musicbrainz.org\">Musicbrainz</a> 提供。"
 
-#: src/ui/sidebar.ui:59
-msgid "Try a different search query."
-msgstr "尝试不同的搜索关键词。"
-
-#: src/ui/sidebar.ui:74
-msgid "Select all files"
-msgstr "选择所有文件"
-
-#: src/ui/sidebar.ui:90
-msgid "Remove selected files"
-msgstr "移除选中文件"
-
-#: src/ui/rename.ui:5
-msgid "Rename Selected Files"
-msgstr "重命名选中文件"
-
-#: src/ui/rename.ui:43
-msgid "Rename"
-msgstr "重命名"
-
-#: src/ui/rename.ui:81
-msgid "Failed to rename files. Check the logs for more information."
-msgstr "重命名文件失败。请检查日志获取更多信息。"
-
-#: src/ui/rename.ui:97
-msgid "Filename pattern"
-msgstr "文件名方案"
-
-#: src/ui/rename.ui:105
-msgid "Preview"
-msgstr "预览"
-
-#: src/ui/rename.ui:117
-msgid ""
-"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
-"of available tags</a>."
-msgstr ""
-"要获取可用的占位符列表，参见<a href=\"https://gitlab.gnome.org/knuxify/"
-"eartag/-/blob/main/src/backends/README.md#available-tags\">可用标签列表</a>。"
-
-#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
-#: src/ui/window.ui:52
-msgid "Drop a file to add it to the opened file list"
-msgstr "拖拽文件来将其添加到打开的文件列表"
-
-#: src/ui/window.ui:118
-msgid "Save"
-msgstr "保存"
-
-#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:132
-msgid "Sort files by track number, album, name"
-msgstr "按曲目编号、专辑、名称排序文件"
-
-#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:141
-msgid "Close file list"
-msgstr "关闭文件列表"
-
-#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:155
-msgid "Add file"
-msgstr "添加文件"
-
-#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:163
-msgid "Select multiple files"
-msgstr "选择多个文件"
-
-#: src/ui/window.ui:170
-msgid "Search opened files"
-msgstr "搜索打开的文件"
-
-#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:199
-msgid "Show file list"
-msgstr "显示文件列表"
-
-#: src/ui/window.ui:240
-msgid "_Open File"
-msgstr "打开文件(_O)"
-
-#: src/ui/window.ui:244
-msgid "O_pen Folder"
-msgstr "打开文件夹(_P)"
-
-#: src/ui/window.ui:250
-msgid "_Save Cover to File"
-msgstr "保存封面至文件(_S)"
-
-#: src/ui/window.ui:254
-msgid "_Rename Selected Files"
-msgstr "重命名选中文件(_R)"
-
-#: src/ui/window.ui:258
-msgid "_Identify Selected Files"
-msgstr "识别选中文件(_I)"
-
-#: src/ui/window.ui:264
-msgid "_Keyboard Shortcuts"
-msgstr "键盘快捷键(_K)"
-
-#: src/ui/window.ui:268
-msgid "_About Ear Tag"
-msgstr "关于 Ear Tag(_A)"
-
-#: src/ui/dialogs/discardwarning.ui:13
-msgid "_Discard and Open"
-msgstr "丢弃并打开(_D)"
-
-#: src/ui/dialogs/discardwarning.ui:14
-msgid "_Save and Open"
-msgstr "保存并打开(_S)"
-
-#: src/ui/dialogs/loadingfailure.ui:5
-msgid "Failed to Load File"
-msgstr "加载文件失败"
-
-#: src/ui/dialogs/loadingfailure.ui:6
-msgid "Could not load file {f}. Check the logs for more information."
-msgstr "无法加载文件 {f}。请检查日志获取更多信息。"
-
-#: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
-msgid "_OK"
-msgstr "确定(_O)"
-
-#: src/ui/dialogs/renamefailure.ui:5
-msgid "Failed to Rename File"
-msgstr "重命名文件失败"
-
-#: src/ui/dialogs/renamefailure.ui:6
-msgid "Could not rename file {f}. Check the logs for more information."
-msgstr "无法重命名文件 {f}。请检查日志获取更多信息。"
+#~ msgid "Album cover"
+#~ msgstr "专辑封面"
