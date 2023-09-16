@@ -550,7 +550,7 @@ class EartagIdentifyDialog(Adw.Window):
             row._filter_changed = False
             GLib.idle_add(row.update_filter)
             while not row._filter_changed:
-                time.sleep(0.5)
+                time.sleep(0.1)
             self.release_rows[rec.release.release_id].update_filter()
             row._filter_changed = False
         else:
@@ -571,7 +571,7 @@ class EartagIdentifyDialog(Adw.Window):
 
         # Prevent weird errors by waiting a bit for the filter to update
         while not self._filter_changed:
-            time.sleep(0.5)
+            time.sleep(0.1)
 
         self._filter_changed = False
 
