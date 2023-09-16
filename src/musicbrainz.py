@@ -434,6 +434,10 @@ class MusicBrainzRelease(GObject.Object):
     def status(self):
         return self.mb_data['status'].lower()
 
+    @GObject.Property(type=str)
+    def disambiguation(self):
+        return self.mb_data['disambiguation']
+
     # Covers
 
     @GObject.Property(type=str)

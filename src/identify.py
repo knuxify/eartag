@@ -128,6 +128,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         ]
         self._connections = [
             self.release.connect('notify::title', self.update_title),
+            self.release.connect('notify::disambiguation', self.update_title),
             self.release.connect('notify::artist', self.update_subtitle),
             self.release.connect('notify::releasedate', self.update_subtitle),
         ]
@@ -144,7 +145,13 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.release = None
 
     def update_title(self, *args):
-        self.set_title(html.escape(self.release.title))
+        title = html.escape(self.release.title)
+        if self.release.disambiguation:
+            opacity = 0.55
+            if Adw.StyleManager.get_default().get_high_contrast():
+                opacity = 0.9
+            title += f'<span alpha="{int(opacity * 100)}%">(' + html.escape(self.release.disambiguation) + ')</span>'
+        self.set_title(title)
 
     def update_subtitle(self, *args):
         self._subtitle = html.escape(self.release.artist)
@@ -287,7 +294,13 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
         self.parent = None
 
     def update_title(self, *args):
-        self.set_title(html.escape(self.release.title))
+        title = html.escape(self.release.title)
+        if self.release.disambiguation:
+            opacity = 0.55
+            if Adw.StyleManager.get_default().get_high_contrast():
+                opacity = 0.9
+            title += f'<span alpha="{int(opacity * 100)}%">(' + html.escape(self.release.disambiguation) + ')</span>'
+        self.set_title(title)
 
     def update_subtitle(self, *args):
         self._subtitle = html.escape(self.release.artist)
