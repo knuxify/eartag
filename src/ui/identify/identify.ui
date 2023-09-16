@@ -3,8 +3,8 @@
   <requires lib="gtk" version="4.0"/>
   <template class="EartagIdentifyDialog" parent="AdwWindow">
     <property name="title" translatable="yes">Identify Selected Files</property>
-    <property name="default-width">600</property>
-    <property name="default-height">330</property>
+    <property name="default-width">700</property>
+    <property name="default-height">550</property>
     <style><class name="identify-dialog"/></style>
     <property name="content">
       <object class="GtkWindowHandle">
@@ -85,42 +85,17 @@
                     <property name="vexpand">true</property>
 
                     <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="valign">fill</property>
-                        <property name="vexpand">true</property>
+                      <object class="AdwPreferencesGroup" id="content_row_group">
+                        <property name="description" translatable="yes">Track information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;. Files without metadata are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service.</property>
+                        <property name="margin-start">12</property>
+                        <property name="margin-end">12</property>
+                        <property name="margin-top">18</property>
+                        <property name="margin-bottom">6</property>
 
                         <child>
-                          <object class="GtkLabel">
-                            <property name="wrap">true</property>
-                            <property name="use-markup">true</property>
-                            <property name="justify">center</property>
-                            <property name="label" translatable="yes">Track information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;. Files without metadata are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service.</property>
-                            <property name="margin-start">12</property>
-                            <property name="margin-end">12</property>
-                            <property name="margin-top">18</property>
-                            <property name="margin-bottom">6</property>
-
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                        </child>
-
-                        <child>
-                          <object class="AdwClamp">
-                            <property name="margin-top">6</property>
-                            <property name="margin-bottom">12</property>
-                            <child>
-                              <object class="GtkListBox" id="content_listbox">
-                                <property name="margin-start">6</property>
-                                <property name="margin-end">6</property>
-                                <property name="selection-mode">none</property>
-                                <style>
-                                  <class name="boxed-list"/>
-                                </style>
-                              </object>
-                            </child>
+                          <object class="GtkListBox" id="content_listbox">
+                            <property name="selection-mode">none</property>
+                            <style><class name="boxed-list"/></style>
                           </object>
                         </child>
                       </object>

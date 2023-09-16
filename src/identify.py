@@ -115,7 +115,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.release_popover_toggle.set_sensitive(False)
         # TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
         # This allows the user to switch between different releases of an album, EP, etc.
-        self.release_popover.set_tooltip_text(_('Other releases'))
+        self.release_popover_toggle.set_tooltip_text(_('Other releases'))
         self.add_action(self.release_popover_toggle)
 
     def bind_to_release(self, release):
@@ -380,11 +380,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     """
     __gtype_name__ = 'EartagIdentifyRecordingRow'
 
-    cover_image = Gtk.Template.Child()
-
-    suffix_stack = Gtk.Template.Child()
     apply_checkbox = Gtk.Template.Child()
-    loading_icon = Gtk.Template.Child()
 
     def __init__(self, parent, recording):
         super().__init__()
@@ -413,10 +409,6 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     def bind_to_recording(self, recording):
         self.recording = recording
 
-        self._bindings = [
-            self.recording.bind_property('thumbnail_path', self.cover_image, 'cover_path',
-                                         GObject.BindingFlags.SYNC_CREATE),
-        ]
         self._connections = [
             self.recording.connect('notify::title', self.update_title),
             self.recording.connect('notify::artist', self.update_subtitle),
@@ -426,9 +418,6 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.update_subtitle()
 
     def unbind(self, *args):
-        for binding in self._bindings:
-            binding.unbind()
-
         for conn in self._connections:
             self.recording.disconnect(conn)
 
@@ -498,10 +487,12 @@ class EartagIdentifyDialog(Adw.Window):
         # has to be added here:
         self.unidentified_row = EartagModelExpanderRow()
         self.unidentified_row.set_title(_('Unidentified Files'))
+        self.unidentified_row.set_expanded(True)
         cover_dummy = EartagIdentifyCoverImage()
         cover_dummy.set_hexpand(False)
         self.unidentified_row.add_prefix(cover_dummy)
         self.unidentified_row.bind_model(self.files_unidentified, self.unidentified_row_create)
+
         self.content_listbox.append(self.unidentified_row)
 
         self.identify_task.bind_property(
@@ -878,6 +869,8 @@ class EartagIdentifyDialog(Adw.Window):
         self.apply_button.set_sensitive(bool(identified))
         for relrow in self.release_rows.values():
             relrow.toggle_apply_sensitivity(True)
+        if not self.files_unidentified.get_n_items():
+            self.unidentified_row.set_visible(False)
 
     @Gtk.Template.Callback()
     def do_apply(self, *args):

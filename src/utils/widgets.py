@@ -255,3 +255,7 @@ class EartagModelExpanderRow(Adw.ExpanderRow):
     def get_row_at_index(self, *args, **kwargs):
         """See Gtk.ListBox.get_row_at_index"""
         return self.list.get_row_at_index(*args, **kwargs)
+
+    def set_placeholder(self, *args, **kwargs):
+        """See Gtk.ListBox.set_placeholder"""
+        return self.list.set_placeholder(*args, **kwargs)
