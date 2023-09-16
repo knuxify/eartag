@@ -79,6 +79,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.audio_file_filter = Gtk.FileFilter()
         for mime in VALID_AUDIO_MIMES:
             self.audio_file_filter.add_mime_type(mime)
+        self.audio_file_filter.set_name(_("All supported audio files"))
 
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
