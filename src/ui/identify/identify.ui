@@ -85,17 +85,21 @@
                     <property name="vexpand">true</property>
 
                     <child>
-                      <object class="AdwPreferencesGroup" id="content_row_group">
-                        <property name="description" translatable="yes">Track information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;. Files without metadata are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service.</property>
-                        <property name="margin-start">12</property>
-                        <property name="margin-end">12</property>
-                        <property name="margin-top">18</property>
-                        <property name="margin-bottom">6</property>
-
+                      <object class="AdwClamp">
                         <child>
-                          <object class="GtkListBox" id="content_listbox">
-                            <property name="selection-mode">none</property>
-                            <style><class name="boxed-list"/></style>
+                          <object class="AdwPreferencesGroup" id="content_row_group">
+                            <property name="description" translatable="yes">Track information is provided by &lt;a href="https://musicbrainz.org"&gt;Musicbrainz&lt;/a&gt;. Files without metadata are identified using the &lt;a href="https://acoustid.org"&gt;AcoustID&lt;/a&gt; service.</property>
+                            <property name="margin-start">12</property>
+                            <property name="margin-end">12</property>
+                            <property name="margin-top">18</property>
+                            <property name="margin-bottom">6</property>
+
+                            <child>
+                              <object class="GtkListBox" id="content_listbox">
+                                <property name="selection-mode">none</property>
+                                <style><class name="boxed-list"/></style>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
