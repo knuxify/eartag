@@ -61,7 +61,7 @@ def test_musicbrainz_multirel():
     assert rec.tracknumber == 1
     assert rec.totaltracknumber == 12
     assert rec.album == 'Effective. Power'
-    assert not rec.thumbnail_path
+    assert rec.thumbnail_path
 
     rec.release = rel2
     assert rec.release == rel2

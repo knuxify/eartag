@@ -457,7 +457,7 @@ class MusicBrainzRelease(GObject.Object):
     @GObject.Property(type=str)
     def back_cover_path(self):
         if not self.cover_tempfiles['back']:
-            return self.group.front_cover_path
+            return ''
         elif self.cover_tempfiles['back'] == MusicBrainzRelease.NEED_UPDATE_COVER:
             raise ValueError("Covers have not been downloaded yet; run update_covers()")
         return self.cover_tempfiles['back'].name
@@ -579,7 +579,6 @@ class MusicBrainzReleaseGroup(GObject.Object):
         self.cover_tempfiles = {
             'thumbnail': None,
             'front': MusicBrainzRelease.NEED_UPDATE_COVER,
-            'back': MusicBrainzRelease.NEED_UPDATE_COVER
         }
 
         if relgroup_data:
@@ -651,15 +650,6 @@ class MusicBrainzReleaseGroup(GObject.Object):
             raise ValueError("Covers have not been downloaded yet; run update_covers()")
         return self.cover_tempfiles['front'].name
 
-    @GObject.Property(type=str)
-    def back_cover_path(self):
-        if not self.cover_tempfiles['back'] or \
-                self.cover_tempfiles['back'] == MusicBrainzReleaseGroup.NO_COVER:
-            return ''
-        elif self.cover_tempfiles['back'] == MusicBrainzRelease.NEED_UPDATE_COVER:
-            raise ValueError("Covers have not been downloaded yet; run update_covers()")
-        return self.cover_tempfiles['back'].name
-
     def update_thumbnail(self):
         """Downloads the thumbnail for the release from coverartarchive.org"""
         url = f'https://coverartarchive.org/release-group/{self.relgroup_id}/front-250'
@@ -690,37 +680,35 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
         if config.get_enum('musicbrainz-cover-size') == 0:
             self.cover_tempfiles['front'] = ''
-            self.cover_tempfiles['back'] = ''
             return
 
-        for cover in ('front', 'back'):
-            url = f'https://coverartarchive.org/release-group/{self.relgroup_id}/{cover}'
+        url = f'https://coverartarchive.org/release-group/{self.relgroup_id}/front'
 
-            if config.get_enum('musicbrainz-cover-size') in (250, 500, 1200):
-                url += '-' + str(config.get_enum('musicbrainz-cover-size'))
+        if config.get_enum('musicbrainz-cover-size') in (250, 500, 1200):
+            url += '-' + str(config.get_enum('musicbrainz-cover-size'))
 
-            if url in MusicBrainzRelease.cover_cache:
-                if MusicBrainzRelease.cover_cache[url]:
-                    self.cover_tempfiles[cover] = MusicBrainzRelease.cover_cache[url]
-                else:
-                    self.cover_tempfiles[cover] = ''
-                self.notify(f'{cover}-cover-path')
-                continue
+        if url in MusicBrainzRelease.cover_cache:
+            if MusicBrainzRelease.cover_cache[url]:
+                self.cover_tempfiles['front'] = MusicBrainzRelease.cover_cache[url]
+            else:
+                self.cover_tempfiles['front'] = ''
+            self.notify('front-cover-path')
+            return
 
-            data = make_request(url, raw=True)
-            if not data:
-                self.cover_tempfiles[cover] = MusicBrainzReleaseGroup.NO_COVER
-                self.notify(f'{cover}-cover-path')
-                continue
+        data = make_request(url, raw=True)
+        if not data:
+            self.cover_tempfiles['front'] = MusicBrainzReleaseGroup.NO_COVER
+            self.notify('front-cover-path')
+            return
 
-            cover_extension = mimetypes.guess_extension(magic.from_buffer(data, mime=True))
-            self.cover_tempfiles[cover] = tempfile.NamedTemporaryFile(
-                suffix=cover_extension
-            )
-            self.cover_tempfiles[cover].write(data)
-            self.cover_tempfiles[cover].flush()
-            MusicBrainzRelease.cover_cache[url] = self.cover_tempfiles[cover]
-            self.notify(f'{cover}-cover-path')
+        cover_extension = mimetypes.guess_extension(magic.from_buffer(data, mime=True))
+        self.cover_tempfiles['front'] = tempfile.NamedTemporaryFile(
+            suffix=cover_extension
+        )
+        self.cover_tempfiles['front'].write(data)
+        self.cover_tempfiles['front'].flush()
+        MusicBrainzRelease.cover_cache[url] = self.cover_tempfiles['front']
+        self.notify('front-cover-path')
 
     @classmethod
     def clear_tempfiles(cls):
