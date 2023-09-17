@@ -12,6 +12,7 @@
             <child>
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">MusicBrainz confidence treshold</property>
+                <property name="subtitle" translatable="yes">Minimum confidence percentage required for a MusicBrainz search result to be evaluated</property>
 
                 <child type="suffix">
                   <object class="GtkSpinButton" id="mb_confidence_spinbutton">
@@ -33,6 +34,7 @@
             <child>
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">AcoustID confidence treshold</property>
+                <property name="subtitle" translatable="yes">Minimum confidence percentage required for an AcoustID lookup result to be evaluated</property>
 
                 <child type="suffix">
                   <object class="GtkSpinButton" id="aid_confidence_spinbutton">

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 08:48+0200\n"
+"POT-Creation-Date: 2023-09-17 17:17+0200\n"
 "PO-Revision-Date: 2023-07-07 11:25+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
@@ -629,31 +629,43 @@ msgstr ""
 msgid "MusicBrainz confidence treshold"
 msgstr ""
 
-#: src/ui/settings.ui:35
+#: src/ui/settings.ui:15
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr ""
+
+#: src/ui/settings.ui:36
 msgid "AcoustID confidence treshold"
 msgstr ""
 
-#: src/ui/settings.ui:56
+#: src/ui/settings.ui:37
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr ""
+
+#: src/ui/settings.ui:58
 msgid "Downloaded cover art size"
 msgstr ""
 
-#: src/ui/settings.ui:61
+#: src/ui/settings.ui:63
 msgid "Do not download covers"
 msgstr ""
 
-#: src/ui/settings.ui:62
+#: src/ui/settings.ui:64
 msgid "250 px"
 msgstr ""
 
-#: src/ui/settings.ui:63
+#: src/ui/settings.ui:65
 msgid "500 px"
 msgstr ""
 
-#: src/ui/settings.ui:64
+#: src/ui/settings.ui:66
 msgid "1200 px"
 msgstr ""
 
-#: src/ui/settings.ui:65
+#: src/ui/settings.ui:67
 msgid "Maximum size"
 msgstr ""
 

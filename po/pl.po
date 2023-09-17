@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 08:48+0200\n"
-"PO-Revision-Date: 2023-09-17 08:52+0200\n"
+"POT-Creation-Date: 2023-09-17 17:17+0200\n"
+"PO-Revision-Date: 2023-09-17 17:18+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -661,31 +661,47 @@ msgstr "Identyfikacja plików"
 msgid "MusicBrainz confidence treshold"
 msgstr "Próg ufności MusicBrainz"
 
-#: src/ui/settings.ui:35
+#: src/ui/settings.ui:15
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr ""
+"Minimalny procent ufności wymagany do uwzględnienia wyniku wyszukiwania na "
+"MusicBrainz"
+
+#: src/ui/settings.ui:36
 msgid "AcoustID confidence treshold"
 msgstr "Próg ufności AcoustID"
 
-#: src/ui/settings.ui:56
+#: src/ui/settings.ui:37
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr ""
+"Minimalny procent ufności wymagany do uwzględnienia wyniku wyszukiwania na "
+"AcoustID"
+
+#: src/ui/settings.ui:58
 msgid "Downloaded cover art size"
 msgstr "Rozmiar pobieranych okładek"
 
-#: src/ui/settings.ui:61
+#: src/ui/settings.ui:63
 msgid "Do not download covers"
 msgstr "Nie pobieraj okładek"
 
-#: src/ui/settings.ui:62
+#: src/ui/settings.ui:64
 msgid "250 px"
 msgstr "250 px"
 
-#: src/ui/settings.ui:63
+#: src/ui/settings.ui:65
 msgid "500 px"
 msgstr "500 px"
 
-#: src/ui/settings.ui:64
+#: src/ui/settings.ui:66
 msgid "1200 px"
 msgstr "1200 px"
 
-#: src/ui/settings.ui:65
+#: src/ui/settings.ui:67
 msgid "Maximum size"
 msgstr "Maksymalny rozmiar"
 
