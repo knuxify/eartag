@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-16 22:13+0200\n"
+"POT-Creation-Date: 2023-09-17 08:48+0200\n"
 "PO-Revision-Date: 2023-08-18 10:07+0200\n"
 "Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: French <gnomefr@traduc.org>\n"
@@ -649,25 +649,16 @@ msgstr ""
 msgid "File could not be identified"
 msgstr ""
 
-#: data/app.drey.EarTag.gschema.xml:14
-#, fuzzy
-msgid "Rename placeholder"
-msgstr "Renommer les fichiers sélectionnés"
+#: src/ui/settings.ui:9
+msgid "File identification"
+msgstr ""
 
-#: data/app.drey.EarTag.gschema.xml:20 src/ui/settings.ui:14
+#: src/ui/settings.ui:14
 msgid "MusicBrainz confidence treshold"
 msgstr ""
 
-#: data/app.drey.EarTag.gschema.xml:26 src/ui/settings.ui:35
+#: src/ui/settings.ui:35
 msgid "AcoustID confidence treshold"
-msgstr ""
-
-#: data/app.drey.EarTag.gschema.xml:31
-msgid "MusicBrainz release cover size"
-msgstr ""
-
-#: src/ui/settings.ui:9
-msgid "File identification"
 msgstr ""
 
 #: src/ui/settings.ui:56
@@ -753,6 +744,10 @@ msgstr "Autre"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Raccourcis clavier"
+
+#, fuzzy
+#~ msgid "Rename placeholder"
+#~ msgstr "Renommer les fichiers sélectionnés"
 
 #~ msgid ""
 #~ "Files are identified using the <a href=\"https://acoustid.org\">AcoustID</"

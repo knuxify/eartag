@@ -44,7 +44,6 @@ src/ui/identify/altreleaserow.ui
 src/ui/identify/recordingrow.ui
 
 # Settings
-data/app.drey.EarTag.gschema.xml
 src/ui/settings.ui
 
 # Shortcut list

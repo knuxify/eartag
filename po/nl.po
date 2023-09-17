@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-16 22:13+0200\n"
+"POT-Creation-Date: 2023-09-17 08:48+0200\n"
 "PO-Revision-Date: 2022-09-17 17:58+0200\n"
 "Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
@@ -663,25 +663,16 @@ msgstr ""
 msgid "File could not be identified"
 msgstr ""
 
-#: data/app.drey.EarTag.gschema.xml:14
-#, fuzzy
-msgid "Rename placeholder"
-msgstr "Geselecteerde bestanden verwijderen"
+#: src/ui/settings.ui:9
+msgid "File identification"
+msgstr ""
 
-#: data/app.drey.EarTag.gschema.xml:20 src/ui/settings.ui:14
+#: src/ui/settings.ui:14
 msgid "MusicBrainz confidence treshold"
 msgstr ""
 
-#: data/app.drey.EarTag.gschema.xml:26 src/ui/settings.ui:35
+#: src/ui/settings.ui:35
 msgid "AcoustID confidence treshold"
-msgstr ""
-
-#: data/app.drey.EarTag.gschema.xml:31
-msgid "MusicBrainz release cover size"
-msgstr ""
-
-#: src/ui/settings.ui:9
-msgid "File identification"
 msgstr ""
 
 #: src/ui/settings.ui:56
@@ -774,6 +765,10 @@ msgstr ""
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Rename placeholder"
+#~ msgstr "Geselecteerde bestanden verwijderen"
 
 #~ msgid "Album cover"
 #~ msgstr "Albumhoes"

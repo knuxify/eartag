@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-16 22:13+0200\n"
-"PO-Revision-Date: 2023-05-27 21:13+0200\n"
+"POT-Creation-Date: 2023-09-17 08:48+0200\n"
+"PO-Revision-Date: 2023-09-17 08:52+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
 "|| n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #. TRANSLATORS: Add your name/nickname here
 #: src/main.py:109 src/main.py:111
@@ -48,6 +48,10 @@ msgid ""
 "ability to rename files using a specific pattern, file identification using "
 "AcoustID and the option to set a full release date."
 msgstr ""
+"Naprawiono błąd, przez który okładki nie mogły być wczytywane. Z notatek o "
+"wersji 0.4.0: Dodano możliwość zmiany nazwy pliku według wzoru, "
+"identyfikacja plików za pomocą AcoustID i opcja ustawienia pełnej daty "
+"wydania."
 
 #: data/app.drey.EarTag.metainfo.xml.in:34
 #: data/app.drey.EarTag.metainfo.xml.in:39
@@ -56,16 +60,21 @@ msgid ""
 "using a specific pattern, file identification using AcoustID and the option "
 "to set a full release date."
 msgstr ""
+"Małe poprawki. Z notatek o wersji 0.4.0: Dodano możliwość zmiany nazwy pliku "
+"według wzoru, identyfikacja plików za pomocą AcoustID i opcja ustawienia "
+"pełnej daty wydania."
 
 #: data/app.drey.EarTag.metainfo.xml.in:44
 msgid ""
 "Added the ability to rename files using a specific pattern, file "
 "identification using AcoustID and the option to set a full release date."
 msgstr ""
+"Dodano możliwość zmiany nazwy pliku według wzoru, identyfikacja plików za "
+"pomocą AcoustID i opcja ustawienia pełnej daty wydania."
 
 #: data/app.drey.EarTag.metainfo.xml.in:54
 msgid "Initial release."
-msgstr ""
+msgstr "Pierwsze wydanie."
 
 #: data/app.drey.EarTag.metainfo.xml.in:62
 msgid ""
@@ -101,7 +110,7 @@ msgstr "Dostęp do sieci jest używany tylko do funkcji identyfikacji plików."
 
 #: src/window.py:82
 msgid "All supported audio files"
-msgstr ""
+msgstr "Wszystkie wspierane pliki audio"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/window.py:163 src/fileview.py:921
@@ -186,7 +195,7 @@ msgstr "Skróty _klawiszowe"
 
 #: src/ui/window.ui:264
 msgid "_Settings"
-msgstr ""
+msgstr "_Ustawienia"
 
 #: src/ui/window.ui:268
 msgid "_About Ear Tag"
@@ -361,27 +370,27 @@ msgstr "Tytuł (sortowanie)"
 
 #: src/backends/file.py:91
 msgid "MusicBrainz Artist ID"
-msgstr ""
+msgstr "ID artysty na MusicBrainz"
 
 #: src/backends/file.py:92
 msgid "MusicBrainz Album ID"
-msgstr ""
+msgstr "ID albumu na MusicBrainz"
 
 #: src/backends/file.py:93
 msgid "MusicBrainz Album Artist ID"
-msgstr ""
+msgstr "ID artysty albumu na MusicBrainz"
 
 #: src/backends/file.py:94
 msgid "MusicBrainz Release Track ID"
-msgstr ""
+msgstr "ID ścieżki w wydaniu na MusicBrainz"
 
 #: src/backends/file.py:95
 msgid "MusicBrainz Recording ID"
-msgstr ""
+msgstr "ID nagrania na MusicBrainz"
 
 #: src/backends/file.py:96
 msgid "MusicBrainz Release Group ID"
-msgstr ""
+msgstr "ID grupy wydań na MusicBrainz"
 
 #: src/fileview.py:183
 msgid "Select Album Cover Image"
@@ -392,31 +401,31 @@ msgid "Save Album Cover To…"
 msgstr "Zapisz okładkę do…"
 
 #: src/fileview.py:238
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Saved cover to {path}"
-msgstr "_Zapisz okładkę do pliku"
+msgstr "Zapisano okładkę do ścieżki {path}"
 
 #: src/fileview.py:261
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
-msgstr[0] "Usuń z listy"
-msgstr[1] "Usuń z listy"
-msgstr[2] "Usuń z listy"
+msgstr[0] "Usunięto okładkę z pliku"
+msgstr[1] "Usunięto okładki z {n} plików"
+msgstr[2] "Usunięto okładki z {n} plików"
 
 #: src/fileview.py:265
 msgid "Undo"
-msgstr ""
+msgstr "Cofnij"
 
 #: src/fileview.py:612
 msgid "More tags"
 msgstr "Więcej tagów"
 
 #: src/fileview.py:935
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
-msgstr[0] "{n} kanał"
+msgstr[0] "1 kanał"
 msgstr[1] "{n} kanały"
 msgstr[2] "{n} kanałów"
 
@@ -442,23 +451,23 @@ msgstr "Następny plik"
 
 #: src/ui/albumcoverbutton.ui:90
 msgid "_Choose Image…"
-msgstr ""
+msgstr "_Wybierz obraz…"
 
 #: src/ui/albumcoverbutton.ui:95
 msgid "_Save Image…"
-msgstr ""
+msgstr "_Zapisz obraz…"
 
 #: src/ui/albumcoverbutton.ui:100
 msgid "_Remove Cover"
-msgstr ""
+msgstr "_Usuń okładkę"
 
 #: src/ui/albumcoverbutton.ui:123
 msgid "Front"
-msgstr ""
+msgstr "Przód"
 
 #: src/ui/albumcoverbutton.ui:130
 msgid "Back"
-msgstr ""
+msgstr "Tył"
 
 #: src/tagentry.py:128
 msgid "(multiple values)"
@@ -474,10 +483,10 @@ msgid "No files selected"
 msgstr "Nie zaznaczono żadnych plików"
 
 #: src/sidebar.py:524
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
-msgstr[0] "Zaznaczono {n} plik"
+msgstr[0] "Zaznaczono 1 plik"
 msgstr[1] "Zaznaczono {n} pliki"
 msgstr[2] "Zaznaczono {n} plików"
 
@@ -607,12 +616,11 @@ msgstr ""
 #. This allows the user to switch between different releases of an album, EP, etc.
 #: src/identify.py:118
 msgid "Other releases"
-msgstr ""
+msgstr "Inne wydania"
 
 #: src/identify.py:493
-#, fuzzy
 msgid "Unidentified Files"
-msgstr "Identyfikuj wybrane pliki"
+msgstr "Niezidentyfikowane pliki"
 
 #: src/identify.py:915
 #, python-brace-format
@@ -629,7 +637,7 @@ msgstr "Identyfikuj"
 
 #: src/ui/identify/identify.ui:58
 msgid "Apply"
-msgstr ""
+msgstr "Zastosuj"
 
 #: src/ui/identify/identify.ui:91
 msgid ""
@@ -637,55 +645,49 @@ msgid ""
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
 "href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
+"Informacje o utworach są dostarczane przez <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Pliki bez metadanych są identyfikowane za pomocą "
+"usługi <a href=\"https://acoustid.org\">AcoustID</a>."
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
-msgstr ""
-
-#: data/app.drey.EarTag.gschema.xml:14
-#, fuzzy
-msgid "Rename placeholder"
-msgstr "Usuń wybrane pliki"
-
-#: data/app.drey.EarTag.gschema.xml:20 src/ui/settings.ui:14
-msgid "MusicBrainz confidence treshold"
-msgstr ""
-
-#: data/app.drey.EarTag.gschema.xml:26 src/ui/settings.ui:35
-msgid "AcoustID confidence treshold"
-msgstr ""
-
-#: data/app.drey.EarTag.gschema.xml:31
-msgid "MusicBrainz release cover size"
-msgstr ""
+msgstr "Nie udało się zidentyfikować pliku"
 
 #: src/ui/settings.ui:9
 msgid "File identification"
-msgstr ""
+msgstr "Identyfikacja plików"
+
+#: src/ui/settings.ui:14
+msgid "MusicBrainz confidence treshold"
+msgstr "Próg ufności MusicBrainz"
+
+#: src/ui/settings.ui:35
+msgid "AcoustID confidence treshold"
+msgstr "Próg ufności AcoustID"
 
 #: src/ui/settings.ui:56
 msgid "Downloaded cover art size"
-msgstr ""
+msgstr "Rozmiar pobieranych okładek"
 
 #: src/ui/settings.ui:61
 msgid "Do not download covers"
-msgstr ""
+msgstr "Nie pobieraj okładek"
 
 #: src/ui/settings.ui:62
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
 #: src/ui/settings.ui:63
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
 #: src/ui/settings.ui:64
 msgid "1200 px"
-msgstr ""
+msgstr "1200 px"
 
 #: src/ui/settings.ui:65
 msgid "Maximum size"
-msgstr ""
+msgstr "Maksymalny rozmiar"
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -746,6 +748,10 @@ msgstr "Inne"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Skróty _klawiszowe"
+
+#, fuzzy
+#~ msgid "Rename placeholder"
+#~ msgstr "Usuń wybrane pliki"
 
 #~ msgid ""
 #~ "Files are identified using the <a href=\"https://acoustid.org\">AcoustID</"
