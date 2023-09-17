@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 17:17+0200\n"
+"POT-Creation-Date: 2023-09-17 17:24+0200\n"
 "PO-Revision-Date: 2023-06-07 08:55+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -45,30 +45,36 @@ msgstr "müzik;ses;etiket;ekitetleme;etiketleyici;"
 
 #: data/app.drey.EarTag.metainfo.xml.in:29
 msgid ""
+"Added support for removing a cover image and setting the back cover image. "
+"Improved the accuracy of the file identification option."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:32
+msgid ""
 "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
 "ability to rename files using a specific pattern, file identification using "
 "AcoustID and the option to set a full release date."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:34
-#: data/app.drey.EarTag.metainfo.xml.in:39
+#: data/app.drey.EarTag.metainfo.xml.in:37
+#: data/app.drey.EarTag.metainfo.xml.in:42
 msgid ""
 "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
 "using a specific pattern, file identification using AcoustID and the option "
 "to set a full release date."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:44
+#: data/app.drey.EarTag.metainfo.xml.in:47
 msgid ""
 "Added the ability to rename files using a specific pattern, file "
 "identification using AcoustID and the option to set a full release date."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:54
+#: data/app.drey.EarTag.metainfo.xml.in:57
 msgid "Initial release."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -81,23 +87,23 @@ msgstr ""
 "kullanıcının bir müzik kütüphanesi klasörü kurmasını gerektirmez. "
 "Yetenekleri şunlardır:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "MP3, WAV, M4A, FLAC, OGG ve WMA dosyalarının etiketlerini düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:68
 msgid "Modify metadata of multiple files at once"
 msgstr "Birden fazla dosyanın üst verilerini aynı anda düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:66
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Rename files using information from present tags"
 msgstr "Etiketlerdeki bilgileri kullanarak dosyaları yeniden adlandırma"
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:70
 msgid "Identify files using AcoustID"
 msgstr "AcoustID kullanarak dosyaları tanılama"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Ağ erişimi yalnızca \"Seçilen Dosyaları Tanıla\" seçeneği için kullanılır."

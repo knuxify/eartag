@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 17:17+0200\n"
+"POT-Creation-Date: 2023-09-17 17:24+0200\n"
 "PO-Revision-Date: 2023-06-06 01:00+0200\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
 "Language-Team: Spanish; Castilian < >\n"
@@ -43,6 +43,12 @@ msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;música;etiqueta;etiquetado;etiquetador;"
 
 #: data/app.drey.EarTag.metainfo.xml.in:29
+msgid ""
+"Added support for removing a cover image and setting the back cover image. "
+"Improved the accuracy of the file identification option."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:32
 #, fuzzy
 msgid ""
 "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
@@ -53,8 +59,8 @@ msgstr ""
 "identificación de archivos mediante AcoustID y la opción de establecer una "
 "fecha de lanzamiento completa."
 
-#: data/app.drey.EarTag.metainfo.xml.in:34
-#: data/app.drey.EarTag.metainfo.xml.in:39
+#: data/app.drey.EarTag.metainfo.xml.in:37
+#: data/app.drey.EarTag.metainfo.xml.in:42
 #, fuzzy
 msgid ""
 "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
@@ -65,7 +71,7 @@ msgstr ""
 "identificación de archivos mediante AcoustID y la opción de establecer una "
 "fecha de lanzamiento completa."
 
-#: data/app.drey.EarTag.metainfo.xml.in:44
+#: data/app.drey.EarTag.metainfo.xml.in:47
 msgid ""
 "Added the ability to rename files using a specific pattern, file "
 "identification using AcoustID and the option to set a full release date."
@@ -74,11 +80,11 @@ msgstr ""
 "identificación de archivos mediante AcoustID y la opción de establecer una "
 "fecha de lanzamiento completa."
 
-#: data/app.drey.EarTag.metainfo.xml.in:54
+#: data/app.drey.EarTag.metainfo.xml.in:57
 msgid "Initial release."
 msgstr "Versión inicial."
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -91,23 +97,23 @@ msgstr ""
 "Tag no requiere que el usuario configure una carpeta de biblioteca de "
 "música. Se puede:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Editar etiquetas de archivos MP3, WAV, M4A, FLAC, OGG y WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:68
 msgid "Modify metadata of multiple files at once"
 msgstr "Modificar los metadatos de varios archivos a la vez"
 
-#: data/app.drey.EarTag.metainfo.xml.in:66
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Rename files using information from present tags"
 msgstr "Renombrar archivos usando la información de las etiquetas actuales"
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:70
 msgid "Identify files using AcoustID"
 msgstr "Identificar archivos mediante AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "El acceso a la red sólo se usa para la opción \"Identificar archivos "

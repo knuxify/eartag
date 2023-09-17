@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 17:17+0200\n"
+"POT-Creation-Date: 2023-09-17 17:24+0200\n"
 "PO-Revision-Date: 2023-07-07 11:25+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
@@ -43,30 +43,36 @@ msgstr "music;audio;tag;tagging;tagger;音乐;音频;标签;"
 
 #: data/app.drey.EarTag.metainfo.xml.in:29
 msgid ""
+"Added support for removing a cover image and setting the back cover image. "
+"Improved the accuracy of the file identification option."
+msgstr ""
+
+#: data/app.drey.EarTag.metainfo.xml.in:32
+msgid ""
 "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
 "ability to rename files using a specific pattern, file identification using "
 "AcoustID and the option to set a full release date."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:34
-#: data/app.drey.EarTag.metainfo.xml.in:39
+#: data/app.drey.EarTag.metainfo.xml.in:37
+#: data/app.drey.EarTag.metainfo.xml.in:42
 msgid ""
 "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
 "using a specific pattern, file identification using AcoustID and the option "
 "to set a full release date."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:44
+#: data/app.drey.EarTag.metainfo.xml.in:47
 msgid ""
 "Added the ability to rename files using a specific pattern, file "
 "identification using AcoustID and the option to set a full release date."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:54
+#: data/app.drey.EarTag.metainfo.xml.in:57
 msgid "Initial release."
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -77,23 +83,23 @@ msgstr ""
 "唱片中的曲目。不像其它标签编辑程序，Ear Tag 不需要用户设置一个音乐库文件夹。"
 "它可以："
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "编辑 MP3、WAV、M4A、FLAC、OGG 和 WMA 文件的标签"
 
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:68
 msgid "Modify metadata of multiple files at once"
 msgstr "同时修改多个文件的元数据"
 
-#: data/app.drey.EarTag.metainfo.xml.in:66
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Rename files using information from present tags"
 msgstr "使用来自呈现标签的信息重命名文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:70
 msgid "Identify files using AcoustID"
 msgstr "使用 AcoustID 识别文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
