@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 17:24+0200\n"
-"PO-Revision-Date: 2023-06-06 01:00+0200\n"
+"POT-Creation-Date: 2023-09-18 12:55+0200\n"
+"PO-Revision-Date: 2023-09-18 13:06+0200\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
-"Language-Team: Spanish; Castilian < >\n"
+"Language-Team: Spanish; Castilian <>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 42.0\n"
+"X-Generator: Gtranslator 45.alpha0\n"
 
 #. TRANSLATORS: Add your name/nickname here
 #: src/main.py:109 src/main.py:111
@@ -47,28 +47,31 @@ msgid ""
 "Added support for removing a cover image and setting the back cover image. "
 "Improved the accuracy of the file identification option."
 msgstr ""
+"Añadido soporte para eliminar una imagen de portada y establecer la imagen "
+"de contraportada. Se ha mejorado la precisión de la opción de identificación "
+"de archivos."
 
 #: data/app.drey.EarTag.metainfo.xml.in:32
-#, fuzzy
 msgid ""
 "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
 "ability to rename files using a specific pattern, file identification using "
 "AcoustID and the option to set a full release date."
 msgstr ""
-"Añadida la posibilidad de renombrar archivos usando un patrón específico, la "
-"identificación de archivos mediante AcoustID y la opción de establecer una "
-"fecha de lanzamiento completa."
+"Se soluciona un problema por el que no se podían cargar las portadas. Desde "
+"las notas de 0.4.0: Añadida la posibilidad de renombrar archivos usando un "
+"patrón específico, identificación de archivos usando AcoustID y la opción de "
+"establecer una fecha de lanzamiento completa."
 
 #: data/app.drey.EarTag.metainfo.xml.in:37
 #: data/app.drey.EarTag.metainfo.xml.in:42
-#, fuzzy
 msgid ""
 "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
 "using a specific pattern, file identification using AcoustID and the option "
 "to set a full release date."
 msgstr ""
-"Añadida la posibilidad de renombrar archivos usando un patrón específico, la "
-"identificación de archivos mediante AcoustID y la opción de establecer una "
+"Actualización de errores menores. Desde las notas de 0.4.0: Añadida la "
+"posibilidad de renombrar archivos usando un patrón específico, "
+"identificación de archivos usando AcoustID y la opción de establecer una "
 "fecha de lanzamiento completa."
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
@@ -121,7 +124,7 @@ msgstr ""
 
 #: src/window.py:82
 msgid "All supported audio files"
-msgstr ""
+msgstr "Todos los archivos de sonido soportados"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/window.py:163 src/fileview.py:921
@@ -206,7 +209,7 @@ msgstr "_Atajos del teclado"
 
 #: src/ui/window.ui:264
 msgid "_Settings"
-msgstr ""
+msgstr "_Configuración"
 
 #: src/ui/window.ui:268
 msgid "_About Ear Tag"
@@ -381,27 +384,27 @@ msgstr "Título (ordenar)"
 
 #: src/backends/file.py:91
 msgid "MusicBrainz Artist ID"
-msgstr ""
+msgstr "ID de artista de MusicBrainz"
 
 #: src/backends/file.py:92
 msgid "MusicBrainz Album ID"
-msgstr ""
+msgstr "ID del álbum de MusicBrainz"
 
 #: src/backends/file.py:93
 msgid "MusicBrainz Album Artist ID"
-msgstr ""
+msgstr "ID de artista del álbum MusicBrainz"
 
 #: src/backends/file.py:94
 msgid "MusicBrainz Release Track ID"
-msgstr ""
+msgstr "ID de pista de lanzamiento de MusicBrainz"
 
 #: src/backends/file.py:95
 msgid "MusicBrainz Recording ID"
-msgstr ""
+msgstr "ID de grabación de MusicBrainz"
 
 #: src/backends/file.py:96
 msgid "MusicBrainz Release Group ID"
-msgstr ""
+msgstr "ID de grupo de publicación de MusicBrainz"
 
 #: src/fileview.py:183
 msgid "Select Album Cover Image"
@@ -412,30 +415,30 @@ msgid "Save Album Cover To…"
 msgstr "Guardar portada de álbum en…"
 
 #: src/fileview.py:238
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Saved cover to {path}"
-msgstr "_Guardar portada en archivo"
+msgstr "Portada guardada en {path}"
 
 #: src/fileview.py:261
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
-msgstr[0] "Eliminar de la lista"
-msgstr[1] "Eliminar de la lista"
+msgstr[0] "Portada eliminada del archivo"
+msgstr[1] "Portadas eliminadas de {n} archivos"
 
 #: src/fileview.py:265
 msgid "Undo"
-msgstr ""
+msgstr "Deshacer"
 
 #: src/fileview.py:612
 msgid "More tags"
 msgstr "Más etiquetas"
 
 #: src/fileview.py:935
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
-msgstr[0] "{n} canal"
+msgstr[0] "1 canal"
 msgstr[1] "{n} canales"
 
 #: src/ui/fileview.ui:10
@@ -461,28 +464,27 @@ msgstr "Archivo siguiente"
 
 #: src/ui/albumcoverbutton.ui:90
 msgid "_Choose Image…"
-msgstr ""
+msgstr "_Elegir imagen…"
 
 #: src/ui/albumcoverbutton.ui:95
 msgid "_Save Image…"
-msgstr ""
+msgstr "_Guardar imagen…"
 
 #: src/ui/albumcoverbutton.ui:100
 msgid "_Remove Cover"
-msgstr ""
+msgstr "_Quitar portada"
 
 #: src/ui/albumcoverbutton.ui:123
 msgid "Front"
-msgstr ""
+msgstr "Anverso"
 
 #: src/ui/albumcoverbutton.ui:130
 msgid "Back"
-msgstr ""
+msgstr "Reverso"
 
 #: src/tagentry.py:128
-#, fuzzy
 msgid "(multiple values)"
-msgstr "Seleccionar varios archivos"
+msgstr "(valores múltiples)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
@@ -494,10 +496,10 @@ msgid "No files selected"
 msgstr "No hay archivos seleccionados"
 
 #: src/sidebar.py:524
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
-msgstr[0] "{n} archivo seleccionado"
+msgstr[0] "1 archivo seleccionado"
 msgstr[1] "{n} archivos seleccionados"
 
 #: src/ui/sidebar.ui:58
@@ -625,14 +627,12 @@ msgstr ""
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
 #: src/identify.py:118
-#, fuzzy
 msgid "Other releases"
-msgstr "Versión inicial."
+msgstr "Otras versiones"
 
 #: src/identify.py:493
-#, fuzzy
 msgid "Unidentified Files"
-msgstr "Identificar archivos seleccionados"
+msgstr "Archivos no identificados"
 
 #: src/identify.py:915
 #, python-brace-format
@@ -649,7 +649,7 @@ msgstr "Identificar"
 
 #: src/ui/identify/identify.ui:58
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 #: src/ui/identify/identify.ui:91
 msgid ""
@@ -657,58 +657,65 @@ msgid ""
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
 "href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
+"La información sobre las pistas la proporciona <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Los archivos sin metadatos se identifican mediante el "
+"servicio <a href=\"https://acoustid.org\">AcoustID</a>."
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
-msgstr ""
+msgstr "No se ha podido identificar el archivo"
 
 #: src/ui/settings.ui:9
 msgid "File identification"
-msgstr ""
+msgstr "Identificación del archivo"
 
 #: src/ui/settings.ui:14
 msgid "MusicBrainz confidence treshold"
-msgstr ""
+msgstr "Umbral de confianza de MusicBrainz"
 
 #: src/ui/settings.ui:15
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
 msgstr ""
+"Porcentaje mínimo de confianza necesario para evaluar un resultado de "
+"búsqueda en MusicBrainz"
 
 #: src/ui/settings.ui:36
 msgid "AcoustID confidence treshold"
-msgstr ""
+msgstr "Umbral de confianza de AcoustID"
 
 #: src/ui/settings.ui:37
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
 msgstr ""
+"Porcentaje mínimo de confianza necesario para evaluar un resultado de "
+"búsqueda AcoustID"
 
 #: src/ui/settings.ui:58
 msgid "Downloaded cover art size"
-msgstr ""
+msgstr "Tamaño de la portada descargada"
 
 #: src/ui/settings.ui:63
 msgid "Do not download covers"
-msgstr ""
+msgstr "No descargar portadas"
 
 #: src/ui/settings.ui:64
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
 #: src/ui/settings.ui:65
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
 #: src/ui/settings.ui:66
 msgid "1200 px"
-msgstr ""
+msgstr "1200 px"
 
 #: src/ui/settings.ui:67
 msgid "Maximum size"
-msgstr ""
+msgstr "Tamaño máximo"
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
