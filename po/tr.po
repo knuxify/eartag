@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-17 17:24+0200\n"
-"PO-Revision-Date: 2023-06-07 08:55+0300\n"
+"PO-Revision-Date: 2023-09-18 18:49+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -48,6 +48,8 @@ msgid ""
 "Added support for removing a cover image and setting the back cover image. "
 "Improved the accuracy of the file identification option."
 msgstr ""
+"Kapak görseli kaldırma ve arka kapak görselini ayarlama desteği eklendi. "
+"Dosya tanımlama seçeneğinin doğruluğu iyileştirildi."
 
 #: data/app.drey.EarTag.metainfo.xml.in:32
 msgid ""
@@ -55,6 +57,9 @@ msgid ""
 "ability to rename files using a specific pattern, file identification using "
 "AcoustID and the option to set a full release date."
 msgstr ""
+"Kapakların yüklenememesi sorununu düzeltildi. 0.4.0 notlarından: Desen "
+"kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya "
+"tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
 
 #: data/app.drey.EarTag.metainfo.xml.in:37
 #: data/app.drey.EarTag.metainfo.xml.in:42
@@ -63,16 +68,21 @@ msgid ""
 "using a specific pattern, file identification using AcoustID and the option "
 "to set a full release date."
 msgstr ""
+"Küçük hata düzeltme güncellemesi. 0.4.0 notlarından: Desen kullanarak "
+"dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya tanımlama "
+"ve tam yayın tarihi belirleme seçeneği eklendi."
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
 msgid ""
 "Added the ability to rename files using a specific pattern, file "
 "identification using AcoustID and the option to set a full release date."
 msgstr ""
+"Desen kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak "
+"dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
 
 #: data/app.drey.EarTag.metainfo.xml.in:57
 msgid "Initial release."
-msgstr ""
+msgstr "İlk sürüm."
 
 #: data/app.drey.EarTag.metainfo.xml.in:65
 msgid ""
@@ -101,16 +111,16 @@ msgstr "Etiketlerdeki bilgileri kullanarak dosyaları yeniden adlandırma"
 
 #: data/app.drey.EarTag.metainfo.xml.in:70
 msgid "Identify files using AcoustID"
-msgstr "AcoustID kullanarak dosyaları tanılama"
+msgstr "AcoustID kullanarak dosyaları tanımlama"
 
 #: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
-"Ağ erişimi yalnızca \"Seçilen Dosyaları Tanıla\" seçeneği için kullanılır."
+"Ağ erişimi yalnızca \"Seçilen Dosyaları Tanımla\" seçeneği için kullanılır."
 
 #: src/window.py:82
 msgid "All supported audio files"
-msgstr ""
+msgstr "Tüm desteklenen ses dosyaları"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/window.py:163 src/fileview.py:921
@@ -187,7 +197,7 @@ msgstr "Seçilen Dosyaları _Yeniden Adlandır"
 
 #: src/ui/window.ui:254
 msgid "_Identify Selected Files"
-msgstr "Seçilen Dosyaları _Tanıla"
+msgstr "Seçilen Dosyaları _Tanımla"
 
 #: src/ui/window.ui:260
 msgid "_Keyboard Shortcuts"
@@ -195,7 +205,7 @@ msgstr "_Klavye Kısayolları"
 
 #: src/ui/window.ui:264
 msgid "_Settings"
-msgstr ""
+msgstr "_Ayarlar"
 
 #: src/ui/window.ui:268
 msgid "_About Ear Tag"
@@ -366,27 +376,27 @@ msgstr "Parça adı (sırala)"
 
 #: src/backends/file.py:91
 msgid "MusicBrainz Artist ID"
-msgstr ""
+msgstr "MusicBrainz Sanatçı Kimliği"
 
 #: src/backends/file.py:92
 msgid "MusicBrainz Album ID"
-msgstr ""
+msgstr "MusicBrainz Albüm Kimliği"
 
 #: src/backends/file.py:93
 msgid "MusicBrainz Album Artist ID"
-msgstr ""
+msgstr "MusicBrainz Albüm Sanatçı Kimliği"
 
 #: src/backends/file.py:94
 msgid "MusicBrainz Release Track ID"
-msgstr ""
+msgstr "MusicBrainz Yayın Parça Kimliği"
 
 #: src/backends/file.py:95
 msgid "MusicBrainz Recording ID"
-msgstr ""
+msgstr "MusicBrainz Kayıt Kimliği"
 
 #: src/backends/file.py:96
 msgid "MusicBrainz Release Group ID"
-msgstr ""
+msgstr "MusicBrainz Yayın Grup Kimliği"
 
 #: src/fileview.py:183
 msgid "Select Album Cover Image"
@@ -397,26 +407,26 @@ msgid "Save Album Cover To…"
 msgstr "Albüm Kapak Resmi Kaydet…"
 
 #: src/fileview.py:238
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Saved cover to {path}"
-msgstr "Albüm Kapağını Dosyaya _Kaydet"
+msgstr "Kapak {path} yoluna kaydedildi"
 
 #: src/fileview.py:261
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
-msgstr[0] "Listeden kaldır"
+msgstr[0] "{n}dosyadan kapaklar kaldırıldı"
 
 #: src/fileview.py:265
 msgid "Undo"
-msgstr ""
+msgstr "Geri Al"
 
 #: src/fileview.py:612
 msgid "More tags"
 msgstr "Daha fazla etiket"
 
 #: src/fileview.py:935
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} kanal"
@@ -443,28 +453,27 @@ msgstr "Sonraki dosya"
 
 #: src/ui/albumcoverbutton.ui:90
 msgid "_Choose Image…"
-msgstr ""
+msgstr "_Görüntü Seç…"
 
 #: src/ui/albumcoverbutton.ui:95
 msgid "_Save Image…"
-msgstr ""
+msgstr "Görüntüyü _Kaydet…"
 
 #: src/ui/albumcoverbutton.ui:100
 msgid "_Remove Cover"
-msgstr ""
+msgstr "Kapağı _Kaldır"
 
 #: src/ui/albumcoverbutton.ui:123
 msgid "Front"
-msgstr ""
+msgstr "Ön"
 
 #: src/ui/albumcoverbutton.ui:130
 msgid "Back"
-msgstr ""
+msgstr "Geri"
 
 #: src/tagentry.py:128
-#, fuzzy
 msgid "(multiple values)"
-msgstr "Birden çok dosya seç"
+msgstr "(çoklu değer)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
@@ -476,7 +485,7 @@ msgid "No files selected"
 msgstr "Hiçbir dosya seçilmedi"
 
 #: src/sidebar.py:524
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} dosya seçildi"
@@ -605,29 +614,28 @@ msgstr ""
 #. This allows the user to switch between different releases of an album, EP, etc.
 #: src/identify.py:118
 msgid "Other releases"
-msgstr ""
+msgstr "Diğer yayınlar"
 
 #: src/identify.py:493
-#, fuzzy
 msgid "Unidentified Files"
-msgstr "Seçilen Dosyaları Tanıla"
+msgstr "Tanımlanmamış Dosyalar"
 
 #: src/identify.py:915
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
-msgstr "{identified} / {total} parça tanılandı"
+msgstr "{identified} / {total} parça tanımlandı"
 
 #: src/ui/identify/identify.ui:5
 msgid "Identify Selected Files"
-msgstr "Seçilen Dosyaları Tanıla"
+msgstr "Seçilen Dosyaları Tanımla"
 
 #: src/ui/identify/identify.ui:47
 msgid "Identify"
-msgstr "Tanıla"
+msgstr "Tanımla"
 
 #: src/ui/identify/identify.ui:58
 msgid "Apply"
-msgstr ""
+msgstr "Uygula"
 
 #: src/ui/identify/identify.ui:91
 msgid ""
@@ -635,58 +643,64 @@ msgid ""
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
 "href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
+"Parça bilgileri <a href=\"https://musicbrainz.org\">Musicbrainz</a> "
+"tarafından sağlanmaktadır. Üst verileri olmayan dosyalar <a href=\"https://"
+"acoustid.org\">AcoustID</a> hizmeti kullanılarak tanımlanır."
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
-msgstr ""
+msgstr "Dosya tanımlanamadı"
 
 #: src/ui/settings.ui:9
 msgid "File identification"
-msgstr ""
+msgstr "Dosya tanımlama"
 
 #: src/ui/settings.ui:14
 msgid "MusicBrainz confidence treshold"
-msgstr ""
+msgstr "MusicBrainz güven eşiği"
 
 #: src/ui/settings.ui:15
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
 msgstr ""
+"MusicBrainz arama sonucunun değerlendirilmesi için gereken azami güven "
+"yüzdesi"
 
 #: src/ui/settings.ui:36
 msgid "AcoustID confidence treshold"
-msgstr ""
+msgstr "AcoustID güven eşiği"
 
 #: src/ui/settings.ui:37
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
 msgstr ""
+"AcoustID arama sonucunun değerlendirilmesi için gereken asgari güven yüzdesi"
 
 #: src/ui/settings.ui:58
 msgid "Downloaded cover art size"
-msgstr ""
+msgstr "İndirilen kapak boyutu"
 
 #: src/ui/settings.ui:63
 msgid "Do not download covers"
-msgstr ""
+msgstr "Kapakları indirme"
 
 #: src/ui/settings.ui:64
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
 #: src/ui/settings.ui:65
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
 #: src/ui/settings.ui:66
 msgid "1200 px"
-msgstr ""
+msgstr "1200 px"
 
 #: src/ui/settings.ui:67
 msgid "Maximum size"
-msgstr ""
+msgstr "Azami boyut"
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
@@ -736,7 +750,7 @@ msgstr "Seçilen dosyaları kenar çubuğundan kaldır"
 #: src/ui/shortcuts.ui:64
 msgctxt "shortcut window"
 msgid "Closes the window if no files are present."
-msgstr "Hiçbir dosya yoksa pencereyi kapatır"
+msgstr "Hiçbir dosya yoksa pencereyi kapatır."
 
 #: src/ui/shortcuts.ui:72
 msgctxt "shortcut window"
@@ -747,19 +761,3 @@ msgstr "Diğer"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Klavye kısayolları"
-
-#, fuzzy
-#~ msgid "Rename placeholder"
-#~ msgstr "Seçilen Dosyaları Yeniden Adlandır"
-
-#~ msgid ""
-#~ "Files are identified using the <a href=\"https://acoustid.org\">AcoustID</"
-#~ "a> service. Additional information is provided by <a href=\"https://"
-#~ "musicbrainz.org\">Musicbrainz</a>."
-#~ msgstr ""
-#~ "Dosyalar, <a href=\"https://acoustid.org\">AcoustID</a> hizmeti "
-#~ "kullanılarak tanılanır. Ek bilgiler <a href=\"https://musicbrainz."
-#~ "org\">Musicbrainz</a> tarafından sağlanmaktadır."
-
-#~ msgid "Album cover"
-#~ msgstr "Albüm kapağı"
