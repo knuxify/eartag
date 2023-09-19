@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-17 17:24+0200\n"
-"PO-Revision-Date: 2023-07-07 11:25+0800\n"
+"PO-Revision-Date: 2023-09-19 21:20+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -45,7 +45,7 @@ msgstr "music;audio;tag;tagging;tagger;音乐;音频;标签;"
 msgid ""
 "Added support for removing a cover image and setting the back cover image. "
 "Improved the accuracy of the file identification option."
-msgstr ""
+msgstr "新增支持移除封面图像并设置背部封面图像。提升了文件识别选项的准确性。"
 
 #: data/app.drey.EarTag.metainfo.xml.in:32
 msgid ""
@@ -53,6 +53,8 @@ msgid ""
 "ability to rename files using a specific pattern, file identification using "
 "AcoustID and the option to set a full release date."
 msgstr ""
+"修复了封面无法加载的问题。来自 0.4.0 的注意：添加了使用指定方案重命名文件，使"
+"用 AcoustID 识别文件的能力和设定完整发行日期的选项。"
 
 #: data/app.drey.EarTag.metainfo.xml.in:37
 #: data/app.drey.EarTag.metainfo.xml.in:42
@@ -61,16 +63,20 @@ msgid ""
 "using a specific pattern, file identification using AcoustID and the option "
 "to set a full release date."
 msgstr ""
+"微小缺陷修复的更新。来自 0.4.0 的注意：添加了使用指定方案重命名文件，使用 "
+"AcoustID 识别文件的能力和设定完整发行日期的选项。"
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
 msgid ""
 "Added the ability to rename files using a specific pattern, file "
 "identification using AcoustID and the option to set a full release date."
 msgstr ""
+"添加了使用指定方案重命名文件，使用 AcoustID 识别文件的能力和设定完整发行日期"
+"的选项。"
 
 #: data/app.drey.EarTag.metainfo.xml.in:57
 msgid "Initial release."
-msgstr ""
+msgstr "初始发布。"
 
 #: data/app.drey.EarTag.metainfo.xml.in:65
 msgid ""
@@ -105,7 +111,7 @@ msgstr "网络访问仅用于“识别选中文件”选项。"
 
 #: src/window.py:82
 msgid "All supported audio files"
-msgstr ""
+msgstr "所有支持的音频文件"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/window.py:163 src/fileview.py:921
@@ -188,7 +194,7 @@ msgstr "键盘快捷键(_K)"
 
 #: src/ui/window.ui:264
 msgid "_Settings"
-msgstr ""
+msgstr "设置(_S)"
 
 #: src/ui/window.ui:268
 msgid "_About Ear Tag"
@@ -358,27 +364,27 @@ msgstr "标题（排序）"
 
 #: src/backends/file.py:91
 msgid "MusicBrainz Artist ID"
-msgstr ""
+msgstr "MusicBrainz 艺术家标识"
 
 #: src/backends/file.py:92
 msgid "MusicBrainz Album ID"
-msgstr ""
+msgstr "MusicBrainz 专辑标识"
 
 #: src/backends/file.py:93
 msgid "MusicBrainz Album Artist ID"
-msgstr ""
+msgstr "MusicBrainz 专辑艺术家标识"
 
 #: src/backends/file.py:94
 msgid "MusicBrainz Release Track ID"
-msgstr ""
+msgstr "MusicBrainz 发行曲目标识"
 
 #: src/backends/file.py:95
 msgid "MusicBrainz Recording ID"
-msgstr ""
+msgstr "MusicBrainz 录制标识"
 
 #: src/backends/file.py:96
 msgid "MusicBrainz Release Group ID"
-msgstr ""
+msgstr "MusicBrainz 发行组标识"
 
 #: src/fileview.py:183
 msgid "Select Album Cover Image"
@@ -389,19 +395,19 @@ msgid "Save Album Cover To…"
 msgstr "保存专辑封面至…"
 
 #: src/fileview.py:238
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Saved cover to {path}"
-msgstr "保存封面至文件(_S)"
+msgstr "已将封面保存至 {path}"
 
 #: src/fileview.py:261
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
-msgstr[0] "从列表移除"
+msgstr[0] "已从 {n} 个文件移除封面"
 
 #: src/fileview.py:265
 msgid "Undo"
-msgstr ""
+msgstr "撤消"
 
 #: src/fileview.py:612
 msgid "More tags"
@@ -435,28 +441,27 @@ msgstr "下个文件"
 
 #: src/ui/albumcoverbutton.ui:90
 msgid "_Choose Image…"
-msgstr ""
+msgstr "选择图像(_C)…"
 
 #: src/ui/albumcoverbutton.ui:95
 msgid "_Save Image…"
-msgstr ""
+msgstr "保存图像(_S)…"
 
 #: src/ui/albumcoverbutton.ui:100
 msgid "_Remove Cover"
-msgstr ""
+msgstr "移除封面(_R)"
 
 #: src/ui/albumcoverbutton.ui:123
 msgid "Front"
-msgstr ""
+msgstr "前"
 
 #: src/ui/albumcoverbutton.ui:130
 msgid "Back"
-msgstr ""
+msgstr "后"
 
 #: src/tagentry.py:128
-#, fuzzy
 msgid "(multiple values)"
-msgstr "选择多个文件"
+msgstr "（多个值）"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
 #: src/sidebar.py:116
@@ -592,12 +597,11 @@ msgstr ""
 #. This allows the user to switch between different releases of an album, EP, etc.
 #: src/identify.py:118
 msgid "Other releases"
-msgstr ""
+msgstr "其它发行"
 
 #: src/identify.py:493
-#, fuzzy
 msgid "Unidentified Files"
-msgstr "识别选中文件"
+msgstr "未识别的文件"
 
 #: src/identify.py:915
 #, python-brace-format
@@ -614,66 +618,68 @@ msgstr "识别"
 
 #: src/ui/identify/identify.ui:58
 msgid "Apply"
-msgstr ""
+msgstr "应用"
 
 #: src/ui/identify/identify.ui:91
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
-"href=\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://musicbrainz.org"
+"\">Musicbrainz</a>. Files without metadata are identified using the <a href="
+"\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
+"曲目信息由 <a href=\"https://musicbrainz.org\">Musicbrainz</a> 提供。没有元数"
+"据的文件使用 <a href=\"https://acoustid.org\">AcoustID</a> 服务识别。"
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
-msgstr ""
+msgstr "文件无法识别"
 
 #: src/ui/settings.ui:9
 msgid "File identification"
-msgstr ""
+msgstr "文件识别"
 
 #: src/ui/settings.ui:14
 msgid "MusicBrainz confidence treshold"
-msgstr ""
+msgstr "MusicBrainz 信任阈值"
 
 #: src/ui/settings.ui:15
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
-msgstr ""
+msgstr "评估 MusicBrainz 搜索结果所需的最小信任百分比"
 
 #: src/ui/settings.ui:36
 msgid "AcoustID confidence treshold"
-msgstr ""
+msgstr "AcoustID 信任阈值"
 
 #: src/ui/settings.ui:37
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
-msgstr ""
+msgstr "评估 AcoustID 搜索结果所需的最小信任百分比"
 
 #: src/ui/settings.ui:58
 msgid "Downloaded cover art size"
-msgstr ""
+msgstr "已下载封面的大小"
 
 #: src/ui/settings.ui:63
 msgid "Do not download covers"
-msgstr ""
+msgstr "不下载封面"
 
 #: src/ui/settings.ui:64
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
 #: src/ui/settings.ui:65
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
 #: src/ui/settings.ui:66
 msgid "1200 px"
-msgstr ""
+msgstr "1200 px"
 
 #: src/ui/settings.ui:67
 msgid "Maximum size"
-msgstr ""
+msgstr "最大尺寸"
 
 #: src/ui/shortcuts.ui:12
 msgctxt "shortcut window"
