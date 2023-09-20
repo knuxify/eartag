@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 17:24+0200\n"
+"POT-Creation-Date: 2023-09-20 19:53+0200\n"
 "PO-Revision-Date: 2023-09-17 17:43+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
@@ -116,96 +116,124 @@ msgstr "Identyfikować pliki używając AcoustID"
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "Dostęp do sieci jest używany tylko do funkcji identyfikacji plików."
 
-#: src/window.py:82
+#: src/window.py:102
 msgid "All supported audio files"
 msgstr "Wszystkie wspierane pliki audio"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:163 src/fileview.py:921
+#: src/window.py:197 src/fileview.py:921
 msgid "(Multiple files selected)"
 msgstr "(Kilka plików zaznaczone)"
 
-#: src/window.py:234 src/ui/nofile.ui:48
+#: src/window.py:269 src/ui/nofile.ui:48
 msgid "Open Folder"
 msgstr "Otwórz folder"
 
-#: src/window.py:237 src/ui/nofile.ui:35
+#: src/window.py:272 src/ui/nofile.ui:35
 msgid "Open File"
 msgstr "Otwórz plik"
 
-#: src/window.py:299
+#: src/window.py:334
 msgid "No supported files found in opened folder"
 msgstr "Nie znaleziono wspieranych plików w otwartym folderze"
 
-#: src/window.py:306
+#: src/window.py:341
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Niektóre z otwartych plików mają nieprawidłowe wartości; zmiany nie mogą być "
 "zapisane"
 
+#: src/window.py:460
+msgid "No files selected"
+msgstr "Nie zaznaczono żadnych plików"
+
+#: src/window.py:464
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "Zaznaczono 1 plik"
+msgstr[1] "Zaznaczono {n} pliki"
+msgstr[2] "Zaznaczono {n} plików"
+
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
-#: src/ui/window.ui:52
+#: src/ui/window.ui:62
 msgid "Drop a file to add it to the opened file list"
 msgstr "Upuść plik, aby dodać go do listy otwartych plików"
 
-#: src/ui/window.ui:118
+#: src/ui/window.ui:123
 msgid "Save"
 msgstr "Zapisz"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:132
+#: src/ui/window.ui:137
 msgid "Sort files by track number, album, name"
 msgstr "Sortuj pliki według numeru ścieżki, albumu, nazwy"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:141
+#: src/ui/window.ui:146
 msgid "Close file list"
 msgstr "Zamknij listę plików"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:155
+#: src/ui/window.ui:160
 msgid "Add file"
 msgstr "Dodaj plik"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:163
+#: src/ui/window.ui:168
 msgid "Select multiple files"
 msgstr "Wybierz kilka plików"
 
-#: src/ui/window.ui:170
+#: src/ui/window.ui:175
 msgid "Search opened files"
 msgstr "Przeszukuj otwarte pliki"
 
+#: src/ui/window.ui:232
+msgid "No Results Found"
+msgstr "Brak wyników"
+
+#: src/ui/window.ui:233
+msgid "Try a different search query."
+msgstr "Spróbuj użyć innych słów kluczowych."
+
+#: src/ui/window.ui:248
+msgid "Select all files"
+msgstr "Wybierz wszystkie pliki"
+
+#: src/ui/window.ui:264
+msgid "Remove selected files"
+msgstr "Usuń wybrane pliki"
+
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:199
+#: src/ui/window.ui:284
 msgid "Show file list"
 msgstr "Pokaż listę plików"
 
-#: src/ui/window.ui:240
+#: src/ui/window.ui:325
 msgid "_Open File"
 msgstr "_Otwórz plik"
 
-#: src/ui/window.ui:244
+#: src/ui/window.ui:329
 msgid "O_pen Folder"
 msgstr "Otwórz _folder"
 
-#: src/ui/window.ui:250
+#: src/ui/window.ui:335
 msgid "_Rename Selected Files"
 msgstr "Zmień _nazwę wybranych plików"
 
-#: src/ui/window.ui:254
+#: src/ui/window.ui:339
 msgid "_Identify Selected Files"
 msgstr "_Identyfikuj wybrane pliki"
 
-#: src/ui/window.ui:260
+#: src/ui/window.ui:345
 msgid "_Keyboard Shortcuts"
 msgstr "Skróty _klawiszowe"
 
-#: src/ui/window.ui:264
+#: src/ui/window.ui:349
 msgid "_Settings"
 msgstr "_Ustawienia"
 
-#: src/ui/window.ui:268
+#: src/ui/window.ui:353
 msgid "_About Ear Tag"
 msgstr "O _Ear Tag"
 
@@ -482,37 +510,9 @@ msgid "(multiple values)"
 msgstr "(kilka wartości)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/sidebar.py:116
+#: src/filelist.py:115
 msgid "(No title)"
 msgstr "(Bez tytułu)"
-
-#: src/sidebar.py:520
-msgid "No files selected"
-msgstr "Nie zaznaczono żadnych plików"
-
-#: src/sidebar.py:524
-#, python-brace-format
-msgid "1 file selected"
-msgid_plural "{n} files selected"
-msgstr[0] "Zaznaczono 1 plik"
-msgstr[1] "Zaznaczono {n} pliki"
-msgstr[2] "Zaznaczono {n} plików"
-
-#: src/ui/sidebar.ui:58
-msgid "No Results Found"
-msgstr "Brak wyników"
-
-#: src/ui/sidebar.ui:59
-msgid "Try a different search query."
-msgstr "Spróbuj użyć innych słów kluczowych."
-
-#: src/ui/sidebar.ui:74
-msgid "Select all files"
-msgstr "Wybierz wszystkie pliki"
-
-#: src/ui/sidebar.ui:90
-msgid "Remove selected files"
-msgstr "Usuń wybrane pliki"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:50
@@ -588,29 +588,29 @@ msgstr ""
 msgid "Rename Selected Files"
 msgstr "Usuń wybrane pliki"
 
-#: src/ui/rename.ui:23 src/ui/identify/identify.ui:25
+#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: src/ui/rename.ui:43
+#: src/ui/rename.ui:44
 msgid "Rename"
 msgstr "Zmień nazwę"
 
-#: src/ui/rename.ui:81
+#: src/ui/rename.ui:82
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
 "Zmiana nazwy plików nie powiodła się. Sprawdź logi, aby uzyskać więcej "
 "informacji."
 
-#: src/ui/rename.ui:97
+#: src/ui/rename.ui:98
 msgid "Filename pattern"
 msgstr "Wzór nazwy pliku"
 
-#: src/ui/rename.ui:105
+#: src/ui/rename.ui:106
 msgid "Preview"
 msgstr "Podgląd"
 
-#: src/ui/rename.ui:117
+#: src/ui/rename.ui:118
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
@@ -622,15 +622,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:118
+#: src/identify.py:117
 msgid "Other releases"
 msgstr "Inne wydania"
 
-#: src/identify.py:493
+#: src/identify.py:492
 msgid "Unidentified Files"
 msgstr "Niezidentyfikowane pliki"
 
-#: src/identify.py:915
+#: src/identify.py:914
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "Zidentyfikowano {identified} z {total} utworów"
@@ -639,15 +639,15 @@ msgstr "Zidentyfikowano {identified} z {total} utworów"
 msgid "Identify Selected Files"
 msgstr "Identyfikuj wybrane pliki"
 
-#: src/ui/identify/identify.ui:47
+#: src/ui/identify/identify.ui:48
 msgid "Identify"
 msgstr "Identyfikuj"
 
-#: src/ui/identify/identify.ui:58
+#: src/ui/identify/identify.ui:59
 msgid "Apply"
 msgstr "Zastosuj"
 
-#: src/ui/identify/identify.ui:91
+#: src/ui/identify/identify.ui:92
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "

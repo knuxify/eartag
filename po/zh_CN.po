@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 17:24+0200\n"
+"POT-Creation-Date: 2023-09-20 19:53+0200\n"
 "PO-Revision-Date: 2023-09-19 21:20+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
@@ -109,94 +109,120 @@ msgstr "使用 AcoustID 识别文件"
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
-#: src/window.py:82
+#: src/window.py:102
 msgid "All supported audio files"
 msgstr "所有支持的音频文件"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:163 src/fileview.py:921
+#: src/window.py:197 src/fileview.py:921
 msgid "(Multiple files selected)"
 msgstr "（已选择多个文件）"
 
-#: src/window.py:234 src/ui/nofile.ui:48
+#: src/window.py:269 src/ui/nofile.ui:48
 msgid "Open Folder"
 msgstr "打开文件夹"
 
-#: src/window.py:237 src/ui/nofile.ui:35
+#: src/window.py:272 src/ui/nofile.ui:35
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/window.py:299
+#: src/window.py:334
 msgid "No supported files found in opened folder"
 msgstr "在打开的文件夹中未发现支持的文件"
 
-#: src/window.py:306
+#: src/window.py:341
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "部分打开的文件具有无效值；无法保存"
 
+#: src/window.py:460
+msgid "No files selected"
+msgstr "未选择文件"
+
+#: src/window.py:464
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "已选择 {n} 个文件"
+
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
-#: src/ui/window.ui:52
+#: src/ui/window.ui:62
 msgid "Drop a file to add it to the opened file list"
 msgstr "拖拽文件来将其添加到打开的文件列表"
 
-#: src/ui/window.ui:118
+#: src/ui/window.ui:123
 msgid "Save"
 msgstr "保存"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:132
+#: src/ui/window.ui:137
 msgid "Sort files by track number, album, name"
 msgstr "按曲目编号、专辑、名称排序文件"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:141
+#: src/ui/window.ui:146
 msgid "Close file list"
 msgstr "关闭文件列表"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:155
+#: src/ui/window.ui:160
 msgid "Add file"
 msgstr "添加文件"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:163
+#: src/ui/window.ui:168
 msgid "Select multiple files"
 msgstr "选择多个文件"
 
-#: src/ui/window.ui:170
+#: src/ui/window.ui:175
 msgid "Search opened files"
 msgstr "搜索打开的文件"
 
+#: src/ui/window.ui:232
+msgid "No Results Found"
+msgstr "未找到结果"
+
+#: src/ui/window.ui:233
+msgid "Try a different search query."
+msgstr "尝试不同的搜索关键词。"
+
+#: src/ui/window.ui:248
+msgid "Select all files"
+msgstr "选择所有文件"
+
+#: src/ui/window.ui:264
+msgid "Remove selected files"
+msgstr "移除选中文件"
+
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:199
+#: src/ui/window.ui:284
 msgid "Show file list"
 msgstr "显示文件列表"
 
-#: src/ui/window.ui:240
+#: src/ui/window.ui:325
 msgid "_Open File"
 msgstr "打开文件(_O)"
 
-#: src/ui/window.ui:244
+#: src/ui/window.ui:329
 msgid "O_pen Folder"
 msgstr "打开文件夹(_P)"
 
-#: src/ui/window.ui:250
+#: src/ui/window.ui:335
 msgid "_Rename Selected Files"
 msgstr "重命名选中文件(_R)"
 
-#: src/ui/window.ui:254
+#: src/ui/window.ui:339
 msgid "_Identify Selected Files"
 msgstr "识别选中文件(_I)"
 
-#: src/ui/window.ui:260
+#: src/ui/window.ui:345
 msgid "_Keyboard Shortcuts"
 msgstr "键盘快捷键(_K)"
 
-#: src/ui/window.ui:264
+#: src/ui/window.ui:349
 msgid "_Settings"
 msgstr "设置(_S)"
 
-#: src/ui/window.ui:268
+#: src/ui/window.ui:353
 msgid "_About Ear Tag"
 msgstr "关于 Ear Tag(_A)"
 
@@ -464,35 +490,9 @@ msgid "(multiple values)"
 msgstr "（多个值）"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/sidebar.py:116
+#: src/filelist.py:115
 msgid "(No title)"
 msgstr "（无标题）"
-
-#: src/sidebar.py:520
-msgid "No files selected"
-msgstr "未选择文件"
-
-#: src/sidebar.py:524
-#, python-brace-format
-msgid "1 file selected"
-msgid_plural "{n} files selected"
-msgstr[0] "已选择 {n} 个文件"
-
-#: src/ui/sidebar.ui:58
-msgid "No Results Found"
-msgstr "未找到结果"
-
-#: src/ui/sidebar.ui:59
-msgid "Try a different search query."
-msgstr "尝试不同的搜索关键词。"
-
-#: src/ui/sidebar.ui:74
-msgid "Select all files"
-msgstr "选择所有文件"
-
-#: src/ui/sidebar.ui:90
-msgid "Remove selected files"
-msgstr "移除选中文件"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:50
@@ -564,27 +564,27 @@ msgstr "无法重命名文件 {f}。请检查日志获取更多信息。"
 msgid "Rename Selected Files"
 msgstr "重命名选中文件"
 
-#: src/ui/rename.ui:23 src/ui/identify/identify.ui:25
+#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
 msgid "Cancel"
 msgstr "取消"
 
-#: src/ui/rename.ui:43
+#: src/ui/rename.ui:44
 msgid "Rename"
 msgstr "重命名"
 
-#: src/ui/rename.ui:81
+#: src/ui/rename.ui:82
 msgid "Failed to rename files. Check the logs for more information."
 msgstr "重命名文件失败。请检查日志获取更多信息。"
 
-#: src/ui/rename.ui:97
+#: src/ui/rename.ui:98
 msgid "Filename pattern"
 msgstr "文件名方案"
 
-#: src/ui/rename.ui:105
+#: src/ui/rename.ui:106
 msgid "Preview"
 msgstr "预览"
 
-#: src/ui/rename.ui:117
+#: src/ui/rename.ui:118
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
@@ -595,15 +595,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:118
+#: src/identify.py:117
 msgid "Other releases"
 msgstr "其它发行"
 
-#: src/identify.py:493
+#: src/identify.py:492
 msgid "Unidentified Files"
 msgstr "未识别的文件"
 
-#: src/identify.py:915
+#: src/identify.py:914
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "已识别 {identified} 共 {total} 首曲目"
@@ -612,19 +612,19 @@ msgstr "已识别 {identified} 共 {total} 首曲目"
 msgid "Identify Selected Files"
 msgstr "识别选中文件"
 
-#: src/ui/identify/identify.ui:47
+#: src/ui/identify/identify.ui:48
 msgid "Identify"
 msgstr "识别"
 
-#: src/ui/identify/identify.ui:58
+#: src/ui/identify/identify.ui:59
 msgid "Apply"
 msgstr "应用"
 
-#: src/ui/identify/identify.ui:91
+#: src/ui/identify/identify.ui:92
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz.org"
-"\">Musicbrainz</a>. Files without metadata are identified using the <a href="
-"\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
 "曲目信息由 <a href=\"https://musicbrainz.org\">Musicbrainz</a> 提供。没有元数"
 "据的文件使用 <a href=\"https://acoustid.org\">AcoustID</a> 服务识别。"

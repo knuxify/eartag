@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-17 17:24+0200\n"
+"POT-Creation-Date: 2023-09-20 19:53+0200\n"
 "PO-Revision-Date: 2023-02-16 11:23+0100\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
@@ -107,99 +107,127 @@ msgstr ""
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 
-#: src/window.py:82
+#: src/window.py:102
 msgid "All supported audio files"
 msgstr ""
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:163 src/fileview.py:921
+#: src/window.py:197 src/fileview.py:921
 msgid "(Multiple files selected)"
 msgstr "(Više datoteka odabrano)"
 
-#: src/window.py:234 src/ui/nofile.ui:48
+#: src/window.py:269 src/ui/nofile.ui:48
 msgid "Open Folder"
 msgstr "Otvori mapu"
 
-#: src/window.py:237 src/ui/nofile.ui:35
+#: src/window.py:272 src/ui/nofile.ui:35
 msgid "Open File"
 msgstr "Otvori datoteku"
 
-#: src/window.py:299
+#: src/window.py:334
 msgid "No supported files found in opened folder"
 msgstr "U otvorenoj mapi nisu pronađene podržane datoteke"
 
-#: src/window.py:306
+#: src/window.py:341
 #, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti."
 
+#: src/window.py:460
+msgid "No files selected"
+msgstr "Nema odabranih datoteka"
+
+#: src/window.py:464
+#, fuzzy, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "{n} datoteka odabrana"
+msgstr[1] "{n} datoteka odabrano"
+msgstr[2] "{n} datoteka odabrano"
+
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
-#: src/ui/window.ui:52
+#: src/ui/window.ui:62
 msgid "Drop a file to add it to the opened file list"
 msgstr "Ubacite datoteku kako bi ste je uredili"
 
-#: src/ui/window.ui:118
+#: src/ui/window.ui:123
 msgid "Save"
 msgstr "Spremi"
 
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
-#: src/ui/window.ui:132
+#: src/ui/window.ui:137
 msgid "Sort files by track number, album, name"
 msgstr ""
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:141
+#: src/ui/window.ui:146
 msgid "Close file list"
 msgstr "Zatvori listu datoteka"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:155
+#: src/ui/window.ui:160
 msgid "Add file"
 msgstr "Dodaj datoteku"
 
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
-#: src/ui/window.ui:163
+#: src/ui/window.ui:168
 msgid "Select multiple files"
 msgstr "Odaberi više datoteka"
 
-#: src/ui/window.ui:170
+#: src/ui/window.ui:175
 #, fuzzy
 msgid "Search opened files"
 msgstr "Otvori datoteke"
 
+#: src/ui/window.ui:232
+msgid "No Results Found"
+msgstr "Nema pronađenih rezultata"
+
+#: src/ui/window.ui:233
+msgid "Try a different search query."
+msgstr "Probajte drugi upit pretraživanja."
+
+#: src/ui/window.ui:248
+msgid "Select all files"
+msgstr "Odaberi sve datoteke"
+
+#: src/ui/window.ui:264
+msgid "Remove selected files"
+msgstr "Ukloni više datoteka"
+
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
-#: src/ui/window.ui:199
+#: src/ui/window.ui:284
 msgid "Show file list"
 msgstr "Prikaži listu datoteka"
 
-#: src/ui/window.ui:240
+#: src/ui/window.ui:325
 msgid "_Open File"
 msgstr "_Otvori datoteku"
 
-#: src/ui/window.ui:244
+#: src/ui/window.ui:329
 msgid "O_pen Folder"
 msgstr "O_tvori mapu"
 
-#: src/ui/window.ui:250
+#: src/ui/window.ui:335
 #, fuzzy
 msgid "_Rename Selected Files"
 msgstr "Ukloni više datoteka"
 
-#: src/ui/window.ui:254
+#: src/ui/window.ui:339
 #, fuzzy
 msgid "_Identify Selected Files"
 msgstr "Ukloni više datoteka"
 
-#: src/ui/window.ui:260
+#: src/ui/window.ui:345
 msgid "_Keyboard Shortcuts"
 msgstr "_Tipkovnički Prečaci"
 
-#: src/ui/window.ui:264
+#: src/ui/window.ui:349
 msgid "_Settings"
 msgstr ""
 
-#: src/ui/window.ui:268
+#: src/ui/window.ui:353
 msgid "_About Ear Tag"
 msgstr "_O Ear Tagu"
 
@@ -476,37 +504,9 @@ msgid "(multiple values)"
 msgstr "(više vrijednosti)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/sidebar.py:116
+#: src/filelist.py:115
 msgid "(No title)"
 msgstr "(Nema naslov)"
-
-#: src/sidebar.py:520
-msgid "No files selected"
-msgstr "Nema odabranih datoteka"
-
-#: src/sidebar.py:524
-#, fuzzy, python-brace-format
-msgid "1 file selected"
-msgid_plural "{n} files selected"
-msgstr[0] "{n} datoteka odabrana"
-msgstr[1] "{n} datoteka odabrano"
-msgstr[2] "{n} datoteka odabrano"
-
-#: src/ui/sidebar.ui:58
-msgid "No Results Found"
-msgstr "Nema pronađenih rezultata"
-
-#: src/ui/sidebar.ui:59
-msgid "Try a different search query."
-msgstr "Probajte drugi upit pretraživanja."
-
-#: src/ui/sidebar.ui:74
-msgid "Select all files"
-msgstr "Odaberi sve datoteke"
-
-#: src/ui/sidebar.ui:90
-msgid "Remove selected files"
-msgstr "Ukloni više datoteka"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:50
@@ -591,30 +591,30 @@ msgstr ""
 msgid "Rename Selected Files"
 msgstr "Ukloni više datoteka"
 
-#: src/ui/rename.ui:23 src/ui/identify/identify.ui:25
+#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
 msgid "Cancel"
 msgstr "Otkaži"
 
-#: src/ui/rename.ui:43
+#: src/ui/rename.ui:44
 msgid "Rename"
 msgstr ""
 
-#: src/ui/rename.ui:81
+#: src/ui/rename.ui:82
 #, fuzzy
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
 "Nije moguće spremiti datoteku {f}. Više informacija potražite u logovima."
 
-#: src/ui/rename.ui:97
+#: src/ui/rename.ui:98
 msgid "Filename pattern"
 msgstr ""
 
-#: src/ui/rename.ui:105
+#: src/ui/rename.ui:106
 #, fuzzy
 msgid "Preview"
 msgstr "Prošla datoteka"
 
-#: src/ui/rename.ui:117
+#: src/ui/rename.ui:118
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
@@ -623,16 +623,16 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:118
+#: src/identify.py:117
 msgid "Other releases"
 msgstr ""
 
-#: src/identify.py:493
+#: src/identify.py:492
 #, fuzzy
 msgid "Unidentified Files"
 msgstr "Ukloni više datoteka"
 
-#: src/identify.py:915
+#: src/identify.py:914
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr ""
@@ -642,15 +642,15 @@ msgstr ""
 msgid "Identify Selected Files"
 msgstr "Ukloni više datoteka"
 
-#: src/ui/identify/identify.ui:47
+#: src/ui/identify/identify.ui:48
 msgid "Identify"
 msgstr ""
 
-#: src/ui/identify/identify.ui:58
+#: src/ui/identify/identify.ui:59
 msgid "Apply"
 msgstr ""
 
-#: src/ui/identify/identify.ui:91
+#: src/ui/identify/identify.ui:92
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
