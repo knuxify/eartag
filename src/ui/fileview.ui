@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
+
   <template class="EartagFileView" parent="GtkStack">
     <property name="transition-type">crossfade</property>
 
@@ -31,6 +32,7 @@
             <child>
               <object class="AdwClamp">
                 <property name="maximum-size">576</property>
+
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>

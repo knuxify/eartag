@@ -76,8 +76,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.apply_checkbox.set_sensitive(False)
         self.apply_checkbox.connect('notify::active', self.toggle_row_checkboxes)
         self.apply_checkbox.add_css_class('selection-mode')
-        # TODO: switch to add_suffix once libadwaita 1.4 is out
-        self.add_action(self.apply_checkbox)
+        self.add_suffix(self.apply_checkbox)
 
         if release:
             self.bind_to_release(release)
@@ -116,7 +115,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         # This allows the user to switch between different releases of an album, EP, etc.
         self.release_popover_toggle.set_tooltip_text(_('Other releases'))
         self.release_popover_toggle.set_icon_name('view-more-symbolic')
-        self.add_action(self.release_popover_toggle)
+        self.add_suffix(self.release_popover_toggle)
 
     def bind_to_release(self, release):
         """Takes a MusicBrainzRelease and binds to it."""

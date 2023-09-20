@@ -135,8 +135,6 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.toggle_fileview()
 
-        self.connect('realize', self._late_init)
-
         # Sidebar setup
         self.sidebar_file_list.set_file_manager(self.file_manager)
         self.sidebar_list_stack.set_visible_child(self.sidebar_no_files)
@@ -154,9 +152,6 @@ class EartagWindow(Adw.ApplicationWindow):
 
         if paths:
             self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
-
-    def _late_init(self, *args):
-        self.file_view.setup_resize_handler()
 
     def update_loading_progress(self, task, *args):
         loading_progress = task.progress

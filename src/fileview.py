@@ -481,6 +481,7 @@ class EartagExtraTagRow(Adw.ActionRow):
         self.files = []
         self.ignore_edit = {}
         self._numeric_connect = None
+        self._compact = False
         self.parent = parent
 
         if property:
@@ -586,7 +587,18 @@ class EartagExtraTagRow(Adw.ActionRow):
         """Removes the row."""
         self.parent.remove_and_unbind_extra_row(self)
 
-    # TODO: use Adw.Breakpoint once libadwaita 1.4 comes out
+    @GObject.Property(type=bool, default=False)
+    def compact(self):
+        return self._compact
+
+    @compact.setter
+    def compact(self, value):
+        self._compact = value
+        if value:
+            self.make_compact()
+        else:
+            self.make_noncompact()
+
     def make_compact(self, *args):
         """Makes the row compact."""
         self.add_css_class('compact')
@@ -618,6 +630,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         self._present_tags_cached = []
         self._last_loaded_filetypes = []
         self._last_present_tags = {} # id: tags
+        self._compact = False
 
         # We can select multiple files of multiple types at once, but
         # they're not guaranteed to all have the same available extra tags.
@@ -893,6 +906,16 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
 
         self.skip_filter_change = False
 
+    @GObject.Property(type=bool, default=False)
+    def compact(self):
+        return self._compact
+
+    @compact.setter
+    def compact(self, value):
+        self._compact = value
+        for row in self._rows:
+            row.props.compact = value
+
 class EartagFileInfoLabel(Gtk.Label):
     """Label showing information about opened files."""
     __gtype_name__ = 'EartagFileInfoLabel'
@@ -1010,27 +1033,6 @@ class EartagFileView(Gtk.Stack):
         else:
             self.releasedate_entry.remove_css_class('error')
 
-    # TODO: rewrite this to use Adw.Breakpoint once libadwaita 1.4 is available
-    def setup_resize_handler(self, *args):
-        # There's no easy way to call a function whenever a singular widget is resized,
-        # so we just call this on resize changes:
-        surface = self.get_native().get_surface()
-        surface.connect('layout', self.handle_resize)
-        self.handle_resize()
-
-    def handle_resize(self, *args):
-        fileview_width = self.get_width()
-        if fileview_width == self.previous_fileview_width:
-            return
-        if fileview_width <= 430:
-            for entry in self.more_tags_expander._rows:
-                entry.make_compact()
-        else:
-            for entry in self.more_tags_expander._rows:
-                entry.make_noncompact()
-        self.previous_fileview_width = fileview_width
-    # ENDTODO
-
     def update_loading(self, task, *args):
         if task.progress == 0:
             self.set_visible_child(self.content_stack)
@@ -1129,3 +1131,11 @@ class EartagFileView(Gtk.Stack):
         self.more_tags_expander.refresh_entries(old_blocked_tags=old_blocked_tags)
 
         self.file_info.refresh_label()
+
+    @GObject.Property(type=bool, default=False)
+    def compact(self):
+        return self.more_tags_expander.compact
+
+    @compact.setter
+    def compact(self, value):
+        self.more_tags_expander.compact = value
