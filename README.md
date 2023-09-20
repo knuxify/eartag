@@ -21,8 +21,8 @@ Ear Tag is available on [Flathub](https://flathub.org/apps/details/app.drey.EarT
 Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The following dependencies are required:
 
 - Python >= 3.8
-- GTK4 >= 4.8.0
-- libadwaita >= 1.2.0
+- GTK4 >= 4.12.0
+- libadwaita >= 1.4.0
 - pygobject
 - pillow (used for some picture operations)
 - mutagen (used for file tagging)
