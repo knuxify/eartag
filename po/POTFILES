@@ -21,8 +21,7 @@ src/ui/albumcoverbutton.ui
 src/tagentry.py
 
 # Sidebar
-src/sidebar.py
-src/ui/sidebar.ui
+src/filelist.py
 src/ui/filelistitem.ui
 
 # Error dialogs

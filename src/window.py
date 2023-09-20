@@ -7,12 +7,14 @@ from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
 from .musicbrainz import MusicBrainzRelease
 from .fileview import EartagFileView # noqa: F401
 from .filemanager import EartagFileManager
-from .sidebar import EartagSidebar  # noqa: F401
+from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
 from .rename import EartagRenameDialog
 from .identify import EartagIdentifyDialog
+from .utils import find_in_model
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
+import gettext
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
@@ -45,9 +47,9 @@ class EartagWindow(Adw.ApplicationWindow):
     save_button = Gtk.Template.Child()
     window_title = Gtk.Template.Child()
     container_stack = Gtk.Template.Child()
-    container_flap = Gtk.Template.Child()
+    split_view = Gtk.Template.Child()
 
-    sidebar = Gtk.Template.Child()
+    sidebar_view = Gtk.Template.Child()
     sidebar_headerbar = Gtk.Template.Child()
     sidebar_search_button = Gtk.Template.Child()
     select_multiple_button = Gtk.Template.Child()
@@ -70,6 +72,24 @@ class EartagWindow(Adw.ApplicationWindow):
 
     open_mode = EartagFileManager.LOAD_OVERWRITE
 
+    # Sidebar
+    sidebar_list_stack = Gtk.Template.Child()
+    sidebar_list_scroll = Gtk.Template.Child()
+    sidebar_file_list = Gtk.Template.Child()
+    sidebar_no_files = Gtk.Template.Child()
+
+    search_bar = Gtk.Template.Child()
+    search_entry = Gtk.Template.Child()
+    no_results = Gtk.Template.Child()
+
+    sidebar_action_bar = Gtk.Template.Child()
+    select_all_button = Gtk.Template.Child()
+    remove_selected_button = Gtk.Template.Child()
+    selected_message_label = Gtk.Template.Child()
+
+    loading_progressbar = Gtk.Template.Child()
+    loading_progressbar_revealer = Gtk.Template.Child()
+
     def __init__(self, application, paths=None):
         super().__init__(application=application, title='Ear Tag')
 
@@ -83,22 +103,21 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
-        self.sidebar.set_file_manager(self.file_manager)
         self.file_manager.connect('notify::is-modified', self.toggle_save_button)
         self.file_manager.connect('notify::has-error', self.toggle_save_button)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
         self.file_manager.connect('refresh-needed', self.update_state)
         self.file_manager.connect('selection-changed', self.update_state)
         self.file_manager.load_task.connect('notify::progress', self.update_loading_progress)
-        self.sidebar.search_bar.bind_property(
+        self.search_bar.bind_property(
             'search-mode-enabled',
             self.sidebar_search_button, 'active',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
-        self.select_multiple_button.bind_property('active', self.sidebar, 'selection-mode',
+        self.select_multiple_button.bind_property('active', self, 'selection-mode',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
-        self.select_multiple_button.bind_property('active', self.sidebar.action_bar, 'revealed',
+        self.select_multiple_button.bind_property('active', self.sidebar_action_bar, 'revealed',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
 
@@ -118,6 +137,21 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.connect('realize', self._late_init)
 
+        # Sidebar setup
+        self.sidebar_file_list.set_file_manager(self.file_manager)
+        self.sidebar_list_stack.set_visible_child(self.sidebar_no_files)
+        self.sidebar_file_list.set_sidebar(self)
+
+        self.search_bar.set_key_capture_widget(self)
+        self.search_bar.connect_entry(self.search_entry)
+        self.search_entry.connect('search-changed', self.search_changed)
+
+        self.file_manager.connect('refresh-needed', self.refresh_actionbar_button_state)
+        self.file_manager.files.connect('items-changed', self.refresh_actionbar_button_state)
+        self.file_manager.connect('selection-changed', self.refresh_actionbar_button_state)
+        self.file_manager.load_task.connect('notify::progress', self.update_loading_progressbar)
+        self.refresh_actionbar_button_state()
+
         if paths:
             self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
 
@@ -129,7 +163,7 @@ class EartagWindow(Adw.ApplicationWindow):
         is_loading = loading_progress != 0
         self.sidebar_headerbar.set_sensitive(not is_loading)
         if self.file_manager.files.get_n_items() == 0 and is_loading:
-            self.container_stack.set_visible_child(self.container_flap)
+            self.container_stack.set_visible_child(self.split_view)
 
     def update_state(self, *args):
         # Set up the active view (hide fileview if there are no selected files)
@@ -179,15 +213,16 @@ class EartagWindow(Adw.ApplicationWindow):
         Shows/hides the fileview/"no files" message depending on opened files.
         """
         if self.file_manager.files.get_n_items() > 0:
-            self.container_stack.set_visible_child(self.container_flap)
+            self.container_stack.set_visible_child(self.split_view)
             self.sidebar_headerbar.set_sensitive(self.file_manager.load_task.progress in (0, 1))
+            self.sidebar_list_stack.set_visible_child(self.sidebar_list_scroll)
         else:
             self.container_stack.set_visible_child(self.no_file)
             self.no_file_widget.grab_button_focus()
             self.sidebar_headerbar.set_sensitive(False)
-            if self.sidebar.selection_mode:
+            self.sidebar_list_stack.set_visible_child(self.sidebar_no_files)
+            if self.selection_mode:
                 self.select_multiple_button.set_active(False)
-        self.sidebar.toggle_fileview()
 
     def on_drag_accept(self, target, drop, *args):
         drop.read_value_async(Gdk.FileList, 0, None, self.verify_files_valid)
@@ -312,17 +347,17 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def show_sidebar(self, *args):
-        self.container_flap.set_reveal_flap(True)
-        self.sidebar.file_list.grab_focus()
+        self.split_view.set_reveal_flap(True)
+        self.sidebar_file_list.grab_focus()
 
     @Gtk.Template.Callback()
     def hide_sidebar(self, *args):
-        self.container_flap.set_reveal_flap(False)
+        self.split_view.set_reveal_flap(False)
 
     @Gtk.Template.Callback()
     def run_sort(self, *args):
         if self.file_manager.files:
-            self.sidebar.file_list.sorter.changed(Gtk.SorterChange.DIFFERENT)
+            self.sidebar_file_list.sorter.changed(Gtk.SorterChange.DIFFERENT)
 
     @Gtk.Template.Callback()
     def on_save(self, *args):
@@ -357,6 +392,133 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_settings_dialog(self, *args):
         self.settings_dialog = EartagSettingsWindow(self)
         self.settings_dialog.present()
+
+    # Sidebar
+
+    def update_loading_progressbar(self, task, *args):
+        """
+        Updates the loading progressbar's position.
+        """
+        loading_progress = task.progress
+        self.loading_progressbar_revealer.set_reveal_child(not loading_progress == 0)
+        self.set_sensitive(loading_progress == 0)
+        self.sidebar_file_list.set_visible(loading_progress == 0)
+        self.loading_progressbar.set_fraction(loading_progress)
+
+    def search_changed(self, search_entry, *args):
+        """Emitted when the search has changed."""
+        self.sidebar_file_list.filter.changed(Gtk.FilterChange.DIFFERENT)
+
+        if self.sidebar_file_list.filter_model.get_n_items() == 0 and \
+                self.file_manager.files.get_n_items() > 0:
+            self.sidebar_list_stack.set_visible_child(self.no_results)
+        else:
+            self.toggle_fileview()
+
+        selected = self.sidebar_file_list.selection_model.get_selected()
+        # TODO: some weird bug where a null selected value is read as 4294967295
+        # (looks like someone forgot to make an unsigned int signed...)
+        has_no_selected = selected < 0 or selected >= 4294967295
+        if not self.selection_mode and has_no_selected and self.file_manager.selected_files:
+            new_selection = find_in_model(self.sidebar_file_list.filter_model,
+                self.file_manager.selected_files[0])
+            if new_selection > -1:
+                self.sidebar_file_list.selection_model.set_selected(new_selection)
+
+        # Scroll back to top of list
+        vadjust = self.sidebar_file_list.get_vadjustment()
+        vadjust.set_value(vadjust.get_lower())
+
+        # Update the switcher buttons in the fileview
+        self.get_native().file_view.update_buttons()
+
+    def toggle_selection_mode(self, *args):
+        self.sidebar_file_list.toggle_selection_mode()
+
+    @Gtk.Template.Callback()
+    def select_all(self, *args):
+        if self.sidebar_file_list.all_selected():
+            self.sidebar_file_list.unselect_all()
+        else:
+            self.sidebar_file_list.select_all()
+
+    @Gtk.Template.Callback()
+    def remove_selected(self, *args):
+        old_selected = self.file_manager.selected_files.copy()
+        self.file_manager.remove_files(old_selected)
+
+    def refresh_actionbar_button_state(self, *args):
+        if not self.file_manager.files or not self.selection_mode:
+            selected_message = ''
+            self.sidebar_action_bar.set_sensitive(False)
+            self.sidebar_action_bar.set_revealed(False)
+        else:
+            self.sidebar_action_bar.set_sensitive(True)
+            self.sidebar_action_bar.set_revealed(True)
+            selected_file_count = len(self.file_manager.selected_files)
+            if selected_file_count == 0:
+                selected_message = _('No files selected')
+                self.remove_selected_button.set_sensitive(False)
+            else:
+                selected_message = gettext.ngettext(
+                    "1 file selected", "{n} files selected", selected_file_count).\
+                        format(n=selected_file_count)
+                self.remove_selected_button.set_sensitive(True)
+
+        self.selected_message_label.set_label(selected_message)
+
+    @GObject.Property(type=bool, default=False)
+    def selection_mode(self):
+        """Whether the sidebar is in selection mode or not."""
+        return self.sidebar_file_list.selection_mode
+
+    @selection_mode.setter
+    def selection_mode(self, value):
+        self.sidebar_file_list.selection_mode = value
+        # Workaround for the text not showing up on initial load
+        self.refresh_actionbar_button_state()
+
+    def select_next(self, *args):
+        """Selects the next item on the sidebar."""
+        if self.sidebar_file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
+            return
+        selected = self.sidebar_file_list.selection_model.get_selected()
+        if selected + 1 >= self.sidebar_file_list.selection_model.get_n_items():
+            self.sidebar_file_list.selection_model.set_selected(0)
+        else:
+            self.sidebar_file_list.selection_model.set_selected(selected + 1)
+
+    def select_previous(self, *args):
+        """Selects the previous item on the sidebar."""
+        if self.sidebar_file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
+            return
+        selected = self.sidebar_file_list.selection_model.get_selected()
+        if selected - 1 >= 0:
+            self.sidebar_file_list.selection_model.set_selected(selected - 1)
+        else:
+            self.sidebar_file_list.selection_model.set_selected(
+                self.sidebar_file_list.selection_model.get_n_items() - 1
+            )
+
+    def scroll_to_top(self):
+        """Scrolls to the top of the file list."""
+        GLib.idle_add(self._scroll_to_top)
+
+    def _scroll_to_top(self):
+        self.sidebar_list_scroll.get_vadjustment().set_value(0)
+
+    def scroll_to_index(self, index):
+        """Scrolls to file at the specified index."""
+        GLib.idle_add(self._scroll_to_index, index)
+
+    def _scroll_to_index(self, index):
+        item_height = self.sidebar_file_list.get_first_child().get_height()
+        vadjust = self.sidebar_list_scroll.get_vadjustment()
+        new_value = item_height * (index + 1)
+        if new_value <= vadjust.get_upper():
+            vadjust.set_value(new_value)
+        else:
+            vadjust.set_value(vadjust.get_upper())
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/settings.ui')
 class EartagSettingsWindow(Adw.PreferencesWindow):

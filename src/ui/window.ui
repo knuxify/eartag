@@ -4,6 +4,16 @@
   <template class="EartagWindow" parent="AdwApplicationWindow">
     <property name="default-width">900</property>
     <property name="default-height">700</property>
+    <property name="width-request">360</property>
+    <property name="height-request">200</property>
+
+    <child>
+      <object class="AdwBreakpoint">
+        <condition>max-width: 600sp</condition>
+        <setter object="split_view" property="collapsed">True</setter>
+      </object>
+    </child>
+
     <child>
       <object class="GtkOverlay" id="overlay">
         <property name="hexpand">true</property>
@@ -97,17 +107,12 @@
                 </child>
 
                 <child>
-                  <object class="AdwFlap" id="container_flap">
-                    <child type="flap">
-                      <object class="GtkBox" id="sidebar_container">
-                        <property name="orientation">vertical</property>
+                  <object class="AdwOverlaySplitView" id="split_view">
+                    <property name="sidebar">
+                      <object class="AdwToolbarView" id="sidebar_view">
                         <property name="width-request">300</property>
 
-                        <style>
-                          <class name="background"/>
-                        </style>
-
-                        <child>
+                        <child type="top">
                           <object class="AdwHeaderBar" id="sidebar_headerbar">
                             <property name="show-end-title-buttons">false</property>
                             <property name="title-widget"><object class="GtkLabel"/></property>
@@ -141,7 +146,7 @@
                                 <property name="tooltip-text" translatable="yes">Close file list</property>
                                 <signal name="clicked" handler="hide_sidebar"/>
                                 <binding name="visible">
-                                  <lookup name="folded">container_flap</lookup>
+                                  <lookup name="collapsed">split_view</lookup>
                                 </binding>
                               </object>
                             </child>
@@ -173,22 +178,102 @@
                           </object>
                         </child>
 
+                        <child type="top">
+                          <object class="GtkSearchBar" id="search_bar">
+                            <property name="hexpand">false</property>
+                            <child>
+                              <object class="GtkSearchEntry" id="search_entry">
+                                <property name="hexpand">true</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+
+                        <child type="top">
+                          <object class="GtkRevealer" id="loading_progressbar_revealer">
+                            <child>
+                              <object class="GtkProgressBar" id="loading_progressbar">
+                                <style>
+                                  <class name="osd"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+
                         <child>
-                          <object class="EartagSidebar" id="sidebar"/>
+                          <object class="GtkStack" id="sidebar_list_stack">
+                            <property name="transition-type">crossfade</property>
+
+                            <child>
+                              <object class="GtkScrolledWindow" id="sidebar_list_scroll">
+                                <property name="hscrollbar-policy">never</property>
+                                <property name="vexpand">true</property>
+                                <property name="min-content-width">300</property>
+                                <property name="max-content-width">400</property>
+
+                                <child>
+                                  <object class="EartagFileList" id="sidebar_file_list">
+                                    <style>
+                                      <class name="navigation-sidebar"/>
+                                    </style>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="GtkBox" id="sidebar_no_files"/>
+                            </child>
+
+                            <child>
+                              <object class="AdwStatusPage" id="no_results">
+                                <property name="icon-name">system-search-symbolic</property>
+                                <property name="title" translatable="yes">No Results Found</property>
+                                <property name="description" translatable="yes">Try a different search query.</property>
+
+                                <style>
+                                  <class name="compact"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+
+                        <child type="bottom">
+                          <object class="GtkActionBar" id="sidebar_action_bar">
+                            <child type="start">
+                              <object class="GtkButton" id="select_all_button">
+                                <property name="icon-name">edit-select-all-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Select all files</property>
+                                <signal name="clicked" handler="select_all"/>
+                              </object>
+                            </child>
+
+                            <child type="center">
+                              <object class="GtkLabel" id="selected_message_label">
+                                <style>
+                                  <class name="dim-label"/>
+                                </style>
+                              </object>
+                            </child>
+
+                            <child type="end">
+                              <object class="GtkButton" id="remove_selected_button">
+                                <property name="icon-name">user-trash-symbolic</property>
+                                <property name="tooltip-text" translatable="yes">Remove selected files</property>
+                                <signal name="clicked" handler="remove_selected"/>
+                              </object>
+                            </child>
+                          </object>
                         </child>
                       </object>
-                    </child>
 
-                    <child type="separator">
-                      <object class="GtkSeparator"/>
-                    </child>
+                    </property>
 
-                    <child type="content">
-                      <object class="GtkBox" id="container">
-                        <property name="orientation">vertical</property>
-                        <property name="hexpand">true</property>
-
-                        <child>
+                    <property name="content">
+                      <object class="AdwToolbarView" id="container">
+                        <child type="top">
                           <object class="AdwHeaderBar" id="headerbar">
                             <property name="show-start-title-buttons">false</property>
 
@@ -199,7 +284,7 @@
                                 <property name="tooltip-text" translatable="yes">Show file list</property>
                                 <signal name="clicked" handler="show_sidebar"/>
                                 <binding name="visible">
-                                  <lookup name="folded">container_flap</lookup>
+                                  <lookup name="collapsed">split_view</lookup>
                                 </binding>
                               </object>
                             </child>
@@ -223,7 +308,7 @@
                           <object class="EartagFileView" id="file_view"/>
                         </child>
                       </object>
-                    </child>
+                    </property>
                   </object>
                 </child>
               </object>

@@ -997,10 +997,10 @@ class EartagFileView(Gtk.Stack):
         self.file_manager.load_task.connect('notify::progress', self.update_loading)
         self.file_manager.connect('notify::has-error', self.update_error)
 
-        sidebar = self.get_native().sidebar
-        self.next_file_button.connect('clicked', sidebar.select_next)
-        self.previous_file_button.connect('clicked', sidebar.select_previous)
-        sidebar.connect('notify::selection-mode', self.update_buttons)
+        window = self.get_native()
+        self.next_file_button.connect('clicked', window.select_next)
+        self.previous_file_button.connect('clicked', window.select_previous)
+        window.connect('notify::selection-mode', self.update_buttons)
 
     def update_error(self, *args):
         # Currently this is only used by the releasedate entry. Expand this
@@ -1039,13 +1039,13 @@ class EartagFileView(Gtk.Stack):
 
     def update_buttons(self, *args):
         """Updates the side switcher button state."""
-        if len(self.file_manager.files) == 0 or self.get_native().sidebar.selection_mode:
+        if len(self.file_manager.files) == 0 or self.get_native().selection_mode:
             self.previous_file_button.set_sensitive(False)
             self.previous_file_button_revealer.set_reveal_child(False)
             self.next_file_button.set_sensitive(False)
             self.next_file_button_revealer.set_reveal_child(False)
         else:
-            if self.get_native().sidebar.file_list.selection_model.get_n_items() > 1:
+            if self.get_native().sidebar_file_list.selection_model.get_n_items() > 1:
                 self.previous_file_button.set_sensitive(True)
                 self.next_file_button.set_sensitive(True)
             else:

@@ -14,7 +14,6 @@ from .musicbrainz import (
 from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equal
 from .utils.bgtask import EartagBackgroundTask
 from .utils.widgets import EartagModelExpanderRow
-from .sidebar import EartagFileList # noqa: F401
 from .backends.file import EartagFile
 
 @Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/coverimage.ui')

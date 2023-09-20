@@ -3,7 +3,6 @@
 
 from gi.repository import GObject, Gtk, GLib
 import os.path
-import gettext
 
 from .utils import find_in_model
 
@@ -316,6 +315,12 @@ class EartagFileList(Gtk.ListView):
 
     def disable_selection_mode(self, *args):
         self.set_single_click_activate(False)
+
+        try:
+            self.file_manager.selected_files
+        except AttributeError:
+            return
+
         if self.file_manager.selected_files:
             first_selected_file = self.file_manager.selected_files[0]
             for file in self.file_manager.selected_files.copy():
@@ -405,177 +410,3 @@ class EartagFileList(Gtk.ListView):
         else:
             self.file_manager.selected_files.append(item)
         self.file_manager.emit('selection-changed')
-
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/sidebar.ui')
-class EartagSidebar(Gtk.Box):
-    __gtype_name__ = 'EartagSidebar'
-
-    list_stack = Gtk.Template.Child()
-    list_scroll = Gtk.Template.Child()
-    file_list = Gtk.Template.Child()
-    no_files = Gtk.Template.Child()
-
-    search_bar = Gtk.Template.Child()
-    search_entry = Gtk.Template.Child()
-    no_results = Gtk.Template.Child()
-
-    action_bar = Gtk.Template.Child()
-    select_all_button = Gtk.Template.Child()
-    remove_selected_button = Gtk.Template.Child()
-    selected_message_label = Gtk.Template.Child()
-
-    loading_progressbar = Gtk.Template.Child()
-    loading_progressbar_revealer = Gtk.Template.Child()
-
-    def __init__(self):
-        super().__init__()
-
-        self.search_bar.set_key_capture_widget(self)
-        self.search_bar.connect_entry(self.search_entry)
-        self.search_entry.connect('search-changed', self.search_changed)
-
-    def set_file_manager(self, file_manager):
-        self.file_manager = file_manager
-        self.file_list.set_file_manager(self.file_manager)
-        self.list_stack.set_visible_child(self.no_files)
-        self.file_list.set_sidebar(self)
-
-        self.file_manager.connect('refresh-needed', self.refresh_actionbar_button_state)
-        self.file_manager.files.connect('items-changed', self.refresh_actionbar_button_state)
-        self.file_manager.connect('selection-changed', self.refresh_actionbar_button_state)
-        self.file_manager.load_task.connect('notify::progress', self.update_loading_progressbar)
-        self.refresh_actionbar_button_state()
-
-    def update_loading_progressbar(self, task, *args):
-        """
-        Updates the loading progressbar's position.
-        """
-        loading_progress = task.progress
-        self.loading_progressbar_revealer.set_reveal_child(not loading_progress == 0)
-        self.set_sensitive(loading_progress == 0)
-        self.file_list.set_visible(loading_progress == 0)
-        self.loading_progressbar.set_fraction(loading_progress)
-
-    def toggle_fileview(self, *args):
-        """
-        Shows/hides the fileview/"no files" message depending on opened files.
-        """
-        if self.file_manager.files.get_n_items() > 0:
-            self.list_stack.set_visible_child(self.list_scroll)
-        else:
-            self.list_stack.set_visible_child(self.no_files)
-
-    def search_changed(self, search_entry, *args):
-        """Emitted when the search has changed."""
-        self.file_list.filter.changed(Gtk.FilterChange.DIFFERENT)
-
-        if self.file_list.filter_model.get_n_items() == 0 and \
-                self.file_manager.files.get_n_items() > 0:
-            self.list_stack.set_visible_child(self.no_results)
-        else:
-            self.toggle_fileview()
-
-        selected = self.file_list.selection_model.get_selected()
-        # TODO: some weird bug where a null selected value is read as 4294967295
-        # (looks like someone forgot to make an unsigned int signed...)
-        has_no_selected = selected < 0 or selected >= 4294967295
-        if not self.selection_mode and has_no_selected and self.file_manager.selected_files:
-            new_selection = find_in_model(self.file_list.filter_model,
-                self.file_manager.selected_files[0])
-            if new_selection > -1:
-                self.file_list.selection_model.set_selected(new_selection)
-
-        # Scroll back to top of list
-        vadjust = self.file_list.get_vadjustment()
-        vadjust.set_value(vadjust.get_lower())
-
-        # Update the switcher buttons in the fileview
-        self.get_native().file_view.update_buttons()
-
-    def toggle_selection_mode(self, *args):
-        self.file_list.toggle_selection_mode()
-
-    @Gtk.Template.Callback()
-    def select_all(self, *args):
-        if self.file_list.all_selected():
-            self.file_list.unselect_all()
-        else:
-            self.file_list.select_all()
-
-    @Gtk.Template.Callback()
-    def remove_selected(self, *args):
-        old_selected = self.file_manager.selected_files.copy()
-        self.file_manager.remove_files(old_selected)
-
-    def refresh_actionbar_button_state(self, *args):
-        if not self.file_manager.files or not self.selection_mode:
-            selected_message = ''
-            self.action_bar.set_sensitive(False)
-            self.action_bar.set_revealed(False)
-        else:
-            self.action_bar.set_sensitive(True)
-            self.action_bar.set_revealed(True)
-            selected_file_count = len(self.file_manager.selected_files)
-            if selected_file_count == 0:
-                selected_message = _('No files selected')
-                self.remove_selected_button.set_sensitive(False)
-            else:
-                selected_message = gettext.ngettext(
-                    "1 file selected", "{n} files selected", selected_file_count).\
-                        format(n=selected_file_count)
-                self.remove_selected_button.set_sensitive(True)
-
-        self.selected_message_label.set_label(selected_message)
-
-    @GObject.Property(type=bool, default=False)
-    def selection_mode(self):
-        """Whether the sidebar is in selection mode or not."""
-        return self.file_list.selection_mode
-
-    @selection_mode.setter
-    def selection_mode(self, value):
-        self.file_list.selection_mode = value
-        # Workaround for the text not showing up on initial load
-        self.refresh_actionbar_button_state()
-
-    def select_next(self, *args):
-        """Selects the next item on the sidebar."""
-        if self.file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
-            return
-        selected = self.file_list.selection_model.get_selected()
-        if selected + 1 >= self.file_list.selection_model.get_n_items():
-            self.file_list.selection_model.set_selected(0)
-        else:
-            self.file_list.selection_model.set_selected(selected + 1)
-
-    def select_previous(self, *args):
-        """Selects the previous item on the sidebar."""
-        if self.file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
-            return
-        selected = self.file_list.selection_model.get_selected()
-        if selected - 1 >= 0:
-            self.file_list.selection_model.set_selected(selected - 1)
-        else:
-            self.file_list.selection_model.set_selected(
-                self.file_list.selection_model.get_n_items() - 1
-            )
-
-    def scroll_to_top(self):
-        """Scrolls to the top of the file list."""
-        GLib.idle_add(self._scroll_to_top)
-
-    def _scroll_to_top(self):
-        self.list_scroll.get_vadjustment().set_value(0)
-
-    def scroll_to_index(self, index):
-        """Scrolls to file at the specified index."""
-        GLib.idle_add(self._scroll_to_index, index)
-
-    def _scroll_to_index(self, index):
-        item_height = self.file_list.get_first_child().get_height()
-        vadjust = self.list_scroll.get_vadjustment()
-        new_value = item_height * (index + 1)
-        if new_value <= vadjust.get_upper():
-            vadjust.set_value(new_value)
-        else:
-            vadjust.set_value(vadjust.get_upper())

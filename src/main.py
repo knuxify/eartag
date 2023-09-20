@@ -160,44 +160,44 @@ Opened files:
 
     def on_next_action(self, *args):
         win = self.props.active_window
-        win.sidebar.select_next()
+        win.select_next()
 
     def on_previous_action(self, *args):
         win = self.props.active_window
-        win.sidebar.select_previous()
+        win.select_previous()
 
     def on_close_selected_action(self, *args):
         win = self.props.active_window
         if win.file_manager.files:
-            win.sidebar.remove_selected()
+            win.remove_selected()
         else:
             win.close()
 
     def on_select_all_action(self, *args):
         win = self.props.active_window
-        if win.container_stack.get_visible_child() != win.container_flap:
+        if win.container_stack.get_visible_child() != win.split_view:
             return
-        if win.sidebar.file_list.all_selected():
+        if win.file_list.all_selected():
             win.select_multiple_button.set_active(False)
-            win.sidebar.file_list.unselect_all()
+            win.sidebar_file_list.unselect_all()
             win.file_manager.emit('select-first')
         else:
             win.select_multiple_button.set_active(True)
-            win.sidebar.file_list.select_all()
+            win.sidebar_file_list.select_all()
 
     def on_toggle_sidebar_action(self, *args):
         win = self.props.active_window
-        if win.container_flap.get_folded():
-            if win.container_flap.get_reveal_flap():
+        if win.split_view.get_collapsed():
+            if win.split_view.get_show_sidebar():
                 win.hide_sidebar()
             else:
                 win.show_sidebar()
         else:
-            win.sidebar.file_list.grab_focus()
+            win.file_list.grab_focus()
 
     def on_open_menu_action(self, *args):
         win = self.props.active_window
-        if win.container_stack.get_visible_child() == win.container_flap:
+        if win.container_stack.get_visible_child() == win.split_view:
             win.primary_menu_button.activate()
         else:
             win.empty_primary_menu_button.activate()
