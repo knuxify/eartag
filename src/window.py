@@ -432,7 +432,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def select_all(self, *args):
-        if self.sidebar_file_list.all_selected():
+        if self.sidebar_file_list.all_selected() and \
+                len(self.file_manager.selected_files) != 1:
             self.sidebar_file_list.unselect_all()
         else:
             self.sidebar_file_list.select_all()
