@@ -342,12 +342,12 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def show_sidebar(self, *args):
-        self.split_view.set_reveal_flap(True)
+        self.split_view.set_show_sidebar(True)
         self.sidebar_file_list.grab_focus()
 
     @Gtk.Template.Callback()
     def hide_sidebar(self, *args):
-        self.split_view.set_reveal_flap(False)
+        self.split_view.set_show_sidebar(False)
 
     @Gtk.Template.Callback()
     def run_sort(self, *args):
