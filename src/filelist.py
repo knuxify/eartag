@@ -218,7 +218,10 @@ class EartagFileList(Gtk.ListView):
 
         if not self.selection_mode:
             if not self.file_manager.selected_files:
-                self.selection_model.unselect_all()
+                if self.file_manager.files.get_n_items() > 0:
+                    self.file_manager.emit('select-first')
+                else:
+                    self.selection_model.unselect_all()
                 self._ignore_unselect = False
                 return
             new_index = find_in_model(self.selection_model,
