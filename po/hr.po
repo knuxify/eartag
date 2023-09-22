@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-20 19:53+0200\n"
-"PO-Revision-Date: 2023-02-16 11:23+0100\n"
+"PO-Revision-Date: 2023-09-22 10:00+0200\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
 "Language: hr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 42.0\n"
+"X-Generator: Gtranslator 45.1\n"
 
 #. TRANSLATORS: Add your name/nickname here
 #: src/main.py:109 src/main.py:111
@@ -48,6 +48,8 @@ msgid ""
 "Added support for removing a cover image and setting the back cover image. "
 "Improved the accuracy of the file identification option."
 msgstr ""
+"Dodana podrška za uklanjanje naslovne slike i postavljanje slike stražnjeg "
+"omota. Poboljšana je točnost opcije identifikacije datoteke."
 
 #: data/app.drey.EarTag.metainfo.xml.in:32
 msgid ""
@@ -55,6 +57,10 @@ msgid ""
 "ability to rename files using a specific pattern, file identification using "
 "AcoustID and the option to set a full release date."
 msgstr ""
+"Popravlja problem u kojem se omoti nisu mogli učitati. Napomene od 0.4.0: "
+"Dodana je mogućnost preimenovanja datoteka pomoću određenog uzorka, "
+"identifikacija datoteke pomoću AcousID-a i opcija postavljanja punog datuma "
+"izdavanja."
 
 #: data/app.drey.EarTag.metainfo.xml.in:37
 #: data/app.drey.EarTag.metainfo.xml.in:42
@@ -63,19 +69,24 @@ msgid ""
 "using a specific pattern, file identification using AcoustID and the option "
 "to set a full release date."
 msgstr ""
+"Ažuriranje s manjim popravcima. Napomene od 0.4.0: Dodana je mogućnost "
+"preimenovanja datoteka pomoću određenog uzorka, identifikacija datoteke "
+"pomoću AcousID-a i opcija postavljanja punog datuma izdavanja."
 
 #: data/app.drey.EarTag.metainfo.xml.in:47
 msgid ""
 "Added the ability to rename files using a specific pattern, file "
 "identification using AcoustID and the option to set a full release date."
 msgstr ""
+"Dodana je mogućnost preimenovanja datoteka pomoću određenog uzorka, "
+"identifikacija datoteke pomoću AcousID-a i opcija postavljanja punog datuma "
+"izdavanja."
 
 #: data/app.drey.EarTag.metainfo.xml.in:57
 msgid "Initial release."
-msgstr ""
+msgstr "Prvo izdanje."
 
 #: data/app.drey.EarTag.metainfo.xml.in:65
-#, fuzzy
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -85,31 +96,32 @@ msgstr ""
 "Ear Tag jednostavan je uređivač oznaka audio datoteka. Prvenstveno je "
 "namijenjen brzom uređivanju ili skupnom uređivanju pjesama u albumima/EP-"
 "ima. Za razliku od drugih programa za označavanje, Ear Tag ne zahtijeva od "
-"korisnika postavljanje mape glazbene knjižnice."
+"korisnika postavljanje mape glazbene knjižnice. Može:"
 
 #: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
-msgstr ""
+msgstr "Uredite oznake MP3, WAV, M4A, FLAC, OGG i WMA datoteka"
 
 #: data/app.drey.EarTag.metainfo.xml.in:68
 msgid "Modify metadata of multiple files at once"
-msgstr ""
+msgstr "Izmijenite metapodatke više datoteka odjednom"
 
 #: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Rename files using information from present tags"
-msgstr ""
+msgstr "Preimenujte datoteke pomoću informacija iz postojećih oznaka"
 
 #: data/app.drey.EarTag.metainfo.xml.in:70
 msgid "Identify files using AcoustID"
-msgstr ""
+msgstr "Identificirajte datoteke pomoću AcoustID-a"
 
 #: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
+"Pristup mreži koristi se samo za opciju \"Identificiraj odabrane datoteke\"."
 
 #: src/window.py:102
 msgid "All supported audio files"
-msgstr ""
+msgstr "Sve podržane audio datoteke"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
 #: src/window.py:197 src/fileview.py:921
@@ -129,7 +141,6 @@ msgid "No supported files found in opened folder"
 msgstr "U otvorenoj mapi nisu pronađene podržane datoteke"
 
 #: src/window.py:341
-#, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti."
@@ -139,12 +150,12 @@ msgid "No files selected"
 msgstr "Nema odabranih datoteka"
 
 #: src/window.py:464
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
-msgstr[0] "{n} datoteka odabrana"
-msgstr[1] "{n} datoteka odabrano"
-msgstr[2] "{n} datoteka odabrano"
+msgstr[0] "{n} datoteke odabrane"
+msgstr[1] "{n} datoteka odabrana"
+msgstr[2] "{n} datoteke odabrane"
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:62
@@ -158,7 +169,7 @@ msgstr "Spremi"
 #. TRANSLATORS: Tooltip for button used to sort files in the opened file list
 #: src/ui/window.ui:137
 msgid "Sort files by track number, album, name"
-msgstr ""
+msgstr "Sortirajte datoteke prema broju, albumu, nazivu"
 
 #. TRANSLATORS: Tooltip for the button used to close the file list sidebar
 #: src/ui/window.ui:146
@@ -176,9 +187,8 @@ msgid "Select multiple files"
 msgstr "Odaberi više datoteka"
 
 #: src/ui/window.ui:175
-#, fuzzy
 msgid "Search opened files"
-msgstr "Otvori datoteke"
+msgstr "Pretraži otvorene datoteke"
 
 #: src/ui/window.ui:232
 msgid "No Results Found"
@@ -210,14 +220,12 @@ msgid "O_pen Folder"
 msgstr "O_tvori mapu"
 
 #: src/ui/window.ui:335
-#, fuzzy
 msgid "_Rename Selected Files"
-msgstr "Ukloni više datoteka"
+msgstr "_Preimenuj odabrane datoteke"
 
 #: src/ui/window.ui:339
-#, fuzzy
 msgid "_Identify Selected Files"
-msgstr "Ukloni više datoteka"
+msgstr "_Identificiraj odabrane datoteke"
 
 #: src/ui/window.ui:345
 msgid "_Keyboard Shortcuts"
@@ -225,7 +233,7 @@ msgstr "_Tipkovnički Prečaci"
 
 #: src/ui/window.ui:349
 msgid "_Settings"
-msgstr ""
+msgstr "_Postavke"
 
 #: src/ui/window.ui:353
 msgid "_About Ear Tag"
@@ -234,6 +242,8 @@ msgstr "_O Ear Tagu"
 #: src/ui/nofile.ui:22
 msgid "Open or drag in some audio files to edit their metadata"
 msgstr ""
+"Otvorite ili povucite neke audio datoteke da biste uredili njihove "
+"metapodatke"
 
 #: src/filemanager.py:95
 msgid "Failed to save file"
@@ -255,23 +265,22 @@ msgid "Saved changes to files"
 msgstr "Spremljene promjene datoteka"
 
 #: src/filemanager.py:216
-#, fuzzy
 msgid "Opened file is read-only; changes cannot be saved"
-msgstr "Otvorena datoteka je samo za čitanje; promjene se ne mogu spremiti."
+msgstr ""
+"Otvorena datoteka je isključivo za čitanje; promjene se ne mogu spremiti"
 
 #: src/filemanager.py:218
-#, fuzzy
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
-"Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti."
+"Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti"
 
 #: src/backends/file.py:44
 msgid "Length"
-msgstr ""
+msgstr "Duljina"
 
 #: src/backends/file.py:45
 msgid "Bitrate"
-msgstr ""
+msgstr "Bitrate"
 
 #: src/backends/file.py:47 src/ui/fileview.ui:107
 msgid "Title"
@@ -291,18 +300,17 @@ msgstr "Izvođač albuma"
 
 #: src/backends/file.py:51 src/ui/fileview.ui:152
 msgid "Track number"
-msgstr "Broj staze"
+msgstr "Broj pjesme"
 
 #: src/backends/file.py:52
 msgid "Total tracks"
-msgstr ""
+msgstr "Ukupno pjesama"
 
 #: src/backends/file.py:53 src/ui/fileview.ui:177
 msgid "Genre"
 msgstr "Žanr"
 
 #: src/backends/file.py:54 src/ui/fileview.ui:184
-#, fuzzy
 msgid "Release date"
 msgstr "Godina izdanja"
 
@@ -366,7 +374,7 @@ msgstr "Podnaslov diska"
 
 #: src/backends/file.py:73
 msgid "Website/URL"
-msgstr ""
+msgstr "Web stranica/URL"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
@@ -400,63 +408,63 @@ msgstr "Naslov (vrsta)"
 
 #: src/backends/file.py:91
 msgid "MusicBrainz Artist ID"
-msgstr ""
+msgstr "MusicBrainz ID izvođača"
 
 #: src/backends/file.py:92
 msgid "MusicBrainz Album ID"
-msgstr ""
+msgstr "MusicBrainz ID albuma"
 
 #: src/backends/file.py:93
 msgid "MusicBrainz Album Artist ID"
-msgstr ""
+msgstr "MusicBrainz ID izvođača albuma"
 
 #: src/backends/file.py:94
 msgid "MusicBrainz Release Track ID"
-msgstr ""
+msgstr "MusicBrainz Objavljen ID pjesme"
 
 #: src/backends/file.py:95
 msgid "MusicBrainz Recording ID"
-msgstr ""
+msgstr "MusicBrainz ID snimke"
 
 #: src/backends/file.py:96
 msgid "MusicBrainz Release Group ID"
-msgstr ""
+msgstr "MusicBrainz ID grupe izdanja"
 
 #: src/fileview.py:183
 msgid "Select Album Cover Image"
-msgstr "Odaberite sliku naslovnice albuma"
+msgstr "Odaberite sliku omota album"
 
 #: src/fileview.py:210
 msgid "Save Album Cover To…"
-msgstr "Spremi naslovnicu albuma u..."
+msgstr "Spremi omot albuma u..."
 
 #: src/fileview.py:238
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Saved cover to {path}"
-msgstr "_Spremi naslovnicu u datoteku"
+msgstr "Omot spremljen u {path}"
 
 #: src/fileview.py:261
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
-msgstr[0] "Makni sa liste"
-msgstr[1] "Makni sa liste"
-msgstr[2] "Makni sa liste"
+msgstr[0] "Uklonjeno {n} omota iz datoteka"
+msgstr[1] "Uklonjen {n} omot iz datoteke"
+msgstr[2] "Uklonjena {n} omota iz datoteka"
 
 #: src/fileview.py:265
 msgid "Undo"
-msgstr ""
+msgstr "Poništi"
 
 #: src/fileview.py:612
 msgid "More tags"
 msgstr "Više oznaka"
 
 #: src/fileview.py:935
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
-msgstr[0] "{n} kanal"
-msgstr[1] "{n} kanala"
+msgstr[0] "{n} kanala"
+msgstr[1] "{n} kanal"
 msgstr[2] "{n} kanala"
 
 #: src/ui/fileview.ui:10
@@ -481,23 +489,23 @@ msgstr "Sljedeća datoteka"
 
 #: src/ui/albumcoverbutton.ui:90
 msgid "_Choose Image…"
-msgstr ""
+msgstr "_Odaberi sliku…"
 
 #: src/ui/albumcoverbutton.ui:95
 msgid "_Save Image…"
-msgstr ""
+msgstr "_Spremi sliku…"
 
 #: src/ui/albumcoverbutton.ui:100
 msgid "_Remove Cover"
-msgstr ""
+msgstr "_Ukloni omot"
 
 #: src/ui/albumcoverbutton.ui:123
 msgid "Front"
-msgstr ""
+msgstr "Prednje"
 
 #: src/ui/albumcoverbutton.ui:130
 msgid "Back"
-msgstr ""
+msgstr "Stražnje"
 
 #: src/tagentry.py:128
 msgid "(multiple values)"
@@ -510,9 +518,8 @@ msgstr "(Nema naslov)"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:50
-#, fuzzy
 msgid "File has invalid values"
-msgstr "Datoteka ima nespremljene promjene"
+msgstr "Datoteka ima nevažeće vrijednosti"
 
 #. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
 #: src/ui/filelistitem.ui:60
@@ -526,9 +533,8 @@ msgstr "Makni sa liste"
 
 #: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
 #: src/ui/dialogs/removaldiscardwarning.ui:5
-#, fuzzy
 msgid "Save Changes?"
-msgstr "Spremljene promjene datoteka"
+msgstr "Spremi promjene?"
 
 #: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
 #: src/ui/dialogs/removaldiscardwarning.ui:6
@@ -541,27 +547,22 @@ msgid "_Cancel"
 msgstr "_Otkaži"
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Close"
-msgstr "_Odbaci promjene i zatvori"
+msgstr "_Odbaci i zatvori"
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
-#, fuzzy
 msgid "_Save and Close"
-msgstr "Spremi i zatvori"
+msgstr "_Spremi i zatvori"
 
 #: src/ui/dialogs/discardwarning.ui:13
-#, fuzzy
 msgid "_Discard and Open"
-msgstr "_Odbaci promjene i otvori"
+msgstr "_Odbaci i otvori"
 
 #: src/ui/dialogs/discardwarning.ui:14
-#, fuzzy
 msgid "_Save and Open"
-msgstr "Spremi i otvori"
+msgstr "_Spremi i otvori"
 
 #: src/ui/dialogs/loadingfailure.ui:5
-#, fuzzy
 msgid "Failed to Load File"
 msgstr "Učitavanje datoteke nije uspjelo"
 
@@ -571,25 +572,21 @@ msgstr ""
 "Nije moguće učitati datoteku {f}. Više informacija potražite u logovima."
 
 #: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
-#, fuzzy
 msgid "_OK"
-msgstr "OK"
+msgstr "_OK"
 
 #: src/ui/dialogs/renamefailure.ui:5
-#, fuzzy
 msgid "Failed to Rename File"
 msgstr "Spremanje datoteke nije uspjelo"
 
 #: src/ui/dialogs/renamefailure.ui:6
-#, fuzzy
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
-"Nije moguće spremiti datoteku {f}. Više informacija potražite u logovima."
+"Nije moguće preimenovati datoteku {f}. Više informacija potražite u logovima."
 
 #: src/ui/rename.ui:5
-#, fuzzy
 msgid "Rename Selected Files"
-msgstr "Ukloni više datoteka"
+msgstr "Preimenuj odabrane datoteke"
 
 #: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
 msgid "Cancel"
@@ -597,22 +594,20 @@ msgstr "Otkaži"
 
 #: src/ui/rename.ui:44
 msgid "Rename"
-msgstr ""
+msgstr "Preimenuj"
 
 #: src/ui/rename.ui:82
-#, fuzzy
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
-"Nije moguće spremiti datoteku {f}. Više informacija potražite u logovima."
+"Preimenovanje datoteka nije uspjelo. Više informacija potražite u logovima."
 
 #: src/ui/rename.ui:98
 msgid "Filename pattern"
-msgstr ""
+msgstr "Uzorak naziva datoteka"
 
 #: src/ui/rename.ui:106
-#, fuzzy
 msgid "Preview"
-msgstr "Prošla datoteka"
+msgstr "Pregled"
 
 #: src/ui/rename.ui:118
 msgid ""
@@ -620,35 +615,36 @@ msgid ""
 "org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
 "of available tags</a>."
 msgstr ""
+"Za popis dostupnih uzoraka pogledajte <a href=\"https://gitlab.gnome.org/"
+"knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">popis "
+"dostupnih oznake</a>."
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
 #: src/identify.py:117
 msgid "Other releases"
-msgstr ""
+msgstr "Ostala izdanja"
 
 #: src/identify.py:492
-#, fuzzy
 msgid "Unidentified Files"
-msgstr "Ukloni više datoteka"
+msgstr "Neidentificirane datoteke"
 
 #: src/identify.py:914
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
-msgstr ""
+msgstr "Identificirano {identified} od {total} pjesama"
 
 #: src/ui/identify/identify.ui:5
-#, fuzzy
 msgid "Identify Selected Files"
-msgstr "Ukloni više datoteka"
+msgstr "Prepoznajte odabrane datoteke"
 
 #: src/ui/identify/identify.ui:48
 msgid "Identify"
-msgstr ""
+msgstr "Identificiraj"
 
 #: src/ui/identify/identify.ui:59
 msgid "Apply"
-msgstr ""
+msgstr "Primijeni"
 
 #: src/ui/identify/identify.ui:92
 msgid ""
@@ -656,61 +652,67 @@ msgid ""
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
 "href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
+"Informacije o pjesmi pruža <a href=\"https://musicbrainz.org\">Musicbrainz</"
+"a>. Datoteke bez metapodataka identificiraju se pomoću usluge <a "
+"href=\"https://acoustid.org\">AcoustID-a</a>."
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
-msgstr ""
+msgstr "Datoteku nije moguće identificirati"
 
 #: src/ui/settings.ui:9
 msgid "File identification"
-msgstr ""
+msgstr "Identifikacija datoteke"
 
 #: src/ui/settings.ui:14
 msgid "MusicBrainz confidence treshold"
-msgstr ""
+msgstr "MusicBrainz prag pouzdanosti"
 
 #: src/ui/settings.ui:15
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
 msgstr ""
+"Minimalni postotak pouzdanosti potreban za procjenu rezultata MusicBrainz "
+"pretraživanja"
 
 #: src/ui/settings.ui:36
 msgid "AcoustID confidence treshold"
-msgstr ""
+msgstr "AcoustID prag pouzdanosti"
 
 #: src/ui/settings.ui:37
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
 msgstr ""
+"Minimalni postotak pouzdanosti potreban za procjenu rezultata traženja "
+"AcousID-a"
 
 #: src/ui/settings.ui:58
 msgid "Downloaded cover art size"
-msgstr ""
+msgstr "Veličina preuzetog omota"
 
 #: src/ui/settings.ui:63
 msgid "Do not download covers"
-msgstr ""
+msgstr "Nemoj preuzimati omote"
 
 #: src/ui/settings.ui:64
 msgid "250 px"
-msgstr ""
+msgstr "250 px"
 
 #: src/ui/settings.ui:65
 msgid "500 px"
-msgstr ""
+msgstr "500 px"
 
 #: src/ui/settings.ui:66
 msgid "1200 px"
-msgstr ""
+msgstr "1200 px"
 
 #: src/ui/settings.ui:67
 msgid "Maximum size"
-msgstr ""
+msgstr "Maksimalna veličina"
 
 #: src/ui/shortcuts.ui:12
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Files"
 msgstr "Datoteke"
@@ -721,10 +723,9 @@ msgid "Open files"
 msgstr "Otvori datoteke"
 
 #: src/ui/shortcuts.ui:23
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Open folder"
-msgstr "_Otvori mapu"
+msgstr "Otvori mapu"
 
 #: src/ui/shortcuts.ui:30
 msgctxt "shortcut window"
@@ -734,7 +735,7 @@ msgstr "Spremite sve izmijenjene datoteke"
 #: src/ui/shortcuts.ui:38
 msgctxt "shortcut window"
 msgid "Sidebar"
-msgstr ""
+msgstr "Bočna traka"
 
 #: src/ui/shortcuts.ui:42
 msgctxt "shortcut window"
@@ -747,26 +748,24 @@ msgid "Select next file in sidebar"
 msgstr "Odaberite sljedeću datoteku na bočnoj traci"
 
 #: src/ui/shortcuts.ui:56
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Select all files in sidebar"
-msgstr "Odaberite sljedeću datoteku na bočnoj traci"
+msgstr "Odaberite sve datoteke na bočnoj traci"
 
 #: src/ui/shortcuts.ui:63
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Remove selected files from sidebar"
-msgstr "Ukloni više datoteka"
+msgstr "Ukloni odabrane datoteke s bočne trake"
 
 #: src/ui/shortcuts.ui:64
 msgctxt "shortcut window"
 msgid "Closes the window if no files are present."
-msgstr ""
+msgstr "Zatvara prozor ako nema datoteka."
 
 #: src/ui/shortcuts.ui:72
 msgctxt "shortcut window"
 msgid "Other"
-msgstr ""
+msgstr "Ostalo"
 
 #: src/ui/shortcuts.ui:76
 msgctxt "shortcut window"
