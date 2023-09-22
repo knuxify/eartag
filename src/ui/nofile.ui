@@ -7,54 +7,41 @@
         <property name="hexpand">true</property>
         <property name="vexpand">true</property>
         <child>
-          <object class="GtkScrolledWindow" id="content_scroll">
-            <property name="hscrollbar-policy">never</property>
-            <property name="hexpand">true</property>
-            <property name="vexpand">true</property>
+          <object class="AdwStatusPage">
+            <property name="icon-name">app.drey.EarTag</property>
+            <property name="title">Ear Tag</property>
+            <property name="description" translatable="yes">Open or drag in some audio files to edit their metadata.</property>
+            <style>
+              <class name="nofiles"/>
+            </style>
+
             <child>
-              <object class="AdwClamp">
-                <property name="maximum-size">450</property>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <property name="halign">center</property>
+                <property name="spacing">12</property>
 
                 <child>
-                  <object class="AdwStatusPage">
-                    <property name="icon-name">app.drey.EarTag</property>
-                    <property name="title">Ear Tag</property>
-                    <property name="description" translatable="yes">Open or drag in some audio files to edit their metadata</property>
+                  <object class="GtkButton" id="open_file">
+                    <property name="label" translatable="yes">Open File</property>
+                    <property name="focusable">true</property>
+                    <signal name="clicked" handler="on_add_file"/>
+
                     <style>
-                      <class name="nofiles"/>
+                      <class name="suggested-action"/>
+                      <class name="pill"/>
                     </style>
+                  </object>
+                </child>
 
-                    <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="halign">center</property>
-                        <property name="spacing">12</property>
+                <child>
+                  <object class="GtkButton" id="open_folder">
+                    <property name="label" translatable="yes">Open Folder</property>
+                    <signal name="clicked" handler="on_add_folder"/>
 
-                        <child>
-                          <object class="GtkButton" id="open_file">
-                            <property name="label" translatable="yes">Open File</property>
-                            <property name="focusable">true</property>
-                            <signal name="clicked" handler="on_add_file"/>
-
-                            <style>
-                              <class name="suggested-action"/>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
-
-                        <child>
-                          <object class="GtkButton" id="open_folder">
-                            <property name="label" translatable="yes">Open Folder</property>
-                            <signal name="clicked" handler="on_add_folder"/>
-
-                            <style>
-                              <class name="pill"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
+                    <style>
+                      <class name="pill"/>
+                    </style>
                   </object>
                 </child>
               </object>
