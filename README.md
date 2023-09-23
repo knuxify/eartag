@@ -2,7 +2,7 @@
 
 Small and simple audio file tag editor
 
-![Screenshot](screenshot.png)
+![Screenshot](data/screenshot-scaled.png)
 
 ## About
 
