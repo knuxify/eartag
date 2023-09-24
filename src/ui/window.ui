@@ -11,7 +11,6 @@
       <object class="AdwBreakpoint">
         <condition>max-width: 620sp</condition>
         <setter object="split_view" property="collapsed">True</setter>
-        <setter object="file_view" property="compact">True</setter>
       </object>
     </child>
 

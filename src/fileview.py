@@ -452,8 +452,6 @@ class EartagTagDoubleRow(Adw.ActionRow):
         self.first_entry.unbind_from_file(file)
         self.second_entry.unbind_from_file(file)
 
-more_item_size_group = Gtk.SizeGroup()
-
 extra_tag_names = dict(
     [(k, v) for k, v in TAG_NAMES.items() if k in ['none'] + list(EXTRA_TAGS)]
 )
@@ -462,156 +460,29 @@ extra_tag_names_swapped = dict(
 )
 more_item_tag_strings = Gtk.StringList.new(list(extra_tag_names.values()))
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/rows/extratagrow.ui')
-class EartagExtraTagRow(Adw.ActionRow):
+class EartagExtraTagRow(EartagTagEntryRow):
     __gtype_name__ = 'EartagExtraTagRow'
 
-    _max_width_chars = -1
-
-    handled_tags = []
-    skip_filter_change = False
-
-    tag_selector = Gtk.Template.Child()
-    value_entry = Gtk.Template.Child()
-    row_remove_button = Gtk.Template.Child()
-
-    def __init__(self, property=None, parent=None):
+    def __init__(self, tag, parent):
         super().__init__()
-
-        self.files = []
-        self.ignore_edit = {}
-        self._numeric_connect = None
-        self._compact = False
         self.parent = parent
 
-        if property:
-            self.value_entry.bound_property = property
-            self.ignore_selector_select = True
-
-        self.tag_model = Gtk.FilterListModel(model=more_item_tag_strings)
-        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
-        self.tag_model.set_filter(self.tag_filter)
-        self.tag_selector.set_model(self.tag_model)
-
-        # I wish we could just use "DropDown:activate" but it never gets emitted,
-        # but it is just a ToggleButton underneath!
-        self.tag_selector.get_first_child().connect('clicked', self.refresh_filter)
-
-        global more_item_size_group
-        more_item_size_group.add_widget(self.tag_selector)
-
-        if property:
-            tag_pos = self.get_tag_position_in_selector(property)
-            if tag_pos >= 0:
-                self.tag_selector.set_selected(tag_pos)
-            self.ignore_selector_select = False
-
-    def bind_to_file(self, file):
-        self.value_entry.bind_to_file(file)
-
-    def unbind_from_file(self, file):
-        self.value_entry.unbind_from_file(file)
-
-    @GObject.Property(type=str)
-    def bound_property(self):
-        return self.value_entry.bound_property
-
-    @bound_property.setter
-    def bound_property(self, tag):
-        old_tag = None
-        if self.value_entry.bound_property:
-            old_tag = self.value_entry.bound_property
-
-        if tag == old_tag:
-            return
-
-        # For "Select a value" rows, make the entry and remove button
-        # unclickable
-        self.value_entry.set_sensitive(tag != 'none')
-        self.row_remove_button.set_sensitive(tag != 'none')
-
-        # Set up the value entry for this tag
-        self.value_entry.bound_property = tag
-        self.value_entry.is_numeric = tag in EartagFile.int_properties
-        self.value_entry.is_float = tag in EartagFile.float_properties
-
-        for row in self.parent._rows:
-            row.refresh_filter()
-
-    @Gtk.Template.Callback()
-    def on_tag_selector_select(self, dropdown, *args):
-        if self.ignore_selector_select:
-            return
-
-        selected_item = dropdown.get_selected_item()
-        if not selected_item:
-            return
-        tag = extra_tag_names_swapped[selected_item.get_string()]
-
         self.bound_property = tag
+        self.is_numeric = tag in EartagFile.int_properties
+        self.is_float = tag in EartagFile.float_properties
+        self.set_title(extra_tag_names[tag])
 
-        if tag != 'none':
-            self.parent.refresh_none_row()
+        self.row_remove_button = Gtk.Button(
+            icon_name='edit-delete-symbolic',
+            valign=Gtk.Align.CENTER
+        )
+        self.row_remove_button.add_css_class('flat')
+        self.row_remove_button.connect('clicked', self.do_remove_row)
+        self.add_suffix(self.row_remove_button)
 
-    def tag_filter_func(self, _tag_name, *args):
-        """Filter function for the tag dropdown."""
-        present_tags = self.parent.get_present_tags()
-
-        tag_name = _tag_name.get_string()
-        tag_prop = extra_tag_names_swapped[tag_name]
-
-        if tag_prop == 'none' and self.bound_property == 'none':
-            return True
-        if tag_prop in present_tags and self.bound_property != tag_prop:
-            return False
-        if tag_prop in self.parent.get_blocked_tags():
-            return False
-
-        return True
-
-    def refresh_filter(self, *args):
-        self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-
-    def get_tag_position_in_selector(self, tag):
-        item_count = self.tag_model.get_n_items()
-        tag_name = extra_tag_names[tag]
-
-        for i in range(item_count):
-            if self.tag_model.get_item(i).get_string() == tag_name:
-                return i
-
-        return -1
-
-    @Gtk.Template.Callback()
     def do_remove_row(self, *args):
         """Removes the row."""
         self.parent.remove_and_unbind_extra_row(self)
-
-    @GObject.Property(type=bool, default=False)
-    def compact(self):
-        return self._compact
-
-    @compact.setter
-    def compact(self, value):
-        self._compact = value
-        if value:
-            self.make_compact()
-        else:
-            self.make_noncompact()
-
-    def make_compact(self, *args):
-        """Makes the row compact."""
-        self.add_css_class('compact')
-        self.get_first_child().set_orientation(Gtk.Orientation.VERTICAL)
-        self.tag_selector.set_hexpand(True)
-        self.value_entry.set_hexpand(True)
-
-    def make_noncompact(self, *args):
-        """Makes the row non-compact."""
-        self.remove_css_class('compact')
-        self.get_first_child().set_orientation(Gtk.Orientation.HORIZONTAL)
-        self.tag_selector.set_hexpand(False)
-        self.value_entry.set_hexpand(False)
 
 class EartagExtraTagsExpander(Adw.ExpanderRow):
     """
@@ -630,7 +501,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         self._present_tags_cached = []
         self._last_loaded_filetypes = []
         self._last_present_tags = {} # id: tags
-        self._compact = False
+        self._ignore_tag_selector = False
 
         # We can select multiple files of multiple types at once, but
         # they're not guaranteed to all have the same available extra tags.
@@ -640,8 +511,29 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         self.blocked_tags = {}      # type: tags
         self.loaded_filetypes = {}  # type: count
 
-        # Initialize an initial "none" row
-        self.add_empty_row()
+        # Extra tag filter for additional tag field
+        self.tag_model = Gtk.FilterListModel(model=more_item_tag_strings)
+        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
+        self.tag_model.set_filter(self.tag_filter)
+
+        # "Add additional tag" field:
+        self.addition_row = Adw.ActionRow()
+
+        self.addition_row_dropdown = Gtk.DropDown(
+            model=self.tag_model,
+            valign=Gtk.Align.CENTER
+        )
+        self.addition_row.add_prefix(self.addition_row_dropdown)
+
+        self.addition_row_add_button = Gtk.Button(
+            icon_name='list-add-symbolic',
+            valign=Gtk.Align.CENTER
+        )
+        self.addition_row_add_button.connect('clicked', self.add_row_from_selector)
+        self.addition_row_add_button.add_css_class('flat')
+        self.addition_row.add_suffix(self.addition_row_add_button)
+
+        self.add_row(self.addition_row)
 
     def get_rows_sorted(self):
         rows = {}
@@ -649,23 +541,51 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
             rows[row.bound_property] = row
         return rows
 
+    # "Add additional tag" field
+
+    def refresh_tag_filter(self):
+        """Refreshes the filter for the additional tag add row."""
+        self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+    def add_row_from_selector(self, *args):
+        """Adds a new row based on the tag selector."""
+        if self._ignore_tag_selector:
+            return
+
+        self._ignore_tag_selector = True
+
+        selected_item = self.addition_row_dropdown.get_selected_item()
+        if not selected_item:
+            return
+        tag = extra_tag_names_swapped[selected_item.get_string()]
+
+        self.addition_row_dropdown.set_selected(0) # switch back to "(Select a tag)"
+
+        self.add_extra_row(tag)
+
+        self._ignore_tag_selector = False
+
+    def tag_filter_func(self, _tag_name, *args):
+        """Filter function for the tag dropdown."""
+        present_tags = self.get_present_tags()
+
+        tag_name = _tag_name.get_string()
+        tag_prop = extra_tag_names_swapped[tag_name]
+
+        if tag_prop == 'none':
+            return True
+        if tag_prop in present_tags:
+            return False
+        if tag_prop in self.get_blocked_tags():
+            return False
+
+        return True
+
     #
     # Row management functions
     #
 
-    def add_empty_row(self, *args):
-        self.add_extra_row('none', skip_adding_none=True)
-
-    def refresh_none_row(self):
-        """Adds a 'none' row if needed, and moves it to the end."""
-        rows = self.get_rows_sorted()
-        if 'none' in rows:
-            self.remove(rows['none'])
-            self.add_row(rows['none'])
-        else:
-            self.add_empty_row()
-
-    def add_extra_row(self, tag, skip_adding_none=False):
+    def add_extra_row(self, tag, skip_filter_refresh=False):
         """
         Adds an extra row for the given tag. Consumers should make sure that
         a row with this tag doesn't exist yet.
@@ -677,25 +597,23 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
             return None
 
         row = EartagExtraTagRow(tag, self)
+        row.set_title(extra_tag_names[tag])
         self._rows.append(row)
         self.add_row(row)
+
+        if tag not in self._present_tags_cached:
+            self._present_tags_cached.append(tag)
 
         for file in self.bound_files:
             row.bind_to_file(file)
 
-        # Update row item filters
-        if not self.skip_filter_change:
-            for row in self._rows:
-                row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+        if not skip_filter_refresh:
+            self.refresh_tag_filter()
 
-        row.value_entry.set_sensitive(not tag == 'none')
-        row.row_remove_button.set_sensitive(not tag == 'none')
+        self.remove(self.addition_row)
+        self.add_row(self.addition_row)
 
-        # Move "none" row to the end
-        if not skip_adding_none and tag != 'none':
-            self.refresh_none_row()
-
-    def remove_extra_row(self, row, skip_adding_none=False):
+    def remove_extra_row(self, row, skip_filter_refresh=False):
         """
         Removes a 'more tags' row from the fileview.
         """
@@ -707,32 +625,27 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         for file in set(row.files + self.bound_files):
             row.unbind_from_file(file)
 
+        if row.bound_property in self._present_tags_cached:
+            self._present_tags_cached.remove(row.bound_property)
+
         self.remove(row)
 
-        # Update row item filters
-        if not self.skip_filter_change:
-            for row in self._rows:
-                row.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+        if not skip_filter_refresh:
+            self.refresh_tag_filter()
 
-        # Move "none" row to the end
-        if not skip_adding_none:
-            self.refresh_none_row()
-
-        del row
-
-    def remove_and_unbind_extra_row(self, row, skip_adding_none=False):
+    def remove_and_unbind_extra_row(self, row, skip_filter_refresh=False):
         """
         Removes a 'more tags' row from the fileview. Used in the callback
         function of the rows' delete button.
         """
-        removed_tag = row.value_entry.bound_property
+        removed_tag = row.bound_property
         if removed_tag != 'none':
             for file in self.bound_files:
                 if removed_tag in file.present_extra_tags:
                     file.present_extra_tags.remove(removed_tag)
                     file.delete_tag(removed_tag)
 
-        self.remove_extra_row(row, skip_adding_none=skip_adding_none)
+        self.remove_extra_row(row, skip_filter_refresh=skip_filter_refresh)
 
     #
     # File handling functions
@@ -752,8 +665,8 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
                     if tag not in self._blocked_tags_cached:
                         self._blocked_tags_cached.append(tag)
 
-            for row in self._rows:
-                row.refresh_filter()
+            self.refresh_tag_filter()
+
         return self._blocked_tags_cached
 
     def get_present_tags(self):
@@ -808,6 +721,8 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
                         tag not in blocked_tags:
                     self._present_tags_cached.append(tag)
 
+        self.refresh_tag_filter()
+
     def refresh_entries(self, old_blocked_tags=None):
         """Adds missing entries and removes unused ones."""
         blocked_tags = self.get_blocked_tags()
@@ -815,11 +730,11 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
 
         for tag, row in self.get_rows_sorted().items():
             if tag in blocked_tags or tag not in present_tags:
-                self.remove_extra_row(row, skip_adding_none=True)
+                self.remove_extra_row(row, skip_filter_refresh=True)
 
         for tag in present_tags:
             if tag not in self._rows:
-                self.add_extra_row(tag, skip_adding_none=True)
+                self.add_extra_row(tag, skip_filter_refresh=True)
 
         if old_blocked_tags is not None and old_blocked_tags != blocked_tags:
             found_tags = []
@@ -831,9 +746,9 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
                 if tag in found_tags:
                     continue
             for tag in found_tags:
-                self.add_extra_row(tag, skip_adding_none=True)
+                self.add_extra_row(tag, skip_filter_refresh=True)
 
-        self.refresh_none_row()
+        self.refresh_tag_filter()
 
     def slow_refresh_entries(self):
         """Like refresh_entries, but forces an update of present tags."""
@@ -905,16 +820,6 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
             self.refresh_entries(old_blocked_tags=blocked_tags_before_unbind)
 
         self.skip_filter_change = False
-
-    @GObject.Property(type=bool, default=False)
-    def compact(self):
-        return self._compact
-
-    @compact.setter
-    def compact(self, value):
-        self._compact = value
-        for row in self._rows:
-            row.props.compact = value
 
 class EartagFileInfoLabel(Gtk.Label):
     """Label showing information about opened files."""
