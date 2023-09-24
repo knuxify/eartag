@@ -533,6 +533,9 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         self.addition_row_add_button.add_css_class('flat')
         self.addition_row.add_suffix(self.addition_row_add_button)
 
+        self.addition_row_dropdown.connect('notify::selected', self.update_selector_sensitivity)
+        self.update_selector_sensitivity()
+
         self.add_row(self.addition_row)
 
     def get_rows_sorted(self):
@@ -546,6 +549,11 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
     def refresh_tag_filter(self):
         """Refreshes the filter for the additional tag add row."""
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+    def update_selector_sensitivity(self, *args):
+        self.addition_row_add_button.set_sensitive(
+            self.addition_row_dropdown.get_selected() != 0
+        )
 
     def add_row_from_selector(self, *args):
         """Adds a new row based on the tag selector."""
