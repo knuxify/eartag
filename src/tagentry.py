@@ -196,7 +196,7 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
             if 'numeric' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['numeric'])
+                self.get_delegate().disconnect(self._limiter_connections['numeric'])
                 del self._limiter_connections['numeric']
 
     @GObject.Property(type=bool, default=False)
@@ -223,7 +223,7 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
             if 'float' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['float'])
+                self.get_delegate().disconnect(self._limiter_connections['float'])
                 del self._limiter_connections['float']
 
     @GObject.Property(type=bool, default=False)
@@ -249,7 +249,7 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
                 self.get_delegate().connect('insert-text', self.disallow_nondate)
         else:
             if 'date' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['date'])
+                self.get_delegate().disconnect(self._limiter_connections['date'])
                 del self._limiter_connections['date']
 
 class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
@@ -314,7 +314,7 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
             if 'numeric' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['numeric'])
+                self.get_delegate().disconnect(self._limiter_connections['numeric'])
                 del self._limiter_connections['numeric']
 
     @GObject.Property(type=bool, default=False)
@@ -341,7 +341,7 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
             if 'float' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['float'])
+                self.get_delegate().disconnect(self._limiter_connections['float'])
                 del self._limiter_connections['float']
 
     @GObject.Property(type=bool, default=False)
@@ -367,7 +367,7 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
                 self.get_delegate().connect('insert-text', self.disallow_nondate)
         else:
             if 'date' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['date'])
+                self.get_delegate().disconnect(self._limiter_connections['date'])
                 del self._limiter_connections['date']
 
 class EartagTagEditableLabel(EartagEditableLabel, EartagTagEntryBase):
