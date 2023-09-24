@@ -25,7 +25,7 @@
   </requires>
 
   <releases>
-    <release version="0.5.0-rc1" date="2023-09-17">
+    <release version="0.5.0" date="2023-09-24">
       <description>Added support for removing a cover image and setting the back cover image. Improved the accuracy of the file identification option.</description>
     </release>
     <release version="0.4.3" date="2023-08-17">
@@ -88,22 +88,22 @@ Added the ability to rename files using a specific pattern, file identification 
 
   <screenshots>
     <screenshot type="default">
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0-rc1/data/screenshot-scaled.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-scaled.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0-rc1/data/screenshot-mobile.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-mobile.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0-rc1/data/screenshot-advanced.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-advanced.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0-rc1/data/screenshot-rename.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-rename.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0-rc1/data/screenshot-identify.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-identify.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0-rc1/data/screenshot-empty.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-empty.png</image>
     </screenshot>
   </screenshots>
 </component>

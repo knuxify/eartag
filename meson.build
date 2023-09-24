@@ -1,5 +1,5 @@
 project('eartag',
-          version: '0.5.0-rc1',
+          version: '0.5.0',
     meson_version: '>= 0.56.0',
   default_options: [ 'warning_level=2',
                    ],
