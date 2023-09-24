@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 19:53+0200\n"
+"POT-Creation-Date: 2023-09-24 12:38+0200\n"
 "PO-Revision-Date: 2023-09-18 18:49+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -123,33 +123,33 @@ msgid "All supported audio files"
 msgstr "Tüm desteklenen ses dosyaları"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:197 src/fileview.py:921
+#: src/window.py:192 src/fileview.py:849
 msgid "(Multiple files selected)"
 msgstr "(Birden fazla dosya seçildi)"
 
-#: src/window.py:269 src/ui/nofile.ui:48
+#: src/window.py:264 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "Klasör Aç"
 
-#: src/window.py:272 src/ui/nofile.ui:35
+#: src/window.py:267 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Dosya Aç"
 
-#: src/window.py:334
+#: src/window.py:329
 msgid "No supported files found in opened folder"
 msgstr "Açılan klasörde desteklenen dosya bulunamadı"
 
-#: src/window.py:341
+#: src/window.py:336
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Açılan dosyalardan bazılarının geçersiz değerleri var; değişiklikler "
 "kaydedilemez"
 
-#: src/window.py:460
+#: src/window.py:456
 msgid "No files selected"
 msgstr "Hiçbir dosya seçilmedi"
 
-#: src/window.py:464
+#: src/window.py:460
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -237,8 +237,9 @@ msgstr "_Ayarlar"
 msgid "_About Ear Tag"
 msgstr "Ear Tag _Hakkında"
 
-#: src/ui/nofile.ui:22
-msgid "Open or drag in some audio files to edit their metadata"
+#: src/ui/nofile.ui:13
+#, fuzzy
+msgid "Open or drag in some audio files to edit their metadata."
 msgstr "Üst verilerini düzenlemek için ses dosyalarını buraya sürükleyin"
 
 #: src/filemanager.py:95
@@ -276,23 +277,23 @@ msgstr "Uzunluk"
 msgid "Bitrate"
 msgstr "Bit oranı"
 
-#: src/backends/file.py:47 src/ui/fileview.ui:107
+#: src/backends/file.py:47 src/ui/fileview.ui:109
 msgid "Title"
 msgstr "Parça adı"
 
-#: src/backends/file.py:48 src/ui/fileview.ui:117
+#: src/backends/file.py:48 src/ui/fileview.ui:119
 msgid "Artist"
 msgstr "Sanatçı"
 
-#: src/backends/file.py:49 src/ui/fileview.ui:163
+#: src/backends/file.py:49 src/ui/fileview.ui:165
 msgid "Album"
 msgstr "Albüm"
 
-#: src/backends/file.py:50 src/ui/fileview.ui:170
+#: src/backends/file.py:50 src/ui/fileview.ui:172
 msgid "Album artist"
 msgstr "Albüm sanatçısı"
 
-#: src/backends/file.py:51 src/ui/fileview.ui:152
+#: src/backends/file.py:51 src/ui/fileview.ui:154
 msgid "Track number"
 msgstr "Parça numarası"
 
@@ -300,15 +301,15 @@ msgstr "Parça numarası"
 msgid "Total tracks"
 msgstr "Toplam parça"
 
-#: src/backends/file.py:53 src/ui/fileview.ui:177
+#: src/backends/file.py:53 src/ui/fileview.ui:179
 msgid "Genre"
 msgstr "Tarz"
 
-#: src/backends/file.py:54 src/ui/fileview.ui:184
+#: src/backends/file.py:54 src/ui/fileview.ui:186
 msgid "Release date"
 msgstr "Yayın tarihi"
 
-#: src/backends/file.py:55 src/ui/fileview.ui:192
+#: src/backends/file.py:55 src/ui/fileview.ui:194
 msgid "Comment"
 msgstr "Yorum"
 
@@ -447,33 +448,33 @@ msgstr[0] "{n}dosyadan kapaklar kaldırıldı"
 msgid "Undo"
 msgstr "Geri Al"
 
-#: src/fileview.py:612
+#: src/fileview.py:495
 msgid "More tags"
 msgstr "Daha fazla etiket"
 
-#: src/fileview.py:935
+#: src/fileview.py:863
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} kanal"
 
-#: src/ui/fileview.ui:10
+#: src/ui/fileview.ui:11
 msgid "Loading Files…"
 msgstr "Dosyalar Yükleniyor…"
 
-#: src/ui/fileview.ui:21
+#: src/ui/fileview.ui:22
 msgid "Select a File"
 msgstr "Dosya Seç"
 
-#: src/ui/fileview.ui:22
+#: src/ui/fileview.ui:23
 msgid "Select the files you want to edit from the list of opened files."
 msgstr "Açılan dosyalar listesinden düzenlemek istediğiniz dosyaları seçin."
 
-#: src/ui/fileview.ui:64
+#: src/ui/fileview.ui:66
 msgid "Previous file"
 msgstr "Önceki dosya"
 
-#: src/ui/fileview.ui:88
+#: src/ui/fileview.ui:90
 msgid "Next file"
 msgstr "Sonraki dosya"
 
@@ -612,15 +613,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:117
+#: src/identify.py:116
 msgid "Other releases"
 msgstr "Diğer yayınlar"
 
-#: src/identify.py:492
+#: src/identify.py:491
 msgid "Unidentified Files"
 msgstr "Tanımlanmamış Dosyalar"
 
-#: src/identify.py:914
+#: src/identify.py:913
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "{identified} / {total} parça tanımlandı"

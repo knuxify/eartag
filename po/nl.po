@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 19:53+0200\n"
+"POT-Creation-Date: 2023-09-24 12:38+0200\n"
 "PO-Revision-Date: 2022-09-17 17:58+0200\n"
 "Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
@@ -105,34 +105,34 @@ msgid "All supported audio files"
 msgstr ""
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:197 src/fileview.py:921
+#: src/window.py:192 src/fileview.py:849
 msgid "(Multiple files selected)"
 msgstr "(meerdere bestanden geselecteerd)"
 
-#: src/window.py:269 src/ui/nofile.ui:48
+#: src/window.py:264 src/ui/nofile.ui:39
 #, fuzzy
 msgid "Open Folder"
 msgstr "Bestand openen"
 
-#: src/window.py:272 src/ui/nofile.ui:35
+#: src/window.py:267 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Bestand openen"
 
-#: src/window.py:334
+#: src/window.py:329
 msgid "No supported files found in opened folder"
 msgstr ""
 
-#: src/window.py:341
+#: src/window.py:336
 #, fuzzy
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Geopend bestand is alleen-lezen; wijzigingen kunnen niet worden opgeslagen."
 
-#: src/window.py:460
+#: src/window.py:456
 msgid "No files selected"
 msgstr "Geen bestanden geselecteerd"
 
-#: src/window.py:464
+#: src/window.py:460
 #, fuzzy, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -228,8 +228,8 @@ msgstr ""
 msgid "_About Ear Tag"
 msgstr "_Over Ear Tag"
 
-#: src/ui/nofile.ui:22
-msgid "Open or drag in some audio files to edit their metadata"
+#: src/ui/nofile.ui:13
+msgid "Open or drag in some audio files to edit their metadata."
 msgstr ""
 
 #: src/filemanager.py:95
@@ -272,23 +272,23 @@ msgstr ""
 msgid "Bitrate"
 msgstr ""
 
-#: src/backends/file.py:47 src/ui/fileview.ui:107
+#: src/backends/file.py:47 src/ui/fileview.ui:109
 msgid "Title"
 msgstr "Titel"
 
-#: src/backends/file.py:48 src/ui/fileview.ui:117
+#: src/backends/file.py:48 src/ui/fileview.ui:119
 msgid "Artist"
 msgstr "Artiest"
 
-#: src/backends/file.py:49 src/ui/fileview.ui:163
+#: src/backends/file.py:49 src/ui/fileview.ui:165
 msgid "Album"
 msgstr "Album"
 
-#: src/backends/file.py:50 src/ui/fileview.ui:170
+#: src/backends/file.py:50 src/ui/fileview.ui:172
 msgid "Album artist"
 msgstr "Albumartiest"
 
-#: src/backends/file.py:51 src/ui/fileview.ui:152
+#: src/backends/file.py:51 src/ui/fileview.ui:154
 msgid "Track number"
 msgstr "Muzieknummer"
 
@@ -296,16 +296,16 @@ msgstr "Muzieknummer"
 msgid "Total tracks"
 msgstr ""
 
-#: src/backends/file.py:53 src/ui/fileview.ui:177
+#: src/backends/file.py:53 src/ui/fileview.ui:179
 msgid "Genre"
 msgstr "Genre"
 
-#: src/backends/file.py:54 src/ui/fileview.ui:184
+#: src/backends/file.py:54 src/ui/fileview.ui:186
 #, fuzzy
 msgid "Release date"
 msgstr "Uitgavejaar"
 
-#: src/backends/file.py:55 src/ui/fileview.ui:192
+#: src/backends/file.py:55 src/ui/fileview.ui:194
 msgid "Comment"
 msgstr "Opmerking"
 
@@ -451,36 +451,36 @@ msgstr[1] "Uit lijst verwijderen"
 msgid "Undo"
 msgstr ""
 
-#: src/fileview.py:612
+#: src/fileview.py:495
 msgid "More tags"
 msgstr ""
 
-#: src/fileview.py:935
+#: src/fileview.py:863
 #, fuzzy, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} kanaal"
 msgstr[1] "{n} kanalen"
 
-#: src/ui/fileview.ui:10
+#: src/ui/fileview.ui:11
 msgid "Loading Files…"
 msgstr ""
 
-#: src/ui/fileview.ui:21
+#: src/ui/fileview.ui:22
 msgid "Select a File"
 msgstr "Bestand selecteren"
 
-#: src/ui/fileview.ui:22
+#: src/ui/fileview.ui:23
 msgid "Select the files you want to edit from the list of opened files."
 msgstr ""
 "Selecteer de bestanden die u wilt bewerken van de lijst met geopende "
 "bestanden."
 
-#: src/ui/fileview.ui:64
+#: src/ui/fileview.ui:66
 msgid "Previous file"
 msgstr ""
 
-#: src/ui/fileview.ui:88
+#: src/ui/fileview.ui:90
 #, fuzzy
 msgid "Next file"
 msgstr "Bestanden sorteren"
@@ -630,17 +630,17 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:117
+#: src/identify.py:116
 #, fuzzy
 msgid "Other releases"
 msgstr "Initiële uitgave."
 
-#: src/identify.py:492
+#: src/identify.py:491
 #, fuzzy
 msgid "Unidentified Files"
 msgstr "Geselecteerde bestanden verwijderen"
 
-#: src/identify.py:914
+#: src/identify.py:913
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr ""

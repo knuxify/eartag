@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 19:53+0200\n"
+"POT-Creation-Date: 2023-09-24 12:38+0200\n"
 "PO-Revision-Date: 2023-09-18 13:06+0200\n"
 "Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
 "Language-Team: Spanish; Castilian <>\n"
@@ -127,33 +127,33 @@ msgid "All supported audio files"
 msgstr "Todos los archivos de sonido soportados"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:197 src/fileview.py:921
+#: src/window.py:192 src/fileview.py:849
 msgid "(Multiple files selected)"
 msgstr "(Varios archivos seleccionados)"
 
-#: src/window.py:269 src/ui/nofile.ui:48
+#: src/window.py:264 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "Abrir carpeta"
 
-#: src/window.py:272 src/ui/nofile.ui:35
+#: src/window.py:267 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Abrir archivo"
 
-#: src/window.py:334
+#: src/window.py:329
 msgid "No supported files found in opened folder"
 msgstr "No se han encontrado archivos compatibles en la carpeta abierta"
 
-#: src/window.py:341
+#: src/window.py:336
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Algunos de los archivos abiertos tienen valores no válidos; no se pueden "
 "guardar"
 
-#: src/window.py:460
+#: src/window.py:456
 msgid "No files selected"
 msgstr "No hay archivos seleccionados"
 
-#: src/window.py:464
+#: src/window.py:460
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -242,8 +242,9 @@ msgstr "_Configuración"
 msgid "_About Ear Tag"
 msgstr "_Acerca de Ear Tag"
 
-#: src/ui/nofile.ui:22
-msgid "Open or drag in some audio files to edit their metadata"
+#: src/ui/nofile.ui:13
+#, fuzzy
+msgid "Open or drag in some audio files to edit their metadata."
 msgstr "Abra o arrastre algunos archivos de audio para editar sus metadatos"
 
 #: src/filemanager.py:95
@@ -285,23 +286,23 @@ msgstr "Longitud"
 msgid "Bitrate"
 msgstr "Tasa de bits"
 
-#: src/backends/file.py:47 src/ui/fileview.ui:107
+#: src/backends/file.py:47 src/ui/fileview.ui:109
 msgid "Title"
 msgstr "Título"
 
-#: src/backends/file.py:48 src/ui/fileview.ui:117
+#: src/backends/file.py:48 src/ui/fileview.ui:119
 msgid "Artist"
 msgstr "Artista"
 
-#: src/backends/file.py:49 src/ui/fileview.ui:163
+#: src/backends/file.py:49 src/ui/fileview.ui:165
 msgid "Album"
 msgstr "Álbum"
 
-#: src/backends/file.py:50 src/ui/fileview.ui:170
+#: src/backends/file.py:50 src/ui/fileview.ui:172
 msgid "Album artist"
 msgstr "Artista del álbum"
 
-#: src/backends/file.py:51 src/ui/fileview.ui:152
+#: src/backends/file.py:51 src/ui/fileview.ui:154
 msgid "Track number"
 msgstr "Número de pista"
 
@@ -309,15 +310,15 @@ msgstr "Número de pista"
 msgid "Total tracks"
 msgstr "Pistas totales"
 
-#: src/backends/file.py:53 src/ui/fileview.ui:177
+#: src/backends/file.py:53 src/ui/fileview.ui:179
 msgid "Genre"
 msgstr "Género"
 
-#: src/backends/file.py:54 src/ui/fileview.ui:184
+#: src/backends/file.py:54 src/ui/fileview.ui:186
 msgid "Release date"
 msgstr "Fecha de publicación"
 
-#: src/backends/file.py:55 src/ui/fileview.ui:192
+#: src/backends/file.py:55 src/ui/fileview.ui:194
 msgid "Comment"
 msgstr "Comentario"
 
@@ -457,35 +458,35 @@ msgstr[1] "Portadas eliminadas de {n} archivos"
 msgid "Undo"
 msgstr "Deshacer"
 
-#: src/fileview.py:612
+#: src/fileview.py:495
 msgid "More tags"
 msgstr "Más etiquetas"
 
-#: src/fileview.py:935
+#: src/fileview.py:863
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "1 canal"
 msgstr[1] "{n} canales"
 
-#: src/ui/fileview.ui:10
+#: src/ui/fileview.ui:11
 msgid "Loading Files…"
 msgstr "Cargando archivos…"
 
-#: src/ui/fileview.ui:21
+#: src/ui/fileview.ui:22
 msgid "Select a File"
 msgstr "Seleccionar un archivo"
 
-#: src/ui/fileview.ui:22
+#: src/ui/fileview.ui:23
 msgid "Select the files you want to edit from the list of opened files."
 msgstr ""
 "Seleccione los archivos que desea editar de la lista de archivos abiertos."
 
-#: src/ui/fileview.ui:64
+#: src/ui/fileview.ui:66
 msgid "Previous file"
 msgstr "Archivo anterior"
 
-#: src/ui/fileview.ui:88
+#: src/ui/fileview.ui:90
 msgid "Next file"
 msgstr "Archivo siguiente"
 
@@ -626,15 +627,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:117
+#: src/identify.py:116
 msgid "Other releases"
 msgstr "Otras versiones"
 
-#: src/identify.py:492
+#: src/identify.py:491
 msgid "Unidentified Files"
 msgstr "Archivos no identificados"
 
-#: src/identify.py:914
+#: src/identify.py:913
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "Identificadas {identified} de {total} pistas"

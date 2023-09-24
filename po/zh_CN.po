@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 19:53+0200\n"
+"POT-Creation-Date: 2023-09-24 12:38+0200\n"
 "PO-Revision-Date: 2023-09-19 21:20+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
@@ -114,31 +114,31 @@ msgid "All supported audio files"
 msgstr "所有支持的音频文件"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:197 src/fileview.py:921
+#: src/window.py:192 src/fileview.py:849
 msgid "(Multiple files selected)"
 msgstr "（已选择多个文件）"
 
-#: src/window.py:269 src/ui/nofile.ui:48
+#: src/window.py:264 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "打开文件夹"
 
-#: src/window.py:272 src/ui/nofile.ui:35
+#: src/window.py:267 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/window.py:334
+#: src/window.py:329
 msgid "No supported files found in opened folder"
 msgstr "在打开的文件夹中未发现支持的文件"
 
-#: src/window.py:341
+#: src/window.py:336
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "部分打开的文件具有无效值；无法保存"
 
-#: src/window.py:460
+#: src/window.py:456
 msgid "No files selected"
 msgstr "未选择文件"
 
-#: src/window.py:464
+#: src/window.py:460
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -226,8 +226,9 @@ msgstr "设置(_S)"
 msgid "_About Ear Tag"
 msgstr "关于 Ear Tag(_A)"
 
-#: src/ui/nofile.ui:22
-msgid "Open or drag in some audio files to edit their metadata"
+#: src/ui/nofile.ui:13
+#, fuzzy
+msgid "Open or drag in some audio files to edit their metadata."
 msgstr "打开或拖拽一些音频文件来编辑它们的元数据"
 
 #: src/filemanager.py:95
@@ -264,23 +265,23 @@ msgstr "时长"
 msgid "Bitrate"
 msgstr "比特率"
 
-#: src/backends/file.py:47 src/ui/fileview.ui:107
+#: src/backends/file.py:47 src/ui/fileview.ui:109
 msgid "Title"
 msgstr "标题"
 
-#: src/backends/file.py:48 src/ui/fileview.ui:117
+#: src/backends/file.py:48 src/ui/fileview.ui:119
 msgid "Artist"
 msgstr "艺人"
 
-#: src/backends/file.py:49 src/ui/fileview.ui:163
+#: src/backends/file.py:49 src/ui/fileview.ui:165
 msgid "Album"
 msgstr "专辑"
 
-#: src/backends/file.py:50 src/ui/fileview.ui:170
+#: src/backends/file.py:50 src/ui/fileview.ui:172
 msgid "Album artist"
 msgstr "专辑艺人"
 
-#: src/backends/file.py:51 src/ui/fileview.ui:152
+#: src/backends/file.py:51 src/ui/fileview.ui:154
 msgid "Track number"
 msgstr "曲目编号"
 
@@ -288,15 +289,15 @@ msgstr "曲目编号"
 msgid "Total tracks"
 msgstr "全部曲目"
 
-#: src/backends/file.py:53 src/ui/fileview.ui:177
+#: src/backends/file.py:53 src/ui/fileview.ui:179
 msgid "Genre"
 msgstr "流派"
 
-#: src/backends/file.py:54 src/ui/fileview.ui:184
+#: src/backends/file.py:54 src/ui/fileview.ui:186
 msgid "Release date"
 msgstr "发行日期"
 
-#: src/backends/file.py:55 src/ui/fileview.ui:192
+#: src/backends/file.py:55 src/ui/fileview.ui:194
 msgid "Comment"
 msgstr "注释"
 
@@ -435,33 +436,33 @@ msgstr[0] "已从 {n} 个文件移除封面"
 msgid "Undo"
 msgstr "撤消"
 
-#: src/fileview.py:612
+#: src/fileview.py:495
 msgid "More tags"
 msgstr "更多标签"
 
-#: src/fileview.py:935
+#: src/fileview.py:863
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} 声道"
 
-#: src/ui/fileview.ui:10
+#: src/ui/fileview.ui:11
 msgid "Loading Files…"
 msgstr "正在加载文件…"
 
-#: src/ui/fileview.ui:21
+#: src/ui/fileview.ui:22
 msgid "Select a File"
 msgstr "选择文件"
 
-#: src/ui/fileview.ui:22
+#: src/ui/fileview.ui:23
 msgid "Select the files you want to edit from the list of opened files."
 msgstr "从打开的文件列表选择您想要编辑的文件。"
 
-#: src/ui/fileview.ui:64
+#: src/ui/fileview.ui:66
 msgid "Previous file"
 msgstr "上个文件"
 
-#: src/ui/fileview.ui:88
+#: src/ui/fileview.ui:90
 msgid "Next file"
 msgstr "下个文件"
 
@@ -595,15 +596,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:117
+#: src/identify.py:116
 msgid "Other releases"
 msgstr "其它发行"
 
-#: src/identify.py:492
+#: src/identify.py:491
 msgid "Unidentified Files"
 msgstr "未识别的文件"
 
-#: src/identify.py:914
+#: src/identify.py:913
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "已识别 {identified} 共 {total} 首曲目"
