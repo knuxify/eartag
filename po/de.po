@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-24 12:38+0200\n"
-"PO-Revision-Date: 2023-09-17 21:21+0200\n"
+"PO-Revision-Date: 2023-09-26 11:22+0200\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -244,11 +244,10 @@ msgid "_About Ear Tag"
 msgstr "_Info zu Ear Tag"
 
 #: src/ui/nofile.ui:13
-#, fuzzy
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr ""
 "Öffnen Sie einige Audio-Dateien oder ziehen Sie sie hierher, um deren "
-"Metadaten zu bearbeiten"
+"Metadaten zu bearbeiten."
 
 #: src/filemanager.py:95
 msgid "Failed to save file"
