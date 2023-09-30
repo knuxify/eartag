@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-24 12:38+0200\n"
+"POT-Creation-Date: 2023-09-30 21:39+0200\n"
 "PO-Revision-Date: 2023-09-19 21:20+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
@@ -41,44 +41,7 @@ msgstr "编辑音频文件标签"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;音乐;音频;标签;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:29
-msgid ""
-"Added support for removing a cover image and setting the back cover image. "
-"Improved the accuracy of the file identification option."
-msgstr "新增支持移除封面图像并设置背部封面图像。提升了文件识别选项的准确性。"
-
-#: data/app.drey.EarTag.metainfo.xml.in:32
-msgid ""
-"Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
-"ability to rename files using a specific pattern, file identification using "
-"AcoustID and the option to set a full release date."
-msgstr ""
-"修复了封面无法加载的问题。来自 0.4.0 的注意：添加了使用指定方案重命名文件，使"
-"用 AcoustID 识别文件的能力和设定完整发行日期的选项。"
-
-#: data/app.drey.EarTag.metainfo.xml.in:37
-#: data/app.drey.EarTag.metainfo.xml.in:42
-msgid ""
-"Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
-"using a specific pattern, file identification using AcoustID and the option "
-"to set a full release date."
-msgstr ""
-"微小缺陷修复的更新。来自 0.4.0 的注意：添加了使用指定方案重命名文件，使用 "
-"AcoustID 识别文件的能力和设定完整发行日期的选项。"
-
-#: data/app.drey.EarTag.metainfo.xml.in:47
-msgid ""
-"Added the ability to rename files using a specific pattern, file "
-"identification using AcoustID and the option to set a full release date."
-msgstr ""
-"添加了使用指定方案重命名文件，使用 AcoustID 识别文件的能力和设定完整发行日期"
-"的选项。"
-
-#: data/app.drey.EarTag.metainfo.xml.in:57
-msgid "Initial release."
-msgstr "初始发布。"
-
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:62
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -89,23 +52,23 @@ msgstr ""
 "唱片中的曲目。不像其它标签编辑程序，Ear Tag 不需要用户设置一个音乐库文件夹。"
 "它可以："
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:64
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "编辑 MP3、WAV、M4A、FLAC、OGG 和 WMA 文件的标签"
 
-#: data/app.drey.EarTag.metainfo.xml.in:68
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid "Modify metadata of multiple files at once"
 msgstr "同时修改多个文件的元数据"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:66
 msgid "Rename files using information from present tags"
 msgstr "使用来自呈现标签的信息重命名文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:70
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Identify files using AcoustID"
 msgstr "使用 AcoustID 识别文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:72
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
@@ -114,7 +77,7 @@ msgid "All supported audio files"
 msgstr "所有支持的音频文件"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:192 src/fileview.py:849
+#: src/window.py:192 src/fileview.py:857
 msgid "(Multiple files selected)"
 msgstr "（已选择多个文件）"
 
@@ -440,7 +403,7 @@ msgstr "撤消"
 msgid "More tags"
 msgstr "更多标签"
 
-#: src/fileview.py:863
+#: src/fileview.py:871
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -741,6 +704,38 @@ msgstr "其它"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "键盘快捷键"
+
+#~ msgid ""
+#~ "Added support for removing a cover image and setting the back cover "
+#~ "image. Improved the accuracy of the file identification option."
+#~ msgstr ""
+#~ "新增支持移除封面图像并设置背部封面图像。提升了文件识别选项的准确性。"
+
+#~ msgid ""
+#~ "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
+#~ "ability to rename files using a specific pattern, file identification "
+#~ "using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "修复了封面无法加载的问题。来自 0.4.0 的注意：添加了使用指定方案重命名文"
+#~ "件，使用 AcoustID 识别文件的能力和设定完整发行日期的选项。"
+
+#~ msgid ""
+#~ "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
+#~ "using a specific pattern, file identification using AcoustID and the "
+#~ "option to set a full release date."
+#~ msgstr ""
+#~ "微小缺陷修复的更新。来自 0.4.0 的注意：添加了使用指定方案重命名文件，使用 "
+#~ "AcoustID 识别文件的能力和设定完整发行日期的选项。"
+
+#~ msgid ""
+#~ "Added the ability to rename files using a specific pattern, file "
+#~ "identification using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "添加了使用指定方案重命名文件，使用 AcoustID 识别文件的能力和设定完整发行日"
+#~ "期的选项。"
+
+#~ msgid "Initial release."
+#~ msgstr "初始发布。"
 
 #, fuzzy
 #~ msgid "Rename placeholder"

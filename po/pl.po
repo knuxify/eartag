@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-24 12:38+0200\n"
+"POT-Creation-Date: 2023-09-30 21:39+0200\n"
 "PO-Revision-Date: 2023-09-17 17:43+0200\n"
 "Last-Translator: knuxify <knuxify@gmail.com>\n"
 "Language-Team: \n"
@@ -42,49 +42,7 @@ msgstr "Edytuj tagi plików audio"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "muzyka;audio;tag;znacznik;znaczniki;tagi;tagowanie;metadane;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:29
-msgid ""
-"Added support for removing a cover image and setting the back cover image. "
-"Improved the accuracy of the file identification option."
-msgstr ""
-"Dodano wsparcie dla usuwania okładek oraz ustawiania tylniej okładki. "
-"Ulepszono dokładność opcji identyfikacji plików."
-
-#: data/app.drey.EarTag.metainfo.xml.in:32
-msgid ""
-"Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
-"ability to rename files using a specific pattern, file identification using "
-"AcoustID and the option to set a full release date."
-msgstr ""
-"Naprawiono błąd, przez który okładki nie mogły być wczytywane. Z notatek o "
-"wersji 0.4.0: Dodano możliwość zmiany nazwy pliku według wzoru, "
-"identyfikacja plików za pomocą AcoustID i opcja ustawienia pełnej daty "
-"wydania."
-
-#: data/app.drey.EarTag.metainfo.xml.in:37
-#: data/app.drey.EarTag.metainfo.xml.in:42
-msgid ""
-"Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
-"using a specific pattern, file identification using AcoustID and the option "
-"to set a full release date."
-msgstr ""
-"Małe poprawki. Z notatek o wersji 0.4.0: Dodano możliwość zmiany nazwy pliku "
-"według wzoru, identyfikacja plików za pomocą AcoustID i opcja ustawienia "
-"pełnej daty wydania."
-
-#: data/app.drey.EarTag.metainfo.xml.in:47
-msgid ""
-"Added the ability to rename files using a specific pattern, file "
-"identification using AcoustID and the option to set a full release date."
-msgstr ""
-"Dodano możliwość zmiany nazwy pliku według wzoru, identyfikacja plików za "
-"pomocą AcoustID i opcja ustawienia pełnej daty wydania."
-
-#: data/app.drey.EarTag.metainfo.xml.in:57
-msgid "Initial release."
-msgstr "Pierwsze wydanie."
-
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:62
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -96,23 +54,23 @@ msgstr ""
 "jednocześnie. W przeciwieństwie do innych programów, Ear Tag nie wymaga "
 "ustawienia folderu biblioteki muzycznej. Potrafi:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:64
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Edytować tagi pików MP3, WAV, M4A, FLAC, OGG i WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:68
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid "Modify metadata of multiple files at once"
 msgstr "Modyfikować metadane kilku plików na raz"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:66
 msgid "Rename files using information from present tags"
 msgstr "Zmieniać nazwy plików używając informacji z ich tagów"
 
-#: data/app.drey.EarTag.metainfo.xml.in:70
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Identify files using AcoustID"
 msgstr "Identyfikować pliki używając AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:72
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "Dostęp do sieci jest używany tylko do funkcji identyfikacji plików."
 
@@ -121,7 +79,7 @@ msgid "All supported audio files"
 msgstr "Wszystkie wspierane pliki audio"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:192 src/fileview.py:849
+#: src/window.py:192 src/fileview.py:857
 msgid "(Multiple files selected)"
 msgstr "(Kilka plików zaznaczone)"
 
@@ -458,7 +416,7 @@ msgstr "Cofnij"
 msgid "More tags"
 msgstr "Więcej tagów"
 
-#: src/fileview.py:863
+#: src/fileview.py:871
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -773,6 +731,42 @@ msgstr "Inne"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Skróty _klawiszowe"
+
+#~ msgid ""
+#~ "Added support for removing a cover image and setting the back cover "
+#~ "image. Improved the accuracy of the file identification option."
+#~ msgstr ""
+#~ "Dodano wsparcie dla usuwania okładek oraz ustawiania tylniej okładki. "
+#~ "Ulepszono dokładność opcji identyfikacji plików."
+
+#~ msgid ""
+#~ "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
+#~ "ability to rename files using a specific pattern, file identification "
+#~ "using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "Naprawiono błąd, przez który okładki nie mogły być wczytywane. Z notatek "
+#~ "o wersji 0.4.0: Dodano możliwość zmiany nazwy pliku według wzoru, "
+#~ "identyfikacja plików za pomocą AcoustID i opcja ustawienia pełnej daty "
+#~ "wydania."
+
+#~ msgid ""
+#~ "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
+#~ "using a specific pattern, file identification using AcoustID and the "
+#~ "option to set a full release date."
+#~ msgstr ""
+#~ "Małe poprawki. Z notatek o wersji 0.4.0: Dodano możliwość zmiany nazwy "
+#~ "pliku według wzoru, identyfikacja plików za pomocą AcoustID i opcja "
+#~ "ustawienia pełnej daty wydania."
+
+#~ msgid ""
+#~ "Added the ability to rename files using a specific pattern, file "
+#~ "identification using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "Dodano możliwość zmiany nazwy pliku według wzoru, identyfikacja plików za "
+#~ "pomocą AcoustID i opcja ustawienia pełnej daty wydania."
+
+#~ msgid "Initial release."
+#~ msgstr "Pierwsze wydanie."
 
 #, fuzzy
 #~ msgid "Rename placeholder"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-24 12:38+0200\n"
+"POT-Creation-Date: 2023-09-30 21:39+0200\n"
 "PO-Revision-Date: 2023-09-18 18:49+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -43,48 +43,7 @@ msgstr "Ses dosyası etiketlerini düzenle"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "müzik;ses;etiket;ekitetleme;etiketleyici;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:29
-msgid ""
-"Added support for removing a cover image and setting the back cover image. "
-"Improved the accuracy of the file identification option."
-msgstr ""
-"Kapak görseli kaldırma ve arka kapak görselini ayarlama desteği eklendi. "
-"Dosya tanımlama seçeneğinin doğruluğu iyileştirildi."
-
-#: data/app.drey.EarTag.metainfo.xml.in:32
-msgid ""
-"Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
-"ability to rename files using a specific pattern, file identification using "
-"AcoustID and the option to set a full release date."
-msgstr ""
-"Kapakların yüklenememesi sorununu düzeltildi. 0.4.0 notlarından: Desen "
-"kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya "
-"tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
-
-#: data/app.drey.EarTag.metainfo.xml.in:37
-#: data/app.drey.EarTag.metainfo.xml.in:42
-msgid ""
-"Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
-"using a specific pattern, file identification using AcoustID and the option "
-"to set a full release date."
-msgstr ""
-"Küçük hata düzeltme güncellemesi. 0.4.0 notlarından: Desen kullanarak "
-"dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya tanımlama "
-"ve tam yayın tarihi belirleme seçeneği eklendi."
-
-#: data/app.drey.EarTag.metainfo.xml.in:47
-msgid ""
-"Added the ability to rename files using a specific pattern, file "
-"identification using AcoustID and the option to set a full release date."
-msgstr ""
-"Desen kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak "
-"dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
-
-#: data/app.drey.EarTag.metainfo.xml.in:57
-msgid "Initial release."
-msgstr "İlk sürüm."
-
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:62
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -97,23 +56,23 @@ msgstr ""
 "kullanıcının bir müzik kütüphanesi klasörü kurmasını gerektirmez. "
 "Yetenekleri şunlardır:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:64
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "MP3, WAV, M4A, FLAC, OGG ve WMA dosyalarının etiketlerini düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:68
+#: data/app.drey.EarTag.metainfo.xml.in:65
 msgid "Modify metadata of multiple files at once"
 msgstr "Birden fazla dosyanın üst verilerini aynı anda düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:66
 msgid "Rename files using information from present tags"
 msgstr "Etiketlerdeki bilgileri kullanarak dosyaları yeniden adlandırma"
 
-#: data/app.drey.EarTag.metainfo.xml.in:70
+#: data/app.drey.EarTag.metainfo.xml.in:67
 msgid "Identify files using AcoustID"
 msgstr "AcoustID kullanarak dosyaları tanımlama"
 
-#: data/app.drey.EarTag.metainfo.xml.in:72
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Ağ erişimi yalnızca \"Seçilen Dosyaları Tanımla\" seçeneği için kullanılır."
@@ -123,7 +82,7 @@ msgid "All supported audio files"
 msgstr "Tüm desteklenen ses dosyaları"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:192 src/fileview.py:849
+#: src/window.py:192 src/fileview.py:857
 msgid "(Multiple files selected)"
 msgstr "(Birden fazla dosya seçildi)"
 
@@ -452,7 +411,7 @@ msgstr "Geri Al"
 msgid "More tags"
 msgstr "Daha fazla etiket"
 
-#: src/fileview.py:863
+#: src/fileview.py:871
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -762,3 +721,38 @@ msgstr "Diğer"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Klavye kısayolları"
+
+#~ msgid ""
+#~ "Added support for removing a cover image and setting the back cover "
+#~ "image. Improved the accuracy of the file identification option."
+#~ msgstr ""
+#~ "Kapak görseli kaldırma ve arka kapak görselini ayarlama desteği eklendi. "
+#~ "Dosya tanımlama seçeneğinin doğruluğu iyileştirildi."
+
+#~ msgid ""
+#~ "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
+#~ "ability to rename files using a specific pattern, file identification "
+#~ "using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "Kapakların yüklenememesi sorununu düzeltildi. 0.4.0 notlarından: Desen "
+#~ "kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak "
+#~ "dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
+
+#~ msgid ""
+#~ "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
+#~ "using a specific pattern, file identification using AcoustID and the "
+#~ "option to set a full release date."
+#~ msgstr ""
+#~ "Küçük hata düzeltme güncellemesi. 0.4.0 notlarından: Desen kullanarak "
+#~ "dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya "
+#~ "tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
+
+#~ msgid ""
+#~ "Added the ability to rename files using a specific pattern, file "
+#~ "identification using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "Desen kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID "
+#~ "kullanarak dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
+
+#~ msgid "Initial release."
+#~ msgstr "İlk sürüm."
