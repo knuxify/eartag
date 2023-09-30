@@ -26,25 +26,22 @@
 
   <releases>
     <release version="0.5.0" date="2023-09-24">
-      <description translatable="no">Added support for removing a cover image and setting the back cover image. Improved the accuracy of the file identification option.</description>
+      <description translatable="no"><p>Added support for removing a cover image and setting the back cover image. Improved the accuracy of the file identification option.</p></description>
     </release>
     <release version="0.4.3" date="2023-08-17">
-      <description translatable="no">Fixes issue where covers could not be loaded. From 0.4.0 notes:
-
-Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</description>
+      <description translatable="no"><p>Fixes issue where covers could not be loaded. From 0.4.0 notes:</p>
+<p>Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</p></description>
     </release>
     <release version="0.4.2" date="2023-07-03">
-      <description translatable="no">Minor bugfix update. From 0.4.0 notes:
-
-Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</description>
+      <description translatable="no"><p>Minor bugfix update. From 0.4.0 notes:</p>
+<p>Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</p></description>
     </release>
     <release version="0.4.1" date="2023-06-16">
-      <description translatable="no">Minor bugfix update. From 0.4.0 notes:
-
-Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</description>
+      <description translatable="no"><p>Minor bugfix update. From 0.4.0 notes:</p>
+<p>Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</p></description>
     </release>
     <release version="0.4.0" date="2023-06-05">
-      <description translatable="no">Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</description>
+      <description translatable="no"><p>Added the ability to rename files using a specific pattern, file identification using AcoustID and the option to set a full release date.</p></description>
     </release>
     <release version="0.3.3" date="2023-03-26"/>
     <release version="0.3.2" date="2023-02-16"/>
@@ -54,7 +51,7 @@ Added the ability to rename files using a specific pattern, file identification 
     <release version="0.2.0" date="2022-09-03"/>
     <release version="0.1.1" date="2022-08-01"/>
     <release version="0.1.0" date="2022-07-31">
-      <description translatable="no">Initial release.</description>
+      <description translatable="no"><p>Initial release.</p></description>
     </release>
   </releases>
 
