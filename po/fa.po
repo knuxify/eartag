@@ -1,0 +1,751 @@
+# Persian translation for app.drey.EarTag.
+# Copyright (C) 2022-2023 app.drey.EarTag's COPYRIGHT HOLDER
+# This file is distributed under the same license as the app.drey.EarTag package.
+#
+# Reza Hosseinzadeh <rezahsnzdh@protonmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: app.drey.EarTag\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-30 21:39+0200\n"
+"PO-Revision-Date: 2023-10-07 14:23+0330\n"
+"Last-Translator: Reza Hosseinzadeh <rezahsnzdh@protonmail.com>\n"
+"Language-Team: Persian <>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 45.2\n"
+
+# Keep it
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:109 src/main.py:111
+msgid "translator-credits"
+msgstr "رضا حسین‌زاده <rezahsnzdh@protonmail.com>"
+
+#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
+msgid "Ear Tag"
+msgstr "ایِرتگ"
+
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr "ویرایشگر برچسب"
+
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr "ویرایش برچسب‌های پرونده‌های صوتی"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "آهنگ؛صدا؛برچسب؛برچسب زدن؛برچسب‌زننده؛"
+
+#: data/app.drey.EarTag.metainfo.xml.in:62
+msgid ""
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder. It can:"
+msgstr ""
+"ایِرتگ ویرایشگر سادهٔ برچسب‌های پرونده‌های صوتی است. او در ابتدا برای ایجاد "
+"ویرایش یا تغییر عمدهٔ قطعه‌ها در آلبوم‌ها و صداهای ضبط شده است. برخلاف "
+"برنامه‌های دیگر برچسب‌زنی، ایِرتگ به اینکه کاربر کتابخانهٔ شاخهٔ موسیقی را مشخص "
+"کند، نیاز ندارد. او میتواند:"
+
+#: data/app.drey.EarTag.metainfo.xml.in:64
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr "برچسب‌های پرونده‌های MP3، WAV، M4A، FLAC، OGG و WMA را ویرایش کنید."
+
+#: data/app.drey.EarTag.metainfo.xml.in:65
+msgid "Modify metadata of multiple files at once"
+msgstr "فراداده‌های چند پرونده را به یکباره ویرایش کنید."
+
+#: data/app.drey.EarTag.metainfo.xml.in:66
+msgid "Rename files using information from present tags"
+msgstr "پرونده‌های را با اطلاعات برچسب‌های کنونی نامگذاری مجدد کنید."
+
+#: data/app.drey.EarTag.metainfo.xml.in:67
+msgid "Identify files using AcoustID"
+msgstr "پرونده‌ها را توسط AcoustID شناسایی کنید."
+
+#: data/app.drey.EarTag.metainfo.xml.in:69
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr "دسترسی شبکه فقط برای گزینهٔ «شناخت پرونده‌های گزینش‌شده» استفاده شده است."
+
+#: src/window.py:102
+msgid "All supported audio files"
+msgstr "تمام پرونده‌های صوتی پشتیبانی شده"
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/window.py:192 src/fileview.py:857
+msgid "(Multiple files selected)"
+msgstr "(چند پیونده گزینش شده‌اند)"
+
+#: src/window.py:264 src/ui/nofile.ui:39
+msgid "Open Folder"
+msgstr "باز کردن پوشه"
+
+#: src/window.py:267 src/ui/nofile.ui:26
+msgid "Open File"
+msgstr "باز کردن پرونده"
+
+#: src/window.py:329
+msgid "No supported files found in opened folder"
+msgstr "هیچ پروندهٔ پشتیبانی شده‌ای در پوشهٔ باز شده پیدا نشد"
+
+#: src/window.py:336
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr "بعضی از پرونده‌های باز شده مقادیر غیرمعتبر دارند؛ ناتوانی در ذخیره"
+
+#: src/window.py:456
+msgid "No files selected"
+msgstr "پرونده‌ای گزینش نشده است"
+
+#: src/window.py:460
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "{n} پرونده گزینش شده است"
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:62
+msgid "Drop a file to add it to the opened file list"
+msgstr "یک پرونده را برای افزودن به فهرست پرونده‌های باز شده رها کنید"
+
+#: src/ui/window.ui:123
+msgid "Save"
+msgstr "ذخیره"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:137
+msgid "Sort files by track number, album, name"
+msgstr "مرتب کردن پرونده‌ها طبق شمارهٔ قطعه، آلبوم، نام"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:146
+msgid "Close file list"
+msgstr "بستن فهرست پرونده"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:160
+msgid "Add file"
+msgstr "افزودن پرونده"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:168
+msgid "Select multiple files"
+msgstr "گزینش چند پرونده"
+
+#: src/ui/window.ui:175
+msgid "Search opened files"
+msgstr "جستجوی پرونده‌های بازشده"
+
+#: src/ui/window.ui:232
+msgid "No Results Found"
+msgstr "نتیجه‌ای یافت نشد"
+
+#: src/ui/window.ui:233
+msgid "Try a different search query."
+msgstr "درخواست جستجوی متفاوتی را امتحان کنید."
+
+#: src/ui/window.ui:248
+msgid "Select all files"
+msgstr "گزینش کردن کل پرونده‌ها"
+
+#: src/ui/window.ui:264
+msgid "Remove selected files"
+msgstr "حذف پرونده‌های گزینش شده"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:284
+msgid "Show file list"
+msgstr "نمایش فهرست پرونده"
+
+#: src/ui/window.ui:325
+msgid "_Open File"
+msgstr "ـباز کردن پرونده"
+
+#: src/ui/window.ui:329
+msgid "O_pen Folder"
+msgstr "ـباز کردن پوشه"
+
+#: src/ui/window.ui:335
+msgid "_Rename Selected Files"
+msgstr "ـنامگذاری مجدد پرونده‌ها"
+
+#: src/ui/window.ui:339
+msgid "_Identify Selected Files"
+msgstr "ـشناسایی پرونده‌های گزینش شده"
+
+#: src/ui/window.ui:345
+msgid "_Keyboard Shortcuts"
+msgstr "میانبرهای ـصفحه‌کلید"
+
+#: src/ui/window.ui:349
+msgid "_Settings"
+msgstr "ـتنظیمات"
+
+#: src/ui/window.ui:353
+msgid "_About Ear Tag"
+msgstr "ـدربارهٔ ایِرتگ"
+
+#: src/ui/nofile.ui:13
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr "برای ویرایش فراداده، چند پروندهٔ صوتی باز کرده یا رها کنید"
+
+#: src/filemanager.py:95
+msgid "Failed to save file"
+msgstr "شکست در ذخیرهٔ پرونده"
+
+#: src/filemanager.py:96
+#, python-brace-format
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr "ناتوانی در ذخیرهٔ پروندهٔ {f}. برای اطلاعات بیشتر، گزارش را بررسی کنید."
+
+#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
+#: src/filemanager.py:99
+msgid "OK"
+msgstr "تمام"
+
+#: src/filemanager.py:105
+msgid "Saved changes to files"
+msgstr "تغییرات در پرونده ذخیره شد"
+
+#: src/filemanager.py:216
+msgid "Opened file is read-only; changes cannot be saved"
+msgstr "پروندهٔ باز شده فقط-خواندنی است؛ تنغییرات نمیتوانند ذخیره شوند"
+
+#: src/filemanager.py:218
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr ""
+"برخی از پرونده‌های باز شده فقط-خواندنی هستند؛ تنغییرات نمیتوانند ذخیره شوند"
+
+#: src/backends/file.py:44
+msgid "Length"
+msgstr "طول"
+
+#: src/backends/file.py:45
+msgid "Bitrate"
+msgstr "نرخ بیت"
+
+#: src/backends/file.py:47 src/ui/fileview.ui:109
+msgid "Title"
+msgstr "عنوان"
+
+#: src/backends/file.py:48 src/ui/fileview.ui:119
+msgid "Artist"
+msgstr "هنرمند"
+
+#: src/backends/file.py:49 src/ui/fileview.ui:165
+msgid "Album"
+msgstr "آلبوم"
+
+#: src/backends/file.py:50 src/ui/fileview.ui:172
+msgid "Album artist"
+msgstr "هنرمند آلبوم"
+
+#: src/backends/file.py:51 src/ui/fileview.ui:154
+msgid "Track number"
+msgstr "شمارهٔ قطعه"
+
+#: src/backends/file.py:52
+msgid "Total tracks"
+msgstr "کل قطعه‌ها"
+
+#: src/backends/file.py:53 src/ui/fileview.ui:179
+msgid "Genre"
+msgstr "سبک"
+
+#: src/backends/file.py:54 src/ui/fileview.ui:186
+msgid "Release date"
+msgstr "تاریخ انتشار"
+
+#: src/backends/file.py:55 src/ui/fileview.ui:194
+msgid "Comment"
+msgstr "توضیحات"
+
+#: src/backends/file.py:57
+msgid "(Select a tag)"
+msgstr "(برچسبی را گزینش کنید)"
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/backends/file.py:59
+msgid "BPM"
+msgstr "بی‌پی‌ام"
+
+#: src/backends/file.py:60
+msgid "Compilation"
+msgstr "تلفیق"
+
+#: src/backends/file.py:61
+msgid "Composer"
+msgstr "آهنگساز"
+
+#: src/backends/file.py:62
+msgid "Copyright"
+msgstr "حق رونوشت"
+
+#: src/backends/file.py:63
+msgid "Encoded by"
+msgstr "کد شده توسط"
+
+#: src/backends/file.py:64
+msgid "Mood"
+msgstr "حالت"
+
+#. TRANSLATORS: Orchestra conductor
+#: src/backends/file.py:66
+msgid "Conductor"
+msgstr "رهبر"
+
+#: src/backends/file.py:67
+msgid "Arranger"
+msgstr "مرتب‌کننده"
+
+#: src/backends/file.py:68
+msgid "Disc number"
+msgstr "شمارهٔ دیسک"
+
+#: src/backends/file.py:69
+msgid "Publisher"
+msgstr "ناشر"
+
+#: src/backends/file.py:71
+msgid "Language"
+msgstr "زبان"
+
+#: src/backends/file.py:72
+msgid "Disc subtitle"
+msgstr "زیرنویس دیسک"
+
+#: src/backends/file.py:73
+msgid "Website/URL"
+msgstr "وبگاه/آدرس"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:77
+msgid "Album artist (sort)"
+msgstr "هنرمند آلبوم (ترتیب)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:80
+msgid "Album (sort)"
+msgstr "آلبوم (ترتیب)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:83
+msgid "Composer (sort)"
+msgstr "آهنگساز (ترتیب)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:86
+msgid "Artist (sort)"
+msgstr "هنرمند (ترتیب)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:89
+msgid "Title (sort)"
+msgstr "عنوان (ترتیب)"
+
+#: src/backends/file.py:91
+msgid "MusicBrainz Artist ID"
+msgstr "شناسهٔ هنرمند MusicBrainz"
+
+#: src/backends/file.py:92
+msgid "MusicBrainz Album ID"
+msgstr "شناسهٔ آلبوم MusicBrainz"
+
+#: src/backends/file.py:93
+msgid "MusicBrainz Album Artist ID"
+msgstr "شناسهٔ هنرمند آلبوم MusicBrainz"
+
+#: src/backends/file.py:94
+msgid "MusicBrainz Release Track ID"
+msgstr "شناسهٔ قطعهٔ انتشار MusicBrainz"
+
+#: src/backends/file.py:95
+msgid "MusicBrainz Recording ID"
+msgstr "شناسهٔ ضبط MusicBrainz"
+
+#: src/backends/file.py:96
+msgid "MusicBrainz Release Group ID"
+msgstr "شناسهٔ گروه انتشار MusicBrainz"
+
+#: src/fileview.py:183
+msgid "Select Album Cover Image"
+msgstr "تصویر جلد آلبوم را گزینش کنید"
+
+#: src/fileview.py:210
+msgid "Save Album Cover To…"
+msgstr "ذخیرهٔ جلد آلبوم در …"
+
+#: src/fileview.py:238
+#, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "جلد در {path} ذخیره شد"
+
+#: src/fileview.py:261
+#, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "جلدها از {n} پرونده حذف شدند."
+
+#: src/fileview.py:265
+msgid "Undo"
+msgstr "برگشت"
+
+#: src/fileview.py:495
+msgid "More tags"
+msgstr "برچسب‌های بیشتر"
+
+#: src/fileview.py:871
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "{n} کانال"
+
+#: src/ui/fileview.ui:11
+msgid "Loading Files…"
+msgstr "بارگذاری پرونده‌ها"
+
+#: src/ui/fileview.ui:22
+msgid "Select a File"
+msgstr "گزینش پرونده"
+
+#: src/ui/fileview.ui:23
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
+"از فهرست پرونده‌های گزینش شده پرونده‌هایی را که میخواهید ویرایش کنید گزینش "
+"کنید."
+
+#: src/ui/fileview.ui:66
+msgid "Previous file"
+msgstr "پروندهٔ پیشین"
+
+#: src/ui/fileview.ui:90
+msgid "Next file"
+msgstr "پروندهٔ پسین"
+
+#: src/ui/albumcoverbutton.ui:90
+msgid "_Choose Image…"
+msgstr "_گزینش تصویر …"
+
+#: src/ui/albumcoverbutton.ui:95
+msgid "_Save Image…"
+msgstr "_ذخیرهٔ تصویر …"
+
+#: src/ui/albumcoverbutton.ui:100
+msgid "_Remove Cover"
+msgstr "_حذف جلد"
+
+#: src/ui/albumcoverbutton.ui:123
+msgid "Front"
+msgstr "جلو"
+
+#: src/ui/albumcoverbutton.ui:130
+msgid "Back"
+msgstr "پشت"
+
+#: src/tagentry.py:128
+msgid "(multiple values)"
+msgstr "(مقادیر مختلف)"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/filelist.py:115
+msgid "(No title)"
+msgstr "(بدون عنوان)"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:50
+msgid "File has invalid values"
+msgstr "پرونده مقادیر نامعتبر دارد"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:60
+msgid "File has unsaved changes"
+msgstr "پرونده تغییرات ذخیره نشده دارد"
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:126
+msgid "Remove from list"
+msgstr "حذف از فهرست"
+
+#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
+#: src/ui/dialogs/removaldiscardwarning.ui:5
+msgid "Save Changes?"
+msgstr "ذخیره کردن تغییرات؟"
+
+#: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
+#: src/ui/dialogs/removaldiscardwarning.ui:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "اگر تغییراتتان را ذخیره نکنید، آنها برای همیشه گم میشوند."
+
+#: src/ui/dialogs/closewarning.ui:12 src/ui/dialogs/discardwarning.ui:12
+#: src/ui/dialogs/removaldiscardwarning.ui:12
+msgid "_Cancel"
+msgstr "ـلغو"
+
+#: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
+msgid "_Discard and Close"
+msgstr "ـدور انداختن و بستن"
+
+#: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
+msgid "_Save and Close"
+msgstr "_ذخیره و بستن"
+
+#: src/ui/dialogs/discardwarning.ui:13
+msgid "_Discard and Open"
+msgstr "_دور انداختن و باز کردن"
+
+#: src/ui/dialogs/discardwarning.ui:14
+msgid "_Save and Open"
+msgstr "_ذخیره و باز کردن"
+
+#: src/ui/dialogs/loadingfailure.ui:5
+msgid "Failed to Load File"
+msgstr "شکست در بارگذاری پرونده"
+
+#: src/ui/dialogs/loadingfailure.ui:6
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr ""
+"ناتوانی در بارگذاری پروندهٔ {f}. برای اطلاعات بیشتر گزارش را بررسی کنید."
+
+#: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
+msgid "_OK"
+msgstr "_تمام"
+
+#: src/ui/dialogs/renamefailure.ui:5
+msgid "Failed to Rename File"
+msgstr "شکست در نامگذاری مجدد پرونده"
+
+#: src/ui/dialogs/renamefailure.ui:6
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr ""
+"ناتوانی در نامگذاری مجدد پروندهٔ {f}. برای اطلاعات بیشتر گزارش را بررسی کنید."
+
+#: src/ui/rename.ui:5
+msgid "Rename Selected Files"
+msgstr "نامگذاری مجدد پرونده‌های گزینش شده"
+
+#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
+msgid "Cancel"
+msgstr "لغو"
+
+#: src/ui/rename.ui:44
+msgid "Rename"
+msgstr "نامگذاری مجدد"
+
+#: src/ui/rename.ui:82
+msgid "Failed to rename files. Check the logs for more information."
+msgstr ""
+"شکست در نامگذاری مجدد پرونده‌ها. برای اطلاعات بیشتر گزارش‌ها را بررسی کنید."
+
+#: src/ui/rename.ui:98
+msgid "Filename pattern"
+msgstr "الگوی نام پرونده"
+
+#: src/ui/rename.ui:106
+msgid "Preview"
+msgstr "پیشین"
+
+#: src/ui/rename.ui:118
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
+"of available tags</a>."
+msgstr ""
+"برای فهرست در دسترس برچسب‌ها، <a href=\"https://gitlab.gnome.org/knuxify/"
+"eartag/-/blob/main/src/backends/README.md#available-tags\">فهرست برچسب‌های در "
+"دسترس</a> را ببینید."
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:116
+msgid "Other releases"
+msgstr "انتشارهای دیگر"
+
+#: src/identify.py:491
+msgid "Unidentified Files"
+msgstr "پرونده‌های ناشناس"
+
+#: src/identify.py:913
+#, python-brace-format
+msgid "Identified {identified} out of {total} tracks"
+msgstr "{identified} خارج از {total} شناسایی شد"
+
+#: src/ui/identify/identify.ui:5
+msgid "Identify Selected Files"
+msgstr "شناسایی پرونده‌های گزینش شده"
+
+#: src/ui/identify/identify.ui:48
+msgid "Identify"
+msgstr "شناسایی"
+
+#: src/ui/identify/identify.ui:59
+msgid "Apply"
+msgstr "اعمال"
+
+#: src/ui/identify/identify.ui:92
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"اطلاعات ارائه شده توسط <a href=\"https://musicbrainz.org\">Musicbrainz</a> "
+"را دنبال کنید. پرونده‌های بدون فراداده، با خدمت <a href=\"https://acoustid."
+"org\">AcoustID</a> شناسایی میشوند."
+
+#: src/ui/identify/filerow.ui:24
+msgid "File could not be identified"
+msgstr "ناتوانی در شناسایی پرونده"
+
+#: src/ui/settings.ui:9
+msgid "File identification"
+msgstr "شناسایی پرونده"
+
+#: src/ui/settings.ui:14
+msgid "MusicBrainz confidence treshold"
+msgstr "MusicBrainz سطح اطمینان"
+
+#: src/ui/settings.ui:15
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr "حداقل درصد اعتماد مورد نیاز برای بالا رفتن نتایج جستجوی MusicBrainz"
+
+#: src/ui/settings.ui:36
+msgid "AcoustID confidence treshold"
+msgstr "AcoustID سطح اطمینان"
+
+#: src/ui/settings.ui:37
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr "حداقل درصد اعتماد مورد نیاز برای بالا رفتن نتایج بررسی AcoustID"
+
+#: src/ui/settings.ui:58
+msgid "Downloaded cover art size"
+msgstr "اندازهٔ جلد هنری بارگیری شده"
+
+#: src/ui/settings.ui:63
+msgid "Do not download covers"
+msgstr "جلدها را بارگیری نکن"
+
+#: src/ui/settings.ui:64
+msgid "250 px"
+msgstr "250 px"
+
+#: src/ui/settings.ui:65
+msgid "500 px"
+msgstr "500 px"
+
+#: src/ui/settings.ui:66
+msgid "1200 px"
+msgstr "1200 px"
+
+#: src/ui/settings.ui:67
+msgid "Maximum size"
+msgstr "بیشترین اندازه"
+
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "پرونده‌ها"
+
+#: src/ui/shortcuts.ui:16
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "باز کردن پرونده‌ها"
+
+#: src/ui/shortcuts.ui:23
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "باز کردن پوشه"
+
+#: src/ui/shortcuts.ui:30
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "ذخیرهٔ کل پرونده‌های ویرایش شده"
+
+#: src/ui/shortcuts.ui:38
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "نوار کناری"
+
+#: src/ui/shortcuts.ui:42
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "گزینش پروندهٔ پیشین در نوار کناری"
+
+#: src/ui/shortcuts.ui:49
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "گزینش پروندهٔ پسین در نوار کناری"
+
+#: src/ui/shortcuts.ui:56
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "گزینش تمام پرونده‌ها در نوار کناری"
+
+#: src/ui/shortcuts.ui:63
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "حذف پرونده‌های گزیده شده از نوار کناری"
+
+#: src/ui/shortcuts.ui:64
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "اگر پرونده‌ای وجود نداشته باشد، پنجره را میبندد."
+
+#: src/ui/shortcuts.ui:72
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "دیگر"
+
+#: src/ui/shortcuts.ui:76
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "میابرهای صفحه‌کلید"
+
+#~ msgid ""
+#~ "Added support for removing a cover image and setting the back cover "
+#~ "image. Improved the accuracy of the file identification option."
+#~ msgstr ""
+#~ "Kapak görseli kaldırma ve arka kapak görselini ayarlama desteği eklendi. "
+#~ "Dosya tanımlama seçeneğinin doğruluğu iyileştirildi."
+
+#~ msgid ""
+#~ "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
+#~ "ability to rename files using a specific pattern, file identification "
+#~ "using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "Kapakların yüklenememesi sorununu düzeltildi. 0.4.0 notlarından: Desen "
+#~ "kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak "
+#~ "dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
+
+#~ msgid ""
+#~ "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
+#~ "using a specific pattern, file identification using AcoustID and the "
+#~ "option to set a full release date."
+#~ msgstr ""
+#~ "Küçük hata düzeltme güncellemesi. 0.4.0 notlarından: Desen kullanarak "
+#~ "dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya "
+#~ "tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
+
+#~ msgid ""
+#~ "Added the ability to rename files using a specific pattern, file "
+#~ "identification using AcoustID and the option to set a full release date."
+#~ msgstr ""
+#~ "Desen kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID "
+#~ "kullanarak dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
+
+#~ msgid "Initial release."
+#~ msgstr "İlk sürüm."
