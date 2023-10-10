@@ -57,6 +57,9 @@
 
   <url type="homepage">https://gitlab.gnome.org/World/eartag</url>
   <url type="bugtracker">https://gitlab.gnome.org/World/eartag/-/issues</url>
+  <url type="contribute">https://gitlab.gnome.org/World/eartag/#contributing</url>
+  <url type="translate">https://gitlab.gnome.org/World/eartag/-/tree/main/po</url>
+  <url type="vcs-browser">https://gitlab.gnome.org/World/eartag/</url>
 
   <description>
     <p>Ear Tag is a simple audio file tag editor. It is primarily geared towards making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, Ear Tag does not require the user to set up a music library folder. It can:</p>
