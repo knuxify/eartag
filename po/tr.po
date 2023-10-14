@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-30 21:39+0200\n"
-"PO-Revision-Date: 2023-09-18 18:49+0300\n"
+"PO-Revision-Date: 2023-10-14 17:54+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4\n"
 
 # Keep it
 #. TRANSLATORS: Add your name/nickname here
@@ -197,9 +197,9 @@ msgid "_About Ear Tag"
 msgstr "Ear Tag _Hakkında"
 
 #: src/ui/nofile.ui:13
-#, fuzzy
 msgid "Open or drag in some audio files to edit their metadata."
-msgstr "Üst verilerini düzenlemek için ses dosyalarını buraya sürükleyin"
+msgstr ""
+"Üst verilerini düzenlemek için ses dosyalarını açın ya da buraya sürükleyin."
 
 #: src/filemanager.py:95
 msgid "Failed to save file"
@@ -494,11 +494,11 @@ msgstr "Kaydetmezseniz tüm değişiklikleriniz kalıcı olarak yitecek."
 #: src/ui/dialogs/closewarning.ui:12 src/ui/dialogs/discardwarning.ui:12
 #: src/ui/dialogs/removaldiscardwarning.ui:12
 msgid "_Cancel"
-msgstr "_İptal Et"
+msgstr "İ_ptal"
 
 #: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
 msgid "_Discard and Close"
-msgstr "_Değişikliklerden Vazgeç ve Kapat"
+msgstr "_Değişiklikleri Gözden Çıkar ve Kapat"
 
 #: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
 msgid "_Save and Close"
@@ -506,7 +506,7 @@ msgstr "_Kaydet ve Kapat"
 
 #: src/ui/dialogs/discardwarning.ui:13
 msgid "_Discard and Open"
-msgstr "_Değişikliklerden Vazgeç ve Aç"
+msgstr "_Değişiklikleri Gözden Çıkar ve Aç"
 
 #: src/ui/dialogs/discardwarning.ui:14
 msgid "_Save and Open"
@@ -540,7 +540,7 @@ msgstr "Seçilen Dosyaları Yeniden Adlandır"
 
 #: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
 msgid "Cancel"
-msgstr "İptal Et"
+msgstr "İptal"
 
 #: src/ui/rename.ui:44
 msgid "Rename"
@@ -721,38 +721,3 @@ msgstr "Diğer"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Klavye kısayolları"
-
-#~ msgid ""
-#~ "Added support for removing a cover image and setting the back cover "
-#~ "image. Improved the accuracy of the file identification option."
-#~ msgstr ""
-#~ "Kapak görseli kaldırma ve arka kapak görselini ayarlama desteği eklendi. "
-#~ "Dosya tanımlama seçeneğinin doğruluğu iyileştirildi."
-
-#~ msgid ""
-#~ "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
-#~ "ability to rename files using a specific pattern, file identification "
-#~ "using AcoustID and the option to set a full release date."
-#~ msgstr ""
-#~ "Kapakların yüklenememesi sorununu düzeltildi. 0.4.0 notlarından: Desen "
-#~ "kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak "
-#~ "dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
-
-#~ msgid ""
-#~ "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
-#~ "using a specific pattern, file identification using AcoustID and the "
-#~ "option to set a full release date."
-#~ msgstr ""
-#~ "Küçük hata düzeltme güncellemesi. 0.4.0 notlarından: Desen kullanarak "
-#~ "dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya "
-#~ "tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
-
-#~ msgid ""
-#~ "Added the ability to rename files using a specific pattern, file "
-#~ "identification using AcoustID and the option to set a full release date."
-#~ msgstr ""
-#~ "Desen kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID "
-#~ "kullanarak dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
-
-#~ msgid "Initial release."
-#~ msgstr "İlk sürüm."
