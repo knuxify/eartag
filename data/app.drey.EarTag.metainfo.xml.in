@@ -82,7 +82,16 @@
   </kudos>
 
   <custom>
-    <value key="Purism::form_factor">workstation</value>
+    <!--
+      Nobody uses this anymore except for the Apps for GNOME website.
+      Many apps have two "Purism::form_factor" keys, but this is against
+      appstream validation rules. To satisfy both of them, only leave
+      the mobile form factor key in.
+
+      Once https://gitlab.gnome.org/World/apps-for-gnome/-/issues/68 is
+      fixed, this could be removed. (As of writing - 2023-10-21 - the main
+      blocker seems to be on Flathub's side.)
+    -->
     <value key="Purism::form_factor">mobile</value>
   </custom>
 
