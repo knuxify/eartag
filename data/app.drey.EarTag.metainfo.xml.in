@@ -21,7 +21,7 @@
   </supports>
 
   <requires>
-    <display_length compare="ge">300</display_length>
+    <display_length compare="ge">360</display_length>
   </requires>
 
   <releases>
