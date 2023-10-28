@@ -25,6 +25,10 @@
   </requires>
 
   <releases>
+    <release version="0.5.1" date="2023-10-28">
+      <description translatable="no"><p>Minor bugfix update. From 0.5.0 notes:</p>
+<p>Added support for removing a cover image and setting the back cover image. Improved the accuracy of the file identification option.</p></description>
+    </release>
     <release version="0.5.0" date="2023-09-24">
       <description translatable="no"><p>Added support for removing a cover image and setting the back cover image. Improved the accuracy of the file identification option.</p></description>
     </release>
@@ -97,22 +101,22 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-scaled.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.1/data/screenshot-scaled.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-mobile.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.1/data/screenshot-mobile.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-advanced.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.1/data/screenshot-advanced.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-rename.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.1/data/screenshot-rename.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-identify.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.1/data/screenshot-identify.png</image>
     </screenshot>
     <screenshot>
-      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.0/data/screenshot-empty.png</image>
+      <image>https://gitlab.gnome.org/World/eartag/-/raw/0.5.1/data/screenshot-empty.png</image>
     </screenshot>
   </screenshots>
 </component>
