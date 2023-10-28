@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-30 21:39+0200\n"
+"POT-Creation-Date: 2023-10-28 15:18+0200\n"
 "PO-Revision-Date: 2022-09-17 17:58+0200\n"
 "Last-Translator: Philip Goto <philip.goto@gmail.com>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
@@ -41,7 +41,7 @@ msgstr ""
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;muziek;taggen;metadata;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -49,23 +49,23 @@ msgid ""
 "library folder. It can:"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:71
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Modify metadata of multiple files at once"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:66
+#: data/app.drey.EarTag.metainfo.xml.in:73
 msgid "Rename files using information from present tags"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:74
 msgid "Identify files using AcoustID"
 msgstr ""
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:76
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 
@@ -593,8 +593,8 @@ msgstr ""
 #: src/ui/rename.ui:118
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
-"of available tags</a>."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
 msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.

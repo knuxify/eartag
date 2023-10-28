@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-30 21:39+0200\n"
+"POT-Creation-Date: 2023-10-28 15:18+0200\n"
 "PO-Revision-Date: 2023-10-07 14:23+0330\n"
 "Last-Translator: Reza Hosseinzadeh <rezahsnzdh@protonmail.com>\n"
 "Language-Team: Persian <>\n"
@@ -43,7 +43,7 @@ msgstr "ویرایش برچسب‌های پرونده‌های صوتی"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "آهنگ؛صدا؛برچسب؛برچسب زدن؛برچسب‌زننده؛"
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -55,23 +55,23 @@ msgstr ""
 "برنامه‌های دیگر برچسب‌زنی، ایِرتگ به اینکه کاربر کتابخانهٔ شاخهٔ موسیقی را مشخص "
 "کند، نیاز ندارد. او میتواند:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:71
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "برچسب‌های پرونده‌های MP3، WAV، M4A، FLAC، OGG و WMA را ویرایش کنید."
 
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Modify metadata of multiple files at once"
 msgstr "فراداده‌های چند پرونده را به یکباره ویرایش کنید."
 
-#: data/app.drey.EarTag.metainfo.xml.in:66
+#: data/app.drey.EarTag.metainfo.xml.in:73
 msgid "Rename files using information from present tags"
 msgstr "پرونده‌های را با اطلاعات برچسب‌های کنونی نامگذاری مجدد کنید."
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:74
 msgid "Identify files using AcoustID"
 msgstr "پرونده‌ها را توسط AcoustID شناسایی کنید."
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:76
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "دسترسی شبکه فقط برای گزینهٔ «شناخت پرونده‌های گزینش‌شده» استفاده شده است."
 
@@ -559,10 +559,10 @@ msgstr "پیشین"
 #: src/ui/rename.ui:118
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
-"of available tags</a>."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
 msgstr ""
-"برای فهرست در دسترس برچسب‌ها، <a href=\"https://gitlab.gnome.org/knuxify/"
+"برای فهرست در دسترس برچسب‌ها، <a href=\"https://gitlab.gnome.org/World/"
 "eartag/-/blob/main/src/backends/README.md#available-tags\">فهرست برچسب‌های در "
 "دسترس</a> را ببینید."
 

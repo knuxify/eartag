@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-30 21:39+0200\n"
+"POT-Creation-Date: 2023-10-28 15:18+0200\n"
 "PO-Revision-Date: 2023-09-25 11:16+0200\n"
 "Last-Translator: Davide Ferracin <davide.ferracin@protonmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -42,7 +42,7 @@ msgstr ""
 "musica;audio;tag;etichetta;etichette;etichettare;etichettatore;"
 "etichettamento;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -54,23 +54,23 @@ msgstr ""
 "contrario di altri programmi per le etichette, Ear Tag non richiede di "
 "impostare una cartella per la libreria musicale. Può:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:71
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Modificare etichette di file MP3, WAV, M4A, FLAC, OGG e WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Modify metadata of multiple files at once"
 msgstr "Modificare i metadati di più file alla volta"
 
-#: data/app.drey.EarTag.metainfo.xml.in:66
+#: data/app.drey.EarTag.metainfo.xml.in:73
 msgid "Rename files using information from present tags"
 msgstr "Rinominare i file usando le informazioni dalle etichette presenti"
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:74
 msgid "Identify files using AcoustID"
 msgstr "Identificare i brani usando AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:76
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "L'accesso alla rete è usato solo per l'opzione «Identifica i file "
@@ -572,10 +572,10 @@ msgstr "Anteprima"
 #: src/ui/rename.ui:118
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
-"of available tags</a>."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
 msgstr ""
-"Consultare la <a href=\"https://gitlab.gnome.org/knuxify/eartag/-/blob/main/"
+"Consultare la <a href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/"
 "src/backends/README.md#available-tags\">lista delle etichette disponibili</"
 "a> per un elenco delle etichette che si possono usare."
 

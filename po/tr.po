@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-30 21:39+0200\n"
+"POT-Creation-Date: 2023-10-28 15:18+0200\n"
 "PO-Revision-Date: 2023-10-14 17:54+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -43,7 +43,7 @@ msgstr "Ses dosyası etiketlerini düzenle"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "müzik;ses;etiket;ekitetleme;etiketleyici;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:62
+#: data/app.drey.EarTag.metainfo.xml.in:69
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -56,23 +56,23 @@ msgstr ""
 "kullanıcının bir müzik kütüphanesi klasörü kurmasını gerektirmez. "
 "Yetenekleri şunlardır:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:64
+#: data/app.drey.EarTag.metainfo.xml.in:71
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "MP3, WAV, M4A, FLAC, OGG ve WMA dosyalarının etiketlerini düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:65
+#: data/app.drey.EarTag.metainfo.xml.in:72
 msgid "Modify metadata of multiple files at once"
 msgstr "Birden fazla dosyanın üst verilerini aynı anda düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:66
+#: data/app.drey.EarTag.metainfo.xml.in:73
 msgid "Rename files using information from present tags"
 msgstr "Etiketlerdeki bilgileri kullanarak dosyaları yeniden adlandırma"
 
-#: data/app.drey.EarTag.metainfo.xml.in:67
+#: data/app.drey.EarTag.metainfo.xml.in:74
 msgid "Identify files using AcoustID"
 msgstr "AcoustID kullanarak dosyaları tanımlama"
 
-#: data/app.drey.EarTag.metainfo.xml.in:69
+#: data/app.drey.EarTag.metainfo.xml.in:76
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Ağ erişimi yalnızca \"Seçilen Dosyaları Tanımla\" seçeneği için kullanılır."
@@ -563,11 +563,11 @@ msgstr "Önizleme"
 #: src/ui/rename.ui:118
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags\">list "
-"of available tags</a>."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
 msgstr ""
 "Kullanılabilir etiketlerin listesi için <a href=\"https://gitlab.gnome.org/"
-"knuxify/eartag/-/blob/main/src/backends/README.md#available-"
+"World/eartag/-/blob/main/src/backends/README.md#available-"
 "tags\">kullanılabilir etiketler listesine</a> bakınız."
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
