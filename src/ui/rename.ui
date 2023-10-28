@@ -115,7 +115,7 @@
                             <property name="wrap">true</property>
                             <property name="use-markup">true</property>
                             <property name="justify">center</property>
-                            <property name="label" translatable="yes">For a list of available placeholders, see the &lt;a href="https://gitlab.gnome.org/knuxify/eartag/-/blob/main/src/backends/README.md#available-tags"&gt;list of available tags&lt;/a&gt;.</property>
+                            <property name="label" translatable="yes">For a list of available placeholders, see the &lt;a href="https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags"&gt;list of available tags&lt;/a&gt;.</property>
                             <style>
                               <class name="dim-label"/>
                             </style>
