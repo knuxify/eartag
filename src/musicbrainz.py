@@ -174,7 +174,7 @@ class MusicBrainzRecording(GObject.Object):
             )
         )
 
-        if not self.mb_data:
+        if not self.mb_data or 'title' not in self.mb_data or not self.mb_data['title']:
             raise ValueError("Could not get recording data")
 
         self.available_releases = self.get_releases()
@@ -394,11 +394,11 @@ class MusicBrainzRelease(GObject.Object):
 
         self.update_thumbnail()
 
-    @classmethod
-    def setup_from_id(cls, id):
-        if id in cls.obj_cache:
-            return cls.obj_cache[id]
-        return cls.__init__({}, from_id=id)
+    @staticmethod
+    def setup_from_id(id):
+        if id in MusicBrainzRelease.obj_cache:
+            return MusicBrainzRelease.obj_cache[id]
+        return MusicBrainzRelease(release_data={}, from_id=id)
 
     def dispose(self):
         for temp in self.cover_tempfiles.values():
@@ -443,7 +443,9 @@ class MusicBrainzRelease(GObject.Object):
 
     @GObject.Property(type=str)
     def status(self):
-        return self.mb_data['status'].lower()
+        if 'status' in self.mb_data and self.mb_data['status']:
+            return self.mb_data['status'].lower()
+        return 'official'
 
     @GObject.Property(type=str)
     def disambiguation(self):
@@ -610,11 +612,11 @@ class MusicBrainzReleaseGroup(GObject.Object):
         if groupid not in MusicBrainzReleaseGroup.obj_cache:
             MusicBrainzReleaseGroup.obj_cache[groupid] = self
 
-    @classmethod
-    def setup_from_id(cls, id):
-        if id in cls.obj_cache:
-            return cls.obj_cache[id]
-        return cls.__init__({}, from_id=id)
+    @staticmethod
+    def setup_from_id(id):
+        if id in MusicBrainzReleaseGroup.obj_cache:
+            return MusicBrainzReleaseGroup.obj_cache[id]
+        return MusicBrainzReleaseGroup({}, from_id=id)
 
     @GObject.Property(type=str)
     def relgroup_id(self):

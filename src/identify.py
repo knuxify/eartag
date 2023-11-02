@@ -683,10 +683,13 @@ class EartagIdentifyDialog(Adw.Window):
                         return
 
                     if reg_and_simple_cmp(track['title'], file.title):
-                        rec = MusicBrainzRecording(track['recording']['id'], file=file)
-                        if rec:
-                            self._identify_set_recording(file, rec)
-                            break
+                        try:
+                            rec = MusicBrainzRecording(track['recording']['id'], file=file)
+                            if rec:
+                                self._identify_set_recording(file, rec)
+                                break
+                        except ValueError:
+                            pass
                 if rec:
                     break
             if rec:
