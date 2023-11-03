@@ -1,6 +1,7 @@
 stages:
   - lint
   - build-and-test
+  - flatpak
 
 .build-common:
   stage: build-and-test
@@ -31,3 +32,24 @@ lint-alpine:
   script:
     - flake8 . --count --select=E9,F63,F7,F82,F821 --show-source --statistics
     - flake8 . --count --exit-zero --statistics
+
+# Flatpak build CI
+
+include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
+
+.vars-devel:
+  stage: flatpak
+  variables:
+    MANIFEST_PATH: "app.drey.EarTag.json"
+    FLATPAK_MODULE: "eartag"
+    APP_ID: "app.drey.EarTag.Devel"
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    BUNDLE: "eartag-dev.flatpak"
+
+# Build Flatpak for x86_64
+flatpak@x86_64:
+  extends: ['.flatpak@x86_64', '.vars-devel']
+
+# Build Flatpak for aarch64
+flatpak@aarch64:
+  extends: ['.flatpak@aarch64', '.vars-devel']
