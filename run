@@ -5,7 +5,7 @@ if [ -e output ]; then rm -r output; fi
 if [ -e '/tmp/eartag' ]; then rm -r '/tmp/eartag'; fi
 
 set -e
-meson setup --prefix=/tmp/eartag . output
+meson setup --prefix=/tmp/eartag -Ddevel=true . output
 meson compile -C output
 meson install -C output
 set +e

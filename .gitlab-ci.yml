@@ -40,7 +40,7 @@ include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_
 .vars-devel:
   stage: flatpak
   variables:
-    MANIFEST_PATH: "app.drey.EarTag.json"
+    MANIFEST_PATH: "app.drey.EarTag.Devel.json"
     FLATPAK_MODULE: "eartag"
     APP_ID: "app.drey.EarTag.Devel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"

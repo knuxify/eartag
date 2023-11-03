@@ -90,8 +90,11 @@ class EartagWindow(Adw.ApplicationWindow):
     loading_progressbar = Gtk.Template.Child()
     loading_progressbar_revealer = Gtk.Template.Child()
 
-    def __init__(self, application, paths=None):
+    def __init__(self, application, paths=None, devel=False):
         super().__init__(application=application, title='Ear Tag')
+
+        if devel:
+            self.add_css_class('devel')
 
         self.file_chooser = Gtk.FileDialog(modal=True)
         self._cancellable = Gio.Cancellable.new()

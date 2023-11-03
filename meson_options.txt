@@ -5,3 +5,5 @@ option('acoustid_api_key', type : 'string', value : 'b\'Kqy8kqI8',
 option('enable_networked_tests', type : 'boolean', value : false,
        description : 'Enable MusicBrainz/AcoustID tests.')
 
+option('devel', type : 'boolean', value : false,
+       description : 'Mark this build as a development build.')

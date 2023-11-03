@@ -16,11 +16,12 @@ from .window import EartagWindow
 from .filemanager import EartagFileManager
 
 class Application(Adw.Application):
-    def __init__(self, version='dev'):
+    def __init__(self, version='dev', devel=False):
         super().__init__(application_id='app.drey.EarTag',
                          resource_base_path='/app/drey/EarTag',
                          flags=Gio.ApplicationFlags.HANDLES_OPEN)
         self.version = version
+        self.devel = devel
         self.paths = []
         self.connect('open', self.on_open)
 
@@ -44,7 +45,7 @@ class Application(Adw.Application):
     def do_activate(self):
         win = self.props.active_window
         if not win:
-            win = EartagWindow(application=self, paths=self.paths)
+            win = EartagWindow(application=self, paths=self.paths, devel=self.devel)
         self.create_action('settings', self.on_settings_action, None)
         self.create_action('about', self.on_about_action, None)
 
@@ -95,6 +96,10 @@ class Application(Adw.Application):
         self.get_active_window().show_settings_dialog()
 
     def on_about_action(self, widget, _):
+        version_str = self.version
+        if self.devel:
+            version_str += ' (dev)'
+
         about = Adw.AboutWindow(
             application_name="Ear Tag",
             application_icon="app.drey.EarTag",
@@ -102,7 +107,7 @@ class Application(Adw.Application):
             artists=["Jakub Steiner", "Igor Dyatlov"],
             license_type=Gtk.License.MIT_X11,
             issue_url="https://gitlab.gnome.org/World/eartag/-/issues",
-            version=self.version,
+            version=version_str,
             website="https://gitlab.gnome.org/World/eartag"
         )
 
@@ -133,7 +138,7 @@ class Application(Adw.Application):
 
         opened_file_list_str = '\n - '.join(opened_file_list) or 'None'
 
-        about.set_debug_info(f'''Ear Tag {self.version}
+        about.set_debug_info(f'''Ear Tag {self.version}{' (Development version)' if self.devel else ''}
 
 Running in Flatpak: {os.path.exists('/.flatpak-info') and 'YES' or 'NO'}
 
@@ -210,6 +215,6 @@ Opened files:
         win = self.props.active_window
         win.close()
 
-def main(version):
-    app = Application(version)
+def main(version, devel):
+    app = Application(version, devel)
     return app.run(sys.argv)
