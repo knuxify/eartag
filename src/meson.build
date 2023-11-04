@@ -26,7 +26,7 @@ gnome.compile_resources('eartag',
 
 configure_file(
   input: 'eartag.in',
-  output: 'eartag',
+  output: bin_name,
   configuration: conf,
   install: true,
   install_dir: get_option('bindir')

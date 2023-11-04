@@ -2,7 +2,7 @@
 Name=@APP_NAME@
 GenericName=Tag Editor
 Comment=Edit audio file tags
-Exec=eartag %U
+Exec=@APP_BIN_NAME@ %U
 Icon=@APP_ID@
 Terminal=false
 Type=Application

@@ -1,5 +1,6 @@
 data_conf = configuration_data()
 data_conf.set('APP_ID', app_id)
+data_conf.set('APP_BIN_NAME', bin_name)
 data_conf.set('APP_GSCHEMA_PATH', '/' + app_id.replace('.', '/') + '/')
 data_conf.set('APP_NAME', 'Ear Tag' + name_suffix)
 

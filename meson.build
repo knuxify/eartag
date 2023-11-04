@@ -7,9 +7,11 @@ project('eartag',
 
 if get_option('devel')
   app_id = 'app.drey.EarTag.Devel'
+  bin_name = 'eartag-devel'
   name_suffix = '(Development)'
 else
   app_id = 'app.drey.EarTag'
+  bin_name = 'eartag'
   name_suffix = ''
 endif
 
