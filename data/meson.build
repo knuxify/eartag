@@ -10,7 +10,7 @@ desktop_file = i18n.merge_file(
     output: 'app.drey.EarTag.desktop.in',
     configuration: data_conf
   ),
-  output: 'app.drey.EarTag.desktop',
+  output: app_id + '.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -30,7 +30,7 @@ appstream_file = i18n.merge_file(
     output: 'app.drey.EarTag.metainfo.xml.in',
     configuration: data_conf
   ),
-  output: 'app.drey.EarTag.metainfo.xml',
+  output: app_id + '.metainfo.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'metainfo')
@@ -46,7 +46,7 @@ endif
 install_data(
     configure_file(
     input: files('app.drey.EarTag.gschema.xml.in'),
-    output: 'app.drey.EarTag.gschema.xml',
+    output: app_id + '.gschema.xml',
     configuration: data_conf
   ),
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
