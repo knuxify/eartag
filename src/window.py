@@ -11,7 +11,7 @@ from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
 from .rename import EartagRenameDialog
 from .identify import EartagIdentifyDialog
 from .utils import find_in_model
-from . import APP_GRESOURCE_PATH
+from . import APP_GRESOURCE_PATH, DEVEL
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
@@ -21,10 +21,13 @@ import gettext
 class EartagNoFile(Adw.Bin):
     __gtype_name__ = 'EartagNoFile'
 
+    nofile_status = Gtk.Template.Child()
     open_file = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
+        if DEVEL:
+            self.nofile_status.set_icon_name('app.drey.EarTag.Devel')
 
     def grab_button_focus(self, *args):
         self.open_file.grab_focus()

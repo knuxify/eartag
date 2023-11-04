@@ -103,7 +103,7 @@ class Application(Adw.Application):
 
         about = Adw.AboutWindow(
             application_name="Ear Tag",
-            application_icon="app.drey.EarTag",
+            application_icon=APP_ID,
             developers=["knuxify"],
             artists=["Jakub Steiner", "Igor Dyatlov"],
             license_type=Gtk.License.MIT_X11,
