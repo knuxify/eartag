@@ -5,7 +5,9 @@ Shim for global config access.
 from gi.repository import Gio
 from enum import IntEnum
 
-config = Gio.Settings.new('app.drey.EarTag')
+from . import APP_ID
+
+config = Gio.Settings.new(APP_ID)
 
 class DLCoverSize(IntEnum):
     NO_DOWNLOAD = 0

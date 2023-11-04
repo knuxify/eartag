@@ -15,8 +15,9 @@ from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equa
 from .utils.bgtask import EartagBackgroundTask
 from .utils.widgets import EartagModelExpanderRow
 from .backends.file import EartagFile
+from . import APP_GRESOURCE_PATH
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/coverimage.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/identify/coverimage.ui')
 class EartagIdentifyCoverImage(Gtk.Stack):
     __gtype_name__ = 'EartagIdentifyCoverImage'
 
@@ -252,7 +253,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.update_filter()
 
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/altreleaserow.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/identify/altreleaserow.ui')
 class EartagIdentifyAltReleaseRow(Adw.ActionRow):
     """
     Representation of releases for the release switcher dropdown.
@@ -310,7 +311,7 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
             self._subtitle += ' • ' + self.release.releasedate
         self.set_subtitle(self._subtitle)
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/filerow.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/identify/filerow.ui')
 class EartagIdentifyFileRow(Adw.ActionRow):
     """
     Representation of files for the identify dialog.
@@ -375,7 +376,7 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         self.loading_icon.stop()
 
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/recordingrow.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/identify/recordingrow.ui')
 class EartagIdentifyRecordingRow(Adw.ActionRow):
     """
     Representation of recordings for the identify dialog.
@@ -452,7 +453,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
             self.parent.parent.apply_files_changed()
 
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/identify/identify.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/identify/identify.ui')
 class EartagIdentifyDialog(Adw.Window):
     __gtype_name__ = 'EartagIdentifyDialog'
 

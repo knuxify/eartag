@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/app/drey/EarTag/icons/scalable/actions/">
+  <gresource prefix="@APP_GRESOURCE_PATH@/icons/scalable/actions/">
     <file alias="file-modified-symbolic.svg">assets/icons/file-modified-symbolic.svg</file>
     <file alias="view-queue-rtl-symbolic.svg">assets/icons/view-queue-rtl-symbolic.svg</file>
     <file alias="view-queue-symbolic.svg">assets/icons/view-queue-symbolic.svg</file>
     <file alias="selection-mode-symbolic.svg">assets/icons/selection-mode-symbolic.svg</file>
   </gresource>
-  <gresource prefix="/app/drey/EarTag">
+  <gresource prefix="@APP_GRESOURCE_PATH@">
     <file>ui/albumcoverbutton.ui</file>
     <file>ui/albumcoverimage.ui</file>
     <file>ui/filelistitem.ui</file>

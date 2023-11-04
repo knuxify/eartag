@@ -1,7 +1,7 @@
 {
     "app-id" : "app.drey.EarTag.Devel",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "master",
+    "runtime-version" : "45",
     "sdk" : "org.gnome.Sdk",
     "command" : "eartag",
     "finish-args" : [
@@ -104,9 +104,8 @@
             ],
             "sources" : [
                 {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/knuxify/eartag.git",
-                    "branch" : "main"
+                    "type" : "dir",
+                    "path": "."
                 }
             ]
         }

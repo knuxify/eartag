@@ -43,8 +43,8 @@ include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_
     MANIFEST_PATH: "app.drey.EarTag.Devel.json"
     FLATPAK_MODULE: "eartag"
     APP_ID: "app.drey.EarTag.Devel"
-    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-    BUNDLE: "eartag-dev.flatpak"
+    RUNTIME_REPO: "https://flathub.org/repo/flathub.flatpakrepo"
+    BUNDLE: "app.drey.EarTag.Devel.flatpak"
 
 # Build Flatpak for x86_64
 flatpak@x86_64:

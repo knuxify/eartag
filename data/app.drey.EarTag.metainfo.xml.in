@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
   <!-- TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents, -->
-  <name>Ear Tag</name>
+  <name>@APP_NAME@</name>
   <!-- TRANSLATORS: App description. -->
   <summary>Edit audio file tags</summary>
-  <id>app.drey.EarTag</id>
+  <id>@APP_ID@</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
 

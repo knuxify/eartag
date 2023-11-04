@@ -11,14 +11,15 @@ gi.require_version('GdkPixbuf', '2.0')
 
 from gi.repository import Adw, Gtk, Gio
 
+from . import APP_ID, APP_GRESOURCE_PATH
 from .utils.validation import is_valid_music_file
 from .window import EartagWindow
 from .filemanager import EartagFileManager
 
 class Application(Adw.Application):
     def __init__(self, version='dev', devel=False):
-        super().__init__(application_id='app.drey.EarTag',
-                         resource_base_path='/app/drey/EarTag',
+        super().__init__(application_id=APP_ID,
+                         resource_base_path=APP_GRESOURCE_PATH,
                          flags=Gio.ApplicationFlags.HANDLES_OPEN)
         self.version = version
         self.devel = devel

@@ -10,6 +10,8 @@ import gettext
 import locale
 
 VERSION = '@VERSION@'
+APP_ID = '@APP_ID@'
+APP_GRESOURCE_PATH = '@APP_GRESOURCE_PATH@'
 DEVEL = @DEVEL@
 ACOUSTID_API_KEY = "@ACOUSTID_API_KEY@"
 pkgdatadir = '@pkgdatadir@'
@@ -18,11 +20,11 @@ localedir = '@localedir@'
 sys.path.insert(1, pkgdatadir)
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 try:
-    locale.bindtextdomain('app.drey.EarTag', localedir)
-    locale.textdomain('app.drey.EarTag')
+    locale.bindtextdomain(APP_ID, localedir)
+    locale.textdomain(APP_ID)
 except:
     print("Python built without locale support, some translations may not work!")
-gettext.install('app.drey.EarTag', localedir)
+gettext.install(APP_ID, localedir)
 
 if __name__ == '__main__':
     import gi
@@ -33,6 +35,8 @@ if __name__ == '__main__':
 
     import eartag
     eartag.VERSION = VERSION
+    eartag.APP_ID = APP_ID
+    eartag.APP_GRESOURCE_PATH = APP_GRESOURCE_PATH
     eartag.DEVEL = DEVEL
     eartag.ACOUSTID_API_KEY = ACOUSTID_API_KEY
 

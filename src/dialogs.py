@@ -2,8 +2,9 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import Adw, Gtk
+from . import APP_GRESOURCE_PATH
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/closewarning.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/dialogs/closewarning.ui')
 class EartagCloseWarningDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagCloseWarningDialog'
 
@@ -23,7 +24,7 @@ class EartagCloseWarningDialog(Adw.MessageDialog):
             self.window.close()
         self.close()
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/discardwarning.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/dialogs/discardwarning.ui')
 class EartagDiscardWarningDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagDiscardWarningDialog'
 
@@ -44,7 +45,7 @@ class EartagDiscardWarningDialog(Adw.MessageDialog):
             )
         self.close()
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/removaldiscardwarning.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/dialogs/removaldiscardwarning.ui')
 class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagRemovalDiscardWarningDialog'
 
@@ -63,7 +64,7 @@ class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
         self.file = None
         self.close()
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/loadingfailure.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/dialogs/loadingfailure.ui')
 class EartagLoadingFailureDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagLoadingFailureDialog'
 
@@ -75,7 +76,7 @@ class EartagLoadingFailureDialog(Adw.MessageDialog):
     def handle_response(self, dialog, response):
         self.close()
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/dialogs/renamefailure.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/dialogs/renamefailure.ui')
 class EartagRenameFailureDialog(Adw.MessageDialog):
     __gtype_name__ = 'EartagRenameFailureDialog'
 

@@ -5,6 +5,7 @@ from gi.repository import Adw, Gdk, Gtk, GObject, Pango
 import os.path
 
 from ..backends.file import CoverType
+from .. import APP_GRESOURCE_PATH
 
 class EartagPopoverButton(Gtk.Box):
     """
@@ -120,7 +121,7 @@ class EartagEditableLabel(Gtk.EditableLabel):
         self._placeholder = value
         self.display_placeholder()
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverimage.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverimage.ui')
 class EartagAlbumCoverImage(Gtk.Stack):
     __gtype_name__ = 'EartagAlbumCoverImage'
 

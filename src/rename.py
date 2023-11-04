@@ -4,6 +4,7 @@
 from .backends.file import BASIC_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length
+from . import APP_GRESOURCE_PATH
 
 from gi.repository import Adw, Gtk, Gio
 import os
@@ -43,7 +44,7 @@ def parse_placeholder_string(string, file):
         output = '_'
     return output
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/rename.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rename.ui')
 class EartagRenameDialog(Adw.Window):
     __gtype_name__ = 'EartagRenameDialog'
 

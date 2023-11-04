@@ -11,12 +11,13 @@ from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
 from .rename import EartagRenameDialog
 from .identify import EartagIdentifyDialog
 from .utils import find_in_model
+from . import APP_GRESOURCE_PATH
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
 import gettext
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/nofile.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
     __gtype_name__ = 'EartagNoFile'
 
@@ -40,7 +41,7 @@ class EartagNoFile(Adw.Bin):
         window.open_mode = EartagFileManager.LOAD_OVERWRITE
         window.show_file_chooser(folders=True)
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/window.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/window.ui')
 class EartagWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'EartagWindow'
 
@@ -519,7 +520,7 @@ class EartagWindow(Adw.ApplicationWindow):
         else:
             vadjust.set_value(vadjust.get_upper())
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/settings.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/settings.ui')
 class EartagSettingsWindow(Adw.PreferencesWindow):
     __gtype_name__ = 'EartagSettingsWindow'
 

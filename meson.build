@@ -5,6 +5,14 @@ project('eartag',
                    ],
 )
 
+if get_option('devel')
+  app_id = 'app.drey.EarTag.Devel'
+  name_suffix = '(Development)'
+else
+  app_id = 'app.drey.EarTag'
+  name_suffix = ''
+endif
+
 i18n = import('i18n')
 
 subdir('data')

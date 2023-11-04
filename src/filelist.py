@@ -5,8 +5,9 @@ from gi.repository import GObject, Gtk, GLib
 import os.path
 
 from .utils import find_in_model
+from . import APP_GRESOURCE_PATH
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/filelistitem.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/filelistitem.ui')
 class EartagFileListItem(Gtk.Box):
     __gtype_name__ = 'EartagFileListItem'
 

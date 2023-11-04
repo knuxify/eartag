@@ -1,5 +1,14 @@
+data_conf = configuration_data()
+data_conf.set('APP_ID', app_id)
+data_conf.set('APP_GSCHEMA_PATH', '/' + app_id.replace('.', '/') + '/')
+data_conf.set('APP_NAME', 'Ear Tag' + name_suffix)
+
 desktop_file = i18n.merge_file(
-  input: 'app.drey.EarTag.desktop.in',
+  input: configure_file(
+    input: files('app.drey.EarTag.desktop.in'),
+    output: 'app.drey.EarTag.desktop.in',
+    configuration: data_conf
+  ),
   output: 'app.drey.EarTag.desktop',
   type: 'desktop',
   po_dir: '../po',
@@ -15,7 +24,11 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-  input: 'app.drey.EarTag.metainfo.xml.in',
+  input: configure_file(
+    input: files('app.drey.EarTag.metainfo.xml.in'),
+    output: 'app.drey.EarTag.metainfo.xml.in',
+    configuration: data_conf
+  ),
   output: 'app.drey.EarTag.metainfo.xml',
   po_dir: '../po',
   install: true,
@@ -29,7 +42,12 @@ if appstreamcli.found()
   )
 endif
 
-install_data('app.drey.EarTag.gschema.xml',
+install_data(
+    configure_file(
+    input: files('app.drey.EarTag.gschema.xml.in'),
+    output: 'app.drey.EarTag.gschema.xml',
+    configuration: data_conf
+  ),
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 

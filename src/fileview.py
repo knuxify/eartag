@@ -9,6 +9,7 @@ from .tagentry import ( # noqa: F401
     EartagTagEntry, EartagTagEntryRow,
     EartagTagEditableLabel
 )
+from . import APP_GRESOURCE_PATH
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GLib, GObject
 
@@ -18,7 +19,7 @@ import mimetypes
 import shutil
 import os.path
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/albumcoverbutton.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):
     __gtype_name__ = 'EartagAlbumCoverButton'
 
@@ -382,7 +383,7 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.highlight_revealer.set_reveal_child(False)
 
 # ActionRow with two TagEntries, used for track numbers.
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/rows/tagdoublerow.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rows/tagdoublerow.ui')
 class EartagTagDoubleRow(Adw.ActionRow):
     __gtype_name__ = 'EartagTagDoubleRow'
 
@@ -882,7 +883,7 @@ class EartagFileInfoLabel(Gtk.Label):
             channels=channels_readable
         ))
 
-@Gtk.Template(resource_path='/app/drey/EarTag/ui/fileview.ui')
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
 
