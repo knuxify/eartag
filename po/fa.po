@@ -28,7 +28,7 @@ msgstr "رضا حسین‌زاده <rezahsnzdh@protonmail.com>"
 #. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
 msgid "Ear Tag"
-msgstr "ایِرتگ"
+msgstr "ایرتگ"
 
 #: data/app.drey.EarTag.desktop.in:4
 msgid "Tag Editor"
