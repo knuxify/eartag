@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-28 15:18+0200\n"
+"POT-Creation-Date: 2023-11-26 20:48+0100\n"
 "PO-Revision-Date: 2023-09-25 11:16+0200\n"
 "Last-Translator: Davide Ferracin <davide.ferracin@protonmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -18,14 +18,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:109 src/main.py:111
+#: src/main.py:115 src/main.py:117
 msgid "translator-credits"
 msgstr "Davide Ferracin <davide.ferracin@protonmail.com>, 2023"
 
-#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
-msgid "Ear Tag"
-msgstr "Ear Tag"
+msgid "@APP_NAME@"
+msgstr ""
 
 #: data/app.drey.EarTag.desktop.in:4
 msgid "Tag Editor"
@@ -76,38 +76,38 @@ msgstr ""
 "L'accesso alla rete è usato solo per l'opzione «Identifica i file "
 "selezionati»."
 
-#: src/window.py:102
+#: src/window.py:109
 msgid "All supported audio files"
 msgstr "Tutti i file audio supportati"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:192 src/fileview.py:857
+#: src/window.py:199 src/fileview.py:858
 msgid "(Multiple files selected)"
 msgstr "(Più file selezionati)"
 
-#: src/window.py:264 src/ui/nofile.ui:39
+#: src/window.py:271 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "Apri cartella"
 
-#: src/window.py:267 src/ui/nofile.ui:26
+#: src/window.py:274 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Apri file"
 
-#: src/window.py:329
+#: src/window.py:336
 msgid "No supported files found in opened folder"
 msgstr "Nessun file supportato nella cartella aperta"
 
-#: src/window.py:336
+#: src/window.py:343
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Alcuni file aperti hanno valori non validi; le modifiche non possono essere "
 "salvate"
 
-#: src/window.py:456
+#: src/window.py:463
 msgid "No files selected"
 msgstr "Nessun file selezionato"
 
-#: src/window.py:460
+#: src/window.py:467
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -387,35 +387,35 @@ msgstr "MusicBrainz Recording ID"
 msgid "MusicBrainz Release Group ID"
 msgstr "MusicBrainz Release Group ID"
 
-#: src/fileview.py:183
+#: src/fileview.py:184
 msgid "Select Album Cover Image"
 msgstr "Selezionare un'immagine di copertina dell'album"
 
-#: src/fileview.py:210
+#: src/fileview.py:211
 msgid "Save Album Cover To…"
 msgstr "Salva copertina album su…"
 
-#: src/fileview.py:238
+#: src/fileview.py:239
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Copertina salvata su {path}"
 
-#: src/fileview.py:261
+#: src/fileview.py:262
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "Rimossa copertina dal file"
 msgstr[1] "Rimossa copertina da {n} file"
 
-#: src/fileview.py:265
+#: src/fileview.py:266
 msgid "Undo"
 msgstr "Annulla"
 
-#: src/fileview.py:495
+#: src/fileview.py:496
 msgid "More tags"
 msgstr "Più etichette"
 
-#: src/fileview.py:871
+#: src/fileview.py:872
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -467,7 +467,7 @@ msgid "(multiple values)"
 msgstr "(più valori)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:115
+#: src/filelist.py:116
 msgid "(No title)"
 msgstr "(Nessun titolo)"
 
@@ -581,15 +581,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:116
+#: src/identify.py:117
 msgid "Other releases"
 msgstr "Altre pubblicazioni"
 
-#: src/identify.py:491
+#: src/identify.py:492
 msgid "Unidentified Files"
 msgstr "File non identificati"
 
-#: src/identify.py:913
+#: src/identify.py:917
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "{identified} su {total} tracce identificate"
@@ -731,6 +731,9 @@ msgstr "Altre"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Scorciatoie da tastiera"
+
+#~ msgid "Ear Tag"
+#~ msgstr "Ear Tag"
 
 #~ msgid ""
 #~ "Added support for removing a cover image and setting the back cover "

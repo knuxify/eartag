@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <!-- TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents, -->
+  <!-- TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable. -->
   <name>@APP_NAME@</name>
   <!-- TRANSLATORS: App description. -->
   <summary>Edit audio file tags</summary>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-28 15:18+0200\n"
+"POT-Creation-Date: 2023-11-26 20:48+0100\n"
 "PO-Revision-Date: 2023-09-19 21:20+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
@@ -19,14 +19,14 @@ msgstr ""
 "X-Generator: Gtranslator 42.0\n"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:109 src/main.py:111
+#: src/main.py:115 src/main.py:117
 msgid "translator-credits"
 msgstr "lumingzh <lumingzh@qq.com>, 2023."
 
-#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
-msgid "Ear Tag"
-msgstr "Ear Tag"
+msgid "@APP_NAME@"
+msgstr ""
 
 #: data/app.drey.EarTag.desktop.in:4
 msgid "Tag Editor"
@@ -72,36 +72,36 @@ msgstr "使用 AcoustID 识别文件"
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
-#: src/window.py:102
+#: src/window.py:109
 msgid "All supported audio files"
 msgstr "所有支持的音频文件"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:192 src/fileview.py:857
+#: src/window.py:199 src/fileview.py:858
 msgid "(Multiple files selected)"
 msgstr "（已选择多个文件）"
 
-#: src/window.py:264 src/ui/nofile.ui:39
+#: src/window.py:271 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "打开文件夹"
 
-#: src/window.py:267 src/ui/nofile.ui:26
+#: src/window.py:274 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/window.py:329
+#: src/window.py:336
 msgid "No supported files found in opened folder"
 msgstr "在打开的文件夹中未发现支持的文件"
 
-#: src/window.py:336
+#: src/window.py:343
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "部分打开的文件具有无效值；无法保存"
 
-#: src/window.py:456
+#: src/window.py:463
 msgid "No files selected"
 msgstr "未选择文件"
 
-#: src/window.py:460
+#: src/window.py:467
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -376,34 +376,34 @@ msgstr "MusicBrainz 录制标识"
 msgid "MusicBrainz Release Group ID"
 msgstr "MusicBrainz 发行组标识"
 
-#: src/fileview.py:183
+#: src/fileview.py:184
 msgid "Select Album Cover Image"
 msgstr "选择专辑封面图像"
 
-#: src/fileview.py:210
+#: src/fileview.py:211
 msgid "Save Album Cover To…"
 msgstr "保存专辑封面至…"
 
-#: src/fileview.py:238
+#: src/fileview.py:239
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "已将封面保存至 {path}"
 
-#: src/fileview.py:261
+#: src/fileview.py:262
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "已从 {n} 个文件移除封面"
 
-#: src/fileview.py:265
+#: src/fileview.py:266
 msgid "Undo"
 msgstr "撤消"
 
-#: src/fileview.py:495
+#: src/fileview.py:496
 msgid "More tags"
 msgstr "更多标签"
 
-#: src/fileview.py:871
+#: src/fileview.py:872
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -454,7 +454,7 @@ msgid "(multiple values)"
 msgstr "（多个值）"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:115
+#: src/filelist.py:116
 msgid "(No title)"
 msgstr "（无标题）"
 
@@ -559,15 +559,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:116
+#: src/identify.py:117
 msgid "Other releases"
 msgstr "其它发行"
 
-#: src/identify.py:491
+#: src/identify.py:492
 msgid "Unidentified Files"
 msgstr "未识别的文件"
 
-#: src/identify.py:913
+#: src/identify.py:917
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "已识别 {identified} 共 {total} 首曲目"
@@ -704,6 +704,9 @@ msgstr "其它"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "键盘快捷键"
+
+#~ msgid "Ear Tag"
+#~ msgstr "Ear Tag"
 
 #~ msgid ""
 #~ "Added support for removing a cover image and setting the back cover "

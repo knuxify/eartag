@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-28 15:18+0200\n"
+"POT-Creation-Date: 2023-11-26 20:48+0100\n"
 "PO-Revision-Date: 2023-09-22 10:00+0200\n"
 "Last-Translator: sheep <sheep@sheepdev.xyz>\n"
 "Language-Team: Croatian <sheep@sheepdev.xyz>\n"
@@ -20,15 +20,14 @@ msgstr ""
 "X-Generator: Gtranslator 45.1\n"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:109 src/main.py:111
+#: src/main.py:115 src/main.py:117
 msgid "translator-credits"
 msgstr "sheep"
 
-# Translators: Do NOT translate or transliterate this text
-#. TRANSLATORS: Do not translate or transliterate the name of the program (Ear Tag). For this string, just copy the existing contents,
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #: data/app.drey.EarTag.desktop.in:3 data/app.drey.EarTag.metainfo.xml.in:4
-msgid "Ear Tag"
-msgstr "Ear Tag"
+msgid "@APP_NAME@"
+msgstr ""
 
 #: data/app.drey.EarTag.desktop.in:4
 msgid "Tag Editor"
@@ -76,37 +75,37 @@ msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Pristup mreži koristi se samo za opciju \"Identificiraj odabrane datoteke\"."
 
-#: src/window.py:102
+#: src/window.py:109
 msgid "All supported audio files"
 msgstr "Sve podržane audio datoteke"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:192 src/fileview.py:857
+#: src/window.py:199 src/fileview.py:858
 msgid "(Multiple files selected)"
 msgstr "(Više datoteka odabrano)"
 
-#: src/window.py:264 src/ui/nofile.ui:39
+#: src/window.py:271 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "Otvori mapu"
 
-#: src/window.py:267 src/ui/nofile.ui:26
+#: src/window.py:274 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Otvori datoteku"
 
-#: src/window.py:329
+#: src/window.py:336
 msgid "No supported files found in opened folder"
 msgstr "U otvorenoj mapi nisu pronađene podržane datoteke"
 
-#: src/window.py:336
+#: src/window.py:343
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Neke od otvorenih datoteka su samo za čitanje; promjene se ne mogu spremiti."
 
-#: src/window.py:456
+#: src/window.py:463
 msgid "No files selected"
 msgstr "Nema odabranih datoteka"
 
-#: src/window.py:460
+#: src/window.py:467
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -388,20 +387,20 @@ msgstr "MusicBrainz ID snimke"
 msgid "MusicBrainz Release Group ID"
 msgstr "MusicBrainz ID grupe izdanja"
 
-#: src/fileview.py:183
+#: src/fileview.py:184
 msgid "Select Album Cover Image"
 msgstr "Odaberite sliku omota album"
 
-#: src/fileview.py:210
+#: src/fileview.py:211
 msgid "Save Album Cover To…"
 msgstr "Spremi omot albuma u..."
 
-#: src/fileview.py:238
+#: src/fileview.py:239
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Omot spremljen u {path}"
 
-#: src/fileview.py:261
+#: src/fileview.py:262
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
@@ -409,15 +408,15 @@ msgstr[0] "Uklonjeno {n} omota iz datoteka"
 msgstr[1] "Uklonjen {n} omot iz datoteke"
 msgstr[2] "Uklonjena {n} omota iz datoteka"
 
-#: src/fileview.py:265
+#: src/fileview.py:266
 msgid "Undo"
 msgstr "Poništi"
 
-#: src/fileview.py:495
+#: src/fileview.py:496
 msgid "More tags"
 msgstr "Više oznaka"
 
-#: src/fileview.py:871
+#: src/fileview.py:872
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -470,7 +469,7 @@ msgid "(multiple values)"
 msgstr "(više vrijednosti)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:115
+#: src/filelist.py:116
 msgid "(No title)"
 msgstr "(Nema naslov)"
 
@@ -579,15 +578,15 @@ msgstr ""
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:116
+#: src/identify.py:117
 msgid "Other releases"
 msgstr "Ostala izdanja"
 
-#: src/identify.py:491
+#: src/identify.py:492
 msgid "Unidentified Files"
 msgstr "Neidentificirane datoteke"
 
-#: src/identify.py:913
+#: src/identify.py:917
 #, python-brace-format
 msgid "Identified {identified} out of {total} tracks"
 msgstr "Identificirano {identified} od {total} pjesama"
@@ -729,6 +728,10 @@ msgstr "Ostalo"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Tipkovnički prečaci"
+
+# Translators: Do NOT translate or transliterate this text
+#~ msgid "Ear Tag"
+#~ msgstr "Ear Tag"
 
 #~ msgid ""
 #~ "Added support for removing a cover image and setting the back cover "
