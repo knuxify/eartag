@@ -7,7 +7,7 @@
         <property name="hexpand">true</property>
         <property name="vexpand">true</property>
         <child>
-          <object class="AdwStatusPage">
+          <object class="AdwStatusPage" id="nofile_status">
             <property name="icon-name">app.drey.EarTag</property>
             <property name="title">Ear Tag</property>
             <property name="description" translatable="yes">Open or drag in some audio files to edit their metadata.</property>
