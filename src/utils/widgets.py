@@ -7,6 +7,7 @@ import os.path
 from ..backends.file import CoverType
 from .. import APP_GRESOURCE_PATH
 
+
 class EartagPopoverButton(Gtk.Box):
     """
     Re-implementation of GtkMenuButton that doesn't have the same issues as
@@ -16,7 +17,8 @@ class EartagPopoverButton(Gtk.Box):
     - doesn't suffer from https://gitlab.gnome.org/GNOME/gtk/-/issues/5568
       (though that one is actually worked around in the AlbumCoverButton)
     """
-    __gtype_name__ = 'EartagPopoverButton'
+
+    __gtype_name__ = "EartagPopoverButton"
 
     def __init__(self):
         super().__init__()
@@ -43,10 +45,10 @@ class EartagPopoverButton(Gtk.Box):
             self.remove(self._popover)
         self._popover = value
         self.toggle_button.bind_property(
-            'active', self.popover, 'visible',
-            GObject.BindingFlags.BIDIRECTIONAL
+            "active", self.popover, "visible", GObject.BindingFlags.BIDIRECTIONAL
         )
         self.append(self._popover)
+
 
 class EartagEditableLabel(Gtk.EditableLabel):
     """
@@ -55,12 +57,13 @@ class EartagEditableLabel(Gtk.EditableLabel):
     just GtkStacks with a regular GtkLabel inside, we can modify
     them to suit our needs. This class automates the process.
     """
-    __gtype_name__ = 'EartagEditableLabel'
+
+    __gtype_name__ = "EartagEditableLabel"
 
     def __init__(self):
         super().__init__()
-        self._placeholder = ''
-        self._original_placeholder = ''
+        self._placeholder = ""
+        self._original_placeholder = ""
 
         # The layout is:
         # GtkEditableLabel
@@ -88,14 +91,18 @@ class EartagEditableLabel(Gtk.EditableLabel):
         label.set_lines(3)
         label.set_max_width_chars(128)
         label.set_justify(Gtk.Justification.CENTER)
-        label.set_cursor(Gdk.Cursor.new_from_name('text'))
+        label.set_cursor(Gdk.Cursor.new_from_name("text"))
         self.set_alignment(0.5)
 
-        self.bind_property('placeholder-text', editable, 'placeholder-text',
-            GObject.BindingFlags.SYNC_CREATE)
+        self.bind_property(
+            "placeholder-text",
+            editable,
+            "placeholder-text",
+            GObject.BindingFlags.SYNC_CREATE,
+        )
 
-        self.connect('notify::editing', self.display_placeholder)
-        self.connect('notify::text', self.display_placeholder)
+        self.connect("notify::editing", self.display_placeholder)
+        self.connect("notify::text", self.display_placeholder)
 
         self.label = label
         self.editable = editable
@@ -106,10 +113,12 @@ class EartagEditableLabel(Gtk.EditableLabel):
         """Displays/hides placeholder in non-editing mode as needed."""
         if not self.get_text():
             self.label.set_label(self.placeholder_text)
-            self.label.add_css_class('dim-label')
+            self.label.add_css_class("dim-label")
         else:
-            self.label.remove_css_class('dim-label')
-        self.stack.update_property([Gtk.AccessibleProperty.LABEL], [self.label.get_label()])
+            self.label.remove_css_class("dim-label")
+        self.stack.update_property(
+            [Gtk.AccessibleProperty.LABEL], [self.label.get_label()]
+        )
 
     @GObject.Property(type=str)
     def placeholder_text(self):
@@ -121,9 +130,10 @@ class EartagEditableLabel(Gtk.EditableLabel):
         self._placeholder = value
         self.display_placeholder()
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverimage.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/albumcoverimage.ui")
 class EartagAlbumCoverImage(Gtk.Stack):
-    __gtype_name__ = 'EartagAlbumCoverImage'
+    __gtype_name__ = "EartagAlbumCoverImage"
 
     no_cover = Gtk.Template.Child()
     cover_image = Gtk.Template.Child()
@@ -133,7 +143,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def __init__(self):
         super().__init__()
         self._cover_type = CoverType.FRONT
-        self.connect('destroy', self.on_destroy)
+        self.connect("destroy", self.on_destroy)
 
     def on_destroy(self, *args):
         self.file = None
@@ -143,8 +153,8 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
         if file.supports_album_covers:
             self.on_cover_change()
-            self.file.connect('notify::front-cover-path', self.on_cover_change)
-            self.file.connect('notify::back-cover-path', self.on_cover_change)
+            self.file.connect("notify::front-cover-path", self.on_cover_change)
+            self.file.connect("notify::back-cover-path", self.on_cover_change)
         else:
             self.cover_image.set_from_file(None)
             self.on_cover_change()
@@ -158,7 +168,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
         """In some cases, we need to force the cover to be shown as empty."""
         if self.get_visible_child() is not self.no_cover:
             self.set_visible_child(self.no_cover)
-            self.notify('is-empty')
+            self.notify("is-empty")
 
     def mark_as_nonempty(self):
         self.on_cover_change()
@@ -188,7 +198,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
         if path and os.path.exists(path):
             if self.get_visible_child() is not self.cover_image:
                 self.set_visible_child(self.cover_image)
-                self.notify('is-empty')
+                self.notify("is-empty")
 
             if self.cover_image.get_pixel_size() <= 48:
                 pixbuf = cover.cover_small
@@ -199,7 +209,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
         else:
             self.mark_as_empty()
 
-        self.emit('cover_changed')
+        self.emit("cover_changed")
 
     @GObject.Property(type=int, default=196)
     def pixel_size(self):
@@ -226,6 +236,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
         self._cover_type = value
         self.on_cover_change()
 
+
 class EartagModelExpanderRow(Adw.ExpanderRow):
     """
     Subclass of AdwExpanderRow that automatically fills rows based on
@@ -247,7 +258,7 @@ class EartagModelExpanderRow(Adw.ExpanderRow):
         # this is, after all, a listbox inside, so we can just grab it with
         # get_template_child and use the model binding functions there.
 
-        self.list = self.get_template_child(Adw.ExpanderRow, 'list')
+        self.list = self.get_template_child(Adw.ExpanderRow, "list")
 
     def bind_model(self, *args, **kwargs):
         """See Gtk.ListBox.bind_model"""

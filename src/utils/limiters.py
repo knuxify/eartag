@@ -6,6 +6,7 @@ import re
 
 from .misc import is_float
 
+
 class EartagEntryLimiters(GObject.Object):
     """
     Common input validators for entries. Assumes inheriting object is a
@@ -25,14 +26,15 @@ class EartagEntryLimiters(GObject.Object):
         Call this **AFTER** the super().__init__() call in the inheritant.
         """
         self._limiter_connections = {}
-        self._limiter_connections['destroy'] = \
-            self.connect('destroy', self._break_limiter_connections)
+        self._limiter_connections["destroy"] = self.connect(
+            "destroy", self._break_limiter_connections
+        )
 
     def _break_limiter_connections(self, *args):
-        for conn_type in ('numeric', 'float', 'date'):
+        for conn_type in ("numeric", "float", "date"):
             if conn_type in self._limiter_connections:
                 self.disconnect(self._limiter_connections[conn_type])
-        self.disconnect(self._limiter_connections['destroy'])
+        self.disconnect(self._limiter_connections["destroy"])
         self._limiter_connections = {}
 
     #
@@ -73,7 +75,7 @@ class EartagEntryLimiters(GObject.Object):
         if not text:
             return
         if not text.isdigit():
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            GObject.signal_stop_emission_by_name(entry, "insert-text")
 
     #
     # Float validator: allows digits and one dot.
@@ -112,10 +114,10 @@ class EartagEntryLimiters(GObject.Object):
     def disallow_nonfloat(self, entry, text, length, position, *args):
         if not text:
             return
-        if '.' in text and '.' in entry.get_text():
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
-        if text != '.' and not is_float(text):
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+        if "." in text and "." in entry.get_text():
+            GObject.signal_stop_emission_by_name(entry, "insert-text")
+        if text != "." and not is_float(text):
+            GObject.signal_stop_emission_by_name(entry, "insert-text")
 
     #
     # Date validator: allows YYYYYYYYY..., YYYY-MM or YYYY-MM-DD dates.
@@ -154,18 +156,18 @@ class EartagEntryLimiters(GObject.Object):
         if not text:
             return
         elif not re.match("^[0-9-]*$", text):
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            GObject.signal_stop_emission_by_name(entry, "insert-text")
             return
 
         current_text = entry.get_buffer().get_text()
 
         current_length = len(current_text)
         if current_length + length > 10:
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            GObject.signal_stop_emission_by_name(entry, "insert-text")
             return
 
-        sep_count = (current_text + text).count('-')
+        sep_count = (current_text + text).count("-")
 
         if sep_count > 2:
-            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+            GObject.signal_stop_emission_by_name(entry, "insert-text")
             return

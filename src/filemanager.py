@@ -11,12 +11,16 @@ from .backends import (
     EartagFileMutagenVorbis,
     EartagFileMutagenID3,
     EartagFileMutagenMP4,
-    EartagFileMutagenASF
-    )
+    EartagFileMutagenASF,
+)
 from .backends.file import EartagFile
 from .utils.bgtask import EartagBackgroundTask
-from .dialogs import (EartagRemovalDiscardWarningDialog,
-    EartagLoadingFailureDialog, EartagRenameFailureDialog)
+from .dialogs import (
+    EartagRemovalDiscardWarningDialog,
+    EartagLoadingFailureDialog,
+    EartagRenameFailureDialog,
+)
+
 
 def is_type_bulk(path, types):
     mimetypes_guess = mimetypes.guess_type(path)[0]
@@ -28,25 +32,47 @@ def is_type_bulk(path, types):
 
     return False
 
+
 def eartagfile_from_path(path):
     """Returns an EartagFile subclass for the provided file."""
     if not os.path.exists(path):
         raise ValueError
 
-    if is_type_bulk(path, ('audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/x-wav')):
+    if is_type_bulk(path, ("audio/mp3", "audio/mpeg", "audio/wav", "audio/x-wav")):
         return EartagFileMutagenID3(path)
-    elif is_type_bulk(path, ('audio/flac', 'audio/ogg', 'application/ogg', 'application/x-ogg',
-            'audio/x-flac', 'audio/x-vorbis+ogg')):
+    elif is_type_bulk(
+        path,
+        (
+            "audio/flac",
+            "audio/ogg",
+            "application/ogg",
+            "application/x-ogg",
+            "audio/x-flac",
+            "audio/x-vorbis+ogg",
+        ),
+    ):
         return EartagFileMutagenVorbis(path)
-    elif is_type_bulk(path, ('audio/x-m4a', 'audio/aac', 'audio/mp4', 'audio/x-mpeg',
-            'audio/mpeg', 'video/mp4')):
+    elif is_type_bulk(
+        path,
+        (
+            "audio/x-m4a",
+            "audio/aac",
+            "audio/mp4",
+            "audio/x-mpeg",
+            "audio/mpeg",
+            "video/mp4",
+        ),
+    ):
         return EartagFileMutagenMP4(path)
-    elif is_type_bulk(path, ('audio/x-ms-wma', 'audio/wma', 'video/x-ms-asf')):
+    elif is_type_bulk(path, ("audio/x-ms-wma", "audio/wma", "video/x-ms-asf")):
         return EartagFileMutagenASF(path)
 
     mimetypes_guess = mimetypes.guess_type(path)[0]
     magic_guess = magic.from_file(path, mime=True)
-    raise ValueError(f"Unsupported file format for file {path} (mimetype: {mimetypes_guess} / {magic_guess})") # noqa: E501
+    raise ValueError(
+        f"Unsupported file format for file {path} (mimetype: {mimetypes_guess} / {magic_guess})"
+    )  # noqa: E501
+
 
 class EartagFileManager(GObject.Object):
     """Contains information about the currently loaded files."""
@@ -90,20 +116,22 @@ class EartagFileManager(GObject.Object):
                 traceback.print_exc()
                 file_basename = os.path.basename(file.path)
                 self.error_dialog = Adw.MessageDialog(
-                                        modal=True,
-                                        transient_for=self.window,
-                                        heading=_("Failed to save file"),
-                                        body=_("Could not save file {f}. Check the logs for more information.").format(f=file_basename) # noqa: E501
+                    modal=True,
+                    transient_for=self.window,
+                    heading=_("Failed to save file"),
+                    body=_(
+                        "Could not save file {f}. Check the logs for more information."
+                    ).format(
+                        f=file_basename
+                    ),  # noqa: E501
                 )
                 # TRANSLATORS: "Okay" button in the "failed to save file" dialog
                 self.error_dialog.add_response("ok", _("OK"))
-                self.error_dialog.connect('response', self.close_dialog)
+                self.error_dialog.connect("response", self.close_dialog)
                 self.error_dialog.show()
                 return False
 
-        self.window.toast_overlay.add_toast(
-            Adw.Toast.new(_("Saved changes to files"))
-        )
+        self.window.toast_overlay.add_toast(Adw.Toast.new(_("Saved changes to files")))
         return True
 
     def update_modified_status(self, file, *args):
@@ -113,7 +141,7 @@ class EartagFileManager(GObject.Object):
         elif not file.is_modified and file.id in self._modified_files:
             self._modified_files.remove(file.id)
 
-        self.set_property('is_modified', bool(self._modified_files))
+        self.set_property("is_modified", bool(self._modified_files))
 
     def update_error_status(self, file, *args):
         """Responsible for setting the has_error property."""
@@ -122,7 +150,7 @@ class EartagFileManager(GObject.Object):
         elif not file.has_error and file.id in self._error_files:
             self._error_files.remove(file.id)
 
-        self.set_property('has_error', bool(self._error_files))
+        self.set_property("has_error", bool(self._error_files))
 
     #
     # Loading
@@ -135,7 +163,7 @@ class EartagFileManager(GObject.Object):
         """
         # self.load_task is set up in the init functions
         self.load_task.stop()
-        self.load_task.reset(kwargs={'paths': paths, 'mode': mode})
+        self.load_task.reset(kwargs={"paths": paths, "mode": mode})
 
         if mode == self.LOAD_OVERWRITE and self.files:
             self.remove_all()
@@ -162,8 +190,8 @@ class EartagFileManager(GObject.Object):
             return False
 
         self._connections[_file.id] = (
-            _file.connect('modified', self.update_modified_status),
-            _file.connect('notify::has-error', self.update_error_status)
+            _file.connect("modified", self.update_modified_status),
+            _file.connect("notify::has-error", self.update_error_status),
         )
 
         if not self.selected_files:
@@ -195,8 +223,13 @@ class EartagFileManager(GObject.Object):
                 return False
 
             if not self._load_single_file(path):
-                GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
-                            priority=GLib.PRIORITY_HIGH_IDLE + 30)
+                GLib.idle_add(
+                    self.files.splice,
+                    0,
+                    0,
+                    self._files_buffer,
+                    priority=GLib.PRIORITY_HIGH_IDLE + 30,
+                )
                 self._files_buffer = []
 
                 task.emit_task_done()
@@ -215,13 +248,20 @@ class EartagFileManager(GObject.Object):
             if file_count == 1:
                 unwritable_msg = _("Opened file is read-only; changes cannot be saved")
             else:
-                unwritable_msg = _("Some of the opened files are read-only; changes cannot be saved") # noqa: E501
-            GLib.idle_add(self.window.toast_overlay.add_toast,
-                Adw.Toast.new(unwritable_msg)
+                unwritable_msg = _(
+                    "Some of the opened files are read-only; changes cannot be saved"
+                )  # noqa: E501
+            GLib.idle_add(
+                self.window.toast_overlay.add_toast, Adw.Toast.new(unwritable_msg)
             )
 
-        GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
-                      priority=GLib.PRIORITY_HIGH_IDLE + 30)
+        GLib.idle_add(
+            self.files.splice,
+            0,
+            0,
+            self._files_buffer,
+            priority=GLib.PRIORITY_HIGH_IDLE + 30,
+        )
         first_file = None
         if self._files_buffer and mode == self.LOAD_INSERT:
             first_file = self._files_buffer[0]
@@ -232,13 +272,15 @@ class EartagFileManager(GObject.Object):
         if mode == self.LOAD_INSERT:
             if len(self.selected_files) < 2 and first_file:
                 self.selected_files = [first_file]
-                GLib.idle_add(self.emit, 'selection-changed', priority=GLib.PRIORITY_HIGH_IDLE)
-                GLib.idle_add(self.emit, 'selection-override')
+                GLib.idle_add(
+                    self.emit, "selection-changed", priority=GLib.PRIORITY_HIGH_IDLE
+                )
+                GLib.idle_add(self.emit, "selection-override")
         else:
-            GLib.idle_add(self.emit, 'select-first')
+            GLib.idle_add(self.emit, "select-first")
 
         if mode == self.LOAD_OVERWRITE:
-            GLib.idle_add(self.emit, 'refresh-needed')
+            GLib.idle_add(self.emit, "refresh-needed")
 
     #
     # Removal
@@ -321,13 +363,13 @@ class EartagFileManager(GObject.Object):
         # up with more infinite emit loops than it's worth...
 
         if self._selection_removed:
-            self.emit('selection-override')
+            self.emit("selection-override")
 
         elif not self.selected_files and self.files:
-            self.emit('select-first')
+            self.emit("select-first")
 
-        self.set_property('is_modified', bool(self._modified_files))
-        self.set_property('has_error', bool(self._error_files))
+        self.set_property("is_modified", bool(self._modified_files))
+        self.set_property("has_error", bool(self._error_files))
         self.refresh_state()
 
         self._selection_removed = False
@@ -343,11 +385,11 @@ class EartagFileManager(GObject.Object):
 
         self._modified_files = []
         self._error_files = []
-        self.set_property('is_modified', bool(self._modified_files))
-        self.set_property('has_error', bool(self._error_files))
+        self.set_property("is_modified", bool(self._modified_files))
+        self.set_property("has_error", bool(self._error_files))
 
         self.refresh_state()
-        self.emit('selection-override')
+        self.emit("selection-override")
 
         return True
 
@@ -382,7 +424,7 @@ class EartagFileManager(GObject.Object):
                 while os.path.exists(new_path):
                     i += 1
                     path_split = os.path.splitext(_orig_new_path)
-                    new_path = path_split[0] + f' ({i})' + path_split[1]
+                    new_path = path_split[0] + f" ({i})" + path_split[1]
 
             try:
                 file.props.path = new_path
@@ -390,9 +432,7 @@ class EartagFileManager(GObject.Object):
                 self._is_renaming_multiple_files = False
 
                 traceback.print_exc()
-                GLib.idle_add(
-                    EartagRenameFailureDialog(self.window, old_path).present
-                )
+                GLib.idle_add(EartagRenameFailureDialog(self.window, old_path).present)
 
                 task.emit_task_done()
                 self.failed = True
@@ -453,5 +493,5 @@ class EartagFileManager(GObject.Object):
 
     def refresh_state(self):
         """Convenience function to refresh the state of the UI"""
-        self.emit('refresh-needed')
-        self.emit('selection-changed')
+        self.emit("refresh-needed")
+        self.emit("selection-changed")

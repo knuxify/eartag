@@ -6,44 +6,65 @@ from src.backends.file import EartagFile, CoverType
 import pytest
 import os
 
+
 # Since we don't have a config in the tests, we have to simulate one
 class TestConfig(dict):
     def get_enum(self, name):
-        if name == 'musicbrainz-cover-size':
+        if name == "musicbrainz-cover-size":
             return 250
 
+
 config = TestConfig()
-config['acoustid-confidence-treshold'] = 85
-config['musicbrainz-confidence-treshold'] = 85
+config["acoustid-confidence-treshold"] = 85
+config["musicbrainz-confidence-treshold"] = 85
+
 
 def get_version_from_meson():
     # this is the worst possible way to do this
-    meson_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'meson.build')
+    meson_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), "meson.build")
     with open(meson_file) as meson_data:
-        version = meson_data.read().split('\n')[1].split(':')[1][2:-2]
+        version = meson_data.read().split("\n")[1].split(":")[1][2:-2]
     return version
+
 
 VERSION = get_version_from_meson()
 ACOUSTID_API_KEY = "b'Kqy8kqI8"
 
+
 class EartagDummyFile(EartagFile):
     """Dummy backend for tests."""
-    __gtype_name__ = 'EartagDummyFile'
+
+    __gtype_name__ = "EartagDummyFile"
 
     _supports_album_covers = True
     _supports_full_dates = True
 
     supported_extra_tags = (
-        'bpm', 'compilation', 'composer', 'copyright', 'encodedby',
-        'mood', 'conductor', 'arranger', 'discnumber', 'publisher',
-        'isrc', 'language', 'discsubtitle', 'url',
-
-        'albumartistsort', 'albumsort', 'composersort', 'artistsort',
-        'titlesort',
-
-        'musicbrainz_artistid', 'musicbrainz_albumid',
-        'musicbrainz_albumartistid', 'musicbrainz_trackid',
-        'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
+        "bpm",
+        "compilation",
+        "composer",
+        "copyright",
+        "encodedby",
+        "mood",
+        "conductor",
+        "arranger",
+        "discnumber",
+        "publisher",
+        "isrc",
+        "language",
+        "discsubtitle",
+        "url",
+        "albumartistsort",
+        "albumsort",
+        "composersort",
+        "artistsort",
+        "titlesort",
+        "musicbrainz_artistid",
+        "musicbrainz_albumid",
+        "musicbrainz_albumartistid",
+        "musicbrainz_trackid",
+        "musicbrainz_recordingid",
+        "musicbrainz_releasegroupid",
     )
 
     def __init__(self, path):
@@ -57,7 +78,7 @@ class EartagDummyFile(EartagFile):
         self.mark_as_unmodified()
 
     def get_tag(self, tag_name):
-        return self.tags[tag_name] if tag_name in self.tags else ''
+        return self.tags[tag_name] if tag_name in self.tags else ""
 
     def set_tag(self, tag_name, value):
         self.tags[tag_name] = value
@@ -87,8 +108,9 @@ class EartagDummyFile(EartagFile):
         else:
             raise ValueError
 
+
 @pytest.fixture
 def dummy_file():
     # This file is not used for the backend, but we set it just in case
-    file = os.path.join(os.path.dirname(__file__), 'backend', 'examples', 'example.mp3')
+    file = os.path.join(os.path.dirname(__file__), "backend", "examples", "example.mp3")
     return EartagDummyFile(file)

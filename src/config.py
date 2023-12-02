@@ -9,6 +9,7 @@ from . import APP_ID
 
 config = Gio.Settings.new(APP_ID)
 
+
 class DLCoverSize(IntEnum):
     NO_DOWNLOAD = 0
     _250PX = 250

@@ -5,6 +5,7 @@ from gi.repository import GObject, GLib
 import threading
 import time
 
+
 class EartagBackgroundTask(GObject.Object):
     """
     Convenience class for creating tasks that run in the background
@@ -20,6 +21,7 @@ class EartagBackgroundTask(GObject.Object):
     Remember to pass all code that interacts with GTK through
     GLib.idle_add().
     """
+
     def __init__(self, target, *args, **kwargs):
         super().__init__()
         self._progress = 0
@@ -46,23 +48,16 @@ class EartagBackgroundTask(GObject.Object):
         self.failed = False
         if args and kwargs:
             self.thread = threading.Thread(
-                target=self.target, daemon=True,
-                args=args, kwargs=kwargs
+                target=self.target, daemon=True, args=args, kwargs=kwargs
             )
         elif args:
-            self.thread = threading.Thread(
-                target=self.target, daemon=True,
-                args=args
-            )
+            self.thread = threading.Thread(target=self.target, daemon=True, args=args)
         elif kwargs:
             self.thread = threading.Thread(
-                target=self.target, daemon=True,
-                kwargs=kwargs
+                target=self.target, daemon=True, kwargs=kwargs
             )
         else:
-            self.thread = threading.Thread(
-                target=self.target, daemon=True
-            )
+            self.thread = threading.Thread(target=self.target, daemon=True)
 
     @GObject.Property(type=float, minimum=0, maximum=1)
     def progress(self):
@@ -98,7 +93,7 @@ class EartagBackgroundTask(GObject.Object):
         around GLib.idle_add. This is the preferred way for users to set the
         progress variable.
         """
-        GLib.idle_add(self.set_property, 'progress', value)
+        GLib.idle_add(self.set_property, "progress", value)
 
     def increment_progress(self, value):
         """
@@ -114,4 +109,4 @@ class EartagBackgroundTask(GObject.Object):
         GLib.idle_add. This is the preferred way for users to emit the
         task-done signal.
         """
-        GLib.idle_add(self.emit, 'task-done')
+        GLib.idle_add(self.emit, "task-done")

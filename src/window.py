@@ -5,7 +5,7 @@ from .config import config, DLCoverSize
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
 from .musicbrainz import MusicBrainzRelease
-from .fileview import EartagFileView # noqa: F401
+from .fileview import EartagFileView  # noqa: F401
 from .filemanager import EartagFileManager
 from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
 from .rename import EartagRenameDialog
@@ -17,9 +17,10 @@ from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
 import gettext
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/nofile.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/nofile.ui")
 class EartagNoFile(Adw.Bin):
-    __gtype_name__ = 'EartagNoFile'
+    __gtype_name__ = "EartagNoFile"
 
     nofile_status = Gtk.Template.Child()
     open_file = Gtk.Template.Child()
@@ -27,7 +28,7 @@ class EartagNoFile(Adw.Bin):
     def __init__(self):
         super().__init__()
         if DEVEL:
-            self.nofile_status.set_icon_name('app.drey.EarTag.Devel')
+            self.nofile_status.set_icon_name("app.drey.EarTag.Devel")
 
     def grab_button_focus(self, *args):
         self.open_file.grab_focus()
@@ -44,9 +45,10 @@ class EartagNoFile(Adw.Bin):
         window.open_mode = EartagFileManager.LOAD_OVERWRITE
         window.show_file_chooser(folders=True)
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/window.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/window.ui")
 class EartagWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'EartagWindow'
+    __gtype_name__ = "EartagWindow"
 
     save_button = Gtk.Template.Child()
     window_title = Gtk.Template.Child()
@@ -95,10 +97,10 @@ class EartagWindow(Adw.ApplicationWindow):
     loading_progressbar_revealer = Gtk.Template.Child()
 
     def __init__(self, application, paths=None, devel=False):
-        super().__init__(application=application, title='Ear Tag')
+        super().__init__(application=application, title="Ear Tag")
 
         if devel:
-            self.add_css_class('devel')
+            self.add_css_class("devel")
 
         self.file_chooser = Gtk.FileDialog(modal=True)
         self._cancellable = Gio.Cancellable.new()
@@ -110,34 +112,43 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
-        self.file_manager.connect('notify::is-modified', self.toggle_save_button)
-        self.file_manager.connect('notify::has-error', self.toggle_save_button)
-        self.file_manager.files.connect('items-changed', self.toggle_fileview)
-        self.file_manager.connect('refresh-needed', self.update_state)
-        self.file_manager.connect('selection-changed', self.update_state)
-        self.file_manager.load_task.connect('notify::progress', self.update_loading_progress)
+        self.file_manager.connect("notify::is-modified", self.toggle_save_button)
+        self.file_manager.connect("notify::has-error", self.toggle_save_button)
+        self.file_manager.files.connect("items-changed", self.toggle_fileview)
+        self.file_manager.connect("refresh-needed", self.update_state)
+        self.file_manager.connect("selection-changed", self.update_state)
+        self.file_manager.load_task.connect(
+            "notify::progress", self.update_loading_progress
+        )
         self.search_bar.bind_property(
-            'search-mode-enabled',
-            self.sidebar_search_button, 'active',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            "search-mode-enabled",
+            self.sidebar_search_button,
+            "active",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.select_multiple_button.bind_property('active', self, 'selection-mode',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        self.select_multiple_button.bind_property(
+            "active",
+            self,
+            "selection-mode",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.select_multiple_button.bind_property('active', self.sidebar_action_bar, 'revealed',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        self.select_multiple_button.bind_property(
+            "active",
+            self.sidebar_action_bar,
+            "revealed",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
 
-        self.connect('close-request', self.on_close_request)
+        self.connect("close-request", self.on_close_request)
 
         self.drop_target = Gtk.DropTarget(
             actions=Gdk.DragAction.COPY,
-            formats=Gdk.ContentFormats.new_for_gtype(Gdk.FileList)
-            )
-        self.drop_target.connect('accept', self.on_drag_accept)
-        self.drop_target.connect('enter', self.on_drag_hover)
-        self.drop_target.connect('leave', self.on_drag_unhover)
-        self.drop_target.connect('drop', self.on_drag_drop)
+            formats=Gdk.ContentFormats.new_for_gtype(Gdk.FileList),
+        )
+        self.drop_target.connect("accept", self.on_drag_accept)
+        self.drop_target.connect("enter", self.on_drag_hover)
+        self.drop_target.connect("leave", self.on_drag_unhover)
+        self.drop_target.connect("drop", self.on_drag_drop)
         self.add_controller(self.drop_target)
 
         self.toggle_fileview()
@@ -149,12 +160,18 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.search_bar.set_key_capture_widget(self)
         self.search_bar.connect_entry(self.search_entry)
-        self.search_entry.connect('search-changed', self.search_changed)
+        self.search_entry.connect("search-changed", self.search_changed)
 
-        self.file_manager.connect('refresh-needed', self.refresh_actionbar_button_state)
-        self.file_manager.files.connect('items-changed', self.refresh_actionbar_button_state)
-        self.file_manager.connect('selection-changed', self.refresh_actionbar_button_state)
-        self.file_manager.load_task.connect('notify::progress', self.update_loading_progressbar)
+        self.file_manager.connect("refresh-needed", self.refresh_actionbar_button_state)
+        self.file_manager.files.connect(
+            "items-changed", self.refresh_actionbar_button_state
+        )
+        self.file_manager.connect(
+            "selection-changed", self.refresh_actionbar_button_state
+        )
+        self.file_manager.load_task.connect(
+            "notify::progress", self.update_loading_progressbar
+        )
         self.refresh_actionbar_button_state()
 
         if paths:
@@ -176,10 +193,12 @@ class EartagWindow(Adw.ApplicationWindow):
                 self.get_application().identify_action.set_enabled(False)
             except AttributeError:
                 return
-            self.set_title('Ear Tag')
-            self.window_title.set_subtitle('')
+            self.set_title("Ear Tag")
+            self.window_title.set_subtitle("")
             if self.file_manager.files:
-                self.file_view.content_stack.set_visible_child(self.file_view.select_file)
+                self.file_view.content_stack.set_visible_child(
+                    self.file_view.select_file
+                )
 
             self.run_sort()
             return False
@@ -192,12 +211,12 @@ class EartagWindow(Adw.ApplicationWindow):
         if len(files) == 1:
             file = files[0]
             file_basename = os.path.basename(file.path)
-            self.set_title('{f} — Ear Tag'.format(f=file_basename))
+            self.set_title("{f} — Ear Tag".format(f=file_basename))
             self.window_title.set_subtitle(file_basename)
         else:
             # TRANSLATOR: Placeholder for file path when multiple files are selected
-            _multiple_files = _('(Multiple files selected)')
-            self.set_title('{f} — Ear Tag'.format(f=_multiple_files))
+            _multiple_files = _("(Multiple files selected)")
+            self.set_title("{f} — Ear Tag".format(f=_multiple_files))
             self.window_title.set_subtitle(_multiple_files)
 
         try:
@@ -216,7 +235,9 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.container_stack.set_visible_child(self.split_view)
-            self.sidebar_headerbar.set_sensitive(self.file_manager.load_task.progress in (0, 1))
+            self.sidebar_headerbar.set_sensitive(
+                self.file_manager.load_task.progress in (0, 1)
+            )
             self.sidebar_list_stack.set_visible_child(self.sidebar_list_scroll)
         else:
             self.container_stack.set_visible_child(self.no_file)
@@ -269,10 +290,10 @@ class EartagWindow(Adw.ApplicationWindow):
 
         if folders:
             title = _("Open Folder")
-            self.file_chooser_mode = 'folders'
+            self.file_chooser_mode = "folders"
         else:
             title = _("Open File")
-            self.file_chooser_mode = 'files'
+            self.file_chooser_mode = "files"
 
         self.file_chooser.set_title(title)
 
@@ -282,18 +303,23 @@ class EartagWindow(Adw.ApplicationWindow):
             self.file_chooser.set_filters(_filters)
 
         if folders:
-            self.file_chooser.select_multiple_folders(self, self._cancellable,
-                self.open_file_from_dialog)
+            self.file_chooser.select_multiple_folders(
+                self, self._cancellable, self.open_file_from_dialog
+            )
         else:
-            self.file_chooser.open_multiple(self, self._cancellable,
-                self.open_file_from_dialog)
+            self.file_chooser.open_multiple(
+                self, self._cancellable, self.open_file_from_dialog
+            )
 
     def open_files(self, paths):
         """
         Loads the files with the given paths. Note that this does not perform
         any validation; caller functions are meant to check for this manually.
         """
-        if self.open_mode != EartagFileManager.LOAD_INSERT and self.file_manager._is_modified:
+        if (
+            self.open_mode != EartagFileManager.LOAD_INSERT
+            and self.file_manager._is_modified
+        ):
             self.discard_warning = EartagDiscardWarningDialog(self, paths)
             self.discard_warning.show()
             return False
@@ -306,9 +332,9 @@ class EartagWindow(Adw.ApplicationWindow):
         selected in the dialog.
         """
         try:
-            if self.file_chooser_mode == 'folders':
+            if self.file_chooser_mode == "folders":
                 response = dialog.select_multiple_folders_finish(result)
-            elif self.file_chooser_mode == 'files':
+            elif self.file_chooser_mode == "files":
                 response = dialog.open_multiple_finish(result)
             else:
                 self.file_chooser_mode = None
@@ -340,11 +366,13 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def toggle_save_button(self, *args):
         if self.file_manager.has_error:
-            self.save_button.set_tooltip_text(_("Some of the opened files have invalid values; cannot save")) # noqa: E501
+            self.save_button.set_tooltip_text(
+                _("Some of the opened files have invalid values; cannot save")
+            )  # noqa: E501
         else:
-            self.save_button.set_tooltip_text('')
+            self.save_button.set_tooltip_text("")
         self.save_button.set_sensitive(
-                self.file_manager.is_modified and not self.file_manager.has_error
+            self.file_manager.is_modified and not self.file_manager.has_error
         )
 
     @Gtk.Template.Callback()
@@ -372,8 +400,11 @@ class EartagWindow(Adw.ApplicationWindow):
         self.show_file_chooser()
 
     def on_close_request(self, *args):
-        if not self.force_close and list(self.file_manager.files) and \
-                self.file_manager._is_modified:
+        if (
+            not self.force_close
+            and list(self.file_manager.files)
+            and self.file_manager._is_modified
+        ):
             self.close_request_dialog = EartagCloseWarningDialog(self)
             self.close_request_dialog.present()
             return True
@@ -411,8 +442,10 @@ class EartagWindow(Adw.ApplicationWindow):
         """Emitted when the search has changed."""
         self.sidebar_file_list.filter.changed(Gtk.FilterChange.DIFFERENT)
 
-        if self.sidebar_file_list.filter_model.get_n_items() == 0 and \
-                self.file_manager.files.get_n_items() > 0:
+        if (
+            self.sidebar_file_list.filter_model.get_n_items() == 0
+            and self.file_manager.files.get_n_items() > 0
+        ):
             self.sidebar_list_stack.set_visible_child(self.no_results)
         else:
             self.toggle_fileview()
@@ -421,9 +454,14 @@ class EartagWindow(Adw.ApplicationWindow):
         # TODO: some weird bug where a null selected value is read as 4294967295
         # (looks like someone forgot to make an unsigned int signed...)
         has_no_selected = selected < 0 or selected >= 4294967295
-        if not self.selection_mode and has_no_selected and self.file_manager.selected_files:
-            new_selection = find_in_model(self.sidebar_file_list.filter_model,
-                self.file_manager.selected_files[0])
+        if (
+            not self.selection_mode
+            and has_no_selected
+            and self.file_manager.selected_files
+        ):
+            new_selection = find_in_model(
+                self.sidebar_file_list.filter_model, self.file_manager.selected_files[0]
+            )
             if new_selection > -1:
                 self.sidebar_file_list.selection_model.set_selected(new_selection)
 
@@ -439,8 +477,10 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def select_all(self, *args):
-        if self.sidebar_file_list.all_selected() and \
-                len(self.file_manager.selected_files) != 1:
+        if (
+            self.sidebar_file_list.all_selected()
+            and len(self.file_manager.selected_files) != 1
+        ):
             self.sidebar_file_list.unselect_all()
         else:
             self.sidebar_file_list.select_all()
@@ -452,7 +492,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def refresh_actionbar_button_state(self, *args):
         if not self.file_manager.files or not self.selection_mode:
-            selected_message = ''
+            selected_message = ""
             self.sidebar_action_bar.set_sensitive(False)
             self.sidebar_action_bar.set_revealed(False)
         else:
@@ -460,12 +500,12 @@ class EartagWindow(Adw.ApplicationWindow):
             self.sidebar_action_bar.set_revealed(True)
             selected_file_count = len(self.file_manager.selected_files)
             if selected_file_count == 0:
-                selected_message = _('No files selected')
+                selected_message = _("No files selected")
                 self.remove_selected_button.set_sensitive(False)
             else:
                 selected_message = gettext.ngettext(
-                    "1 file selected", "{n} files selected", selected_file_count).\
-                        format(n=selected_file_count)
+                    "1 file selected", "{n} files selected", selected_file_count
+                ).format(n=selected_file_count)
                 self.remove_selected_button.set_sensitive(True)
 
         self.selected_message_label.set_label(selected_message)
@@ -483,7 +523,10 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def select_next(self, *args):
         """Selects the next item on the sidebar."""
-        if self.sidebar_file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
+        if (
+            self.sidebar_file_list.selection_model.get_n_items() <= 1
+            or self.selection_mode
+        ):
             return
         selected = self.sidebar_file_list.selection_model.get_selected()
         if selected + 1 >= self.sidebar_file_list.selection_model.get_n_items():
@@ -493,7 +536,10 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def select_previous(self, *args):
         """Selects the previous item on the sidebar."""
-        if self.sidebar_file_list.selection_model.get_n_items() <= 1 or self.selection_mode:
+        if (
+            self.sidebar_file_list.selection_model.get_n_items() <= 1
+            or self.selection_mode
+        ):
             return
         selected = self.sidebar_file_list.selection_model.get_selected()
         if selected - 1 >= 0:
@@ -523,9 +569,10 @@ class EartagWindow(Adw.ApplicationWindow):
         else:
             vadjust.set_value(vadjust.get_upper())
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/settings.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/settings.ui")
 class EartagSettingsWindow(Adw.PreferencesWindow):
-    __gtype_name__ = 'EartagSettingsWindow'
+    __gtype_name__ = "EartagSettingsWindow"
 
     mb_confidence_spinbutton = Gtk.Template.Child()
     aid_confidence_spinbutton = Gtk.Template.Child()
@@ -535,32 +582,37 @@ class EartagSettingsWindow(Adw.PreferencesWindow):
         super().__init__(transient_for=parent, modal=True)
 
         config.bind(
-            'musicbrainz-confidence-treshold',
-            self.mb_confidence_spinbutton, 'value',
-            flags=Gio.SettingsBindFlags.DEFAULT
+            "musicbrainz-confidence-treshold",
+            self.mb_confidence_spinbutton,
+            "value",
+            flags=Gio.SettingsBindFlags.DEFAULT,
         )
         config.bind(
-            'acoustid-confidence-treshold',
-            self.aid_confidence_spinbutton, 'value',
-            flags=Gio.SettingsBindFlags.DEFAULT
+            "acoustid-confidence-treshold",
+            self.aid_confidence_spinbutton,
+            "value",
+            flags=Gio.SettingsBindFlags.DEFAULT,
         )
 
-        self.bind_property('cover-size-setting', self.cover_size_comborow, 'selected',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+        self.bind_property(
+            "cover-size-setting",
+            self.cover_size_comborow,
+            "selected",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
 
     @GObject.Property(type=int)
     def cover_size_setting(self):
-        if config.get_enum('musicbrainz-cover-size') == 0:
+        if config.get_enum("musicbrainz-cover-size") == 0:
             return 0
-        elif config.get_enum('musicbrainz-cover-size') == 250:
+        elif config.get_enum("musicbrainz-cover-size") == 250:
             return 1
-        elif config.get_enum('musicbrainz-cover-size') == 500:
+        elif config.get_enum("musicbrainz-cover-size") == 500:
             return 2
-        elif config.get_enum('musicbrainz-cover-size') == 1200:
+        elif config.get_enum("musicbrainz-cover-size") == 1200:
             return 3
         return 4
 
     @cover_size_setting.setter
     def cover_size_setting(self, value):
-        config.set_enum('musicbrainz-cover-size', int(DLCoverSize.index_to_item(value)))
+        config.set_enum("musicbrainz-cover-size", int(DLCoverSize.index_to_item(value)))

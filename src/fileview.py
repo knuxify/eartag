@@ -5,9 +5,10 @@ from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES, CoverType
 from .utils import get_readable_length
 from .utils.validation import is_valid_image_file
 from .utils.widgets import EartagAlbumCoverImage, EartagPopoverButton  # noqa: F401
-from .tagentry import ( # noqa: F401
-    EartagTagEntry, EartagTagEntryRow,
-    EartagTagEditableLabel
+from .tagentry import (  # noqa: F401
+    EartagTagEntry,
+    EartagTagEntryRow,
+    EartagTagEditableLabel,
 )
 from . import APP_GRESOURCE_PATH
 
@@ -19,9 +20,10 @@ import mimetypes
 import shutil
 import os.path
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui")
 class EartagAlbumCoverButton(Adw.Bin):
-    __gtype_name__ = 'EartagAlbumCoverButton'
+    __gtype_name__ = "EartagAlbumCoverButton"
 
     button = Gtk.Template.Child()
     cover_image = Gtk.Template.Child()
@@ -42,37 +44,43 @@ class EartagAlbumCoverButton(Adw.Bin):
         self._cover_type = CoverType.FRONT
         self._remove_undo_buffer = {}
 
-        self.connect('destroy', self.on_destroy)
+        self.connect("destroy", self.on_destroy)
         self.drop_target = Gtk.DropTarget(
             actions=Gdk.DragAction.COPY,
-            formats=Gdk.ContentFormats.new_for_gtype(Gio.File)
-            )
+            formats=Gdk.ContentFormats.new_for_gtype(Gio.File),
+        )
 
-        self.drop_target.connect('accept', self.on_drag_accept)
-        self.drop_target.connect('enter', self.on_drag_hover)
-        self.drop_target.connect('leave', self.on_drag_unhover)
-        self.drop_target.connect('drop', self.on_drag_drop)
+        self.drop_target.connect("accept", self.on_drag_accept)
+        self.drop_target.connect("enter", self.on_drag_hover)
+        self.drop_target.connect("leave", self.on_drag_unhover)
+        self.drop_target.connect("drop", self.on_drag_drop)
         self.add_controller(self.drop_target)
 
         self.hover_controller = Gtk.EventControllerMotion.new()
-        self.hover_controller.connect('enter', self.on_hover)
-        self.hover_controller.connect('leave', self.on_unhover)
+        self.hover_controller.connect("enter", self.on_hover)
+        self.hover_controller.connect("leave", self.on_unhover)
         self.add_controller(self.hover_controller)
 
-        self.front_toggle.connect('notify::active', self.update_from_switcher)
+        self.front_toggle.connect("notify::active", self.update_from_switcher)
         self.front_toggle.set_active(True)
 
-        self.cover_image.connect('cover-changed', self.update_coverbutton_save_availability)
-        self.cover_image.connect('notify::cover-type', self.update_coverbutton_save_availability)
-        self.cover_image.connect('notify::is-empty', self.update_coverbutton_save_availability)
+        self.cover_image.connect(
+            "cover-changed", self.update_coverbutton_save_availability
+        )
+        self.cover_image.connect(
+            "notify::cover-type", self.update_coverbutton_save_availability
+        )
+        self.cover_image.connect(
+            "notify::is-empty", self.update_coverbutton_save_availability
+        )
 
-        self.bind_property('cover-type', self.cover_image, 'cover-type')
+        self.bind_property("cover-type", self.cover_image, "cover-type")
 
         # Register actions for popover menu
-        self.install_action('albumcoverbutton.load', None, self.show_cover_file_chooser)
-        self.install_action('albumcoverbutton.save', None, self.save_cover)
-        self.action_set_enabled('albumcoverbutton.save', False)
-        self.install_action('albumcoverbutton.remove', None, self.remove_cover)
+        self.install_action("albumcoverbutton.load", None, self.show_cover_file_chooser)
+        self.install_action("albumcoverbutton.save", None, self.save_cover)
+        self.action_set_enabled("albumcoverbutton.save", False)
+        self.install_action("albumcoverbutton.remove", None, self.remove_cover)
 
         self.files = []
 
@@ -101,11 +109,11 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def update_coverbutton_save_availability(self, *args):
         if self.cover_type == CoverType.FRONT:
-            cover = 'front_cover'
+            cover = "front_cover"
         else:
-            cover = 'back_cover'
+            cover = "back_cover"
 
-        self.action_set_enabled('albumcoverbutton.save', not self.cover_image.is_empty)
+        self.action_set_enabled("albumcoverbutton.save", not self.cover_image.is_empty)
 
         enable_remove = False
         for file in self.files:
@@ -113,7 +121,7 @@ class EartagAlbumCoverButton(Adw.Bin):
                 enable_remove = True
             break
 
-        self.action_set_enabled('albumcoverbutton.remove', enable_remove)
+        self.action_set_enabled("albumcoverbutton.remove", enable_remove)
 
     def bind_to_file(self, file):
         self.files.append(file)
@@ -167,8 +175,9 @@ class EartagAlbumCoverButton(Adw.Bin):
                     break
             if not covers_different:
                 self.cover_image.mark_as_nonempty()
-                if self.files[0].supports_album_covers and \
-                        self.files[0].get_cover(self.cover_type):
+                if self.files[0].supports_album_covers and self.files[0].get_cover(
+                    self.cover_type
+                ):
                     self.cover_image.bind_to_file(self.files[0])
 
         elif len(self.files) == 1:
@@ -180,18 +189,16 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def show_cover_file_chooser(self, *args):
         """Shows the file chooser."""
-        file_chooser = Gtk.FileDialog(
-            title=_("Select Album Cover Image"),
-            modal=True
-        )
+        file_chooser = Gtk.FileDialog(title=_("Select Album Cover Image"), modal=True)
         _cancellable = Gio.Cancellable.new()
 
         _filters = Gio.ListStore.new(Gtk.FileFilter)
         _filters.append(self.image_file_filter)
         file_chooser.set_filters(_filters)
 
-        file_chooser.open(self.get_native(), _cancellable,
-            self.open_cover_file_from_dialog)
+        file_chooser.open(
+            self.get_native(), _cancellable, self.open_cover_file_from_dialog
+        )
 
     def save_cover(self, *args):
         """Opens a file dialog to have the cover art to a file."""
@@ -208,8 +215,12 @@ class EartagAlbumCoverButton(Adw.Bin):
         target_folder, target_filename = os.path.split(self.files[0].path)
         target_filename = os.path.splitext(target_filename)[0] + cover_extension
 
-        file_chooser = Gtk.FileDialog(title=_("Save Album Cover To…"), modal=True,
-            initial_folder=Gio.File.new_for_path(target_folder), initial_name=target_filename)
+        file_chooser = Gtk.FileDialog(
+            title=_("Save Album Cover To…"),
+            modal=True,
+            initial_folder=Gio.File.new_for_path(target_folder),
+            initial_name=target_filename,
+        )
         _cancellable = Gio.Cancellable.new()
 
         file_chooser.save(self.get_native(), _cancellable, self._save_cover_response)
@@ -241,12 +252,12 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def remove_cover(self, *args):
         self._remove_undo_budder = {}
-        self._remove_undo_buffer['type'] = self.cover_type
+        self._remove_undo_buffer["type"] = self.cover_type
 
         if self.cover_type == CoverType.FRONT:
-            cover_path_prop = 'front_cover_path'
+            cover_path_prop = "front_cover_path"
         elif self.cover_type == CoverType.BACK:
-            cover_path_prop = 'back_cover_path'
+            cover_path_prop = "back_cover_path"
 
         for file in self.files:
             self._remove_undo_buffer[file.id] = file.get_property(cover_path_prop)
@@ -254,25 +265,24 @@ class EartagAlbumCoverButton(Adw.Bin):
             # call delete_cover) we set the underlying property instead.
             # That was we can still recover the tempfile-based covers if the
             # remove gets undone. We call delete_cover later on.
-            setattr(file, '_' + cover_path_prop, '')
+            setattr(file, "_" + cover_path_prop, "")
             file.mark_as_modified(cover_path_prop)
             file.notify(cover_path_prop)
 
         remove_msg = gettext.ngettext(
-            "Removed cover from file",
-            "Removed covers from {n} files",
-            len(self.files)).format(n=len(self.files))
+            "Removed cover from file", "Removed covers from {n} files", len(self.files)
+        ).format(n=len(self.files))
         toast = Adw.Toast.new(remove_msg)
         toast.set_button_label(_("Undo"))
-        toast.connect('button-clicked', self._remove_undo)
-        toast.connect('dismissed', self._remove_undo_clear)
+        toast.connect("button-clicked", self._remove_undo)
+        toast.connect("dismissed", self._remove_undo_clear)
         self.get_native().toast_overlay.add_toast(toast)
 
     def _remove_undo(self, *args):
-        if self._remove_undo_buffer['type'] == CoverType.FRONT:
-            cover_path_prop = 'front_cover_path'
-        elif self._remove_undo_buffer['type'] == CoverType.BACK:
-            cover_path_prop = 'back_cover_path'
+        if self._remove_undo_buffer["type"] == CoverType.FRONT:
+            cover_path_prop = "front_cover_path"
+        elif self._remove_undo_buffer["type"] == CoverType.BACK:
+            cover_path_prop = "back_cover_path"
 
         file_manager = self.get_native().file_manager
         for file in file_manager.files:
@@ -287,13 +297,13 @@ class EartagAlbumCoverButton(Adw.Bin):
         self._remove_undo_buffer = {}
 
     def _remove_undo_clear(self, *args):
-        if 'type' not in self._remove_undo_buffer:
+        if "type" not in self._remove_undo_buffer:
             return
 
-        if self._remove_undo_buffer['type'] == CoverType.FRONT:
-            cover_path_prop = 'front_cover_path'
-        elif self._remove_undo_buffer['type'] == CoverType.BACK:
-            cover_path_prop = 'back_cover_path'
+        if self._remove_undo_buffer["type"] == CoverType.FRONT:
+            cover_path_prop = "front_cover_path"
+        elif self._remove_undo_buffer["type"] == CoverType.BACK:
+            cover_path_prop = "back_cover_path"
 
         file_manager = self.get_native().file_manager
         for file in file_manager.files:
@@ -301,7 +311,7 @@ class EartagAlbumCoverButton(Adw.Bin):
                 continue
             if file.get_property(cover_path_prop) != self._remove_undo_buffer[file.id]:
                 continue
-            file.delete_cover(self._remove_undo_buffer['type'])
+            file.delete_cover(self._remove_undo_buffer["type"])
 
         for _file in self.files:
             if _file.get_cover(self.cover_type) != self.files[0]:
@@ -326,11 +336,11 @@ class EartagAlbumCoverButton(Adw.Bin):
         if self.cover_type == CoverType.FRONT:
             for file in self.files:
                 file.front_cover_path = response.get_path()
-                file.notify('front-cover-path')
+                file.notify("front-cover-path")
         elif self.cover_type == CoverType.BACK:
             for file in self.files:
                 file.back_cover_path = response.get_path()
-                file.notify('back-cover-path')
+                file.notify("back-cover-path")
 
         self.cover_image.on_cover_change()
 
@@ -365,11 +375,11 @@ class EartagAlbumCoverButton(Adw.Bin):
         if self.cover_type == CoverType.FRONT:
             for file in self.files:
                 file.front_cover_path = path
-                file.notify('front-cover-path')
+                file.notify("front-cover-path")
         elif self.cover_type == CoverType.BACK:
             for file in self.files:
                 file.back_cover_path = path
-                file.notify('back-cover-path')
+                file.notify("back-cover-path")
         self.cover_image.on_cover_change()
         self.on_drag_unhover()
 
@@ -382,10 +392,11 @@ class EartagAlbumCoverButton(Adw.Bin):
     def on_unhover(self, *args):
         self.highlight_revealer.set_reveal_child(False)
 
+
 # ActionRow with two TagEntries, used for track numbers.
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rows/tagdoublerow.ui')
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/rows/tagdoublerow.ui")
 class EartagTagDoubleRow(Adw.ActionRow):
-    __gtype_name__ = 'EartagTagDoubleRow'
+    __gtype_name__ = "EartagTagDoubleRow"
 
     _max_width_chars = -1
 
@@ -394,7 +405,7 @@ class EartagTagDoubleRow(Adw.ActionRow):
     second_entry = Gtk.Template.Child()
     suffixes = Gtk.Template.Child()
 
-    @GObject.Property(type=str, default='')
+    @GObject.Property(type=str, default="")
     def double_separator(self):
         return self.double_separator_label.get_label()
 
@@ -453,16 +464,16 @@ class EartagTagDoubleRow(Adw.ActionRow):
         self.first_entry.unbind_from_file(file)
         self.second_entry.unbind_from_file(file)
 
+
 extra_tag_names = dict(
-    [(k, v) for k, v in TAG_NAMES.items() if k in ['none'] + list(EXTRA_TAGS)]
+    [(k, v) for k, v in TAG_NAMES.items() if k in ["none"] + list(EXTRA_TAGS)]
 )
-extra_tag_names_swapped = dict(
-    [(v, k) for k, v in extra_tag_names.items()]
-)
+extra_tag_names_swapped = dict([(v, k) for k, v in extra_tag_names.items()])
 more_item_tag_strings = Gtk.StringList.new(list(extra_tag_names.values()))
 
+
 class EartagExtraTagRow(EartagTagEntryRow):
-    __gtype_name__ = 'EartagExtraTagRow'
+    __gtype_name__ = "EartagExtraTagRow"
 
     def __init__(self, tag, parent):
         super().__init__()
@@ -474,26 +485,27 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.set_title(extra_tag_names[tag])
 
         self.row_remove_button = Gtk.Button(
-            icon_name='edit-delete-symbolic',
-            valign=Gtk.Align.CENTER
+            icon_name="edit-delete-symbolic", valign=Gtk.Align.CENTER
         )
-        self.row_remove_button.add_css_class('flat')
-        self.row_remove_button.connect('clicked', self.do_remove_row)
+        self.row_remove_button.add_css_class("flat")
+        self.row_remove_button.connect("clicked", self.do_remove_row)
         self.add_suffix(self.row_remove_button)
 
     def do_remove_row(self, *args):
         """Removes the row."""
         self.parent.remove_and_unbind_extra_row(self)
 
+
 class EartagExtraTagsExpander(Adw.ExpanderRow):
     """
     Used for the "More tags" row in the FileView.
     """
-    __gtype_name__ = 'EartagExtraTagsExpander'
+
+    __gtype_name__ = "EartagExtraTagsExpander"
 
     def __init__(self):
         super().__init__()
-        self.set_title(_('More tags'))
+        self.set_title(_("More tags"))
         self._rows = []
         self.bound_files = []
         self.bound_file_ids = []
@@ -501,7 +513,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         self._blocked_tags_cached = []
         self._present_tags_cached = []
         self._last_loaded_filetypes = []
-        self._last_present_tags = {} # id: tags
+        self._last_present_tags = {}  # id: tags
         self._ignore_tag_selector = False
 
         # We can select multiple files of multiple types at once, but
@@ -509,7 +521,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         # Thus, we assemble a list of "blocked tags" to ignore based on
         # bound files. A list of these tags can be received by calling the
         # get_blocked_tags method.
-        self.blocked_tags = {}      # type: tags
+        self.blocked_tags = {}  # type: tags
         self.loaded_filetypes = {}  # type: count
 
         # Extra tag filter for additional tag field
@@ -521,20 +533,20 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         self.addition_row = Adw.ActionRow()
 
         self.addition_row_dropdown = Gtk.DropDown(
-            model=self.tag_model,
-            valign=Gtk.Align.CENTER
+            model=self.tag_model, valign=Gtk.Align.CENTER
         )
         self.addition_row.add_prefix(self.addition_row_dropdown)
 
         self.addition_row_add_button = Gtk.Button(
-            icon_name='list-add-symbolic',
-            valign=Gtk.Align.CENTER
+            icon_name="list-add-symbolic", valign=Gtk.Align.CENTER
         )
-        self.addition_row_add_button.connect('clicked', self.add_row_from_selector)
-        self.addition_row_add_button.add_css_class('flat')
+        self.addition_row_add_button.connect("clicked", self.add_row_from_selector)
+        self.addition_row_add_button.add_css_class("flat")
         self.addition_row.add_suffix(self.addition_row_add_button)
 
-        self.addition_row_dropdown.connect('notify::selected', self.update_selector_sensitivity)
+        self.addition_row_dropdown.connect(
+            "notify::selected", self.update_selector_sensitivity
+        )
         self.update_selector_sensitivity()
 
         self.add_row(self.addition_row)
@@ -568,7 +580,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
             return
         tag = extra_tag_names_swapped[selected_item.get_string()]
 
-        self.addition_row_dropdown.set_selected(0) # switch back to "(Select a tag)"
+        self.addition_row_dropdown.set_selected(0)  # switch back to "(Select a tag)"
 
         self.add_extra_row(tag)
 
@@ -581,7 +593,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         tag_name = _tag_name.get_string()
         tag_prop = extra_tag_names_swapped[tag_name]
 
-        if tag_prop == 'none':
+        if tag_prop == "none":
             return True
         if tag_prop in present_tags:
             return False
@@ -648,7 +660,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         function of the rows' delete button.
         """
         removed_tag = row.bound_property
-        if removed_tag != 'none':
+        if removed_tag != "none":
             for file in self.bound_files:
                 if removed_tag in file.present_extra_tags:
                     file.present_extra_tags.remove(removed_tag)
@@ -707,8 +719,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
             self._present_tags_cached = []
             for taglist in self._last_present_tags.values():
                 for tag in taglist:
-                    if tag not in self._present_tags_cached and \
-                            tag not in blocked_tags:
+                    if tag not in self._present_tags_cached and tag not in blocked_tags:
                         self._present_tags_cached.append(tag)
 
         return self._present_tags_cached
@@ -726,8 +737,7 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
         self._present_tags_cached = []
         for taglist in self._last_present_tags.values():
             for tag in taglist:
-                if tag not in self._present_tags_cached and \
-                        tag not in blocked_tags:
+                if tag not in self._present_tags_cached and tag not in blocked_tags:
                     self._present_tags_cached.append(tag)
 
         self.refresh_tag_filter()
@@ -830,14 +840,16 @@ class EartagExtraTagsExpander(Adw.ExpanderRow):
 
         self.skip_filter_change = False
 
+
 class EartagFileInfoLabel(Gtk.Label):
     """Label showing information about opened files."""
-    __gtype_name__ = 'EartagFileInfoLabel'
+
+    __gtype_name__ = "EartagFileInfoLabel"
 
     def __init__(self):
         super().__init__()
-        self.add_css_class('dim-label')
-        self.add_css_class('numeric')
+        self.add_css_class("dim-label")
+        self.add_css_class("numeric")
         self._files = []
         self.refresh_label()
 
@@ -851,11 +863,11 @@ class EartagFileInfoLabel(Gtk.Label):
 
     def refresh_label(self):
         if len(self._files) == 0:
-            self.set_label('')
+            self.set_label("")
         elif len(self._files) == 1:
             self._set_info_label(self._files[0])
         else:
-            self.set_label(_('(Multiple files selected)'))
+            self.set_label(_("(Multiple files selected)"))
 
     def _set_info_label(self, file):
         length_readable = get_readable_length(int(file.length))
@@ -863,29 +875,36 @@ class EartagFileInfoLabel(Gtk.Label):
         # Get human-readable version of channel count
         channels = file.channels
         if channels == 0:
-            channels_readable = 'N/A'
+            channels_readable = "N/A"
         elif channels == 1:
-            channels_readable = 'Mono'
+            channels_readable = "Mono"
         elif channels == 2:
-            channels_readable = 'Stereo'
+            channels_readable = "Stereo"
         else:
-            channels_readable = gettext.ngettext("1 channel", "{n} channels", channels).format(n=channels) # noqa: E501
+            channels_readable = gettext.ngettext(
+                "1 channel", "{n} channels", channels
+            ).format(
+                n=channels
+            )  # noqa: E501
 
         if file.bitrate > -1:
             bitrate_readable = str(file.bitrate)
         else:
             bitrate_readable = "N/A"
 
-        self.set_label('{length} • {bitrate} kbps • {channels} • {filetype}'.format(
-            filetype=file.filetype,
-            length=length_readable,
-            bitrate=bitrate_readable,
-            channels=channels_readable
-        ))
+        self.set_label(
+            "{length} • {bitrate} kbps • {channels} • {filetype}".format(
+                filetype=file.filetype,
+                length=length_readable,
+                bitrate=bitrate_readable,
+                channels=channels_readable,
+            )
+        )
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/fileview.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/fileview.ui")
 class EartagFileView(Gtk.Stack):
-    __gtype_name__ = 'EartagFileView'
+    __gtype_name__ = "EartagFileView"
 
     loading = Gtk.Template.Child()
     content_stack = Gtk.Template.Child()
@@ -919,33 +938,41 @@ class EartagFileView(Gtk.Stack):
         """Initializes the EartagFileView."""
         super().__init__()
 
-        self.bindable_entries = (self.album_cover, self.title_entry, self.artist_entry,
-            self.tracknumber_entry, self.album_entry, self.albumartist_entry,
-            self.genre_entry, self.releasedate_entry, self.comment_entry,
-            self.file_info)
+        self.bindable_entries = (
+            self.album_cover,
+            self.title_entry,
+            self.artist_entry,
+            self.tracknumber_entry,
+            self.album_entry,
+            self.albumartist_entry,
+            self.genre_entry,
+            self.releasedate_entry,
+            self.comment_entry,
+            self.file_info,
+        )
 
         self.previous_fileview_width = 0
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
-        self.file_manager.connect('refresh-needed', self.update_binds)
-        self.file_manager.connect('selection-changed', self.update_binds)
-        self.file_manager.connect('selection-override', self.update_binds)
-        self.file_manager.load_task.connect('notify::progress', self.update_loading)
-        self.file_manager.connect('notify::has-error', self.update_error)
+        self.file_manager.connect("refresh-needed", self.update_binds)
+        self.file_manager.connect("selection-changed", self.update_binds)
+        self.file_manager.connect("selection-override", self.update_binds)
+        self.file_manager.load_task.connect("notify::progress", self.update_loading)
+        self.file_manager.connect("notify::has-error", self.update_error)
 
         window = self.get_native()
-        self.next_file_button.connect('clicked', window.select_next)
-        self.previous_file_button.connect('clicked', window.select_previous)
-        window.connect('notify::selection-mode', self.update_buttons)
+        self.next_file_button.connect("clicked", window.select_next)
+        self.previous_file_button.connect("clicked", window.select_previous)
+        window.connect("notify::selection-mode", self.update_buttons)
 
     def update_error(self, *args):
         # Currently this is only used by the releasedate entry. Expand this
         # when needed.
         if self.file_manager.has_error:
-            self.releasedate_entry.add_css_class('error')
+            self.releasedate_entry.add_css_class("error")
         else:
-            self.releasedate_entry.remove_css_class('error')
+            self.releasedate_entry.remove_css_class("error")
 
     def update_loading(self, task, *args):
         if task.progress == 0:
@@ -978,10 +1005,16 @@ class EartagFileView(Gtk.Stack):
         self.update_buttons()
 
         # Get list of selected (added)/unselected (removed) files
-        added_files = [file for file in self.file_manager.selected_files
-            if file not in self.bound_files]
-        removed_files = [file for file in self.bound_files
-            if file not in self.file_manager.selected_files]
+        added_files = [
+            file
+            for file in self.file_manager.selected_files
+            if file not in self.bound_files
+        ]
+        removed_files = [
+            file
+            for file in self.bound_files
+            if file not in self.file_manager.selected_files
+        ]
 
         # Handle added and removed files
         self._unbind_files(removed_files)

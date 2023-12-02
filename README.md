@@ -47,6 +47,8 @@ Project development happens on [GNOME's GitLab instance](https://gitlab.gnome.or
 
 You are expected to follow the [GNOME Code of Conduct](https://wiki.gnome.org/Foundation/CodeOfConduct) when participating in project spaces.
 
+For code, use the `black` formatting tool to re-format the code.
+
 ### Commit style
 
 **Please follow the following commit style:**
