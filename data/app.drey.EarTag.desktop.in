@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=@APP_NAME@
+Name=Ear Tag
 GenericName=Tag Editor
 Comment=Edit audio file tags
 Exec=@APP_BIN_NAME@ %U
