@@ -7,10 +7,9 @@ import os.path
 from .utils import find_in_model
 from . import APP_GRESOURCE_PATH
 
-
-@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/filelistitem.ui")
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/filelistitem.ui')
 class EartagFileListItem(Gtk.Box):
-    __gtype_name__ = "EartagFileListItem"
+    __gtype_name__ = 'EartagFileListItem'
 
     status_icon_stack = Gtk.Template.Child()
     modified_icon = Gtk.Template.Child()
@@ -34,11 +33,11 @@ class EartagFileListItem(Gtk.Box):
         if self.filelist.selection_mode:
             self.show_selection_button()
         self.file_manager = filelist.file_manager
-        self.file_manager.connect("selection-changed", self.handle_selection_change)
-        self.filelist.connect("notify::selection-mode", self.toggle_selection_mode)
-        self.connect("destroy", self.on_destroy)
+        self.file_manager.connect('selection-changed', self.handle_selection_change)
+        self.filelist.connect('notify::selection-mode', self.toggle_selection_mode)
+        self.connect('destroy', self.on_destroy)
         self.bindings = []
-        if mode == "selected":
+        if mode == 'selected':
             self.remove_button.set_visible(False)
 
     def bind_to_file(self, file):
@@ -49,34 +48,16 @@ class EartagFileListItem(Gtk.Box):
 
         # We don't do this with a binding as it causes weird problems with self-
         # unselecting files
-        self.select_button.connect("toggled", self.handle_select_button_change)
-        self.bindings.append(
-            self.file.bind_property(
-                "title", self, "title", GObject.BindingFlags.SYNC_CREATE
-            )
-        )
-        self.bindings.append(
-            self.file.bind_property(
-                "path", self, "filename", GObject.BindingFlags.SYNC_CREATE
-            )
-        )
-        self.bindings.append(
-            self.file.bind_property(
-                "is-modified",
-                self.modified_icon,
-                "visible",
-                GObject.BindingFlags.SYNC_CREATE,
-            )
-        )
-        self.bindings.append(
-            self.file.bind_property(
-                "has-error",
-                self.error_icon,
-                "visible",
-                GObject.BindingFlags.SYNC_CREATE,
-            )
-        )
-        self._error_connect = self.file.connect("notify::has-error", self.handle_error)
+        self.select_button.connect('toggled', self.handle_select_button_change)
+        self.bindings.append(self.file.bind_property('title', self, 'title',
+            GObject.BindingFlags.SYNC_CREATE))
+        self.bindings.append(self.file.bind_property('path', self,
+            'filename', GObject.BindingFlags.SYNC_CREATE))
+        self.bindings.append(self.file.bind_property('is-modified', self.modified_icon,
+            'visible', GObject.BindingFlags.SYNC_CREATE))
+        self.bindings.append(self.file.bind_property('has-error', self.error_icon,
+            'visible', GObject.BindingFlags.SYNC_CREATE))
+        self._error_connect = self.file.connect('notify::has-error', self.handle_error)
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
         self.handle_selection_change()
@@ -108,7 +89,7 @@ class EartagFileListItem(Gtk.Box):
             self.file_manager.selected_files.append(self.file)
         elif not value and self.file in self.file_manager.selected_files:
             self.file_manager.selected_files.remove(self.file)
-        self.file_manager.emit("selection-changed")
+        self.file_manager.emit('selection-changed')
 
     def handle_select_button_change(self, button):
         if self.selected != button.get_active():
@@ -132,7 +113,7 @@ class EartagFileListItem(Gtk.Box):
     @title.setter
     def title(self, value):
         # TRANSLATORS: Placeholder for file sidebar items with no title set
-        self.title_label.set_label(value or _("(No title)"))
+        self.title_label.set_label(value or _('(No title)'))
 
     @GObject.Property(type=str)
     def filename(self):
@@ -155,19 +136,17 @@ class EartagFileListItem(Gtk.Box):
         else:
             self.hide_selection_button()
 
-
 class EartagFileList(Gtk.ListView):
     """List of opened tracks."""
-
-    __gtype_name__ = "EartagFileList"
+    __gtype_name__ = 'EartagFileList'
 
     def __init__(self):
         super().__init__()
         self.sidebar = None
         self.sidebar_factory = Gtk.SignalListItemFactory()
-        self.sidebar_factory.connect("setup", self.setup)
-        self.sidebar_factory.connect("bind", self.bind)
-        self.sidebar_factory.connect("unbind", self.bind)
+        self.sidebar_factory.connect('setup', self.setup)
+        self.sidebar_factory.connect('bind', self.bind)
+        self.sidebar_factory.connect('unbind', self.bind)
         self.set_factory(self.sidebar_factory)
         self._selection_mode = False
         self._ignore_unselect = False
@@ -176,11 +155,11 @@ class EartagFileList(Gtk.ListView):
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
-        self.file_manager.connect("selection-override", self.handle_selection_override)
-        self.file_manager.connect("select-first", self.handle_select_first)
+        self.file_manager.connect('selection-override', self.handle_selection_override)
+        self.file_manager.connect('select-first', self.handle_select_first)
 
     def set_sidebar(self, sidebar):
-        self.mode = "sidebar"
+        self.mode = 'sidebar'
         self.sidebar = sidebar
 
         # Set up sort model for sort button
@@ -194,19 +173,17 @@ class EartagFileList(Gtk.ListView):
         self.filter_model.set_filter(self.filter)
 
         self.selection_model = Gtk.SingleSelection(model=self.filter_model)
-        self.selection_model.connect(
-            "selection-changed", self.update_selection_from_model
-        )
+        self.selection_model.connect('selection-changed', self.update_selection_from_model)
         self.selection_model.set_autoselect(False)
         self.selection_model.set_can_unselect(False)
 
         self.set_model(self.selection_model)
 
         self.set_single_click_activate(False)
-        self.connect("activate", self.handle_activate)
+        self.connect('activate', self.handle_activate)
 
     def setup_for_selected(self):
-        self.mode = "selected"
+        self.mode = 'selected'
         # Set up sort model for sort button
         self.sort_model = Gtk.SortListModel(model=self.file_manager.files)
         self.sorter = Gtk.CustomSorter.new(self.sort_func, None)
@@ -243,14 +220,13 @@ class EartagFileList(Gtk.ListView):
         if not self.selection_mode:
             if not self.file_manager.selected_files:
                 if self.file_manager.files.get_n_items() > 0:
-                    self.file_manager.emit("select-first")
+                    self.file_manager.emit('select-first')
                 else:
                     self.selection_model.unselect_all()
                 self._ignore_unselect = False
                 return
-            new_index = find_in_model(
-                self.selection_model, self.file_manager.selected_files[0]
-            )
+            new_index = find_in_model(self.selection_model,
+                self.file_manager.selected_files[0])
             if new_index < 0:
                 self.selection_model.unselect_all()
             else:
@@ -281,7 +257,7 @@ class EartagFileList(Gtk.ListView):
         if not new_selection:
             return
         self.file_manager.selected_files = [new_selection]
-        self.file_manager.emit("selection-changed")
+        self.file_manager.emit('selection-changed')
         self.selection_model.select_item(0, True)
 
         if self.sidebar:
@@ -312,8 +288,8 @@ class EartagFileList(Gtk.ListView):
         """Custom sort function implementation for file sorting."""
 
         # Step 1. Compare album names
-        a_album = GLib.utf8_casefold(a.albumsort or a.album or "", -1)
-        b_album = GLib.utf8_casefold(b.albumsort or b.album or "", -1)
+        a_album = GLib.utf8_casefold(a.albumsort or a.album or '', -1)
+        b_album = GLib.utf8_casefold(b.albumsort or b.album or '', -1)
         collate = GLib.utf8_collate(a_album, b_album)
 
         # Step 2. Compare track numbers
@@ -361,22 +337,22 @@ class EartagFileList(Gtk.ListView):
                     found_selected = True
                     break
             if not found_selected:
-                self.file_manager.emit("select-first")
+                self.file_manager.emit('select-first')
         else:
-            self.file_manager.emit("select-first")
+            self.file_manager.emit('select-first')
 
-        self.file_manager.emit("selection-changed")
+        self.file_manager.emit('selection-changed')
         self.selection_model.set_can_unselect(False)
 
     def select_all(self, *args):
         self.file_manager.selected_files = list(self.filter_model)
-        self.file_manager.emit("selection-changed")
+        self.file_manager.emit('selection-changed')
 
     def unselect_all(self, *args):
         for file in list(self.filter_model):
             if file in self.file_manager.selected_files:
                 self.file_manager.selected_files.remove(file)
-        self.file_manager.emit("selection-changed")
+        self.file_manager.emit('selection-changed')
 
     def all_selected(self):
         n_items = len(list(self.filter_model))
@@ -426,7 +402,7 @@ class EartagFileList(Gtk.ListView):
                 selected_file = self.filter_model.get_item(pos)
 
         self.file_manager.selected_files = [selected_file]
-        self.file_manager.emit("selection-changed")
+        self.file_manager.emit('selection-changed')
 
     def handle_activate(self, _, position):
         if not self.selection_mode:
@@ -437,4 +413,4 @@ class EartagFileList(Gtk.ListView):
             self.file_manager.selected_files.remove(item)
         else:
             self.file_manager.selected_files.append(item)
-        self.file_manager.emit("selection-changed")
+        self.file_manager.emit('selection-changed')

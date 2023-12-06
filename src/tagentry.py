@@ -7,7 +7,6 @@ from .utils.limiters import EartagEntryLimiters
 from .utils.widgets import EartagEditableLabel
 from .backends.file import EartagFile
 
-
 class EartagTagEntryBase(GObject.Object):
     """
     Base class for tag entries: entries which are bound to files and carry
@@ -48,13 +47,14 @@ class EartagTagEntryBase(GObject.Object):
         self._property = property
         self.files = []
         self._connections = {}
-        self.connect("changed", self.on_entry_change)
+        self.connect('changed', self.on_entry_change)
 
     def bind_to_file(self, file):
         if file in self.files:
             return
 
-        self._connections[file.id] = file.connect("modified", self.on_file_change)
+        self._connections[file.id] = \
+            file.connect('modified', self.on_file_change)
         self.files.append(file)
 
         self.refresh_text()
@@ -104,7 +104,7 @@ class EartagTagEntryBase(GObject.Object):
             for file in self.files:
                 file.set_property(self.bound_property, self.get_text())
 
-        self.tagentry_placeholder = ""
+        self.tagentry_placeholder = ''
 
         self._ignore_text_change = False
 
@@ -124,25 +124,23 @@ class EartagTagEntryBase(GObject.Object):
         """
         self._ignore_text_change = True
         if self.has_different_values():
-            self.props.text = ""
-            self.tagentry_placeholder = _("(multiple values)")
+            self.props.text = ''
+            self.tagentry_placeholder = _('(multiple values)')
         else:
             if self.files:
                 value = self.files[0].get_property(self.bound_property)
                 if value is not None:
                     self.props.text = str(value)
                 else:
-                    self.props.text = ""
+                    self.props.text = ''
             else:
-                self.props.text = ""
-            self.tagentry_placeholder = ""
+                self.props.text = ''
+            self.tagentry_placeholder = ''
         self._ignore_text_change = False
-
 
 class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
     """Simple GtkEntry implementing EartagTagEntryBase."""
-
-    __gtype_name__ = "EartagTagEntry"
+    __gtype_name__ = 'EartagTagEntry'
 
     def __init__(self):
         super().__init__()
@@ -158,8 +156,8 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
         # Bit of a hack, but: override the placeholder value for track
         # number and total track number entries to prevent them from
         # expanding the app window when set
-        if value and self.bound_property in ("tracknumber", "totaltracknumber"):
-            self.props.placeholder_text = "..."
+        if value and self.bound_property in ('tracknumber', 'totaltracknumber'):
+            self.props.placeholder_text = '...'
         else:
             self.props.placeholder_text = value
 
@@ -193,14 +191,13 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
         self._is_numeric = value
         if value:
             self.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self._limiter_connections["numeric"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonnumeric
-            )
+            self._limiter_connections['numeric'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "numeric" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["numeric"])
-                del self._limiter_connections["numeric"]
+            if 'numeric' in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections['numeric'])
+                del self._limiter_connections['numeric']
 
     @GObject.Property(type=bool, default=False)
     def is_float(self):
@@ -221,14 +218,13 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
         self._is_float = value
         if value:
             self.set_input_purpose(Gtk.InputPurpose.NUMBER)
-            self._limiter_connections["float"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonfloat
-            )
+            self._limiter_connections['float'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nonfloat)
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "float" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["float"])
-                del self._limiter_connections["float"]
+            if 'float' in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections['float'])
+                del self._limiter_connections['float']
 
     @GObject.Property(type=bool, default=False)
     def is_date(self):
@@ -249,23 +245,20 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
         self._is_date = value
         self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
         if value:
-            self._limiter_connections["date"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nondate
-            )
+            self._limiter_connections['date'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nondate)
         else:
-            if "date" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["date"])
-                del self._limiter_connections["date"]
-
+            if 'date' in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections['date'])
+                del self._limiter_connections['date']
 
 class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
     """Simple AdwEntryRow implementing EartagTagEntryBase."""
-
-    __gtype_name__ = "EartagTagEntryRow"
+    __gtype_name__ = 'EartagTagEntryRow'
 
     def __init__(self):
         super().__init__()
-        self._placeholder_text = ""
+        self._placeholder_text = ''
         self._title = self.props.title
         self.setup_tagentry()
         self.setup_limiters()
@@ -283,7 +276,7 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
             self._title = self.props.title
         self._placeholder_text = value
         if value:
-            self.set_title(self._title + " " + value)
+            self.set_title(self._title + ' ' + value)
         else:
             self.set_title(self._title)
 
@@ -316,14 +309,13 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
         self._is_numeric = value
         if value:
             self.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self._limiter_connections["numeric"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonnumeric
-            )
+            self._limiter_connections['numeric'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "numeric" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["numeric"])
-                del self._limiter_connections["numeric"]
+            if 'numeric' in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections['numeric'])
+                del self._limiter_connections['numeric']
 
     @GObject.Property(type=bool, default=False)
     def is_float(self):
@@ -344,14 +336,13 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
         self._is_float = value
         if value:
             self.set_input_purpose(Gtk.InputPurpose.NUMBER)
-            self._limiter_connections["float"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonfloat
-            )
+            self._limiter_connections['float'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nonfloat)
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "float" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["float"])
-                del self._limiter_connections["float"]
+            if 'float' in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections['float'])
+                del self._limiter_connections['float']
 
     @GObject.Property(type=bool, default=False)
     def is_date(self):
@@ -372,23 +363,21 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
         self._is_date = value
         self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
         if value:
-            self._limiter_connections["date"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nondate
-            )
+            self._limiter_connections['date'] = \
+                self.get_delegate().connect('insert-text', self.disallow_nondate)
         else:
-            if "date" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["date"])
-                del self._limiter_connections["date"]
-
+            if 'date' in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections['date'])
+                del self._limiter_connections['date']
 
 class EartagTagEditableLabel(EartagEditableLabel, EartagTagEntryBase):
     """Simple EartagEditableLabel implementing EartagTagEntryBase."""
 
-    __gtype_name__ = "EartagTagEditableLabel"
+    __gtype_name__ = 'EartagTagEditableLabel'
 
     def __init__(self):
         super().__init__()
-        self._tagentry_placeholder = ""
+        self._tagentry_placeholder = ''
         self.setup_tagentry()
 
     @GObject.Property(type=str, default=None)
@@ -408,7 +397,7 @@ class EartagTagEditableLabel(EartagEditableLabel, EartagTagEntryBase):
     def tagentry_placeholder(self, value):
         self._tagentry_placeholder = value
         if value:
-            self.placeholder_text = self._title + " " + value
+            self.placeholder_text = self._title + ' ' + value
         else:
             self.placeholder_text = self._title
 

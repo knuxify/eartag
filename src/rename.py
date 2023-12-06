@@ -9,28 +9,27 @@ from . import APP_GRESOURCE_PATH
 from gi.repository import Adw, Gtk, Gio
 import os
 
-
 def parse_placeholder_string(string, file):
     """
     Takes a string with tag placeholders and replaces them with the provided
     file's data.
     """
     output = string
-    for tag in BASIC_TAGS + file.supported_extra_tags + ("length", "bitrate"):
-        if tag == "title":
-            null_value = "Untitled"
+    for tag in BASIC_TAGS + file.supported_extra_tags + ('length', 'bitrate'):
+        if tag == 'title':
+            null_value = 'Untitled'
         elif tag in file.int_properties + file.float_properties:
             null_value = 0
         else:
-            null_value = "Unknown " + TAG_NAMES[tag]
+            null_value = 'Unknown ' + TAG_NAMES[tag]
 
-        if tag in file.int_properties + file.float_properties + ("length", "bitrate"):
+        if tag in file.int_properties + file.float_properties + ('length', 'bitrate'):
             value = file.get_property(tag)
             if not value or value < 0:
                 value = 0
-            if tag == "length":
+            if tag == 'length':
                 tag_replaced = get_readable_length(int(value))
-            elif tag == "tracknumber" or tag == "totaltracknumber":
+            elif tag == 'tracknumber' or tag == 'totaltracknumber':
                 tag_replaced = str(value).zfill(2)
             else:
                 tag_replaced = str(value)
@@ -39,16 +38,15 @@ def parse_placeholder_string(string, file):
             if not value:
                 tag_replaced = null_value
             else:
-                tag_replaced = str(value).replace("/", "_")
-        output = output.replace("{" + tag + "}", tag_replaced)
-    if output in (",", ".", ".."):
-        output = "_"
+                tag_replaced = str(value).replace('/', '_')
+        output = output.replace('{' + tag + '}', tag_replaced)
+    if output in (',', '.', '..'):
+        output = '_'
     return output
 
-
-@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/rename.ui")
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rename.ui')
 class EartagRenameDialog(Adw.Window):
-    __gtype_name__ = "EartagRenameDialog"
+    __gtype_name__ = 'EartagRenameDialog'
 
     rename_progress = Gtk.Template.Child()
     error_banner = Gtk.Template.Child()
@@ -61,16 +59,14 @@ class EartagRenameDialog(Adw.Window):
         self.file_manager = window.file_manager
 
         self.file_manager.rename_task.bind_property(
-            "progress", self.rename_progress, "fraction"
+            'progress', self.rename_progress, 'fraction'
         )
-        self.file_manager.rename_task.connect("task-done", self.on_done)
+        self.file_manager.rename_task.connect('task-done', self.on_done)
 
         self.files = list(self.file_manager.selected_files).copy()
-        config.bind(
-            "rename-placeholder",
-            self.filename_entry,
-            "text",
-            Gio.SettingsBindFlags.DEFAULT,
+        config.bind('rename-placeholder',
+            self.filename_entry, 'text',
+            Gio.SettingsBindFlags.DEFAULT
         )
 
     @Gtk.Template.Callback()
@@ -85,11 +81,8 @@ class EartagRenameDialog(Adw.Window):
         names = []
         for file in self.files:
             basepath = os.path.dirname(file.props.path)
-            names.append(
-                os.path.join(
-                    basepath,
-                    parse_placeholder_string(format, file) + file.props.filetype,
-                )
+            names.append(os.path.join(basepath,
+                    parse_placeholder_string(format, file) + file.props.filetype)
             )
 
         self.set_sensitive(False)
@@ -100,7 +93,8 @@ class EartagRenameDialog(Adw.Window):
     def update_preview(self, *args):
         example_file = self.file_manager.selected_files[0]
         parsed_placeholder = parse_placeholder_string(
-            self.filename_entry.get_text(), example_file
+            self.filename_entry.get_text(),
+            example_file
         )
         self.preview_entry.set_text(parsed_placeholder + example_file.props.filetype)
 

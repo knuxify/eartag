@@ -50,9 +50,8 @@ KEY_TO_FRAME = {
     "genre": "WM/Genre",
     "publisher": "WM/Publisher",
     "website": "WM/AuthorURL",
-    "comment": "Description",
+    "comment": "Description"
 }
-
 
 def unpack_image(data):
     """Unpacks an ASF/WMA picture."""
@@ -91,8 +90,7 @@ def unpack_image(data):
 
     return (mime, description, data, picture_type)
 
-
-def pack_image(image_data, image_type=3, description="thumbnail"):
+def pack_image(image_data, image_type=3, description='thumbnail'):
     """Packs an image into ASF format."""
     size = len(image_data)
 
@@ -103,47 +101,27 @@ def pack_image(image_data, image_type=3, description="thumbnail"):
 
     return data
 
-
 class EartagFileMutagenASF(EartagFileMutagenCommon):
     """EartagFile handler that uses mutagen for ASF support."""
-
-    __gtype_name__ = "EartagFileMutagenASF"
+    __gtype_name__ = 'EartagFileMutagenASF'
     _supports_album_covers = True
     _supports_full_dates = False
 
     # Copied from file.py, but excludes totaltracknumber, as ASF tags don't
     # have a way to specify it
-    handled_properties = (
-        "title",
-        "artist",
-        "album",
-        "albumartist",
-        "tracknumber",
-        "genre",
-        "releasedate",
-        "comment",
-    )
+    handled_properties = ('title', 'artist', 'album', 'albumartist', 'tracknumber', 'genre',
+        'releasedate', 'comment')
 
     supported_extra_tags = (
-        "bpm",
-        "composer",
-        "copyright",
-        "encodedby",
-        "mood",
-        "conductor",
-        "discnumber",
-        "publisher",
-        "isrc",
-        "discsubtitle",
-        "albumartistsort",
-        "albumsort",
-        "artistsort",
-        "musicbrainz_artistid",
-        "musicbrainz_albumid",
-        "musicbrainz_albumartistid",
-        "musicbrainz_trackid",
-        "musicbrainz_recordingid",
-        "musicbrainz_releasegroupid",
+        'bpm', 'composer', 'copyright', 'encodedby',
+        'mood', 'conductor', 'discnumber', 'publisher',
+        'isrc', 'discsubtitle',
+
+        'albumartistsort', 'albumsort', 'artistsort',
+
+        'musicbrainz_artistid', 'musicbrainz_albumid',
+        'musicbrainz_albumartistid', 'musicbrainz_trackid',
+        'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
     )
 
     def load_from_file(self, path):
@@ -157,7 +135,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         try:
             return str(self.mg_file.tags[KEY_TO_FRAME[tag_name.lower()]][0])
         except KeyError:
-            return ""
+            return ''
 
     def set_tag(self, tag_name, value):
         """Sets a tag's value using the KEY_TO_FRAME list as a guideline."""
@@ -169,12 +147,12 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
             if value:
                 stringified = str(int(value))
             else:
-                stringified = ""
+                stringified = ''
         else:
             if value:
                 stringified = str(value)
             else:
-                stringified = ""
+                stringified = ''
 
         self.mg_file.tags[frame_name] = [stringified]
 
@@ -183,7 +161,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         Returns True or False based on whether the tag with the given name is
         present in the file.
         """
-        if tag_name == "totaltracknumber":
+        if tag_name == 'totaltracknumber':
             return False
         if tag_name not in KEY_TO_FRAME:
             return False
@@ -204,19 +182,19 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         if cover_type == CoverType.FRONT:
             pictypes = (PictureType.OTHER, PictureType.COVER_FRONT)
         elif cover_type == CoverType.BACK:
-            pictypes = (PictureType.COVER_BACK,)
+            pictypes = (PictureType.COVER_BACK, )
         else:
             raise ValueError
 
         pictures = []
-        if "WM/Picture" in self.mg_file.tags:
-            pictures = self.mg_file.tags["WM/Picture"]
+        if 'WM/Picture' in self.mg_file.tags:
+            pictures = self.mg_file.tags['WM/Picture']
         if pictures:
             for picture in pictures.copy():
                 picture_type = unpack_image(picture.value)[3]
                 if picture_type in pictypes:
                     pictures.remove(picture)
-        self.mg_file.tags["WM/Picture"] = pictures
+        self.mg_file.tags['WM/Picture'] = pictures
 
         if not clear_only:
             self._cleanup_cover(cover_type)
@@ -230,11 +208,11 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
         if cover_type == CoverType.FRONT:
             pictype = PictureType.COVER_FRONT
-            prop = "front_cover_path"
+            prop = 'front_cover_path'
             self._front_cover_path = value
         elif cover_type == CoverType.BACK:
             pictype = PictureType.COVER_BACK
-            prop = "back_cover_path"
+            prop = 'back_cover_path'
             self._back_cover_path = value
         else:
             raise ValueError
@@ -243,8 +221,8 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
             data = cover_file.read()
 
         pictures = []
-        if "WM/Picture" in self.mg_file.tags:
-            pictures = self.mg_file.tags["WM/Picture"]
+        if 'WM/Picture' in self.mg_file.tags:
+            pictures = self.mg_file.tags['WM/Picture']
 
         # Remove all conflicting pictures
         self.delete_cover(cover_type, clear_only=True)
@@ -252,19 +230,19 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         packed_data = pack_image(data, image_type=pictype)
         pictures.append(mutagen.asf.ASFValue(packed_data, mutagen.asf.BYTEARRAY))
 
-        self.mg_file.tags["WM/Picture"] = pictures
+        self.mg_file.tags['WM/Picture'] = pictures
 
         self.mark_as_modified(prop)
 
     def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
-        if "WM/Picture" not in self.mg_file.tags:
+        if 'WM/Picture' not in self.mg_file.tags:
             return None
 
         front_cover = None
         back_cover = None
 
-        pictures = self.mg_file.tags["WM/Picture"]
+        pictures = self.mg_file.tags['WM/Picture']
 
         for picture in pictures:
             raw_data = picture.value
@@ -284,22 +262,22 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
     @GObject.Property(type=str)
     def releasedate(self):
-        return self.get_tag("releasedate")
+        return self.get_tag('releasedate')
 
     @releasedate.setter
     def releasedate(self, value):
-        self.validate_date("releasedate", value)
+        self.validate_date('releasedate', value)
         if value:
             if len(value) >= 4:
                 try:
-                    self.set_tag("releasedate", value[:4])
+                    self.set_tag('releasedate', value[:4])
                 except:
-                    self.set_tag("releasedate", "")
+                    self.set_tag('releasedate', '')
             else:
-                self.set_tag("releasedate", value)
-            self.mark_as_modified("releasedate")
+                self.set_tag('releasedate', value)
+            self.mark_as_modified('releasedate')
         else:
-            self.delete_tag("releasedate")
+            self.delete_tag('releasedate')
 
     @GObject.Property(type=int)
     def totaltracknumber(self):

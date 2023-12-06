@@ -5,7 +5,6 @@ from itertools import groupby
 import re
 import unicodedata
 
-
 def all_equal(iterable):
     """
     Check if all elements in a list are equal. Source:
@@ -13,7 +12,6 @@ def all_equal(iterable):
     """
     g = groupby(iterable)
     return next(g, True) and not next(g, False)
-
 
 def find_in_model(model, item):
     """
@@ -30,7 +28,6 @@ def find_in_model(model, item):
         i += 1
     return -1
 
-
 def is_float(value):
     """Checks if the given value is a valid float."""
     try:
@@ -39,29 +36,30 @@ def is_float(value):
         return False
     return True
 
-
 def get_readable_length(length):
     """Returns human-readable version of the length, given in seconds."""
     length_min, length_sec = divmod(int(length), 60)
     length_hour, length_min = divmod(length_min, 60)
 
     if length_hour:
-        length_readable = "{h}∶{m}∶{s}".format(
-            h=str(length_hour).rjust(2, "0"),
-            m=str(length_min).rjust(2, "0"),
-            s=str(length_sec).rjust(2, "0"),
+        length_readable = '{h}∶{m}∶{s}'.format(
+            h=str(length_hour).rjust(2, '0'),
+            m=str(length_min).rjust(2, '0'),
+            s=str(length_sec).rjust(2, '0')
         )
     else:
-        length_readable = "{m}∶{s}".format(
-            m=str(length_min).rjust(2, "0"), s=str(length_sec).rjust(2, "0")
+        length_readable = '{m}∶{s}'.format(
+            m=str(length_min).rjust(2, '0'),
+            s=str(length_sec).rjust(2, '0')
         )
 
     return length_readable
 
-
 def title_case_preserve_uppercase(text: str):
-    return " ".join([x.isupper() and x or x.capitalize() for x in text.split(" ")])
-
+    return ' '.join([
+        x.isupper() and x or x.capitalize()
+        for x in text.split(' ')
+    ])
 
 def simplify_string(text: str):
     """
@@ -69,16 +67,15 @@ def simplify_string(text: str):
     characters for more accurate searches and comparisons.
     """
     # Step 1: Normalize Unicode characters
-    instr = unicodedata.normalize("NFKC", text)
+    instr = unicodedata.normalize('NFKC', text)
     # Step 2: Only leave lowercase alphanumeric letters
-    instr = "".join(
-        [letter for letter in instr.lower() if letter.isalnum() or letter == " "]
-    ).strip()
+    instr = ''.join([
+        letter for letter in instr.lower() if letter.isalnum() or letter == ' '
+    ]).strip()
     # Step 3: Remove repeating spaces
-    instr = re.sub(" +", " ", instr)
+    instr = re.sub(' +', ' ', instr)
 
     return instr
-
 
 def simplify_compare(string1: str, string2: str):
     """
@@ -87,10 +84,8 @@ def simplify_compare(string1: str, string2: str):
     """
     return simplify_string(string1) == simplify_string(string2)
 
-
 def reg_and_simple_cmp(string1: str, string2: str):
     return string1 == string2 or simplify_compare(string1, string2)
-
 
 def inspect_prettyprint(stack):
     """
@@ -103,7 +98,7 @@ def inspect_prettyprint(stack):
     print("--- Inspect trace: ---")
 
     for frame in stack:
-        print(f"\033[1m{frame.filename}:{frame.lineno}\033[0m")
-        print("".join(frame.code_context))  # already includes newlines
+        print(f'\033[1m{frame.filename}:{frame.lineno}\033[0m')
+        print(''.join(frame.code_context)) # already includes newlines
 
     print("--- End trace ---")

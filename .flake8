@@ -1,4 +1,4 @@
 [flake8]
 max_line_length = 100
-ignore = E402, W503, E722, E203
+ignore = E261, E302, E305, E402, E731, ET128, E128, E124, E121, E123, E126, E722
 builtins = _
