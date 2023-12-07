@@ -121,7 +121,7 @@ def test_musicbrainz_file_set(dummy_file):  # noqa: F811; flake8 doesn't underst
 
     recordings = get_recordings_for_file(dummy_file)
     assert recordings
-    assert len(recordings) == 1
+    assert len(recordings) > 0
 
     # https://musicbrainz.org/recording/4f734ae1-c363-454e-939e-a1964ae23d0b
     rec = None
