@@ -102,7 +102,7 @@ class Application(Adw.Application):
             version_str += ' (dev)'
 
         about = Adw.AboutWindow(
-            application_name="Ear Tag",
+            application_name=self._("Ear Tag"),
             application_icon=APP_ID,
             developers=["knuxify"],
             artists=["Jakub Steiner", "Igor Dyatlov"],
