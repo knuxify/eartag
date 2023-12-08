@@ -6,8 +6,8 @@
 
   <name xml:lang="en">Ear Tag</name>
   <shortdesc xml:lang="en">Edit audio file tags</shortdesc>
-  <homepage rdf:resource="https://gitlab.gnome.org/knuxify/eartag" />
-  <bug-database rdf:resource="https://gitlab.gnome.org/knuxify/eartag/-/issues"/>
+  <homepage rdf:resource="https://gitlab.gnome.org/World/eartag" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/World/eartag/-/issues"/>
 
   <programming-language>Python</programming-language>
   <platform>GTK 4</platform>
