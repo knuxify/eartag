@@ -111,7 +111,7 @@ editablelabel:focus-within {
 }
 
 .editable-label-overlay editablelabel label {
-	padding: 0 34px;
+	padding: 0 40px;
 }
 
 .cover-switch-box checkbutton { margin: 3px 5px; }
