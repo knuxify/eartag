@@ -244,6 +244,7 @@ class EartagWindow(Adw.ApplicationWindow):
                 self.on_drag_unhover()
 
     def on_drag_hover(self, *args):
+        self.drop_highlight_revealer.set_visible(True)
         self.drop_highlight_revealer.set_reveal_child(True)
         self.drop_highlight_revealer.set_can_target(True)
         return Gdk.DragAction.COPY
@@ -261,6 +262,11 @@ class EartagWindow(Adw.ApplicationWindow):
         self.open_files(paths)
         self.open_mode = EartagFileManager.LOAD_OVERWRITE
         self.on_drag_unhover()
+
+    @Gtk.Template.Callback()
+    def drop_highlight_autohide(self, revealer, *args):
+        """Sets the drop highlight to be invisible."""
+        revealer.set_visible(revealer.props.child_revealed)
 
     def show_file_chooser(self, folders=False):
         """Shows the file chooser."""

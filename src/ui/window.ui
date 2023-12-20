@@ -24,10 +24,13 @@
             <property name="receives-default">false</property>
             <property name="can-focus">false</property>
             <property name="can-target">false</property>
+            <property name="visible">false</property>
 
             <property name="transition-type">crossfade</property>
             <property name="hexpand">true</property>
             <property name="vexpand">true</property>
+
+            <signal name="notify::child-revealed" handler="drop_highlight_autohide"/>
 
             <child>
               <object class="AdwBin">
