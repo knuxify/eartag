@@ -1,0 +1,7 @@
+editablelabel {
+	border: 1px solid @borders;
+}
+
+.editable-label-overlay .edit-icon {
+	opacity: 1;
+}

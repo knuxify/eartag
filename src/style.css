@@ -103,6 +103,17 @@ editablelabel:focus-within {
 	outline-offset: 0;
 }
 
+.editable-label-overlay .edit-icon {
+	min-width: 24px;
+	min-height: 24px;
+	padding: 5px;
+	opacity: 0.25;
+}
+
+.editable-label-overlay editablelabel label {
+	padding: 0 34px;
+}
+
 .cover-switch-box checkbutton { margin: 3px 5px; }
 
 /* Tweaks for "compact" "more item" entries */
