@@ -193,6 +193,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return bool(self.totaltracknumber)
         elif tag_name == 'releasedate':
             return 'TDRC' in self.mg_file.tags or 'TDOR' in self.mg_file.tags
+        elif tag_name == 'url':
+            return bool(self.props.url)
         elif tag_name in KEY_TO_FRAME:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             return frame_name in self.mg_file.tags
