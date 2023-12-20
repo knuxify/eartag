@@ -107,7 +107,7 @@ editablelabel:focus-within {
 	min-width: 24px;
 	min-height: 24px;
 	padding: 5px;
-	opacity: 0.25;
+	opacity: 0.55;
 }
 
 .editable-label-overlay editablelabel label {
