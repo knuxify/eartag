@@ -141,58 +141,94 @@
                     </child>
 
                     <child>
-                      <object class="GtkListBox" id="tag_list">
-                        <property name="hexpand">true</property>
-                        <property name="valign">start</property>
-                        <property name="selection-mode">none</property>
-                        <style>
-                          <class name="boxed-list"/>
-                        </style>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
 
                         <child>
-                          <object class="EartagTagDoubleRow" id="tracknumber_entry">
-                            <property name="title" translatable="yes">Track number</property>
-                            <property name="first-property">tracknumber</property>
-                            <property name="second-property">totaltracknumber</property>
-                            <property name="max-width-chars">4</property>
-                            <property name="double-separator">/</property>
-                            <property name="is-numeric">true</property>
+                          <object class="GtkBox" id="tracknumber_box">
+                            <property name="spacing">6</property>
+                            <property name="hexpand">true</property>
+
+                            <child>
+                              <object class="EartagTagEntryRow" id="tracknumber_entry">
+                                <property name="title" translatable="yes">Track number</property>
+                                <property name="bound-property">tracknumber</property>
+                                <property name="max-width-chars">4</property>
+                                <property name="is-numeric">true</property>
+                                <property name="hexpand">true</property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
+
+                            <!--<child>
+                              <object class="GtkLabel">
+                                <property name="use-markup">true</property>
+                                <property name="label">&lt;b&gt;/&lt;/b&gt;</property>
+                              </object>
+                            </child>-->
+
+                            <child>
+                              <object class="EartagTagEntryRow" id="totaltracknumber_entry">
+                                <property name="title" translatable="yes">Total tracks</property>
+                                <property name="bound-property">totaltracknumber</property>
+                                <property name="max-width-chars">4</property>
+                                <property name="is-numeric">true</property>
+                                <property name="hexpand">true</property>
+                                <style>
+                                  <class name="card"/>
+                                </style>
+                              </object>
+                            </child>
                           </object>
                         </child>
 
                         <child>
-                          <object class="EartagTagEntryRow" id="album_entry">
-                            <property name="title" translatable="yes">Album</property>
-                            <property name="bound-property">album</property>
-                          </object>
-                        </child>
+                          <object class="GtkListBox" id="tag_list">
+                            <property name="hexpand">true</property>
+                            <property name="valign">start</property>
+                            <property name="selection-mode">none</property>
+                            <style>
+                              <class name="boxed-list"/>
+                            </style>
 
-                        <child>
-                          <object class="EartagTagEntryRow" id="albumartist_entry">
-                            <property name="title" translatable="yes">Album artist</property>
-                            <property name="bound-property">albumartist</property>
-                          </object>
-                        </child>
+                            <child>
+                              <object class="EartagTagEntryRow" id="album_entry">
+                                <property name="title" translatable="yes">Album</property>
+                                <property name="bound-property">album</property>
+                              </object>
+                            </child>
 
-                        <child>
-                          <object class="EartagTagEntryRow" id="genre_entry">
-                            <property name="title" translatable="yes">Genre</property>
-                            <property name="bound-property">genre</property>
-                          </object>
-                        </child>
+                            <child>
+                              <object class="EartagTagEntryRow" id="albumartist_entry">
+                                <property name="title" translatable="yes">Album artist</property>
+                                <property name="bound-property">albumartist</property>
+                              </object>
+                            </child>
 
-                        <child>
-                          <object class="EartagTagEntryRow" id="releasedate_entry">
-                            <property name="title" translatable="yes">Release date</property>
-                            <property name="bound-property">releasedate</property>
-                            <property name="is-date">true</property>
-                          </object>
-                        </child>
+                            <child>
+                              <object class="EartagTagEntryRow" id="genre_entry">
+                                <property name="title" translatable="yes">Genre</property>
+                                <property name="bound-property">genre</property>
+                              </object>
+                            </child>
 
-                        <child>
-                          <object class="EartagTagEntryRow" id="comment_entry">
-                            <property name="title" translatable="yes">Comment</property>
-                            <property name="bound-property">comment</property>
+                            <child>
+                              <object class="EartagTagEntryRow" id="releasedate_entry">
+                                <property name="title" translatable="yes">Release date</property>
+                                <property name="bound-property">releasedate</property>
+                                <property name="is-date">true</property>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="EartagTagEntryRow" id="comment_entry">
+                                <property name="title" translatable="yes">Comment</property>
+                                <property name="bound-property">comment</property>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -210,4 +246,11 @@
       </object>
     </child>
   </template>
+  <object class="GtkSizeGroup">
+    <property name="mode">horizontal</property>
+    <widgets>
+      <widget name="tracknumber_entry"/>
+      <widget name="totaltracknumber_entry"/>
+    </widgets>
+  </object>
 </interface>

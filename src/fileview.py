@@ -382,77 +382,6 @@ class EartagAlbumCoverButton(Adw.Bin):
     def on_unhover(self, *args):
         self.highlight_revealer.set_reveal_child(False)
 
-# ActionRow with two TagEntries, used for track numbers.
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rows/tagdoublerow.ui')
-class EartagTagDoubleRow(Adw.ActionRow):
-    __gtype_name__ = 'EartagTagDoubleRow'
-
-    _max_width_chars = -1
-
-    first_entry = Gtk.Template.Child()
-    double_separator_label = Gtk.Template.Child()
-    second_entry = Gtk.Template.Child()
-    suffixes = Gtk.Template.Child()
-
-    @GObject.Property(type=str, default='')
-    def double_separator(self):
-        return self.double_separator_label.get_label()
-
-    @double_separator.setter
-    def double_separator(self, value):
-        if value:
-            self.double_separator_label.set_label(value)
-            self.double_separator_label.set_visible(True)
-        else:
-            self.double_separator_label.set_visible(False)
-
-    @GObject.Property(type=bool, default=False)
-    def is_double(self):
-        return True
-
-    @GObject.Property(type=int, default=-1)
-    def max_width_chars(self):
-        return self._max_width_chars
-
-    @max_width_chars.setter
-    def max_width_chars(self, value):
-        self._max_width_chars = value
-        self.first_entry.set_max_width_chars(value)
-        self.second_entry.set_max_width_chars(value)
-
-    @GObject.Property(type=bool, default=False)
-    def is_numeric(self):
-        return self.first_entry.is_numeric
-
-    @is_numeric.setter
-    def is_numeric(self, value):
-        self.first_entry.is_numeric = value
-        self.second_entry.is_numeric = value
-
-    @GObject.Property(type=str, default=None)
-    def first_property(self):
-        return self.first_entry.bound_property
-
-    @first_property.setter
-    def first_property(self, value):
-        self.first_entry.bound_property = value
-
-    @GObject.Property(type=str, default=None)
-    def second_property(self):
-        return self.second_entry.bound_property
-
-    @second_property.setter
-    def second_property(self, value):
-        self.second_entry.bound_property = value
-
-    def bind_to_file(self, file):
-        self.first_entry.bind_to_file(file)
-        self.second_entry.bind_to_file(file)
-
-    def unbind_from_file(self, file):
-        self.first_entry.unbind_from_file(file)
-        self.second_entry.unbind_from_file(file)
-
 extra_tag_names = dict(
     [(k, v) for k, v in TAG_NAMES.items() if k in ['none'] + list(EXTRA_TAGS)]
 )
@@ -892,6 +821,7 @@ class EartagFileView(Gtk.Stack):
     artist_entry = Gtk.Template.Child()
     file_info = Gtk.Template.Child()
     tracknumber_entry = Gtk.Template.Child()
+    totaltracknumber_entry = Gtk.Template.Child()
     album_entry = Gtk.Template.Child()
     albumartist_entry = Gtk.Template.Child()
     genre_entry = Gtk.Template.Child()
@@ -912,9 +842,9 @@ class EartagFileView(Gtk.Stack):
         super().__init__()
 
         self.bindable_entries = (self.album_cover, self.title_entry, self.artist_entry,
-            self.tracknumber_entry, self.album_entry, self.albumartist_entry,
-            self.genre_entry, self.releasedate_entry, self.comment_entry,
-            self.file_info)
+            self.tracknumber_entry, self.totaltracknumber_entry, self.album_entry,
+            self.albumartist_entry, self.genre_entry, self.releasedate_entry,
+            self.comment_entry, self.file_info)
 
         self.previous_fileview_width = 0
 
