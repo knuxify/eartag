@@ -203,6 +203,7 @@
                                 <property name="hexpand">true</property>
                                 <style>
                                   <class name="card"/>
+                                  <class name="tagentry-small"/>
                                 </style>
                               </object>
                             </child>
@@ -223,6 +224,7 @@
                                 <property name="hexpand">true</property>
                                 <style>
                                   <class name="card"/>
+                                  <class name="tagentry-small"/>
                                 </style>
                               </object>
                             </child>

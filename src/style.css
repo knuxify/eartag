@@ -114,6 +114,11 @@ editablelabel:focus-within {
 	padding: 0 40px;
 }
 
+/* For some reason, the icon in the smaller entries is 2px off from the main one. Here's a manual fix: */
+.tagentry-small {
+	padding: 0 2px;
+}
+
 .cover-switch-box checkbutton { margin: 3px 5px; }
 
 /* Tweaks for "compact" "more item" entries */
