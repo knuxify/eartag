@@ -195,11 +195,11 @@
                             <property name="bound-property">comment</property>
                           </object>
                         </child>
-
-                        <child>
-                          <object class="EartagExtraTagsExpander" id="more_tags_expander"/>
-                        </child>
                       </object>
+                    </child>
+
+                    <child>
+                      <object class="EartagMoreTagsGroup" id="more_tags_group"/>
                     </child>
                   </object>
                 </child>

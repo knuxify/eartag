@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagMoreTagsGroup" parent="AdwPreferencesGroup">
+    <property name="title" translatable="yes">More tags</property>
+
+    <property name="header-suffix">
+      <object class="GtkMenuButton" id="add_button">
+        <property name="accessible-role">button</property>
+        <style>
+          <class name="flat"/>
+        </style>
+
+        <property name="child">
+          <object class="AdwButtonContent">
+            <!-- TRANSLATORS: "Add" button for "More tags" section -->
+            <property name="label" translatable="yes">Add</property>
+            <property name="icon-name">list-add-symbolic</property>
+          </object>
+        </property>
+
+        <property name="popover">
+          <object class="GtkPopover" id="tag_list_popover">
+            <style>
+              <class name="menu"/>
+            </style>
+
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+
+                <child>
+                  <object class="GtkSearchEntry" id="tag_list_search_entry">
+                    <property name="margin-top">6</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <signal name="search-changed" handler="refresh_tag_filter"/>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="hscrollbar-policy">never</property>
+                    <property name="vscrollbar-policy">automatic</property>
+                    <property name="propagate-natural-width">true</property>
+                    <property name="propagate-natural-height">true</property>
+
+                    <child>
+                      <object class="GtkListView" id="tag_list">
+                        <property name="single-click-activate">true</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+</interface>
