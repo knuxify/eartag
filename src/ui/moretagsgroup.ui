@@ -7,17 +7,13 @@
     <property name="header-suffix">
       <object class="GtkMenuButton" id="add_button">
         <property name="accessible-role">button</property>
+        <property name="icon-name">list-add-symbolic</property>
+        <!-- TRANSLATORS: "Add" button for "More tags" section -->
+        <property name="tooltip-text" translatable="yes">Add tag</property>
+
         <style>
           <class name="flat"/>
         </style>
-
-        <property name="child">
-          <object class="AdwButtonContent">
-            <!-- TRANSLATORS: "Add" button for "More tags" section -->
-            <property name="label" translatable="yes">Add</property>
-            <property name="icon-name">list-add-symbolic</property>
-          </object>
-        </property>
 
         <property name="popover">
           <object class="GtkPopover" id="tag_list_popover">
