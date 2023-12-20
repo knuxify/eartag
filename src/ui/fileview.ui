@@ -275,11 +275,13 @@
                             </child>
                           </object>
                         </child>
-                      </object>
-                    </child>
 
-                    <child>
-                      <object class="EartagMoreTagsGroup" id="more_tags_group"/>
+                        <child>
+                          <object class="EartagMoreTagsGroup" id="more_tags_group">
+                            <property name="margin-top">6</property>
+                          </object>
+                        </child>
+                      </object>
                     </child>
                   </object>
                 </child>
