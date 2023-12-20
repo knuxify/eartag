@@ -114,6 +114,8 @@
                               <object class="EartagTagEditableLabel" id="title_entry">
                                 <property name="title" translatable="yes">Title</property>
                                 <property name="bound-property">title</property>
+                                <property name="margin-start">12</property>
+                                <property name="margin-end">12</property>
                                 <style>
                                   <class name="title-1"/>
                                 </style>
@@ -128,6 +130,7 @@
                                 <property name="can-focus">false</property>
                                 <property name="halign">end</property>
                                 <property name="visible" bind-source="title_entry" bind-property="editing" bind-flags="invert-boolean"/>
+                                <property name="margin-end">12</property>
                                 <style>
                                   <class name="edit-icon"/>
                                 </style>
@@ -146,6 +149,8 @@
                               <object class="EartagTagEditableLabel" id="artist_entry">
                                 <property name="title" translatable="yes">Artist</property>
                                 <property name="bound-property">artist</property>
+                                <property name="margin-start">12</property>
+                                <property name="margin-end">12</property>
                                 <style>
                                   <class name="title-3"/>
                                   <class name="artist"/>
@@ -161,6 +166,7 @@
                                 <property name="can-focus">false</property>
                                 <property name="halign">end</property>
                                 <property name="visible" bind-source="artist_entry" bind-property="editing" bind-flags="invert-boolean"/>
+                                <property name="margin-end">12</property>
                                 <style>
                                   <class name="edit-icon"/>
                                 </style>
