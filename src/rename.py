@@ -6,7 +6,7 @@ from .config import config
 from .utils import get_readable_length
 from . import APP_GRESOURCE_PATH
 
-from gi.repository import Adw, Gtk, Gio
+from gi.repository import Adw, GLib, Gtk, Gio, GObject
 import os
 
 def parse_placeholder_string(string, file):
@@ -54,9 +54,20 @@ class EartagRenameDialog(Adw.Window):
     filename_entry = Gtk.Template.Child()
     preview_entry = Gtk.Template.Child()
 
+    _last_folder = None
+
+    folder_selector_row = Gtk.Template.Child()
+    enable_move_to_folder_toggle = Gtk.Template.Child()
+
     def __init__(self, window):
         super().__init__(modal=True, transient_for=window)
         self.file_manager = window.file_manager
+        self._folder = None
+
+        self.folder_chooser = Gtk.FileDialog(modal=True)
+        self.bind_property('folder', self.folder_selector_row, 'subtitle', GObject.BindingFlags.SYNC_CREATE)
+        if EartagRenameDialog._last_folder is not None:
+            self.props.folder = EartagRenameDialog._last_folder
 
         self.file_manager.rename_task.bind_property(
             'progress', self.rename_progress, 'fraction'
@@ -69,6 +80,36 @@ class EartagRenameDialog(Adw.Window):
             Gio.SettingsBindFlags.DEFAULT
         )
 
+        config.bind('rename-move-to-folder',
+            self.enable_move_to_folder_toggle, 'active',
+            Gio.SettingsBindFlags.DEFAULT
+        )
+
+    @GObject.Property(type=str, default=None)
+    def folder(self):
+        """Base folder to use for the "move to folder" option."""
+        return self._folder
+
+    @folder.setter
+    def folder(self, value):
+        self._folder = value
+        EartagRenameDialog._last_folder = value
+
+    @Gtk.Template.Callback()
+    def show_folder_selector(self, *args):
+        self.folder_chooser.select_folder(self, None, self.select_folder_from_selector, None)
+
+    def select_folder_from_selector(self, source, result, data):
+        try:
+            response = self.folder_chooser.select_folder_finish(result)
+        except GLib.GError:
+            return
+
+        if not response:
+            return
+
+        self.props.folder = response.get_path()
+
     @Gtk.Template.Callback()
     def on_cancel(self, *args):
         self.files = None
@@ -80,7 +121,10 @@ class EartagRenameDialog(Adw.Window):
         format = self.filename_entry.get_text()
         names = []
         for file in self.files:
-            basepath = os.path.dirname(file.props.path)
+            if config['rename-move-to-folder'] and self.props.folder:
+                basepath = self.props.folder
+            else:
+                basepath = os.path.dirname(file.props.path)
             names.append(os.path.join(basepath,
                     parse_placeholder_string(format, file) + file.props.filetype)
             )
