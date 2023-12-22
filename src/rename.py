@@ -118,7 +118,9 @@ class EartagRenameDialog(Adw.Window):
     def folder(self, value):
         self._folder = value
         EartagRenameDialog._last_folder = value
-        if not value.startswith('/run/user/'):
+        if not value:
+            config['rename-base-folder'] = ""
+        elif not value.startswith('/run/user/'):
             config['rename-base-folder'] = value
 
     @Gtk.Template.Callback()
