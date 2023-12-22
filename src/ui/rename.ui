@@ -105,24 +105,10 @@
                                     <property name="editable">false</property>
                                   </object>
                                 </child>
-                              </object>
-                            </child>
-
-                            <child>
-                              <object class="AdwPreferencesGroup">
-                                <property name="title" translatable="yes">Move to folder</property>
-
-                                <child type="header-suffix">
-                                  <object class="GtkSwitch" id="enable_move_to_folder_toggle">
-                                    <property name="tooltip-text" translatable="yes">Enable moving to folder</property>
-                                    <property name="valign">center</property>
-                                  </object>
-                                </child>
 
                                 <child>
                                   <object class="AdwActionRow" id="folder_selector_row">
-                                    <property name="title" translatable="yes">Base folder</property>
-                                    <property name="sensitive" bind-property="active" bind-source="enable_move_to_folder_toggle" bind-flags="sync-create"/>
+                                    <property name="title" translatable="yes">Move to folder</property>
 
                                     <child type="suffix">
                                       <object class="GtkButton" id="folder_selector_button">
@@ -130,6 +116,17 @@
                                         <property name="tooltip-text" translatable="yes">Select a folder…</property>
                                         <property name="valign">center</property>
                                         <signal name="clicked" handler="show_folder_selector"/>
+                                        <style><class name="flat"/></style>
+                                      </object>
+                                    </child>
+
+                                    <child type="suffix">
+                                      <object class="GtkButton" id="folder_remove_button">
+                                        <property name="icon-name">edit-delete-symbolic</property>
+                                        <property name="tooltip-text" translatable="yes">Unselect folder</property>
+                                        <property name="valign">center</property>
+                                        <property name="sensitive">false</property>
+                                        <signal name="clicked" handler="remove_folder"/>
                                         <style><class name="flat"/></style>
                                       </object>
                                     </child>

@@ -60,7 +60,7 @@ class EartagRenameDialog(Adw.Window):
     _last_folder = None
 
     folder_selector_row = Gtk.Template.Child()
-    enable_move_to_folder_toggle = Gtk.Template.Child()
+    folder_remove_button = Gtk.Template.Child()
 
     validation_passed = GObject.Property(type=bool, default=True)
 
@@ -85,15 +85,6 @@ class EartagRenameDialog(Adw.Window):
             Gio.SettingsBindFlags.DEFAULT
         )
 
-        config.bind('rename-move-to-folder',
-            self.enable_move_to_folder_toggle, 'active',
-            Gio.SettingsBindFlags.DEFAULT
-        )
-
-        self.enable_move_to_folder_toggle.connect(
-            'notify::active',
-            self.validate_placeholder
-        )
         self.connect('notify::folder', self.validate_placeholder)
         self.connect('notify::validation-passed', self.update_rename_button_sensitivity)
         self.update_rename_button_sensitivity()
@@ -101,11 +92,12 @@ class EartagRenameDialog(Adw.Window):
     def validate_placeholder(self, *args):
         """Validates the filename input."""
         placeholder = self.filename_entry.get_text()
-        if not config['rename-move-to-folder'] and '/' in placeholder:
+        if '/' in placeholder and not self.props.folder:
             self.props.validation_passed = False
         else:
             self.props.validation_passed = True
         self.update_rename_button_sensitivity()
+        self.folder_remove_button.props.sensitive = bool(self.props.folder)
 
     def update_rename_button_sensitivity(self, *args):
         if self.props.validation_passed:
@@ -113,11 +105,6 @@ class EartagRenameDialog(Adw.Window):
         else:
             self.filename_entry.add_css_class('error')
 
-        if config['rename-move-to-folder']:
-            self.rename_button.set_sensitive(
-                bool(self.props.folder) and self.props.validation_passed
-            )
-            return
         self.rename_button.set_sensitive(self.props.validation_passed)
 
     @GObject.Property(type=str, default=None)
@@ -161,6 +148,10 @@ class EartagRenameDialog(Adw.Window):
                 self.props.folder = response.get_path()
 
     @Gtk.Template.Callback()
+    def remove_folder(self, *args):
+        self.props.folder = None
+
+    @Gtk.Template.Callback()
     def on_cancel(self, *args):
         self.files = None
         self.close()
@@ -171,7 +162,7 @@ class EartagRenameDialog(Adw.Window):
         format = self.filename_entry.get_text()
         names = []
         for file in self.files:
-            if config['rename-move-to-folder'] and self.props.folder:
+            if self.props.folder:
                 basepath = self.props.folder
             else:
                 basepath = os.path.dirname(file.props.path)
