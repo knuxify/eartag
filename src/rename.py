@@ -48,6 +48,9 @@ def parse_placeholder_string(string, file):
 class EartagRenameDialog(Adw.Window):
     __gtype_name__ = 'EartagRenameDialog'
 
+    toast_overlay = Gtk.Template.Child()
+
+    rename_button = Gtk.Template.Child()
     rename_progress = Gtk.Template.Child()
     error_banner = Gtk.Template.Child()
 
@@ -58,6 +61,8 @@ class EartagRenameDialog(Adw.Window):
 
     folder_selector_row = Gtk.Template.Child()
     enable_move_to_folder_toggle = Gtk.Template.Child()
+
+    validation_passed = GObject.Property(type=bool, default=True)
 
     def __init__(self, window):
         super().__init__(modal=True, transient_for=window)
@@ -85,6 +90,36 @@ class EartagRenameDialog(Adw.Window):
             Gio.SettingsBindFlags.DEFAULT
         )
 
+        self.enable_move_to_folder_toggle.connect(
+            'notify::active',
+            self.validate_placeholder
+        )
+        self.connect('notify::folder', self.validate_placeholder)
+        self.connect('notify::validation-passed', self.update_rename_button_sensitivity)
+        self.update_rename_button_sensitivity()
+
+    def validate_placeholder(self, *args):
+        """Validates the filename input."""
+        placeholder = self.filename_entry.get_text()
+        if not config['rename-move-to-folder'] and '/' in placeholder:
+            self.props.validation_passed = False
+        else:
+            self.props.validation_passed = True
+        self.update_rename_button_sensitivity()
+
+    def update_rename_button_sensitivity(self, *args):
+        if self.props.validation_passed:
+            self.filename_entry.remove_css_class('error')
+        else:
+            self.filename_entry.add_css_class('error')
+
+        if config['rename-move-to-folder']:
+            self.rename_button.set_sensitive(
+                bool(self.props.folder) and self.props.validation_passed
+            )
+            return
+        self.rename_button.set_sensitive(self.props.validation_passed)
+
     @GObject.Property(type=str, default=None)
     def folder(self):
         """Base folder to use for the "move to folder" option."""
@@ -108,7 +143,22 @@ class EartagRenameDialog(Adw.Window):
         if not response:
             return
 
-        self.props.folder = response.get_path()
+        folder = response.get_path()
+        try:
+            assert os.path.exists(folder)
+        except AssertionError:
+            self.toast_overlay.add_toast(
+                Adw.Toast.new(_("Selected folder does not exist"))
+            )
+        else:
+            try:
+                assert os.access(folder, os.W_OK)
+            except AssertionError:
+                self.toast_overlay.add_toast(
+                    Adw.Toast.new(_("Selected folder is read-only"))
+                )
+            else:
+                self.props.folder = response.get_path()
 
     @Gtk.Template.Callback()
     def on_cancel(self, *args):
@@ -135,6 +185,9 @@ class EartagRenameDialog(Adw.Window):
 
     @Gtk.Template.Callback()
     def update_preview(self, *args):
+        """Validates the input and updates the preview."""
+        if self.validate_placeholder():
+            return
         example_file = self.file_manager.selected_files[0]
         parsed_placeholder = parse_placeholder_string(
             self.filename_entry.get_text(),
