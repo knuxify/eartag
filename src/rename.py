@@ -73,6 +73,8 @@ class EartagRenameDialog(Adw.Window):
         self.bind_property('folder', self.folder_selector_row, 'subtitle', GObject.BindingFlags.SYNC_CREATE)
         if EartagRenameDialog._last_folder is not None:
             self.props.folder = EartagRenameDialog._last_folder
+        elif os.path.exists(config['rename-base-folder']):
+            self.props.folder = config['rename-base-folder']
 
         self.file_manager.rename_task.bind_property(
             'progress', self.rename_progress, 'fraction'
@@ -116,6 +118,8 @@ class EartagRenameDialog(Adw.Window):
     def folder(self, value):
         self._folder = value
         EartagRenameDialog._last_folder = value
+        if not value.startswith('/run/user/'):
+            config['rename-base-folder'] = value
 
     @Gtk.Template.Callback()
     def show_folder_selector(self, *args):

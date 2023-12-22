@@ -14,9 +14,9 @@
       <summary>Rename placeholder</summary>
     </key>
 
-    <key name="rename-move-to-folder" type="b">
-      <default>false</default>
-      <summary>Move to folder</summary>
+    <key name="rename-base-folder" type="s">
+      <default>""</default>
+      <summary>Rename: base folder to move to</summary>
     </key>
 
     <key name="musicbrainz-confidence-treshold" type="i">
