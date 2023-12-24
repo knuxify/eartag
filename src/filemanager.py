@@ -383,6 +383,9 @@ class EartagFileManager(GObject.Object):
                     i += 1
                     path_split = os.path.splitext(_orig_new_path)
                     new_path = path_split[0] + f' ({i})' + path_split[1]
+            else:
+                if not os.path.exists(os.path.dirname(new_path)):
+                    os.makedirs(os.path.dirname(new_path), exist_ok=True)
 
             try:
                 file.props.path = new_path
