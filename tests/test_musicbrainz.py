@@ -139,6 +139,8 @@ def test_musicbrainz_file_set(dummy_file):  # noqa: F811; flake8 doesn't underst
             break
     assert rel, NOT_FOUND_STR
 
+    rec.release = rel
+
     rec.apply_data_to_file(dummy_file)
 
     assert dummy_file.title == 'Royal Blue Walls'
