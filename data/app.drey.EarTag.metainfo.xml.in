@@ -76,10 +76,6 @@
     <p>Network access is only used for the "Identify selected files" option.</p>
   </description>
 
-  <categories>
-    <category>AudioVideo</category>
-  </categories>
-
   <kudos>
     <kudo>ModernToolkit</kudo>
     <kudo>HiDpiIcon</kudo>
