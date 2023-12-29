@@ -12,6 +12,12 @@
 
   <translation type="gettext">app.drey.EarTag</translation>
 
+  <!-- developer_name tag deprecated with Appstream 1.0 -->
+  <developer_name translatable="no">knuxify</developer_name>
+  <developer id="gnome.org">
+    <name translatable="no">knuxify</name>
+  </developer>
+
   <content_rating type="oars-1.1"/>
 
   <supports>

@@ -99,6 +99,7 @@
             "name" : "eartag",
             "builddir" : true,
             "buildsystem" : "meson",
+            "run-tests": true,
             "config-opts" : [
                 "-Ddevel=true"
             ],
