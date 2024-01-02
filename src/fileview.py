@@ -892,7 +892,7 @@ class EartagFileView(Gtk.Stack):
             self.next_file_button.set_sensitive(False)
             self.next_file_button_revealer.set_reveal_child(False)
         else:
-            if self.file_manager.get_n_selected() > 1:
+            if self.file_manager.selected_files.get_n_items() > 1:
                 self.previous_file_button.set_sensitive(True)
                 self.next_file_button.set_sensitive(True)
             else:

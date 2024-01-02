@@ -36,13 +36,11 @@ class EartagFileListItem(Gtk.Box):
         self.file_manager.connect('selection-changed', self.update_selected_status)
         self.filelist.connect('notify::selection-mode', self.toggle_selection_mode)
         self.connect('destroy', self.on_destroy)
-        self.bindings = []
-        self.bindings.append(
-            self.bind_property(
-                'selected', self.select_button, 'active',
-                GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
-            )
+        self._selected_bind = self.bind_property(
+            'selected', self.select_button, 'active',
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
+        self.bindings = []
 
     def bind_to_file(self, file):
         if self.bindings:
@@ -61,12 +59,13 @@ class EartagFileListItem(Gtk.Box):
         self._error_connect = self.file.connect('notify::has-error', self.handle_error)
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
-        #self.update_selected_status()
+        self.update_selected_status()
 
     def on_destroy(self, *args):
         if self.bindings:
             for b in self.bindings:
                 b.unbind()
+        self._selected_bind.unbind()
         self.file.disconnect(self._error_connect)
         self.file = None
 
@@ -86,6 +85,7 @@ class EartagFileListItem(Gtk.Box):
 
     @selected.setter
     def selected(self, value):
+        self._selected = value
         if value and not self.file_manager.is_selected(self.file):
             self.file_manager.select_file(self.file)
         elif not value and self.file_manager.is_selected(self.file):
@@ -93,7 +93,7 @@ class EartagFileListItem(Gtk.Box):
 
     def update_selected_status(self, *args):
         self._selected = self.file_manager.is_selected(self.file)
-        self.notify('selected')
+        self.notify("selected")
 
     @Gtk.Template.Callback()
     def remove_item(self, *args):
@@ -149,10 +149,7 @@ class EartagFileList(Gtk.ListView):
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
         self.set_model(self.file_manager.selected_files)
-        self.get_native().search_entry.connect('search-changed', self.update_search_query)
-
-    def update_search_query(self, entry, *args):
-        self.file_manager.props.file_filter.str = entry.get_text()
+        self.file_manager.connect('selection-changed', self.switch_into_selection_mode)
 
     def setup(self, factory, list_item):
         list_item.set_child(EartagFileListItem(self))
@@ -167,19 +164,6 @@ class EartagFileList(Gtk.ListView):
         file = list_item.get_item()
         del self._widgets[file.id]
 
-    def enable_selection_mode(self, *args):
-        pass # TODO
-
-    def disable_selection_mode(self, *args):
-        if not self.file_manager:
-            return
-        selection = self.file_manager.selected_files.get_selection()
-        if selection.get_size() > 1:
-            self.file_manager.selected_files.select_item(selection.get_nth(0), True)
-
-    def all_selected(self):
-        return False  # TODO
-
     @GObject.Property(type=bool, default=False)
     def selection_mode(self):
         """Whether the sidebar is in selection mode or not."""
@@ -188,7 +172,20 @@ class EartagFileList(Gtk.ListView):
     @selection_mode.setter
     def selection_mode(self, value):
         self._selection_mode = value
-        if value:
-            self.enable_selection_mode()
-        else:
-            self.disable_selection_mode()
+        if not self.file_manager:
+            return
+        if value is False:
+            selection = self.file_manager.selected_files.get_selection()
+            if selection.get_size() > 1:
+                self.file_manager.selected_files.select_item(selection.get_nth(0), True)
+
+    def toggle_selection_mode(self):
+        self.props.selection_mode = not self.props.selection_mode
+
+    def switch_into_selection_mode(self, *args):
+        """
+        If multiple files have been selected (by holding down Ctrl or Shift) and
+        we're not in multiple selection mode, toggle it on.
+        """
+        if self.file_manager.get_n_selected() >= 2 and not self.props.selection_mode:
+            self.props.selection_mode = True

@@ -245,10 +245,8 @@ class EartagFileManager(GObject.Object):
         task.emit_task_done()
         GLib.idle_add(self.refresh_state)
         if mode == self.LOAD_INSERT:
-            if self.selected_files.get_n_items() < 2 and first_file:
-                position = find_in_model(self.file_filter_model, first_file)
-                if position >= 0:
-                    GLib.idle_add(self.selected_files.select_item, position, True, priority=GLib.PRIORITY_HIGH_IDLE)
+            if self.get_n_selected() < 2 and first_file:
+                GLib.idle_add(self.select_file, first_file, True)
         else:
             GLib.idle_add(self.emit, 'select-first')
 
@@ -330,7 +328,7 @@ class EartagFileManager(GObject.Object):
 
                 self.files.splice(chunk_start, chunk_length, [])
 
-        if self.selected_files.get_n_items() <= 0 and self.files:
+        if self.get_n_selected() <= 0 and self.files:
             self.emit('select-first')
 
         self.set_property('is_modified', bool(self._modified_files))
@@ -476,15 +474,15 @@ class EartagFileManager(GObject.Object):
     def unselect_all(self, *args):
         self.selected_files.unselect_all()
 
-    def select_file(self, file):
+    def select_file(self, file, unselect_other: bool = False):
         pos = find_in_model(self.file_filter_model, file)
         if pos >= 0:
-            self.selected_files.select_item(pos, True)
+            self.selected_files.select_item(pos, unselect_other)
 
     def unselect_file(self, file):
         pos = find_in_model(self.file_filter_model, file)
         if pos >= 0:
-            self.selected_files.unselect_item(pos, True)
+            self.selected_files.unselect_item(pos)
 
     def is_selected(self, file):
         pos = find_in_model(self.file_filter_model, file)
@@ -496,14 +494,18 @@ class EartagFileManager(GObject.Object):
         return self.selected_files.get_selection().get_size()
 
     def do_selection_changed(self, *args):
-        self.emit('selection-changed')
+        if args:
+            self.emit('selection-changed')
+
+    def all_selected(self):
+        return self.get_n_selected() == self.selected_files.get_n_items()
 
     @property
     def selected_files_list(self):
         out = []
-        for i in range(self.file_filter.model.get_n_items()):
+        for i in range(self.file_filter_model.get_n_items()):
             if self.selected_files.is_selected(i):
-                out.append(self.file_filter.get_item(i))
+                out.append(self.file_filter_model.get_item(i))
         return out
 
     @GObject.Signal
@@ -521,6 +523,43 @@ class EartagFileManager(GObject.Object):
     def select_first(self):
         """See EartagFileList.handle_select_first"""
         self.selected_files.select_item(0, True)
+
+    def get_first_selected(self):
+        """Returns the position of the first selected item."""
+        selected = self.selected_files.get_selection()
+        if selected.get_size() < 1:
+            return -1
+        return selected.get_nth(0)
+
+    def select_next(self, *args):
+        """Selects the next item on the sidebar."""
+        if self.selected_files.get_n_items() <= 1 or self.get_n_selected() > 1:
+            return
+
+        selected = self.get_first_selected()
+        if selected < 0:
+            return
+
+        if selected + 1 >= self.selected_files.get_n_items():
+            self.selected_files.select_item(0, True)
+        else:
+            self.selected_files.select_item(selected + 1, True)
+
+    def select_previous(self, *args):
+        """Selects the previous item on the sidebar."""
+        if self.selected_files.get_n_items() <= 1 or self.get_n_selected() > 1:
+            return
+
+        selected = self.get_first_selected()
+        if selected < 0:
+            return
+
+        if selected - 1 >= 0:
+            self.selected_files.select_item(selected - 1, True)
+        else:
+            self.selected_files.select_item(
+                self.selected_files.get_n_items() - 1, True
+            )
 
     #
     # Miscelaneous
