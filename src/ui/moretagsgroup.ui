@@ -17,6 +17,7 @@
 
         <property name="popover">
           <object class="GtkPopover" id="tag_list_popover">
+            <property name="autohide">true</property>
             <style>
               <class name="menu"/>
             </style>
