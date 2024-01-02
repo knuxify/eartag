@@ -462,6 +462,13 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
         self.tag_list.set_factory(factory)
         self.tag_list.connect('activate', self.add_row_from_selector)
 
+        # Close popover if Escape key is pressed in search entry
+        controller = Gtk.ShortcutController()
+        trigger = Gtk.KeyvalTrigger.new(Gdk.keyval_from_name("Escape"), 0)
+        shortcut = Gtk.Shortcut.new(trigger, Gtk.CallbackAction.new(self.close_popover))
+        controller.add_shortcut(shortcut)
+        self.tag_list_search_entry.add_controller(controller)
+
     def get_rows_sorted(self):
         rows = {}
         for row in self._rows:
@@ -493,6 +500,9 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
         self.tag_list_popover.popdown()
 
         self._ignore_tag_selector = False
+
+    def close_popover(self, *args):
+        self.tag_list_popover.popdown()
 
     def tag_filter_func(self, _tag_name, *args):
         """Filter function for the tag dropdown."""
