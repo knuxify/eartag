@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import Adw, Gio, GObject, GLib
+from gi.repository import Adw, Gio, GObject, GLib, Gtk
 import magic
 import mimetypes
 import os.path
@@ -15,6 +15,7 @@ from .backends import (
     )
 from .backends.file import EartagFile
 from .utils.bgtask import EartagBackgroundTask
+from .utils.misc import find_in_model
 from .dialogs import (EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog, EartagRenameFailureDialog)
 
@@ -57,14 +58,29 @@ class EartagFileManager(GObject.Object):
 
     _is_modified = False
     _has_error = False
-    selected_files = []
 
     def __init__(self, window):
         super().__init__()
         self.window = window
+
+        # Set up models
         self.files = Gio.ListStore(item_type=EartagFile)
+
+        # Set up sort model for sort button
+        self.file_sort_model = Gtk.SortListModel(model=self.files)
+        self.sorter = Gtk.CustomSorter.new(self.file_sort_func, None)
+        self.file_sort_model.set_sorter(self.sorter)
+
+        # Set up filter model for search
+        self.file_filter_model = Gtk.FilterListModel(model=self.file_sort_model)
+        self.filter = Gtk.CustomFilter.new(self.file_filter_func, self.file_filter_model)
+        self._file_filter_str = ''
+        self.file_filter_model.set_filter(self.filter)
+
+        # Set up selection model for selected files handling
+        self.selected_files = Gtk.MultiSelection.new(self.file_filter_model)
+
         self.file_paths = []
-        self.selected_files = []
         self._files_buffer = []
         self._modified_files = []
         self._error_files = []
@@ -74,6 +90,8 @@ class EartagFileManager(GObject.Object):
         # Create background task runners
         self.load_task = EartagBackgroundTask(self._load_files)
         self.rename_task = EartagBackgroundTask(self._rename_files)
+
+        self.selected_files.connect('selection-changed', self.do_selection_changed)
 
     def save(self):
         """Saves changes in all files."""
@@ -166,9 +184,6 @@ class EartagFileManager(GObject.Object):
             _file.connect('notify::has-error', self.update_error_status)
         )
 
-        if not self.selected_files:
-            self.selected_files = []
-
         self._files_buffer.append(_file)
 
         self.file_paths.append(_file.path)
@@ -230,10 +245,10 @@ class EartagFileManager(GObject.Object):
         task.emit_task_done()
         GLib.idle_add(self.refresh_state)
         if mode == self.LOAD_INSERT:
-            if len(self.selected_files) < 2 and first_file:
-                self.selected_files = [first_file]
-                GLib.idle_add(self.emit, 'selection-changed', priority=GLib.PRIORITY_HIGH_IDLE)
-                GLib.idle_add(self.emit, 'selection-override')
+            if self.selected_files.get_n_items() < 2 and first_file:
+                position = find_in_model(self.file_filter_model, first_file)
+                if position >= 0:
+                    GLib.idle_add(self.selected_files.select_item, position, True, priority=GLib.PRIORITY_HIGH_IDLE)
         else:
             GLib.idle_add(self.emit, 'select-first')
 
@@ -256,9 +271,9 @@ class EartagFileManager(GObject.Object):
 
         self._removed_files_buffer.append(self.files.find(file)[1])
 
-        if file in self.selected_files:
+        pos = find_in_model(self.file_filter_model, file)
+        if pos >= 0:
             self._selection_removed = True
-            self.selected_files.remove(file)
         if file.id in self._modified_files:
             self._modified_files.remove(file.id)
         if file.id in self._error_files:
@@ -315,15 +330,7 @@ class EartagFileManager(GObject.Object):
 
                 self.files.splice(chunk_start, chunk_length, [])
 
-        # Here, selection-override is used instead of selection-changed, as
-        # it's primarily consumed by the sidebar, and the sidebar already emits
-        # selection-changed multiple times throughout itself, so we'd just end
-        # up with more infinite emit loops than it's worth...
-
-        if self._selection_removed:
-            self.emit('selection-override')
-
-        elif not self.selected_files and self.files:
+        if self.selected_files.get_n_items() <= 0 and self.files:
             self.emit('select-first')
 
         self.set_property('is_modified', bool(self._modified_files))
@@ -339,7 +346,7 @@ class EartagFileManager(GObject.Object):
         """Clear the opened file ist.."""
         self.files.remove_all()
         self.file_paths = []
-        self.selected_files = []
+        self.selected_files.unselect_all()
 
         self._modified_files = []
         self._error_files = []
@@ -347,7 +354,6 @@ class EartagFileManager(GObject.Object):
         self.set_property('has_error', bool(self._error_files))
 
         self.refresh_state()
-        self.emit('selection-override')
 
         return True
 
@@ -406,6 +412,120 @@ class EartagFileManager(GObject.Object):
         task.emit_task_done()
         GLib.idle_add(self.refresh_state)
 
+    #
+    # File list sort and filter
+    #
+
+    @GObject.Property(type=str, default='')
+    def file_filter_str(self):
+        """String for the file filter."""
+        return self._file_filter_str
+
+    @file_filter_str.setter
+    def file_filter_str(self, value: str):
+        self._file_filter_str = value
+        self.filter.changed(Gtk.FilterChange.DIFFERENT)
+
+    def file_filter_func(self, file, *args):
+        """Custom filter for file search."""
+        query = self.props.file_filter_str
+        if not query:
+            return True
+        query = query.casefold()
+
+        if query in file.title.casefold():
+            return True
+
+        if query in file.artist.casefold():
+            return True
+
+        if query in file.album.casefold():
+            return True
+
+        if query in os.path.basename(file.path).casefold():
+            return True
+
+        return False
+
+    def file_sort_func(self, a, b, *args):
+        """Custom sort function implementation for file sorting."""
+
+        # Step 1. Compare album names
+        a_album = GLib.utf8_casefold(a.albumsort or a.album or '', -1)
+        b_album = GLib.utf8_casefold(b.albumsort or b.album or '', -1)
+        collate = GLib.utf8_collate(a_album, b_album)
+
+        # Step 2. Compare track numbers
+        if collate == 0:
+            if (a.tracknumber or -1) > (b.tracknumber or -1):
+                collate = 1
+            elif (a.tracknumber or -1) < (b.tracknumber or -1):
+                collate = -1
+
+        # Step 3. If the result is inconclusive, compare filenames
+        if collate == 0:
+            a_filename = GLib.utf8_casefold(os.path.basename(a.path), -1)
+            b_filename = GLib.utf8_casefold(os.path.basename(b.path), -1)
+            collate = GLib.utf8_collate(a_filename, b_filename)
+
+        return collate
+
+    def select_all(self, *args):
+        self.selected_files.select_all()
+
+    def unselect_all(self, *args):
+        self.selected_files.unselect_all()
+
+    def select_file(self, file):
+        pos = find_in_model(self.file_filter_model, file)
+        if pos >= 0:
+            self.selected_files.select_item(pos, True)
+
+    def unselect_file(self, file):
+        pos = find_in_model(self.file_filter_model, file)
+        if pos >= 0:
+            self.selected_files.unselect_item(pos, True)
+
+    def is_selected(self, file):
+        pos = find_in_model(self.file_filter_model, file)
+        if pos >= 0:
+            return self.selected_files.is_selected(pos)
+        return False
+
+    def get_n_selected(self):
+        return self.selected_files.get_selection().get_size()
+
+    def do_selection_changed(self, *args):
+        self.emit('selection-changed')
+
+    @property
+    def selected_files_list(self):
+        out = []
+        for i in range(self.file_filter.model.get_n_items()):
+            if self.selected_files.is_selected(i):
+                out.append(self.file_filter.get_item(i))
+        return out
+
+    @GObject.Signal
+    def selection_changed(self):
+        pass
+
+    @GObject.Signal
+    def selection_override(self):
+        """
+        Internal signal used to communicate selection overrides to the sidebar.
+        """
+        pass
+
+    @GObject.Signal
+    def select_first(self):
+        """See EartagFileList.handle_select_first"""
+        self.selected_files.select_item(0, True)
+
+    #
+    # Miscelaneous
+    #
+
     def close_dialog(self, dialog, *args):
         dialog.close()
 
@@ -425,36 +545,11 @@ class EartagFileManager(GObject.Object):
     def has_error(self, value):
         self._has_error = value
 
-    def select_all(self, *args):
-        self.selected_files = list(self.files)
-
-    def unselect_all(self, *args):
-        self.selected_files = []
-
-    def select_file(self, file):
-        self.selected_files = [file]
-
     @GObject.Signal
     def refresh_needed(self):
-        pass
-
-    @GObject.Signal
-    def selection_changed(self):
-        pass
-
-    @GObject.Signal
-    def selection_override(self):
-        """
-        Internal signal used to communicate selection overrides to the sidebar.
-        """
-        pass
-
-    @GObject.Signal
-    def select_first(self):
-        """See EartagFileList.handle_select_first"""
         pass
 
     def refresh_state(self):
         """Convenience function to refresh the state of the UI"""
         self.emit('refresh-needed')
-        self.emit('selection-changed')
+        #self.emit('selection-changed')
