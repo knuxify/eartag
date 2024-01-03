@@ -6,6 +6,7 @@ import acoustid
 import json
 import magic
 import mimetypes
+import os.path
 import tempfile
 import time
 import traceback
@@ -752,7 +753,9 @@ def acoustid_identify_file(file):
         if 'results' not in results or not results['results']:
             return (0.0, None)
     except:
+        print(f"Error while getting AcoustID match for {os.path.basename(file.path)} ({file.id}):")
         traceback.print_exc()
+        print("Continuing without match.")
         return (0.0, None)
 
     acoustid_data = results['results'][0]
