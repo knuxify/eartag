@@ -145,6 +145,7 @@ class EartagFileList(Gtk.ListView):
         self._ignore_unselect = False
         self.file_manager = None
         self._widgets = {}
+        self.connect("activate", self.on_activate)
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -174,7 +175,12 @@ class EartagFileList(Gtk.ListView):
         self._selection_mode = value
         if not self.file_manager:
             return
-        if value is False:
+        if value is True:
+            self.action_set_enabled('list.select-item', False)
+            self.props.single_click_activate = True
+        else:
+            self.action_set_enabled('list.select-item', True)
+            self.props.single_click_activate = False
             selection = self.file_manager.selected_files.get_selection()
             if selection.get_size() > 1:
                 self.file_manager.selected_files.select_item(selection.get_nth(0), True)
@@ -189,3 +195,10 @@ class EartagFileList(Gtk.ListView):
         """
         if self.file_manager.get_n_selected() >= 2 and not self.props.selection_mode:
             self.props.selection_mode = True
+
+    def on_activate(self, list, index):
+        if self.props.selection_mode:
+            if self.file_manager.selected_files.is_selected(index):
+                self.file_manager.selected_files.unselect_item(index)
+            else:
+                self.file_manager.selected_files.select_item(index, False)
