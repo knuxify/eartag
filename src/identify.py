@@ -508,7 +508,7 @@ class EartagIdentifyDialog(Adw.Window):
         )
         self.apply_task.connect('task-done', self.on_apply_done)
 
-        self.files.splice(0, self.files.get_n_items(), self.file_manager.selected_files.copy())
+        self.files.splice(0, self.files.get_n_items(), self.file_manager.selected_files_list)
 
         self.connect('close-request', self.on_close_request)
 

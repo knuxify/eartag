@@ -862,7 +862,6 @@ class EartagFileView(Gtk.Stack):
         self.file_manager = file_manager
         self.file_manager.connect('refresh-needed', self.update_binds)
         self.file_manager.connect('selection-changed', self.update_binds)
-        self.file_manager.connect('selection-override', self.update_binds)
         self.file_manager.load_task.connect('notify::progress', self.update_loading)
         self.file_manager.connect('notify::has-error', self.update_error)
 
@@ -893,7 +892,7 @@ class EartagFileView(Gtk.Stack):
             self.next_file_button.set_sensitive(False)
             self.next_file_button_revealer.set_reveal_child(False)
         else:
-            if self.get_native().sidebar_file_list.selection_model.get_n_items() > 1:
+            if self.file_manager.selected_files.get_n_items() > 1:
                 self.previous_file_button.set_sensitive(True)
                 self.next_file_button.set_sensitive(True)
             else:
@@ -910,10 +909,10 @@ class EartagFileView(Gtk.Stack):
         self.update_buttons()
 
         # Get list of selected (added)/unselected (removed) files
-        added_files = [file for file in self.file_manager.selected_files
+        added_files = [file for file in self.file_manager.selected_files_list
             if file not in self.bound_files]
         removed_files = [file for file in self.bound_files
-            if file not in self.file_manager.selected_files]
+            if not self.file_manager.is_selected(file)]
 
         # Handle added and removed files
         self._unbind_files(removed_files)
@@ -922,7 +921,7 @@ class EartagFileView(Gtk.Stack):
         # Make save/fields sensitive/insensitive based on whether selected files are
         # all writable
         has_unwritable = False
-        for file in self.file_manager.selected_files:
+        for file in self.file_manager.selected_files_list:
             if not file.is_writable:
                 has_unwritable = True
                 break

@@ -183,17 +183,17 @@ Opened files:
         win = self.props.active_window
         if win.container_stack.get_visible_child() != win.split_view:
             return
-        if win.sidebar_file_list.all_selected():
+        if win.file_manager.all_selected():
             if win.file_manager.files.get_n_items() == 1:
                 if not win.select_multiple_button.get_active():
                     win.select_multiple_button.set_active(True)
                     return
             win.select_multiple_button.set_active(False)
-            win.sidebar_file_list.unselect_all()
+            win.file_manager.unselect_all()
             win.file_manager.emit('select-first')
         else:
             win.select_multiple_button.set_active(True)
-            win.sidebar_file_list.select_all()
+            win.file_manager.select_all()
 
     def on_toggle_sidebar_action(self, *args):
         win = self.props.active_window

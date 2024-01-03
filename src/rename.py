@@ -81,7 +81,7 @@ class EartagRenameDialog(Adw.Window):
         )
         self.file_manager.rename_task.connect('task-done', self.on_done)
 
-        self.files = list(self.file_manager.selected_files).copy()
+        self.files = self.file_manager.selected_files_list.copy()
         config.bind('rename-placeholder',
             self.filename_entry, 'text',
             Gio.SettingsBindFlags.DEFAULT
