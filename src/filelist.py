@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import GObject, Gtk, GLib
+from gi.repository import GObject, Gtk, GLib, Gdk
 import os.path
 
 from .utils import find_in_model
@@ -145,7 +145,14 @@ class EartagFileList(Gtk.ListView):
         self._ignore_unselect = False
         self.file_manager = None
         self._widgets = {}
+
+        # See on_activate function for explaination
         self.connect("activate", self.on_activate)
+        self.key_controller = Gtk.EventControllerKey.new()
+        self.key_controller.connect('key-pressed', self.shift_key_pressed)
+        self.key_controller.connect('key-released', self.shift_key_released)
+        self.add_controller(self.key_controller)
+        self.shift_state = False
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -198,7 +205,38 @@ class EartagFileList(Gtk.ListView):
 
     def on_activate(self, list, index):
         if self.props.selection_mode:
-            if self.file_manager.selected_files.is_selected(index):
-                self.file_manager.selected_files.unselect_item(index)
-            else:
-                self.file_manager.selected_files.select_item(index, False)
+            # Gtk.MultiSelection doesn't have a way to force every click
+            # to count a selection - instead, a single click unselects
+            # all other items. This isn't the behavior we want, so instead:
+            # - We switch into single_click_activate (which makes selections
+            # happen on hover, and activations on a single click, instead
+            # of selections happening on a single-click and activations on
+            # double-click)
+            # - Then, we disable the list.select-item action to prevent the
+            # items from being selected on hover. Instead:
+            # - We re-implement the default selection behavior manually,
+            # here in on_activate. We still call the underlying action so
+            # that we don't have to re-write all the code for handling
+            # "extend" selections (when Shift is pressed).
+
+            extend = self.shift_state
+
+            self.action_set_enabled('list.select-item', True)
+            self.activate_action('list.select-item', GLib.Variant('(ubb)', (index, not extend, extend)))
+            self.action_set_enabled('list.select-item', False)
+
+    def shift_key_pressed(self, controller, keyval, keycode, state):
+        """
+        Checks if the Shift key is pressed and sets the internal shift state
+        variable accordingly.
+        """
+        if state & Gdk.ModifierType.SHIFT_MASK or keyval in (Gdk.KEY_Shift_L, Gdk.KEY_Shift_R):
+            self.shift_state = True
+
+    def shift_key_released(self, controller, keyval, keycode, state):
+        """
+        Checks if the Shift key is released and sets the internal shift state
+        variable accordingly.
+        """
+        if state & Gdk.ModifierType.SHIFT_MASK or keyval in (Gdk.KEY_Shift_L, Gdk.KEY_Shift_R):
+            self.shift_state = False
