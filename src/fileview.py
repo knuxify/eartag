@@ -284,6 +284,7 @@ class EartagAlbumCoverButton(Adw.Bin):
             our_tmpdir = None
             if self.cover_tempdir:
                 our_tmpdir = self.cover_tempdir.name
+            cover_is_modified = cover_path_prop in file.modified_tags
             if cover_path.startswith(tmpdir) and \
                     (not our_tmpdir or not cover_path.startswith(our_tmpdir)):
                 # As delete_cover closes the cover tempfile, we need to copy it
@@ -296,9 +297,9 @@ class EartagAlbumCoverButton(Adw.Bin):
                     str(time.time()) + '-' + os.path.basename(cover_path)
                 )
                 shutil.copyfile(cover_path, target_path)
-                self._remove_undo_buffer[file.id] = (cover_path, target_path)
+                self._remove_undo_buffer[file.id] = (cover_path, target_path, cover_is_modified)
             else:
-                self._remove_undo_buffer[file.id] = (cover_path, cover_path)
+                self._remove_undo_buffer[file.id] = (cover_path, cover_path, cover_is_modified)
 
             file.delete_cover(self.cover_type)
 
@@ -325,7 +326,11 @@ class EartagAlbumCoverButton(Adw.Bin):
             if file.id not in self._remove_undo_buffer:
                 continue
             file.set_property(cover_path_prop, self._remove_undo_buffer[file.id][1])
-            file.mark_tag_as_unmodified(cover_path_prop)
+            was_modified = self._remove_undo_buffer[file.id][2]
+            if was_modified:
+                file.mark_as_modified(cover_path_prop)
+            else:
+                file.mark_tag_as_unmodified(cover_path_prop)
 
         self.cover_image.on_cover_change()
 
