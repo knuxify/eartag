@@ -325,6 +325,17 @@ class EartagFile(GObject.Object):
         self.emit('modified', None)
         self.modified_tags = []
 
+    def mark_tag_as_unmodified(self, tag):
+        was_modified = bool(self.modified_tags)
+        try:
+            self.modified_tags.remove(tag)
+        except ValueError:
+            return
+        if bool(self.modified_tags) != was_modified:
+            self._is_modified = bool(self.modified_tags)
+            self.notify('is_modified')
+        self.emit('modified', None)
+
     @GObject.Property(type=bool, default=False)
     def is_modified(self):
         """Returns whether the values have been modified or not."""

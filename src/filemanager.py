@@ -93,6 +93,10 @@ class EartagFileManager(GObject.Object):
 
         self.selected_files.connect('selection-changed', self.do_selection_changed)
 
+    @GObject.Signal
+    def save_started(self):
+        pass
+
     def save(self):
         """Saves changes in all files."""
         if not self.is_modified or self.has_error:

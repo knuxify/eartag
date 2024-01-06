@@ -18,6 +18,8 @@ import magic
 import mimetypes
 import shutil
 import os.path
+import tempfile
+import time
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):
@@ -41,6 +43,7 @@ class EartagAlbumCoverButton(Adw.Bin):
         super().__init__()
         self._cover_type = CoverType.FRONT
         self._remove_undo_buffer = {}
+        self.cover_tempdir = None
 
         self.connect('destroy', self.on_destroy)
         self.drop_target = Gtk.DropTarget(
@@ -177,6 +180,9 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     def on_destroy(self, *args):
         self.files = None
+        if self.cover_tempdir:
+            self.cover_tempdir.cleanup()
+            self.cover_tempdir = None
 
     def show_cover_file_chooser(self, *args):
         """Shows the file chooser."""
@@ -192,6 +198,30 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         file_chooser.open(self.get_native(), _cancellable,
             self.open_cover_file_from_dialog)
+
+    def open_cover_file_from_dialog(self, dialog, result):
+        """
+        Callback for a FileChooser that takes the response and opens the file
+        selected in the dialog.
+        """
+        try:
+            response = dialog.open_finish(result)
+        except GLib.GError:
+            return
+
+        if not response:
+            return
+
+        if self.cover_type == CoverType.FRONT:
+            for file in self.files:
+                file.front_cover_path = response.get_path()
+                file.notify('front-cover-path')
+        elif self.cover_type == CoverType.BACK:
+            for file in self.files:
+                file.back_cover_path = response.get_path()
+                file.notify('back-cover-path')
+
+        self.cover_image.on_cover_change()
 
     def save_cover(self, *args):
         """Opens a file dialog to have the cover art to a file."""
@@ -248,15 +278,31 @@ class EartagAlbumCoverButton(Adw.Bin):
         elif self.cover_type == CoverType.BACK:
             cover_path_prop = 'back_cover_path'
 
+        tmpdir = tempfile.gettempdir()
         for file in self.files:
-            self._remove_undo_buffer[file.id] = file.get_property(cover_path_prop)
-            # HACK: Instead of setting the cover path directly (which will
-            # call delete_cover) we set the underlying property instead.
-            # That was we can still recover the tempfile-based covers if the
-            # remove gets undone. We call delete_cover later on.
-            setattr(file, '_' + cover_path_prop, '')
-            file.mark_as_modified(cover_path_prop)
-            file.notify(cover_path_prop)
+            cover_path = file.get_property(cover_path_prop)
+            our_tmpdir = None
+            if self.cover_tempdir:
+                our_tmpdir = self.cover_tempdir.name
+            if cover_path.startswith(tmpdir) and \
+                    (not our_tmpdir or not cover_path.startswith(our_tmpdir)):
+                # As delete_cover closes the cover tempfile, we need to copy it
+                # somewhere temporarily so that it doesn't get removed if the user
+                # decides to undo the operation.
+                if not self.cover_tempdir:
+                    self.cover_tempdir = tempfile.TemporaryDirectory()
+                target_path = os.path.join(
+                    self.cover_tempdir.name,
+                    str(time.time()) + '-' + os.path.basename(cover_path)
+                )
+                shutil.copyfile(cover_path, target_path)
+                self._remove_undo_buffer[file.id] = (cover_path, target_path)
+            else:
+                self._remove_undo_buffer[file.id] = (cover_path, cover_path)
+
+            file.delete_cover(self.cover_type)
+
+        self.cover_image.on_cover_change()
 
         remove_msg = gettext.ngettext(
             "Removed cover from file",
@@ -278,61 +324,18 @@ class EartagAlbumCoverButton(Adw.Bin):
         for file in file_manager.files:
             if file.id not in self._remove_undo_buffer:
                 continue
-            file.set_property(cover_path_prop, self._remove_undo_buffer[file.id])
+            file.set_property(cover_path_prop, self._remove_undo_buffer[file.id][1])
+            file.mark_tag_as_unmodified(cover_path_prop)
 
-        for _file in self.files:
-            if _file.get_cover(self.cover_type) != self.files[0]:
-                self.cover_image.mark_as_empty()
-                break
+        self.cover_image.on_cover_change()
+
         self._remove_undo_buffer = {}
 
     def _remove_undo_clear(self, *args):
         if 'type' not in self._remove_undo_buffer:
             return
 
-        if self._remove_undo_buffer['type'] == CoverType.FRONT:
-            cover_path_prop = 'front_cover_path'
-        elif self._remove_undo_buffer['type'] == CoverType.BACK:
-            cover_path_prop = 'back_cover_path'
-
-        file_manager = self.get_native().file_manager
-        for file in file_manager.files:
-            if file.id not in self._remove_undo_buffer:
-                continue
-            if file.get_property(cover_path_prop) != self._remove_undo_buffer[file.id]:
-                continue
-            file.delete_cover(self._remove_undo_buffer['type'])
-
-        for _file in self.files:
-            if _file.get_cover(self.cover_type) != self.files[0]:
-                self.cover_image.mark_as_empty()
-                break
-
         self._remove_undo_buffer = {}
-
-    def open_cover_file_from_dialog(self, dialog, result):
-        """
-        Callback for a FileChooser that takes the response and opens the file
-        selected in the dialog.
-        """
-        try:
-            response = dialog.open_finish(result)
-        except GLib.GError:
-            return
-
-        if not response:
-            return
-
-        if self.cover_type == CoverType.FRONT:
-            for file in self.files:
-                file.front_cover_path = response.get_path()
-                file.notify('front-cover-path')
-        elif self.cover_type == CoverType.BACK:
-            for file in self.files:
-                file.back_cover_path = response.get_path()
-                file.notify('back-cover-path')
-
-        self.cover_image.on_cover_change()
 
     # Drag-and-drop
 
@@ -857,6 +860,9 @@ class EartagFileView(Gtk.Stack):
             self.comment_entry, self.file_info)
 
         self.previous_fileview_width = 0
+
+    def on_close(self):
+        self.album_cover.on_destroy()
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager

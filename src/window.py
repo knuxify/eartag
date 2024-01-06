@@ -347,8 +347,9 @@ class EartagWindow(Adw.ApplicationWindow):
             self.save_button.set_tooltip_text(_("Some of the opened files have invalid values; cannot save")) # noqa: E501
         else:
             self.save_button.set_tooltip_text('')
+
         self.save_button.set_sensitive(
-                self.file_manager.is_modified and not self.file_manager.has_error
+            self.file_manager.is_modified and not self.file_manager.has_error
         )
 
     @Gtk.Template.Callback()
@@ -386,6 +387,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
         for file in self.file_manager.files:
             file.on_remove()
+
+        self.file_view.on_close()
 
     def show_rename_dialog(self, *args):
         self.rename_dialog = EartagRenameDialog(self)
