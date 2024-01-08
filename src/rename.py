@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from .backends.file import BASIC_TAGS, TAG_NAMES
+from .backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length
 from . import APP_GRESOURCE_PATH
 
-from gi.repository import Adw, GLib, Gtk, Gio, GObject
+from gi.repository import Adw, GLib, Gtk, Gdk, Gio, GObject
 import os
 
 def parse_placeholder_string(string, file):
@@ -64,6 +64,10 @@ class EartagRenameDialog(Adw.Window):
 
     validation_passed = GObject.Property(type=bool, default=True)
 
+    tag_list = Gtk.Template.Child()
+    tag_list_popover = Gtk.Template.Child()
+    tag_list_search_entry = Gtk.Template.Child()
+
     def __init__(self, window):
         super().__init__(modal=True, transient_for=window)
         self.file_manager = window.file_manager
@@ -91,6 +95,39 @@ class EartagRenameDialog(Adw.Window):
         self.connect('notify::validation-passed', self.update_rename_button_sensitivity)
         self.update_rename_button_sensitivity()
 
+        # Extra tag filter for additional tag field
+
+        self.tag_names = dict(
+            [(k, v) for k, v in TAG_NAMES.items()
+            if k in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate')]
+        )
+        self.tag_names_swapped = dict(
+            [(v, k) for k, v in self.tag_names.items()]
+        )
+        tag_model_nofilter = Gtk.StringList.new(list(self.tag_names.values()))
+        self.tag_model = Gtk.FilterListModel(model=tag_model_nofilter)
+        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
+        self.tag_model.set_filter(self.tag_filter)
+
+        self.tag_selection_model = Gtk.NoSelection.new(self.tag_model)
+
+        # "Add additional tag" field (we can reuse the factory from the "more tags" selector):
+        self._ignore_tag_selector = False
+
+        factory = Gtk.BuilderListItemFactory.new_from_resource(
+            None, f'{APP_GRESOURCE_PATH}/ui/moretagsgroupfactory.ui'
+        )
+        self.tag_list.set_model(self.tag_selection_model)
+        self.tag_list.set_factory(factory)
+        self.tag_list.connect('activate', self.add_placeholder_from_selector)
+
+        # Close popover if Escape key is pressed in search entry
+        controller = Gtk.ShortcutController()
+        trigger = Gtk.KeyvalTrigger.new(Gdk.keyval_from_name("Escape"), 0)
+        shortcut = Gtk.Shortcut.new(trigger, Gtk.CallbackAction.new(self.close_popover))
+        controller.add_shortcut(shortcut)
+        self.tag_list_search_entry.add_controller(controller)
+
     def validate_placeholder(self, *args):
         """Validates the filename input."""
         placeholder = self.filename_entry.get_text()
@@ -108,6 +145,41 @@ class EartagRenameDialog(Adw.Window):
             self.filename_entry.add_css_class('error')
 
         self.rename_button.set_sensitive(self.props.validation_passed)
+
+    def add_placeholder_from_selector(self, listview, position, *args):
+        """Adds a new placeholder based on the tag selector."""
+        if self._ignore_tag_selector:
+            return
+
+        self._ignore_tag_selector = True
+
+        selected_item = self.tag_selection_model.get_item(position)
+        if not selected_item:
+            return
+        if selected_item.get_string() == 'none':
+            return
+        tag = self.tag_names_swapped[selected_item.get_string()]
+
+        self.filename_entry.set_text(self.filename_entry.get_text() + '{' + tag + '}')
+        self.tag_list_popover.popdown()
+
+        self._ignore_tag_selector = False
+
+    @Gtk.Template.Callback()
+    def refresh_tag_filter(self, *args):
+        """Refreshes the filter for the tag placeholder insert row."""
+        self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+
+    def close_popover(self, *args):
+        self.tag_list_popover.popdown()
+
+    def tag_filter_func(self, _tag_name, *args):
+        """Filter function for the tag dropdown."""
+        tag_name = _tag_name.get_string()
+        query = self.tag_list_search_entry.get_text()
+        if query:
+            return query.lower() in tag_name.lower()
+        return True
 
     @GObject.Property(type=str, default=None)
     def folder(self):
