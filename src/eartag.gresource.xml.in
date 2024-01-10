@@ -10,6 +10,7 @@
     <file>ui/albumcoverbutton.ui</file>
     <file>ui/albumcoverimage.ui</file>
     <file>ui/filelistitem.ui</file>
+    <file>ui/filenamerow.ui</file>
     <file>ui/fileview.ui</file>
     <file>ui/rename.ui</file>
     <file>ui/moretagsgroup.ui</file>
