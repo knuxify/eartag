@@ -10,6 +10,7 @@ from .filemanager import EartagFileManager
 from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
 from .rename import EartagRenameDialog
 from .identify import EartagIdentifyDialog
+from .guess import EartagGuessDialog
 from . import APP_GRESOURCE_PATH, DEVEL
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
@@ -401,6 +402,10 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_settings_dialog(self, *args):
         self.settings_dialog = EartagSettingsWindow(self)
         self.settings_dialog.present()
+
+    def show_guess_dialog(self, *args):
+        self.guess_dialog = EartagGuessDialog(self)
+        self.guess_dialog.present()
 
     # Sidebar
 

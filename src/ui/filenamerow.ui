@@ -6,16 +6,17 @@
     <property name="show-apply-button">true</property>
     <signal name="apply" handler="set_filename"/>
 
-    <!--<child type="suffix">
+    <child type="suffix">
       <object class="GtkButton" id="guess_button">
         <property name="icon-name">system-search-symbolic</property>
         <property name="tooltip-text" translatable="yes">Guess tags from filename</property>
         <property name="valign">center</property>
         <property name="sensitive">true</property>
+        <signal name="clicked" handler="open_guess_dialog"/>
         <style>
           <class name="flat"/>
         </style>
       </object>
-    </child>-->
+    </child>
   </template>
 </interface>

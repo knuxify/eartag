@@ -36,6 +36,7 @@ eartag_sources = [
   '__init__.py',
   'config.py',
   'dialogs.py',
+  'guess.py',
   'identify.py',
   'main.py',
   'musicbrainz.py',
