@@ -2,8 +2,9 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from . import APP_GRESOURCE_PATH
+from .backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 
-from gi.repository import Adw, Gtk, Pango, GObject
+from gi.repository import Adw, Gtk, Pango, GObject, GLib
 from typing import Optional
 import re
 
@@ -77,11 +78,12 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
         self.attrs = Pango.AttrList()
 
         self.widget = widget
-        widget.get_delegate().get_buffer().connect('inserted-text', self.syntax_highlighting_insert)
-        widget.get_delegate().get_buffer().connect('deleted-text', self.syntax_highlighting_remove)
+        # If we bind to the standard changed signal, the attrs don't update
+        # until another character is set; this seems to be early enough to work.
+        widget.get_delegate().get_buffer().connect('inserted-text', self.syntax_highlighting_inserted)
+        widget.get_delegate().get_buffer().connect('deleted-text', self.syntax_highlighting_deleted)
         widget.set_attributes(self.attrs)
 
-        self.connect('notify::error', self.on_error)
         style_manager = Adw.StyleManager.get_default()
         style_manager.connect('notify::dark', self.update_theme)
         style_manager.connect('notify::high-contrast', self.update_theme)
@@ -90,107 +92,107 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
     def update_theme(self, style_manager, *args):
         self.props.theme = "dark" if style_manager.props.dark else "light"
         self.props.high_contrast = style_manager.props.high_contrast
-        self.attrs.update(0, len(self.widget.get_text()), 0)
-        self.add_tags_from_text(self.widget.get_text(), 0)
+        self.update_syntax_highlighting()
 
-    @property
-    def tag_positions(self):
+    def update_syntax_highlighting(self, full_text=None):
         """Helper function that returns tag positions."""
+
+        # You might call this a lazy implementation - every time text is
+        # inserted or removed, we clear all attributes and re-do everything
+        # from scratch. A *good* implementation would instead only modify
+        # the parts that are needed.
+        #
+        # I spent an entire day writing such an implementation, before I
+        # realized that I had written nearly 150 lines of code, and it still
+        # wasn't working like I wanted to. To handle all sorts of edge cases,
+        # I'd need to add a lot more checks.
+        #
+        # So, if it were a "good" implementation, we would have to perform
+        # many more checks and write a lot more code for something that would
+        # cause all formatting to fall apart if only the user dares to insert
+        # something in a different order than you anticipated.
+        #
+        # The performance difference is negligible (we're dealing with strings
+        # that are like ~40 characters tops!), and this is probably faster
+        # since we don't have to do all these checks. Feel free to rewrite this
+        # if you think that you can do it better, but remember to increase the
+        # Counter of Hours Lost to Attribute Issues below:
+        #
+        # HOURS_LOST = 12
+
+        # Clear all existing attributes
+        self.attrs.filter(lambda *a: True)
+
         error = False
         tags = []
 
+        def add_bracket_color(position):
+            color = THEMES[self.theme]["bracket_color"]
+            color_attr = attr_foreground_new(color, position, position+1)
+            self.attrs.insert(color_attr)
+
+        def add_tag_color(tag_number, start, end):
+            color = THEMES[self.theme]["placeholder_colors"][
+                tag_number % len(THEMES[self.theme]["placeholder_colors"])
+            ]
+            color_attr = attr_foreground_new(color, start, end)
+            self.attrs.insert(color_attr)
+
         pos = 0
         current_tag = None
-        for char in self.widget.get_text():
+        n_tags = 0
+
+        if full_text is None:
+            full_text = self.widget.get_text()
+
+        for char in full_text:
             if char == '{':
                 if current_tag:
                     error = True
                     break
                 current_tag = (pos, None, False)
+                add_bracket_color(pos)
+
             elif char == '}':
-                current_tag = (current_tag[0], pos, True)
+                try:
+                    current_tag = (current_tag[0], pos, True)
+                except TypeError:  # current_tag is None
+                    error = True
+                    break
+
+                tag_name = full_text[current_tag[0]+1:current_tag[1]]
+                if tag_name in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+                    add_tag_color(n_tags, current_tag[0]+1, current_tag[1])
+                add_bracket_color(pos)
+
+                n_tags += 1
                 tags.append(current_tag)
                 current_tag = None
 
             pos += 1
 
         if current_tag:
+            n_tags += 1
             tags.append( (current_tag[0], pos, False) )
 
-        if error != self.props.error:
-            self.props.error = error
+        self.props.error = error
+        assert self.props.error == error
 
-        return tags
+        GLib.idle_add(self.widget.get_delegate().queue_draw)
 
-    def tag_in_position(self, pos: int) -> Optional[int]:
-        """
-        Returns whether a tag is present in the entry text for the given
-        position. If one is present, the index of the tag in the tag_positions
-        list is returned (note that this is not necessarily the order of the
-        tag in the text).
-        """
-        i = 0
-        total_len = len(self.widget.get_text())
-        for start, end, closed in self.tag_positions:
-            if pos > start and (end == start or pos < end or (not closed and pos == end)):
-                return i
-            i += 1
-        return None
-
-    def add_tags_from_text(self, text: str, position: int = 0):
-        """Adds tags from text at a starting position."""
-        # Split inserted text into chunks: opening and closing brackets are
-        # handled separately, as we need to note down that a placeholder
-        # has been opened/closed.
-        chunks = [x for x in re.split('({)|(})', text) if x]
-
-        # Due to the chunk-based parsing, we also need to remember where
-        # we are in a parse; thus, we save it to the cur_pos variable.
-        cur_pos = position
-
-        for text in chunks:
-            color_attr = None
-            tag_pos = self.tag_in_position(cur_pos)
-
-            if text == '{':
-                if tag_pos is None:
-                    color = THEMES[self.theme]["bracket_color"]
-                    color_attr = attr_foreground_new(color, cur_pos, cur_pos+len(text))
-            elif text == '}':
-                color = THEMES[self.theme]["bracket_color"]
-                color_attr = attr_foreground_new(color, cur_pos, cur_pos+len(text))
-            else:
-                if tag_pos is not None:
-                    self.attrs.update(cur_pos, 0, len(text))
-                    color = THEMES[self.theme]["placeholder_colors"][
-                        tag_pos % len(THEMES[self.theme]["placeholder_colors"])
-                    ]
-                    color_attr = attr_foreground_new(color, cur_pos, cur_pos+len(text))
-
-            if color_attr and not self.props.error:
-                self.attrs.change(color_attr)
-
-            cur_pos += len(text)
-
-    def syntax_highlighting_insert(self, entry, position: int, text: str, *args):
+    def syntax_highlighting_inserted(self, *args):
         """
         Updates the placeholder syntax highlighting after text insertion.
         """
-        self.add_tags_from_text(text, position)
+        self.update_syntax_highlighting()
 
-    def syntax_highlighting_remove(self, entry, position: int, n_chars: int, *args):
+    def syntax_highlighting_deleted(self, entry, position: int, n_chars: int):
         """
         Updates the placeholder syntax highlighting after text removal.
         """
-        self.attrs.update(position, n_chars, 0)
-        self.tag_positions  # make sure error check runs
-
-    def on_error(self, *args):
-        """Handles an error."""
-        if self.props.error:
-            self.attrs.update(0, len(self.widget.get_text()), 0)
-        else:
-            self.add_tags_from_text(self.widget.get_text(), 0)
+        full_text = entry.get_text()
+        full_text = full_text[:position] + full_text[position+n_chars:]
+        self.update_syntax_highlighting(full_text)
 
 class EartagGuessRow(Gtk.Box):
     __gtype_name__ = 'EartagGuessRow'
