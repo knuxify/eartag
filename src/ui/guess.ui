@@ -64,7 +64,7 @@
                 </child>
 
                 <child>
-                  <object class="AdwClamp">
+                  <object class="AdwClamp" id="content_clamp">
                     <child>
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
@@ -88,20 +88,9 @@
                             <child>
                               <object class="AdwEntryRow" id="preview_entry">
                                 <property name="title" translatable="yes">Preview</property>
-                                <property name="sensitive">false</property>
+                                <property name="editable">false</property>
                               </object>
                             </child>
-                          </object>
-                        </child>
-
-                        <child>
-                          <object class="GtkListBox" id="guess_list">
-                            <property name="hexpand">true</property>
-                            <property name="valign">start</property>
-                            <property name="selection-mode">none</property>
-                            <style>
-                              <class name="boxed-list"/>
-                            </style>
                           </object>
                         </child>
 
@@ -115,17 +104,24 @@
                             </style>
 
                             <child>
-                              <object class="AdwEntryRow" id="custom_entry">
-                                <property name="title" translatable="yes">Custom</property>
+                              <object class="AdwEntryRow" id="pattern_entry">
+                                <property name="title" translatable="yes">Filename pattern</property>
+                                <signal name="changed" handler="update_preview"/>
 
-                                <child type="prefix">
-                                  <object class="GtkCheckButton" id="apply_checkbox">
-                                    <property name="active">true</property>
-                                    <property name="sensitive">false</property>
-                                    <style><class name="selection-mode"/></style>
-                                    <!--<signal name="notify::active" handler="toggle_apply"/>-->
+                                <child type="suffix">
+                                  <object class="EartagTagSelectorButton" id="tag_selector">
+                                    <property name="icon-name">list-add-symbolic</property>
+                                    <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
+                                    <signal name="tag-selected" handler="add_tag_from_selector"/>
                                   </object>
                                 </child>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="AdwSwitchRow" id="toggle_strip_common_suffixes">
+                                <property name="title" translatable="yes">Ignore common suffixes</property>
+                                <property name="subtitle" translatable="yes">Automatically ignores ID suffixes often found in filenames of downloaded files. Disable this option if it interferes with your filenames.</property>
                               </object>
                             </child>
                           </object>

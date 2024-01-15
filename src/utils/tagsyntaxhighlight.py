@@ -74,8 +74,6 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
         self._tag_positions_changed = False
         self._tag_positions = []
 
-        self.attrs = Pango.AttrList()
-
         self.widget = widget
         self.widget_type = widget_type
 
@@ -86,8 +84,6 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
             widget.get_delegate().get_buffer().connect('deleted-text', self.syntax_highlighting_deleted)
         elif widget_type == "label":
             widget.connect('notify::label', self.syntax_highlighting_label_updated)
-
-        widget.set_attributes(self.attrs)
 
         self.widget_type = "entry"
 
@@ -109,32 +105,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
 
     def update_syntax_highlighting(self, full_text=None):
         """Helper function that returns tag positions."""
-
-        # You might call this a lazy implementation - every time text is
-        # inserted or removed, we clear all attributes and re-do everything
-        # from scratch. A *good* implementation would instead only modify
-        # the parts that are needed.
-        #
-        # I spent an entire day writing such an implementation, before I
-        # realized that I had written nearly 150 lines of code, and it still
-        # wasn't working like I wanted to. To handle all sorts of edge cases,
-        # I'd need to add a lot more checks.
-        #
-        # So, if it were a "good" implementation, we would have to perform
-        # many more checks and write a lot more code for something that would
-        # cause all formatting to fall apart if only the user dares to insert
-        # something in a different order than you anticipated.
-        #
-        # The performance difference is negligible (we're dealing with strings
-        # that are like ~40 characters tops!), and this is probably faster
-        # since we don't have to do all these checks. Feel free to rewrite this
-        # if you think that you can do it better, but remember to increase the
-        # Counter of Hours Lost to Attribute Issues below:
-        #
-        # HOURS_LOST = 12
-
-        # Clear all existing attributes
-        self.attrs.filter(lambda *a: True)
+        attrs = Pango.AttrList()
 
         error = False
         tags = []
@@ -142,18 +113,20 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
         def add_bracket_color(position):
             color = THEMES[self.theme]["bracket_color"]
             color_attr = attr_foreground_new(color, position, position+1)
-            self.attrs.insert(color_attr)
+            attrs.insert(color_attr)
 
         def add_tag_color(tag_number, start, end):
             color = THEMES[self.theme]["placeholder_colors"][
                 tag_number % len(THEMES[self.theme]["placeholder_colors"])
             ]
             color_attr = attr_foreground_new(color, start, end)
-            self.attrs.insert(color_attr)
+            attrs.insert(color_attr)
 
         pos = 0
         current_tag = None
         n_tags = 0
+
+        present_tags = []
 
         if full_text is None:
             full_text = self.get_text()
@@ -174,8 +147,10 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
                     break
 
                 tag_name = full_text[current_tag[0]+1:current_tag[1]]
-                if tag_name in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+                if tag_name in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate') and \
+                        tag_name not in present_tags:
                     add_tag_color(n_tags, current_tag[0]+1, current_tag[1])
+                    present_tags.append(tag_name)
                 add_bracket_color(pos)
 
                 n_tags += 1
@@ -191,8 +166,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
         self.props.error = error
         assert self.props.error == error
 
-        if self.widget_type == "entry":
-            GLib.idle_add(self.widget.get_delegate().queue_draw)
+        self.widget.set_attributes(attrs)
 
     def syntax_highlighting_inserted(self, *args):
         """
