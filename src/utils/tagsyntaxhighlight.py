@@ -57,6 +57,13 @@ def attr_foreground_new(color: (int, int, int), start_index, end_index) -> Pango
     attr.end_index = end_index
     return attr
 
+def attr_underline_new(start_index, end_index) -> Pango.Attribute:
+    """Shorthand function to create a new Pango AttrUnderline."""
+    attr = Pango.attr_underline_new(Pango.Underline.SINGLE)
+    attr.start_index = start_index
+    attr.end_index = end_index
+    return attr
+
 class EartagPlaceholderSyntaxHighlighter(GObject.Object):
     """Helper object for placeholder syntax highlighting."""
 

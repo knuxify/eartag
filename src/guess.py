@@ -4,7 +4,10 @@
 from . import APP_GRESOURCE_PATH
 from .config import config
 from .utils.bgtask import EartagBackgroundTask
-from .utils.tagsyntaxhighlight import EartagPlaceholderSyntaxHighlighter, attr_foreground_new, THEMES
+from .utils.tagsyntaxhighlight import (
+    EartagPlaceholderSyntaxHighlighter,
+    attr_foreground_new, THEMES
+)
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 
@@ -105,8 +108,8 @@ class EartagGuessDialog(Adw.Window):
             self, 'strip-common-suffixes',
             Gio.SettingsBindFlags.DEFAULT
         )
-        self.toggle_strip_common_suffixes.bind_property(
-            'active', self, 'strip-common-suffixes',
+        self.bind_property(
+            'strip-common-suffixes', self.toggle_strip_common_suffixes, 'active',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
         self._connections.append(
@@ -157,7 +160,11 @@ class EartagGuessDialog(Adw.Window):
         for more information).
         """
         filename_suffixless = os.path.splitext(filename)[0]
+
         if self.props.strip_common_suffixes:
+            # Modern yt-dlp: square brackets with ID inside
+            # (could be YouTube ID, or longer for e.g. SoundCloud,
+            # so we don't limit it)
             if filename_suffixless.endswith(']'):
                 try:
                     filename_stripped = re.match('(.*) \[(.*)\]', filename_suffixless).group(1)
@@ -166,6 +173,17 @@ class EartagGuessDialog(Adw.Window):
                     pass
                 else:
                     filename_suffixless = filename_stripped
+
+            # Old youtube-dl: "-" and then YouTube ID. To minimize
+            # the likelihood for misdetections, we only check for
+            # YouTube IDs that have numbers or special characters
+            # in them.
+            try:
+                if re.match('-([A-Za-z0-9_\-]{11})', filename_suffixless[-12:]) \
+                        and re.search('[0-9_\-]', filename_suffixless[-11:]):
+                    filename_suffixless = filename_suffixless[:-12]
+            except IndexError:
+                pass
 
         guess = guess_tags_from_filename(
             filename_suffixless,
