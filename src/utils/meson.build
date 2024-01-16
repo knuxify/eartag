@@ -5,6 +5,8 @@ utils_sources = [
   'bgtask.py',
   'limiters.py',
   'misc.py',
+  'tagselector.py',
+  'tagsyntaxhighlight.py',
   'validation.py',
   'widgets.py'
 ]

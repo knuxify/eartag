@@ -822,6 +822,67 @@ class EartagFileInfoLabel(Gtk.Label):
             channels=channels_readable
         ))
 
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/filenamerow.ui')
+class EartagFilenameRow(Adw.EntryRow):
+    __gtype_name__ = 'EartagFilenameRow'
+
+    error = GObject.Property(type=bool, default=False)
+
+    guess_presets = [
+        '{artist} - {title}'
+        '{tracknumber} {title}'
+        '{tracknumber} {artist} - {title}'
+    ]
+
+    def __init__(self):
+        super().__init__()
+        self._files = []
+        self._title = self.props.title
+        self.get_delegate().connect('insert-text', self.validate_input)
+
+    def bind_to_file(self, file):
+        self._files.append(file)
+        self.update_on_bind()
+
+    def unbind_from_file(self, file):
+        self._files.remove(file)
+        self.update_on_bind()
+
+    def update_on_bind(self):
+        if len(self._files) > 1:
+            self.props.title = self._title + ' ' + _("(multiple files)")
+            self.set_editable(False)
+            self.props.show_apply_button = False
+            self.set_text('')
+        elif len(self._files) == 1:
+            self.props.title = self._title
+            self.set_editable(True)
+            self.props.show_apply_button = True
+            self.set_text(os.path.basename(self._files[0].path))
+        else:
+            self.props.title = self._title
+            self.set_editable(False)
+            self.props.show_apply_button = False
+            self.set_text('')
+
+    @Gtk.Template.Callback()
+    def set_filename(self, *args):
+        if len(self._files) != 1:
+            return
+        old_path = self._files[0].path
+        self.get_native().file_manager.rename_files(
+            (self._files[0], ),
+            (os.path.join(os.path.dirname(old_path), self.get_text()), )
+        )
+
+    def validate_input(self, entry, text, length, position, *args):
+        if '/' in text:
+            GObject.signal_stop_emission_by_name(entry, 'insert-text')
+
+    @Gtk.Template.Callback()
+    def open_guess_dialog(self, *args):
+        self.get_native().show_guess_dialog()
+
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'
@@ -845,6 +906,7 @@ class EartagFileView(Gtk.Stack):
     genre_entry = Gtk.Template.Child()
     releasedate_entry = Gtk.Template.Child()
     comment_entry = Gtk.Template.Child()
+    filename_entry = Gtk.Template.Child()
     more_tags_group = Gtk.Template.Child()
 
     previous_file_button_revealer = Gtk.Template.Child()
@@ -862,7 +924,7 @@ class EartagFileView(Gtk.Stack):
         self.bindable_entries = (self.album_cover, self.title_entry, self.artist_entry,
             self.tracknumber_entry, self.totaltracknumber_entry, self.album_entry,
             self.albumartist_entry, self.genre_entry, self.releasedate_entry,
-            self.comment_entry, self.file_info)
+            self.comment_entry, self.filename_entry, self.file_info)
 
         self.previous_fileview_width = 0
 

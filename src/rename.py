@@ -4,6 +4,7 @@
 from .backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length
+from .utils.tagsyntaxhighlight import EartagPlaceholderSyntaxHighlighter
 from . import APP_GRESOURCE_PATH
 
 from gi.repository import Adw, GLib, Gtk, Gdk, Gio, GObject
@@ -72,6 +73,9 @@ class EartagRenameDialog(Adw.Window):
         super().__init__(modal=True, transient_for=window)
         self.file_manager = window.file_manager
         self._folder = None
+
+        self.syntax_highlight = \
+            EartagPlaceholderSyntaxHighlighter(self.filename_entry, "entry")
 
         self.folder_chooser = Gtk.FileDialog(modal=True)
         self.bind_property('folder', self.folder_selector_row, 'subtitle', GObject.BindingFlags.SYNC_CREATE)
@@ -161,6 +165,7 @@ class EartagRenameDialog(Adw.Window):
         tag = self.tag_names_swapped[selected_item.get_string()]
 
         self.filename_entry.set_text(self.filename_entry.get_text() + '{' + tag + '}')
+        self.syntax_highlight.update_syntax_highlighting()
         self.tag_list_popover.popdown()
 
         self._ignore_tag_selector = False

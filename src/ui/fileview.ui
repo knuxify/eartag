@@ -285,6 +285,21 @@
                         </child>
 
                         <child>
+                          <object class="GtkListBox" id="filename_listbox">
+                            <property name="hexpand">true</property>
+                            <property name="valign">start</property>
+                            <property name="selection-mode">none</property>
+                            <style>
+                              <class name="boxed-list"/>
+                            </style>
+
+                            <child>
+                              <object class="EartagFilenameRow" id="filename_entry"/>
+                            </child>
+                          </object>
+                        </child>
+
+                        <child>
                           <object class="EartagMoreTagsGroup" id="more_tags_group">
                             <property name="margin-top">1</property>
                           </object>

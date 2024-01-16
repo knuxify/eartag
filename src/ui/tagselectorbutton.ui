@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="EartagTagSelectorButton" parent="GtkMenuButton">
+    <property name="icon-name">list-add-symbolic</property>
+    <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
+    <property name="valign">center</property>
+    <style><class name="flat"/></style>
+
+    <property name="popover">
+      <object class="GtkPopover" id="tag_list_popover">
+        <property name="autohide">true</property>
+        <style>
+          <class name="menu"/>
+        </style>
+
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+
+            <child>
+              <object class="GtkSearchEntry" id="tag_list_search_entry">
+                <property name="margin-top">6</property>
+                <property name="margin-start">6</property>
+                <property name="margin-end">6</property>
+                <signal name="search-changed" handler="refresh_tag_filter"/>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hscrollbar-policy">never</property>
+                <property name="vscrollbar-policy">automatic</property>
+                <property name="propagate-natural-width">true</property>
+                <property name="propagate-natural-height">true</property>
+
+                <child>
+                  <object class="GtkListView" id="tag_list">
+                    <property name="single-click-activate">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </property>
+  </template>
+</interface>

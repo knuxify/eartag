@@ -11,7 +11,7 @@
   <schema id="@APP_ID@" path="@APP_GSCHEMA_PATH@">
     <key name="rename-placeholder" type="s">
       <default>"{tracknumber} {title} - {artist}"</default>
-      <summary>Rename placeholder</summary>
+      <summary>Rename pattern</summary>
     </key>
 
     <key name="rename-base-folder" type="s">
@@ -34,6 +34,16 @@
     <key name="musicbrainz-cover-size" enum="@APP_ID@.enums.dlcoversize">
       <default>"1200 px"</default>
       <summary>MusicBrainz release cover size</summary>
+    </key>
+
+    <key name="guess-pattern" type="s">
+      <default>"{tracknumber} {title} - {artist}"</default>
+      <summary>Guess pattern</summary>
+    </key>
+
+    <key name="guess-strip-common-suffixes" type="b">
+      <default>true</default>
+      <summary>Strip common suffixes</summary>
     </key>
   </schema>
 </schemalist>
