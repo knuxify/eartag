@@ -9,7 +9,7 @@ from .utils.tagsyntaxhighlight import (
     attr_foreground_new, THEMES
 )
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
-from .backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
+from .backends.file import BASIC_TAGS, EXTRA_TAGS
 
 from gi.repository import Adw, Gtk, Gio, GObject, Pango
 import re
@@ -136,7 +136,7 @@ class EartagGuessDialog(Adw.Window):
 
     @property
     def present_tags(self) -> list:
-        tags = re.findall('\{(.*?)\}', self.pattern_entry.get_text())
+        tags = re.findall(r'{(.*?)}', self.pattern_entry.get_text())
         tags = [x for x in set(tags) if x in BASIC_TAGS + EXTRA_TAGS]
         return tags
 
@@ -177,7 +177,7 @@ class EartagGuessDialog(Adw.Window):
             # so we don't limit it)
             if filename_suffixless.endswith(']'):
                 try:
-                    filename_stripped = re.match('(.*) \[(.*)\]', filename_suffixless).group(1)
+                    filename_stripped = re.match(r'(.*) [(.*)]', filename_suffixless).group(1)
                     assert filename_stripped
                 except:
                     pass
@@ -189,8 +189,8 @@ class EartagGuessDialog(Adw.Window):
             # YouTube IDs that have numbers or special characters
             # in them.
             try:
-                if re.match('-([A-Za-z0-9_\-]{11})', filename_suffixless[-12:]) \
-                        and re.search('[0-9_\-]', filename_suffixless[-11:]):
+                if re.match(r'-([A-Za-z0-9_\-]{11})', filename_suffixless[-12:]) \
+                        and re.search(r'[0-9_\-]', filename_suffixless[-11:]):
                     filename_suffixless = filename_suffixless[:-12]
             except IndexError:
                 pass

@@ -1,11 +1,9 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from ..backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
+from ..backends.file import BASIC_TAGS, EXTRA_TAGS
 
-from gi.repository import Adw, Gtk, Pango, GObject, GLib
-from typing import Optional
-import re
+from gi.repository import Adw, Pango, GObject
 
 THEMES = {
     "light": {
@@ -52,7 +50,7 @@ def pango_attr_iter(attrlist: Pango.AttrList):
 
 def attr_foreground_new(color: (int, int, int), start_index, end_index) -> Pango.Attribute:
     """Shorthand function to create a new Pango AttrForeground."""
-    attr = Pango.attr_foreground_new((color[0])*256, (color[1])*256, (color[2])*256)
+    attr = Pango.attr_foreground_new((color[0]) * 256, (color[1]) * 256, (color[2]) * 256)
     attr.start_index = start_index
     attr.end_index = end_index
     return attr
@@ -86,10 +84,12 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
         self.allow_duplicates = allow_duplicates
 
         if widget_type == "entry":
-            # If we bind to the standard changed signal, the attrs don't update
-            # until another character is set; this seems to be early enough to work.
-            widget.get_delegate().get_buffer().connect('inserted-text', self.syntax_highlighting_inserted)
-            widget.get_delegate().get_buffer().connect('deleted-text', self.syntax_highlighting_deleted)
+            widget.get_delegate().get_buffer().connect(
+                'inserted-text', self.syntax_highlighting_inserted
+            )
+            widget.get_delegate().get_buffer().connect(
+                'deleted-text', self.syntax_highlighting_deleted
+            )
         elif widget_type == "label":
             widget.connect('notify::label', self.syntax_highlighting_label_updated)
 
@@ -120,7 +120,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
 
         def add_bracket_color(position):
             color = THEMES[self.theme]["bracket_color"]
-            color_attr = attr_foreground_new(color, position, position+1)
+            color_attr = attr_foreground_new(color, position, position + 1)
             attrs.insert(color_attr)
 
         def add_tag_color(tag_number, start, end):
@@ -154,10 +154,10 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
                     error = True
                     break
 
-                tag_name = full_text[current_tag[0]+1:current_tag[1]]
+                tag_name = full_text[current_tag[0] + 1:current_tag[1]]
                 if tag_name in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate') and \
                         (self.allow_duplicates or tag_name not in present_tags):
-                    add_tag_color(n_tags, current_tag[0]+1, current_tag[1])
+                    add_tag_color(n_tags, current_tag[0] + 1, current_tag[1])
                     present_tags.append(tag_name)
                 add_bracket_color(pos)
 
@@ -169,7 +169,9 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
 
         if current_tag:
             n_tags += 1
-            tags.append( (current_tag[0], pos, False) )
+            tags.append(
+                (current_tag[0], pos, False)
+            )
 
         self.props.error = error
         assert self.props.error == error
@@ -187,7 +189,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
         Updates the placeholder syntax highlighting after text removal.
         """
         full_text = entry.get_text()
-        full_text = full_text[:position] + full_text[position+n_chars:]
+        full_text = full_text[:position] + full_text[position + n_chars:]
         self.update_syntax_highlighting(full_text)
 
     def syntax_highlighting_label_updated(self, label, *args):

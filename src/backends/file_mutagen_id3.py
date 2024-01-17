@@ -239,7 +239,6 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         else:
             raise ValueError
 
-        pictures = self.mg_file.tags.getall('APIC')
         for tag in dict(self.mg_file.tags).copy().keys():
             if tag.startswith('APIC') and self.mg_file.tags[tag].type in pictypes:
                 del self.mg_file.tags[tag]

@@ -139,7 +139,8 @@ class Application(Adw.Application):
 
         opened_file_list_str = '\n - '.join(opened_file_list) or 'None'
 
-        about.set_debug_info(f'''Ear Tag {self.version}{' (Development version)' if self.devel else ''}
+        about.set_debug_info(
+            f'''Ear Tag {self.version}{' (Development version)' if self.devel else ''}
 
 Running in Flatpak: {os.path.exists('/.flatpak-info') and 'YES' or 'NO'}
 

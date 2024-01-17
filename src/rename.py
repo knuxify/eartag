@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from .backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
+from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
@@ -11,7 +11,7 @@ from .utils.tagsyntaxhighlight import (
 )
 from . import APP_GRESOURCE_PATH
 
-from gi.repository import Adw, GLib, Gtk, Gdk, Gio, GObject, Pango
+from gi.repository import Adw, GLib, Gtk, Gio, GObject, Pango
 import os
 import re
 
@@ -59,7 +59,7 @@ def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bo
                         parsed_value = str(value)
 
                 out += parsed_value
-                _positions.append((i, i+len(parsed_value)))
+                _positions.append((i, i + len(parsed_value)))
                 i += len(parsed_value)
 
             else:
@@ -105,7 +105,10 @@ class EartagRenameDialog(Adw.Window):
         )
 
         self.folder_chooser = Gtk.FileDialog(modal=True)
-        self.bind_property('folder', self.folder_selector_row, 'subtitle', GObject.BindingFlags.SYNC_CREATE)
+        self.bind_property(
+            'folder', self.folder_selector_row, 'subtitle',
+            GObject.BindingFlags.SYNC_CREATE
+        )
         if EartagRenameDialog._last_folder is not None:
             self.props.folder = EartagRenameDialog._last_folder
         elif os.path.exists(config['rename-base-folder']):
