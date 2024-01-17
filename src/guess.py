@@ -134,6 +134,12 @@ class EartagGuessDialog(Adw.Window):
         self.tag_selector.set_filter(self.tag_filter)
         self.pattern_entry.connect('changed', self.tag_selector.refresh_tag_filter)
 
+    @property
+    def present_tags(self) -> list:
+        tags = re.findall('\{(.*?)\}', self.pattern_entry.get_text())
+        tags = [x for x in set(tags) if x in BASIC_TAGS + EXTRA_TAGS]
+        return tags
+
     def tag_filter_func(self, _tag_name, *args):
         """Filter function for the tag dropdown."""
         if not self.tag_selector.tag_filter_func(_tag_name):
@@ -144,6 +150,10 @@ class EartagGuessDialog(Adw.Window):
         if tag in self.present_tags:
             return False
         return True
+
+    @Gtk.Template.Callback()
+    def add_tag_from_selector(self, selector, tag, *args):
+        self.pattern_entry.set_text(self.pattern_entry.get_text() + '{' + tag + '}')
 
     def on_syntax_highlight_error(self, syntax, *args):
         if syntax.props.error:
@@ -192,12 +202,6 @@ class EartagGuessDialog(Adw.Window):
         )
 
         return guess
-
-    @property
-    def present_tags(self) -> list:
-        tags = re.findall('\{(.*?)\}', self.pattern_entry.get_text())
-        tags = [x for x in set(tags) if x in BASIC_TAGS + EXTRA_TAGS]
-        return tags
 
     @Gtk.Template.Callback()
     def update_preview(self, *args):
@@ -278,7 +282,3 @@ class EartagGuessDialog(Adw.Window):
             self.disconnect(conn)
         self.files = None
         self.close()
-
-    @Gtk.Template.Callback()
-    def add_tag_from_selector(self, selector, tag, *args):
-        self.pattern_entry.set_text(self.pattern_entry.get_text() + '{' + tag + '}')

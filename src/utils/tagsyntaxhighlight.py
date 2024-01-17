@@ -72,7 +72,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
     theme = GObject.Property(type=str, default="light")
     high_contrast = GObject.Property(type=bool, default=False)
 
-    def __init__(self, widget, widget_type="entry"):
+    def __init__(self, widget, widget_type="entry", allow_duplicates=False):
         """
         Sets up syntax highlighting for a widget.
         """
@@ -83,6 +83,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
 
         self.widget = widget
         self.widget_type = widget_type
+        self.allow_duplicates = allow_duplicates
 
         if widget_type == "entry":
             # If we bind to the standard changed signal, the attrs don't update
@@ -155,7 +156,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
 
                 tag_name = full_text[current_tag[0]+1:current_tag[1]]
                 if tag_name in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate') and \
-                        tag_name not in present_tags:
+                        (self.allow_duplicates or tag_name not in present_tags):
                     add_tag_color(n_tags, current_tag[0]+1, current_tag[1])
                     present_tags.append(tag_name)
                 add_bracket_color(pos)

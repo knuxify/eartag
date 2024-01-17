@@ -4,46 +4,74 @@
 from .backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length
-from .utils.tagsyntaxhighlight import EartagPlaceholderSyntaxHighlighter
+from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
+from .utils.tagsyntaxhighlight import (
+    EartagPlaceholderSyntaxHighlighter,
+    attr_foreground_new, THEMES
+)
 from . import APP_GRESOURCE_PATH
 
-from gi.repository import Adw, GLib, Gtk, Gdk, Gio, GObject
+from gi.repository import Adw, GLib, Gtk, Gdk, Gio, GObject, Pango
 import os
+import re
 
-def parse_placeholder_string(string, file):
-    """
-    Takes a string with tag placeholders and replaces them with the provided
-    file's data.
-    """
-    output = string
-    for tag in BASIC_TAGS + file.supported_extra_tags + ('length', 'bitrate'):
-        if tag == 'title':
-            null_value = 'Untitled'
-        elif tag in file.int_properties + file.float_properties:
-            null_value = 0
-        else:
-            null_value = 'Unknown ' + TAG_NAMES[tag]
+def tag_is_int(file, tag):
+    return tag in file.int_properties + file.float_properties + ('length', 'bitrate')
 
-        if tag in file.int_properties + file.float_properties + ('length', 'bitrate'):
-            value = file.get_property(tag)
-            if not value or value < 0:
-                value = 0
-            if tag == 'length':
-                tag_replaced = get_readable_length(int(value))
-            elif tag == 'tracknumber' or tag == 'totaltracknumber':
-                tag_replaced = str(value).zfill(2)
+def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bool = False) -> dict:
+    """
+    Takes a placeholder string and a file and returns a string filled with the
+    placeholders.
+    """
+    # Step 1. Split placeholder string into static strings and placeholders.
+    placeholder_split = [x for x in re.split('({.*?})', placeholder) if x]
+
+    out = ""
+    _positions = []
+    i = 0
+    for element in placeholder_split:
+        if element.startswith('{') and element.endswith('}'):
+            tag = element[1:-1]
+            if tag in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+                value = file.get_property(tag)
+                if not value:
+                    if tag == 'title':
+                        parsed_value = _("Untitled")
+                    elif tag_is_int(file, tag):
+                        if tag.endswith('tracknumber') or tag.endswith('discnumber'):
+                            parsed_value = "00"
+                        else:
+                            parsed_value = "0"
+                    else:
+                        parsed_value = _("Unknown {tag_name}").format(tag_name=TAG_NAMES[tag])
+
+                else:
+                    if tag_is_int(file, tag):
+                        if not value or value < 0:
+                            value = 0
+                        if tag == 'length':
+                            parsed_value = get_readable_length(int(value))
+                        elif tag.endswith('tracknumber') or tag.endswith('discnumber'):
+                            parsed_value = str(value).zfill(2)
+                        else:
+                            parsed_value = str(value)
+                    else:
+                        parsed_value = str(value)
+
+                out += parsed_value
+                _positions.append((i, i+len(parsed_value)))
+                i += len(parsed_value)
+
             else:
-                tag_replaced = str(value)
+                out += element
+                i += len(element)
         else:
-            value = file.get_property(tag)
-            if not value:
-                tag_replaced = null_value
-            else:
-                tag_replaced = str(value).replace('/', '_')
-        output = output.replace('{' + tag + '}', tag_replaced)
-    if output in (',', '.', '..'):
-        output = '_'
-    return output
+            out += element
+            i += len(element)
+
+    if positions:
+        return out, _positions
+    return out
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rename.ui')
 class EartagRenameDialog(Adw.Window):
@@ -65,17 +93,16 @@ class EartagRenameDialog(Adw.Window):
 
     validation_passed = GObject.Property(type=bool, default=True)
 
-    tag_list = Gtk.Template.Child()
-    tag_list_popover = Gtk.Template.Child()
-    tag_list_search_entry = Gtk.Template.Child()
+    tag_selector = Gtk.Template.Child()
 
     def __init__(self, window):
         super().__init__(modal=True, transient_for=window)
         self.file_manager = window.file_manager
         self._folder = None
 
-        self.syntax_highlight = \
-            EartagPlaceholderSyntaxHighlighter(self.filename_entry, "entry")
+        self.syntax_highlight = EartagPlaceholderSyntaxHighlighter(
+            self.filename_entry, "entry", allow_duplicates=True
+        )
 
         self.folder_chooser = Gtk.FileDialog(modal=True)
         self.bind_property('folder', self.folder_selector_row, 'subtitle', GObject.BindingFlags.SYNC_CREATE)
@@ -99,39 +126,6 @@ class EartagRenameDialog(Adw.Window):
         self.connect('notify::validation-passed', self.update_rename_button_sensitivity)
         self.update_rename_button_sensitivity()
 
-        # Extra tag filter for additional tag field
-
-        self.tag_names = dict(
-            [(k, v) for k, v in TAG_NAMES.items()
-            if k in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate')]
-        )
-        self.tag_names_swapped = dict(
-            [(v, k) for k, v in self.tag_names.items()]
-        )
-        tag_model_nofilter = Gtk.StringList.new(list(self.tag_names.values()))
-        self.tag_model = Gtk.FilterListModel(model=tag_model_nofilter)
-        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
-        self.tag_model.set_filter(self.tag_filter)
-
-        self.tag_selection_model = Gtk.NoSelection.new(self.tag_model)
-
-        # "Add additional tag" field (we can reuse the factory from the "more tags" selector):
-        self._ignore_tag_selector = False
-
-        factory = Gtk.BuilderListItemFactory.new_from_resource(
-            None, f'{APP_GRESOURCE_PATH}/ui/moretagsgroupfactory.ui'
-        )
-        self.tag_list.set_model(self.tag_selection_model)
-        self.tag_list.set_factory(factory)
-        self.tag_list.connect('activate', self.add_placeholder_from_selector)
-
-        # Close popover if Escape key is pressed in search entry
-        controller = Gtk.ShortcutController()
-        trigger = Gtk.KeyvalTrigger.new(Gdk.keyval_from_name("Escape"), 0)
-        shortcut = Gtk.Shortcut.new(trigger, Gtk.CallbackAction.new(self.close_popover))
-        controller.add_shortcut(shortcut)
-        self.tag_list_search_entry.add_controller(controller)
-
     def validate_placeholder(self, *args):
         """Validates the filename input."""
         placeholder = self.filename_entry.get_text()
@@ -150,41 +144,12 @@ class EartagRenameDialog(Adw.Window):
 
         self.rename_button.set_sensitive(self.props.validation_passed)
 
-    def add_placeholder_from_selector(self, listview, position, *args):
-        """Adds a new placeholder based on the tag selector."""
-        if self._ignore_tag_selector:
-            return
-
-        self._ignore_tag_selector = True
-
-        selected_item = self.tag_selection_model.get_item(position)
-        if not selected_item:
-            return
-        if selected_item.get_string() == 'none':
-            return
-        tag = self.tag_names_swapped[selected_item.get_string()]
-
-        self.filename_entry.set_text(self.filename_entry.get_text() + '{' + tag + '}')
-        self.syntax_highlight.update_syntax_highlighting()
-        self.tag_list_popover.popdown()
-
-        self._ignore_tag_selector = False
-
     @Gtk.Template.Callback()
-    def refresh_tag_filter(self, *args):
-        """Refreshes the filter for the tag placeholder insert row."""
-        self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+    def add_placeholder_from_selector(self, selector, tag, *args):
+        """Adds a new placeholder based on the tag selector."""
+        self.filename_entry.set_text(self.filename_entry.get_text() + '{' + tag + '}')
 
-    def close_popover(self, *args):
-        self.tag_list_popover.popdown()
-
-    def tag_filter_func(self, _tag_name, *args):
-        """Filter function for the tag dropdown."""
-        tag_name = _tag_name.get_string()
-        query = self.tag_list_search_entry.get_text()
-        if query:
-            return query.lower() in tag_name.lower()
-        return True
+    # Move to folder feature
 
     @GObject.Property(type=str, default=None)
     def folder(self):
@@ -250,7 +215,7 @@ class EartagRenameDialog(Adw.Window):
             else:
                 basepath = os.path.dirname(file.props.path)
             names.append(os.path.join(basepath,
-                    parse_placeholder_string(format, file) + file.props.filetype)
+                parse_placeholder_string(format, file) + file.props.filetype)
             )
 
         self.set_sensitive(False)
@@ -263,11 +228,22 @@ class EartagRenameDialog(Adw.Window):
         if self.validate_placeholder():
             return
         example_file = self.file_manager.selected_files[0]
-        parsed_placeholder = parse_placeholder_string(
+        parsed_placeholder, placeholder_positions = parse_placeholder_string(
             self.filename_entry.get_text(),
-            example_file
+            example_file,
+            positions=True
         )
         self.preview_entry.set_text(parsed_placeholder + example_file.props.filetype)
+
+        preview_attrs = Pango.AttrList()
+        for n in range(len(placeholder_positions)):
+            start, end = placeholder_positions[n]
+            color = THEMES[self.syntax_highlight.props.theme]["placeholder_colors"][
+                n % len(THEMES[self.syntax_highlight.props.theme]["placeholder_colors"])
+            ]
+            color_attr = attr_foreground_new(color, start, end)
+            preview_attrs.insert(color_attr)
+        self.preview_entry.set_attributes(preview_attrs)
 
     def on_done(self, task, *args):
         if task.failed:

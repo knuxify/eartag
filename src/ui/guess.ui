@@ -89,6 +89,8 @@
                               <object class="AdwEntryRow" id="preview_entry">
                                 <property name="title" translatable="yes">Preview</property>
                                 <property name="editable">false</property>
+                                <property name="can-focus">false</property>
+                                <property name="focusable">false</property>
                               </object>
                             </child>
                           </object>

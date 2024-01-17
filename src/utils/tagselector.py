@@ -84,7 +84,7 @@ class EartagTagSelectorButton(Gtk.MenuButton):
     def tag_filter_func(self, _tag_name, *args):
         """Filter function for the tag dropdown."""
         tag_name = _tag_name.get_string()
-        query = self.tag_list_search_entry.get_text()
+        query = self.get_search_query()
         if query:
             return query.lower() in tag_name.lower()
         return True
@@ -107,3 +107,7 @@ class EartagTagSelectorButton(Gtk.MenuButton):
         """
         self.tag_filter = filter
         self.tag_model.set_filter(self.tag_filter)
+
+    def get_search_query(self) -> str:
+        """Returns the search query typed into the search entry."""
+        return self.tag_list_search_entry.get_text()

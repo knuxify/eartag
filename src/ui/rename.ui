@@ -26,12 +26,12 @@
                       <signal name="clicked" handler="on_cancel"/>
 
                       <child>
-                        <object class='GtkShortcutController'>
-                          <property name='scope'>managed</property>
+                        <object class="GtkShortcutController">
+                          <property name="scope">managed</property>
                           <child>
-                            <object class='GtkShortcut'>
-                              <property name='trigger'>Escape</property>
-                              <property name='action'>activate</property>
+                            <object class="GtkShortcut">
+                              <property name="trigger">Escape</property>
+                              <property name="action">activate</property>
                             </object>
                           </child>
                         </object>
@@ -88,9 +88,27 @@
                             </child>
 
                             <child>
-                              <object class="AdwPreferencesGroup">
-                                <!--<property name="title" translatable="yes">Filename</property>-->
+                              <object class="GtkListBox">
+                                <property name="hexpand">true</property>
+                                <property name="valign">start</property>
+                                <property name="selection-mode">none</property>
+                                <style>
+                                  <class name="boxed-list"/>
+                                </style>
 
+                                <child>
+                                  <object class="AdwEntryRow" id="preview_entry">
+                                    <property name="title" translatable="yes">Preview</property>
+                                    <property name="editable">false</property>
+                                    <property name="can-focus">false</property>
+                                    <property name="focusable">false</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+
+                            <child>
+                              <object class="AdwPreferencesGroup">
                                 <child>
                                   <object class="AdwEntryRow" id="filename_entry">
                                     <property name="title" translatable="yes">Filename pattern</property>
@@ -98,60 +116,12 @@
                                     <signal name="entry-activated" handler="do_rename"/>
 
                                     <child type="suffix">
-                                      <object class="GtkMenuButton" id="tags_button">
+                                      <object class="EartagTagSelectorButton" id="tag_selector">
                                         <property name="icon-name">list-add-symbolic</property>
                                         <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
-                                        <property name="valign">center</property>
-                                        <style><class name="flat"/></style>
-
-                                        <property name="popover">
-                                          <object class="GtkPopover" id="tag_list_popover">
-                                            <property name="autohide">true</property>
-                                            <style>
-                                              <class name="menu"/>
-                                            </style>
-
-                                            <child>
-                                              <object class="GtkBox">
-                                                <property name="orientation">vertical</property>
-
-                                                <child>
-                                                  <object class="GtkSearchEntry" id="tag_list_search_entry">
-                                                    <property name="margin-top">6</property>
-                                                    <property name="margin-start">6</property>
-                                                    <property name="margin-end">6</property>
-                                                    <signal name="search-changed" handler="refresh_tag_filter"/>
-                                                  </object>
-                                                </child>
-
-                                                <child>
-                                                  <object class="GtkScrolledWindow">
-                                                    <property name="hscrollbar-policy">never</property>
-                                                    <property name="vscrollbar-policy">automatic</property>
-                                                    <property name="propagate-natural-width">true</property>
-                                                    <property name="propagate-natural-height">true</property>
-
-                                                    <child>
-                                                      <object class="GtkListView" id="tag_list">
-                                                        <property name="single-click-activate">true</property>
-                                                      </object>
-                                                    </child>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                        </property>
-
+                                        <signal name="tag-selected" handler="add_placeholder_from_selector"/>
                                       </object>
                                     </child>
-                                  </object>
-                                </child>
-
-                                <child>
-                                  <object class="AdwEntryRow" id="preview_entry">
-                                    <property name="title" translatable="yes">Preview</property>
-                                    <property name="editable">false</property>
                                   </object>
                                 </child>
 
