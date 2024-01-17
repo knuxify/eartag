@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from .backends.file import EartagFile, EXTRA_TAGS, TAG_NAMES, CoverType
+from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES, CoverType
 from .utils import get_readable_length
 from .utils.validation import is_valid_image_file
 from .utils.widgets import EartagAlbumCoverImage, EartagPopoverButton  # noqa: F401
@@ -429,9 +429,7 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
     """
     __gtype_name__ = 'EartagMoreTagsGroup'
 
-    tag_list = Gtk.Template.Child()
-    tag_list_popover = Gtk.Template.Child()
-    tag_list_search_entry = Gtk.Template.Child()
+    tag_selector = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -454,28 +452,11 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
         self.blocked_tags = {}      # type: tags
         self.loaded_filetypes = {}  # type: count
 
-        # Extra tag filter for additional tag field
-        self.tag_model = Gtk.FilterListModel(model=more_item_tag_strings)
-
-        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
-        self.tag_model.set_filter(self.tag_filter)
-
-        self.tag_selection_model = Gtk.NoSelection.new(self.tag_model)
-
-        # "Add additional tag" field:
-        factory = Gtk.BuilderListItemFactory.new_from_resource(
-            None, f'{APP_GRESOURCE_PATH}/ui/moretagsgroupfactory.ui'
+        self.tag_filter = Gtk.CustomFilter.new(
+            self.tag_filter_func,
+            self.tag_selector.tag_model
         )
-        self.tag_list.set_model(self.tag_selection_model)
-        self.tag_list.set_factory(factory)
-        self.tag_list.connect('activate', self.add_row_from_selector)
-
-        # Close popover if Escape key is pressed in search entry
-        controller = Gtk.ShortcutController()
-        trigger = Gtk.KeyvalTrigger.new(Gdk.keyval_from_name("Escape"), 0)
-        shortcut = Gtk.Shortcut.new(trigger, Gtk.CallbackAction.new(self.close_popover))
-        controller.add_shortcut(shortcut)
-        self.tag_list_search_entry.add_controller(controller)
+        self.tag_selector.set_filter(self.tag_filter)
 
     def get_rows_sorted(self):
         rows = {}
@@ -485,50 +466,33 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
 
     # "Add additional tag" field
 
-    @Gtk.Template.Callback()
     def refresh_tag_filter(self, *args):
         """Refreshes the filter for the additional tag add row."""
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
 
-    def add_row_from_selector(self, listview, position, *args):
+    @Gtk.Template.Callback()
+    def add_row_from_selector(self, selector, tag):
         """Adds a new row based on the tag selector."""
-        if self._ignore_tag_selector:
-            return
-
-        self._ignore_tag_selector = True
-
-        selected_item = self.tag_selection_model.get_item(position)
-        if not selected_item:
-            return
-        if selected_item.get_string() == 'none':
-            return
-        tag = extra_tag_names_swapped[selected_item.get_string()]
-
         self.add_extra_row(tag)
-        self.tag_list_popover.popdown()
-
-        self._ignore_tag_selector = False
-
-    def close_popover(self, *args):
-        self.tag_list_popover.popdown()
 
     def tag_filter_func(self, _tag_name, *args):
         """Filter function for the tag dropdown."""
+        if not self.tag_selector.tag_filter_func(_tag_name):
+            return False
+
         present_tags = self.get_present_tags()
 
         tag_name = _tag_name.get_string()
-        tag_prop = extra_tag_names_swapped[tag_name]
+        tag_prop = self.tag_selector.tag_names_swapped[tag_name]
 
+        if tag_prop in ('length', 'bitrate') + BASIC_TAGS:
+            return False
         if tag_prop == 'none':
             return False
         if tag_prop in present_tags:
             return False
         if tag_prop in self.get_blocked_tags():
             return False
-
-        query = self.tag_list_search_entry.get_text()
-        if query:
-            return query.lower() in tag_name.lower()
 
         return True
 

@@ -5,54 +5,11 @@
     <property name="title" translatable="yes">More tags</property>
 
     <property name="header-suffix">
-      <object class="GtkMenuButton" id="add_button">
-        <property name="accessible-role">button</property>
+      <object class="EartagTagSelectorButton" id="tag_selector">
         <property name="icon-name">list-add-symbolic</property>
         <!-- TRANSLATORS: "Add" button for "More tags" section -->
         <property name="tooltip-text" translatable="yes">Add tag</property>
-
-        <style>
-          <class name="flat"/>
-        </style>
-
-        <property name="popover">
-          <object class="GtkPopover" id="tag_list_popover">
-            <property name="autohide">true</property>
-            <style>
-              <class name="menu"/>
-            </style>
-
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
-
-                <child>
-                  <object class="GtkSearchEntry" id="tag_list_search_entry">
-                    <property name="margin-top">6</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <signal name="search-changed" handler="refresh_tag_filter"/>
-                  </object>
-                </child>
-
-                <child>
-                  <object class="GtkScrolledWindow">
-                    <property name="hscrollbar-policy">never</property>
-                    <property name="vscrollbar-policy">automatic</property>
-                    <property name="propagate-natural-width">true</property>
-                    <property name="propagate-natural-height">true</property>
-
-                    <child>
-                      <object class="GtkListView" id="tag_list">
-                        <property name="single-click-activate">true</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-          </object>
-        </property>
+        <signal name="tag-selected" handler="add_row_from_selector"/>
       </object>
     </property>
   </template>
