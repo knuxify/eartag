@@ -80,7 +80,7 @@ class EartagFileManager(GObject.Object):
         # Set up selection model for selected files handling
         self.selected_files = Gtk.MultiSelection.new(self.file_filter_model)
 
-        self.file_paths = []
+        self.file_paths = set()
         self._files_buffer = []
         self._modified_files = []
         self._error_files = []
@@ -190,7 +190,7 @@ class EartagFileManager(GObject.Object):
 
         self._files_buffer.append(_file)
 
-        self.file_paths.append(_file.path)
+        self.file_paths.add(_file.path)
 
         return True
 
@@ -347,7 +347,7 @@ class EartagFileManager(GObject.Object):
     def remove_all(self):
         """Clear the opened file ist.."""
         self.files.remove_all()
-        self.file_paths = []
+        self.file_paths = set()
         self.selected_files.unselect_all()
 
         self._modified_files = []
@@ -414,6 +414,13 @@ class EartagFileManager(GObject.Object):
                 task.emit_task_done()
                 self.failed = True
                 return False
+
+            try:
+                self.file_paths.remove(old_path)
+            except KeyError:
+                pass
+            self.file_paths.add(new_path)
+
             n += 1
             task.increment_progress(progress_step)
 
