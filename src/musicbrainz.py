@@ -755,7 +755,7 @@ def acoustid_identify_file(file):
     except:
         print(f"Error while getting AcoustID match for {os.path.basename(file.path)} ({file.id}):")
         traceback.print_exc()
-        print("Continuing without match.")
+        print("Continuing without match. (This is not a fatal error!)")
         return (0.0, None)
 
     acoustid_data = results['results'][0]
