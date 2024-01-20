@@ -104,6 +104,8 @@ class EartagGuessDialog(Adw.Window):
         self.custom_syntax_highlight.connect('notify::error', self.check_for_errors)
         self.connect('notify::validation-passed', self.on_syntax_highlight_error)
 
+        self._entry_conn = self.pattern_entry.connect('changed', self.update_preview)
+
         self.custom_syntax_highlight.bind_property(
             'theme', self, 'theme',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
@@ -216,10 +218,8 @@ class EartagGuessDialog(Adw.Window):
 
         return guess
 
-    @Gtk.Template.Callback()
     def update_preview(self, *args):
         """Updates the text and syntax highlighting on the preview entry."""
-
         filename = os.path.basename(self.files[0].path)
         guess = self.get_guess(filename, positions=True)
 
@@ -308,6 +308,9 @@ class EartagGuessDialog(Adw.Window):
     def _close(self):
         for conn in self._connections:
             self.disconnect(conn)
+        self.pattern_entry.disconnect(self._entry_conn)
+        self._connections = []
+        self._entry_conn = None
         self.files = None
         self.close()
 
