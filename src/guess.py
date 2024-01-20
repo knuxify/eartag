@@ -9,6 +9,7 @@ from .utils.tagsyntaxhighlight import (
     attr_foreground_new, THEMES
 )
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
+from .utils.misc import filename_valid
 from .backends.file import BASIC_TAGS, EXTRA_TAGS
 
 from gi.repository import Adw, Gtk, Gio, GObject, Pango
@@ -80,6 +81,8 @@ class EartagGuessDialog(Adw.Window):
 
     strip_common_suffixes = GObject.Property(type=bool, default=True)
 
+    validation_passed = GObject.Property(type=bool, default=True)
+
     guess_presets = [
         '{artist} - {title}'
         '{tracknumber} {title}'
@@ -90,10 +93,15 @@ class EartagGuessDialog(Adw.Window):
         super().__init__(modal=True, transient_for=parent)
         self.parent = parent
         self._connections = []
-        custom_syntax_highlight = EartagPlaceholderSyntaxHighlighter(self.pattern_entry, "entry")
-        custom_syntax_highlight.connect('notify::error', self.on_syntax_highlight_error)
+        self.custom_syntax_highlight = EartagPlaceholderSyntaxHighlighter(self.pattern_entry, "entry")
+        self.custom_syntax_highlight.bind_property(
+            'error', self, 'validation-passed',
+            GObject.BindingFlags.SYNC_CREATE
+        )
+        self.custom_syntax_highlight.connect('notify::error', self.check_for_errors)
+        self.connect('notify::validation-passed', self.on_syntax_highlight_error)
 
-        custom_syntax_highlight.bind_property(
+        self.custom_syntax_highlight.bind_property(
             'theme', self, 'theme',
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
         )
@@ -101,7 +109,7 @@ class EartagGuessDialog(Adw.Window):
             self.connect('notify::theme', self.update_preview)
         )
 
-        self.files = list(parent.get_native().file_manager.selected_files).copy()
+        self.files = parent.file_manager.selected_files_list.copy()
         self.preview_entry.set_text(os.path.basename(self.files[0].path))
 
         config.bind('guess-strip-common-suffixes',
@@ -134,6 +142,8 @@ class EartagGuessDialog(Adw.Window):
         self.tag_selector.set_filter(self.tag_filter)
         self.pattern_entry.connect('changed', self.tag_selector.refresh_tag_filter)
 
+        self.pattern_entry.connect('changed', self.check_for_errors)
+
     @property
     def present_tags(self) -> list:
         tags = re.findall(r'{(.*?)}', self.pattern_entry.get_text())
@@ -155,8 +165,8 @@ class EartagGuessDialog(Adw.Window):
     def add_tag_from_selector(self, selector, tag, *args):
         self.pattern_entry.set_text(self.pattern_entry.get_text() + '{' + tag + '}')
 
-    def on_syntax_highlight_error(self, syntax, *args):
-        if syntax.props.error:
+    def on_syntax_highlight_error(self, *args):
+        if not self.props.validation_passed:
             self.pattern_entry.add_css_class('error')
             self.apply_button.set_sensitive(False)  # todo: only do this when custom is selected
         else:
@@ -235,6 +245,7 @@ class EartagGuessDialog(Adw.Window):
         if len(self.files) < 1:
             self.close()
         self.content_clamp.set_sensitive(False)
+        self.apply_button.set_sensitive(False)
         self.apply_task.reset()
         self.apply_task.run()
 
@@ -282,3 +293,12 @@ class EartagGuessDialog(Adw.Window):
             self.disconnect(conn)
         self.files = None
         self.close()
+
+    def check_for_errors(self, *args):
+        if self.custom_syntax_highlight.props.error:
+            self.props.validation_passed = False
+            return
+        self.props.validation_passed = filename_valid(
+            self.pattern_entry.get_text(),
+            allow_path=False
+        )

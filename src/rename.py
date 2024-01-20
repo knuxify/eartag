@@ -4,6 +4,7 @@
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length
+from .utils.misc import filename_valid
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .utils.tagsyntaxhighlight import (
     EartagPlaceholderSyntaxHighlighter,
@@ -135,7 +136,13 @@ class EartagRenameDialog(Adw.Window):
         if '/' in placeholder and not self.props.folder:
             self.props.validation_passed = False
         else:
-            self.props.validation_passed = True
+            if self.props.folder and placeholder.startswith('/'):
+                self.props.validation_passed = False
+            else:
+                self.props.validation_passed = filename_valid(
+                    self.filename_entry.get_text(),
+                    allow_path=bool(self.props.folder)
+                )
         self.update_rename_button_sensitivity()
         self.folder_remove_button.props.sensitive = bool(self.props.folder)
 

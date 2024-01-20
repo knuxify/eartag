@@ -4,6 +4,7 @@
 from itertools import groupby
 import re
 import unicodedata
+import os
 
 def all_equal(iterable):
     """
@@ -102,3 +103,88 @@ def inspect_prettyprint(stack):
         print(''.join(frame.code_context)) # already includes newlines
 
     print("--- End trace ---")
+
+# https://stackoverflow.com/questions/1976007/what-characters-are-forbidden-in-windows-and-linux-directory-names#31976060
+FILENAME_BANNED_CHARS = ("/", "\\", ":", "*", "?", "\"", "<", ">", "|", "\t")
+BANNED_FILENAMES = ("CON", "PRN", "AUX", "NUL",
+"COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+"LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9")
+
+def cleanup_filename(filename: str, allow_path: bool = False, full_path: bool = False) -> str:
+    """
+    Takes a filename or path and returns a cleaned up version (that is,
+    one where invalid characters or tricks like ../ are ignored).
+    """
+    if full_path:
+        allow_path = True
+
+    banned_chars = list(FILENAME_BANNED_CHARS)
+    if allow_path and os.path.sep in banned_chars:
+        banned_chars.remove(os.path.sep)
+
+    for char in banned_chars:
+        filename.replace(char, '_')
+
+    if full_path:
+        filename_clean = os.path.sep
+    else:
+        if filename.startswith(os.path.sep):
+            filename = filename[1:]
+        filename_clean = ""
+
+    filename_split = filename.split(os.path.sep)
+    for i in range(len(filename_split)):
+        # Strip out leading/trailing spaces
+        f = filename_split[i].strip()
+
+        if f == '':
+            continue
+
+        # Fix too long filenames; 255 is a common limit, we leave some
+        # space for safety
+        if len(f) > 249:
+            if i == (len(filename_split) - 1):
+                # If we're dealing with a filename, keep the extension
+                f, ext = os.path.splitext(f)
+                f = f[(-249 - len(ext)):] + ext
+            else:
+                f = f[-249:]
+
+        # Misc. cleanup steps
+        if f in BANNED_FILENAMES:
+            filename_clean += f"_{f}"
+        elif f == '..':
+            filename_clean += "__"
+        elif f.endswith('.'):
+            filename_clean += f[:-1] + '_'
+        else:
+            filename_clean += f
+        filename_clean += os.path.sep
+    filename_clean = filename_clean[:-1]
+
+    return filename_clean
+
+def filename_valid(filename: str, allow_path: bool = False, full_path: bool = False) -> bool:
+    """Returns whether or not a filename is valid."""
+    if filename != os.path.normpath(filename):
+        return False
+
+    banned_chars = list(FILENAME_BANNED_CHARS)
+    if allow_path and os.path.sep in banned_chars:
+        banned_chars.remove(os.path.sep)
+
+    if not full_path and filename.startswith(os.path.sep):
+        return False
+
+    for char in banned_chars:
+        if char in filename:
+            return False
+
+    for f in filename.split(os.path.sep):
+        if f == '':
+            continue
+        if f in BANNED_FILENAMES + ('..',) or f.endswith(".") or f != f.strip() or len(f) > 255:
+            return False
+
+    return True
+

@@ -15,7 +15,7 @@ from .backends import (
     )
 from .backends.file import EartagFile
 from .utils.bgtask import EartagBackgroundTask
-from .utils.misc import find_in_model
+from .utils.misc import find_in_model, cleanup_filename
 from .dialogs import (EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog, EartagRenameFailureDialog)
 
@@ -384,13 +384,19 @@ class EartagFileManager(GObject.Object):
                 n += 1
                 continue
 
+            new_path = cleanup_filename(new_path, allow_path=True, full_path=True)
+
             if os.path.exists(new_path):
                 _orig_new_path = new_path
                 i = 0
                 while os.path.exists(new_path):
                     i += 1
+                    filler = f' ({i})'
                     path_split = os.path.splitext(_orig_new_path)
-                    new_path = path_split[0] + f' ({i})' + path_split[1]
+                    # Prevent the filename from becoming too long
+                    if len(path_split[0]) > 249:
+                        path_split = path_split[(-249 - len(filler)):]
+                    new_path = path_split[0] + filler + path_split[1]
             else:
                 if not os.path.exists(os.path.dirname(new_path)):
                     os.makedirs(os.path.dirname(new_path), exist_ok=True)
