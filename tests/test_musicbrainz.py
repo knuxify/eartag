@@ -173,7 +173,7 @@ def acoustid_file():
             file_writable.write(data)
     return EartagFileMutagenID3(file)
 
-@pytest.mark.skip(reason="Currently broken, looks like it's misidentifying the track; not our fault")
+@pytest.mark.skip(reason="Currently broken, looks like it's misidentifying the track; not our fault")  # noqa: E501
 @pytest.mark.networked_tests
 def test_acoustid_identify(acoustid_file):
     """Tests the AcoustID identification function."""

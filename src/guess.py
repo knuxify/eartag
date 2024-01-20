@@ -94,7 +94,9 @@ class EartagGuessDialog(Adw.Window):
         super().__init__(modal=True, transient_for=parent)
         self.parent = parent
         self._connections = []
-        self.custom_syntax_highlight = EartagPlaceholderSyntaxHighlighter(self.pattern_entry, "entry")
+        self.custom_syntax_highlight = EartagPlaceholderSyntaxHighlighter(
+            self.pattern_entry, "entry"
+        )
         self.custom_syntax_highlight.bind_property(
             'error', self, 'validation-passed',
             GObject.BindingFlags.SYNC_CREATE

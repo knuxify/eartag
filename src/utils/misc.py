@@ -187,4 +187,3 @@ def filename_valid(filename: str, allow_path: bool = False, full_path: bool = Fa
             return False
 
     return True
-
