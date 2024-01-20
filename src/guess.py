@@ -273,7 +273,7 @@ class EartagGuessDialog(Adw.Window):
                             GLib.idle_add(file.set_property, tag, int(value))
                         except (TypeError, ValueError):
                             pass
-                    if tag in file.float_properties:
+                    elif tag in file.float_properties:
                         try:
                             GLib.idle_add(file.set_property, tag, float(value))
                         except (TypeError, ValueError):
