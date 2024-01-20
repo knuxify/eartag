@@ -801,18 +801,23 @@ class EartagFilenameRow(Adw.EntryRow):
     def __init__(self):
         super().__init__()
         self._files = []
+        self._connections = {}
         self._title = self.props.title
         self.get_delegate().connect('insert-text', self.validate_input)
 
     def bind_to_file(self, file):
         self._files.append(file)
+        self._connections[file.id] = \
+            file.connect('notify::path', self.update_on_bind)
         self.update_on_bind()
 
     def unbind_from_file(self, file):
+        file.disconnect(self._connections[file.id])
+        del self._connections[file.id]
         self._files.remove(file)
         self.update_on_bind()
 
-    def update_on_bind(self):
+    def update_on_bind(self, *args):
         if len(self._files) > 1:
             self.props.title = self._title + ' ' + _("(multiple files)")
             self.set_editable(False)
