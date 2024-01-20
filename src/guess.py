@@ -268,7 +268,18 @@ class EartagGuessDialog(Adw.Window):
             for tag, value in guess.items():
                 if tag not in EXTRA_TAGS or \
                         (tag in EXTRA_TAGS and tag in file.supported_extra_tags):
-                    GLib.idle_add(file.set_property, tag, value))
+                    if tag in file.int_properties:
+                        try:
+                            GLib.idle_add(file.set_property, tag, int(value))
+                        except (TypeError, ValueError):
+                            pass
+                    if tag in file.float_properties:
+                        try:
+                            GLib.idle_add(file.set_property, tag, float(value))
+                        except (TypeError, ValueError):
+                            pass
+                    else:
+                        GLib.idle_add(file.set_property, tag, value)
 
             # Sleep for a bit to make sure tags are set
             time.sleep(0.05)
