@@ -58,6 +58,12 @@ def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bo
                             parsed_value = str(value)
                     else:
                         parsed_value = str(value)
+                        # Other characters are cleaned by cleanup_filename; these are
+                        # potential file path separators we need to filter out first,
+                        # otherwise they'll get treated as folders (valid as far as
+                        # renaming and moving to a folder is concerned).
+                        for char in ('/', '\'', ':'):
+                            parsed_value = parsed_value.replace(char, '_')
 
                 out += parsed_value
                 _positions.append((i, i + len(parsed_value)))
