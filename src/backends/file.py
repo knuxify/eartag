@@ -3,13 +3,14 @@
 
 import gi
 gi.require_version('GdkPixbuf', '2.0')
-from gi.repository import GObject, GdkPixbuf
+from gi.repository import GObject, GdkPixbuf, GLib
 import filecmp
 import os
 import re
 import shutil
 import tempfile
 import uuid
+import time
 
 BASIC_TAGS = (
     'title', 'artist', 'album', 'albumartist', 'tracknumber',
@@ -301,6 +302,17 @@ class EartagFile(GObject.Object):
     @path.setter
     def path(self, value):
         """Moves the file to the new location."""
+        self._set_path(value, thread_safe=False)
+
+    def _set_path(self, value: str, thread_safe: bool = False):
+        """
+        Moves the file to the new location.
+        (Internal function that does not notify the path property; used by the
+        rename UI to prevent crashes.)
+        """
+        if value == self._path:
+            return
+
         modifications = {}
         for tag in self.modified_tags:
             modifications[tag] = self.get_property(tag)
@@ -309,8 +321,15 @@ class EartagFile(GObject.Object):
         self._path = value
         self.load_from_file(value)
 
-        for tag, tag_value in modifications.items():
-            self.set_property(tag, tag_value)
+        if thread_safe:
+            for tag, tag_value in modifications.items():
+                GLib.idle_add(self.set_property, tag, tag_value)
+
+            # Sleep a bit to make sure values get applied
+            time.sleep(0.05)
+        else:
+            for tag, tag_value in modifications.items():
+                self.set_property(tag, tag_value)
 
     def mark_as_modified(self, tag):
         if not self._is_modified:

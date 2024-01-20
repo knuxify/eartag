@@ -402,7 +402,7 @@ class EartagFileManager(GObject.Object):
                     os.makedirs(os.path.dirname(new_path), exist_ok=True)
 
             try:
-                file.props.path = new_path
+                file._set_path(new_path, thread_safe=True)
             except:
                 self._is_renaming_multiple_files = False
 
@@ -414,6 +414,8 @@ class EartagFileManager(GObject.Object):
                 task.emit_task_done()
                 self.failed = True
                 return False
+
+            GLib.idle_add(file.notify, "path")
 
             try:
                 self.file_paths.remove(old_path)
