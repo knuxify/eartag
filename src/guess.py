@@ -12,9 +12,10 @@ from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .utils.misc import filename_valid
 from .backends.file import BASIC_TAGS, EXTRA_TAGS
 
-from gi.repository import Adw, Gtk, Gio, GObject, Pango
+from gi.repository import Adw, Gtk, Gio, GLib, GObject, Pango
 import re
 import os.path
+import time
 
 def guess_tags_from_filename(filename: str, placeholder: str, positions: bool = False) -> dict:
     """
@@ -267,7 +268,10 @@ class EartagGuessDialog(Adw.Window):
             for tag, value in guess.items():
                 if tag not in EXTRA_TAGS or \
                         (tag in EXTRA_TAGS and tag in file.supported_extra_tags):
-                    file.set_property(tag, value)
+                    GLib.idle_add(file.set_property, tag, value))
+
+            # Sleep for a bit to make sure tags are set
+            time.sleep(0.05)
 
             self.guessed += 1
             self.apply_task.increment_progress(progress_step)
