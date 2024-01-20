@@ -163,7 +163,9 @@ class EartagRenameDialog(Adw.Window):
     @Gtk.Template.Callback()
     def add_placeholder_from_selector(self, selector, tag, *args):
         """Adds a new placeholder based on the tag selector."""
-        self.filename_entry.set_text(self.filename_entry.get_text() + '{' + tag + '}')
+        self.filename_entry.insert_text(
+            '{' + tag + '}', self.filename_entry.props.cursor_position
+        )
 
     # Move to folder feature
 

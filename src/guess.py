@@ -168,7 +168,9 @@ class EartagGuessDialog(Adw.Window):
 
     @Gtk.Template.Callback()
     def add_tag_from_selector(self, selector, tag, *args):
-        self.pattern_entry.set_text(self.pattern_entry.get_text() + '{' + tag + '}')
+        self.pattern_entry.insert_text(
+            '{' + tag + '}', self.pattern_entry.props.cursor_position
+        )
 
     def on_syntax_highlight_error(self, *args):
         if not self.props.validation_passed:
