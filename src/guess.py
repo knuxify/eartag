@@ -34,7 +34,7 @@ def guess_tags_from_filename(filename: str, placeholder: str, positions: bool = 
         if element.startswith('{') and element.endswith('}'):
             tag = element[1:-1]
             if tag in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate') and tag not in tags:
-                pattern += f"(?P<{tag}>.*)"
+                pattern += f"(?P<{tag}>.*?)"
                 tags.append(tag)
                 continue
         pattern += re.escape(element)
