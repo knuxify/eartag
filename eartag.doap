@@ -17,6 +17,7 @@
     <foaf:Person>
       <foaf:name>knuxify</foaf:name>
       <foaf:mbox rdf:resource="mailto:knuxify@gmail.com" />
+      <gnome:userid>knuxify</gnome:userid>
       <foaf:account>
         <foaf:OnlineAccount>
           <foaf:accountServiceHomepage rdf:resource="https://gitlab.gnome.org"/>
