@@ -1,0 +1,761 @@
+# Swedish translation for eartag.
+# Copyright © 2024 eartag's COPYRIGHT HOLDER
+# This file is distributed under the same license as the eartag package.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: eartag main\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
+"POT-Creation-Date: 2024-01-26 04:46+0000\n"
+"PO-Revision-Date: 2024-01-27 10:47+0100\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
+#: src/main.py:105 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.ui:297
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:115 src/main.py:117
+msgid "translator-credits"
+msgstr ""
+"Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"\n"
+"Skicka synpunkter på översättningen till\n"
+"<tp-sv@listor.tp-sv.se>."
+
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr "Taggredigerare"
+
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr "Redigera ljudfilstaggar"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "musik;ljud;tagg;taggning;taggare;"
+
+#: data/app.drey.EarTag.metainfo.xml.in:75
+msgid ""
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder. It can:"
+msgstr ""
+"Ear Tag är en enkel ljudfilstaggredigerare. Den är främst tänkt för att göra "
+"snabba redigeringar eller massredigering av spår på album/EP-skivor. Till "
+"skillnad från andra taggningsprogram så kräver inte Ear Tag att användaren "
+"konfigurerar en musikbiblioteksmapp. Den kan:"
+
+#: data/app.drey.EarTag.metainfo.xml.in:77
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr "Redigera taggar för MP3-, WAV-, M4A-, FLAC-, OGG- och WMA-filer"
+
+#: data/app.drey.EarTag.metainfo.xml.in:78
+msgid "Modify metadata of multiple files at once"
+msgstr "Ändra metadata på flera filer samtidigt"
+
+#: data/app.drey.EarTag.metainfo.xml.in:79
+msgid "Rename files using information from present tags"
+msgstr "Byta namn på filer med information från befintliga taggar"
+
+#: data/app.drey.EarTag.metainfo.xml.in:80
+msgid "Identify files using AcoustID"
+msgstr "Identifiera filer med AcoustID"
+
+#: data/app.drey.EarTag.metainfo.xml.in:82
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr ""
+"Nätverksåtkomst används endast för alternativet ”Identifiera markerade "
+"filer”."
+
+#: src/window.py:109
+msgid "All supported audio files"
+msgstr "Alla ljudfiler som stöds"
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/window.py:198 src/fileview.py:761
+msgid "(Multiple files selected)"
+msgstr "(Flera filer markerade)"
+
+#: src/window.py:276 src/ui/nofile.ui:39
+msgid "Open Folder"
+msgstr "Öppna mapp"
+
+#: src/window.py:279 src/ui/nofile.ui:26
+msgid "Open File"
+msgstr "Öppna fil"
+
+#: src/window.py:341
+msgid "No supported files found in opened folder"
+msgstr "Inga filer som stöds hittade i öppnad mapp"
+
+#: src/window.py:348
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr "Några av de öppnade filerna har ogiltiga värden. Kan inte spara"
+
+#: src/window.py:469
+msgid "No files selected"
+msgstr "Inga filer markerade"
+
+#: src/window.py:473
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "1 fil markerad"
+msgstr[1] "{n} filer markerade"
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:65
+msgid "Drop a file to add it to the opened file list"
+msgstr "Släpp en fil för att lägga till den i listan över öppnade filer"
+
+#: src/ui/window.ui:126
+msgid "Save"
+msgstr "Spara"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:140
+msgid "Sort files by track number, album, name"
+msgstr "Sortera filer efter spårnummer, album, namn"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:149
+msgid "Close file list"
+msgstr "Stäng fillista"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:163
+msgid "Add file"
+msgstr "Lägg till fil"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:171
+msgid "Select multiple files"
+msgstr "Välj flera filer"
+
+#: src/ui/window.ui:178
+msgid "Search opened files"
+msgstr "Sök öppnade filer"
+
+#: src/ui/window.ui:235
+msgid "No Results Found"
+msgstr "Inga resultat hittades"
+
+#: src/ui/window.ui:236
+msgid "Try a different search query."
+msgstr "Försök med en annan sökning."
+
+#: src/ui/window.ui:251
+msgid "Select all files"
+msgstr "Markera alla filer"
+
+#: src/ui/window.ui:267
+msgid "Remove selected files"
+msgstr "Ta bort markerade filer"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:287
+msgid "Show file list"
+msgstr "Visa fillista"
+
+#: src/ui/window.ui:328
+msgid "_Open File"
+msgstr "Ö_ppna fil"
+
+#: src/ui/window.ui:332
+msgid "O_pen Folder"
+msgstr "Öpp_na mapp"
+
+#: src/ui/window.ui:338
+msgid "_Rename Selected Files"
+msgstr "_Byt namn på markerade filer"
+
+#: src/ui/window.ui:342
+msgid "_Identify Selected Files"
+msgstr "_Identifiera markerade filer"
+
+#: src/ui/window.ui:348
+msgid "_Keyboard Shortcuts"
+msgstr "_Tangentbordsgenvägar"
+
+#: src/ui/window.ui:352
+msgid "_Settings"
+msgstr "_Inställningar"
+
+#: src/ui/window.ui:356
+msgid "_About Ear Tag"
+msgstr "_Om Ear Tag"
+
+#: src/ui/nofile.ui:13
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr "Öppna eller dra in några ljudfiler för att redigera deras metadata."
+
+#: src/filemanager.py:117
+msgid "Failed to save file"
+msgstr "Misslyckades med att spara fil"
+
+#: src/filemanager.py:118
+#, python-brace-format
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr "Kunde inte spara filen {f}. Se loggarna för mer information."
+
+#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
+#: src/filemanager.py:121
+msgid "OK"
+msgstr "OK"
+
+#: src/filemanager.py:127
+msgid "Saved changes to files"
+msgstr "Sparade ändringar till filer"
+
+#: src/filemanager.py:235
+msgid "Opened file is read-only; changes cannot be saved"
+msgstr "Den öppnade filen är skrivskyddad. Ändringar kan inte sparas"
+
+#: src/filemanager.py:237
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr ""
+"Några av de öppnade filerna är skrivskyddade. Ändringar kan inte sparas"
+
+#: src/backends/file.py:45
+msgid "Length"
+msgstr "Längd"
+
+#: src/backends/file.py:46
+msgid "Bitrate"
+msgstr "Bithastighet"
+
+#: src/backends/file.py:48 src/ui/fileview.ui:115
+msgid "Title"
+msgstr "Titel"
+
+#: src/backends/file.py:49 src/ui/fileview.ui:150
+msgid "Artist"
+msgstr "Artist"
+
+#: src/backends/file.py:50 src/ui/fileview.ui:251
+msgid "Album"
+msgstr "Album"
+
+#: src/backends/file.py:51 src/ui/fileview.ui:258
+msgid "Album artist"
+msgstr "Albumartist"
+
+#: src/backends/file.py:52 src/ui/fileview.ui:205
+msgid "Track number"
+msgstr "Spårnummer"
+
+#: src/backends/file.py:53 src/ui/fileview.ui:226
+msgid "Total tracks"
+msgstr "Totalt antal spår"
+
+#: src/backends/file.py:54 src/ui/fileview.ui:265
+msgid "Genre"
+msgstr "Genre"
+
+#: src/backends/file.py:55 src/ui/fileview.ui:272
+msgid "Release date"
+msgstr "Utgivningsdatum"
+
+#: src/backends/file.py:56 src/ui/fileview.ui:280
+msgid "Comment"
+msgstr "Kommentar"
+
+#: src/backends/file.py:58
+msgid "(Select a tag)"
+msgstr "(Välj en tagg)"
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/backends/file.py:60
+msgid "BPM"
+msgstr "Slag/minut"
+
+#: src/backends/file.py:61
+msgid "Compilation"
+msgstr "Samling"
+
+#: src/backends/file.py:62
+msgid "Composer"
+msgstr "Kompositör"
+
+#: src/backends/file.py:63
+msgid "Copyright"
+msgstr "Copyright"
+
+#: src/backends/file.py:64
+msgid "Encoded by"
+msgstr "Kodad av"
+
+#: src/backends/file.py:65
+msgid "Mood"
+msgstr "Stämning"
+
+#. TRANSLATORS: Orchestra conductor
+#: src/backends/file.py:67
+msgid "Conductor"
+msgstr "Dirigent"
+
+#: src/backends/file.py:68
+msgid "Arranger"
+msgstr "Arrangör"
+
+#: src/backends/file.py:69
+msgid "Disc number"
+msgstr "Skivnummer"
+
+#: src/backends/file.py:70
+msgid "Publisher"
+msgstr "Förlag"
+
+#: src/backends/file.py:72
+msgid "Language"
+msgstr "Språk"
+
+#: src/backends/file.py:73
+msgid "Disc subtitle"
+msgstr "Undertitel för skiva"
+
+#: src/backends/file.py:74
+msgid "Website/URL"
+msgstr "Webbplats/URL"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:78
+msgid "Album artist (sort)"
+msgstr "Albumartist (sortering)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:81
+msgid "Album (sort)"
+msgstr "Album (sortering)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:84
+msgid "Composer (sort)"
+msgstr "Kompositör (sortering)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:87
+msgid "Artist (sort)"
+msgstr "Artist (sortering)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:90
+msgid "Title (sort)"
+msgstr "Titel (sortering)"
+
+#: src/backends/file.py:92
+msgid "MusicBrainz Artist ID"
+msgstr "MusicBrainz artist-ID"
+
+#: src/backends/file.py:93
+msgid "MusicBrainz Album ID"
+msgstr "MusicBrainz album-ID"
+
+#: src/backends/file.py:94
+msgid "MusicBrainz Album Artist ID"
+msgstr "MusicBrainz albumartist-ID"
+
+#: src/backends/file.py:95
+msgid "MusicBrainz Release Track ID"
+msgstr "MusicBrainz utgåvespår-ID"
+
+#: src/backends/file.py:96
+msgid "MusicBrainz Recording ID"
+msgstr "MusicBrainz inspelnings-ID"
+
+#: src/backends/file.py:97
+msgid "MusicBrainz Release Group ID"
+msgstr "MusicBrainz utgåvegrupp-ID"
+
+#: src/fileview.py:190
+msgid "Select Album Cover Image"
+msgstr "Välj omslagsbild för album"
+
+#: src/fileview.py:241
+msgid "Save Album Cover To…"
+msgstr "Spara albumomslag till…"
+
+#: src/fileview.py:269
+#, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "Sparade omslag till {path}"
+
+#: src/fileview.py:309
+#, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "Tog bort omslag från fil"
+msgstr[1] "Tog bort omslag från {n} filer"
+
+#: src/fileview.py:313
+msgid "Undo"
+msgstr "Ångra"
+
+#: src/fileview.py:436
+msgid "More tags"
+msgstr "Fler taggar"
+
+#: src/fileview.py:775
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "1 kanal"
+msgstr[1] "{n} kanaler"
+
+#: src/fileview.py:822
+msgid "(multiple files)"
+msgstr "(flera filer)"
+
+#: src/ui/fileview.ui:11
+msgid "Loading Files…"
+msgstr "Läser in filer…"
+
+#: src/ui/fileview.ui:22
+msgid "Select a File"
+msgstr "Välj en fil"
+
+#: src/ui/fileview.ui:23
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "Välj filerna du vill redigera från listan över öppnade filer."
+
+#: src/ui/fileview.ui:66
+msgid "Previous file"
+msgstr "Föregående fil"
+
+#: src/ui/fileview.ui:90
+msgid "Next file"
+msgstr "Nästa fil"
+
+#: src/ui/albumcoverbutton.ui:90
+msgid "_Choose Image…"
+msgstr "_Välj bild…"
+
+#: src/ui/albumcoverbutton.ui:95
+msgid "_Save Image…"
+msgstr "_Spara bild…"
+
+#: src/ui/albumcoverbutton.ui:100
+msgid "_Remove Cover"
+msgstr "_Ta bort omslag"
+
+#: src/ui/albumcoverbutton.ui:123
+msgid "Front"
+msgstr "Framsida"
+
+#: src/ui/albumcoverbutton.ui:130
+msgid "Back"
+msgstr "Baksida"
+
+#: src/tagentry.py:128
+msgid "(multiple values)"
+msgstr "(flera värden)"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/filelist.py:109
+msgid "(No title)"
+msgstr "(Ingen titel)"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:50
+msgid "File has invalid values"
+msgstr "Filen har ogiltiga värden"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:60
+msgid "File has unsaved changes"
+msgstr "Filen har osparade ändringar"
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:126
+msgid "Remove from list"
+msgstr "Ta bort från lista"
+
+#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
+#: src/ui/dialogs/removaldiscardwarning.ui:5
+msgid "Save Changes?"
+msgstr "Spara ändringar?"
+
+#: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
+#: src/ui/dialogs/removaldiscardwarning.ui:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "Om du inte sparar dina ändringar kommer de förloras för alltid."
+
+#: src/ui/dialogs/closewarning.ui:12 src/ui/dialogs/discardwarning.ui:12
+#: src/ui/dialogs/removaldiscardwarning.ui:12
+msgid "_Cancel"
+msgstr "A_vbryt"
+
+#: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
+msgid "_Discard and Close"
+msgstr "_Förkasta och stäng"
+
+#: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
+msgid "_Save and Close"
+msgstr "_Spara och stäng"
+
+#: src/ui/dialogs/discardwarning.ui:13
+msgid "_Discard and Open"
+msgstr "_Förkasta och öppna"
+
+#: src/ui/dialogs/discardwarning.ui:14
+msgid "_Save and Open"
+msgstr "_Spara och öppna"
+
+#: src/ui/dialogs/loadingfailure.ui:5
+msgid "Failed to Load File"
+msgstr "Misslyckades med att läsa in fil"
+
+#: src/ui/dialogs/loadingfailure.ui:6
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr "Kunde inte läsa in filen {f}. Se loggarna för mer information."
+
+#: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
+msgid "_OK"
+msgstr "_OK"
+
+#: src/ui/dialogs/renamefailure.ui:5
+msgid "Failed to Rename File"
+msgstr "Misslyckades med att byta namn på fil"
+
+#: src/ui/dialogs/renamefailure.ui:6
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr "Kunde inte byta namn på filen {f}. Se loggarna för mer information."
+
+#: src/rename.py:40
+msgid "Untitled"
+msgstr "Namnlös"
+
+#: src/rename.py:47
+#, python-brace-format
+msgid "Unknown {tag_name}"
+msgstr "Okänd {tag_name}"
+
+#: src/rename.py:204
+msgid "Selected folder does not exist"
+msgstr "Markerad mapp finns inte"
+
+#: src/rename.py:211
+msgid "Selected folder is read-only"
+msgstr "Markerad mapp är skrivskyddad"
+
+#: src/ui/rename.ui:5
+msgid "Rename Selected Files"
+msgstr "Byt namn på markerade filer"
+
+#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: src/ui/rename.ui:44
+msgid "Rename"
+msgstr "Byt namn"
+
+#: src/ui/rename.ui:83
+msgid "Failed to rename files. Check the logs for more information."
+msgstr ""
+"Misslyckades med att byta namn på filer. Se loggarna för mer information."
+
+#: src/ui/rename.ui:101
+msgid "Preview"
+msgstr "Förhandsgranskning"
+
+#: src/ui/rename.ui:114
+msgid "Filename pattern"
+msgstr "Filnamnsmönster"
+
+#: src/ui/rename.ui:121
+msgid "Insert tag placeholder"
+msgstr "Infoga taggplatshållare"
+
+#: src/ui/rename.ui:130
+msgid "Move to folder"
+msgstr "Flytta till mapp"
+
+#: src/ui/rename.ui:135
+msgid "Select a folder…"
+msgstr "Markera en mapp…"
+
+#: src/ui/rename.ui:145
+msgid "Unselect folder"
+msgstr "Avmarkera mapp"
+
+#: src/ui/rename.ui:162
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
+msgstr ""
+"För en lista över tillgängliga platshållare, se <a href=\"https://gitlab."
+"gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">listan över tillgängliga taggar</a>."
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:117
+msgid "Other releases"
+msgstr "Andra utgåvor"
+
+#: src/identify.py:492
+msgid "Unidentified Files"
+msgstr "Oidentifierade filer"
+
+#: src/identify.py:917
+#, python-brace-format
+msgid "Identified {identified} out of {total} tracks"
+msgstr "Identifierade {identified} av {total} spår"
+
+#: src/ui/identify/identify.ui:5
+msgid "Identify Selected Files"
+msgstr "Identifiera markerade filer"
+
+#: src/ui/identify/identify.ui:48
+msgid "Identify"
+msgstr "Identifiera"
+
+#: src/ui/identify/identify.ui:59
+msgid "Apply"
+msgstr "Verkställ"
+
+#: src/ui/identify/identify.ui:92
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"Spårinformation tillhandahålls av <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Filer utan metadata identifieras med <a "
+"href=\"https://acoustid.org\">AcoustID</a>-tjänsten."
+
+#: src/ui/identify/filerow.ui:24
+msgid "File could not be identified"
+msgstr "Filen kunde inte identifieras"
+
+#: src/ui/settings.ui:9
+msgid "File identification"
+msgstr "Filidentifiering"
+
+#: src/ui/settings.ui:14
+msgid "MusicBrainz confidence treshold"
+msgstr "MusicBrainz-konfidensgräns"
+
+#: src/ui/settings.ui:15
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr ""
+"Minsta konfidensprocent som krävs för att ett MusicBrainz-sökresultat ska "
+"utvärderas"
+
+#: src/ui/settings.ui:31
+msgid "AcoustID confidence treshold"
+msgstr "AcoustID-konfidensgräns"
+
+#: src/ui/settings.ui:32
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr ""
+"Minsta konfidensprocent som krävs för att ett AcoustID-uppslagningsresultat "
+"ska utvärderas"
+
+#: src/ui/settings.ui:48
+msgid "Downloaded cover art size"
+msgstr "Storlek för hämtade albumomslag"
+
+#: src/ui/settings.ui:53
+msgid "Do not download covers"
+msgstr "Hämta inte omslag"
+
+#: src/ui/settings.ui:54
+msgid "250 px"
+msgstr "250 bildpunkter"
+
+#: src/ui/settings.ui:55
+msgid "500 px"
+msgstr "500 bildpunkter"
+
+#: src/ui/settings.ui:56
+msgid "1200 px"
+msgstr "1200 bildpunkter"
+
+#: src/ui/settings.ui:57
+msgid "Maximum size"
+msgstr "Maximal storlek"
+
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "Filer"
+
+#: src/ui/shortcuts.ui:16
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "Öppna filer"
+
+#: src/ui/shortcuts.ui:23
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "Öppna mapp"
+
+#: src/ui/shortcuts.ui:30
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "Spara alla ändrade filer"
+
+#: src/ui/shortcuts.ui:38
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "Sidopanel"
+
+#: src/ui/shortcuts.ui:42
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Välj föregående fil i sidopanel"
+
+#: src/ui/shortcuts.ui:49
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "Välj nästa fil i sidopanel"
+
+#: src/ui/shortcuts.ui:56
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "Markera alla filer i sidopanelen"
+
+#: src/ui/shortcuts.ui:63
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "Ta bort markerade filer från sidopanelen"
+
+#: src/ui/shortcuts.ui:64
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "Stänger fönstret om inga filer finns."
+
+#: src/ui/shortcuts.ui:72
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "Annat"
+
+#: src/ui/shortcuts.ui:76
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Tangentbordsgenvägar"
