@@ -4,6 +4,7 @@
 from ..backends.file import BASIC_TAGS, EXTRA_TAGS
 
 from gi.repository import Adw, Pango, GObject
+import re
 
 THEMES = {
     "light": {
@@ -114,67 +115,54 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
     def update_syntax_highlighting(self, full_text=None):
         """Helper function that returns tag positions."""
         attrs = Pango.AttrList()
-
         error = False
-        tags = []
 
-        def add_bracket_color(position):
-            color = THEMES[self.theme]["bracket_color"]
-            color_attr = attr_foreground_new(color, position, position + 1)
-            attrs.insert(color_attr)
-
-        def add_tag_color(tag_number, start, end):
-            color = THEMES[self.theme]["placeholder_colors"][
-                tag_number % len(THEMES[self.theme]["placeholder_colors"])
-            ]
-            color_attr = attr_foreground_new(color, start, end)
-            attrs.insert(color_attr)
-
-        pos = 0
-        current_tag = None
-        n_tags = 0
-
-        present_tags = []
-
+        # Pango attributes (used for syntax highlighting) use offsets calculated
+        # in bytes, not Python characters, so we encode the pattern and filename
+        # to UTF-8 so that the returned group positions match the byte count.
         if full_text is None:
             full_text = self.get_text()
+        full_text = full_text.encode('utf-8')
 
-        for char in full_text:
-            if char == '{':
-                if current_tag:
-                    error = True
-                    break
-                current_tag = (pos, None, False)
-                add_bracket_color(pos)
+        n = 0
+        present_tags = set()
+        for match in re.finditer(r'{.*?}'.encode('utf-8'), full_text):
+            try:
+                tag_name = match.group(0)[1:-1].decode('utf-8')
+            except (IndexError, UnicodeDecodeError):
+                error = True
+                continue
 
-            elif char == '}':
-                try:
-                    current_tag = (current_tag[0], pos, True)
-                except TypeError:  # current_tag is None
-                    error = True
-                    break
+            if '{' in tag_name or '}' in tag_name:
+                error = True
+                continue
 
-                tag_name = full_text[current_tag[0] + 1:current_tag[1]]
-                if tag_name in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate') and \
-                        (self.allow_duplicates or tag_name not in present_tags):
-                    add_tag_color(n_tags, current_tag[0] + 1, current_tag[1])
-                    present_tags.append(tag_name)
-                add_bracket_color(pos)
+            if tag_name == '' or tag_name in present_tags:
+                continue
 
-                n_tags += 1
-                tags.append(current_tag)
-                current_tag = None
+            if tag_name not in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+                continue
 
-            pos += 1
+            present_tags.add(tag_name)
 
-        if current_tag:
-            n_tags += 1
-            tags.append(
-                (current_tag[0], pos, False)
-            )
+            # Add bracket colors
+            for position in (match.span(0)[0], match.span(0)[1]-1):
+                color_attr = attr_foreground_new(
+                    THEMES[self.theme]["bracket_color"],
+                    position, position + 1
+                )
+                attrs.insert(color_attr)
+
+            # Add tag color
+            color = THEMES[self.theme]["placeholder_colors"][
+                n % len(THEMES[self.theme]["placeholder_colors"])
+            ]
+            color_attr = attr_foreground_new(color, match.span(0)[0]+1, match.span(0)[1]-1)
+            attrs.insert(color_attr)
+
+            n += 1
 
         self.props.error = error
-        assert self.props.error == error
 
         self.widget.set_attributes(attrs)
 

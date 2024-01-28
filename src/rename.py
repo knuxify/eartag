@@ -19,65 +19,91 @@ import re
 def tag_is_int(file, tag):
     return tag in file.int_properties + file.float_properties + ('length', 'bitrate')
 
+def get_formatted_tag(file: "EartagFile", tag: str) -> str:
+    """
+    Returns the value of the tag formatted according to placeholder preview rules.
+    """
+    parsed_value = ''
+
+    if tag in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+        value = file.get_property(tag)
+        if not value:
+            if tag == 'title':
+                parsed_value = _("Untitled")
+            elif tag_is_int(file, tag):
+                if tag.endswith('tracknumber') or tag.endswith('discnumber'):
+                    parsed_value = "00"
+                else:
+                    parsed_value = "0"
+            else:
+                parsed_value = _("Unknown {tag_name}").format(tag_name=TAG_NAMES[tag])
+
+        else:
+            if tag_is_int(file, tag):
+                if not value or value < 0:
+                    value = 0
+                if tag == 'length':
+                    parsed_value = get_readable_length(int(value))
+                elif tag.endswith('tracknumber') or tag.endswith('discnumber'):
+                    parsed_value = str(value).zfill(2)
+                else:
+                    parsed_value = str(value)
+            else:
+                parsed_value = str(value)
+                # Other characters are cleaned by cleanup_filename; these are
+                # potential file path separators we need to filter out first,
+                # otherwise they'll get treated as folders (valid as far as
+                # renaming and moving to a folder is concerned).
+                for char in ('/', '\'', ':'):
+                    parsed_value = parsed_value.replace(char, '_')
+
+    return parsed_value
+
 def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bool = False) -> dict:
     """
     Takes a placeholder string and a file and returns a string filled with the
     placeholders.
     """
-    # Step 1. Split placeholder string into static strings and placeholders.
-    placeholder_split = [x for x in re.split('({.*?})', placeholder) if x]
+    # Pango attributes (used for syntax highlighting) use offsets calculated
+    # in bytes, not Python characters, so we encode the placeholder to UTF-8
+    # so that the returned group positions match the byte count.
+    placeholder = placeholder.encode('utf-8')
 
-    out = ""
-    _positions = []
-    i = 0
-    for element in placeholder_split:
-        if element.startswith('{') and element.endswith('}'):
-            tag = element[1:-1]
-            if tag in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
-                value = file.get_property(tag)
-                if not value:
-                    if tag == 'title':
-                        parsed_value = _("Untitled")
-                    elif tag_is_int(file, tag):
-                        if tag.endswith('tracknumber') or tag.endswith('discnumber'):
-                            parsed_value = "00"
-                        else:
-                            parsed_value = "0"
-                    else:
-                        parsed_value = _("Unknown {tag_name}").format(tag_name=TAG_NAMES[tag])
+    n = 0
+    offset = 0
+    out = placeholder
+    present_tags = set()
+    positions = []
+    for match in re.finditer(r'{.*?}'.encode('utf-8'), placeholder):
+        try:
+            tag_name = match.group(0)[1:-1].decode('utf-8')
+        except (IndexError, UnicodeDecodeError):
+            error = True
+            continue
 
-                else:
-                    if tag_is_int(file, tag):
-                        if not value or value < 0:
-                            value = 0
-                        if tag == 'length':
-                            parsed_value = get_readable_length(int(value))
-                        elif tag.endswith('tracknumber') or tag.endswith('discnumber'):
-                            parsed_value = str(value).zfill(2)
-                        else:
-                            parsed_value = str(value)
-                    else:
-                        parsed_value = str(value)
-                        # Other characters are cleaned by cleanup_filename; these are
-                        # potential file path separators we need to filter out first,
-                        # otherwise they'll get treated as folders (valid as far as
-                        # renaming and moving to a folder is concerned).
-                        for char in ('/', '\'', ':'):
-                            parsed_value = parsed_value.replace(char, '_')
+        if '{' in tag_name or '}' in tag_name:
+            error = True
+            continue
 
-                out += parsed_value
-                _positions.append((i, i + len(parsed_value)))
-                i += len(parsed_value)
+        if tag_name == '' or tag_name in present_tags:
+            continue
 
-            else:
-                out += element
-                i += len(element)
-        else:
-            out += element
-            i += len(element)
+        if tag_name not in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+            continue
+
+        present_tags.add(tag_name)
+
+        formatted_value = get_formatted_tag(file, tag_name).encode('utf-8')
+        out = out.replace(('{' + tag_name + '}').encode('utf-8'), formatted_value, 1)
+
+        positions.append((match.span(0)[0] + offset, match.span(0)[0] + offset + len(formatted_value)))
+        offset += len(formatted_value) - len(('{' + tag_name + '}').encode('utf-8'))
+        n += 1
+
+    out = out.decode('utf-8')
 
     if positions:
-        return out, _positions
+        return out, positions
     return out
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rename.ui')

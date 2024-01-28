@@ -40,6 +40,12 @@ def guess_tags_from_filename(filename: str, placeholder: str, positions: bool = 
         pattern += re.escape(element)
     pattern += "$"
 
+    # Pango attributes (used for syntax highlighting) use offsets calculated
+    # in bytes, not Python characters, so we encode the pattern and filename
+    # to UTF-8 so that the returned group positions match the byte count.
+    pattern = pattern.encode('utf-8')
+    filename = filename.encode('utf-8')
+
     match = re.match(pattern, filename)
 
     if not match:
@@ -52,13 +58,13 @@ def guess_tags_from_filename(filename: str, placeholder: str, positions: bool = 
             if not tag_matched:
                 continue
             span = match.span(tag)
-            out[tag] = (tag_matched, span)
+            out[tag] = (tag_matched.decode('utf-8'), span)
     else:
         for tag in tags:
             tag_matched = match.group(tag)
             if not tag_matched:
                 continue
-            out[tag] = tag_matched
+            out[tag] = tag_matched.decode('utf-8')
 
     return out
 
