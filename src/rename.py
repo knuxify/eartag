@@ -64,6 +64,11 @@ def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bo
     Takes a placeholder string and a file and returns a string filled with the
     placeholders.
     """
+    if placeholder == "":
+        if positions:
+            return "", []
+        return ""
+
     # Pango attributes (used for syntax highlighting) use offsets calculated
     # in bytes, not Python characters, so we encode the placeholder to UTF-8
     # so that the returned group positions match the byte count.
@@ -73,7 +78,7 @@ def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bo
     offset = 0
     out = placeholder
     present_tags = set()
-    positions = []
+    _positions = []
     for match in re.finditer(r'{.*?}'.encode('utf-8'), placeholder):
         try:
             tag_name = match.group(0)[1:-1].decode('utf-8')
@@ -96,14 +101,14 @@ def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bo
         formatted_value = get_formatted_tag(file, tag_name).encode('utf-8')
         out = out.replace(('{' + tag_name + '}').encode('utf-8'), formatted_value, 1)
 
-        positions.append((match.span(0)[0] + offset, match.span(0)[0] + offset + len(formatted_value)))
+        _positions.append((match.span(0)[0] + offset, match.span(0)[0] + offset + len(formatted_value)))
         offset += len(formatted_value) - len(('{' + tag_name + '}').encode('utf-8'))
         n += 1
 
     out = out.decode('utf-8')
 
     if positions:
-        return out, positions
+        return out, _positions
     return out
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rename.ui')
