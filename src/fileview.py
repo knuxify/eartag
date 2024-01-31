@@ -792,12 +792,6 @@ class EartagFilenameRow(Adw.EntryRow):
 
     error = GObject.Property(type=bool, default=False)
 
-    guess_presets = [
-        '{artist} - {title}'
-        '{tracknumber} {title}'
-        '{tracknumber} {artist} - {title}'
-    ]
-
     def __init__(self):
         super().__init__()
         self._files = []
