@@ -3,7 +3,7 @@
 
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 from .config import config
-from .utils import get_readable_length
+from .utils import get_readable_length, file_is_sandboxed
 from .utils.misc import filename_valid
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .utils.tagsyntaxhighlight import (
@@ -116,6 +116,8 @@ class EartagRenameDialog(Adw.Window):
     rename_progress = Gtk.Template.Child()
     error_banner = Gtk.Template.Child()
 
+    sandbox_warning_banner = Gtk.Template.Child()
+
     filename_entry = Gtk.Template.Child()
     preview_entry = Gtk.Template.Child()
 
@@ -132,6 +134,13 @@ class EartagRenameDialog(Adw.Window):
         super().__init__(modal=True, transient_for=window)
         self.file_manager = window.file_manager
         self._folder = None
+        self._has_sandboxed_files = False
+
+        self.files = self.file_manager.selected_files_list.copy()
+        for file in self.files:
+            if file_is_sandboxed(file.path):
+                self._has_sandboxed_files = True
+                break
 
         self.syntax_highlight = EartagPlaceholderSyntaxHighlighter(
             self.filename_entry, "entry", allow_duplicates=True
@@ -152,11 +161,13 @@ class EartagRenameDialog(Adw.Window):
         )
         self.file_manager.rename_task.connect('task-done', self.on_done)
 
-        self.files = self.file_manager.selected_files_list.copy()
         config.bind('rename-placeholder',
             self.filename_entry, 'text',
             Gio.SettingsBindFlags.DEFAULT
         )
+
+        if self._has_sandboxed_files and not self.props.folder:
+            self.sandbox_warning_banner.props.revealed = True
 
         self.connect('notify::folder', self.validate_placeholder)
         self.connect('notify::validation-passed', self.update_rename_button_sensitivity)
@@ -184,7 +195,9 @@ class EartagRenameDialog(Adw.Window):
         else:
             self.filename_entry.add_css_class('error')
 
-        self.rename_button.set_sensitive(self.props.validation_passed)
+        has_sandboxed = self._has_sandboxed_files and not self.props.folder
+
+        self.rename_button.set_sensitive(self.props.validation_passed and not has_sandboxed)
 
     @Gtk.Template.Callback()
     def add_placeholder_from_selector(self, selector, tag, *args):
@@ -208,6 +221,9 @@ class EartagRenameDialog(Adw.Window):
             config['rename-base-folder'] = ""
         elif not value.startswith('/run/user/'):
             config['rename-base-folder'] = value
+
+        self.sandbox_warning_banner.props.revealed = \
+            self._has_sandboxed_files and not value
 
     @Gtk.Template.Callback()
     def show_folder_selector(self, *args):
@@ -296,3 +312,9 @@ class EartagRenameDialog(Adw.Window):
         else:
             self.files = None
             self.close()
+
+    @Gtk.Template.Callback()
+    def on_sandbox_warning_learn_more(self, *args):
+        Gio.AppInfo.launch_default_for_uri(
+            "https://gitlab.gnome.org/World/eartag/-/wikis/How-to-fix-renaming-files-not-working-under-Flatpak"  # noqa: E501
+        )

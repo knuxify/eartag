@@ -52,7 +52,7 @@
               </object>
             </child>
 
-            <child>
+            <property name="content">
               <object class="AdwToastOverlay" id="toast_overlay">
                 <child>
                   <object class="GtkOverlay">
@@ -66,103 +66,124 @@
                     </child>
 
                     <child>
-                      <object class="AdwClamp">
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+
                         <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <property name="valign">center</property>
-                            <property name="vexpand">true</property>
-                            <property name="spacing">12</property>
-                            <property name="margin-start">12</property>
-                            <property name="margin-end">12</property>
-                            <property name="margin-top">12</property>
-                            <property name="margin-bottom">24</property>
+                          <object class="AdwBanner" id="sandbox_warning_banner">
+                            <property name="title" translatable="yes">Ear Tag needs additional permissions to rename files in-place.</property>
+                            <property name="button-label" translatable="yes">Learn More</property>
+                            <signal name="button-clicked" handler="on_sandbox_warning_learn_more"/>
+                            <style>
+                              <class name="warning"/>
+                            </style>
+                          </object>
+                        </child>
 
+                        <child>
+                          <object class="AdwBanner" id="error_banner">
+                            <property name="title" translatable="yes">Failed to rename files. Check the logs for more information.</property>
+                            <style>
+                              <class name="error"/>
+                            </style>
+                          </object>
+                        </child>
+
+                        <child>
+                          <object class="GtkScrolledWindow">
                             <child>
-                              <object class="AdwBanner" id="error_banner">
-                                <property name="title" translatable="yes">Failed to rename files. Check the logs for more information.</property>
-                                <style>
-                                  <class name="boxed-list"/>
-                                </style>
-                              </object>
-                            </child>
-
-                            <child>
-                              <object class="GtkListBox">
-                                <property name="hexpand">true</property>
-                                <property name="valign">start</property>
-                                <property name="selection-mode">none</property>
-                                <style>
-                                  <class name="boxed-list"/>
-                                </style>
-
+                              <object class="AdwClamp">
                                 <child>
-                                  <object class="AdwEntryRow" id="preview_entry">
-                                    <property name="title" translatable="yes">Preview</property>
-                                    <property name="editable">false</property>
-                                    <property name="can-focus">false</property>
-                                    <property name="focusable">false</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="valign">center</property>
+                                    <property name="vexpand">true</property>
+                                    <property name="spacing">12</property>
+                                    <property name="margin-start">12</property>
+                                    <property name="margin-end">12</property>
+                                    <property name="margin-top">12</property>
+                                    <property name="margin-bottom">24</property>
 
-                            <child>
-                              <object class="AdwPreferencesGroup">
-                                <child>
-                                  <object class="AdwEntryRow" id="filename_entry">
-                                    <property name="title" translatable="yes">Filename pattern</property>
-                                    <signal name="changed" handler="update_preview"/>
-                                    <signal name="entry-activated" handler="do_rename"/>
+                                    <child>
+                                      <object class="GtkListBox">
+                                        <property name="hexpand">true</property>
+                                        <property name="valign">start</property>
+                                        <property name="selection-mode">none</property>
+                                        <style>
+                                          <class name="boxed-list"/>
+                                        </style>
 
-                                    <child type="suffix">
-                                      <object class="EartagTagSelectorButton" id="tag_selector">
-                                        <property name="icon-name">list-add-symbolic</property>
-                                        <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
-                                        <signal name="tag-selected" handler="add_placeholder_from_selector"/>
+                                        <child>
+                                          <object class="AdwEntryRow" id="preview_entry">
+                                            <property name="title" translatable="yes">Preview</property>
+                                            <property name="editable">false</property>
+                                            <property name="can-focus">false</property>
+                                            <property name="focusable">false</property>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="AdwPreferencesGroup">
+                                        <child>
+                                          <object class="AdwEntryRow" id="filename_entry">
+                                            <property name="title" translatable="yes">Filename pattern</property>
+                                            <signal name="changed" handler="update_preview"/>
+                                            <signal name="entry-activated" handler="do_rename"/>
+
+                                            <child type="suffix">
+                                              <object class="EartagTagSelectorButton" id="tag_selector">
+                                                <property name="icon-name">list-add-symbolic</property>
+                                                <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
+                                                <signal name="tag-selected" handler="add_placeholder_from_selector"/>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+
+                                        <child>
+                                          <object class="AdwActionRow" id="folder_selector_row">
+                                            <property name="title" translatable="yes">Move to folder</property>
+
+                                            <child type="suffix">
+                                              <object class="GtkButton" id="folder_selector_button">
+                                                <property name="icon-name">folder-open-symbolic</property>
+                                                <property name="tooltip-text" translatable="yes">Select a folder…</property>
+                                                <property name="valign">center</property>
+                                                <signal name="clicked" handler="show_folder_selector"/>
+                                                <style><class name="flat"/></style>
+                                              </object>
+                                            </child>
+
+                                            <child type="suffix">
+                                              <object class="GtkButton" id="folder_remove_button">
+                                                <property name="icon-name">edit-delete-symbolic</property>
+                                                <property name="tooltip-text" translatable="yes">Unselect folder</property>
+                                                <property name="valign">center</property>
+                                                <property name="sensitive">false</property>
+                                                <signal name="clicked" handler="remove_folder"/>
+                                                <style><class name="flat"/></style>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child>
+                                      </object>
+                                    </child>
+
+                                    <child>
+                                      <object class="GtkLabel">
+                                        <property name="wrap">true</property>
+                                        <property name="use-markup">true</property>
+                                        <property name="justify">center</property>
+                                        <property name="label" translatable="yes">For a list of available placeholders, see the &lt;a href="https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags"&gt;list of available tags&lt;/a&gt;.</property>
+                                        <style>
+                                          <class name="dim-label"/>
+                                        </style>
                                       </object>
                                     </child>
                                   </object>
                                 </child>
-
-                                <child>
-                                  <object class="AdwActionRow" id="folder_selector_row">
-                                    <property name="title" translatable="yes">Move to folder</property>
-
-                                    <child type="suffix">
-                                      <object class="GtkButton" id="folder_selector_button">
-                                        <property name="icon-name">folder-open-symbolic</property>
-                                        <property name="tooltip-text" translatable="yes">Select a folder…</property>
-                                        <property name="valign">center</property>
-                                        <signal name="clicked" handler="show_folder_selector"/>
-                                        <style><class name="flat"/></style>
-                                      </object>
-                                    </child>
-
-                                    <child type="suffix">
-                                      <object class="GtkButton" id="folder_remove_button">
-                                        <property name="icon-name">edit-delete-symbolic</property>
-                                        <property name="tooltip-text" translatable="yes">Unselect folder</property>
-                                        <property name="valign">center</property>
-                                        <property name="sensitive">false</property>
-                                        <signal name="clicked" handler="remove_folder"/>
-                                        <style><class name="flat"/></style>
-                                      </object>
-                                    </child>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-
-                            <child>
-                              <object class="GtkLabel">
-                                <property name="wrap">true</property>
-                                <property name="use-markup">true</property>
-                                <property name="justify">center</property>
-                                <property name="label" translatable="yes">For a list of available placeholders, see the &lt;a href="https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags"&gt;list of available tags&lt;/a&gt;.</property>
-                                <style>
-                                  <class name="dim-label"/>
-                                </style>
                               </object>
                             </child>
                           </object>
@@ -172,7 +193,7 @@
                   </object>
                 </child>
               </object>
-            </child>
+            </property>
           </object>
         </child>
       </object>

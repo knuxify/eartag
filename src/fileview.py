@@ -2,7 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES, CoverType
-from .utils import get_readable_length
+from .utils import get_readable_length, file_is_sandboxed
 from .utils.validation import is_valid_image_file
 from .utils.widgets import EartagAlbumCoverImage, EartagPopoverButton  # noqa: F401
 from .tagentry import ( # noqa: F401
@@ -20,7 +20,6 @@ import shutil
 import os.path
 import tempfile
 import time
-import re
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):
@@ -821,7 +820,7 @@ class EartagFilenameRow(Adw.EntryRow):
         elif len(self._files) == 1:
             path = self._files[0].path
             self.props.title = self._title
-            self.set_editable(not re.match('^/run/user/[0-9].*/doc', path))
+            self.set_editable(not file_is_sandboxed(path))
             self.props.show_apply_button = True
             self.set_text(os.path.basename(path))
         else:

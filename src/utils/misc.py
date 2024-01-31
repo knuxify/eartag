@@ -187,3 +187,12 @@ def filename_valid(filename: str, allow_path: bool = False, full_path: bool = Fa
             return False
 
     return True
+
+def file_is_sandboxed(path: str) -> bool:
+    """
+    Takes a path and returns whether or not the file is sandboxed.
+
+    This is a best-guess based on the path, and has only really been tested
+    to work under Flatpak.
+    """
+    return bool(re.match('^/run/user/[0-9].*/doc', path))
