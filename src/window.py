@@ -172,6 +172,7 @@ class EartagWindow(Adw.ApplicationWindow):
         if selected_files_count <= 0:
             try:
                 self.get_application().rename_action.set_enabled(False)
+                self.get_application().guess_action.set_enabled(False)
                 self.get_application().identify_action.set_enabled(False)
             except AttributeError:
                 return
@@ -201,6 +202,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
         try:
             self.get_application().rename_action.set_enabled(True)
+            self.get_application().guess_action.set_enabled(True)
             self.get_application().identify_action.set_enabled(True)
         except AttributeError:
             pass

@@ -339,6 +339,10 @@
         <attribute name="action">app.rename</attribute>
       </item>
       <item>
+        <attribute name="label" translatable="yes">_Guess Tags from Filename</attribute>
+        <attribute name="action">app.guess</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">_Identify Selected Files</attribute>
         <attribute name="action">app.identify</attribute>
       </item>

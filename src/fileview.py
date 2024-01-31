@@ -848,10 +848,6 @@ class EartagFilenameRow(Adw.EntryRow):
         if '/' in text:
             GObject.signal_stop_emission_by_name(entry, 'insert-text')
 
-    @Gtk.Template.Callback()
-    def open_guess_dialog(self, *args):
-        self.get_native().show_guess_dialog()
-
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/fileview.ui')
 class EartagFileView(Gtk.Stack):
     __gtype_name__ = 'EartagFileView'

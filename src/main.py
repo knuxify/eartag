@@ -66,6 +66,10 @@ class Application(Adw.Application):
             self.create_action('rename', self.on_rename_action, None)
         self.rename_action.set_enabled(False)
 
+        self.guess_action = \
+            self.create_action('guess', self.on_guess_action, None)
+        self.guess_action.set_enabled(False)
+
         self.identify_action = \
             self.create_action('identify', self.on_identify_action, None)
         self.identify_action.set_enabled(False)
@@ -95,6 +99,9 @@ class Application(Adw.Application):
 
     def on_settings_action(self, widget, _):
         self.get_active_window().show_settings_dialog()
+
+    def on_guess_action(self, widget, _):
+        self.get_active_window().show_guess_dialog()
 
     def on_about_action(self, widget, _):
         version_str = self.version
