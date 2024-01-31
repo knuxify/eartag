@@ -176,6 +176,7 @@ class EartagRenameDialog(Adw.Window):
 
         self.connect('notify::folder', self.validate_placeholder)
         self.connect('notify::validation-passed', self.update_rename_button_sensitivity)
+        self.validate_placeholder()
         self.update_rename_button_sensitivity()
 
     def validate_placeholder(self, *args):
