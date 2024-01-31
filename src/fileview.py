@@ -20,6 +20,7 @@ import shutil
 import os.path
 import tempfile
 import time
+import re
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):
@@ -818,10 +819,11 @@ class EartagFilenameRow(Adw.EntryRow):
             self.props.show_apply_button = False
             self.set_text('')
         elif len(self._files) == 1:
+            path = self._files[0].path
             self.props.title = self._title
-            self.set_editable(True)
+            self.set_editable(not re.match('^/run/user/[0-9].*/doc', path))
             self.props.show_apply_button = True
-            self.set_text(os.path.basename(self._files[0].path))
+            self.set_text(os.path.basename(path))
         else:
             self.props.title = self._title
             self.set_editable(False)
