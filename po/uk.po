@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-01-26 04:46+0000\n"
-"PO-Revision-Date: 2024-01-26 15:13+0200\n"
+"POT-Creation-Date: 2024-01-31 14:34+0000\n"
+"PO-Revision-Date: 2024-02-01 09:55+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -20,13 +20,13 @@ msgstr ""
 "X-Generator: Lokalize 23.04.1\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:105 data/app.drey.EarTag.desktop.in:3
+#: src/main.py:112 data/app.drey.EarTag.desktop.in:3
 #: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.ui:297
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:115 src/main.py:117
+#: src/main.py:122 src/main.py:124
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2024"
 
@@ -51,11 +51,11 @@ msgid ""
 "tagging programs, Ear Tag does not require the user to set up a music "
 "library folder. It can:"
 msgstr ""
-"«Ear Tag» є простим редактором міток звукових файлів. Програму призначено в"
-" основному для виконання простих редагувань або пакетного редагування"
-" доріжок в альбомах чи збірках. На відміну від інших програм для роботи з"
-" мітками, «Ear Tag» не потребує від користувача налаштовування теки музичної"
-" бібліотеки. Програма може:"
+"«Ear Tag» є простим редактором міток звукових файлів. Програму призначено в "
+"основному для виконання простих редагувань або пакетного редагування доріжок "
+"в альбомах чи збірках. На відміну від інших програм для роботи з мітками, "
+"«Ear Tag» не потребує від користувача налаштовування теки музичної "
+"бібліотеки. Програма може:"
 
 #: data/app.drey.EarTag.metainfo.xml.in:77
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
@@ -77,41 +77,41 @@ msgstr "Ідентифікувати файли за допомогою AcoustID
 msgid ""
 "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
-"Доступ до мережі буде використано лише для пункту «Ідентифікувати позначені"
-" файли»."
+"Доступ до мережі буде використано лише для пункту «Ідентифікувати позначені "
+"файли»."
 
 #: src/window.py:109
 msgid "All supported audio files"
 msgstr "Усі підтримувані звукові файли"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:198 src/fileview.py:761
+#: src/window.py:199 src/fileview.py:761
 msgid "(Multiple files selected)"
 msgstr "(Позначено декілька файлів)"
 
-#: src/window.py:276 src/ui/nofile.ui:39
+#: src/window.py:278 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "Відкрити теку"
 
-#: src/window.py:279 src/ui/nofile.ui:26
+#: src/window.py:281 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Відкрити файл"
 
-#: src/window.py:341
+#: src/window.py:343
 msgid "No supported files found in opened folder"
 msgstr "У відкритій теці не знайдено підтримуваних файлів"
 
-#: src/window.py:348
+#: src/window.py:350
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
-"Для деяких з відкритих файлів виявлено некоректні значення; не вдалося"
-" зберегти"
+"Для деяких з відкритих файлів виявлено некоректні значення; не вдалося "
+"зберегти"
 
-#: src/window.py:469
+#: src/window.py:471
 msgid "No files selected"
 msgstr "Не вибрано жодного файла"
 
-#: src/window.py:473
+#: src/window.py:475
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -187,26 +187,30 @@ msgid "_Rename Selected Files"
 msgstr "П_ерейменувати позначені файли"
 
 #: src/ui/window.ui:342
+msgid "_Guess Tags from Filename"
+msgstr "В_гадувати мітки з назви файла"
+
+#: src/ui/window.ui:346
 msgid "_Identify Selected Files"
 msgstr "_Ідентифікувати позначені файли"
 
-#: src/ui/window.ui:348
+#: src/ui/window.ui:352
 msgid "_Keyboard Shortcuts"
 msgstr "_Клавіатурні скорочення"
 
-#: src/ui/window.ui:352
+#: src/ui/window.ui:356
 msgid "_Settings"
 msgstr "П_араметри"
 
-#: src/ui/window.ui:356
+#: src/ui/window.ui:360
 msgid "_About Ear Tag"
 msgstr "_Про «Ear Tag»"
 
 #: src/ui/nofile.ui:13
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr ""
-"Відкрийте або перетягніть сюди якісь файли звукових даних, щоб редагувати"
-" метадані у них."
+"Відкрийте або перетягніть сюди якісь файли звукових даних, щоб редагувати "
+"метадані у них."
 
 #: src/filemanager.py:117
 msgid "Failed to save file"
@@ -234,8 +238,8 @@ msgstr "Відкритий файл призначено лише для чит�
 #: src/filemanager.py:237
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
-"Деякі з відкритих файлів призначено лише для читання; зміни неможливо"
-" зберегти"
+"Деякі з відкритих файлів призначено лише для читання; зміни неможливо "
+"зберегти"
 
 #: src/backends/file.py:45
 msgid "Length"
@@ -432,7 +436,7 @@ msgstr[1] "{n} канали"
 msgstr[2] "{n} каналів"
 msgstr[3] "{n} канал"
 
-#: src/fileview.py:822
+#: src/fileview.py:816
 msgid "(multiple files)"
 msgstr "(декілька доріжок)"
 
@@ -538,8 +542,8 @@ msgstr "Не вдалося завантажити файл"
 #: src/ui/dialogs/loadingfailure.ui:6
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
-"Не вдалося завантажити файл {f}. Ознайомтеся із журналом, щоб дізнатися"
-" більше."
+"Не вдалося завантажити файл {f}. Ознайомтеся із журналом, щоб дізнатися "
+"більше."
 
 #: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
 msgid "_OK"
@@ -552,23 +556,23 @@ msgstr "Не вдалося перейменувати файл"
 #: src/ui/dialogs/renamefailure.ui:6
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
-"Не вдалося перейменувати файл {f}. Ознайомтеся із журналом, щоб дізнатися"
-" більше."
+"Не вдалося перейменувати файл {f}. Ознайомтеся із журналом, щоб дізнатися "
+"більше."
 
-#: src/rename.py:40
+#: src/rename.py:32
 msgid "Untitled"
 msgstr "Без заголовка"
 
-#: src/rename.py:47
+#: src/rename.py:39
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "Невідомий {tag_name}"
 
-#: src/rename.py:204
+#: src/rename.py:246
 msgid "Selected folder does not exist"
 msgstr "Вибраної теки не існує"
 
-#: src/rename.py:211
+#: src/rename.py:253
 msgid "Selected folder is read-only"
 msgstr "Вибрану теку призначено лише для читання"
 
@@ -584,45 +588,55 @@ msgstr "Скасувати"
 msgid "Rename"
 msgstr "Перейменувати"
 
-#: src/ui/rename.ui:83
+#: src/ui/rename.ui:74
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr ""
+"«Ear Tag» потрібні додаткові права доступу для перейменування файлів на"
+" місці."
+
+#: src/ui/rename.ui:75
+msgid "Learn More"
+msgstr "Дізнатися більше"
+
+#: src/ui/rename.ui:85
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
-"Не вдалося перейменувати файли. Ознайомтеся із журналом, щоб дізнатися"
-" більше."
+"Не вдалося перейменувати файли. Ознайомтеся із журналом, щоб дізнатися "
+"більше."
 
-#: src/ui/rename.ui:101
+#: src/ui/rename.ui:118
 msgid "Preview"
 msgstr "Перегляд"
 
-#: src/ui/rename.ui:114
+#: src/ui/rename.ui:131
 msgid "Filename pattern"
 msgstr "Шаблон назви файлів"
 
-#: src/ui/rename.ui:121
+#: src/ui/rename.ui:138
 msgid "Insert tag placeholder"
 msgstr "Вставити замінник мітки"
 
-#: src/ui/rename.ui:130
+#: src/ui/rename.ui:147
 msgid "Move to folder"
 msgstr "Пересунути до теки"
 
-#: src/ui/rename.ui:135
+#: src/ui/rename.ui:152
 msgid "Select a folder…"
 msgstr "Вибрати теку…"
 
-#: src/ui/rename.ui:145
+#: src/ui/rename.ui:162
 msgid "Unselect folder"
 msgstr "Скасувати вибір теки"
 
-#: src/ui/rename.ui:162
+#: src/ui/rename.ui:179
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
 "available tags</a>."
 msgstr ""
-"Щоб ознайомитися із доступними замінниками, вивчіть <a"
-" href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README"
-".md#available-tags\">список доступних міток</a>."
+"Щоб ознайомитися із доступними замінниками, вивчіть <a href=\"https://gitlab."
+"gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">список доступних міток</a>."
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
@@ -657,9 +671,9 @@ msgid ""
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
 "href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
-"Дані щодо доріжки взято з <a href=\"https://musicbrainz.org\">Musicbrainz</a"
-">. Файли без метаданих буде ідентифіковано за допомогою служби <a"
-" href=\"https://acoustid.org\">AcoustID</a>."
+"Дані щодо доріжки взято з <a href=\"https://musicbrainz.org\">Musicbrainz</"
+"a>. Файли без метаданих буде ідентифіковано за допомогою служби <a "
+"href=\"https://acoustid.org\">AcoustID</a>."
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
@@ -678,8 +692,8 @@ msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
 msgstr ""
-"Мінімальний рівень упевненості, який потрібен для врахування результату"
-" пошуку MusicBrainz"
+"Мінімальний рівень упевненості, який потрібен для врахування результату "
+"пошуку MusicBrainz"
 
 #: src/ui/settings.ui:31
 msgid "AcoustID confidence treshold"
@@ -690,8 +704,8 @@ msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
 msgstr ""
-"Мінімальний рівень упевненості, який потрібен для врахування результату"
-" пошуку AcoustID"
+"Мінімальний рівень упевненості, який потрібен для врахування результату "
+"пошуку AcoustID"
 
 #: src/ui/settings.ui:48
 msgid "Downloaded cover art size"
