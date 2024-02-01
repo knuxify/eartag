@@ -355,6 +355,12 @@ class EartagFile(GObject.Object):
             self.notify('is_modified')
         self.emit('modified', None)
 
+    def undo_all(self):
+        """Undo all changes."""
+        for tag in self.modified_tags:
+            self.set_property(tag, self.original_values[tag])
+        self.mark_as_unmodified()
+
     @GObject.Property(type=bool, default=False)
     def is_modified(self):
         """Returns whether the values have been modified or not."""

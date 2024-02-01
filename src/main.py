@@ -74,6 +74,10 @@ class Application(Adw.Application):
             self.create_action('identify', self.on_identify_action, None)
         self.identify_action.set_enabled(False)
 
+        self.undo_all_action = \
+            self.create_action('undo_all', self.on_undo_all_action, None)
+        self.undo_all_action.set_enabled(False)
+
         self.create_action('quit', self.on_quit_action, '<Ctrl>q')
 
         win.present()
@@ -102,6 +106,9 @@ class Application(Adw.Application):
 
     def on_guess_action(self, widget, _):
         self.get_active_window().show_guess_dialog()
+
+    def on_undo_all_action(self, widget, _):
+        self.get_active_window().undo_all()
 
     def on_about_action(self, widget, _):
         version_str = self.version

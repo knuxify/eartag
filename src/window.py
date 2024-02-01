@@ -96,6 +96,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def __init__(self, application, paths=None, devel=False):
         super().__init__(application=application, title='Ear Tag')
+        self._undo_all_data = {}
 
         if devel:
             self.add_css_class('devel')
@@ -112,6 +113,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_view.set_file_manager(self.file_manager)
         self.file_manager.connect('notify::is-modified', self.toggle_save_button)
         self.file_manager.connect('notify::has-error', self.toggle_save_button)
+        self.file_manager.connect('notify::is-selected-modified', self.toggle_undo_all_action)
         self.file_manager.files.connect('items-changed', self.toggle_fileview)
         self.file_manager.connect('refresh-needed', self.update_state)
         self.file_manager.connect('selection-changed', self.update_state)
@@ -167,13 +169,15 @@ class EartagWindow(Adw.ApplicationWindow):
             self.container_stack.set_visible_child(self.split_view)
 
     def update_state(self, *args):
+        app = self.get_application()
+
         # Set up the active view (hide fileview if there are no selected files)
         selected_files_count = self.file_manager.get_n_selected()
         if selected_files_count <= 0:
             try:
-                self.get_application().rename_action.set_enabled(False)
-                self.get_application().guess_action.set_enabled(False)
-                self.get_application().identify_action.set_enabled(False)
+                for action in (app.rename_action, app.guess_action, app.identify_action,
+                               app.undo_all_action):
+                    action.set_enabled(False)
             except AttributeError:
                 return
             self.set_title('Ear Tag')
@@ -200,10 +204,16 @@ class EartagWindow(Adw.ApplicationWindow):
             self.set_title('{f} — Ear Tag'.format(f=_multiple_files))
             self.window_title.set_subtitle(_multiple_files)
 
+        is_modified = False
+        for file in files:
+            if file.is_modified:
+                is_modified = True
+                break
+
         try:
-            self.get_application().rename_action.set_enabled(True)
-            self.get_application().guess_action.set_enabled(True)
-            self.get_application().identify_action.set_enabled(True)
+            app.undo_all_action.set_enabled(is_modified)
+            for action in (app.rename_action, app.guess_action, app.identify_action):
+                action.set_enabled(True)
         except AttributeError:
             pass
 
@@ -391,6 +401,8 @@ class EartagWindow(Adw.ApplicationWindow):
         for file in self.file_manager.files:
             file.on_remove()
 
+        self.clear_redo_data()
+
         self.file_view.on_close()
 
     def show_rename_dialog(self, *args):
@@ -516,6 +528,62 @@ class EartagWindow(Adw.ApplicationWindow):
             vadjust.set_value(new_value)
         else:
             vadjust.set_value(vadjust.get_upper())
+
+    # Undo all option
+
+    def undo_all(self, *args):
+        """Undo all changes and add the option to re-do them."""
+        self._undo_all_data = {}
+        n_files = 0
+        for file in self.file_manager.selected_files_list:
+            if not file.is_modified:
+                continue
+            n_files += 1
+
+            self._undo_all_data[file.id] = {}
+            for tag in file.modified_tags:
+                self._undo_all_data[file.id][tag] = file.get_property(tag)
+
+            file.undo_all()
+
+        if n_files == 0:
+            return
+
+        toast = Adw.Toast.new(
+            gettext.ngettext(
+                "Undid changes in 1 file", "Undid changes in {n} files", n_files).\
+                format(n=n_files)
+        )
+        toast.props.button_label = _("Redo")
+        toast.connect('button-clicked', self.redo_all)
+        toast.connect('dismissed', self.clear_redo_data)
+        self.toast_overlay.add_toast(toast)
+
+    def redo_all(self, *args):
+        """Reverses undo_all."""
+        n_files = 0
+        for file in self.file_manager.files:
+            if file.id in self._undo_all_data:
+                n_files += 1
+                for tag, value in self._undo_all_data[file.id].items():
+                    file.set_property(tag, value)
+        toast = Adw.Toast.new(
+            gettext.ngettext(
+                "Redid changes in 1 file", "Redid changes in {n} files", n_files).\
+                format(n=n_files)
+        )
+        self.toast_overlay.add_toast(toast)
+
+    def clear_redo_data(self, *args):
+        """Clears the redo data for the "undo all" option."""
+        self._undo_all_data = {}
+
+    def toggle_undo_all_action(self, *args):
+        app = self.get_application()
+        try:
+            app.undo_all_action.set_enabled(self.file_manager.props.is_selected_modified)
+        except AttributeError:
+            pass
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/settings.ui')
 class EartagSettingsWindow(Adw.PreferencesWindow):

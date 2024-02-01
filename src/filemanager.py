@@ -85,6 +85,7 @@ class EartagFileManager(GObject.Object):
         self._modified_files = []
         self._error_files = []
         self._connections = {}
+        self._selected_file_ids = []
         self._selection_removed = False
 
         # Create background task runners
@@ -514,6 +515,7 @@ class EartagFileManager(GObject.Object):
 
     def do_selection_changed(self, *args):
         if args:
+            self._selected_file_ids = [file.id for file in self.selected_files]
             self.emit('selection-changed')
 
     def all_selected(self):
@@ -529,7 +531,7 @@ class EartagFileManager(GObject.Object):
 
     @GObject.Signal
     def selection_changed(self):
-        pass
+        self.notify('is-selected-modified')
 
     @GObject.Signal
     def selection_override(self):
@@ -594,6 +596,14 @@ class EartagFileManager(GObject.Object):
     @is_modified.setter
     def is_modified(self, value):
         self._is_modified = value
+        self.notify('is-selected-modified')
+
+    @GObject.Property(type=bool, default=False)
+    def is_selected_modified(self) -> bool:
+        for file_id in self._modified_files:
+            if file_id in self._selected_file_ids:
+                return True
+        return False
 
     @GObject.Property(type=bool, default=False)
     def has_error(self):

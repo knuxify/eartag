@@ -349,6 +349,12 @@
     </section>
     <section>
       <item>
+        <attribute name="label" translatable="yes">_Undo Changes in Selected Files</attribute>
+        <attribute name="action">app.undo_all</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
         <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
         <attribute name="action">win.show-help-overlay</attribute>
       </item>
