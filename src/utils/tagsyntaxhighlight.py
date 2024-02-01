@@ -101,6 +101,8 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
         style_manager.connect('notify::high-contrast', self.update_theme)
         self.update_theme(style_manager)
 
+        self.update_syntax_highlighting()
+
     def get_text(self):
         if self.widget_type == "entry":
             return self.widget.get_text()
