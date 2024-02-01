@@ -18,7 +18,6 @@ import magic
 import mimetypes
 import shutil
 import os.path
-import tempfile
 import time
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui')
@@ -278,29 +277,10 @@ class EartagAlbumCoverButton(Adw.Bin):
         elif self.cover_type == CoverType.BACK:
             cover_path_prop = 'back_cover_path'
 
-        tmpdir = tempfile.gettempdir()
         for file in self.files:
             cover_path = file.get_property(cover_path_prop)
-            our_tmpdir = None
-            if self.cover_tempdir:
-                our_tmpdir = self.cover_tempdir.name
             cover_is_modified = cover_path_prop in file.modified_tags
-            if cover_path.startswith(tmpdir) and \
-                    (not our_tmpdir or not cover_path.startswith(our_tmpdir)):
-                # As delete_cover closes the cover tempfile, we need to copy it
-                # somewhere temporarily so that it doesn't get removed if the user
-                # decides to undo the operation.
-                if not self.cover_tempdir:
-                    self.cover_tempdir = tempfile.TemporaryDirectory()
-                target_path = os.path.join(
-                    self.cover_tempdir.name,
-                    str(time.time()) + '-' + os.path.basename(cover_path)
-                )
-                shutil.copyfile(cover_path, target_path)
-                self._remove_undo_buffer[file.id] = (cover_path, target_path, cover_is_modified)
-            else:
-                self._remove_undo_buffer[file.id] = (cover_path, cover_path, cover_is_modified)
-
+            self._remove_undo_buffer[file.id] = (cover_path, cover_path, cover_is_modified)
             file.delete_cover(self.cover_type)
 
         self.cover_image.on_cover_change()

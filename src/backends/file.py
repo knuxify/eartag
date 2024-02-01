@@ -454,16 +454,12 @@ class EartagFile(GObject.Object):
 
     def _cleanup_front_cover(self):
         """Common cleanup steps after delete_front_cover."""
-        if self.front_cover_tempfile:
-            self.front_cover_tempfile.close()
         self._front_cover_path = ''
         self.mark_as_modified('front_cover_path')
         self.notify('front-cover-path')
 
     def _cleanup_back_cover(self):
         """Common cleanup steps after delete_back_cover."""
-        if self.back_cover_tempfile:
-            self.back_cover_tempfile.close()
         self._back_cover_path = ''
         self.mark_as_modified('back_cover_path')
         self.notify('back-cover-path')
