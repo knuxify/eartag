@@ -202,7 +202,7 @@ class EartagGuessDialog(Adw.Window):
             # so we don't limit it)
             if filename_suffixless.endswith(']'):
                 try:
-                    filename_stripped = re.match(r'(.*) [(.*)]', filename_suffixless).group(1)
+                    filename_stripped = re.match(r'(.*?) \[(.*)\]', filename_suffixless).group(1)
                     assert filename_stripped
                 except:
                     pass
