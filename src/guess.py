@@ -135,8 +135,6 @@ class EartagGuessDialog(Adw.Window):
             self.connect('notify::strip-common-suffixes', self.update_preview)
         )
 
-        self.tag_selector.refresh_tag_filter
-
         config.bind('guess-pattern',
             self.pattern_entry, 'text',
             Gio.SettingsBindFlags.DEFAULT
@@ -151,9 +149,13 @@ class EartagGuessDialog(Adw.Window):
         # Custom filter for tag selector to filter out already present tags
         self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_selector.tag_model)
         self.tag_selector.set_filter(self.tag_filter)
-        self.pattern_entry.connect('changed', self.tag_selector.refresh_tag_filter)
 
+        self.pattern_entry.connect('changed', self.tag_selector.refresh_tag_filter)
         self.pattern_entry.connect('changed', self.check_for_errors)
+
+        self.check_for_errors()
+        self.update_preview()
+        self.tag_selector.refresh_tag_filter()
 
     @property
     def present_tags(self) -> list:
