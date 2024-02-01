@@ -1,7 +1,0 @@
-#!/bin/sh
-if [ ! -e src ]; then echo "Not in eartag source directory"; exit 1; fi
-if [ -e output ]; then rm -r output; fi
-if [ -e /tmp/eartag ]; then rm -r /tmp/eartag; fi
-meson --prefix=/tmp/eartag . output
-meson compile -C output
-meson compile app.drey.EarTag-update-po -C output
