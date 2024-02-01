@@ -17,6 +17,7 @@ src/backends/file.py
 # Fileview
 src/fileview.py
 src/ui/fileview.ui
+src/ui/filenamerow.ui
 src/ui/albumcoverbutton.ui
 src/tagentry.py
 
@@ -34,6 +35,10 @@ src/ui/dialogs/renamefailure.ui
 # Rename dialog
 src/rename.py
 src/ui/rename.ui
+
+# Guess dialog
+src/guess.py
+src/ui/guess.ui
 
 # Identify dialog
 src/identify.py
