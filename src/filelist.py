@@ -148,8 +148,8 @@ class EartagFileList(Gtk.ListView):
         # See on_activate function for explaination
         self.connect("activate", self.on_activate)
         self.key_controller = Gtk.EventControllerKey.new()
-        self.key_controller.connect('key-pressed', self.shift_key_pressed)
-        self.key_controller.connect('key-released', self.shift_key_released)
+        self.key_controller.connect('key-pressed', self.key_pressed)
+        self.key_controller.connect('key-released', self.key_released)
         self.add_controller(self.key_controller)
         self.shift_state = False
 
@@ -202,6 +202,13 @@ class EartagFileList(Gtk.ListView):
         if self.file_manager.get_n_selected() >= 2 and not self.props.selection_mode:
             self.props.selection_mode = True
 
+    def remove_selected(self):
+        """Removes selected files."""
+        if not self.file_manager:
+            return
+        old_selected = self.file_manager.selected_files_list.copy()
+        self.file_manager.remove_files(old_selected)
+
     def on_activate(self, list, index):
         if self.props.selection_mode:
             # Gtk.MultiSelection doesn't have a way to force every click
@@ -227,18 +234,15 @@ class EartagFileList(Gtk.ListView):
             )
             self.action_set_enabled('list.select-item', False)
 
-    def shift_key_pressed(self, controller, keyval, keycode, state):
-        """
-        Checks if the Shift key is pressed and sets the internal shift state
-        variable accordingly.
-        """
+    def key_pressed(self, controller, keyval, keycode, state):
+        # Used for selection mode, see on_activate.
         if state & Gdk.ModifierType.SHIFT_MASK or keyval in (Gdk.KEY_Shift_L, Gdk.KEY_Shift_R):
             self.shift_state = True
 
-    def shift_key_released(self, controller, keyval, keycode, state):
-        """
-        Checks if the Shift key is released and sets the internal shift state
-        variable accordingly.
-        """
+        if keyval == Gdk.KEY_Delete:
+            self.remove_selected()
+
+    def key_released(self, controller, keyval, keycode, state):
+        # Used for selection mode, see on_activate.
         if state & Gdk.ModifierType.SHIFT_MASK or keyval in (Gdk.KEY_Shift_L, Gdk.KEY_Shift_R):
             self.shift_state = False

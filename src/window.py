@@ -476,9 +476,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def remove_selected(self, *args):
-        if self.file_manager:
-            old_selected = self.file_manager.selected_files_list.copy()
-            self.file_manager.remove_files(old_selected)
+        self.sidebar_file_list.remove_selected()
 
     def refresh_actionbar_button_state(self, *args):
         if not self.file_manager.files or not self.selection_mode:
