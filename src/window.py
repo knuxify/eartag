@@ -2,6 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .config import config, DLCoverSize
+from .utils.bgtask import EartagBackgroundTask
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
 from .musicbrainz import MusicBrainzRelease
@@ -143,6 +144,15 @@ class EartagWindow(Adw.ApplicationWindow):
         self.add_controller(self.drop_target)
 
         self.toggle_fileview()
+
+        # Tasks for undo/redo all option
+        self._undo_all_count = 0
+        self.undo_all_task = EartagBackgroundTask(self._undo_all)
+        self.undo_all_task.connect('task-done', self._undo_all_done)
+
+        self._redo_all_count = 0
+        self.redo_all_task = EartagBackgroundTask(self._redo_all)
+        self.redo_all_task.connect('task-done', self._redo_all_done)
 
         # Sidebar setup
         self.sidebar_file_list.set_file_manager(self.file_manager)
@@ -532,13 +542,18 @@ class EartagWindow(Adw.ApplicationWindow):
     # Undo all option
 
     def undo_all(self, *args):
+        self.set_sensitive(False)
+        self.undo_all_task.reset()
+        self.undo_all_task.run()
+
+    def _undo_all(self, *args):
         """Undo all changes and add the option to re-do them."""
         self._undo_all_data = {}
-        n_files = 0
+        self._undo_all_count = 0
         for file in self.file_manager.selected_files_list:
             if not file.is_modified:
                 continue
-            n_files += 1
+            self._undo_all_count += 1
 
             self._undo_all_data[file.id] = {}
             for tag in file.modified_tags:
@@ -546,13 +561,19 @@ class EartagWindow(Adw.ApplicationWindow):
 
             file.undo_all()
 
-        if n_files == 0:
+        if self._undo_all_count == 0:
+            self.undo_all_task.emit_task_done()
             return
+
+        self.undo_all_task.emit_task_done()
+
+    def _undo_all_done(self, *args):
+        self.set_sensitive(True)
 
         toast = Adw.Toast.new(
             gettext.ngettext(
-                "Undid changes in 1 file", "Undid changes in {n} files", n_files).\
-                format(n=n_files)
+                "Undid changes in 1 file", "Undid changes in {n} files", self._undo_all_count).\
+                format(n=self._undo_all_count)
         )
         toast.props.button_label = _("Redo")
         toast.connect('button-clicked', self.redo_all)
@@ -560,17 +581,27 @@ class EartagWindow(Adw.ApplicationWindow):
         self.toast_overlay.add_toast(toast)
 
     def redo_all(self, *args):
+        self.set_sensitive(False)
+        self.redo_all_task.reset()
+        self.redo_all_task.run()
+
+    def _redo_all(self, *args):
         """Reverses undo_all."""
-        n_files = 0
+        self._redo_all_count = 0
         for file in self.file_manager.files:
             if file.id in self._undo_all_data:
-                n_files += 1
+                self._redo_all_count += 1
                 for tag, value in self._undo_all_data[file.id].items():
                     file.set_property(tag, value)
+
+        self.redo_all_task.emit_task_done()
+
+    def _redo_all_done(self, *args):
+        self.set_sensitive(True)
         toast = Adw.Toast.new(
             gettext.ngettext(
-                "Redid changes in 1 file", "Redid changes in {n} files", n_files).\
-                format(n=n_files)
+                "Redid changes in 1 file", "Redid changes in {n} files", self._redo_all_count).\
+                format(n=self._redo_all_count)
         )
         self.toast_overlay.add_toast(toast)
 
