@@ -272,6 +272,10 @@ class EartagRenameDialog(Adw.Window):
 
     @Gtk.Template.Callback()
     def do_rename(self, *args):
+        has_sandboxed = self._has_sandboxed_files and not self.props.folder
+        if not (self.props.validation_passed and not has_sandboxed):
+            return
+
         self.error_banner.set_revealed(False)
         format = self.filename_entry.get_text()
         names = []
