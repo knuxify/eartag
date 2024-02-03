@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-01-25 20:57+0000\n"
-"PO-Revision-Date: 2024-01-26 19:57+0100\n"
+"POT-Creation-Date: 2024-02-01 14:19+0000\n"
+"PO-Revision-Date: 2024-02-01 17:04+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -19,13 +19,13 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:105 data/app.drey.EarTag.desktop.in:3
+#: src/main.py:119 data/app.drey.EarTag.desktop.in:3
 #: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.ui:297
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:115 src/main.py:117
+#: src/main.py:129 src/main.py:131
 msgid "translator-credits"
 msgstr "Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024"
 
@@ -77,42 +77,60 @@ msgstr ""
 "Netzwerkzugriff wird nur verwendet für die »Ausgewählte Dateien "
 "identifizieren«-Option."
 
-#: src/window.py:109
+#: src/window.py:110
 msgid "All supported audio files"
 msgstr "Alle unterstützten Audio-Dateien"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:198 src/fileview.py:761
+#: src/window.py:203 src/fileview.py:741
 msgid "(Multiple files selected)"
 msgstr "(Mehrere Dateien ausgewählt)"
 
-#: src/window.py:276 src/ui/nofile.ui:39
+#: src/window.py:288 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "Ordner öffnen"
 
-#: src/window.py:279 src/ui/nofile.ui:26
+#: src/window.py:291 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/window.py:341
+#: src/window.py:353
 msgid "No supported files found in opened folder"
 msgstr "Keine unterstützten Dateien im geöffneten Ordner gefunden"
 
-#: src/window.py:348
+#: src/window.py:360
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Einige der geöffneten Dateien haben ungültige Werte; Speichern nicht möglich"
 
-#: src/window.py:469
+#: src/window.py:483
 msgid "No files selected"
 msgstr "Keine Dateien ausgewählt"
 
-#: src/window.py:473
+#: src/window.py:487
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "1 Datei ausgewählt"
 msgstr[1] "{n} Dateien ausgewählt"
+
+#: src/window.py:554
+#, python-brace-format
+msgid "Undid changes in 1 file"
+msgid_plural "Undid changes in {n} files"
+msgstr[0] "Änderungen in 1 Datei wurden rückgängig gemacht"
+msgstr[1] "Änderungen in {n} Dateien wurden rückgängig gemacht"
+
+#: src/window.py:557
+msgid "Redo"
+msgstr "Wiederholen"
+
+#: src/window.py:572
+#, python-brace-format
+msgid "Redid changes in 1 file"
+msgid_plural "Redid changes in {n} files"
+msgstr[0] "Änderungen in 1 Datei wurden wiederhergestellt"
+msgstr[1] "Änderungen in {n} Datei wurden wiederhergestellt"
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:65
@@ -182,18 +200,26 @@ msgid "_Rename Selected Files"
 msgstr "Ausgewählte Dateien _umbenennen"
 
 #: src/ui/window.ui:342
+msgid "_Guess Tags from Filename"
+msgstr "Tags aus dem Dateinamen e_rraten"
+
+#: src/ui/window.ui:346
 msgid "_Identify Selected Files"
 msgstr "Ausgewählte Dateien _identifizieren"
 
-#: src/ui/window.ui:348
+#: src/ui/window.ui:352
+msgid "_Undo Changes in Selected Files"
+msgstr "Änderungen in ausgewählten Dateien _rückgängig machen"
+
+#: src/ui/window.ui:358
 msgid "_Keyboard Shortcuts"
 msgstr "Tasten_kürzel"
 
-#: src/ui/window.ui:352
+#: src/ui/window.ui:362
 msgid "_Settings"
 msgstr "_Einstellungen"
 
-#: src/ui/window.ui:356
+#: src/ui/window.ui:366
 msgid "_About Ear Tag"
 msgstr "_Info zu Ear Tag"
 
@@ -203,11 +229,11 @@ msgstr ""
 "Öffnen Sie einige Audio-Dateien oder ziehen Sie sie hierher, um deren "
 "Metadaten zu bearbeiten."
 
-#: src/filemanager.py:117
+#: src/filemanager.py:118
 msgid "Failed to save file"
 msgstr "Datei konnte nicht gespeichert werden"
 
-#: src/filemanager.py:118
+#: src/filemanager.py:119
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr ""
@@ -215,21 +241,21 @@ msgstr ""
 "Protokolldateien für weitere Informationen."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:121
+#: src/filemanager.py:122
 msgid "OK"
 msgstr "OK"
 
-#: src/filemanager.py:127
+#: src/filemanager.py:128
 msgid "Saved changes to files"
 msgstr "Änderungen wurden in Dateien gespeichert"
 
-#: src/filemanager.py:235
+#: src/filemanager.py:236
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr ""
 "Die geöffnete Datei ist schreibgeschützt; Änderungen können nicht "
 "gespeichert werden"
 
-#: src/filemanager.py:237
+#: src/filemanager.py:238
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Einige der geöffneten Dateien sind schreibgeschützt; Änderungen können nicht "
@@ -391,42 +417,42 @@ msgstr "Aufnahme-Kennung von MusicBrainz"
 msgid "MusicBrainz Release Group ID"
 msgstr "Veröffentlichungsgruppen-Kennung von MusicBrainz"
 
-#: src/fileview.py:190
+#: src/fileview.py:189
 msgid "Select Album Cover Image"
 msgstr "Bild für Albumbild auswählen"
 
-#: src/fileview.py:241
+#: src/fileview.py:240
 msgid "Save Album Cover To…"
 msgstr "Albumbild speichern nach …"
 
-#: src/fileview.py:269
+#: src/fileview.py:268
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Albumbild nach {path} gespeichert"
 
-#: src/fileview.py:309
+#: src/fileview.py:289
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "Albumbild aus Datei entfernt"
 msgstr[1] "Albumbilder aus {n} Dateien entfernt"
 
-#: src/fileview.py:313
+#: src/fileview.py:293
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: src/fileview.py:436
+#: src/fileview.py:416
 msgid "More tags"
 msgstr "Weitere Tags"
 
-#: src/fileview.py:775
+#: src/fileview.py:755
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "1 Kanal"
 msgstr[1] "{n} Kanäle"
 
-#: src/fileview.py:822
+#: src/fileview.py:796
 msgid "(multiple files)"
 msgstr "(Mehrere Dateien)"
 
@@ -451,6 +477,10 @@ msgstr "Vorherige Datei"
 #: src/ui/fileview.ui:90
 msgid "Next file"
 msgstr "Nächste Datei"
+
+#: src/ui/filenamerow.ui:5
+msgid "Filename"
+msgstr "Dateiname"
 
 #: src/ui/albumcoverbutton.ui:90
 msgid "_Choose Image…"
@@ -552,20 +582,20 @@ msgstr ""
 "Datei {f} konnte nicht umbenannt werden. Schauen Sie in die Protokolldateien "
 "für weitere Informationen."
 
-#: src/rename.py:40
+#: src/rename.py:32
 msgid "Untitled"
 msgstr "Unbenannt"
 
-#: src/rename.py:47
+#: src/rename.py:39
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "{tag_name} unbekannt"
 
-#: src/rename.py:204
+#: src/rename.py:252
 msgid "Selected folder does not exist"
 msgstr "Ausgewählter Ordner existiert nicht"
 
-#: src/rename.py:211
+#: src/rename.py:259
 msgid "Selected folder is read-only"
 msgstr "Ausgewählter Ordner ist schreibgeschützt"
 
@@ -573,45 +603,55 @@ msgstr "Ausgewählter Ordner ist schreibgeschützt"
 msgid "Rename Selected Files"
 msgstr "Ausgewählte Dateien umbenennen"
 
-#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
+#: src/ui/rename.ui:25 src/ui/guess.ui:24 src/ui/identify/identify.ui:26
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/ui/rename.ui:44
+#: src/ui/rename.ui:45
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: src/ui/rename.ui:83
+#: src/ui/rename.ui:75
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr ""
+"Ear Tag benötigt zusätzliche Berechtigungen, um Dateien an Ort und Stelle "
+"umzubenennen."
+
+#: src/ui/rename.ui:76
+msgid "Learn More"
+msgstr "Mehr erfahren"
+
+#: src/ui/rename.ui:86
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
 "Dateien konnten nicht umbenannt werden. Schauen Sie in die Protokolldateien "
 "für weitere Informationen."
 
-#: src/ui/rename.ui:101
+#: src/ui/rename.ui:119 src/ui/guess.ui:90
 msgid "Preview"
 msgstr "Vorschau"
 
-#: src/ui/rename.ui:114
+#: src/ui/rename.ui:132 src/ui/guess.ui:110
 msgid "Filename pattern"
-msgstr "Dateiname-Muster"
+msgstr "Dateinamen-Muster"
 
-#: src/ui/rename.ui:121
+#: src/ui/rename.ui:139 src/ui/guess.ui:116
 msgid "Insert tag placeholder"
 msgstr "Tag-Platzhalter einfügen"
 
-#: src/ui/rename.ui:130
+#: src/ui/rename.ui:148
 msgid "Move to folder"
 msgstr "In Ordner verschieben"
 
-#: src/ui/rename.ui:135
+#: src/ui/rename.ui:153
 msgid "Select a folder…"
 msgstr "Einen Ordner auswählen …"
 
-#: src/ui/rename.ui:145
+#: src/ui/rename.ui:163
 msgid "Unselect folder"
 msgstr "Ordnerauswahl aufheben"
 
-#: src/ui/rename.ui:162
+#: src/ui/rename.ui:180
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
@@ -620,6 +660,32 @@ msgstr ""
 "Für eine Liste der verfügbaren Platzhalter besuchen Sie bitte <a "
 "href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README."
 "md#available-tags\">list of available tags</a>."
+
+#: src/guess.py:306
+#, python-brace-format
+msgid "Guessed tags for {guessed} out of {total} tracks"
+msgstr "Tags wurden erraten für {guessed} von {total} Titeln"
+
+#: src/ui/guess.ui:5
+msgid "Guess Tags from Filename"
+msgstr "Tags aus dem Dateinamen erraten"
+
+#: src/ui/guess.ui:44 src/ui/identify/identify.ui:59
+msgid "Apply"
+msgstr "Anwenden"
+
+#: src/ui/guess.ui:125
+msgid "Ignore common suffixes"
+msgstr "Häufigen Endungen ignorieren"
+
+#: src/ui/guess.ui:126
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded "
+"files. Disable this option if it interferes with your filenames."
+msgstr ""
+"Ignoriert automatisch die Kennungs-Endungen, die häufig in Dateinamen von "
+"heruntergeladenen Dateien vorkommen. Deaktivieren Sie diese Option, wenn sie "
+"sich störend auf Ihre Dateinamen auswirkt."
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
@@ -643,10 +709,6 @@ msgstr "Ausgewählte Dateien identifizieren"
 #: src/ui/identify/identify.ui:48
 msgid "Identify"
 msgstr "Identifizieren"
-
-#: src/ui/identify/identify.ui:59
-msgid "Apply"
-msgstr "Anwenden"
 
 #: src/ui/identify/identify.ui:92
 msgid ""
