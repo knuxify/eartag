@@ -255,6 +255,8 @@ class EartagGuessDialog(Adw.Window):
 
     @Gtk.Template.Callback()
     def do_apply(self, *args):
+        if self.apply_button.props.sensitive is False:
+            return
         if len(self.files) < 1:
             self.close()
         self.content_clamp.set_sensitive(False)

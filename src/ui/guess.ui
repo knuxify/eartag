@@ -108,7 +108,7 @@
                             <child>
                               <object class="AdwEntryRow" id="pattern_entry">
                                 <property name="title" translatable="yes">Filename pattern</property>
-                                <!--<signal name="changed" handler="update_preview"/>-->
+                                <signal name="entry-activated" handler="do_apply"/>
 
                                 <child type="suffix">
                                   <object class="EartagTagSelectorButton" id="tag_selector">
