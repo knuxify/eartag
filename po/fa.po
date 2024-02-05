@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-01-25 20:57+0000\n"
-"PO-Revision-Date: 2024-01-26 08:15+0330\n"
+"POT-Creation-Date: 2024-02-01 13:37+0000\n"
+"PO-Revision-Date: 2024-02-06 02:17+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -21,14 +21,14 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:105 data/app.drey.EarTag.desktop.in:3
+#: src/main.py:119 data/app.drey.EarTag.desktop.in:3
 #: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.ui:297
 msgid "Ear Tag"
-msgstr "ایرتگ"
+msgstr "پلاک گوش"
 
 # Keep it
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:115 src/main.py:117
+#: src/main.py:129 src/main.py:131
 msgid "translator-credits"
 msgstr ""
 "دانیال بهزادی <dani.behzi@ubuntu.com>\n"
@@ -49,13 +49,15 @@ msgstr "آهنگ؛صدا؛برچسب؛برچسب زدن؛برچسب‌زننده
 
 #: data/app.drey.EarTag.metainfo.xml.in:75
 msgid ""
-"Ear Tag is a simple audio file tag editor. It is primarily geared towards making "
-"quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, "
-"Ear Tag does not require the user to set up a music library folder. It can:"
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging "
+"programs, Ear Tag does not require the user to set up a music library folder. "
+"It can:"
 msgstr ""
-"ایِرتگ ویرایشگر سادهٔ برچسب‌های پرونده‌های صوتی است. او در ابتدا برای ایجاد ویرایش یا "
-"تغییر عمدهٔ قطعه‌ها در آلبوم‌ها و صداهای ضبط شده است. برخلاف برنامه‌های دیگر برچسب‌زنی، "
-"ایِرتگ به اینکه کاربر کتابخانهٔ شاخهٔ موسیقی را مشخص کند، نیاز ندارد. او میتواند:"
+"پلاک گوش ویرایشگری ساده برای برچسب‌های پرونده‌های صوتیست. هدف اصلی این کاره "
+"ویرایش‌های سریع یا تغییر دسته‌ای قطعه‌ها در آلبوم‌هاست. خلاف دیگر برنامه‌های "
+"برچسب‌زنی، پلاک گوش نیازی به برپایی شاخهٔ کتابخانهٔ آهنگ‌ها به دست کاربر ندارد. "
+"ویژگی‌ها:"
 
 #: data/app.drey.EarTag.metainfo.xml.in:77
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
@@ -63,7 +65,7 @@ msgstr "ویرایش برچسب‌های پرونده‌های MP3، WAV، M4A،
 
 #: data/app.drey.EarTag.metainfo.xml.in:78
 msgid "Modify metadata of multiple files at once"
-msgstr "تغییر فراداده‌های چند پرونده با هم"
+msgstr "تغییر یک‌بارهٔ فرادادهٔ چندین پرونده"
 
 #: data/app.drey.EarTag.metainfo.xml.in:79
 msgid "Rename files using information from present tags"
@@ -71,47 +73,65 @@ msgstr "تغییر نام پرونده‌ها با استفاده از اطّل�
 
 #: data/app.drey.EarTag.metainfo.xml.in:80
 msgid "Identify files using AcoustID"
-msgstr "شناسی پرونده‌ها با AcoustID"
+msgstr "شناسایی پرونده‌ها با AcoustID"
 
 #: data/app.drey.EarTag.metainfo.xml.in:82
 msgid "Network access is only used for the \"Identify selected files\" option."
-msgstr "دسترسی شبکه فقط برای گزینهٔ «شناخت پرونده‌های گزینش‌شده» استفاده شده است."
+msgstr "دسترسی شبکه تنها برای گزینهٔ «تشخیص پرونده‌های گزیده» است."
 
-#: src/window.py:109
+#: src/window.py:110
 msgid "All supported audio files"
 msgstr "تمام پرونده‌های صوتی پشتیبانی شده"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:198 src/fileview.py:761
+#: src/window.py:203 src/fileview.py:761
 msgid "(Multiple files selected)"
 msgstr "(چندین پرونده گزیده)"
 
-#: src/window.py:276 src/ui/nofile.ui:39
+#: src/window.py:288 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "گشودن شاخه"
 
-#: src/window.py:279 src/ui/nofile.ui:26
+#: src/window.py:291 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "گشودن پرونده"
 
-#: src/window.py:341
+#: src/window.py:353
 msgid "No supported files found in opened folder"
 msgstr "هیچ پروندهٔ پشتیبانی شده‌ای در شاخهٔ گشوده پیدا نشد"
 
-#: src/window.py:348
+#: src/window.py:360
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "برخی پرونده‌های گشوده مقدارهایی نامعتبر دارند. نمی‌توان ذخیره کرد"
 
-#: src/window.py:469
+#: src/window.py:483
 msgid "No files selected"
 msgstr "پرونده‌ای گزیده نشده"
 
-#: src/window.py:473
+#: src/window.py:487
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "۱ پرونده گزیده شده"
 msgstr[1] "{n} پرونده گزیده شده"
+
+#: src/window.py:554
+#, python-brace-format
+msgid "Undid changes in 1 file"
+msgid_plural "Undid changes in {n} files"
+msgstr[0] "تغییرات ۱ پرونده برگردانده شد"
+msgstr[1] "تغییرات {n} پرونده برگردانده شد"
+
+#: src/window.py:557
+msgid "Redo"
+msgstr "انجام دوباره"
+
+#: src/window.py:572
+#, python-brace-format
+msgid "Redid changes in 1 file"
+msgid_plural "Redid changes in {n} files"
+msgstr[0] "تغییرات ۱ پرونده دوباره انجام شد"
+msgstr[1] "تغییرات {n} پرونده دوباره انجام شد"
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:65
@@ -140,7 +160,7 @@ msgstr "افزودن پرونده"
 #. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
 #: src/ui/window.ui:171
 msgid "Select multiple files"
-msgstr "گزینش چند پرونده"
+msgstr "گزینش چندین پرونده"
 
 #: src/ui/window.ui:178
 msgid "Search opened files"
@@ -180,48 +200,56 @@ msgid "_Rename Selected Files"
 msgstr "_تغییر نام پرونده‌های گزیده"
 
 #: src/ui/window.ui:342
+msgid "_Guess Tags from Filename"
+msgstr "_حدس برچسب‌ها از نام پرونده"
+
+#: src/ui/window.ui:346
 msgid "_Identify Selected Files"
 msgstr "_شناسایی پرونده‌های گزیده"
 
-#: src/ui/window.ui:348
+#: src/ui/window.ui:352
+msgid "_Undo Changes in Selected Files"
+msgstr "_برگرداندن تغییرات پرونده‌های گزیده"
+
+#: src/ui/window.ui:358
 msgid "_Keyboard Shortcuts"
 msgstr "_میان‌برهای صفحه‌کلید"
 
-#: src/ui/window.ui:352
+#: src/ui/window.ui:362
 msgid "_Settings"
 msgstr "_تنظیمات"
 
-#: src/ui/window.ui:356
+#: src/ui/window.ui:366
 msgid "_About Ear Tag"
-msgstr "_دربارهٔ ایِرتگ"
+msgstr "_دربارهٔ پلاک گوش"
 
 #: src/ui/nofile.ui:13
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "گشودن یا کشیدن پرونده‌های صوتی برای ویرایش فراداده‌هایشان."
 
-#: src/filemanager.py:117
+#: src/filemanager.py:118
 msgid "Failed to save file"
 msgstr "شکست در ذخیرهٔ پرونده"
 
-#: src/filemanager.py:118
+#: src/filemanager.py:119
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr "ناتوانی در ذخیرهٔ پروندهٔ {f}. برای اطلاعات بیشتر، گزارش را بررسی کنید."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:121
+#: src/filemanager.py:122
 msgid "OK"
 msgstr "تأیید"
 
-#: src/filemanager.py:127
+#: src/filemanager.py:128
 msgid "Saved changes to files"
 msgstr "تغییرات در پرونده‌ها ذخیره شدند"
 
-#: src/filemanager.py:235
+#: src/filemanager.py:236
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "پروندهٔ گشوده فقط‌خواندنیست. تغییرات نمی‌توانند ذخیره شوند"
 
-#: src/filemanager.py:237
+#: src/filemanager.py:238
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "برخی پرونده‌های گشوده فقط‌خواندنیند؛ تغییرات نمی‌توانند ذخیره شوند"
 
@@ -416,7 +444,7 @@ msgid_plural "{n} channels"
 msgstr[0] "۱ کانال"
 msgstr[1] "{n} کانال"
 
-#: src/fileview.py:822
+#: src/fileview.py:816
 msgid "(multiple files)"
 msgstr "(چندین پرونده)"
 
@@ -439,6 +467,10 @@ msgstr "پروندهٔ پیشین"
 #: src/ui/fileview.ui:90
 msgid "Next file"
 msgstr "پروندهٔ بعدی"
+
+#: src/ui/filenamerow.ui:5
+msgid "Filename"
+msgstr "نام پرونده"
 
 #: src/ui/albumcoverbutton.ui:90
 msgid "_Choose Image…"
@@ -535,20 +567,20 @@ msgstr "شکست در تغغیر نام پرونده"
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr "نتوانست نام پروندهٔ {f} را تغییر دهد. بررسی گزارش برای اطّلاعات بیش‌تر."
 
-#: src/rename.py:40
+#: src/rename.py:32
 msgid "Untitled"
 msgstr "بی‌عنوان"
 
-#: src/rename.py:47
+#: src/rename.py:39
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "{tag_name} ناشناخته"
 
-#: src/rename.py:204
+#: src/rename.py:252
 msgid "Selected folder does not exist"
 msgstr "شاخهٔ گزیده وجود ندارد"
 
-#: src/rename.py:211
+#: src/rename.py:259
 msgid "Selected folder is read-only"
 msgstr "شاخهٔ گزیده فقط‌خواندنیست"
 
@@ -556,51 +588,84 @@ msgstr "شاخهٔ گزیده فقط‌خواندنیست"
 msgid "Rename Selected Files"
 msgstr "تغییر نام پرونده‌های گزیده"
 
-#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
+#: src/ui/rename.ui:25 src/ui/guess.ui:24 src/ui/identify/identify.ui:26
 msgid "Cancel"
 msgstr "لغو"
 
-#: src/ui/rename.ui:44
+#: src/ui/rename.ui:45
 msgid "Rename"
 msgstr "تغییر نام"
 
-#: src/ui/rename.ui:83
+#: src/ui/rename.ui:75
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr "پلاک گوش برای تغییر نام درجای پرونده‌ها نیاز به اجازه‌های اضافی دارد."
+
+#: src/ui/rename.ui:76
+msgid "Learn More"
+msgstr "بیش‌تر بدانید"
+
+#: src/ui/rename.ui:86
 msgid "Failed to rename files. Check the logs for more information."
 msgstr "شکست در تغغیر نام پرونده‌ها. بررسی گزارش برای اطّلاعات بیش‌تر."
 
-#: src/ui/rename.ui:101
+#: src/ui/rename.ui:119 src/ui/guess.ui:90
 msgid "Preview"
 msgstr "پیش‌نمایش"
 
-#: src/ui/rename.ui:114
+#: src/ui/rename.ui:132 src/ui/guess.ui:110
 msgid "Filename pattern"
 msgstr "الگوی نام پرونده"
 
-#: src/ui/rename.ui:121
+#: src/ui/rename.ui:139 src/ui/guess.ui:116
 msgid "Insert tag placeholder"
 msgstr "درج نگه‌دارندهٔ برچسب"
 
-#: src/ui/rename.ui:130
+#: src/ui/rename.ui:148
 msgid "Move to folder"
 msgstr "جابه‌جایی به شاخه"
 
-#: src/ui/rename.ui:135
+#: src/ui/rename.ui:153
 msgid "Select a folder…"
 msgstr "گزینش شاخه…"
 
-#: src/ui/rename.ui:145
+#: src/ui/rename.ui:163
 msgid "Unselect folder"
 msgstr "ناگزینش شاخه"
 
-#: src/ui/rename.ui:162
+#: src/ui/rename.ui:180
 msgid ""
-"For a list of available placeholders, see the <a href=\"https://gitlab.gnome.org/"
-"World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of available "
-"tags</a>."
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
 msgstr ""
 "برای سیاهه‌ای از نگه‌دارنده‌های موجود <a href=\"https://gitlab.gnome.org/World/"
-"eartag/-/blob/main/src/backends/README.md#available-tags\">سیاههٔ برچسب‌های موجود</a> "
-"را ببینید."
+"eartag/-/blob/main/src/backends/README.md#available-tags\">سیاههٔ برچسب‌های "
+"موجود</a> را ببینید."
+
+#: src/guess.py:306
+#, python-brace-format
+msgid "Guessed tags for {guessed} out of {total} tracks"
+msgstr "برچسب‌های حدس زده برای {guessed} از {total} قطعه"
+
+#: src/ui/guess.ui:5
+msgid "Guess Tags from Filename"
+msgstr "حدس برچسب‌ها از نام پرونده"
+
+#: src/ui/guess.ui:44 src/ui/identify/identify.ui:59
+msgid "Apply"
+msgstr "اعمال"
+
+#: src/ui/guess.ui:125
+msgid "Ignore common suffixes"
+msgstr "چشم‌پوشی از پسوندهای معمول"
+
+#: src/ui/guess.ui:126
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded files. "
+"Disable this option if it interferes with your filenames."
+msgstr ""
+"چشم‌پوشی خودکار از پسوندهای شناسه‌ای که معمولاً در نام پرونده‌های بار گرفته پیدا "
+"می‌شود. اگر این گزینه با نام پرونده‌هایتان تداخل دارد از کار بیندازیدش."
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
@@ -625,19 +690,15 @@ msgstr "شناسایی پرونده‌های گزیده"
 msgid "Identify"
 msgstr "شناسایی"
 
-#: src/ui/identify/identify.ui:59
-msgid "Apply"
-msgstr "اعمال"
-
 #: src/ui/identify/identify.ui:92
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz.org\">Musicbrainz</"
-"a>. Files without metadata are identified using the <a href=\"https://acoustid."
-"org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
 "اطّلاعات قطعه‌ها به دست <a href=\"https://musicbrainz.org\">میوزیک‌برینز</a> فراهم "
-"می‌شود. پرونده‌های بدون فراداده با خدمت <a href=\"https://acoustid.org\">AcoustID</a> "
-"شناسایی می‌شوند."
+"می‌شود. پرونده‌های بدون فراداده با خدمت <a href=\"https://acoustid."
+"org\">AcoustID</a> شناسایی می‌شوند."
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
@@ -663,7 +724,8 @@ msgstr "آستانهٔ اطمینان AcoustID"
 
 #: src/ui/settings.ui:32
 msgid ""
-"Minimum confidence percentage required for an AcoustID lookup result to be evaluated"
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
 msgstr "کمینهٔ درصد اعتماد لازم برای پذیرش نتیجهٔ جست‌وجوی AcoustID"
 
 #: src/ui/settings.ui:48
@@ -754,8 +816,8 @@ msgstr "میان‌برهای صفحه‌کلید"
 #~ "Added support for removing a cover image and setting the back cover image. "
 #~ "Improved the accuracy of the file identification option."
 #~ msgstr ""
-#~ "Kapak görseli kaldırma ve arka kapak görselini ayarlama desteği eklendi. Dosya "
-#~ "tanımlama seçeneğinin doğruluğu iyileştirildi."
+#~ "Kapak görseli kaldırma ve arka kapak görselini ayarlama desteği eklendi. "
+#~ "Dosya tanımlama seçeneğinin doğruluğu iyileştirildi."
 
 #~ msgid ""
 #~ "Fixes issue where covers could not be loaded. From 0.4.0 notes: Added the "
@@ -767,17 +829,17 @@ msgstr "میان‌برهای صفحه‌کلید"
 #~ "tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
 
 #~ msgid ""
-#~ "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files using a "
-#~ "specific pattern, file identification using AcoustID and the option to set a "
-#~ "full release date."
+#~ "Minor bugfix update. From 0.4.0 notes: Added the ability to rename files "
+#~ "using a specific pattern, file identification using AcoustID and the option "
+#~ "to set a full release date."
 #~ msgstr ""
-#~ "Küçük hata düzeltme güncellemesi. 0.4.0 notlarından: Desen kullanarak dosyaları "
-#~ "yeniden adlandırma yeteneği, AcoustID kullanarak dosya tanımlama ve tam yayın "
-#~ "tarihi belirleme seçeneği eklendi."
+#~ "Küçük hata düzeltme güncellemesi. 0.4.0 notlarından: Desen kullanarak "
+#~ "dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak dosya tanımlama "
+#~ "ve tam yayın tarihi belirleme seçeneği eklendi."
 
 #~ msgid ""
-#~ "Added the ability to rename files using a specific pattern, file identification "
-#~ "using AcoustID and the option to set a full release date."
+#~ "Added the ability to rename files using a specific pattern, file "
+#~ "identification using AcoustID and the option to set a full release date."
 #~ msgstr ""
 #~ "Desen kullanarak dosyaları yeniden adlandırma yeteneği, AcoustID kullanarak "
 #~ "dosya tanımlama ve tam yayın tarihi belirleme seçeneği eklendi."
