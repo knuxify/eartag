@@ -195,6 +195,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return 'TDRC' in self.mg_file.tags or 'TDOR' in self.mg_file.tags
         elif tag_name == 'url':
             return bool(self.props.url)
+        elif tag_name == 'comment':
+            return bool(self.props.comment)
         elif tag_name in KEY_TO_FRAME:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             return frame_name in self.mg_file.tags
@@ -218,6 +220,10 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             self.mg_file.tags.delall('WXXX')
             self.mg_file.tags.delall('WXXX:')
             self.mg_file.tags.delall('TXXX:purl')
+        elif tag_name.lower() == 'comment':
+            self.mg_file.tags.delall('COMM::XXX')
+            self.mg_file.tags.delall('COMM::eng')
+            self.mg_file.tags.delall('TXXX:comment')
         elif tag_name.lower() in KEY_TO_FRAME:
             frame_name = KEY_TO_FRAME[tag_name.lower()]
             self.mg_file.tags.delall(frame_name)
