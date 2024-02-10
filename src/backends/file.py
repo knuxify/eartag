@@ -159,8 +159,7 @@ class EartagFile(GObject.Object):
     """
     __gtype_name__ = 'EartagFile'
 
-    handled_properties = ('title', 'artist', 'album', 'albumartist', 'tracknumber',
-        'totaltracknumber', 'genre', 'releasedate', 'comment')
+    handled_properties = BASIC_TAGS
     int_properties = ('tracknumber', 'totaltracknumber', 'discnumber')
     float_properties = ('bpm',)
     supported_extra_tags = []
@@ -215,6 +214,32 @@ class EartagFile(GObject.Object):
         """Deletes the tag from the file. Must be implemented by the backend."""
         raise NotImplementedError
 
+    def delete_all_raw(self):
+        """
+        Completely removes all metadata, including information that Ear Tag cannot
+        read. Implementations must call the regular delete_all function first.
+        This is used by the "clear all tags" option.
+
+        Must be implemented by the backend.
+        """
+        raise NotImplementedError
+
+    def delete_all(self):
+        """Deletes all present tags."""
+        for tag in self.present_tags:
+            self.delete_tag(tag)
+        for cover_type in (CoverType.FRONT, CoverType.BACK):
+            self.delete_cover(cover_type)
+
+    @property
+    def present_tags(self) -> list:
+        """Returns a list of present tags."""
+        present_tags = []
+        for tag in self.handled_properties:
+            if self.has_tag(tag):
+                present_tags.append(tag)
+        return present_tags + self.present_extra_tags
+
     def setup_present_extra_tags(self):
         """
         For performance reasons, each file keeps a list of present extra tags.
@@ -236,7 +261,11 @@ class EartagFile(GObject.Object):
         """
         self.original_values = {}
         for tag in set(tuple(self.handled_properties) + tuple(self.present_extra_tags)):
-            self.original_values[tag] = self.get_property(tag)
+            value = self.get_property(tag)
+            if tag in self.int_properties + self.float_properties and value is None:
+                self.original_values[tag] = 0
+            else:
+                self.original_values[tag] = self.get_property(tag)
         if self._supports_album_covers:
             self.original_values['front_cover_path'] = self.get_property('front_cover_path')
             self.original_values['back_cover_path'] = self.get_property('back_cover_path')
@@ -331,6 +360,22 @@ class EartagFile(GObject.Object):
             for tag, tag_value in modifications.items():
                 self.set_property(tag, tag_value)
 
+    def reload(self, thread_safe: bool = False):
+        """Reloads the file and discards all modifications."""
+        self.load_from_file(self.props.path)
+        if thread_safe:
+            for prop in BASIC_TAGS + tuple(self.supported_extra_tags) + ('front_cover_path', 'back_cover_path'):
+                GLib.idle_add(self.notify, prop)
+            # Sleep a bit to make sure values get applied
+            time.sleep(0.05)
+
+            GLib.idle_add(self.mark_as_unmodified)
+            time.sleep(0.05)
+        else:
+            for prop in BASIC_TAGS + tuple(self.supported_extra_tags) + ('front_cover_path', 'back_cover_path'):
+                self.notify(prop)
+            self.mark_as_unmodified()
+
     def mark_as_modified(self, tag):
         if not self._is_modified:
             self._is_modified = True
@@ -357,8 +402,14 @@ class EartagFile(GObject.Object):
 
     def undo_all(self):
         """Undo all changes."""
-        for tag in self.modified_tags:
+        for tag in self.modified_tags.copy():
             self.set_property(tag, self.original_values[tag])
+        self.mark_as_unmodified()
+
+    def reset_to_original(self):
+        """Resets to original values."""
+        for tag, value in self.original_values.items():
+            self.set_property(tag, value)
         self.mark_as_unmodified()
 
     @GObject.Property(type=bool, default=False)

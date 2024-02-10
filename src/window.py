@@ -4,7 +4,7 @@
 from .config import config, DLCoverSize
 from .utils.bgtask import EartagBackgroundTask
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
-from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog
+from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog, EartagTagDeleteWarningDialog
 from .musicbrainz import MusicBrainzRelease
 from .fileview import EartagFileView # noqa: F401
 from .filemanager import EartagFileManager
@@ -17,6 +17,7 @@ from . import APP_GRESOURCE_PATH, DEVEL
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
 import gettext
+import time
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
@@ -154,6 +155,16 @@ class EartagWindow(Adw.ApplicationWindow):
         self.redo_all_task = EartagBackgroundTask(self._redo_all)
         self.redo_all_task.connect('task-done', self._redo_all_done)
 
+        # Task for delete all tags option
+
+        self._delete_all_tags_count = 0
+        self.delete_all_tags_task = EartagBackgroundTask(self._delete_all_tags)
+        self.delete_all_tags_task.connect('task-done', self._delete_all_tags_done)
+
+        self._undo_delete_all_count = 0
+        self.undo_delete_all_tags_task = EartagBackgroundTask(self._undo_delete_all_tags)
+        self.undo_delete_all_tags_task.connect('task-done', self._undo_delete_all_tags_done)
+
         # Sidebar setup
         self.sidebar_file_list.set_file_manager(self.file_manager)
         self.sidebar_list_stack.set_visible_child(self.sidebar_no_files)
@@ -186,7 +197,7 @@ class EartagWindow(Adw.ApplicationWindow):
         if selected_files_count <= 0:
             try:
                 for action in (app.rename_action, app.guess_action, app.identify_action,
-                               app.undo_all_action):
+                               app.undo_all_action, app.delete_all_tags_action):
                     action.set_enabled(False)
             except AttributeError:
                 return
@@ -222,7 +233,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
         try:
             app.undo_all_action.set_enabled(is_modified)
-            for action in (app.rename_action, app.guess_action, app.identify_action):
+            for action in (app.rename_action, app.guess_action, app.identify_action,
+                           app.delete_all_tags_action):
                 action.set_enabled(True)
         except AttributeError:
             pass
@@ -412,6 +424,7 @@ class EartagWindow(Adw.ApplicationWindow):
             file.on_remove()
 
         self.clear_redo_data()
+        self.clear_delete_all_tags_undo_data()
 
         self.file_view.on_close()
 
@@ -430,6 +443,10 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_guess_dialog(self, *args):
         self.guess_dialog = EartagGuessDialog(self)
         self.guess_dialog.present()
+
+    def show_delete_all_tags_dialog(self, *args):
+        self.delete_all_tags_dialog = EartagTagDeleteWarningDialog(self)
+        self.delete_all_tags_dialog.present()
 
     # Sidebar
 
@@ -557,7 +574,8 @@ class EartagWindow(Adw.ApplicationWindow):
             for tag in file.modified_tags:
                 self._undo_all_data[file.id][tag] = file.get_property(tag)
 
-            file.undo_all()
+            GLib.idle_add(file.undo_all)
+            time.sleep(0.05)
 
         if self._undo_all_count == 0:
             self.undo_all_task.emit_task_done()
@@ -575,7 +593,7 @@ class EartagWindow(Adw.ApplicationWindow):
         )
         toast.props.button_label = _("Redo")
         toast.connect('button-clicked', self.redo_all)
-        toast.connect('dismissed', self.clear_redo_data)
+        # toast.connect('dismissed', self.clear_redo_data)
         self.toast_overlay.add_toast(toast)
 
     def redo_all(self, *args):
@@ -590,7 +608,11 @@ class EartagWindow(Adw.ApplicationWindow):
             if file.id in self._undo_all_data:
                 self._redo_all_count += 1
                 for tag, value in self._undo_all_data[file.id].items():
-                    file.set_property(tag, value)
+                    if tag in file.int_properties + file.float_properties and not value:
+                        GLib.idle_add(file.set_property, tag, 0)
+                    else:
+                        GLib.idle_add(file.set_property, tag, value)
+                time.sleep(0.05)
 
         self.redo_all_task.emit_task_done()
 
@@ -613,6 +635,69 @@ class EartagWindow(Adw.ApplicationWindow):
             app.undo_all_action.set_enabled(self.file_manager.props.is_selected_modified)
         except AttributeError:
             pass
+
+    # "Delete all tags" option
+    def do_delete_all_tags(self, *args):
+        self.set_sensitive(False)
+        self.delete_all_tags_task.reset()
+        self.delete_all_tags_task.run()
+
+    def _delete_all_tags(self, *args):
+        """Undo all changes and add the option to re-do them."""
+        self._delete_all_tags_undo_data = {}
+        files = self.file_manager.selected_files_list.copy()
+        self._delete_all_tags_count = len(files)
+        for file in files:
+            GLib.idle_add(file.delete_all_raw)
+            self._delete_all_tags_undo_data[file.id] = {}
+            for prop in file.modified_tags:
+                self._delete_all_tags_undo_data[file.id][prop] = file.get_property(prop)
+            time.sleep(0.05)
+
+        self.delete_all_tags_task.emit_task_done()
+
+    def _delete_all_tags_done(self, *args):
+        self.set_sensitive(True)
+
+        toast = Adw.Toast.new(
+            gettext.ngettext(
+                "Removed tags from 1 file", "Removed tags from {n} files", self._delete_all_tags_count).\
+                format(n=self._delete_all_tags_count)
+        )
+        toast.props.button_label = _("Undo")
+        toast.connect('button-clicked', self.undo_delete_all_tags)
+        # toast.connect('dismissed', self.clear_delete_all_tags_undo_data)
+        self.toast_overlay.add_toast(toast)
+
+    def undo_delete_all_tags(self, *args):
+        self.set_sensitive(False)
+        self.undo_delete_all_tags_task.reset()
+        self.undo_delete_all_tags_task.run()
+
+    def _undo_delete_all_tags(self, *args):
+        """Reverses undo_all."""
+        self._undo_delete_all_count = 0
+        for file in self.file_manager.files:
+            if file.id in self._delete_all_tags_undo_data:
+                self._undo_delete_all_count += 1
+                file.reload(thread_safe=True)
+                for prop, value in self._delete_all_tags_undo_data[file.id].items():
+                    GLib.idle_add(file.set_property, prop, value)
+                time.sleep(0.05)
+
+        self.undo_delete_all_tags_task.emit_task_done()
+
+    def _undo_delete_all_tags_done(self, *args):
+        self.set_sensitive(True)
+        toast = Adw.Toast.new(
+            gettext.ngettext(
+                "Undid tag removal in 1 file", "Undid tag removal in {n} files", self._undo_delete_all_count).\
+                format(n=self._undo_delete_all_count)
+        )
+        self.toast_overlay.add_toast(toast)
+
+    def clear_delete_all_tags_undo_data(self, *args):
+        self._delete_all_tags_undo_data = {}
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/settings.ui')
 class EartagSettingsWindow(Adw.PreferencesWindow):

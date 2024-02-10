@@ -78,6 +78,10 @@ class Application(Adw.Application):
             self.create_action('undo_all', self.on_undo_all_action, None)
         self.undo_all_action.set_enabled(False)
 
+        self.delete_all_tags_action = \
+            self.create_action('delete_all_tags', self.on_delete_all_tags_action, None)
+        self.delete_all_tags_action.set_enabled(False)
+
         self.create_action('quit', self.on_quit_action, '<Ctrl>q')
 
         win.present()
@@ -109,6 +113,9 @@ class Application(Adw.Application):
 
     def on_undo_all_action(self, widget, _):
         self.get_active_window().undo_all()
+
+    def on_delete_all_tags_action(self, widget, _):
+        self.get_active_window().show_delete_all_tags_dialog()
 
     def on_about_action(self, widget, _):
         version_str = self.version

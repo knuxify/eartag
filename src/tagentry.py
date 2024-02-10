@@ -112,7 +112,7 @@ class EartagTagEntryBase(GObject.Object):
         if self._ignore_text_change:
             return
 
-        if changed_property != self.bound_property:
+        if changed_property != self.bound_property and changed_property is not None:
             return
 
         self.refresh_text()

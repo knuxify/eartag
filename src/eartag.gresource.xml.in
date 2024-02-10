@@ -31,6 +31,7 @@
     <file>ui/dialogs/removaldiscardwarning.ui</file>
     <file>ui/dialogs/loadingfailure.ui</file>
     <file>ui/dialogs/renamefailure.ui</file>
+    <file>ui/dialogs/tagdeletewarning.ui</file>
     <file>style.css</file>
     <file>style-dark.css</file>
     <file>style-hc.css</file>

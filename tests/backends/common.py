@@ -101,6 +101,10 @@ def run_backend_tests(file_class, extension, skip_channels=False):
     with TestFile('test_delete', extension, 'alltags') as file_delete:
         backend_delete(file_class(file_delete))
 
+    # delete_all_raw function test
+    with TestFile('test_delete_all_raw', extension, 'alltags') as file_delete_all_raw:
+        backend_delete_all_raw(file_class(file_delete_all_raw))
+
     # Make sure tags are deleted when set to empty values
     with TestFile('test_write_empty', extension, 'alltags') as file_write_empty:
         backend_write_empty(file_class(file_write_empty), skip_channels)
@@ -290,6 +294,7 @@ def backend_delete(file):
         file.delete_tag(prop)
         assert not file.has_tag(prop), f'tag {prop} erroneously found in file'
         assert not file.get_property(prop), f'tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}'  # noqa: E501
+        assert prop in file.modified_tags
 
     assert file.get_property('is_modified') is True
 
@@ -345,8 +350,17 @@ def backend_rename(file):
     os.remove(orig_copy_path)
     os.remove(new_path)
 
+def backend_delete_all_raw(file):
+    """Tests the delete_all_raw function."""
+    file.delete_all_raw()
+    assert file.is_modified
+    for prop in file.handled_properties + file.supported_extra_tags:
+        assert not file.has_tag(prop), f'tag {prop} erroneously found in file'
+        assert not file.get_property(prop), f'tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}'  # noqa: E501
+        assert prop in file.modified_tags
+
 def backend_full_releasedate(file):
-    """Tests various values for the releasedate field"""
+    """Tests various values for the releasedate field."""
     path = file.props.path
     file_class = type(file)
     for value in ('0000', '2022', '2022-01', '2022-01-31'):

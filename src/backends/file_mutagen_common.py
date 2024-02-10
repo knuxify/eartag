@@ -28,6 +28,13 @@ class EartagFileMutagenCommon(EartagFile):
         super().on_remove()
         self.mg_file = None
 
+    def delete_all_raw(self):
+        self.delete_all()
+        if not self.mg_file.tags:
+            return
+        for tag in dict(self.mg_file.tags).keys():
+            del self.mg_file.tags[tag]
+
     # Main properties
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)

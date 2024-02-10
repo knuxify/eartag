@@ -352,6 +352,10 @@
         <attribute name="label" translatable="yes">_Undo Changes in Selected Files</attribute>
         <attribute name="action">app.undo_all</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">_Remove All Tags in Selected Files</attribute>
+        <attribute name="action">app.delete_all_tags</attribute>
+      </item>
     </section>
     <section>
       <item>

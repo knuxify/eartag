@@ -87,3 +87,17 @@ class EartagRenameFailureDialog(Adw.MessageDialog):
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
         self.close()
+
+@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/dialogs/tagdeletewarning.ui')
+class EartagTagDeleteWarningDialog(Adw.MessageDialog):
+    __gtype_name__ = 'EartagTagDeleteWarningDialog'
+
+    def __init__(self, window):
+        super().__init__(modal=True, transient_for=window)
+        self.window = window
+
+    @Gtk.Template.Callback()
+    def handle_response(self, dialog, response):
+        if response != 'cancel':
+            self.window.do_delete_all_tags()
+        self.close()

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<requires lib="gtk" version="4.0"/>
+	<template class="EartagTagDeleteWarningDialog" parent="AdwMessageDialog">
+		<property name="heading" translatable="yes">Delete All Tags?</property>
+		<property name="body" translatable="yes">This will remove all tags from the file, including ones that cannot be viewed in Ear Tag.</property>
+		<property name="close-response">cancel</property>
+		<property name="default-response">save</property>
+		<signal name="response" handler="handle_response"/>
+
+		<responses>
+			<response id="cancel" translatable="yes">_Cancel</response>
+			<response id="discard" translatable="yes" appearance="destructive">_Delete</response>
+		</responses>
+	</template>
+</interface>
