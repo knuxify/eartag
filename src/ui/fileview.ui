@@ -300,9 +300,7 @@
                         </child>
 
                         <child>
-                          <object class="EartagMoreTagsGroup" id="more_tags_group">
-                            <property name="margin-top">1</property>
-                          </object>
+                          <object class="EartagMoreTagsGroup" id="more_tags_group"/>
                         </child>
                       </object>
                     </child>

@@ -138,6 +138,7 @@
                                                 <property name="icon-name">list-add-symbolic</property>
                                                 <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
                                                 <signal name="tag-selected" handler="add_placeholder_from_selector"/>
+                                                <style><class name="flat"/></style>
                                               </object>
                                             </child>
                                           </object>

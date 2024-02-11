@@ -3,9 +3,7 @@
   <requires lib="gtk" version="4.0"/>
   <template class="EartagTagSelectorButton" parent="GtkMenuButton">
     <property name="icon-name">list-add-symbolic</property>
-    <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
     <property name="valign">center</property>
-    <style><class name="flat"/></style>
 
     <property name="popover">
       <object class="GtkPopover" id="tag_list_popover">

@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="EartagMoreTagsGroup" parent="AdwPreferencesGroup">
-    <property name="title" translatable="yes">More tags</property>
+  <template class="EartagMoreTagsGroup" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">6</property>
 
-    <property name="header-suffix">
-      <object class="EartagTagSelectorButton" id="tag_selector">
-        <property name="icon-name">list-add-symbolic</property>
-        <!-- TRANSLATORS: "Add" button for "More tags" section -->
-        <property name="tooltip-text" translatable="yes">Add tag</property>
-        <signal name="tag-selected" handler="add_row_from_selector"/>
+    <child>
+      <object class="GtkListBox" id="tag_entry_listbox">
+        <property name="hexpand">true</property>
+        <property name="valign">start</property>
+        <property name="selection-mode">none</property>
+        <style>
+          <class name="boxed-list"/>
+        </style>
       </object>
-    </property>
+    </child>
+
+    <child>
+      <object class="EartagTagSelectorButton" id="tag_selector">
+        <!-- TRANSLATORS: "Add" button for "More tags" section -->
+        <property name="label" translatable="yes">Add tag</property>
+        <signal name="tag-selected" handler="add_row_from_selector"/>
+        <property name="halign">center</property>
+        <property name="margin-top">6</property>
+        <style>
+          <class name="raised"/>
+          <class name="pill"/>
+        </style>
+      </object>
+    </child>
   </template>
 </interface>

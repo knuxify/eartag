@@ -403,17 +403,18 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.parent.remove_and_unbind_extra_row(self)
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/moretagsgroup.ui')
-class EartagMoreTagsGroup(Adw.PreferencesGroup):
+class EartagMoreTagsGroup(Gtk.Box):
     """
     Used for the "More tags" row in the FileView.
     """
     __gtype_name__ = 'EartagMoreTagsGroup'
 
+    tag_entry_listbox = Gtk.Template.Child()
     tag_selector = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
-        self.set_title(_('More tags'))
+        #self.set_title(_('More tags'))
         self._rows = []
         self.bound_files = []
         self.bound_file_ids = []
@@ -449,6 +450,7 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
     def refresh_tag_filter(self, *args):
         """Refreshes the filter for the additional tag add row."""
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
+        self.tag_entry_listbox.props.visible = bool(self.get_present_tags())
 
     @Gtk.Template.Callback()
     def add_row_from_selector(self, selector, tag):
@@ -494,7 +496,7 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
         row = EartagExtraTagRow(tag, self)
         row.set_title(extra_tag_names[tag])
         self._rows.append(row)
-        self.add(row)
+        self.tag_entry_listbox.append(row)
 
         if tag not in self._present_tags_cached:
             self._present_tags_cached.append(tag)
@@ -520,7 +522,7 @@ class EartagMoreTagsGroup(Adw.PreferencesGroup):
         if row.bound_property in self._present_tags_cached:
             self._present_tags_cached.remove(row.bound_property)
 
-        self.remove(row)
+        self.tag_entry_listbox.remove(row)
 
         if not skip_filter_refresh:
             self.refresh_tag_filter()

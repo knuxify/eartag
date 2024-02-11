@@ -26,12 +26,12 @@
                       <signal name="clicked" handler="on_cancel"/>
 
                       <child>
-                        <object class='GtkShortcutController'>
-                          <property name='scope'>managed</property>
+                        <object class="GtkShortcutController">
+                          <property name="scope">managed</property>
                           <child>
-                            <object class='GtkShortcut'>
-                              <property name='trigger'>Escape</property>
-                              <property name='action'>activate</property>
+                            <object class="GtkShortcut">
+                              <property name="trigger">Escape</property>
+                              <property name="action">activate</property>
                             </object>
                           </child>
                         </object>
@@ -115,6 +115,7 @@
                                     <property name="icon-name">list-add-symbolic</property>
                                     <property name="tooltip-text" translatable="yes">Insert tag placeholder</property>
                                     <signal name="tag-selected" handler="add_tag_from_selector"/>
+                                    <style><class name="flat"/></style>
                                   </object>
                                 </child>
                               </object>
