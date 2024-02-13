@@ -4,8 +4,24 @@ if [ ! -e src ]; then echo "Not in source directory"; exit 1; fi
 if [ -e output ]; then rm -r output; fi
 if [ -e '/tmp/eartag' ]; then rm -r '/tmp/eartag'; fi
 
+NETWORKED_TESTS=true
+
+while getopts 'fh' c
+do
+  case $c in
+    f) NETWORKED_TESTS=false ;;
+    h)
+      echo "Usage: $(basename $0) [-f] [-h]"
+      echo "Options:"
+      echo "  -f: execute fast tests only, skipping networked tests (by default all tests are executed)"
+      echo "  -h: show help"
+      exit 0
+      ;;
+  esac
+done
+
 set -e
-meson setup --prefix=/tmp/eartag -Denable_networked_tests=true . output
+meson setup --prefix=/tmp/eartag -Denable_networked_tests=${NETWORKED_TESTS} . output
 meson compile -C output
 meson test -v -C output
 ret=$?
