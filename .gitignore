@@ -20,3 +20,6 @@ _test_*example.*
 Sneaky_Snitch.mp3
 
 *.mo
+
+.idea
+
