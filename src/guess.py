@@ -3,7 +3,7 @@
 
 from . import APP_GRESOURCE_PATH
 from .config import config
-from .utils.bgtask import EartagBackgroundTask
+from .utils.bgtask import EartagBackgroundTask, run_threadsafe
 from .utils.tagsyntaxhighlight import (
     EartagPlaceholderSyntaxHighlighter,
     attr_foreground_new, THEMES
@@ -12,10 +12,9 @@ from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .utils.misc import filename_valid
 from .backends.file import BASIC_TAGS, EXTRA_TAGS
 
-from gi.repository import Adw, Gtk, Gio, GLib, GObject, Pango
+from gi.repository import Adw, Gtk, Gio, GObject, Pango
 import re
 import os.path
-import time
 
 def guess_tags_from_filename(filename: str, placeholder: str, positions: bool = False) -> dict:
     """
@@ -284,19 +283,16 @@ class EartagGuessDialog(Adw.Window):
                         (tag in EXTRA_TAGS and tag in file.supported_extra_tags):
                     if tag in file.int_properties:
                         try:
-                            GLib.idle_add(file.set_property, tag, int(value))
+                            run_threadsafe(file.set_property, tag, int(value))
                         except (TypeError, ValueError):
                             pass
                     elif tag in file.float_properties:
                         try:
-                            GLib.idle_add(file.set_property, tag, float(value))
+                            run_threadsafe(file.set_property, tag, float(value))
                         except (TypeError, ValueError):
                             pass
                     else:
-                        GLib.idle_add(file.set_property, tag, value)
-
-            # Sleep for a bit to make sure tags are set
-            time.sleep(0.05)
+                        run_threadsafe(file.set_property, tag, value)
 
             self.guessed += 1
             self.apply_task.increment_progress(progress_step)

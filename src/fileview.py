@@ -18,7 +18,6 @@ import magic
 import mimetypes
 import shutil
 import os.path
-import time
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui')
 class EartagAlbumCoverButton(Adw.Bin):

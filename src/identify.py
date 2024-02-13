@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import Adw, Gtk, GLib, Gio, GObject, GdkPixbuf
+from gi.repository import Adw, Gtk, Gio, GObject, GdkPixbuf
 
 import os
-import time
 import html
 
 from .musicbrainz import (
@@ -12,7 +11,7 @@ from .musicbrainz import (
     MusicBrainzRecording, MusicBrainzRelease, MusicBrainzReleaseGroup,
 )
 from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equal
-from .utils.bgtask import EartagBackgroundTask
+from .utils.bgtask import EartagBackgroundTask, run_threadsafe
 from .utils.widgets import EartagModelExpanderRow
 from .backends.file import EartagFile
 from . import APP_GRESOURCE_PATH
@@ -219,7 +218,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         Used by the identification process to fill in the release switcher
         button model.
         """
-        GLib.idle_add(
+        return run_threadsafe(
             self._rel_model.splice,
             0, self._rel_model.get_n_items(), releases
         )
@@ -551,32 +550,24 @@ class EartagIdentifyDialog(Adw.Window):
         if rec.release.release_id in self.release_rows:
             row = self.release_rows[rec.release.release_id]
             row._filter_changed = False
-            GLib.idle_add(row.update_filter)
-            while not row._filter_changed:
-                time.sleep(0.1)
-            self.release_rows[rec.release.release_id].update_filter()
+            run_threadsafe(row.update_filter)
             row._filter_changed = False
         else:
             self.release_rows[rec.release.release_id] = \
                 EartagIdentifyReleaseRow(self, rec.release)
-            GLib.idle_add(
+            run_threadsafe(
                 self.content_listbox.prepend,
                 self.release_rows[rec.release.release_id]
             )
 
         self._filter_changed = False
-        GLib.idle_add(
+        run_threadsafe(
             self.unidentified_filter.changed,
             Gtk.FilterChange.DIFFERENT
         )
+        self._filter_changed = False
 
         self.apply_files.append(file.id)
-
-        # Prevent weird errors by waiting a bit for the filter to update
-        while not self._filter_changed:
-            time.sleep(0.1)
-
-        self._filter_changed = False
 
     def identify_files(self, *args, **kwargs):
         progress_step = 1 / len(self.files)
@@ -602,7 +593,7 @@ class EartagIdentifyDialog(Adw.Window):
                 continue
 
             unid_row = self.unidentified_row.get_row_at_index(unid_index)
-            GLib.idle_add(unid_row.start_loading)
+            run_threadsafe(unid_row.start_loading)
 
             recordings = []
 
@@ -648,12 +639,12 @@ class EartagIdentifyDialog(Adw.Window):
             if recordings:
                 rec = recordings[0]
                 if not rec.available_releases:
-                    GLib.idle_add(unid_row.mark_as_unidentified)
+                    run_threadsafe(unid_row.mark_as_unidentified)
                 else:
                     self._identify_set_recording(file, rec)
                     self.identify_task.increment_progress(progress_step)
             else:
-                GLib.idle_add(unid_row.mark_as_unidentified)
+                run_threadsafe(unid_row.mark_as_unidentified)
 
         # Once we have identified all the files we could, check in
         # the releases we have to make sure we can't find other tracks
@@ -717,7 +708,7 @@ class EartagIdentifyDialog(Adw.Window):
                         if simplify_compare(s_track['title'], b_track['title']):
                             for rec in self.release_rows[s_rel.release_id].recordings:
                                 rec.release = b_rel
-                            GLib.idle_add(
+                            run_threadsafe(
                                 self.content_listbox.remove,
                                 self.release_rows[s_rel.release_id]
                             )
@@ -849,7 +840,7 @@ class EartagIdentifyDialog(Adw.Window):
                 else:
                     self.release_rows[rec.release.release_id] = \
                         EartagIdentifyReleaseRow(self, rec.release)
-                    GLib.idle_add(
+                    run_threadsafe(
                         self.content_listbox.prepend,
                         self.release_rows[rec.release.release_id]
                     )
@@ -863,7 +854,7 @@ class EartagIdentifyDialog(Adw.Window):
 
                 if row._rec_filter_model.get_n_items() == 0:
                     del self.release_rows[k]
-                    GLib.idle_add(self.content_listbox.remove, row)
+                    run_threadsafe(self.content_listbox.remove, row)
 
         self.identify_task.emit_task_done()
 
@@ -902,7 +893,7 @@ class EartagIdentifyDialog(Adw.Window):
 
             rec = self.recordings[file.id]
             rec.release.update_covers()
-            GLib.idle_add(rec.apply_data_to_file, file)
+            run_threadsafe(rec.apply_data_to_file, file)
             self.apply_task.increment_progress(progress_step)
 
         self.apply_task.emit_task_done()

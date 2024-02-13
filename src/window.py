@@ -2,7 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .config import config, DLCoverSize
-from .utils.bgtask import EartagBackgroundTask
+from .utils.bgtask import EartagBackgroundTask, run_threadsafe
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import EartagCloseWarningDialog, EartagDiscardWarningDialog, EartagTagDeleteWarningDialog
 from .musicbrainz import MusicBrainzRelease
@@ -17,7 +17,6 @@ from . import APP_GRESOURCE_PATH, DEVEL
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
 import gettext
-import time
 
 @Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/nofile.ui')
 class EartagNoFile(Adw.Bin):
@@ -574,8 +573,7 @@ class EartagWindow(Adw.ApplicationWindow):
             for tag in file.modified_tags:
                 self._undo_all_data[file.id][tag] = file.get_property(tag)
 
-            GLib.idle_add(file.undo_all)
-            time.sleep(0.05)
+            run_threadsafe(file.undo_all)
 
         if self._undo_all_count == 0:
             self.undo_all_task.emit_task_done()
@@ -588,8 +586,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
         toast = Adw.Toast.new(
             gettext.ngettext(
-                "Undid changes in 1 file", "Undid changes in {n} files", self._undo_all_count).\
-                format(n=self._undo_all_count)
+                "Undid changes in 1 file", "Undid changes in {n} files",
+                self._undo_all_count).format(n=self._undo_all_count)
         )
         toast.props.button_label = _("Redo")
         toast.connect('button-clicked', self.redo_all)
@@ -609,10 +607,9 @@ class EartagWindow(Adw.ApplicationWindow):
                 self._redo_all_count += 1
                 for tag, value in self._undo_all_data[file.id].items():
                     if tag in file.int_properties + file.float_properties and not value:
-                        GLib.idle_add(file.set_property, tag, 0)
+                        run_threadsafe(file.set_property, tag, 0)
                     else:
-                        GLib.idle_add(file.set_property, tag, value)
-                time.sleep(0.05)
+                        run_threadsafe(file.set_property, tag, value)
 
         self.redo_all_task.emit_task_done()
 
@@ -620,8 +617,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.set_sensitive(True)
         toast = Adw.Toast.new(
             gettext.ngettext(
-                "Redid changes in 1 file", "Redid changes in {n} files", self._redo_all_count).\
-                format(n=self._redo_all_count)
+                "Redid changes in 1 file", "Redid changes in {n} files",
+                self._redo_all_count).format(n=self._redo_all_count)
         )
         self.toast_overlay.add_toast(toast)
 
@@ -648,11 +645,10 @@ class EartagWindow(Adw.ApplicationWindow):
         files = self.file_manager.selected_files_list.copy()
         self._delete_all_tags_count = len(files)
         for file in files:
-            GLib.idle_add(file.delete_all_raw)
             self._delete_all_tags_undo_data[file.id] = {}
             for prop in file.modified_tags:
                 self._delete_all_tags_undo_data[file.id][prop] = file.get_property(prop)
-            time.sleep(0.05)
+            run_threadsafe(file.delete_all_raw)
 
         self.delete_all_tags_task.emit_task_done()
 
@@ -661,8 +657,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
         toast = Adw.Toast.new(
             gettext.ngettext(
-                "Removed tags from 1 file", "Removed tags from {n} files", self._delete_all_tags_count).\
-                format(n=self._delete_all_tags_count)
+                "Removed tags from 1 file", "Removed tags from {n} files",
+                self._delete_all_tags_count).format(n=self._delete_all_tags_count)
         )
         toast.props.button_label = _("Undo")
         toast.connect('button-clicked', self.undo_delete_all_tags)
@@ -682,8 +678,7 @@ class EartagWindow(Adw.ApplicationWindow):
                 self._undo_delete_all_count += 1
                 file.reload(thread_safe=True)
                 for prop, value in self._delete_all_tags_undo_data[file.id].items():
-                    GLib.idle_add(file.set_property, prop, value)
-                time.sleep(0.05)
+                    run_threadsafe(file.set_property, prop, value)
 
         self.undo_delete_all_tags_task.emit_task_done()
 
@@ -691,8 +686,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.set_sensitive(True)
         toast = Adw.Toast.new(
             gettext.ngettext(
-                "Undid tag removal in 1 file", "Undid tag removal in {n} files", self._undo_delete_all_count).\
-                format(n=self._undo_delete_all_count)
+                "Undid tag removal in 1 file", "Undid tag removal in {n} files",
+                self._undo_delete_all_count).format(n=self._undo_delete_all_count)
         )
         self.toast_overlay.add_toast(toast)
 

@@ -1,16 +1,17 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
+from ..utils.bgtask import run_threadsafe
+
 import gi
 gi.require_version('GdkPixbuf', '2.0')
-from gi.repository import GObject, GdkPixbuf, GLib
+from gi.repository import GObject, GdkPixbuf
 import filecmp
 import os
 import re
 import shutil
 import tempfile
 import uuid
-import time
 
 BASIC_TAGS = (
     'title', 'artist', 'album', 'albumartist', 'tracknumber',
@@ -352,10 +353,7 @@ class EartagFile(GObject.Object):
 
         if thread_safe:
             for tag, tag_value in modifications.items():
-                GLib.idle_add(self.set_property, tag, tag_value)
-
-            # Sleep a bit to make sure values get applied
-            time.sleep(0.05)
+                run_threadsafe(self.set_property, tag, tag_value)
         else:
             for tag, tag_value in modifications.items():
                 self.set_property(tag, tag_value)
@@ -365,12 +363,9 @@ class EartagFile(GObject.Object):
         self.load_from_file(self.props.path)
         if thread_safe:
             for prop in BASIC_TAGS + tuple(self.supported_extra_tags) + ('front_cover_path', 'back_cover_path'):
-                GLib.idle_add(self.notify, prop)
-            # Sleep a bit to make sure values get applied
-            time.sleep(0.05)
+                run_threadsafe(self.notify, prop)
 
-            GLib.idle_add(self.mark_as_unmodified)
-            time.sleep(0.05)
+            run_threadsafe(self.mark_as_unmodified)
         else:
             for prop in BASIC_TAGS + tuple(self.supported_extra_tags) + ('front_cover_path', 'back_cover_path'):
                 self.notify(prop)

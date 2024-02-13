@@ -4,6 +4,7 @@
 from gi.repository import GObject, GLib
 import threading
 import time
+import traceback
 
 class EartagBackgroundTask(GObject.Object):
     """
@@ -115,3 +116,38 @@ class EartagBackgroundTask(GObject.Object):
         task-done signal.
         """
         GLib.idle_add(self.emit, 'task-done')
+
+
+class EartagIdleFunc:
+    """
+    Wrapper around GLib.idle_add() that has the ability to parse the return
+    value.
+    """
+    def __init__(self, func, *args, **kwargs):
+        self._function_done = False
+        self._function_ret = None
+        self._run_event = None
+        self.func = func
+        self.args = args
+        self.kwargs = kwargs
+
+    def func_wrapper(self):
+        try:
+            self._function_ret = self.func(*self.args, **self.kwargs)
+        except:
+            traceback.print_exc()
+        self._run_event.set()
+        self._function_done = True
+
+    def run(self):
+        self._function_done = False
+        self._function_ret = None
+        self._run_event = threading.Event()
+        GLib.idle_add(self.func_wrapper)
+        self._run_event.wait()
+        return self._function_ret
+
+
+def run_threadsafe(func, *args, **kwargs):
+    idle_func = EartagIdleFunc(func, *args, **kwargs)
+    return idle_func.run()

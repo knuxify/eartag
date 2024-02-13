@@ -14,7 +14,7 @@ from .backends import (
     EartagFileMutagenASF
     )
 from .backends.file import EartagFile
-from .utils.bgtask import EartagBackgroundTask
+from .utils.bgtask import EartagBackgroundTask, run_threadsafe
 from .utils.misc import find_in_model, cleanup_filename
 from .dialogs import (EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog, EartagRenameFailureDialog)
@@ -215,8 +215,7 @@ class EartagFileManager(GObject.Object):
                 return False
 
             if not self._load_single_file(path):
-                GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
-                            priority=GLib.PRIORITY_HIGH_IDLE + 30)
+                run_threadsafe(self.files.splice, 0, 0, self._files_buffer)
                 self._files_buffer = []
 
                 task.emit_task_done()
@@ -240,8 +239,7 @@ class EartagFileManager(GObject.Object):
                 Adw.Toast.new(unwritable_msg)
             )
 
-        GLib.idle_add(self.files.splice, 0, 0, self._files_buffer,
-                      priority=GLib.PRIORITY_HIGH_IDLE + 30)
+        run_threadsafe(self.files.splice, 0, 0, self._files_buffer)
         first_file = None
         if self._files_buffer and mode == self.LOAD_INSERT:
             first_file = self._files_buffer[0]
@@ -251,12 +249,12 @@ class EartagFileManager(GObject.Object):
         GLib.idle_add(self.refresh_state)
         if mode == self.LOAD_INSERT:
             if self.get_n_selected() < 2 and first_file:
-                GLib.idle_add(self.select_file, first_file, True)
+                run_threadsafe(self.select_file, first_file, True)
         else:
-            GLib.idle_add(self.emit, 'select-first')
+            run_threadsafe(self.emit, 'select-first')
 
         if mode == self.LOAD_OVERWRITE:
-            GLib.idle_add(self.emit, 'refresh-needed')
+            run_threadsafe(self.emit, 'refresh-needed')
 
     #
     # Removal
@@ -416,7 +414,7 @@ class EartagFileManager(GObject.Object):
                 self.failed = True
                 return False
 
-            GLib.idle_add(file.notify, "path")
+            run_threadsafe(file.notify, "path")
 
             try:
                 self.file_paths.remove(old_path)
