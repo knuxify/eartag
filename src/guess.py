@@ -2,6 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from . import APP_GRESOURCE_PATH
+from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS
 from .config import config
 from .utils.bgtask import EartagBackgroundTask, run_threadsafe
 from .utils.guesstags import guess_tags_from_filename
@@ -12,7 +13,6 @@ from .utils.tagsyntaxhighlight import (
 )
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .utils.misc import filename_valid
-from .backends.file import BASIC_TAGS, EXTRA_TAGS
 
 from gi.repository import Adw, Gtk, Gio, GObject, Pango
 import re
@@ -27,6 +27,7 @@ class EartagGuessDialog(Adw.Window):
 
     pattern_entry = Gtk.Template.Child()
     preview_entry = Gtk.Template.Child()
+    preview_selector_button = Gtk.Template.Child()
     apply_button = Gtk.Template.Child()
     toggle_strip_common_suffixes = Gtk.Template.Child()
 
@@ -38,12 +39,9 @@ class EartagGuessDialog(Adw.Window):
     theme = GObject.Property(type=str, default="light")
 
     strip_common_suffixes = GObject.Property(type=bool, default=True)
-
     validation_passed = GObject.Property(type=bool, default=True)
 
-    guess_presets = [
-        "{artist} - {title}" "{tracknumber} {title}" "{tracknumber} {artist} - {title}"
-    ]
+    preview_selector_button = Gtk.Template.Child()
 
     def __init__(self, parent):
         super().__init__(modal=True, transient_for=parent)
@@ -69,7 +67,14 @@ class EartagGuessDialog(Adw.Window):
         self._connections.append(self.connect("notify::theme", self.update_preview))
 
         self.files = parent.file_manager.selected_files_list.copy()
-        self.preview_entry.set_text(os.path.basename(self.files[0].path))
+
+        self.preview_selector_button.set_files(self.files)
+        self.preview_selector_button.set_formatting_function(
+            self.generate_preview_attrs
+        )
+        self._preview_update_conn = self.preview_selector_button.connect(
+            "notify::selected-index", self.update_preview
+        )
 
         config.bind(
             "guess-strip-common-suffixes",
@@ -184,9 +189,8 @@ class EartagGuessDialog(Adw.Window):
 
         return guess
 
-    def update_preview(self, *args):
-        """Updates the text and syntax highlighting on the preview entry."""
-        filename = os.path.basename(self.files[0].path)
+    def generate_preview_attrs(self, file: EartagFile):
+        filename = os.path.basename(file.props.path)
         guess = self.get_guess(filename, positions=True)
 
         preview_attrs = Pango.AttrList()
@@ -207,6 +211,17 @@ class EartagGuessDialog(Adw.Window):
             n += 1
 
         self.preview_entry.notify("attributes")
+        self.preview_entry.set_attributes(preview_attrs)
+
+        return (filename, preview_attrs)
+
+    def update_preview(self, *args):
+        """Updates the text and syntax highlighting on the preview entry."""
+        self.preview_selector_button.emit("formatting-changed")
+        preview_text, preview_attrs = self.generate_preview_attrs(
+            self.files[self.preview_selector_button.props.selected_index]
+        )
+        self.preview_entry.set_text(preview_text)
         self.preview_entry.set_attributes(preview_attrs)
 
     @Gtk.Template.Callback()
@@ -271,6 +286,8 @@ class EartagGuessDialog(Adw.Window):
     def on_cancel(self, *args):
         if self.apply_task.is_running:
             self.apply_task.stop()
+        self.preview_selector_button.disconnect(self._preview_update_conn)
+        self.preview_selector_button.teardown()
         self._close()
 
     def _close(self):

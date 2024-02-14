@@ -8,6 +8,7 @@ utils_sources = [
   'misc.py',
   'tagselector.py',
   'tagsyntaxhighlight.py',
+  'previewselector.py',
   'validation.py',
   'widgets.py'
 ]

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
+from . import APP_GRESOURCE_PATH
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length, file_is_sandboxed
@@ -11,9 +12,9 @@ from .utils.tagsyntaxhighlight import (
     attr_foreground_new,
     THEMES,
 )
-from . import APP_GRESOURCE_PATH
+from .utils.previewselector import EartagPreviewSelectorButton  # noqa: F401
 
-from gi.repository import Adw, GLib, Gtk, Gio, GObject, Pango
+from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject, Pango
 import os
 import re
 
@@ -135,6 +136,7 @@ class EartagRenameDialog(Adw.Window):
 
     filename_entry = Gtk.Template.Child()
     preview_entry = Gtk.Template.Child()
+    preview_selector_button = Gtk.Template.Child()
 
     _last_folder = None
 
@@ -187,6 +189,14 @@ class EartagRenameDialog(Adw.Window):
 
         if self._has_sandboxed_files and not self.props.folder:
             self.sandbox_warning_banner.props.revealed = True
+
+        self.preview_selector_button.set_files(self.files)
+        self.preview_selector_button.set_formatting_function(
+            self.generate_preview_attrs
+        )
+        self._preview_update_conn = self.preview_selector_button.connect(
+            "notify::selected-index", self.update_preview
+        )
 
         self.connect("notify::folder", self.validate_placeholder)
         self.connect("notify::validation-passed", self.update_rename_button_sensitivity)
@@ -285,6 +295,8 @@ class EartagRenameDialog(Adw.Window):
 
     @Gtk.Template.Callback()
     def on_cancel(self, *args):
+        self.preview_selector_button.disconnect(self._preview_update_conn)
+        self.preview_selector_button.teardown()
         self.files = None
         self.close()
 
@@ -313,18 +325,17 @@ class EartagRenameDialog(Adw.Window):
 
         self.file_manager.rename_files(self.files, names)
 
-    @Gtk.Template.Callback()
-    def update_preview(self, *args):
-        """Validates the input and updates the preview."""
-        if self.validate_placeholder():
-            return
-        example_file = self.file_manager.selected_files[0]
-        parsed_placeholder, placeholder_positions = parse_placeholder_string(
-            self.filename_entry.get_text(), example_file, positions=True
-        )
-        self.preview_entry.set_text(parsed_placeholder + example_file.props.filetype)
+    # Preview
 
+    def generate_preview_attrs(self, file: EartagFile):
+        """Generates preview attributes for a given file."""
         preview_attrs = Pango.AttrList()
+
+        parsed_placeholder, placeholder_positions = parse_placeholder_string(
+            self.filename_entry.get_text(), file, positions=True
+        )
+        preview_text = parsed_placeholder + file.props.filetype
+
         for n in range(len(placeholder_positions)):
             start, end = placeholder_positions[n]
             color = THEMES[self.syntax_highlight.props.theme]["placeholder_colors"][
@@ -332,6 +343,21 @@ class EartagRenameDialog(Adw.Window):
             ]
             color_attr = attr_foreground_new(color, start, end)
             preview_attrs.insert(color_attr)
+        return preview_text, preview_attrs
+
+    @Gtk.Template.Callback()
+    def update_preview(self, *args):
+        """Validates the input and updates the preview."""
+        # TODO: figure out why this is needed
+        if not self.files:
+            self.preview_selector_button.teardown()
+            return
+        self.validate_placeholder()
+        self.preview_selector_button.emit("formatting-changed")
+        preview_text, preview_attrs = self.generate_preview_attrs(
+            self.files[self.preview_selector_button.props.selected_index]
+        )
+        self.preview_entry.set_text(preview_text)
         self.preview_entry.set_attributes(preview_attrs)
 
     def on_done(self, task, *args):

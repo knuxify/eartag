@@ -40,6 +40,9 @@ src/ui/rename.ui
 src/guess.py
 src/ui/guess.ui
 
+# Preview selector, for both of the above
+src/ui/previewselectorbutton.ui
+
 # Identify dialog
 src/identify.py
 src/ui/identify/identify.ui

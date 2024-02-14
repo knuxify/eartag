@@ -17,6 +17,8 @@
     <file>ui/moretagsgroup.ui</file>
     <file>ui/moretagsgroupfactory.ui</file>
     <file>ui/tagselectorbutton.ui</file>
+    <file>ui/previewselectorbutton.ui</file>
+    <file>ui/previewselectoritem.ui</file>
     <file alias="gtk/help-overlay.ui">ui/shortcuts.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
