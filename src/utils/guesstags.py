@@ -5,6 +5,8 @@ from ..backends.file import BASIC_TAGS, EXTRA_TAGS
 
 import re
 
+VALID_TAGS = BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate")
+
 
 def guess_tags_from_filename(
     filename: str, placeholder: str, positions: bool = False
@@ -24,10 +26,7 @@ def guess_tags_from_filename(
     for element in placeholder_split:
         if element.startswith("{") and element.endswith("}"):
             tag = element[1:-1]
-            if (
-                tag in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate")
-                and tag not in tags
-            ):
+            if tag in VALID_TAGS and tag not in tags:
                 pattern += f"(?P<{tag}>.*?)"
                 tags.append(tag)
                 continue
