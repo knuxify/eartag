@@ -45,18 +45,14 @@ def guess_tags_from_filename(
         return {}
 
     out = {}
-    if positions:
-        for tag in tags:
-            tag_matched = match.group(tag)
-            if not tag_matched:
-                continue
-            span = match.span(tag)
-            out[tag] = (tag_matched.decode("utf-8"), span)
-    else:
-        for tag in tags:
-            tag_matched = match.group(tag)
-            if not tag_matched:
-                continue
-            out[tag] = tag_matched.decode("utf-8")
+
+    for tag in tags:
+        tag_matched = match.group(tag)
+        if tag_matched:
+            tag_value = tag_matched.decode("utf-8")
+            if positions:
+                out[tag] = (tag_value, match.span(tag))
+            else:
+                out[tag] = tag_value
 
     return out
