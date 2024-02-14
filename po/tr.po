@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-02-01 14:19+0000\n"
-"PO-Revision-Date: 2024-02-03 08:00+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2024-02-10 11:55+0000\n"
+"PO-Revision-Date: 2024-02-11 01:09+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -21,14 +21,14 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:119 data/app.drey.EarTag.desktop.in:3
+#: src/main.py:126 data/app.drey.EarTag.desktop.in:3
 #: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.ui:297
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 # Keep it
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:129 src/main.py:131
+#: src/main.py:136 src/main.py:138
 msgid "translator-credits"
 msgstr ""
 "Sabri Ünal <libreajans@gmail.com>\n"
@@ -81,58 +81,74 @@ msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Ağ erişimi yalnızca \"Seçilen Dosyaları Tanımla\" seçeneği için kullanılır."
 
-#: src/window.py:110
+#: src/window.py:112
 msgid "All supported audio files"
 msgstr "Tüm desteklenen ses dosyaları"
 
 #. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:203 src/fileview.py:741
+#: src/window.py:224 src/fileview.py:741
 msgid "(Multiple files selected)"
 msgstr "(Birden çok dosya seçildi)"
 
-#: src/window.py:288 src/ui/nofile.ui:39
+#: src/window.py:310 src/ui/nofile.ui:39
 msgid "Open Folder"
 msgstr "Klasör Aç"
 
-#: src/window.py:291 src/ui/nofile.ui:26
+#: src/window.py:313 src/ui/nofile.ui:26
 msgid "Open File"
 msgstr "Dosya Aç"
 
-#: src/window.py:353
+#: src/window.py:375
 msgid "No supported files found in opened folder"
 msgstr "Açılan klasörde desteklenen dosya bulunamadı"
 
-#: src/window.py:360
+#: src/window.py:382
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Açılan dosyalardan bazılarının geçersiz değerleri var; değişiklikler "
 "kaydedilemez"
 
-#: src/window.py:483
+#: src/window.py:508
 msgid "No files selected"
 msgstr "Hiçbir dosya seçilmedi"
 
-#: src/window.py:487
+#: src/window.py:512
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} dosya seçildi"
 
-#: src/window.py:554
+#: src/window.py:591
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "{n} dosyadaki değişiklikleri geri al"
 
-#: src/window.py:557
+#: src/window.py:594
 msgid "Redo"
 msgstr "Yinele"
 
-#: src/window.py:572
+#: src/window.py:623
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "{n} dosyadaki değişiklikleri yine yap"
+
+#: src/window.py:664
+#, python-brace-format
+msgid "Removed tags from 1 file"
+msgid_plural "Removed tags from {n} files"
+msgstr[0] "{n}dosyadan etiketler kaldırıldı"
+
+#: src/window.py:667 src/fileview.py:293
+msgid "Undo"
+msgstr "Geri Al"
+
+#: src/window.py:694
+#, python-brace-format
+msgid "Undid tag removal in 1 file"
+msgid_plural "Undid tag removal in {n} files"
+msgstr[0] "{n} dosyadaki etiket kaldırmayı geri al"
 
 #. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
 #: src/ui/window.ui:65
@@ -212,15 +228,19 @@ msgstr "Seçilen Dosyaları _Tanımla"
 msgid "_Undo Changes in Selected Files"
 msgstr "Seçilen Dosyalardaki Değişiklikleri _Geri Al"
 
-#: src/ui/window.ui:358
+#: src/ui/window.ui:356
+msgid "_Remove All Tags in Selected Files"
+msgstr "Seçilen Dosyalardaki Tüm Etiketleri _Kaldır"
+
+#: src/ui/window.ui:362
 msgid "_Keyboard Shortcuts"
 msgstr "_Klavye Kısayolları"
 
-#: src/ui/window.ui:362
+#: src/ui/window.ui:366
 msgid "_Settings"
 msgstr "_Ayarlar"
 
-#: src/ui/window.ui:366
+#: src/ui/window.ui:370
 msgid "_About Ear Tag"
 msgstr "Ear Tag _Hakkında"
 
@@ -431,10 +451,6 @@ msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "{n}dosyadan kapaklar kaldırıldı"
 
-#: src/fileview.py:293
-msgid "Undo"
-msgstr "Geri Al"
-
 #: src/fileview.py:416
 msgid "More tags"
 msgstr "Daha çok etiket"
@@ -554,7 +570,8 @@ msgstr "Dosya Yüklenemedi"
 
 #: src/ui/dialogs/loadingfailure.ui:6
 msgid "Could not load file {f}. Check the logs for more information."
-msgstr "{f} dosyası yüklenemedi. Daha çok bilgi için günlükleri gözden geçirin."
+msgstr ""
+"{f} dosyası yüklenemedi. Daha çok bilgi için günlükleri gözden geçirin."
 
 #: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
 msgid "_OK"
@@ -645,10 +662,10 @@ msgid ""
 "available tags</a>."
 msgstr ""
 "Kullanılabilir etiketlerin listesi için <a href=\"https://gitlab.gnome.org/"
-"World/eartag/-/blob/main/src/backends/README.md#available-"
-"tags\">kullanılabilir etiketler listesine</a> bakınız."
+"World/eartag/-/blob/main/src/backends/README.md#available-tags"
+"\">kullanılabilir etiketler listesine</a> bakınız."
 
-#: src/guess.py:306
+#: src/guess.py:308
 #, python-brace-format
 msgid "Guessed tags for {guessed} out of {total} tracks"
 msgstr "{guessed} / {total} parça için etiketler öngörüldü"
@@ -670,8 +687,9 @@ msgid ""
 "Automatically ignores ID suffixes often found in filenames of downloaded "
 "files. Disable this option if it interferes with your filenames."
 msgstr ""
-"Genellikle indirilen dosya adlarında bulunan kimlik son eklerini kendiliğinden "
-"yok sayar. Dosya adlarınızla çakışıyorsa bu seçeneği devre dışı bırakın."
+"Genellikle indirilen dosya adlarında bulunan kimlik son eklerini "
+"kendiliğinden yok sayar. Dosya adlarınızla çakışıyorsa bu seçeneği devre "
+"dışı bırakın."
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
@@ -698,9 +716,9 @@ msgstr "Tanımla"
 
 #: src/ui/identify/identify.ui:92
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
-"href=\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://musicbrainz.org"
+"\">Musicbrainz</a>. Files without metadata are identified using the <a href="
+"\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
 "Parça bilgileri <a href=\"https://musicbrainz.org\">Musicbrainz</a> "
 "tarafından sağlanmaktadır. Üst verileri olmayan dosyalar <a href=\"https://"
