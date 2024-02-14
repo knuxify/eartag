@@ -6,9 +6,10 @@ import os.path
 
 from . import APP_GRESOURCE_PATH
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/filelistitem.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/filelistitem.ui")
 class EartagFileListItem(Gtk.Box):
-    __gtype_name__ = 'EartagFileListItem'
+    __gtype_name__ = "EartagFileListItem"
 
     status_icon_stack = Gtk.Template.Child()
     modified_icon = Gtk.Template.Child()
@@ -32,12 +33,14 @@ class EartagFileListItem(Gtk.Box):
         if self.filelist.selection_mode:
             self.show_selection_button()
         self.file_manager = filelist.file_manager
-        self.file_manager.connect('selection-changed', self.update_selected_status)
-        self.filelist.connect('notify::selection-mode', self.toggle_selection_mode)
-        self.connect('destroy', self.on_destroy)
+        self.file_manager.connect("selection-changed", self.update_selected_status)
+        self.filelist.connect("notify::selection-mode", self.toggle_selection_mode)
+        self.connect("destroy", self.on_destroy)
         self._selected_bind = self.bind_property(
-            'selected', self.select_button, 'active',
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE
+            "selected",
+            self.select_button,
+            "active",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
         self.bindings = []
 
@@ -47,15 +50,33 @@ class EartagFileListItem(Gtk.Box):
                 b.unbind()
         self.file = file
 
-        self.bindings.append(self.file.bind_property('title', self, 'title',
-            GObject.BindingFlags.SYNC_CREATE))
-        self.bindings.append(self.file.bind_property('path', self,
-            'filename', GObject.BindingFlags.SYNC_CREATE))
-        self.bindings.append(self.file.bind_property('is-modified', self.modified_icon,
-            'visible', GObject.BindingFlags.SYNC_CREATE))
-        self.bindings.append(self.file.bind_property('has-error', self.error_icon,
-            'visible', GObject.BindingFlags.SYNC_CREATE))
-        self._error_connect = self.file.connect('notify::has-error', self.handle_error)
+        self.bindings.append(
+            self.file.bind_property(
+                "title", self, "title", GObject.BindingFlags.SYNC_CREATE
+            )
+        )
+        self.bindings.append(
+            self.file.bind_property(
+                "path", self, "filename", GObject.BindingFlags.SYNC_CREATE
+            )
+        )
+        self.bindings.append(
+            self.file.bind_property(
+                "is-modified",
+                self.modified_icon,
+                "visible",
+                GObject.BindingFlags.SYNC_CREATE,
+            )
+        )
+        self.bindings.append(
+            self.file.bind_property(
+                "has-error",
+                self.error_icon,
+                "visible",
+                GObject.BindingFlags.SYNC_CREATE,
+            )
+        )
+        self._error_connect = self.file.connect("notify::has-error", self.handle_error)
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
         self.update_selected_status()
@@ -106,7 +127,7 @@ class EartagFileListItem(Gtk.Box):
     @title.setter
     def title(self, value):
         # TRANSLATORS: Placeholder for file sidebar items with no title set
-        self.title_label.set_label(value or _('(No title)'))
+        self.title_label.set_label(value or _("(No title)"))
 
     @GObject.Property(type=str)
     def filename(self):
@@ -129,16 +150,18 @@ class EartagFileListItem(Gtk.Box):
         else:
             self.hide_selection_button()
 
+
 class EartagFileList(Gtk.ListView):
     """List of opened tracks."""
-    __gtype_name__ = 'EartagFileList'
+
+    __gtype_name__ = "EartagFileList"
 
     def __init__(self):
         super().__init__()
         self.sidebar_factory = Gtk.SignalListItemFactory()
-        self.sidebar_factory.connect('setup', self.setup)
-        self.sidebar_factory.connect('bind', self.bind)
-        self.sidebar_factory.connect('unbind', self.bind)
+        self.sidebar_factory.connect("setup", self.setup)
+        self.sidebar_factory.connect("bind", self.bind)
+        self.sidebar_factory.connect("unbind", self.bind)
         self.set_factory(self.sidebar_factory)
         self._selection_mode = False
         self._ignore_unselect = False
@@ -148,15 +171,15 @@ class EartagFileList(Gtk.ListView):
         # See on_activate function for explaination
         self.connect("activate", self.on_activate)
         self.key_controller = Gtk.EventControllerKey.new()
-        self.key_controller.connect('key-pressed', self.key_pressed)
-        self.key_controller.connect('key-released', self.key_released)
+        self.key_controller.connect("key-pressed", self.key_pressed)
+        self.key_controller.connect("key-released", self.key_released)
         self.add_controller(self.key_controller)
         self.shift_state = False
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
         self.set_model(self.file_manager.selected_files)
-        self.file_manager.connect('selection-changed', self.switch_into_selection_mode)
+        self.file_manager.connect("selection-changed", self.switch_into_selection_mode)
 
     def setup(self, factory, list_item):
         list_item.set_child(EartagFileListItem(self))
@@ -182,10 +205,10 @@ class EartagFileList(Gtk.ListView):
         if not self.file_manager:
             return
         if value is True:
-            self.action_set_enabled('list.select-item', False)
+            self.action_set_enabled("list.select-item", False)
             self.props.single_click_activate = True
         else:
-            self.action_set_enabled('list.select-item', True)
+            self.action_set_enabled("list.select-item", True)
             self.props.single_click_activate = False
             selection = self.file_manager.selected_files.get_selection()
             if selection.get_size() > 1:
@@ -227,16 +250,18 @@ class EartagFileList(Gtk.ListView):
 
             extend = self.shift_state
 
-            self.action_set_enabled('list.select-item', True)
+            self.action_set_enabled("list.select-item", True)
             self.activate_action(
-                'list.select-item',
-                GLib.Variant('(ubb)', (index, not extend, extend))
+                "list.select-item", GLib.Variant("(ubb)", (index, not extend, extend))
             )
-            self.action_set_enabled('list.select-item', False)
+            self.action_set_enabled("list.select-item", False)
 
     def key_pressed(self, controller, keyval, keycode, state):
         # Used for selection mode, see on_activate.
-        if state & Gdk.ModifierType.SHIFT_MASK or keyval in (Gdk.KEY_Shift_L, Gdk.KEY_Shift_R):
+        if state & Gdk.ModifierType.SHIFT_MASK or keyval in (
+            Gdk.KEY_Shift_L,
+            Gdk.KEY_Shift_R,
+        ):
             self.shift_state = True
 
         if keyval == Gdk.KEY_Delete:
@@ -244,5 +269,8 @@ class EartagFileList(Gtk.ListView):
 
     def key_released(self, controller, keyval, keycode, state):
         # Used for selection mode, see on_activate.
-        if state & Gdk.ModifierType.SHIFT_MASK or keyval in (Gdk.KEY_Shift_L, Gdk.KEY_Shift_R):
+        if state & Gdk.ModifierType.SHIFT_MASK or keyval in (
+            Gdk.KEY_Shift_L,
+            Gdk.KEY_Shift_R,
+        ):
             self.shift_state = False

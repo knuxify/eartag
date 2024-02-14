@@ -6,9 +6,11 @@ import mutagen
 
 from .file import EartagFile
 
+
 class EartagFileMutagenCommon(EartagFile):
     """Base class for Mutagen-based backends."""
-    __gtype_name__ = 'EartagFileMutagenCommon'
+
+    __gtype_name__ = "EartagFileMutagenCommon"
 
     def __init__(self, path):
         super().__init__(path)

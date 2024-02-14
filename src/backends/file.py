@@ -4,7 +4,8 @@
 from ..utils.bgtask import run_threadsafe
 
 import gi
-gi.require_version('GdkPixbuf', '2.0')
+
+gi.require_version("GdkPixbuf", "2.0")
 from gi.repository import GObject, GdkPixbuf
 import filecmp
 import os
@@ -14,92 +15,96 @@ import tempfile
 import uuid
 
 BASIC_TAGS = (
-    'title', 'artist', 'album', 'albumartist', 'tracknumber',
-    'totaltracknumber', 'genre', 'releasedate', 'comment'
-)
+    "title", "artist", "album", "albumartist", "tracknumber",
+    "totaltracknumber", "genre", "releasedate", "comment"
+)  # fmt: skip
 
 EXTRA_TAGS = (
-    'bpm', 'compilation', 'composer', 'copyright', 'encodedby',
-    'mood', 'conductor', 'arranger', 'discnumber', 'publisher',
-    'isrc', 'language', 'discsubtitle', 'url',
+    "bpm", "compilation", "composer", "copyright", "encodedby",
+    "mood", "conductor", "arranger", "discnumber", "publisher",
+    "isrc", "language", "discsubtitle", "url",
 
-    'albumartistsort', 'albumsort', 'composersort', 'artistsort',
-    'titlesort',
+    "albumartistsort", "albumsort", "composersort", "artistsort",
+    "titlesort",
 
-    'musicbrainz_artistid', 'musicbrainz_albumid',
-    'musicbrainz_albumartistid', 'musicbrainz_trackid',
-    'musicbrainz_recordingid', 'musicbrainz_releasegroupid'
-)
+    "musicbrainz_artistid", "musicbrainz_albumid",
+    "musicbrainz_albumartistid", "musicbrainz_trackid",
+    "musicbrainz_recordingid", "musicbrainz_releasegroupid"
+)  # fmt: skip
+
 
 class CoverType:
     FRONT = 0
     BACK = 1
 
+
 # Workaround for tests not having the _ variable available
 try:
     _
 except NameError:
-    _ = lambda x: x
+    _ = lambda x: x  # noqa: E731
 
 # Human-readable tag names
 TAG_NAMES = {
-        "length": _("Length"),
-        "bitrate": _("Bitrate"),
+    "length": _("Length"),
+    "bitrate": _("Bitrate"),
 
-        "title": _("Title"),
-        "artist": _("Artist"),
-        "album": _("Album"),
-        "albumartist": _("Album artist"),
-        "tracknumber": _("Track number"),
-        "totaltracknumber": _("Total tracks"),
-        "genre": _("Genre"),
-        "releasedate": _("Release date"),
-        "comment": _("Comment"),
+    "title": _("Title"),
+    "artist": _("Artist"),
+    "album": _("Album"),
+    "albumartist": _("Album artist"),
+    "tracknumber": _("Track number"),
+    "totaltracknumber": _("Total tracks"),
+    "genre": _("Genre"),
+    "releasedate": _("Release date"),
+    "comment": _("Comment"),
 
-        "none": _("(Select a tag)"),
-        # TRANSLATORS: Short for "beats per minute".
-        "bpm": _("BPM"),
-        "compilation": _("Compilation"),
-        "composer": _("Composer"),
-        "copyright": _("Copyright"),
-        "encodedby": _("Encoded by"),
-        "mood": _("Mood"),
-        # TRANSLATORS: Orchestra conductor
-        "conductor": _("Conductor"),
-        "arranger": _("Arranger"),
-        "discnumber": _("Disc number"),
-        "publisher": _("Publisher"),
-        "isrc": "ISRC",
-        "language": _("Language"),
-        "discsubtitle": _("Disc subtitle"),
-        "url": _("Website/URL"),
+    "none": _("(Select a tag)"),
+    # TRANSLATORS: Short for "beats per minute".
+    "bpm": _("BPM"),
+    "compilation": _("Compilation"),
+    "composer": _("Composer"),
+    "copyright": _("Copyright"),
+    "encodedby": _("Encoded by"),
+    "mood": _("Mood"),
+    # TRANSLATORS: Orchestra conductor
+    "conductor": _("Conductor"),
+    "arranger": _("Arranger"),
+    "discnumber": _("Disc number"),
+    "publisher": _("Publisher"),
+    "isrc": "ISRC",
+    "language": _("Language"),
+    "discsubtitle": _("Disc subtitle"),
+    "url": _("Website/URL"),
 
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
-        # software should treat this tag when sorting.
-        "albumartistsort": _("Album artist (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
-        # software should treat this tag when sorting.
-        "albumsort": _("Album (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
-        # software should treat this tag when sorting.
-        "composersort": _("Composer (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
-        # software should treat this tag when sorting.
-        "artistsort": _("Artist (sort)"),
-        # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
-        # software should treat this tag when sorting.
-        "titlesort": _("Title (sort)"),
+    # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+    # software should treat this tag when sorting.
+    "albumartistsort": _("Album artist (sort)"),
+    # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+    # software should treat this tag when sorting.
+    "albumsort": _("Album (sort)"),
+    # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+    # software should treat this tag when sorting.
+    "composersort": _("Composer (sort)"),
+    # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+    # software should treat this tag when sorting.
+    "artistsort": _("Artist (sort)"),
+    # TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+    # software should treat this tag when sorting.
+    "titlesort": _("Title (sort)"),
 
-        "musicbrainz_artistid": _("MusicBrainz Artist ID"),
-        "musicbrainz_albumid": _("MusicBrainz Album ID"),
-        "musicbrainz_albumartistid": _("MusicBrainz Album Artist ID"),
-        "musicbrainz_trackid": _("MusicBrainz Release Track ID"),
-        "musicbrainz_recordingid": _("MusicBrainz Recording ID"),
-        "musicbrainz_releasegroupid": _("MusicBrainz Release Group ID"),
-    }
+    "musicbrainz_artistid": _("MusicBrainz Artist ID"),
+    "musicbrainz_albumid": _("MusicBrainz Album ID"),
+    "musicbrainz_albumartistid": _("MusicBrainz Album Artist ID"),
+    "musicbrainz_trackid": _("MusicBrainz Release Track ID"),
+    "musicbrainz_recordingid": _("MusicBrainz Recording ID"),
+    "musicbrainz_releasegroupid": _("MusicBrainz Release Group ID"),
+}  # fmt: skip
+
 
 class EartagFileCover:
     """This class is only used for comparing two covers on two files."""
+
     def __init__(self, cover_path):
         self.cover_path = cover_path
         if cover_path:
@@ -109,21 +114,15 @@ class EartagFileCover:
         if not self.cover_path:
             return
 
-        with open(self.cover_path, 'rb') as cover_file:
+        with open(self.cover_path, "rb") as cover_file:
             self.cover_data = cover_file.read()
 
         self.cover_small = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            self.cover_path,
-            48,
-            48,
-            True
+            self.cover_path, 48, 48, True
         )
 
         self.cover_large = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            self.cover_path,
-            196,
-            196,
-            True
+            self.cover_path, 196, 196, True
         )
 
     def __eq__(self, other):
@@ -143,6 +142,7 @@ class EartagFileCover:
     def is_empty(self):
         return not bool(self.cover_path)
 
+
 class EartagFile(GObject.Object):
     """
     Generic base for GObject wrappers that provide information about a music
@@ -158,11 +158,12 @@ class EartagFile(GObject.Object):
     Do not use get_tag and set_tag directly in the code; use get_property and
     set_property instead.
     """
-    __gtype_name__ = 'EartagFile'
+
+    __gtype_name__ = "EartagFile"
 
     handled_properties = BASIC_TAGS
-    int_properties = ('tracknumber', 'totaltracknumber', 'discnumber')
-    float_properties = ('bpm',)
+    int_properties = ("tracknumber", "totaltracknumber", "discnumber")
+    float_properties = ("bpm",)
     supported_extra_tags = []
     _supports_album_covers = False
     _is_modified = False
@@ -172,7 +173,7 @@ class EartagFile(GObject.Object):
     def __init__(self, path):
         """Initializes an EartagFile for the given file path."""
         super().__init__()
-        self.notify('supports-album-covers')
+        self.notify("supports-album-covers")
         self._path = path
         self.update_writability()
         self._front_cover = None
@@ -185,9 +186,9 @@ class EartagFile(GObject.Object):
         self.original_values = {}
         self._error_fields = []
         self._releasedate_cached = None
-        self.id = str(uuid.uuid4()) # Internal ID used for keeping track of files
-        self.connect('notify::front-cover-path', self._update_front_cover)
-        self.connect('notify::back-cover-path', self._update_back_cover)
+        self.id = str(uuid.uuid4())  # Internal ID used for keeping track of files
+        self.connect("notify::front-cover-path", self._update_front_cover)
+        self.connect("notify::back-cover-path", self._update_back_cover)
 
     def on_remove(self, *args):
         if self.front_cover_tempfile:
@@ -268,8 +269,12 @@ class EartagFile(GObject.Object):
             else:
                 self.original_values[tag] = self.get_property(tag)
         if self._supports_album_covers:
-            self.original_values['front_cover_path'] = self.get_property('front_cover_path')
-            self.original_values['back_cover_path'] = self.get_property('back_cover_path')
+            self.original_values["front_cover_path"] = self.get_property(
+                "front_cover_path"
+            )
+            self.original_values["back_cover_path"] = self.get_property(
+                "back_cover_path"
+            )
 
     def update_writability(self):
         """
@@ -277,13 +282,13 @@ class EartagFile(GObject.Object):
         accordingly.
         """
         try:
-            writable_check = open(self.path, 'a')
+            writable_check = open(self.path, "a")
             writable_check.close()
         except OSError:
             self._is_writable = False
         else:
             self._is_writable = True
-        self.notify('is_writable')
+        self.notify("is_writable")
 
     def set_error(self, field, has_error):
         """Sets an error for the given field."""
@@ -293,7 +298,7 @@ class EartagFile(GObject.Object):
             self._error_fields.append(field)
 
         self._has_error = has_error
-        self.notify('has-error')
+        self.notify("has-error")
 
     @GObject.Signal(arg_types=(str,))
     def modified(self, tag):
@@ -322,7 +327,7 @@ class EartagFile(GObject.Object):
 
         if not self.modified_tags:
             self._is_modified = False
-            self.notify('is_modified')
+            self.notify("is_modified")
 
     @GObject.Property(type=str)
     def path(self):
@@ -362,26 +367,34 @@ class EartagFile(GObject.Object):
         """Reloads the file and discards all modifications."""
         self.load_from_file(self.props.path)
         if thread_safe:
-            for prop in BASIC_TAGS + tuple(self.supported_extra_tags) + ('front_cover_path', 'back_cover_path'):
+            for prop in (
+                BASIC_TAGS
+                + tuple(self.supported_extra_tags)
+                + ("front_cover_path", "back_cover_path")
+            ):
                 run_threadsafe(self.notify, prop)
 
             run_threadsafe(self.mark_as_unmodified)
         else:
-            for prop in BASIC_TAGS + tuple(self.supported_extra_tags) + ('front_cover_path', 'back_cover_path'):
+            for prop in (
+                BASIC_TAGS
+                + tuple(self.supported_extra_tags)
+                + ("front_cover_path", "back_cover_path")
+            ):
                 self.notify(prop)
             self.mark_as_unmodified()
 
     def mark_as_modified(self, tag):
         if not self._is_modified:
             self._is_modified = True
-            self.notify('is_modified')
-        self.emit('modified', tag)
+            self.notify("is_modified")
+        self.emit("modified", tag)
 
     def mark_as_unmodified(self):
         if self._is_modified:
             self._is_modified = False
-            self.notify('is_modified')
-        self.emit('modified', None)
+            self.notify("is_modified")
+        self.emit("modified", None)
         self.modified_tags = []
 
     def mark_tag_as_unmodified(self, tag):
@@ -392,8 +405,8 @@ class EartagFile(GObject.Object):
             return
         if bool(self.modified_tags) != was_modified:
             self._is_modified = bool(self.modified_tags)
-            self.notify('is_modified')
-        self.emit('modified', None)
+            self.notify("is_modified")
+        self.emit("modified", None)
 
     def undo_all(self):
         """Undo all changes."""
@@ -500,15 +513,15 @@ class EartagFile(GObject.Object):
 
     def _cleanup_front_cover(self):
         """Common cleanup steps after delete_front_cover."""
-        self._front_cover_path = ''
-        self.mark_as_modified('front_cover_path')
-        self.notify('front-cover-path')
+        self._front_cover_path = ""
+        self.mark_as_modified("front_cover_path")
+        self.notify("front-cover-path")
 
     def _cleanup_back_cover(self):
         """Common cleanup steps after delete_back_cover."""
-        self._back_cover_path = ''
-        self.mark_as_modified('back_cover_path')
-        self.notify('back-cover-path')
+        self._back_cover_path = ""
+        self.mark_as_modified("back_cover_path")
+        self.notify("back-cover-path")
 
     def _cleanup_cover(self, cover_type: CoverType):
         """Common cleanup steps after delete_cover."""
@@ -551,31 +564,31 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=str)
     def title(self):
-        return self.get_tag('title')
+        return self.get_tag("title")
 
     @title.setter
     def title(self, value):
         if value:
-            self.set_tag('title', value)
-            self.mark_as_modified('title')
-        elif self.has_tag('title'):
-            self.delete_tag('title')
+            self.set_tag("title", value)
+            self.mark_as_modified("title")
+        elif self.has_tag("title"):
+            self.delete_tag("title")
 
     @GObject.Property(type=str)
     def artist(self):
-        return self.get_tag('artist')
+        return self.get_tag("artist")
 
     @artist.setter
     def artist(self, value):
         if value:
-            self.set_tag('artist', value)
-            self.mark_as_modified('artist')
-        elif self.has_tag('artist'):
-            self.delete_tag('artist')
+            self.set_tag("artist", value)
+            self.mark_as_modified("artist")
+        elif self.has_tag("artist"):
+            self.delete_tag("artist")
 
     @GObject.Property(type=int)
     def tracknumber(self):
-        value = self.get_tag('tracknumber')
+        value = self.get_tag("tracknumber")
         if value:
             return int(value)
         return None
@@ -583,14 +596,14 @@ class EartagFile(GObject.Object):
     @tracknumber.setter
     def tracknumber(self, value):
         if value:
-            self.set_tag('tracknumber', int(value))
-            self.mark_as_modified('tracknumber')
+            self.set_tag("tracknumber", int(value))
+            self.mark_as_modified("tracknumber")
         else:
-            self.delete_tag('tracknumber')
+            self.delete_tag("tracknumber")
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
-        value = self.get_tag('totaltracknumber')
+        value = self.get_tag("totaltracknumber")
         if value:
             return int(value)
         return None
@@ -598,46 +611,46 @@ class EartagFile(GObject.Object):
     @totaltracknumber.setter
     def totaltracknumber(self, value):
         if value:
-            self.set_tag('totaltracknumber', int(value))
-            self.mark_as_modified('totaltracknumber')
+            self.set_tag("totaltracknumber", int(value))
+            self.mark_as_modified("totaltracknumber")
         else:
-            self.delete_tag('totaltracknumber')
+            self.delete_tag("totaltracknumber")
 
     @GObject.Property(type=str)
     def album(self):
-        return self.get_tag('album')
+        return self.get_tag("album")
 
     @album.setter
     def album(self, value):
         if value:
-            self.set_tag('album', value)
-            self.mark_as_modified('album')
-        elif self.has_tag('album'):
-            self.delete_tag('album')
+            self.set_tag("album", value)
+            self.mark_as_modified("album")
+        elif self.has_tag("album"):
+            self.delete_tag("album")
 
     @GObject.Property(type=str)
     def albumartist(self):
-        return self.get_tag('albumartist')
+        return self.get_tag("albumartist")
 
     @albumartist.setter
     def albumartist(self, value):
         if value:
-            self.set_tag('albumartist', value)
-            self.mark_as_modified('albumartist')
-        elif self.has_tag('albumartist'):
-            self.delete_tag('albumartist')
+            self.set_tag("albumartist", value)
+            self.mark_as_modified("albumartist")
+        elif self.has_tag("albumartist"):
+            self.delete_tag("albumartist")
 
     @GObject.Property(type=str)
     def genre(self):
-        return self.get_tag('genre')
+        return self.get_tag("genre")
 
     @genre.setter
     def genre(self, value):
         if value:
-            self.set_tag('genre', value)
-            self.mark_as_modified('genre')
-        elif self.has_tag('genre'):
-            self.delete_tag('genre')
+            self.set_tag("genre", value)
+            self.mark_as_modified("genre")
+        elif self.has_tag("genre"):
+            self.delete_tag("genre")
 
     # Release dates have custom handling, as invalid values don't get
     # saved correctly, so we only save valid ones to the file itself,
@@ -649,9 +662,12 @@ class EartagFile(GObject.Object):
             return
 
         has_error = True
-        if '-' in value:
-            for format in ('^[0-9]{4}$', '^[0-9]{4}-[0-9]{2}$',
-                    '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'):
+        if "-" in value:
+            for format in (
+                "^[0-9]{4}$",
+                "^[0-9]{4}-[0-9]{2}$",
+                "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            ):
                 if re.match(format, value):
                     has_error = False
                     break
@@ -662,8 +678,8 @@ class EartagFile(GObject.Object):
 
     @GObject.Property(type=str)
     def releasedate(self):
-        if not self._releasedate_cached and self.has_tag('releasedate'):
-            value = self.get_tag('releasedate')
+        if not self._releasedate_cached and self.has_tag("releasedate"):
+            value = self.get_tag("releasedate")
             if value and len(value) > 10:
                 value = value[:10]
             self._releasedate_cached = value
@@ -671,446 +687,446 @@ class EartagFile(GObject.Object):
 
     @releasedate.setter
     def releasedate(self, value):
-        self.validate_date('releasedate', value)
+        self.validate_date("releasedate", value)
         self._releasedate_cached = value
-        if 'releasedate' not in self._error_fields:
+        if "releasedate" not in self._error_fields:
             if value:
-                self.set_tag('releasedate', value)
-            elif self.has_tag('releasedate'):
+                self.set_tag("releasedate", value)
+            elif self.has_tag("releasedate"):
                 self._releasedate_cached = None
-                self.delete_tag('releasedate')
-        self.mark_as_modified('releasedate')
+                self.delete_tag("releasedate")
+        self.mark_as_modified("releasedate")
 
     @GObject.Property(type=str)
     def comment(self):
-        return self.get_tag('comment')
+        return self.get_tag("comment")
 
     @comment.setter
     def comment(self, value):
         if value:
-            self.set_tag('comment', value)
-            self.mark_as_modified('comment')
-        elif self.has_tag('comment'):
-            self.delete_tag('comment')
+            self.set_tag("comment", value)
+            self.mark_as_modified("comment")
+        elif self.has_tag("comment"):
+            self.delete_tag("comment")
 
     # Additional tag properties.
 
     @GObject.Property(type=float)
     def bpm(self):
-        if 'bpm' in self.supported_extra_tags:
-            value = self.get_tag('bpm')
+        if "bpm" in self.supported_extra_tags:
+            value = self.get_tag("bpm")
             if value:
                 # Some BPMs can be floating point values, so we treat this as a float
                 try:
-                    return float(self.get_tag('bpm'))
+                    return float(self.get_tag("bpm"))
                 except ValueError:
                     return None
         return None
 
     @bpm.setter
     def bpm(self, value):
-        if 'bpm' not in self.supported_extra_tags:
+        if "bpm" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('bpm', float(value))
-            self.mark_as_modified('bpm')
-        elif self.has_tag('bpm'):
-            self.delete_tag('bpm')
+            self.set_tag("bpm", float(value))
+            self.mark_as_modified("bpm")
+        elif self.has_tag("bpm"):
+            self.delete_tag("bpm")
 
     @GObject.Property(type=str)
     def compilation(self):
-        if 'compilation' in self.supported_extra_tags:
-            return self.get_tag('compilation')
+        if "compilation" in self.supported_extra_tags:
+            return self.get_tag("compilation")
         return None
 
     @compilation.setter
     def compilation(self, value):
-        if 'compilation' not in self.supported_extra_tags:
+        if "compilation" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('compilation', value)
-            self.mark_as_modified('compilation')
-        elif self.has_tag('compilation'):
-            self.delete_tag('compilation')
+            self.set_tag("compilation", value)
+            self.mark_as_modified("compilation")
+        elif self.has_tag("compilation"):
+            self.delete_tag("compilation")
 
     @GObject.Property(type=str)
     def composer(self):
-        if 'composer' in self.supported_extra_tags:
-            return self.get_tag('composer')
+        if "composer" in self.supported_extra_tags:
+            return self.get_tag("composer")
         return None
 
     @composer.setter
     def composer(self, value):
-        if 'composer' not in self.supported_extra_tags:
+        if "composer" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('composer', value)
-            self.mark_as_modified('composer')
-        elif self.has_tag('composer'):
-            self.delete_tag('composer')
+            self.set_tag("composer", value)
+            self.mark_as_modified("composer")
+        elif self.has_tag("composer"):
+            self.delete_tag("composer")
 
     @GObject.Property(type=str)
     def copyright(self):
-        if 'copyright' in self.supported_extra_tags:
-            return self.get_tag('copyright')
+        if "copyright" in self.supported_extra_tags:
+            return self.get_tag("copyright")
         return None
 
     @copyright.setter
     def copyright(self, value):
-        if 'copyright' not in self.supported_extra_tags:
+        if "copyright" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('copyright', value)
-            self.mark_as_modified('copyright')
-        elif self.has_tag('copyright'):
-            self.delete_tag('copyright')
+            self.set_tag("copyright", value)
+            self.mark_as_modified("copyright")
+        elif self.has_tag("copyright"):
+            self.delete_tag("copyright")
 
     @GObject.Property(type=str)
     def encodedby(self):
-        if 'encodedby' in self.supported_extra_tags:
-            return self.get_tag('encodedby')
+        if "encodedby" in self.supported_extra_tags:
+            return self.get_tag("encodedby")
         return None
 
     @encodedby.setter
     def encodedby(self, value):
-        if 'encodedby' not in self.supported_extra_tags:
+        if "encodedby" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('encodedby', value)
-            self.mark_as_modified('encodedby')
-        elif self.has_tag('encodedby'):
-            self.delete_tag('encodedby')
+            self.set_tag("encodedby", value)
+            self.mark_as_modified("encodedby")
+        elif self.has_tag("encodedby"):
+            self.delete_tag("encodedby")
 
     @GObject.Property(type=str)
     def mood(self):
-        if 'mood' in self.supported_extra_tags:
-            return self.get_tag('mood')
+        if "mood" in self.supported_extra_tags:
+            return self.get_tag("mood")
         return None
 
     @mood.setter
     def mood(self, value):
-        if 'mood' not in self.supported_extra_tags:
+        if "mood" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('mood', value)
-            self.mark_as_modified('mood')
-        elif self.has_tag('mood'):
-            self.delete_tag('mood')
+            self.set_tag("mood", value)
+            self.mark_as_modified("mood")
+        elif self.has_tag("mood"):
+            self.delete_tag("mood")
 
     @GObject.Property(type=str)
     def conductor(self):
-        if 'conductor' in self.supported_extra_tags:
-            return self.get_tag('conductor')
+        if "conductor" in self.supported_extra_tags:
+            return self.get_tag("conductor")
         return None
 
     @conductor.setter
     def conductor(self, value):
-        if 'conductor' not in self.supported_extra_tags:
+        if "conductor" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('conductor', value)
-            self.mark_as_modified('conductor')
-        elif self.has_tag('conductor'):
-            self.delete_tag('conductor')
+            self.set_tag("conductor", value)
+            self.mark_as_modified("conductor")
+        elif self.has_tag("conductor"):
+            self.delete_tag("conductor")
 
     @GObject.Property(type=str)
     def arranger(self):
-        if 'arranger' in self.supported_extra_tags:
-            return self.get_tag('arranger')
+        if "arranger" in self.supported_extra_tags:
+            return self.get_tag("arranger")
         return None
 
     @arranger.setter
     def arranger(self, value):
-        if 'arranger' not in self.supported_extra_tags:
+        if "arranger" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('arranger', value)
-            self.mark_as_modified('arranger')
-        elif self.has_tag('arranger'):
-            self.delete_tag('arranger')
+            self.set_tag("arranger", value)
+            self.mark_as_modified("arranger")
+        elif self.has_tag("arranger"):
+            self.delete_tag("arranger")
 
     @GObject.Property(type=int)
     def discnumber(self):
-        if 'discnumber' in self.supported_extra_tags:
-            value = self.get_tag('discnumber')
+        if "discnumber" in self.supported_extra_tags:
+            value = self.get_tag("discnumber")
             if value:
                 return int(value)
         return None
 
     @discnumber.setter
     def discnumber(self, value):
-        if 'discnumber' not in self.supported_extra_tags:
+        if "discnumber" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('discnumber', int(value))
-            self.mark_as_modified('discnumber')
-        elif self.has_tag('discnumber'):
-            self.delete_tag('discnumber')
+            self.set_tag("discnumber", int(value))
+            self.mark_as_modified("discnumber")
+        elif self.has_tag("discnumber"):
+            self.delete_tag("discnumber")
 
     @GObject.Property(type=str)
     def publisher(self):
-        if 'publisher' in self.supported_extra_tags:
-            return self.get_tag('publisher')
+        if "publisher" in self.supported_extra_tags:
+            return self.get_tag("publisher")
         return None
 
     @publisher.setter
     def publisher(self, value):
-        if 'publisher' not in self.supported_extra_tags:
+        if "publisher" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('publisher', value)
-            self.mark_as_modified('publisher')
-        elif self.has_tag('publisher'):
-            self.delete_tag('publisher')
+            self.set_tag("publisher", value)
+            self.mark_as_modified("publisher")
+        elif self.has_tag("publisher"):
+            self.delete_tag("publisher")
 
     @GObject.Property(type=str)
     def isrc(self):
-        if 'isrc' in self.supported_extra_tags:
-            return self.get_tag('isrc')
+        if "isrc" in self.supported_extra_tags:
+            return self.get_tag("isrc")
         return None
 
     @isrc.setter
     def isrc(self, value):
-        if 'isrc' not in self.supported_extra_tags:
+        if "isrc" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('isrc', value)
-            self.mark_as_modified('isrc')
-        elif self.has_tag('isrc'):
-            self.delete_tag('isrc')
+            self.set_tag("isrc", value)
+            self.mark_as_modified("isrc")
+        elif self.has_tag("isrc"):
+            self.delete_tag("isrc")
 
     @GObject.Property(type=str)
     def language(self):
-        if 'language' in self.supported_extra_tags:
-            return self.get_tag('language')
+        if "language" in self.supported_extra_tags:
+            return self.get_tag("language")
         return None
 
     @language.setter
     def language(self, value):
-        if 'language' not in self.supported_extra_tags:
+        if "language" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('language', value)
-            self.mark_as_modified('language')
-        elif self.has_tag('language'):
-            self.delete_tag('language')
+            self.set_tag("language", value)
+            self.mark_as_modified("language")
+        elif self.has_tag("language"):
+            self.delete_tag("language")
 
     @GObject.Property(type=str)
     def discsubtitle(self):
-        if 'discsubtitle' in self.supported_extra_tags:
-            return self.get_tag('discsubtitle')
+        if "discsubtitle" in self.supported_extra_tags:
+            return self.get_tag("discsubtitle")
         return None
 
     @discsubtitle.setter
     def discsubtitle(self, value):
-        if 'discsubtitle' not in self.supported_extra_tags:
+        if "discsubtitle" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('discsubtitle', value)
-            self.mark_as_modified('discsubtitle')
-        elif self.has_tag('discsubtitle'):
-            self.delete_tag('discsubtitle')
+            self.set_tag("discsubtitle", value)
+            self.mark_as_modified("discsubtitle")
+        elif self.has_tag("discsubtitle"):
+            self.delete_tag("discsubtitle")
 
     # Sort order tags
 
     @GObject.Property(type=str)
     def albumartistsort(self):
-        if 'albumartistsort' in self.supported_extra_tags:
-            return self.get_tag('albumartistsort')
+        if "albumartistsort" in self.supported_extra_tags:
+            return self.get_tag("albumartistsort")
         return None
 
     @albumartistsort.setter
     def albumartistsort(self, value):
-        if 'albumartistsort' not in self.supported_extra_tags:
+        if "albumartistsort" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('albumartistsort', value)
-            self.mark_as_modified('albumartistsort')
-        elif self.has_tag('albumartistsort'):
-            self.delete_tag('albumartistsort')
+            self.set_tag("albumartistsort", value)
+            self.mark_as_modified("albumartistsort")
+        elif self.has_tag("albumartistsort"):
+            self.delete_tag("albumartistsort")
 
     @GObject.Property(type=str)
     def albumsort(self):
-        if 'albumsort' in self.supported_extra_tags:
-            return self.get_tag('albumsort')
+        if "albumsort" in self.supported_extra_tags:
+            return self.get_tag("albumsort")
         return None
 
     @albumsort.setter
     def albumsort(self, value):
-        if 'albumsort' not in self.supported_extra_tags:
+        if "albumsort" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('albumsort', value)
-            self.mark_as_modified('albumsort')
-        elif self.has_tag('albumsort'):
-            self.delete_tag('albumsort')
+            self.set_tag("albumsort", value)
+            self.mark_as_modified("albumsort")
+        elif self.has_tag("albumsort"):
+            self.delete_tag("albumsort")
 
     @GObject.Property(type=str)
     def composersort(self):
-        if 'composersort' in self.supported_extra_tags:
-            return self.get_tag('composersort')
+        if "composersort" in self.supported_extra_tags:
+            return self.get_tag("composersort")
         return None
 
     @composersort.setter
     def composersort(self, value):
-        if 'composersort' not in self.supported_extra_tags:
+        if "composersort" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('composersort', value)
-            self.mark_as_modified('composersort')
-        elif self.has_tag('composersort'):
-            self.delete_tag('composersort')
+            self.set_tag("composersort", value)
+            self.mark_as_modified("composersort")
+        elif self.has_tag("composersort"):
+            self.delete_tag("composersort")
 
     @GObject.Property(type=str)
     def artistsort(self):
-        if 'artistsort' in self.supported_extra_tags:
-            return self.get_tag('artistsort')
+        if "artistsort" in self.supported_extra_tags:
+            return self.get_tag("artistsort")
         return None
 
     @artistsort.setter
     def artistsort(self, value):
-        if 'artistsort' not in self.supported_extra_tags:
+        if "artistsort" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('artistsort', value)
-            self.mark_as_modified('artistsort')
-        elif self.has_tag('artistsort'):
-            self.delete_tag('artistsort')
+            self.set_tag("artistsort", value)
+            self.mark_as_modified("artistsort")
+        elif self.has_tag("artistsort"):
+            self.delete_tag("artistsort")
 
     @GObject.Property(type=str)
     def titlesort(self):
-        if 'titlesort' in self.supported_extra_tags:
-            return self.get_tag('titlesort')
+        if "titlesort" in self.supported_extra_tags:
+            return self.get_tag("titlesort")
         return None
 
     @titlesort.setter
     def titlesort(self, value):
-        if 'titlesort' not in self.supported_extra_tags:
+        if "titlesort" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('titlesort', value)
-            self.mark_as_modified('titlesort')
-        elif self.has_tag('titlesort'):
-            self.delete_tag('titlesort')
+            self.set_tag("titlesort", value)
+            self.mark_as_modified("titlesort")
+        elif self.has_tag("titlesort"):
+            self.delete_tag("titlesort")
 
     @GObject.Property(type=str)
     def url(self):
-        if 'url' in self.supported_extra_tags:
-            return self.get_tag('url')
+        if "url" in self.supported_extra_tags:
+            return self.get_tag("url")
         return None
 
     @url.setter
     def url(self, value):
-        if 'url' not in self.supported_extra_tags:
+        if "url" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('url', value)
-            self.mark_as_modified('url')
-        elif self.has_tag('url'):
-            self.delete_tag('url')
+            self.set_tag("url", value)
+            self.mark_as_modified("url")
+        elif self.has_tag("url"):
+            self.delete_tag("url")
 
     # MusicBrainz tags
 
     @GObject.Property(type=str)
     def musicbrainz_artistid(self):
-        if 'musicbrainz_artistid' in self.supported_extra_tags:
-            return self.get_tag('musicbrainz_artistid')
+        if "musicbrainz_artistid" in self.supported_extra_tags:
+            return self.get_tag("musicbrainz_artistid")
         return None
 
     @musicbrainz_artistid.setter
     def musicbrainz_artistid(self, value):
-        if 'musicbrainz_artistid' not in self.supported_extra_tags:
+        if "musicbrainz_artistid" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('musicbrainz_artistid', value)
-            self.mark_as_modified('musicbrainz_artistid')
-        elif self.has_tag('musicbrainz_artistid'):
-            self.delete_tag('musicbrainz_artistid')
+            self.set_tag("musicbrainz_artistid", value)
+            self.mark_as_modified("musicbrainz_artistid")
+        elif self.has_tag("musicbrainz_artistid"):
+            self.delete_tag("musicbrainz_artistid")
 
     @GObject.Property(type=str)
     def musicbrainz_albumid(self):
-        if 'musicbrainz_albumid' in self.supported_extra_tags:
-            return self.get_tag('musicbrainz_albumid')
+        if "musicbrainz_albumid" in self.supported_extra_tags:
+            return self.get_tag("musicbrainz_albumid")
         return None
 
     @musicbrainz_albumid.setter
     def musicbrainz_albumid(self, value):
-        if 'musicbrainz_albumid' not in self.supported_extra_tags:
+        if "musicbrainz_albumid" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('musicbrainz_albumid', value)
-            self.mark_as_modified('musicbrainz_albumid')
-        elif self.has_tag('musicbrainz_albumid'):
-            self.delete_tag('musicbrainz_albumid')
+            self.set_tag("musicbrainz_albumid", value)
+            self.mark_as_modified("musicbrainz_albumid")
+        elif self.has_tag("musicbrainz_albumid"):
+            self.delete_tag("musicbrainz_albumid")
 
     @GObject.Property(type=str)
     def musicbrainz_albumartistid(self):
-        if 'musicbrainz_albumartistid' in self.supported_extra_tags:
-            return self.get_tag('musicbrainz_albumartistid')
+        if "musicbrainz_albumartistid" in self.supported_extra_tags:
+            return self.get_tag("musicbrainz_albumartistid")
         return None
 
     @musicbrainz_albumartistid.setter
     def musicbrainz_albumartistid(self, value):
-        if 'musicbrainz_albumartistid' not in self.supported_extra_tags:
+        if "musicbrainz_albumartistid" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('musicbrainz_albumartistid', value)
-            self.mark_as_modified('musicbrainz_albumartistid')
-        elif self.has_tag('musicbrainz_albumartistid'):
-            self.delete_tag('musicbrainz_albumartistid')
+            self.set_tag("musicbrainz_albumartistid", value)
+            self.mark_as_modified("musicbrainz_albumartistid")
+        elif self.has_tag("musicbrainz_albumartistid"):
+            self.delete_tag("musicbrainz_albumartistid")
 
     @GObject.Property(type=str)
     def musicbrainz_trackid(self):
-        if 'musicbrainz_trackid' in self.supported_extra_tags:
-            return self.get_tag('musicbrainz_trackid')
+        if "musicbrainz_trackid" in self.supported_extra_tags:
+            return self.get_tag("musicbrainz_trackid")
         return None
 
     @musicbrainz_trackid.setter
     def musicbrainz_trackid(self, value):
-        if 'musicbrainz_trackid' not in self.supported_extra_tags:
+        if "musicbrainz_trackid" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('musicbrainz_trackid', value)
-            self.mark_as_modified('musicbrainz_trackid')
-        elif self.has_tag('musicbrainz_trackid'):
-            self.delete_tag('musicbrainz_trackid')
+            self.set_tag("musicbrainz_trackid", value)
+            self.mark_as_modified("musicbrainz_trackid")
+        elif self.has_tag("musicbrainz_trackid"):
+            self.delete_tag("musicbrainz_trackid")
 
     @GObject.Property(type=str)
     def musicbrainz_recordingid(self):
-        if 'musicbrainz_recordingid' in self.supported_extra_tags:
-            return self.get_tag('musicbrainz_recordingid')
+        if "musicbrainz_recordingid" in self.supported_extra_tags:
+            return self.get_tag("musicbrainz_recordingid")
         return None
 
     @musicbrainz_recordingid.setter
     def musicbrainz_recordingid(self, value):
-        if 'musicbrainz_recordingid' not in self.supported_extra_tags:
+        if "musicbrainz_recordingid" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('musicbrainz_recordingid', value)
-            self.mark_as_modified('musicbrainz_recordingid')
-        elif self.has_tag('musicbrainz_recordingid'):
-            self.delete_tag('musicbrainz_recordingid')
+            self.set_tag("musicbrainz_recordingid", value)
+            self.mark_as_modified("musicbrainz_recordingid")
+        elif self.has_tag("musicbrainz_recordingid"):
+            self.delete_tag("musicbrainz_recordingid")
 
     @GObject.Property(type=str)
     def musicbrainz_releasegroupid(self):
-        if 'musicbrainz_releasegroupid' in self.supported_extra_tags:
-            return self.get_tag('musicbrainz_releasegroupid')
+        if "musicbrainz_releasegroupid" in self.supported_extra_tags:
+            return self.get_tag("musicbrainz_releasegroupid")
         return None
 
     @musicbrainz_releasegroupid.setter
     def musicbrainz_releasegroupid(self, value):
-        if 'musicbrainz_releasegroupid' not in self.supported_extra_tags:
+        if "musicbrainz_releasegroupid" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag('musicbrainz_releasegroupid', value)
-            self.mark_as_modified('musicbrainz_releasegroupid')
-        elif self.has_tag('musicbrainz_releasegroupid'):
-            self.delete_tag('musicbrainz_releasegroupid')
+            self.set_tag("musicbrainz_releasegroupid", value)
+            self.mark_as_modified("musicbrainz_releasegroupid")
+        elif self.has_tag("musicbrainz_releasegroupid"):
+            self.delete_tag("musicbrainz_releasegroupid")
 
     @GObject.Property(type=str)
     def none(self):
-        return ''
+        return ""
 
     @none.setter
     def none(self, value):
-        return ''
+        return ""

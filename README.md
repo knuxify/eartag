@@ -47,6 +47,8 @@ Project development happens on [GNOME's GitLab instance](https://gitlab.gnome.or
 
 Translations can be submitted through [Damned Lies (l10n.gnome.org)](https://l10n.gnome.org/module/eartag/).
 
+If you make modifications to the code, run `black` to ensure that everything is formatted correctly.
+
 You are expected to follow the [GNOME Code of Conduct](https://wiki.gnome.org/Foundation/CodeOfConduct) when participating in project spaces.
 
 ### Commit style

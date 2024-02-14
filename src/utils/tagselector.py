@@ -10,7 +10,8 @@ from ..backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
 
 from gi.repository import Gdk, Gtk, GObject
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/tagselectorbutton.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/tagselectorbutton.ui")
 class EartagTagSelectorButton(Gtk.MenuButton):
     """
     Button that allows you to select a tag from a list.
@@ -18,6 +19,7 @@ class EartagTagSelectorButton(Gtk.MenuButton):
     Users can bind to the tag-selected signal to get the name
     of the tag.
     """
+
     __gtype_name__ = "EartagTagSelectorButton"
 
     tag_list_popover = Gtk.Template.Child()
@@ -27,12 +29,13 @@ class EartagTagSelectorButton(Gtk.MenuButton):
     def __init__(self):
         # Extra tag filter for additional tag field
         self.tag_names = dict(
-            [(k, v) for k, v in TAG_NAMES.items()
-            if k in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate')]
+            [
+                (k, v)
+                for k, v in TAG_NAMES.items()
+                if k in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate")
+            ]
         )
-        self.tag_names_swapped = dict(
-            [(v, k) for k, v in self.tag_names.items()]
-        )
+        self.tag_names_swapped = dict([(v, k) for k, v in self.tag_names.items()])
         tag_model_nofilter = Gtk.StringList.new(list(self.tag_names.values()))
         self.tag_model = Gtk.FilterListModel(model=tag_model_nofilter)
         self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_model)
@@ -44,11 +47,11 @@ class EartagTagSelectorButton(Gtk.MenuButton):
         self._ignore_tag_selector = False
 
         factory = Gtk.BuilderListItemFactory.new_from_resource(
-            None, f'{APP_GRESOURCE_PATH}/ui/moretagsgroupfactory.ui'
+            None, f"{APP_GRESOURCE_PATH}/ui/moretagsgroupfactory.ui"
         )
         self.tag_list.set_model(self.tag_selection_model)
         self.tag_list.set_factory(factory)
-        self.tag_list.connect('activate', self.add_placeholder_from_selector)
+        self.tag_list.connect("activate", self.add_placeholder_from_selector)
 
         # Close popover if Escape key is pressed in search entry
         controller = Gtk.ShortcutController()
@@ -67,11 +70,11 @@ class EartagTagSelectorButton(Gtk.MenuButton):
         selected_item = self.tag_selection_model.get_item(position)
         if not selected_item:
             return
-        if selected_item.get_string() == 'none':
+        if selected_item.get_string() == "none":
             return
         tag = self.tag_names_swapped[selected_item.get_string()]
 
-        self.emit('tag-selected', tag)
+        self.emit("tag-selected", tag)
 
         self.tag_list_popover.popdown()
 

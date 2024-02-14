@@ -8,7 +8,8 @@ from .utils.misc import filename_valid
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .utils.tagsyntaxhighlight import (
     EartagPlaceholderSyntaxHighlighter,
-    attr_foreground_new, THEMES
+    attr_foreground_new,
+    THEMES,
 )
 from . import APP_GRESOURCE_PATH
 
@@ -16,22 +17,24 @@ from gi.repository import Adw, GLib, Gtk, Gio, GObject, Pango
 import os
 import re
 
+
 def tag_is_int(file, tag):
-    return tag in file.int_properties + file.float_properties + ('length', 'bitrate')
+    return tag in file.int_properties + file.float_properties + ("length", "bitrate")
+
 
 def get_formatted_tag(file: "EartagFile", tag: str) -> str:
     """
     Returns the value of the tag formatted according to placeholder preview rules.
     """
-    parsed_value = ''
+    parsed_value = ""
 
-    if tag in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+    if tag in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate"):
         value = file.get_property(tag)
         if not value:
-            if tag == 'title':
+            if tag == "title":
                 parsed_value = _("Untitled")
             elif tag_is_int(file, tag):
-                if tag.endswith('tracknumber') or tag.endswith('discnumber'):
+                if tag.endswith("tracknumber") or tag.endswith("discnumber"):
                     parsed_value = "00"
                 else:
                     parsed_value = "0"
@@ -42,9 +45,9 @@ def get_formatted_tag(file: "EartagFile", tag: str) -> str:
             if tag_is_int(file, tag):
                 if not value or value < 0:
                     value = 0
-                if tag == 'length':
+                if tag == "length":
                     parsed_value = get_readable_length(int(value))
-                elif tag.endswith('tracknumber') or tag.endswith('discnumber'):
+                elif tag.endswith("tracknumber") or tag.endswith("discnumber"):
                     parsed_value = str(value).zfill(2)
                 else:
                     parsed_value = str(value)
@@ -54,12 +57,15 @@ def get_formatted_tag(file: "EartagFile", tag: str) -> str:
                 # potential file path separators we need to filter out first,
                 # otherwise they'll get treated as folders (valid as far as
                 # renaming and moving to a folder is concerned).
-                for char in ('/', '\'', ':'):
-                    parsed_value = parsed_value.replace(char, '_')
+                for char in ("/", "'", ":"):
+                    parsed_value = parsed_value.replace(char, "_")
 
     return parsed_value
 
-def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bool = False) -> dict:
+
+def parse_placeholder_string(
+    placeholder: str, file: "EartagFile", positions: bool = False
+) -> dict:
     """
     Takes a placeholder string and a file and returns a string filled with the
     placeholders.
@@ -72,48 +78,52 @@ def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bo
     # Pango attributes (used for syntax highlighting) use offsets calculated
     # in bytes, not Python characters, so we encode the placeholder to UTF-8
     # so that the returned group positions match the byte count.
-    placeholder = placeholder.encode('utf-8')
+    placeholder = placeholder.encode("utf-8")
 
     n = 0
     offset = 0
     out = placeholder
     present_tags = set()
     _positions = []
-    for match in re.finditer(r'{.*?}'.encode('utf-8'), placeholder):
+    for match in re.finditer(r"{.*?}".encode("utf-8"), placeholder):
         try:
-            tag_name = match.group(0)[1:-1].decode('utf-8')
+            tag_name = match.group(0)[1:-1].decode("utf-8")
         except (IndexError, UnicodeDecodeError):
-            error = True
             continue
 
-        if '{' in tag_name or '}' in tag_name:
-            error = True
+        if "{" in tag_name or "}" in tag_name:
             continue
 
-        if tag_name == '' or tag_name in present_tags:
+        if tag_name == "" or tag_name in present_tags:
             continue
 
-        if tag_name not in BASIC_TAGS + EXTRA_TAGS + ('length', 'bitrate'):
+        if tag_name not in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate"):
             continue
 
         present_tags.add(tag_name)
 
-        formatted_value = get_formatted_tag(file, tag_name).encode('utf-8')
-        out = out.replace(('{' + tag_name + '}').encode('utf-8'), formatted_value, 1)
+        formatted_value = get_formatted_tag(file, tag_name).encode("utf-8")
+        out = out.replace(("{" + tag_name + "}").encode("utf-8"), formatted_value, 1)
 
-        _positions.append((match.span(0)[0] + offset, match.span(0)[0] + offset + len(formatted_value)))
-        offset += len(formatted_value) - len(('{' + tag_name + '}').encode('utf-8'))
+        _positions.append(
+            (
+                match.span(0)[0] + offset,
+                match.span(0)[0] + offset + len(formatted_value),
+            )
+        )
+        offset += len(formatted_value) - len(("{" + tag_name + "}").encode("utf-8"))
         n += 1
 
-    out = out.decode('utf-8')
+    out = out.decode("utf-8")
 
     if positions:
         return out, _positions
     return out
 
-@Gtk.Template(resource_path=f'{APP_GRESOURCE_PATH}/ui/rename.ui')
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/rename.ui")
 class EartagRenameDialog(Adw.Window):
-    __gtype_name__ = 'EartagRenameDialog'
+    __gtype_name__ = "EartagRenameDialog"
 
     toast_overlay = Gtk.Template.Child()
 
@@ -153,63 +163,68 @@ class EartagRenameDialog(Adw.Window):
 
         self.folder_chooser = Gtk.FileDialog(modal=True)
         self.bind_property(
-            'folder', self.folder_selector_row, 'subtitle',
-            GObject.BindingFlags.SYNC_CREATE
+            "folder",
+            self.folder_selector_row,
+            "subtitle",
+            GObject.BindingFlags.SYNC_CREATE,
         )
         if EartagRenameDialog._last_folder is not None:
             self.props.folder = EartagRenameDialog._last_folder
-        elif os.path.exists(config['rename-base-folder']):
-            self.props.folder = config['rename-base-folder']
+        elif os.path.exists(config["rename-base-folder"]):
+            self.props.folder = config["rename-base-folder"]
 
         self.file_manager.rename_task.bind_property(
-            'progress', self.rename_progress, 'fraction'
+            "progress", self.rename_progress, "fraction"
         )
-        self.file_manager.rename_task.connect('task-done', self.on_done)
+        self.file_manager.rename_task.connect("task-done", self.on_done)
 
-        config.bind('rename-placeholder',
-            self.filename_entry, 'text',
-            Gio.SettingsBindFlags.DEFAULT
+        config.bind(
+            "rename-placeholder",
+            self.filename_entry,
+            "text",
+            Gio.SettingsBindFlags.DEFAULT,
         )
 
         if self._has_sandboxed_files and not self.props.folder:
             self.sandbox_warning_banner.props.revealed = True
 
-        self.connect('notify::folder', self.validate_placeholder)
-        self.connect('notify::validation-passed', self.update_rename_button_sensitivity)
+        self.connect("notify::folder", self.validate_placeholder)
+        self.connect("notify::validation-passed", self.update_rename_button_sensitivity)
         self.validate_placeholder()
         self.update_rename_button_sensitivity()
 
     def validate_placeholder(self, *args):
         """Validates the filename input."""
         placeholder = self.filename_entry.get_text()
-        if '/' in placeholder and not self.props.folder:
+        if "/" in placeholder and not self.props.folder:
             self.props.validation_passed = False
         else:
-            if self.props.folder and placeholder.startswith('/'):
+            if self.props.folder and placeholder.startswith("/"):
                 self.props.validation_passed = False
             else:
                 self.props.validation_passed = filename_valid(
-                    self.filename_entry.get_text(),
-                    allow_path=bool(self.props.folder)
+                    self.filename_entry.get_text(), allow_path=bool(self.props.folder)
                 )
         self.update_rename_button_sensitivity()
         self.folder_remove_button.props.sensitive = bool(self.props.folder)
 
     def update_rename_button_sensitivity(self, *args):
         if self.props.validation_passed:
-            self.filename_entry.remove_css_class('error')
+            self.filename_entry.remove_css_class("error")
         else:
-            self.filename_entry.add_css_class('error')
+            self.filename_entry.add_css_class("error")
 
         has_sandboxed = self._has_sandboxed_files and not self.props.folder
 
-        self.rename_button.set_sensitive(self.props.validation_passed and not has_sandboxed)
+        self.rename_button.set_sensitive(
+            self.props.validation_passed and not has_sandboxed
+        )
 
     @Gtk.Template.Callback()
     def add_placeholder_from_selector(self, selector, tag, *args):
         """Adds a new placeholder based on the tag selector."""
         self.filename_entry.insert_text(
-            '{' + tag + '}', self.filename_entry.props.cursor_position
+            "{" + tag + "}", self.filename_entry.props.cursor_position
         )
 
     # Move to folder feature
@@ -224,16 +239,19 @@ class EartagRenameDialog(Adw.Window):
         self._folder = value
         EartagRenameDialog._last_folder = value
         if not value:
-            config['rename-base-folder'] = ""
-        elif not value.startswith('/run/user/'):
-            config['rename-base-folder'] = value
+            config["rename-base-folder"] = ""
+        elif not value.startswith("/run/user/"):
+            config["rename-base-folder"] = value
 
-        self.sandbox_warning_banner.props.revealed = \
+        self.sandbox_warning_banner.props.revealed = (
             self._has_sandboxed_files and not value
+        )
 
     @Gtk.Template.Callback()
     def show_folder_selector(self, *args):
-        self.folder_chooser.select_folder(self, None, self.select_folder_from_selector, None)
+        self.folder_chooser.select_folder(
+            self, None, self.select_folder_from_selector, None
+        )
 
     def select_folder_from_selector(self, source, result, data):
         try:
@@ -284,8 +302,11 @@ class EartagRenameDialog(Adw.Window):
                 basepath = self.props.folder
             else:
                 basepath = os.path.dirname(file.props.path)
-            names.append(os.path.join(basepath,
-                parse_placeholder_string(format, file) + file.props.filetype)
+            names.append(
+                os.path.join(
+                    basepath,
+                    parse_placeholder_string(format, file) + file.props.filetype,
+                )
             )
 
         self.set_sensitive(False)
@@ -299,9 +320,7 @@ class EartagRenameDialog(Adw.Window):
             return
         example_file = self.file_manager.selected_files[0]
         parsed_placeholder, placeholder_positions = parse_placeholder_string(
-            self.filename_entry.get_text(),
-            example_file,
-            positions=True
+            self.filename_entry.get_text(), example_file, positions=True
         )
         self.preview_entry.set_text(parsed_placeholder + example_file.props.filetype)
 
