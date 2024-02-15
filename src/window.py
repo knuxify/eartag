@@ -15,7 +15,7 @@ from .filemanager import EartagFileManager
 from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
 from .rename import EartagRenameDialog
 from .identify import EartagIdentifyDialog
-from .guess import EartagGuessDialog
+from .extract import EartagExtractTagsDialog
 from . import APP_GRESOURCE_PATH, DEVEL
 
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
@@ -224,7 +224,7 @@ class EartagWindow(Adw.ApplicationWindow):
             try:
                 for action in (
                     app.rename_action,
-                    app.guess_action,
+                    app.extract_action,
                     app.identify_action,
                     app.undo_all_action,
                     app.delete_all_tags_action,
@@ -268,7 +268,7 @@ class EartagWindow(Adw.ApplicationWindow):
             app.undo_all_action.set_enabled(is_modified)
             for action in (
                 app.rename_action,
-                app.guess_action,
+                app.extract_action,
                 app.identify_action,
                 app.delete_all_tags_action,
             ):
@@ -489,9 +489,9 @@ class EartagWindow(Adw.ApplicationWindow):
         self.settings_dialog = EartagSettingsWindow(self)
         self.settings_dialog.present()
 
-    def show_guess_dialog(self, *args):
-        self.guess_dialog = EartagGuessDialog(self)
-        self.guess_dialog.present()
+    def show_extract_dialog(self, *args):
+        self.extract_dialog = EartagExtractTagsDialog(self)
+        self.extract_dialog.present()
 
     def show_delete_all_tags_dialog(self, *args):
         self.delete_all_tags_dialog = EartagTagDeleteWarningDialog(self)

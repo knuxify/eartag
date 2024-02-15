@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 """
-Common code for the preview selector in the rename and guess tags dialogs.
+Common code for the preview selector in the rename and extract tags dialogs.
 """
 
 from gi.repository import Gtk, GObject, Gio, Gdk
@@ -15,7 +15,7 @@ from .. import APP_GRESOURCE_PATH
 class EartagPreviewSelectorItem(Gtk.Box):
     """
     Representation of a file for the preview file selector in the rename
-    and guess tags dialogs.
+    and extract tags dialogs.
     """
 
     __gtype_name__ = "EartagPreviewSelectorItem"
@@ -66,7 +66,7 @@ class EartagPreviewSelectorItem(Gtk.Box):
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/previewselectorbutton.ui")
 class EartagPreviewSelectorButton(Gtk.MenuButton):
     """
-    Previewed file selector for the rename and guess tags dialogs.
+    Previewed file selector for the rename and extract tags dialogs.
     """
 
     __gtype_name__ = "EartagPreviewSelectorButton"

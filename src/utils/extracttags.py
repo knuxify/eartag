@@ -8,7 +8,7 @@ import re
 VALID_TAGS = BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate")
 
 
-def guess_tags_from_filename(
+def extract_tags_from_filename(
     filename: str, placeholder: str, positions: bool = False
 ) -> dict:
     """

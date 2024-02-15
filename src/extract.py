@@ -5,7 +5,7 @@ from . import APP_GRESOURCE_PATH
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS
 from .config import config
 from .utils.bgtask import EartagBackgroundTask, run_threadsafe
-from .utils.guesstags import guess_tags_from_filename
+from .utils.extracttags import extract_tags_from_filename
 from .utils.tagsyntaxhighlight import (
     EartagPlaceholderSyntaxHighlighter,
     attr_foreground_new,
@@ -19,11 +19,11 @@ import re
 import os.path
 
 
-@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/guess.ui")
-class EartagGuessDialog(Adw.Window):
-    """Dialog for guessing selected files' tags from their filename."""
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/extract.ui")
+class EartagExtractTagsDialog(Adw.Window):
+    """Dialog for extracting selected files' tags from their filename."""
 
-    __gtype_name__ = "EartagGuessDialog"
+    __gtype_name__ = "EartagExtractTagsDialog"
 
     pattern_entry = Gtk.Template.Child()
     preview_entry = Gtk.Template.Child()
@@ -77,7 +77,7 @@ class EartagGuessDialog(Adw.Window):
         )
 
         config.bind(
-            "guess-strip-common-suffixes",
+            "extract-strip-common-suffixes",
             self,
             "strip-common-suffixes",
             Gio.SettingsBindFlags.DEFAULT,
@@ -93,7 +93,7 @@ class EartagGuessDialog(Adw.Window):
         )
 
         config.bind(
-            "guess-pattern", self.pattern_entry, "text", Gio.SettingsBindFlags.DEFAULT
+            "extract-pattern", self.pattern_entry, "text", Gio.SettingsBindFlags.DEFAULT
         )
 
         self.apply_task = EartagBackgroundTask(self.apply_func)
@@ -148,10 +148,10 @@ class EartagGuessDialog(Adw.Window):
                 True
             )  # todo: only do this when custom is selected
 
-    def get_guess(self, filename: str, positions: bool = False) -> dict:
+    def get_extracted(self, filename: str, positions: bool = False) -> dict:
         """
         Applies the pattern from pattern entry to the given filename
-        and returns a guess (see guess_tags_from_filename function docs
+        and returns a guess (see extract_tags_from_filename function docs
         for more information).
         """
         filename_suffixless = os.path.splitext(filename)[0]
@@ -183,22 +183,22 @@ class EartagGuessDialog(Adw.Window):
             except IndexError:
                 pass
 
-        guess = guess_tags_from_filename(
+        extracted = extract_tags_from_filename(
             filename_suffixless, self.pattern_entry.get_text(), positions=positions
         )
 
-        return guess
+        return extracted
 
     def generate_preview_attrs(self, file: EartagFile):
         filename = os.path.basename(file.props.path)
-        guess = self.get_guess(filename, positions=True)
+        extracted = self.get_extracted(filename, positions=True)
 
         preview_attrs = Pango.AttrList()
         self.preview_entry.set_text(filename)
 
         present_tags = []
         n = 0
-        for tag, tag_data in guess.items():
+        for tag, tag_data in extracted.items():
             if tag in present_tags:
                 continue
             present_tags.append(tag)
@@ -236,7 +236,7 @@ class EartagGuessDialog(Adw.Window):
         self.apply_task.run()
 
     def apply_func(self):
-        self.guessed = 0
+        self.extracted = 0
 
         progress_step = 1 / len(self.files)
 
@@ -246,11 +246,11 @@ class EartagGuessDialog(Adw.Window):
                 return
 
             filename = os.path.basename(file.path)
-            guess = self.get_guess(filename, positions=False)
-            if not guess:
+            extract = self.get_extracted(filename, positions=False)
+            if not extract:
                 continue
 
-            for tag, value in guess.items():
+            for tag, value in extract.items():
                 if tag not in EXTRA_TAGS or (
                     tag in EXTRA_TAGS and tag in file.supported_extra_tags
                 ):
@@ -267,7 +267,7 @@ class EartagGuessDialog(Adw.Window):
                     else:
                         run_threadsafe(file.set_property, tag, value)
 
-            self.guessed += 1
+            self.extracted += 1
             self.apply_task.increment_progress(progress_step)
 
         self.apply_task.emit_task_done()
@@ -275,8 +275,8 @@ class EartagGuessDialog(Adw.Window):
     def on_apply_done(self, *args):
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
-                _("Guessed tags for {guessed} out of {total} tracks").format(
-                    guessed=self.guessed, total=len(self.files)
+                _("Extracted tags for {extracted} out of {total} tracks").format(
+                    extracted=self.extracted, total=len(self.files)
                 )
             )
         )

@@ -36,9 +36,9 @@ src/ui/dialogs/renamefailure.ui
 src/rename.py
 src/ui/rename.ui
 
-# Guess dialog
-src/guess.py
-src/ui/guess.ui
+# Extract tags dialog
+src/extract.py
+src/ui/extract.ui
 
 # Preview selector, for both of the above
 src/ui/previewselectorbutton.ui

@@ -339,8 +339,8 @@
         <attribute name="action">app.rename</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Guess Tags from Filename</attribute>
-        <attribute name="action">app.guess</attribute>
+        <attribute name="label" translatable="yes">_Extract Tags from Filename</attribute>
+        <attribute name="action">app.extract</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Identify Selected Files</attribute>

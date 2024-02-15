@@ -12,7 +12,7 @@
     <file>ui/filelistitem.ui</file>
     <file>ui/filenamerow.ui</file>
     <file>ui/fileview.ui</file>
-    <file>ui/guess.ui</file>
+    <file>ui/extract.ui</file>
     <file>ui/rename.ui</file>
     <file>ui/moretagsgroup.ui</file>
     <file>ui/moretagsgroupfactory.ui</file>

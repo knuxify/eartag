@@ -36,12 +36,12 @@
       <summary>MusicBrainz release cover size</summary>
     </key>
 
-    <key name="guess-pattern" type="s">
+    <key name="extract-pattern" type="s">
       <default>"{tracknumber} {title} - {artist}"</default>
-      <summary>Guess pattern</summary>
+      <summary>Tag extraction pattern</summary>
     </key>
 
-    <key name="guess-strip-common-suffixes" type="b">
+    <key name="extract-strip-common-suffixes" type="b">
       <default>true</default>
       <summary>Strip common suffixes</summary>
     </key>

@@ -68,8 +68,10 @@ class Application(Adw.Application):
         self.rename_action = self.create_action("rename", self.on_rename_action, None)
         self.rename_action.set_enabled(False)
 
-        self.guess_action = self.create_action("guess", self.on_guess_action, None)
-        self.guess_action.set_enabled(False)
+        self.extract_action = self.create_action(
+            "extract", self.on_extract_action, None
+        )
+        self.extract_action.set_enabled(False)
 
         self.identify_action = self.create_action(
             "identify", self.on_identify_action, None
@@ -112,8 +114,8 @@ class Application(Adw.Application):
     def on_settings_action(self, widget, _):
         self.get_active_window().show_settings_dialog()
 
-    def on_guess_action(self, widget, _):
-        self.get_active_window().show_guess_dialog()
+    def on_extract_action(self, widget, _):
+        self.get_active_window().show_extract_dialog()
 
     def on_undo_all_action(self, widget, _):
         self.get_active_window().undo_all()
