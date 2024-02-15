@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 """
-Common code for the placeholder selector used in the rename and guess UIs,
+Common code for the placeholder selector used in the rename and extract UIs,
 as well as the fileview "add extra tags" button.
 """
 
