@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from ..backends.file import BASIC_TAGS, EXTRA_TAGS
+from ..backends.file import VALID_TAGS
 
 from gi.repository import Adw, Pango, GObject
 import re
@@ -149,7 +149,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
             if tag_name == "" or tag_name in present_tags:
                 continue
 
-            if tag_name not in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate"):
+            if tag_name not in VALID_TAGS + ("length", "bitrate"):
                 continue
 
             present_tags.add(tag_name)

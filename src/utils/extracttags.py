@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from ..backends.file import BASIC_TAGS, EXTRA_TAGS
+from ..backends.file import VALID_TAGS
 
 import re
 
-VALID_TAGS = BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate")
+EXTRACTABLE_TAGS = VALID_TAGS + ("length", "bitrate")
 
 
 def extract_tags_from_filename(
@@ -26,7 +26,7 @@ def extract_tags_from_filename(
     for element in placeholder_split:
         if element.startswith("{") and element.endswith("}"):
             tag = element[1:-1]
-            if tag in VALID_TAGS and tag not in tags:
+            if tag in EXTRACTABLE_TAGS and tag not in tags:
                 pattern += f"(?P<{tag}>.*?)"
                 tags.append(tag)
                 continue

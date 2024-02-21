@@ -6,7 +6,7 @@ as well as the fileview "add extra tags" button.
 """
 
 from .. import APP_GRESOURCE_PATH
-from ..backends.file import BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
+from ..backends.file import VALID_TAGS, TAG_NAMES
 
 from gi.repository import Gdk, Gtk, GObject
 
@@ -32,7 +32,7 @@ class EartagTagSelectorButton(Gtk.MenuButton):
             [
                 (k, v)
                 for k, v in TAG_NAMES.items()
-                if k in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate")
+                if k in VALID_TAGS + ("length", "bitrate")
             ]
         )
         self.tag_names_swapped = dict([(v, k) for k, v in self.tag_names.items()])

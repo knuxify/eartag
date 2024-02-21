@@ -32,6 +32,8 @@ EXTRA_TAGS = (
     "musicbrainz_recordingid", "musicbrainz_releasegroupid"
 )  # fmt: skip
 
+VALID_TAGS = BASIC_TAGS + EXTRA_TAGS
+
 
 class CoverType:
     FRONT = 0

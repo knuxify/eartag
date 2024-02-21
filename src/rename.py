@@ -2,7 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from . import APP_GRESOURCE_PATH
-from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES
+from .backends.file import EartagFile, VALID_TAGS, TAG_NAMES
 from .config import config
 from .utils import get_readable_length, file_is_sandboxed
 from .utils.misc import filename_valid
@@ -29,7 +29,7 @@ def get_formatted_tag(file: "EartagFile", tag: str) -> str:
     """
     parsed_value = ""
 
-    if tag in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate"):
+    if tag in VALID_TAGS + ("length", "bitrate"):
         value = file.get_property(tag)
         if not value:
             if tag == "title":
@@ -98,7 +98,7 @@ def parse_placeholder_string(
         if tag_name == "" or tag_name in present_tags:
             continue
 
-        if tag_name not in BASIC_TAGS + EXTRA_TAGS + ("length", "bitrate"):
+        if tag_name not in VALID_TAGS + ("length", "bitrate"):
             continue
 
         present_tags.add(tag_name)

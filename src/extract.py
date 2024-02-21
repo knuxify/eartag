@@ -2,7 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from . import APP_GRESOURCE_PATH
-from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS
+from .backends.file import EartagFile, VALID_TAGS, EXTRA_TAGS
 from .config import config
 from .utils.bgtask import EartagBackgroundTask, run_threadsafe
 from .utils.extracttags import extract_tags_from_filename
@@ -116,7 +116,7 @@ class EartagExtractTagsDialog(Adw.Window):
     @property
     def present_tags(self) -> list:
         tags = re.findall(r"{(.*?)}", self.pattern_entry.get_text())
-        tags = [x for x in set(tags) if x in BASIC_TAGS + EXTRA_TAGS]
+        tags = [x for x in set(tags) if x in VALID_TAGS]
         return tags
 
     def tag_filter_func(self, _tag_name, *args):
