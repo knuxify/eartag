@@ -48,18 +48,23 @@ class EartagFileListItem(Gtk.Box):
         if self.bindings:
             for b in self.bindings:
                 b.unbind()
+            self.file.disconnect(self._error_connect)
+            self.file.disconnect(self._title_connect)
         self.file = file
 
-        self.bindings.append(
-            self.file.bind_property(
-                "title", self, "title", GObject.BindingFlags.SYNC_CREATE
-            )
-        )
+        # self.bindings.append(
+        # 	self.file.bind_property(
+        # 		"title", self, "title", GObject.BindingFlags.SYNC_CREATE
+        # 	)
+        # )
+        self._title_connect = self.file.connect("notify::title", self.on_title_notify)
+
         self.bindings.append(
             self.file.bind_property(
                 "path", self, "filename", GObject.BindingFlags.SYNC_CREATE
             )
         )
+
         self.bindings.append(
             self.file.bind_property(
                 "is-modified",
@@ -86,8 +91,18 @@ class EartagFileListItem(Gtk.Box):
             for b in self.bindings:
                 b.unbind()
         self._selected_bind.unbind()
-        self.file.disconnect(self._error_connect)
+        try:
+            self.file.disconnect(self._error_connect)
+            self.file.disconnect(self._title_connect)
+        except AttributeError:
+            pass
         self.file = None
+
+    def on_title_notify(self, *args):
+        # Because calling notify on a property doesn't update bind_property,
+        # which we need to do for delete_tag on the file, we have to connect
+        # to the notify signal instead.
+        self.props.title = self.file.props.title
 
     def handle_error(self, *args):
         if self.file.has_error:
