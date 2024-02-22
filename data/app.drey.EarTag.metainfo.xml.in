@@ -31,6 +31,9 @@
   </requires>
 
   <releases>
+    <release version="0.6.0" date="2024-02-22">
+      <description translatable="no"><p>Improved the functionality of the "Rename Selected Files" option, added an option to extract tags from filenames, refreshed the main UI design</p></description>
+    </release>
     <release version="0.5.2" date="2024-02-22">
       <description translatable="no"><p>Minor bugfix update. From 0.5.0 notes:</p>
 <p>Added support for removing a cover image and setting the back cover image. Improved the accuracy of the file identification option.</p></description>
