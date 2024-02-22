@@ -90,7 +90,8 @@ class EartagPreviewSelectorButton(Gtk.MenuButton):
 
         self.selection_model = Gtk.NoSelection.new(self.model)
 
-        # "Add additional preview_selector" field (we can reuse the factory from the "more preview_selectors" selector):
+        # "Add additional preview_selector" field
+        # (we can reuse the factory from the "more preview_selectors" selector):
         self._ignore_preview_selector_selector = False
 
         self.factory = Gtk.SignalListItemFactory.new()

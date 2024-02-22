@@ -14,7 +14,7 @@ from .utils.tagsyntaxhighlight import (
 )
 from .utils.previewselector import EartagPreviewSelectorButton  # noqa: F401
 
-from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject, Pango
+from gi.repository import Adw, GLib, Gtk, Gio, GObject, Pango
 import os
 import re
 
