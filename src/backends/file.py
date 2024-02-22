@@ -413,7 +413,10 @@ class EartagFile(GObject.Object):
     def undo_all(self):
         """Undo all changes."""
         for tag in self.modified_tags.copy():
-            self.set_property(tag, self.original_values[tag])
+            if tag in self.original_values:
+                self.set_property(tag, self.original_values[tag])
+            else:
+                self.delete_tag(tag)
         self.mark_as_unmodified()
 
     def reset_to_original(self):
