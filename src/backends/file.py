@@ -386,10 +386,12 @@ class EartagFile(GObject.Object):
                 self.notify(prop)
             self.mark_as_unmodified()
 
-    def mark_as_modified(self, tag):
+    def mark_as_modified(self, tag, notify_prop: bool = False):
         if not self._is_modified:
             self._is_modified = True
             self.notify("is_modified")
+            if notify_prop:
+                self.notify(tag)
         self.emit("modified", tag)
 
     def mark_as_unmodified(self):

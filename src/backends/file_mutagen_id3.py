@@ -244,7 +244,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
                 if frame.FrameID == "UFID" and frame.owner == "http://musicbrainz.org":
                     del self.mg_file.tags[key]
 
-        self.mark_as_modified(tag_name)
+        self.mark_as_modified(tag_name, notify_prop=True)
 
     def delete_cover(self, cover_type: CoverType, clear_only=False):
         """Delets the cover of the specified type from the file."""

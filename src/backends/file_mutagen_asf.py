@@ -187,7 +187,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         frame_name = KEY_TO_FRAME[tag_name.lower()]
         if frame_name in self.mg_file.tags:
             del self.mg_file.tags[frame_name]
-        self.mark_as_modified(tag_name)
+        self.mark_as_modified(tag_name, notify_prop=True)
 
     def delete_cover(self, cover_type: CoverType, clear_only=False):
         """Deletes the cover from the file."""

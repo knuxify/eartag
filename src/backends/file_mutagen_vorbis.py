@@ -109,7 +109,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             tag_name = self._replaces[tag_name.lower()]
         if tag_name in self.mg_file.tags:
             del self.mg_file.tags[tag_name]
-        self.mark_as_modified(_original_tag_name)
+        self.mark_as_modified(_original_tag_name, notify_prop=True)
 
     def delete_cover(self, cover_type: CoverType, clear_only=False):
         if cover_type == CoverType.FRONT:
