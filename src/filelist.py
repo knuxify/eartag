@@ -58,6 +58,7 @@ class EartagFileListItem(Gtk.Box):
         # 	)
         # )
         self._title_connect = self.file.connect("notify::title", self.on_title_notify)
+        self.on_title_notify()
 
         self.bindings.append(
             self.file.bind_property(
