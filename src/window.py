@@ -712,6 +712,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.delete_all_tags_task.emit_task_done()
 
     def _delete_all_tags_done(self, *args):
+        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(
@@ -744,7 +745,9 @@ class EartagWindow(Adw.ApplicationWindow):
         self.undo_delete_all_tags_task.emit_task_done()
 
     def _undo_delete_all_tags_done(self, *args):
+        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
+
         toast = Adw.Toast.new(
             gettext.ngettext(
                 "Undid tag removal in 1 file",
