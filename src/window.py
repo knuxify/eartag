@@ -635,6 +635,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.undo_all_task.emit_task_done()
 
     def _undo_all_done(self, *args):
+        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(
@@ -669,6 +670,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.redo_all_task.emit_task_done()
 
     def _redo_all_done(self, *args):
+        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
         toast = Adw.Toast.new(
             gettext.ngettext(
