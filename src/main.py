@@ -50,7 +50,7 @@ class Application(Adw.Application):
         win = self.props.active_window
         if not win:
             win = EartagWindow(application=self, paths=self.paths, devel=self.devel)
-        self.create_action("settings", self.on_settings_action, None)
+        self.create_action("preferences", self.on_preferences_action, None)
         self.create_action("about", self.on_about_action, None)
 
         self.create_action("open_file", self.on_open_file_action, "<Ctrl>o")
@@ -111,8 +111,8 @@ class Application(Adw.Application):
     def on_identify_action(self, widget, _):
         self.get_active_window().show_identify_dialog()
 
-    def on_settings_action(self, widget, _):
-        self.get_active_window().show_settings_dialog()
+    def on_preferences_action(self, widget, _):
+        self.get_active_window().show_preferences_dialog()
 
     def on_extract_action(self, widget, _):
         self.get_active_window().show_extract_dialog()

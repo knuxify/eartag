@@ -485,9 +485,9 @@ class EartagWindow(Adw.ApplicationWindow):
         self.identify_dialog = EartagIdentifyDialog(self)
         self.identify_dialog.present()
 
-    def show_settings_dialog(self, *args):
-        self.settings_dialog = EartagSettingsWindow(self)
-        self.settings_dialog.present()
+    def show_preferences_dialog(self, *args):
+        self.preferences_dialog = EartagPreferencesWindow(self)
+        self.preferences_dialog.present()
 
     def show_extract_dialog(self, *args):
         self.extract_dialog = EartagExtractTagsDialog(self)
@@ -764,8 +764,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/settings.ui")
-class EartagSettingsWindow(Adw.PreferencesWindow):
-    __gtype_name__ = "EartagSettingsWindow"
+class EartagPreferencesWindow(Adw.PreferencesWindow):
+    __gtype_name__ = "EartagPreferencesWindow"
 
     mb_confidence_spinbutton = Gtk.Template.Child()
     aid_confidence_spinbutton = Gtk.Template.Child()
