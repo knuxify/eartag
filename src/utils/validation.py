@@ -27,26 +27,18 @@ VALID_AUDIO_MIMES = (
     "video/x-wmv",
 )
 
+VALID_IMAGE_MIMES = ("image/jpeg", "image/png")
+
 
 def is_valid_music_file(path):
-    """
-    Takes a path to a file and returns True if it's supported, False otherwise.
-    """
-    # In Flatpak, some files don't exist; double-check to make sure
-    if not os.path.exists(path):
-        return False
-
-    mimetype = magic.from_file(path, mime=True)
-    if mimetype == "application/octet-stream":
-        # Try to guess mimetype from filetype if magic fails
-        mimetype = mimetypes.guess_type(path)[0]
-
-    if not mimetype or mimetype not in VALID_AUDIO_MIMES:
-        return False
-    return True
+    return is_valid_file(path, VALID_AUDIO_MIMES)
 
 
 def is_valid_image_file(path):
+    return is_valid_file(path, VALID_IMAGE_MIMES)
+
+
+def is_valid_file(path, valid_mime_types):
     """
     Takes a path to a file and returns True if it's supported, False otherwise.
     """
@@ -59,6 +51,6 @@ def is_valid_image_file(path):
         # Try to guess mimetype from filetype if magic fails
         mimetype = mimetypes.guess_type(path)[0]
 
-    if not mimetype or mimetype not in ["image/jpeg", "image/png"]:
+    if not mimetype or mimetype not in valid_mime_types:
         return False
     return True

@@ -2,7 +2,12 @@ from unittest.mock import patch
 
 import pytest
 
-from src.utils.validation import is_valid_music_file
+from src.utils.validation import (
+    is_valid_music_file,
+    is_valid_image_file,
+    is_valid_file,
+    VALID_AUDIO_MIMES,
+)
 
 EXAMPLES_DIRECTORY = "tests/backends/examples"
 
@@ -28,22 +33,30 @@ def test_valid_music_file(file_name):
     assert is_valid_music_file(f"{EXAMPLES_DIRECTORY}/{file_name}") is True
 
 
+@pytest.mark.parametrize(
+    "file_name",
+    ["aconcagua.jpg", "cover.png"],
+)
+def test_valid_image_file(file_name):
+    assert is_valid_image_file(f"{EXAMPLES_DIRECTORY}/{file_name}") is True
+
+
 @patch("magic.from_file")
 def test_magic_fails_to_get_file_type(mock_magic_from_file):
     mock_magic_from_file.return_value = "application/octet-stream"
 
-    assert is_valid_music_file(example_mp3) is True
+    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES) is True
 
 
 @patch("magic.from_file")
 def test_magic_returns_no_file_type(mock_magic_from_file):
     mock_magic_from_file.return_value = False
 
-    assert is_valid_music_file(example_mp3) is False
+    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES) is False
 
 
 @patch("magic.from_file")
 def test_file_type_not_in_valid_mime_types(mock_magic_from_file):
     mock_magic_from_file.return_value = "audio/invalid"
 
-    assert is_valid_music_file(example_mp3) is False
+    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES) is False
