@@ -1,0 +1,38 @@
+using Gtk 4.0;
+
+template $EartagTagSelectorButton : MenuButton {
+  icon-name: 'list-add-symbolic';
+  valign: center;
+  popover:
+  Popover tag_list_popover {
+    autohide: true;
+
+    styles [
+      "menu",
+    ]
+
+    Box {
+      orientation: vertical;
+
+      SearchEntry tag_list_search_entry {
+        margin-top: 6;
+        margin-start: 6;
+        margin-end: 6;
+        search-changed => $refresh_tag_filter();
+      }
+
+      ScrolledWindow {
+        hscrollbar-policy: never;
+        vscrollbar-policy: automatic;
+        propagate-natural-width: true;
+        propagate-natural-height: true;
+
+        ListView tag_list {
+          single-click-activate: true;
+        }
+      }
+    }
+  }
+
+  ;
+}

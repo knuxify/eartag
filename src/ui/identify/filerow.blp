@@ -1,0 +1,26 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagIdentifyFileRow : Adw.ActionRow {
+  styles [
+    "identify-file-row",
+  ]
+
+  [prefix]
+  $EartagIdentifyCoverImage cover_image {
+    hexpand: 'false';
+  }
+
+  [suffix]
+  Stack suffix_stack {
+    visible: false;
+
+    Spinner loading_icon {
+    }
+
+    Image not_found_icon {
+      icon-name: 'dialog-question-symbolic';
+      tooltip-text: _('File could not be identified');
+    }
+  }
+}

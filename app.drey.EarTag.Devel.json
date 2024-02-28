@@ -34,6 +34,17 @@
         "*.a"
     ],
     "modules" : [
+        {
+            "name": "blueprint-compiler",
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler/-/archive/v0.8.0/blueprint-compiler-v0.8.0.tar.gz",
+                    "sha256": "0ad7da31da5ee4f068bc083e9dc191ee73e79975e670c538d1ecaa9a5ea6e4b0"
+                }
+            ]
+        },
         "data/flatpak-python-modules.json",
         {
             "name": "python3-pytest",

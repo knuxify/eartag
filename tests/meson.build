@@ -7,7 +7,7 @@ endif
 
 test('Run tests', python3,
   args: [
-    '-m', 'pytest', networked,
+    '-m', 'pytest', networked, '--ignore', 'subprojects/blueprint-compiler'
   ],
   timeout: 180,
   workdir: meson.project_source_root()

@@ -8,7 +8,7 @@ stages:
   script:
     - meson setup _build -Denable_networked_tests=true
     - meson compile -C _build
-    - meson test -v -C _build
+    - meson test "eartag*:" -v -C _build
     - meson install -C _build
 
 build-fedora:
@@ -22,7 +22,7 @@ build-alpine:
   image: alpine:edge
   extends: .build-common
   before_script:
-    - apk add build-base gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-magic py3-mutagen py3-pillow desktop-file-utils appstream-glib gettext py3-pytest py3-flake8 py3-pyacoustid ffmpeg
+    - apk add build-base git gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-magic py3-mutagen py3-pillow desktop-file-utils appstream-glib gettext py3-pytest py3-flake8 py3-pyacoustid ffmpeg
 
 lint-alpine:
   image: alpine:edge

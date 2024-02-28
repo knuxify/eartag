@@ -22,4 +22,7 @@ Sneaky_Snitch.mp3
 *.mo
 
 .idea
+.flatpak-builder
+
+/subprojects/blueprint-compiler
 

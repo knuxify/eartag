@@ -1,0 +1,21 @@
+using Gtk 4.0;
+
+template $EartagPreviewSelectorItem : Box {
+  orientation: vertical;
+
+  Label formatted_path_label {
+    halign: start;
+    hexpand: true;
+    ellipsize: middle;
+  }
+
+  Label filename_label {
+    halign: start;
+    hexpand: true;
+    ellipsize: middle;
+
+    styles [
+      "subtitle",
+    ]
+  }
+}

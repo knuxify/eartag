@@ -13,6 +13,39 @@ conf.set('ACOUSTID_API_KEY', get_option('acoustid_api_key'))
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
 
+blueprints = custom_target('blueprints',
+  input: files(
+    'ui/dialogs/closewarning.blp',
+    'ui/dialogs/discardwarning.blp',
+    'ui/dialogs/loadingfailure.blp',
+    'ui/dialogs/removaldiscardwarning.blp',
+    'ui/dialogs/renamefailure.blp',
+    'ui/dialogs/tagdeletewarning.blp',
+    'ui/identify/altreleaserow.blp',
+    'ui/identify/coverimage.blp',
+    'ui/identify/filerow.blp',
+    'ui/identify/identify.blp',
+    'ui/identify/recordingrow.blp',
+    'ui/albumcoverbutton.blp',
+    'ui/albumcoverimage.blp',
+    'ui/extract.blp',
+    'ui/filelistitem.blp',
+    'ui/filenamerow.blp',
+    'ui/fileview.blp',
+    'ui/moretagsgroup.blp',
+    'ui/nofile.blp',
+    'ui/previewselectorbutton.blp',
+    'ui/previewselectoritem.blp',
+    'ui/rename.blp',
+    'ui/settings.blp',
+    'ui/shortcuts.blp',
+    'ui/tagselectorbutton.blp',
+    'ui/window.blp'
+  ),
+  output: '.',
+  command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+)
+
 gnome.compile_resources('eartag',
   configure_file(
     input: files('eartag.gresource.xml.in'),
@@ -22,6 +55,7 @@ gnome.compile_resources('eartag',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
+  dependencies: blueprints,
 )
 
 configure_file(

@@ -1,0 +1,102 @@
+using Gtk 4.0;
+
+template $EartagFileListItem : Box {
+  hexpand: true;
+  spacing: 12;
+
+  styles [
+    "filelist-item",
+  ]
+
+  Stack cover_edit_stack {
+    transition-type: crossfade;
+
+    $EartagAlbumCoverImage coverart_image {
+      pixel-size: '48';
+      hexpand: 'false';
+    }
+
+    CheckButton select_button {
+      halign: center;
+
+      styles [
+        "selection-mode",
+        "circular",
+      ]
+    }
+  }
+
+  Box data_box {
+    orientation: vertical;
+    hexpand: true;
+    halign: fill;
+    valign: center;
+    spacing: 3;
+
+    Box {
+      Stack status_icon_stack {
+        Image error_icon {
+          icon-name: 'dialog-warning-symbolic';
+          tooltip-text: _('File has invalid values');
+          visible: false;
+          margin-end: 3;
+        }
+
+        Image modified_icon {
+          icon-name: 'file-modified-symbolic';
+          tooltip-text: _('File has unsaved changes');
+          visible: false;
+          margin-end: 3;
+        }
+      }
+
+      Label title_label {
+        halign: start;
+        hexpand: true;
+        ellipsize: middle;
+
+        styles [
+          "heading",
+        ]
+      }
+    }
+
+    Label filename_label {
+      halign: start;
+      hexpand: true;
+      ellipsize: middle;
+
+      styles [
+        "subtitle",
+      ]
+    }
+  }
+
+  Box suffixes {
+    spacing: 6;
+
+    Stack acoustid_info_stack {
+      visible: false;
+
+      Label acoustid_info_label {
+      }
+
+      Spinner acoustid_loading_icon {
+      }
+    }
+
+    Button remove_button {
+      icon-name: 'edit-delete-symbolic';
+      clicked => $remove_item();
+      hexpand: true;
+      halign: end;
+      valign: center;
+      tooltip-text: _('Remove from list');
+
+      styles [
+        "flat",
+        "circular",
+      ]
+    }
+  }
+}

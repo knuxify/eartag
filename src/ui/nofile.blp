@@ -1,0 +1,45 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagNoFile : Adw.Bin {
+  WindowHandle {
+    hexpand: true;
+    vexpand: true;
+
+    Adw.StatusPage nofile_status {
+      icon-name: 'app.drey.EarTag';
+      title: 'Ear Tag';
+      description: _('Open or drag in some audio files to edit their metadata.');
+
+      styles [
+        "nofiles",
+      ]
+
+      Box {
+        orientation: vertical;
+        halign: center;
+        spacing: 12;
+
+        Button open_file {
+          label: _('Open File');
+          focusable: true;
+          clicked => $on_add_file();
+
+          styles [
+            "suggested-action",
+            "pill",
+          ]
+        }
+
+        Button open_folder {
+          label: _('Open Folder');
+          clicked => $on_add_folder();
+
+          styles [
+            "pill",
+          ]
+        }
+      }
+    }
+  }
+}

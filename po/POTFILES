@@ -7,8 +7,8 @@ data/app.drey.EarTag.metainfo.xml.in
 
 # Strings for the main window itself
 src/window.py
-src/ui/window.ui
-src/ui/nofile.ui
+src/ui/window.blp
+src/ui/nofile.blp
 
 # Backend bits; mostly for error strings, but also human-readable tag names
 src/filemanager.py
@@ -16,42 +16,42 @@ src/backends/file.py
 
 # Fileview
 src/fileview.py
-src/ui/fileview.ui
-src/ui/filenamerow.ui
-src/ui/albumcoverbutton.ui
+src/ui/fileview.blp
+src/ui/filenamerow.blp
+src/ui/albumcoverbutton.blp
 src/tagentry.py
 
 # Sidebar
 src/filelist.py
-src/ui/filelistitem.ui
+src/ui/filelistitem.blp
 
 # Error dialogs
-src/ui/dialogs/closewarning.ui
-src/ui/dialogs/discardwarning.ui
-src/ui/dialogs/removaldiscardwarning.ui
-src/ui/dialogs/loadingfailure.ui
-src/ui/dialogs/renamefailure.ui
+src/ui/dialogs/closewarning.blp
+src/ui/dialogs/discardwarning.blp
+src/ui/dialogs/removaldiscardwarning.blp
+src/ui/dialogs/loadingfailure.blp
+src/ui/dialogs/renamefailure.blp
 
 # Rename dialog
 src/rename.py
-src/ui/rename.ui
+src/ui/rename.blp
 
 # Extract tags dialog
 src/extract.py
-src/ui/extract.ui
+src/ui/extract.blp
 
 # Preview selector, for both of the above
-src/ui/previewselectorbutton.ui
+src/ui/previewselectorbutton.blp
 
 # Identify dialog
 src/identify.py
-src/ui/identify/identify.ui
-src/ui/identify/filerow.ui
-src/ui/identify/altreleaserow.ui
-src/ui/identify/recordingrow.ui
+src/ui/identify/identify.blp
+src/ui/identify/filerow.blp
+src/ui/identify/altreleaserow.blp
+src/ui/identify/recordingrow.blp
 
 # Settings
-src/ui/settings.ui
+src/ui/settings.blp
 
 # Shortcut list
-src/ui/shortcuts.ui
+src/ui/shortcuts.blp

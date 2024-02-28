@@ -1,0 +1,41 @@
+using Gtk 4.0;
+
+template $EartagPreviewSelectorButton : MenuButton {
+  tooltip-text: _('Select file to preview');
+  valign: center;
+
+  styles [
+    "flat",
+  ]
+  popover:
+  Popover popover {
+    autohide: true;
+
+    styles [
+      "menu",
+    ]
+
+    Box {
+      orientation: vertical;
+
+      SearchEntry search_entry {
+        margin-top: 6;
+        margin-start: 6;
+        margin-end: 6;
+      }
+
+      ScrolledWindow {
+        hscrollbar-policy: never;
+        vscrollbar-policy: automatic;
+        propagate-natural-width: true;
+        propagate-natural-height: true;
+
+        ListView list {
+          single-click-activate: true;
+        }
+      }
+    }
+  }
+
+  ;
+}

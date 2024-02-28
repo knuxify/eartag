@@ -1,0 +1,14 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagRenameFailureDialog : Adw.MessageDialog {
+  heading: _('Failed to Rename File');
+  body: _('Could not rename file {f}. Check the logs for more information.');
+  close-response: 'close';
+  default-response: 'close';
+  response => $handle_response();
+
+  responses [
+    close: _('_OK'),
+  ]
+}

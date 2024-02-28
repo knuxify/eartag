@@ -1,0 +1,324 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagWindow : Adw.ApplicationWindow {
+  default-width: 900;
+  default-height: 700;
+  width-request: 360;
+  height-request: 200;
+
+  Adw.Breakpoint {
+    condition ('max-width: 620sp')
+    setters {
+      split_view.collapsed: true;
+    }
+  }
+
+  Overlay overlay {
+    hexpand: true;
+    vexpand: true;
+
+    [overlay]
+    Revealer drop_highlight_revealer {
+      receives-default: false;
+      can-focus: false;
+      can-target: false;
+      visible: false;
+      transition-type: crossfade;
+      hexpand: true;
+      vexpand: true;
+      notify::child-revealed => $drop_highlight_autohide();
+
+      Adw.Bin {
+        hexpand: true;
+        vexpand: true;
+
+        styles [
+          "drag-target",
+        ]
+
+        Box {
+          orientation: vertical;
+          valign: center;
+          spacing: 36;
+          margin-top: 24;
+          margin-bottom: 24;
+          margin-start: 24;
+          margin-end: 24;
+
+          Image {
+            icon-name: 'document-send-symbolic';
+            pixel-size: 96;
+          }
+
+          Label {
+            label: _('Drop a file to add it to the opened file list');
+            wrap: true;
+
+            styles [
+              "title-1",
+            ]
+          }
+        }
+      }
+    }
+
+    Adw.ToastOverlay toast_overlay {
+      Stack container_stack {
+        transition-type: crossfade;
+
+        Box no_file {
+          orientation: vertical;
+
+          Adw.HeaderBar empty_headerbar {
+            title-widget:             Label {
+            }
+
+            ;
+
+            styles [
+              "flat",
+            ]
+
+            [end]
+            MenuButton empty_primary_menu_button {
+              icon-name: 'open-menu-symbolic';
+              menu-model: primary_menu;
+            }
+          }
+
+          $EartagNoFile no_file_widget {
+          }
+        }
+
+        Adw.OverlaySplitView split_view {
+          sidebar:           Adw.ToolbarView sidebar_view {
+            width-request: 300;
+
+            [top]
+            Adw.HeaderBar sidebar_headerbar {
+              show-end-title-buttons: false;
+              title-widget:
+              Label {
+              }
+
+              ;
+
+              [start]
+              Button save_button {
+                sensitive: false;
+                label: _('Save');
+                clicked => $on_save();
+
+                styles [
+                  "suggested-action",
+                ]
+              }
+
+              [start]
+              Button sort_button {
+                icon-name: 'view-sort-descending-symbolic';
+                clicked => $run_sort();
+                tooltip-text: _('Sort files by track number, album, name');
+              }
+
+              [end]
+              Button hide_sidebar_button {
+                icon-name: 'go-previous-symbolic';
+                halign: start;
+                tooltip-text: _('Close file list');
+                clicked => $hide_sidebar();
+                visible: bind split_view.collapsed;
+              }
+
+              [end]
+              Button insert_button {
+                halign: end;
+                icon-name: 'list-add-symbolic';
+                clicked => $insert_file();
+                tooltip-text: _('Add file');
+              }
+
+              [end]
+              ToggleButton select_multiple_button {
+                icon-name: 'selection-mode-symbolic';
+                tooltip-text: _('Select multiple files');
+              }
+
+              [end]
+              ToggleButton sidebar_search_button {
+                icon-name: 'edit-find-symbolic';
+                tooltip-text: _('Search opened files');
+              }
+            }
+
+            [top]
+            SearchBar search_bar {
+              hexpand: false;
+
+              SearchEntry search_entry {
+                hexpand: true;
+              }
+            }
+
+            [top]
+            Revealer loading_progressbar_revealer {
+              ProgressBar loading_progressbar {
+                styles [
+                  "osd",
+                ]
+              }
+            }
+
+            Stack sidebar_list_stack {
+              transition-type: crossfade;
+
+              ScrolledWindow sidebar_list_scroll {
+                hscrollbar-policy: never;
+                vexpand: true;
+                min-content-width: 300;
+                max-content-width: 400;
+
+                $EartagFileList sidebar_file_list {
+                  styles [
+                    "navigation-sidebar",
+                  ]
+                }
+              }
+
+              Box sidebar_no_files {
+              }
+
+              Adw.StatusPage no_results {
+                icon-name: 'system-search-symbolic';
+                title: _('No Results Found');
+                description: _('Try a different search query.');
+
+                styles [
+                  "compact",
+                ]
+              }
+            }
+
+            [bottom]
+            ActionBar sidebar_action_bar {
+              [start]
+              Button select_all_button {
+                icon-name: 'edit-select-all-symbolic';
+                tooltip-text: _('Select all files');
+                clicked => $select_all();
+              }
+
+              [center]
+              Label selected_message_label {
+                styles [
+                  "dim-label",
+                ]
+              }
+
+              [end]
+              Button remove_selected_button {
+                icon-name: 'user-trash-symbolic';
+                tooltip-text: _('Remove selected files');
+                clicked => $remove_selected();
+              }
+            }
+          }
+
+          ;
+          content:
+          Adw.ToolbarView container {
+            [top]
+            Adw.HeaderBar headerbar {
+              show-start-title-buttons: false;
+
+              [start]
+              Button show_sidebar_button {
+                icon-name: 'view-queue-symbolic';
+                tooltip-text: _('Show file list');
+                clicked => $show_sidebar();
+                visible: bind split_view.collapsed;
+              }
+
+              [title]
+              Adw.WindowTitle window_title {
+                title: _('Ear Tag');
+              }
+
+              [end]
+              MenuButton primary_menu_button {
+                icon-name: 'open-menu-symbolic';
+                menu-model: primary_menu;
+              }
+            }
+
+            $EartagFileView file_view {
+            }
+          }
+
+          ;
+        }
+      }
+    }
+  }
+}
+
+menu primary_menu {
+  section {
+    item {
+      label: _('_Open File');
+      action: 'app.open_file';
+    }
+
+    item {
+      label: _('O_pen Folder');
+      action: 'app.open_folder';
+    }
+  }
+
+  section {
+    item {
+      label: _('_Rename Selected Files');
+      action: 'app.rename';
+    }
+
+    item {
+      label: _('_Extract Tags from Filename');
+      action: 'app.extract';
+    }
+
+    item {
+      label: _('_Identify Selected Files');
+      action: 'app.identify';
+    }
+  }
+
+  section {
+    item {
+      label: _('_Undo Changes in Selected Files');
+      action: 'app.undo_all';
+    }
+
+    item {
+      label: _('_Remove All Tags in Selected Files');
+      action: 'app.delete_all_tags';
+    }
+  }
+
+  section {
+    item {
+      label: _('_Keyboard Shortcuts');
+      action: 'win.show-help-overlay';
+    }
+
+    item {
+      label: _('_Preferences');
+      action: 'app.preferences';
+    }
+
+    item {
+      label: _('_About Ear Tag');
+      action: 'app.about';
+    }
+  }
+}

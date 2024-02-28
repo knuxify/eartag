@@ -1,0 +1,125 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagAlbumCoverButton : Adw.Bin {
+  width-request: 196;
+  height-request: 196;
+  halign: center;
+  valign: start;
+  hexpand: false;
+  vexpand: false;
+
+  styles [
+    "album-cover",
+  ]
+
+  Overlay drag_overlay {
+    [overlay]
+    Revealer highlight_revealer {
+      receives-default: false;
+      can-focus: false;
+      can-target: false;
+      reveal-child: false;
+      transition-type: crossfade;
+      hexpand: true;
+      vexpand: true;
+
+      Stack highlight_stack {
+        Box hover_highlight {
+          styles [
+            "hover-highlight",
+          ]
+
+          Image {
+            icon-name: 'document-edit-symbolic';
+            pixel-size: 48;
+            valign: center;
+            halign: center;
+            hexpand: true;
+          }
+        }
+
+        Box drop_highlight {
+          styles [
+            "drag-target",
+          ]
+
+          Image {
+            icon-name: 'document-send-symbolic';
+            pixel-size: 48;
+            valign: center;
+            halign: center;
+            hexpand: true;
+          }
+        }
+      }
+    }
+
+    $EartagPopoverButton button {
+      popover: 'menu_popover';
+      child:
+      $EartagAlbumCoverImage cover_image {
+        pixel-size: '196';
+      }
+
+      ;
+    }
+  }
+}
+
+menu options_menu {
+  section {
+    item {
+      label: _('_Choose Image…');
+      icon: 'insert-image-symbolic';
+      action: 'albumcoverbutton.load';
+    }
+
+    item {
+      label: _('_Save Image…');
+      icon: 'user-trash-symbolic';
+      action: 'albumcoverbutton.save';
+    }
+
+    item {
+      label: _('_Remove Cover');
+      icon: 'user-trash-symbolic';
+      action: 'albumcoverbutton.remove';
+    }
+  }
+
+  section {
+    item {
+      custom: 'type_switcher';
+    }
+  }
+}
+
+PopoverMenu menu_popover {
+  menu-model: options_menu;
+
+  [type_switcher]
+  Box cover_switch_box {
+    hexpand: true;
+    orientation: vertical;
+
+    styles [
+      "cover-switch-box",
+    ]
+
+    CheckButton front_toggle {
+      label: _('Front');
+      group: back_toggle;
+    }
+
+    CheckButton back_toggle {
+      label: _('Back');
+    }
+  }
+}
+
+FileFilter image_file_filter {
+  mime-types [
+    'image/*',
+  ]
+}

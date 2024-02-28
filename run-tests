@@ -23,7 +23,7 @@ done
 set -e
 meson setup --prefix=/tmp/eartag -Denable_networked_tests=${NETWORKED_TESTS} . output
 meson compile -C output
-meson test -v -C output
+meson test "eartag*:" -v -C output
 ret=$?
 set +e
 

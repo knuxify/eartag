@@ -1,0 +1,28 @@
+using Gtk 4.0;
+
+template $EartagMoreTagsGroup : Box {
+  orientation: vertical;
+  spacing: 6;
+
+  ListBox tag_entry_listbox {
+    hexpand: true;
+    valign: start;
+    selection-mode: none;
+
+    styles [
+      "boxed-list",
+    ]
+  }
+
+  $EartagTagSelectorButton tag_selector {
+    label: _('Add tag');
+    tag-selected => $add_row_from_selector();
+    halign: 'center';
+    margin-top: '6';
+
+    styles [
+      "raised",
+      "pill",
+    ]
+  }
+}

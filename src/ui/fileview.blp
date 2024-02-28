@@ -1,0 +1,257 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagFileView : Stack {
+  transition-type: crossfade;
+
+  Adw.StatusPage loading {
+    icon-name: 'content-loading-symbolic';
+    title: _('Loading Files…');
+  }
+
+  Stack content_stack {
+    transition-type: crossfade;
+
+    Adw.StatusPage select_file {
+      icon-name: 'edit-select-all-symbolic';
+      title: _('Select a File');
+      description: _('Select the files you want to edit from the list of opened files.');
+    }
+
+    ScrolledWindow content_scroll {
+      hscrollbar-policy: never;
+      hexpand: true;
+      vexpand: true;
+
+      Adw.Clamp {
+        maximum-size: 576;
+
+        Box {
+          orientation: vertical;
+          hexpand: true;
+          spacing: 24;
+          margin-top: 36;
+          margin-bottom: 24;
+          margin-start: 12;
+          margin-end: 12;
+
+          Overlay cover_overlay {
+            $EartagAlbumCoverButton album_cover {
+            }
+
+            [overlay]
+            Revealer previous_file_button_revealer {
+              halign: start;
+              valign: center;
+              reveal-child: false;
+              transition-type: crossfade;
+
+              styles [
+                "prev-next-button-container",
+              ]
+
+              Button previous_file_button {
+                tooltip-text: _('Previous file');
+                icon-name: 'go-previous-symbolic';
+
+                styles [
+                  "osd",
+                  "prev-next-button",
+                ]
+              }
+            }
+
+            [overlay]
+            Revealer next_file_button_revealer {
+              halign: end;
+              valign: center;
+              reveal-child: false;
+              transition-type: crossfade;
+
+              styles [
+                "prev-next-button-container",
+              ]
+
+              Button next_file_button {
+                tooltip-text: _('Next file');
+                icon-name: 'go-next-symbolic';
+
+                styles [
+                  "osd",
+                ]
+              }
+            }
+          }
+
+          Box important_data_container {
+            orientation: vertical;
+            spacing: 6;
+
+            Overlay {
+              styles [
+                "editable-label-overlay",
+              ]
+
+              $EartagTagEditableLabel title_entry {
+                title: _('Title');
+                bound-property: 'title';
+                margin-start: '12';
+                margin-end: '12';
+
+                styles [
+                  "title-1",
+                ]
+              }
+
+              [overlay]
+              Image {
+                icon-name: 'document-edit-symbolic';
+                receives-default: false;
+                can-target: false;
+                can-focus: false;
+                halign: end;
+                visible: bind title_entry.editing no-sync-create inverted;
+                margin-end: 12;
+
+                styles [
+                  "edit-icon",
+                ]
+              }
+            }
+
+            Overlay {
+              styles [
+                "editable-label-overlay",
+              ]
+
+              $EartagTagEditableLabel artist_entry {
+                title: _('Artist');
+                bound-property: 'artist';
+                margin-start: '12';
+                margin-end: '12';
+
+                styles [
+                  "title-3",
+                  "artist",
+                ]
+              }
+
+              [overlay]
+              Image {
+                icon-name: 'document-edit-symbolic';
+                receives-default: false;
+                can-target: false;
+                can-focus: false;
+                halign: end;
+                visible: bind artist_entry.editing no-sync-create inverted;
+                margin-end: 12;
+
+                styles [
+                  "edit-icon",
+                ]
+              }
+            }
+
+            $EartagFileInfoLabel file_info {
+              justify: 'center';
+              wrap: 'true';
+              margin-top: '6';
+
+              styles [
+                "caption-header",
+              ]
+            }
+          }
+
+          Box {
+            orientation: vertical;
+            spacing: 6;
+
+            Box tracknumber_box {
+              spacing: 6;
+              hexpand: true;
+
+              $EartagTagEntryRow tracknumber_entry {
+                title: _('Track number');
+                bound-property: 'tracknumber';
+                max-width-chars: '4';
+                is-numeric: 'true';
+                hexpand: 'true';
+
+                styles [
+                  "card",
+                  "tagentry-small",
+                ]
+              }
+
+              $EartagTagEntryRow totaltracknumber_entry {
+                title: _('Total tracks');
+                bound-property: 'totaltracknumber';
+                max-width-chars: '4';
+                is-numeric: 'true';
+                hexpand: 'true';
+
+                styles [
+                  "card",
+                  "tagentry-small",
+                ]
+              }
+            }
+
+            ListBox tag_list {
+              hexpand: true;
+              valign: start;
+              selection-mode: none;
+
+              styles [
+                "boxed-list",
+              ]
+
+              $EartagTagEntryRow album_entry {
+                title: _('Album');
+                bound-property: 'album';
+              }
+
+              $EartagTagEntryRow albumartist_entry {
+                title: _('Album artist');
+                bound-property: 'albumartist';
+              }
+
+              $EartagTagEntryRow genre_entry {
+                title: _('Genre');
+                bound-property: 'genre';
+              }
+
+              $EartagTagEntryRow releasedate_entry {
+                title: _('Release date');
+                bound-property: 'releasedate';
+                is-date: 'true';
+              }
+
+              $EartagTagEntryRow comment_entry {
+                title: _('Comment');
+                bound-property: 'comment';
+              }
+            }
+
+            ListBox filename_listbox {
+              hexpand: true;
+              valign: start;
+              selection-mode: none;
+
+              styles [
+                "boxed-list",
+              ]
+
+              $EartagFilenameRow filename_entry {
+              }
+            }
+
+            $EartagMoreTagsGroup more_tags_group {
+            }
+          }
+        }
+      }
+    }
+  }
+}

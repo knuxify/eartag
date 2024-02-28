@@ -1,0 +1,15 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagTagDeleteWarningDialog : Adw.MessageDialog {
+  heading: _('Delete All Tags?');
+  body: _('This will remove all tags from the file, including ones that cannot be viewed in Ear Tag.');
+  close-response: 'cancel';
+  default-response: 'save';
+  response => $handle_response();
+
+  responses [
+    cancel: _('_Cancel'),
+    discard: _('_Delete') destructive,
+  ]
+}

@@ -1,0 +1,24 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagIdentifyAltReleaseRow : Adw.ActionRow {
+  activatable-widget: apply_checkbox;
+
+  styles [
+    "identify-recording-row",
+  ]
+
+  [prefix]
+  $EartagIdentifyCoverImage cover_image {
+    hexpand: 'false';
+  }
+
+  CheckButton apply_checkbox {
+    active: true;
+
+    styles [
+      "selection-mode",
+      "circular",
+    ]
+  }
+}

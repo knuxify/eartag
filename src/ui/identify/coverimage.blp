@@ -1,0 +1,26 @@
+using Gtk 4.0;
+
+template $EartagIdentifyCoverImage : Stack {
+  hexpand: false;
+  vexpand: false;
+  valign: center;
+  visible-child: no_cover;
+
+  styles [
+    "cover-image",
+  ]
+
+  Image no_cover {
+    icon-name: 'folder-music-symbolic';
+    pixel-size: 28;
+    halign: center;
+    valign: center;
+  }
+
+  Image cover_image {
+    hexpand: true;
+    vexpand: true;
+    pixel-size: 48;
+    overflow: hidden;
+  }
+}
