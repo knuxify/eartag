@@ -153,7 +153,7 @@ def cleanup_filename(
         banned_chars.remove(os.path.sep)
 
     for char in banned_chars:
-        filename.replace(char, "_")
+        filename = filename.replace(char, "_")
 
     if full_path:
         filename_clean = os.path.sep
@@ -176,7 +176,7 @@ def cleanup_filename(
             if i == (len(filename_split) - 1):
                 # If we're dealing with a filename, keep the extension
                 f, ext = os.path.splitext(f)
-                f = f[(-249 - len(ext)) :] + ext
+                f = f[(-249 + len(ext) - 1) :] + ext
             else:
                 f = f[-249:]
 
