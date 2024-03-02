@@ -214,8 +214,6 @@ def filename_valid(
             return False
 
     for f in filename.split(os.path.sep):
-        if f == "":
-            continue
         if (
             f in BANNED_FILENAMES + ("..",)
             or f.endswith(".")
