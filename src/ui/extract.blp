@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $EartagExtractTagsDialog : Adw.Window {
-  title: _('Extract Tags from Filename');
+  title: _("Extract Tags from Filename");
   default-width: 600;
   width-request: 360;
   height-request: 200;
@@ -19,7 +19,7 @@ template $EartagExtractTagsDialog : Adw.Window {
 
         [start]
         Button cancel_button {
-          label: _('Cancel');
+          label: _("Cancel");
           focusable: true;
           clicked => $on_cancel();
 
@@ -27,15 +27,15 @@ template $EartagExtractTagsDialog : Adw.Window {
             scope: managed;
 
             Shortcut {
-              trigger: 'Escape';
-              action: 'activate';
+              trigger: "Escape";
+              action: "activate";
             }
           }
         }
 
         [end]
         Button apply_button {
-          label: _('Apply');
+          label: _("Apply");
           focusable: true;
           clicked => $do_apply();
 
@@ -76,7 +76,7 @@ template $EartagExtractTagsDialog : Adw.Window {
               ]
 
               Adw.EntryRow preview_entry {
-                title: _('Preview');
+                title: _("Preview");
                 editable: false;
 
                 [suffix]
@@ -95,13 +95,13 @@ template $EartagExtractTagsDialog : Adw.Window {
               ]
 
               Adw.EntryRow pattern_entry {
-                title: _('Filename pattern');
+                title: _("Filename pattern");
                 entry-activated => $do_apply();
 
                 [suffix]
                 $EartagTagSelectorButton tag_selector {
-                  icon-name: 'list-add-symbolic';
-                  tooltip-text: _('Insert tag placeholder');
+                  icon-name: "list-add-symbolic";
+                  tooltip-text: _("Insert tag placeholder");
                   tag-selected => $add_tag_from_selector();
 
                   styles [
@@ -111,8 +111,8 @@ template $EartagExtractTagsDialog : Adw.Window {
               }
 
               Adw.SwitchRow toggle_strip_common_suffixes {
-                title: _('Ignore common suffixes');
-                subtitle: _('Automatically ignores ID suffixes often found in filenames of downloaded files. Disable this option if it interferes with your filenames.');
+                title: _("Ignore common suffixes");
+                subtitle: _("Automatically ignores ID suffixes often found in filenames of downloaded files. Disable this option if it interferes with your filenames.");
               }
             }
           }

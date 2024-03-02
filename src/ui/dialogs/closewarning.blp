@@ -2,15 +2,15 @@ using Gtk 4.0;
 using Adw 1;
 
 template $EartagCloseWarningDialog : Adw.MessageDialog {
-  heading: _('Save Changes?');
-  body: _('If you don\'t save your changes, they will be permanently lost.');
-  close-response: 'cancel';
-  default-response: 'save';
+  heading: _("Save Changes?");
+  body: _("If you don't save your changes, they will be permanently lost.");
+  close-response: "cancel";
+  default-response: "save";
   response => $handle_response();
 
   responses [
-    cancel: _('_Cancel'),
-    discard: _('_Discard and Close') destructive,
-    save: _('_Save and Close'),
+    cancel: _("_Cancel"),
+    discard: _("_Discard and Close") destructive,
+    save: _("_Save and Close"),
   ]
 }

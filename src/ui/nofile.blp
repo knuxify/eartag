@@ -7,9 +7,9 @@ template $EartagNoFile : Adw.Bin {
     vexpand: true;
 
     Adw.StatusPage nofile_status {
-      icon-name: 'app.drey.EarTag';
-      title: 'Ear Tag';
-      description: _('Open or drag in some audio files to edit their metadata.');
+      icon-name: "app.drey.EarTag";
+      title: "Ear Tag";
+      description: _("Open or drag in some audio files to edit their metadata.");
 
       styles [
         "nofiles",
@@ -21,7 +21,7 @@ template $EartagNoFile : Adw.Bin {
         spacing: 12;
 
         Button open_file {
-          label: _('Open File');
+          label: _("Open File");
           focusable: true;
           clicked => $on_add_file();
 
@@ -32,7 +32,7 @@ template $EartagNoFile : Adw.Bin {
         }
 
         Button open_folder {
-          label: _('Open Folder');
+          label: _("Open Folder");
           clicked => $on_add_folder();
 
           styles [

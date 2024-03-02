@@ -5,17 +5,17 @@ template $EartagFileView : Stack {
   transition-type: crossfade;
 
   Adw.StatusPage loading {
-    icon-name: 'content-loading-symbolic';
-    title: _('Loading Files…');
+    icon-name: "content-loading-symbolic";
+    title: _("Loading Files…");
   }
 
   Stack content_stack {
     transition-type: crossfade;
 
     Adw.StatusPage select_file {
-      icon-name: 'edit-select-all-symbolic';
-      title: _('Select a File');
-      description: _('Select the files you want to edit from the list of opened files.');
+      icon-name: "edit-select-all-symbolic";
+      title: _("Select a File");
+      description: _("Select the files you want to edit from the list of opened files.");
     }
 
     ScrolledWindow content_scroll {
@@ -51,8 +51,8 @@ template $EartagFileView : Stack {
               ]
 
               Button previous_file_button {
-                tooltip-text: _('Previous file');
-                icon-name: 'go-previous-symbolic';
+                tooltip-text: _("Previous file");
+                icon-name: "go-previous-symbolic";
 
                 styles [
                   "osd",
@@ -73,8 +73,8 @@ template $EartagFileView : Stack {
               ]
 
               Button next_file_button {
-                tooltip-text: _('Next file');
-                icon-name: 'go-next-symbolic';
+                tooltip-text: _("Next file");
+                icon-name: "go-next-symbolic";
 
                 styles [
                   "osd",
@@ -93,10 +93,10 @@ template $EartagFileView : Stack {
               ]
 
               $EartagTagEditableLabel title_entry {
-                title: _('Title');
-                bound-property: 'title';
-                margin-start: '12';
-                margin-end: '12';
+                title: _("Title");
+                bound-property: "title";
+                margin-start: "12";
+                margin-end: "12";
 
                 styles [
                   "title-1",
@@ -105,7 +105,7 @@ template $EartagFileView : Stack {
 
               [overlay]
               Image {
-                icon-name: 'document-edit-symbolic';
+                icon-name: "document-edit-symbolic";
                 receives-default: false;
                 can-target: false;
                 can-focus: false;
@@ -125,10 +125,10 @@ template $EartagFileView : Stack {
               ]
 
               $EartagTagEditableLabel artist_entry {
-                title: _('Artist');
-                bound-property: 'artist';
-                margin-start: '12';
-                margin-end: '12';
+                title: _("Artist");
+                bound-property: "artist";
+                margin-start: "12";
+                margin-end: "12";
 
                 styles [
                   "title-3",
@@ -138,7 +138,7 @@ template $EartagFileView : Stack {
 
               [overlay]
               Image {
-                icon-name: 'document-edit-symbolic';
+                icon-name: "document-edit-symbolic";
                 receives-default: false;
                 can-target: false;
                 can-focus: false;
@@ -153,9 +153,9 @@ template $EartagFileView : Stack {
             }
 
             $EartagFileInfoLabel file_info {
-              justify: 'center';
-              wrap: 'true';
-              margin-top: '6';
+              justify: "center";
+              wrap: "true";
+              margin-top: "6";
 
               styles [
                 "caption-header",
@@ -172,11 +172,11 @@ template $EartagFileView : Stack {
               hexpand: true;
 
               $EartagTagEntryRow tracknumber_entry {
-                title: _('Track number');
-                bound-property: 'tracknumber';
-                max-width-chars: '4';
-                is-numeric: 'true';
-                hexpand: 'true';
+                title: _("Track number");
+                bound-property: "tracknumber";
+                max-width-chars: "4";
+                is-numeric: "true";
+                hexpand: "true";
 
                 styles [
                   "card",
@@ -185,11 +185,11 @@ template $EartagFileView : Stack {
               }
 
               $EartagTagEntryRow totaltracknumber_entry {
-                title: _('Total tracks');
-                bound-property: 'totaltracknumber';
-                max-width-chars: '4';
-                is-numeric: 'true';
-                hexpand: 'true';
+                title: _("Total tracks");
+                bound-property: "totaltracknumber";
+                max-width-chars: "4";
+                is-numeric: "true";
+                hexpand: "true";
 
                 styles [
                   "card",
@@ -208,29 +208,29 @@ template $EartagFileView : Stack {
               ]
 
               $EartagTagEntryRow album_entry {
-                title: _('Album');
-                bound-property: 'album';
+                title: _("Album");
+                bound-property: "album";
               }
 
               $EartagTagEntryRow albumartist_entry {
-                title: _('Album artist');
-                bound-property: 'albumartist';
+                title: _("Album artist");
+                bound-property: "albumartist";
               }
 
               $EartagTagEntryRow genre_entry {
-                title: _('Genre');
-                bound-property: 'genre';
+                title: _("Genre");
+                bound-property: "genre";
               }
 
               $EartagTagEntryRow releasedate_entry {
-                title: _('Release date');
-                bound-property: 'releasedate';
-                is-date: 'true';
+                title: _("Release date");
+                bound-property: "releasedate";
+                is-date: "true";
               }
 
               $EartagTagEntryRow comment_entry {
-                title: _('Comment');
-                bound-property: 'comment';
+                title: _("Comment");
+                bound-property: "comment";
               }
             }
 

@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $EartagIdentifyDialog : Adw.Window {
-  title: _('Identify Selected Files');
+  title: _("Identify Selected Files");
   default-width: 700;
   default-height: 550;
   width-request: 360;
@@ -24,7 +24,7 @@ template $EartagIdentifyDialog : Adw.Window {
 
         [start]
         Button cancel_button {
-          label: _('Cancel');
+          label: _("Cancel");
           focusable: true;
           clicked => $on_cancel();
 
@@ -32,8 +32,8 @@ template $EartagIdentifyDialog : Adw.Window {
             scope: managed;
 
             Shortcut {
-              trigger: 'Escape';
-              action: 'activate';
+              trigger: "Escape";
+              action: "activate";
             }
           }
         }
@@ -41,7 +41,7 @@ template $EartagIdentifyDialog : Adw.Window {
         [end]
         Stack end_button_stack {
           Button identify_button {
-            label: _('Identify');
+            label: _("Identify");
             focusable: true;
             clicked => $do_identify();
 
@@ -51,7 +51,7 @@ template $EartagIdentifyDialog : Adw.Window {
           }
 
           Button apply_button {
-            label: _('Apply');
+            label: _("Apply");
             focusable: true;
             clicked => $do_apply();
 
@@ -78,7 +78,7 @@ template $EartagIdentifyDialog : Adw.Window {
 
           Adw.Clamp {
             Adw.PreferencesGroup content_row_group {
-              description: _('Track information is provided by <a href="https://musicbrainz.org">Musicbrainz</a>. Files without metadata are identified using the <a href="https://acoustid.org">AcoustID</a> service.');
+              description: _("Track information is provided by <a href=\"https://musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified using the <a href=\"https://acoustid.org\">AcoustID</a> service.");
               margin-start: 12;
               margin-end: 12;
               margin-top: 18;

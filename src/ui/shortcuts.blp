@@ -4,59 +4,59 @@ ShortcutsWindow help_overlay {
   modal: true;
 
   ShortcutsSection {
-    section-name: 'shortcuts';
+    section-name: "shortcuts";
     max-height: 12;
 
     ShortcutsGroup {
-      title: C_('shortcut window', 'Files');
+      title: C_("shortcut window", "Files");
 
       ShortcutsShortcut {
-        action-name: 'app.open_file';
-        title: C_('shortcut window', 'Open files');
+        action-name: "app.open_file";
+        title: C_("shortcut window", "Open files");
       }
 
       ShortcutsShortcut {
-        action-name: 'app.open_folder';
-        title: C_('shortcut window', 'Open folder');
+        action-name: "app.open_folder";
+        title: C_("shortcut window", "Open folder");
       }
 
       ShortcutsShortcut {
-        action-name: 'app.save';
-        title: C_('shortcut window', 'Save all modified files');
-      }
-    }
-
-    ShortcutsGroup {
-      title: C_('shortcut window', 'Sidebar');
-
-      ShortcutsShortcut {
-        action-name: 'app.previous_file';
-        title: C_('shortcut window', 'Select previous file in sidebar');
-      }
-
-      ShortcutsShortcut {
-        action-name: 'app.next_file';
-        title: C_('shortcut window', 'Select next file in sidebar');
-      }
-
-      ShortcutsShortcut {
-        action-name: 'app.select_all';
-        title: C_('shortcut window', 'Select all files in sidebar');
-      }
-
-      ShortcutsShortcut {
-        action-name: 'app.close_selected';
-        title: C_('shortcut window', 'Remove selected files from sidebar');
-        subtitle: C_('shortcut window', 'Closes the window if no files are present.');
+        action-name: "app.save";
+        title: C_("shortcut window", "Save all modified files");
       }
     }
 
     ShortcutsGroup {
-      title: C_('shortcut window', 'Other');
+      title: C_("shortcut window", "Sidebar");
 
       ShortcutsShortcut {
-        action-name: 'win.show-help-overlay';
-        title: C_('shortcut window', 'Keyboard shortcuts');
+        action-name: "app.previous_file";
+        title: C_("shortcut window", "Select previous file in sidebar");
+      }
+
+      ShortcutsShortcut {
+        action-name: "app.next_file";
+        title: C_("shortcut window", "Select next file in sidebar");
+      }
+
+      ShortcutsShortcut {
+        action-name: "app.select_all";
+        title: C_("shortcut window", "Select all files in sidebar");
+      }
+
+      ShortcutsShortcut {
+        action-name: "app.close_selected";
+        title: C_("shortcut window", "Remove selected files from sidebar");
+        subtitle: C_("shortcut window", "Closes the window if no files are present.");
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "Other");
+
+      ShortcutsShortcut {
+        action-name: "win.show-help-overlay";
+        title: C_("shortcut window", "Keyboard shortcuts");
       }
     }
   }

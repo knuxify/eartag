@@ -8,7 +8,7 @@ template $EartagWindow : Adw.ApplicationWindow {
   height-request: 200;
 
   Adw.Breakpoint {
-    condition ('max-width: 620sp')
+    condition ("max-width: 620sp")
     setters {
       split_view.collapsed: true;
     }
@@ -47,12 +47,12 @@ template $EartagWindow : Adw.ApplicationWindow {
           margin-end: 24;
 
           Image {
-            icon-name: 'document-send-symbolic';
+            icon-name: "document-send-symbolic";
             pixel-size: 96;
           }
 
           Label {
-            label: _('Drop a file to add it to the opened file list');
+            label: _("Drop a file to add it to the opened file list");
             wrap: true;
 
             styles [
@@ -82,7 +82,7 @@ template $EartagWindow : Adw.ApplicationWindow {
 
             [end]
             MenuButton empty_primary_menu_button {
-              icon-name: 'open-menu-symbolic';
+              icon-name: "open-menu-symbolic";
               menu-model: primary_menu;
             }
           }
@@ -107,7 +107,7 @@ template $EartagWindow : Adw.ApplicationWindow {
               [start]
               Button save_button {
                 sensitive: false;
-                label: _('Save');
+                label: _("Save");
                 clicked => $on_save();
 
                 styles [
@@ -117,16 +117,16 @@ template $EartagWindow : Adw.ApplicationWindow {
 
               [start]
               Button sort_button {
-                icon-name: 'view-sort-descending-symbolic';
+                icon-name: "view-sort-descending-symbolic";
                 clicked => $run_sort();
-                tooltip-text: _('Sort files by track number, album, name');
+                tooltip-text: _("Sort files by track number, album, name");
               }
 
               [end]
               Button hide_sidebar_button {
-                icon-name: 'go-previous-symbolic';
+                icon-name: "go-previous-symbolic";
                 halign: start;
-                tooltip-text: _('Close file list');
+                tooltip-text: _("Close file list");
                 clicked => $hide_sidebar();
                 visible: bind split_view.collapsed;
               }
@@ -134,21 +134,21 @@ template $EartagWindow : Adw.ApplicationWindow {
               [end]
               Button insert_button {
                 halign: end;
-                icon-name: 'list-add-symbolic';
+                icon-name: "list-add-symbolic";
                 clicked => $insert_file();
-                tooltip-text: _('Add file');
+                tooltip-text: _("Add file");
               }
 
               [end]
               ToggleButton select_multiple_button {
-                icon-name: 'selection-mode-symbolic';
-                tooltip-text: _('Select multiple files');
+                icon-name: "selection-mode-symbolic";
+                tooltip-text: _("Select multiple files");
               }
 
               [end]
               ToggleButton sidebar_search_button {
-                icon-name: 'edit-find-symbolic';
-                tooltip-text: _('Search opened files');
+                icon-name: "edit-find-symbolic";
+                tooltip-text: _("Search opened files");
               }
             }
 
@@ -190,9 +190,9 @@ template $EartagWindow : Adw.ApplicationWindow {
               }
 
               Adw.StatusPage no_results {
-                icon-name: 'system-search-symbolic';
-                title: _('No Results Found');
-                description: _('Try a different search query.');
+                icon-name: "system-search-symbolic";
+                title: _("No Results Found");
+                description: _("Try a different search query.");
 
                 styles [
                   "compact",
@@ -204,8 +204,8 @@ template $EartagWindow : Adw.ApplicationWindow {
             ActionBar sidebar_action_bar {
               [start]
               Button select_all_button {
-                icon-name: 'edit-select-all-symbolic';
-                tooltip-text: _('Select all files');
+                icon-name: "edit-select-all-symbolic";
+                tooltip-text: _("Select all files");
                 clicked => $select_all();
               }
 
@@ -218,8 +218,8 @@ template $EartagWindow : Adw.ApplicationWindow {
 
               [end]
               Button remove_selected_button {
-                icon-name: 'user-trash-symbolic';
-                tooltip-text: _('Remove selected files');
+                icon-name: "user-trash-symbolic";
+                tooltip-text: _("Remove selected files");
                 clicked => $remove_selected();
               }
             }
@@ -234,20 +234,20 @@ template $EartagWindow : Adw.ApplicationWindow {
 
               [start]
               Button show_sidebar_button {
-                icon-name: 'view-queue-symbolic';
-                tooltip-text: _('Show file list');
+                icon-name: "view-queue-symbolic";
+                tooltip-text: _("Show file list");
                 clicked => $show_sidebar();
                 visible: bind split_view.collapsed;
               }
 
               [title]
               Adw.WindowTitle window_title {
-                title: _('Ear Tag');
+                title: _("Ear Tag");
               }
 
               [end]
               MenuButton primary_menu_button {
-                icon-name: 'open-menu-symbolic';
+                icon-name: "open-menu-symbolic";
                 menu-model: primary_menu;
               }
             }
@@ -266,59 +266,59 @@ template $EartagWindow : Adw.ApplicationWindow {
 menu primary_menu {
   section {
     item {
-      label: _('_Open File');
-      action: 'app.open_file';
+      label: _("_Open File");
+      action: "app.open_file";
     }
 
     item {
-      label: _('O_pen Folder');
-      action: 'app.open_folder';
-    }
-  }
-
-  section {
-    item {
-      label: _('_Rename Selected Files');
-      action: 'app.rename';
-    }
-
-    item {
-      label: _('_Extract Tags from Filename');
-      action: 'app.extract';
-    }
-
-    item {
-      label: _('_Identify Selected Files');
-      action: 'app.identify';
+      label: _("O_pen Folder");
+      action: "app.open_folder";
     }
   }
 
   section {
     item {
-      label: _('_Undo Changes in Selected Files');
-      action: 'app.undo_all';
+      label: _("_Rename Selected Files");
+      action: "app.rename";
     }
 
     item {
-      label: _('_Remove All Tags in Selected Files');
-      action: 'app.delete_all_tags';
+      label: _("_Extract Tags from Filename");
+      action: "app.extract";
+    }
+
+    item {
+      label: _("_Identify Selected Files");
+      action: "app.identify";
     }
   }
 
   section {
     item {
-      label: _('_Keyboard Shortcuts');
-      action: 'win.show-help-overlay';
+      label: _("_Undo Changes in Selected Files");
+      action: "app.undo_all";
     }
 
     item {
-      label: _('_Preferences');
-      action: 'app.preferences';
+      label: _("_Remove All Tags in Selected Files");
+      action: "app.delete_all_tags";
+    }
+  }
+
+  section {
+    item {
+      label: _("_Keyboard Shortcuts");
+      action: "win.show-help-overlay";
     }
 
     item {
-      label: _('_About Ear Tag');
-      action: 'app.about';
+      label: _("_Preferences");
+      action: "app.preferences";
+    }
+
+    item {
+      label: _("_About Ear Tag");
+      action: "app.about";
     }
   }
 }

@@ -31,7 +31,7 @@ template $EartagAlbumCoverButton : Adw.Bin {
           ]
 
           Image {
-            icon-name: 'document-edit-symbolic';
+            icon-name: "document-edit-symbolic";
             pixel-size: 48;
             valign: center;
             halign: center;
@@ -45,7 +45,7 @@ template $EartagAlbumCoverButton : Adw.Bin {
           ]
 
           Image {
-            icon-name: 'document-send-symbolic';
+            icon-name: "document-send-symbolic";
             pixel-size: 48;
             valign: center;
             halign: center;
@@ -56,10 +56,10 @@ template $EartagAlbumCoverButton : Adw.Bin {
     }
 
     $EartagPopoverButton button {
-      popover: 'menu_popover';
+      popover: "menu_popover";
       child:
       $EartagAlbumCoverImage cover_image {
-        pixel-size: '196';
+        pixel-size: "196";
       }
 
       ;
@@ -70,27 +70,27 @@ template $EartagAlbumCoverButton : Adw.Bin {
 menu options_menu {
   section {
     item {
-      label: _('_Choose Image…');
-      icon: 'insert-image-symbolic';
-      action: 'albumcoverbutton.load';
+      label: _("_Choose Image…");
+      icon: "insert-image-symbolic";
+      action: "albumcoverbutton.load";
     }
 
     item {
-      label: _('_Save Image…');
-      icon: 'user-trash-symbolic';
-      action: 'albumcoverbutton.save';
+      label: _("_Save Image…");
+      icon: "user-trash-symbolic";
+      action: "albumcoverbutton.save";
     }
 
     item {
-      label: _('_Remove Cover');
-      icon: 'user-trash-symbolic';
-      action: 'albumcoverbutton.remove';
+      label: _("_Remove Cover");
+      icon: "user-trash-symbolic";
+      action: "albumcoverbutton.remove";
     }
   }
 
   section {
     item {
-      custom: 'type_switcher';
+      custom: "type_switcher";
     }
   }
 }
@@ -108,18 +108,18 @@ PopoverMenu menu_popover {
     ]
 
     CheckButton front_toggle {
-      label: _('Front');
+      label: _("Front");
       group: back_toggle;
     }
 
     CheckButton back_toggle {
-      label: _('Back');
+      label: _("Back");
     }
   }
 }
 
 FileFilter image_file_filter {
   mime-types [
-    'image/*',
+    "image/*",
   ]
 }

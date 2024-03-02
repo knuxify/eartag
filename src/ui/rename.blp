@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $EartagRenameDialog : Adw.Window {
-  title: _('Rename Selected Files');
+  title: _("Rename Selected Files");
   default-width: 600;
   default-height: 300;
   width-request: 360;
@@ -20,7 +20,7 @@ template $EartagRenameDialog : Adw.Window {
 
         [start]
         Button cancel_button {
-          label: _('Cancel');
+          label: _("Cancel");
           focusable: true;
           clicked => $on_cancel();
 
@@ -28,15 +28,15 @@ template $EartagRenameDialog : Adw.Window {
             scope: managed;
 
             Shortcut {
-              trigger: 'Escape';
-              action: 'activate';
+              trigger: "Escape";
+              action: "activate";
             }
           }
         }
 
         [end]
         Button rename_button {
-          label: _('Rename');
+          label: _("Rename");
           focusable: true;
           clicked => $do_rename();
 
@@ -61,8 +61,8 @@ template $EartagRenameDialog : Adw.Window {
             orientation: vertical;
 
             Adw.Banner sandbox_warning_banner {
-              title: _('Ear Tag needs additional permissions to rename files in-place.');
-              button-label: _('Learn More');
+              title: _("Ear Tag needs additional permissions to rename files in-place.");
+              button-label: _("Learn More");
               button-clicked => $on_sandbox_warning_learn_more();
 
               styles [
@@ -71,7 +71,7 @@ template $EartagRenameDialog : Adw.Window {
             }
 
             Adw.Banner error_banner {
-              title: _('Failed to rename files. Check the logs for more information.');
+              title: _("Failed to rename files. Check the logs for more information.");
 
               styles [
                 "error",
@@ -100,7 +100,7 @@ template $EartagRenameDialog : Adw.Window {
                     ]
 
                     Adw.EntryRow preview_entry {
-                      title: _('Preview');
+                      title: _("Preview");
                       editable: false;
 
                       [suffix]
@@ -111,14 +111,14 @@ template $EartagRenameDialog : Adw.Window {
 
                   Adw.PreferencesGroup {
                     Adw.EntryRow filename_entry {
-                      title: _('Filename pattern');
+                      title: _("Filename pattern");
                       changed => $update_preview();
                       entry-activated => $do_rename();
 
                       [suffix]
                       $EartagTagSelectorButton tag_selector {
-                        icon-name: 'list-add-symbolic';
-                        tooltip-text: _('Insert tag placeholder');
+                        icon-name: "list-add-symbolic";
+                        tooltip-text: _("Insert tag placeholder");
                         tag-selected => $add_placeholder_from_selector();
 
                         styles [
@@ -128,12 +128,12 @@ template $EartagRenameDialog : Adw.Window {
                     }
 
                     Adw.ActionRow folder_selector_row {
-                      title: _('Move to folder');
+                      title: _("Move to folder");
 
                       [suffix]
                       Button folder_selector_button {
-                        icon-name: 'folder-open-symbolic';
-                        tooltip-text: _('Select a folder…');
+                        icon-name: "folder-open-symbolic";
+                        tooltip-text: _("Select a folder…");
                         valign: center;
                         clicked => $show_folder_selector();
 
@@ -144,8 +144,8 @@ template $EartagRenameDialog : Adw.Window {
 
                       [suffix]
                       Button folder_remove_button {
-                        icon-name: 'edit-delete-symbolic';
-                        tooltip-text: _('Unselect folder');
+                        icon-name: "edit-delete-symbolic";
+                        tooltip-text: _("Unselect folder");
                         valign: center;
                         sensitive: false;
                         clicked => $remove_folder();
@@ -161,7 +161,7 @@ template $EartagRenameDialog : Adw.Window {
                     wrap: true;
                     use-markup: true;
                     justify: center;
-                    label: _('For a list of available placeholders, see the <a href="https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags">list of available tags</a>.');
+                    label: _("For a list of available placeholders, see the <a href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of available tags</a>.");
 
                     styles [
                       "dim-label",

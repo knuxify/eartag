@@ -12,8 +12,8 @@ template $EartagFileListItem : Box {
     transition-type: crossfade;
 
     $EartagAlbumCoverImage coverart_image {
-      pixel-size: '48';
-      hexpand: 'false';
+      pixel-size: "48";
+      hexpand: "false";
     }
 
     CheckButton select_button {
@@ -36,15 +36,15 @@ template $EartagFileListItem : Box {
     Box {
       Stack status_icon_stack {
         Image error_icon {
-          icon-name: 'dialog-warning-symbolic';
-          tooltip-text: _('File has invalid values');
+          icon-name: "dialog-warning-symbolic";
+          tooltip-text: _("File has invalid values");
           visible: false;
           margin-end: 3;
         }
 
         Image modified_icon {
-          icon-name: 'file-modified-symbolic';
-          tooltip-text: _('File has unsaved changes');
+          icon-name: "file-modified-symbolic";
+          tooltip-text: _("File has unsaved changes");
           visible: false;
           margin-end: 3;
         }
@@ -86,12 +86,12 @@ template $EartagFileListItem : Box {
     }
 
     Button remove_button {
-      icon-name: 'edit-delete-symbolic';
+      icon-name: "edit-delete-symbolic";
       clicked => $remove_item();
       hexpand: true;
       halign: end;
       valign: center;
-      tooltip-text: _('Remove from list');
+      tooltip-text: _("Remove from list");
 
       styles [
         "flat",

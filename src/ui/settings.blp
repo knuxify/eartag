@@ -4,11 +4,11 @@ using Adw 1;
 template $EartagPreferencesWindow : Adw.PreferencesWindow {
   Adw.PreferencesPage {
     Adw.PreferencesGroup {
-      title: _('File identification');
+      title: _("File identification");
 
       Adw.SpinRow mb_confidence_spinbutton {
-        title: _('MusicBrainz confidence treshold');
-        subtitle: _('Minimum confidence percentage required for a MusicBrainz search result to be evaluated');
+        title: _("MusicBrainz confidence treshold");
+        subtitle: _("Minimum confidence percentage required for a MusicBrainz search result to be evaluated");
         adjustment:
         Adjustment {
           lower: 0;
@@ -22,8 +22,8 @@ template $EartagPreferencesWindow : Adw.PreferencesWindow {
       }
 
       Adw.SpinRow aid_confidence_spinbutton {
-        title: _('AcoustID confidence treshold');
-        subtitle: _('Minimum confidence percentage required for an AcoustID lookup result to be evaluated');
+        title: _("AcoustID confidence treshold");
+        subtitle: _("Minimum confidence percentage required for an AcoustID lookup result to be evaluated");
         adjustment:
         Adjustment {
           lower: 0;
@@ -37,15 +37,15 @@ template $EartagPreferencesWindow : Adw.PreferencesWindow {
       }
 
       Adw.ComboRow cover_size_comborow {
-        title: _('Downloaded cover art size');
+        title: _("Downloaded cover art size");
         model:
         StringList {
           strings [
-            _('Do not download covers'),
-            _('250 px'),
-            _('500 px'),
-            _('1200 px'),
-            _('Maximum size'),
+            _("Do not download covers"),
+            _("250 px"),
+            _("500 px"),
+            _("1200 px"),
+            _("Maximum size"),
           ]
         }
 
