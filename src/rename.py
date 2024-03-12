@@ -58,8 +58,7 @@ def get_formatted_tag(file: "EartagFile", tag: str) -> str:
                 # potential file path separators we need to filter out first,
                 # otherwise they'll get treated as folders (valid as far as
                 # renaming and moving to a folder is concerned).
-                for char in ("/", "'", ":"):
-                    parsed_value = parsed_value.replace(char, "_")
+                parsed_value = parsed_value.replace("/", "_")
 
     return parsed_value
 
