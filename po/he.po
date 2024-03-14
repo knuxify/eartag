@@ -3,25 +3,26 @@
 # This file is distributed under the same license as the eartag package.
 # Yosef Or Boczko <yoseforb@gmail.com>, 2024.
 #
+# SPDX-FileCopyrightText: 2024 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-02-28 14:46+0000\n"
-"PO-Revision-Date: 2024-02-29 09:34+0200\n"
+"POT-Creation-Date: 2024-03-08 14:24+0000\n"
+"PO-Revision-Date: 2024-03-14 15:39+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
-"Language-Team: Hebrew <yoseforb@gmail.com>\n"
+"Language-Team: GNOME\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3);\n"
-"X-Generator: Poedit 3.4.2\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? 2 :"
+" 3);\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #: src/main.py:132 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:245
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -85,11 +86,11 @@ msgstr "כל קובצי השמע הנתמכים"
 msgid "(Multiple files selected)"
 msgstr "(מספר רב של קבצים נבחרים)"
 
-#: src/window.py:349
+#: src/window.py:349 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "פתיחת תיקיה"
 
-#: src/window.py:352
+#: src/window.py:352 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "פתיחת קובץ"
 
@@ -158,6 +159,100 @@ msgstr[1] "בוטלה הסרת תגיות משני קבצים"
 msgstr[2] "בוטלה הסרת תגיות מ־{n} קבצים"
 msgstr[3] "בוטלה הסרת תגיות מ־{n} קבצים"
 
+#: src/ui/window.blp:55
+msgid "Drop a file to add it to the opened file list"
+msgstr "יש להשליך קובץ על מנת להוסיף אותו לרשימת הקבצים הפתוחים"
+
+#: src/ui/window.blp:110
+msgid "Save"
+msgstr "שמירה"
+
+#: src/ui/window.blp:122
+msgid "Sort files by track number, album, name"
+msgstr "מיון קבצים לפי מספר רצועה, אלבום, שם"
+
+#: src/ui/window.blp:129
+msgid "Close file list"
+msgstr "סגירת רשימת קבצים"
+
+#: src/ui/window.blp:139
+msgid "Add file"
+msgstr "הוספת קובץ"
+
+#: src/ui/window.blp:145
+msgid "Select multiple files"
+msgstr "בחירה מרובה של קבצים"
+
+#: src/ui/window.blp:151
+msgid "Search opened files"
+msgstr "חיפוש בקבצים הפתוחים"
+
+#: src/ui/window.blp:194
+msgid "No Results Found"
+msgstr "לא נמצאו תוצאות"
+
+#: src/ui/window.blp:195
+msgid "Try a different search query."
+msgstr "יש לנסות מילים שונות לחיפוש."
+
+#: src/ui/window.blp:208
+msgid "Select all files"
+msgstr "בחירת כל הקבצים"
+
+#: src/ui/window.blp:222
+msgid "Remove selected files"
+msgstr "הסתרת הקבצים הנבחרים"
+
+#: src/ui/window.blp:238
+msgid "Show file list"
+msgstr "הצגת רשימת הקבצים"
+
+#: src/ui/window.blp:269
+msgid "_Open File"
+msgstr "_פתיחת קובץ"
+
+#: src/ui/window.blp:274
+msgid "O_pen Folder"
+msgstr "פתיחת _תיקייה"
+
+#: src/ui/window.blp:281
+msgid "_Rename Selected Files"
+msgstr "_שינוי שם לקבצים הנבחרים"
+
+#: src/ui/window.blp:286
+msgid "_Extract Tags from Filename"
+msgstr "_חילוץ תגיות משם קובץ"
+
+#: src/ui/window.blp:291
+msgid "_Identify Selected Files"
+msgstr "_זיהוי הקבצים הנבחרים"
+
+#: src/ui/window.blp:298
+#| msgid "_Rename Selected Files"
+msgid "_Undo Changes in Selected Files"
+msgstr "_ביטול השינויים בקבצים הנבחרים"
+
+#: src/ui/window.blp:303
+#| msgid "Remove selected files"
+msgid "_Remove All Tags in Selected Files"
+msgstr "ה_סרת כל התגיות בקבצים הנבחרים"
+
+#: src/ui/window.blp:310
+msgid "_Keyboard Shortcuts"
+msgstr "_צירופי מקשים"
+
+#: src/ui/window.blp:315
+msgid "_Preferences"
+msgstr "ה_עדפות"
+
+#: src/ui/window.blp:320
+msgid "_About Ear Tag"
+msgstr "_על אודות Ear Tag"
+
+#: src/ui/nofile.blp:12
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr "יש לפתוח או לגרור קובצי שמע כדי לערוך את נתוני המידע שלהם."
+
 #: src/filemanager.py:146
 msgid "Failed to save file"
 msgstr "שמירת הקובץ נכשלה"
@@ -192,39 +287,39 @@ msgstr "אורך"
 msgid "Bitrate"
 msgstr "קצב סיביות"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:54 src/ui/fileview.blp:96
 msgid "Title"
 msgstr "כותרת"
 
-#: src/backends/file.py:55
+#: src/backends/file.py:55 src/ui/fileview.blp:128
 msgid "Artist"
 msgstr "אומן"
 
-#: src/backends/file.py:56
+#: src/backends/file.py:56 src/ui/fileview.blp:211
 msgid "Album"
 msgstr "אלבום"
 
-#: src/backends/file.py:57
+#: src/backends/file.py:57 src/ui/fileview.blp:216
 msgid "Album artist"
 msgstr "אומן האלבום"
 
-#: src/backends/file.py:58
+#: src/backends/file.py:58 src/ui/fileview.blp:175
 msgid "Track number"
 msgstr "מספר רצועה"
 
-#: src/backends/file.py:59
+#: src/backends/file.py:59 src/ui/fileview.blp:188
 msgid "Total tracks"
 msgstr "סך הכל רצועות"
 
-#: src/backends/file.py:60
+#: src/backends/file.py:60 src/ui/fileview.blp:221
 msgid "Genre"
 msgstr "סוגה"
 
-#: src/backends/file.py:61
+#: src/backends/file.py:61 src/ui/fileview.blp:226
 msgid "Release date"
 msgstr "תאריך הוצאה לאור"
 
-#: src/backends/file.py:62
+#: src/backends/file.py:62 src/ui/fileview.blp:232
 msgid "Comment"
 msgstr "הערה"
 
@@ -375,6 +470,51 @@ msgstr[3] "‫{n} ערוצים"
 msgid "(multiple files)"
 msgstr "(מספר קבצים רב)"
 
+#: src/ui/fileview.blp:9
+msgid "Loading Files…"
+msgstr "קבצים בטעינה…"
+
+#: src/ui/fileview.blp:17
+msgid "Select a File"
+msgstr "בחירת קובץ"
+
+#: src/ui/fileview.blp:18
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "יש לבחור מרשימת הקבצים הפתוחים את הקבצים שברצונך לערוך."
+
+#: src/ui/fileview.blp:54
+msgid "Previous file"
+msgstr "קובץ קודם"
+
+#: src/ui/fileview.blp:76
+msgid "Next file"
+msgstr "קובץ הבא"
+
+#: src/ui/filenamerow.blp:5
+#| msgid "Rename"
+msgid "Filename"
+msgstr "שם הקובץ"
+
+#: src/ui/albumcoverbutton.blp:73
+msgid "_Choose Image…"
+msgstr "_בחירת תמונה…"
+
+#: src/ui/albumcoverbutton.blp:79
+msgid "_Save Image…"
+msgstr "_שמירת תמונה…"
+
+#: src/ui/albumcoverbutton.blp:85
+msgid "_Remove Cover"
+msgstr "_שינוי שם עטיפה"
+
+#: src/ui/albumcoverbutton.blp:111
+msgid "Front"
+msgstr "קדמי"
+
+#: src/ui/albumcoverbutton.blp:116
+msgid "Back"
+msgstr "אחורי"
+
 #: src/tagentry.py:128
 msgid "(multiple values)"
 msgstr "(מספר ערכים)"
@@ -383,6 +523,71 @@ msgstr "(מספר ערכים)"
 #: src/filelist.py:146
 msgid "(No title)"
 msgstr "(ללא כותרת)"
+
+#: src/ui/filelistitem.blp:40
+msgid "File has invalid values"
+msgstr "לקובץ יש ערכים לא תקינים"
+
+#: src/ui/filelistitem.blp:47
+msgid "File has unsaved changes"
+msgstr "לקובץ יש שינויים שלא נשמרו"
+
+#: src/ui/filelistitem.blp:94
+msgid "Remove from list"
+msgstr "הסרה מהרשימה"
+
+#: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
+#: src/ui/dialogs/removaldiscardwarning.blp:5
+msgid "Save Changes?"
+msgstr "שמירת השינויים?"
+
+#: src/ui/dialogs/closewarning.blp:6 src/ui/dialogs/discardwarning.blp:6
+#: src/ui/dialogs/removaldiscardwarning.blp:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "אם לא תתבצע שמירה, כל השינויים יאבדו לצמיתות."
+
+#: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
+#: src/ui/dialogs/removaldiscardwarning.blp:12
+msgid "_Cancel"
+msgstr "_ביטול"
+
+#: src/ui/dialogs/closewarning.blp:13
+#: src/ui/dialogs/removaldiscardwarning.blp:13
+msgid "_Discard and Close"
+msgstr "ה_שלכה וסגירה"
+
+#: src/ui/dialogs/closewarning.blp:14
+#: src/ui/dialogs/removaldiscardwarning.blp:14
+msgid "_Save and Close"
+msgstr "_שמירה וסגירה"
+
+#: src/ui/dialogs/discardwarning.blp:13
+msgid "_Discard and Open"
+msgstr "ה_שלכה ופתיחה"
+
+#: src/ui/dialogs/discardwarning.blp:14
+msgid "_Save and Open"
+msgstr "_שמירה ופתיחה"
+
+#: src/ui/dialogs/loadingfailure.blp:5
+msgid "Failed to Load File"
+msgstr "אירע כשל בטעינת הקובץ"
+
+#: src/ui/dialogs/loadingfailure.blp:6
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr "לא היה ניתן לפתוח את הקובץ {f}. יש להסתכל ביומנים למידע נוסף."
+
+#: src/ui/dialogs/loadingfailure.blp:12 src/ui/dialogs/renamefailure.blp:12
+msgid "_OK"
+msgstr "_אישור"
+
+#: src/ui/dialogs/renamefailure.blp:5
+msgid "Failed to Rename File"
+msgstr "אירע כשל בשינוי שם הקובץ"
+
+#: src/ui/dialogs/renamefailure.blp:6
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr "לא היה ניתן לשנות את שם הקובץ {f}. יש להסתכל ביומנים למידע נוסף."
 
 #: src/rename.py:36
 msgid "Untitled"
@@ -401,10 +606,95 @@ msgstr "התיקייה הנבחרת לא קיימת"
 msgid "Selected folder is read-only"
 msgstr "התיקייה הנבחרת היא לקריאה בלבד"
 
+#: src/ui/rename.blp:5
+msgid "Rename Selected Files"
+msgstr "שינוי שם הקבצים הנבחרים"
+
+#: src/ui/rename.blp:23 src/ui/extract.blp:22 src/ui/identify/identify.blp:27
+msgid "Cancel"
+msgstr "ביטול"
+
+#: src/ui/rename.blp:39
+msgid "Rename"
+msgstr "שינוי שם"
+
+#: src/ui/rename.blp:64
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr "ל־Ear Tag נחוצות הרשאות נוספות כדי לשנות שם של קבצים בו במקום."
+
+#: src/ui/rename.blp:65
+msgid "Learn More"
+msgstr "מידע נוסף"
+
+#: src/ui/rename.blp:74
+msgid "Failed to rename files. Check the logs for more information."
+msgstr "אירע כשל בשינוי שם הקבצים. יש להסתכל ביומנים למידע נוסף."
+
+#: src/ui/rename.blp:103 src/ui/extract.blp:79
+msgid "Preview"
+msgstr "תצוגה מקדימה"
+
+#: src/ui/rename.blp:114 src/ui/extract.blp:98
+msgid "Filename pattern"
+msgstr "תבנית שם קובץ"
+
+#: src/ui/rename.blp:121 src/ui/extract.blp:104
+msgid "Insert tag placeholder"
+msgstr "הכנסת תגית ממלאת מקום"
+
+#: src/ui/rename.blp:131
+msgid "Move to folder"
+msgstr "העברה לתיקייה"
+
+#: src/ui/rename.blp:136
+msgid "Select a folder…"
+msgstr "בחירת תיקייה…"
+
+#: src/ui/rename.blp:148
+msgid "Unselect folder"
+msgstr "ביטול בחירת תיקייה"
+
+#: src/ui/rename.blp:164
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
+msgstr ""
+"לרשימה של תגיות ממלאות מקום זמינות, יש לעיין ב<a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">רשימת "
+"תגיות זמינות</a>."
+
 #: src/extract.py:278
 #, python-brace-format
 msgid "Extracted tags for {extracted} out of {total} tracks"
 msgstr "חולצו תגיות ל־{extracted} מתוך {total} רצועות"
+
+#: src/ui/extract.blp:5
+msgid "Extract Tags from Filename"
+msgstr "חילוץ תגיות משם הקובץ"
+
+#: src/ui/extract.blp:38 src/ui/identify/identify.blp:54
+msgid "Apply"
+msgstr "החלה"
+
+#: src/ui/extract.blp:114
+msgid "Ignore common suffixes"
+msgstr "התעלמות מסיומות משותפות"
+
+#: src/ui/extract.blp:115
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded "
+"files. Disable this option if it interferes with your filenames."
+msgstr ""
+"מתעלם אוטומטית מסיומות מזהים שבדרך כלל נמצאים בשמות של קבצים שהורדו"
+" מהאינטרנט. "
+"יש להשבית את האפשרות הזאת אם היא מפריעה עם שמות הקבצים שלך."
+
+#: src/ui/previewselectorbutton.blp:4
+#| msgctxt "shortcut window"
+#| msgid "Select next file in sidebar"
+msgid "Select file to preview"
+msgstr "נא לבחור קובץ לתצוגה מקדימה"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
@@ -421,285 +711,139 @@ msgstr "קבצים שלא זוהו"
 msgid "Identified {identified} out of {total} tracks"
 msgstr "זוהו {identified} מתוך {total} רצועות"
 
-#~ msgid "Drop a file to add it to the opened file list"
-#~ msgstr "יש להשליך קובץ על מנת להוסיף אותו לרשימת הקבצים הפתוחים"
+#: src/ui/identify/identify.blp:5
+msgid "Identify Selected Files"
+msgstr "זיהוי קבצים נבחרים"
 
-#~ msgid "Save"
-#~ msgstr "שמירה"
+#: src/ui/identify/identify.blp:44
+msgid "Identify"
+msgstr "זיהוי"
 
-#~ msgid "Sort files by track number, album, name"
-#~ msgstr "מיון קבצים לפי מספר רצועה, אלבום, שם"
+#: src/ui/identify/identify.blp:81
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"מידע על רצועה מסופק על ידי <a href=\"https://musicbrainz.org\">Musicbrainz</"
+"a>. קבצים ללא נתוני מידע מזוהים באמצעות שירות <a href=\"https://acoustid."
+"org\">AcoustID</a>."
 
-#~ msgid "Close file list"
-#~ msgstr "סגירת רשימת קבצים"
+#: src/ui/identify/filerow.blp:23
+msgid "File could not be identified"
+msgstr "לא ניתן לזהות את הקובץ"
 
-#~ msgid "Add file"
-#~ msgstr "הוספת קובץ"
+#: src/ui/settings.blp:7
+msgid "File identification"
+msgstr "זיהוי קובץ"
 
-#~ msgid "Select multiple files"
-#~ msgstr "בחירה מרובה של קבצים"
+#: src/ui/settings.blp:10
+msgid "MusicBrainz confidence treshold"
+msgstr "סף אמינות עבור MusicBrainz"
 
-#~ msgid "Search opened files"
-#~ msgstr "חיפוש בקבצים הפתוחים"
+#: src/ui/settings.blp:11
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr "אחוז האמינות המזערי הנדרש עבור תוצאת חיפוש מ־MusicBrainz כדי להתקבל"
 
-#~ msgid "No Results Found"
-#~ msgstr "לא נמצאו תוצאות"
+#: src/ui/settings.blp:25
+msgid "AcoustID confidence treshold"
+msgstr "סף אמינות עבור AcoustID"
 
-#~ msgid "Try a different search query."
-#~ msgstr "יש לנסות מילים שונות לחיפוש."
+#: src/ui/settings.blp:26
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr "אחוז האמינות המזערי הנדרש עבור תוצאת חיפוש מ־AcoustID כדי להתקבל"
 
-#~ msgid "Select all files"
-#~ msgstr "בחירת כל הקבצים"
+#: src/ui/settings.blp:40
+msgid "Downloaded cover art size"
+msgstr "גודל הורדת כיסוי אלבום"
 
-#~ msgid "Remove selected files"
-#~ msgstr "הסתרת הקבצים הנבחרים"
+#: src/ui/settings.blp:44
+msgid "Do not download covers"
+msgstr "לא להוריד כיסויים"
 
-#~ msgid "Show file list"
-#~ msgstr "הצגת רשימת הקבצים"
+#: src/ui/settings.blp:45
+msgid "250 px"
+msgstr "250 פיקסלים"
 
-#~ msgid "_Open File"
-#~ msgstr "_פתיחת קובץ"
+#: src/ui/settings.blp:46
+msgid "500 px"
+msgstr "500 פיקסלים"
 
-#~ msgid "O_pen Folder"
-#~ msgstr "פתיחת _תיקייה"
+#: src/ui/settings.blp:47
+msgid "1200 px"
+msgstr "1200 פיקסלים"
 
-#~ msgid "_Rename Selected Files"
-#~ msgstr "_שינוי שם לקבצים הנבחרים"
+#: src/ui/settings.blp:48
+msgid "Maximum size"
+msgstr "גודל מרבי"
 
-#~ msgid "_Identify Selected Files"
-#~ msgstr "_זיהוי הקבצים הנבחרים"
+#: src/ui/shortcuts.blp:11
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "קבצים"
 
-#~ msgid "_Keyboard Shortcuts"
-#~ msgstr "_צירופי מקשים"
+#: src/ui/shortcuts.blp:15
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "פתיחת קבצים"
+
+#: src/ui/shortcuts.blp:20
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "פתיחת תיקייה"
+
+#: src/ui/shortcuts.blp:25
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "שמירת כל הקבצים ששונו"
+
+#: src/ui/shortcuts.blp:30
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "סרגל צד"
+
+#: src/ui/shortcuts.blp:34
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "בחירת הקובץ הקודם בסרגל הצד"
+
+#: src/ui/shortcuts.blp:39
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "בחירת הקובץ הבא בסרגל הצד"
+
+#: src/ui/shortcuts.blp:44
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "בחירת כל הקבצים בסרגל הצד"
+
+#: src/ui/shortcuts.blp:49
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "הסרת הקבצים הנבחרים מסרגל הצד"
+
+#: src/ui/shortcuts.blp:50
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "סגירת החלון אם אף קובץ לא מוצג."
+
+#: src/ui/shortcuts.blp:55
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "אחר"
+
+#: src/ui/shortcuts.blp:59
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "צירופי מקשים"
 
 #~ msgid "_Settings"
 #~ msgstr "ה_גדרות"
 
-#~ msgid "_About Ear Tag"
-#~ msgstr "_על אודות Ear Tag"
-
-#~ msgid "Open or drag in some audio files to edit their metadata."
-#~ msgstr "יש לפתוח או לגרור קובצי שמע כדי לערוך את נתוני המידע שלהם."
-
 #~ msgid "More tags"
 #~ msgstr "תגיות נוספות"
 
-#~ msgid "Loading Files…"
-#~ msgstr "קבצים בטעינה…"
-
-#~ msgid "Select a File"
-#~ msgstr "בחירת קובץ"
-
-#~ msgid "Select the files you want to edit from the list of opened files."
-#~ msgstr "יש לבחור מרשימת הקבצים הפתוחים את הקבצים שברצונך לערוך."
-
-#~ msgid "Previous file"
-#~ msgstr "קובץ קודם"
-
-#~ msgid "Next file"
-#~ msgstr "קובץ הבא"
-
-#~ msgid "_Choose Image…"
-#~ msgstr "_בחירת תמונה…"
-
-#~ msgid "_Save Image…"
-#~ msgstr "_שמירת תמונה…"
-
-#~ msgid "_Remove Cover"
-#~ msgstr "_שינוי שם עטיפה"
-
-#~ msgid "Front"
-#~ msgstr "קדמי"
-
-#~ msgid "Back"
-#~ msgstr "אחורי"
-
-#~ msgid "File has invalid values"
-#~ msgstr "לקובץ יש ערכים לא תקינים"
-
-#~ msgid "File has unsaved changes"
-#~ msgstr "לקובץ יש שינויים שלא נשמרו"
-
-#~ msgid "Remove from list"
-#~ msgstr "הסרה מהרשימה"
-
-#~ msgid "Save Changes?"
-#~ msgstr "שמירת השינויים?"
-
-#~ msgid "If you don't save your changes, they will be permanently lost."
-#~ msgstr "אם לא תתבצע שמירה, כל השינויים יאבדו לצמיתות."
-
-#~ msgid "_Cancel"
-#~ msgstr "_ביטול"
-
-#~ msgid "_Discard and Close"
-#~ msgstr "ה_שלכה וסגירה"
-
-#~ msgid "_Save and Close"
-#~ msgstr "_שמירה וסגירה"
-
-#~ msgid "_Discard and Open"
-#~ msgstr "ה_שלכה ופתיחה"
-
-#~ msgid "_Save and Open"
-#~ msgstr "_שמירה ופתיחה"
-
-#~ msgid "Failed to Load File"
-#~ msgstr "אירע כשל בטעינת הקובץ"
-
-#~ msgid "Could not load file {f}. Check the logs for more information."
-#~ msgstr "לא היה ניתן לפתוח את הקובץ {f}. יש להסתכל ביומנים למידע נוסף."
-
-#~ msgid "_OK"
-#~ msgstr "_אישור"
-
-#~ msgid "Failed to Rename File"
-#~ msgstr "אירע כשל בשינוי שם הקובץ"
-
-#~ msgid "Could not rename file {f}. Check the logs for more information."
-#~ msgstr "לא היה ניתן לשנות את שם הקובץ {f}. יש להסתכל ביומנים למידע נוסף."
-
-#~ msgid "Rename Selected Files"
-#~ msgstr "שינוי שם הקבצים הנבחרים"
-
-#~ msgid "Cancel"
-#~ msgstr "ביטול"
-
-#~ msgid "Rename"
-#~ msgstr "שינוי שם"
-
-#~ msgid "Failed to rename files. Check the logs for more information."
-#~ msgstr "אירע כשל בשינוי שם הקבצים. יש להסתכל ביומנים למידע נוסף."
-
-#~ msgid "Preview"
-#~ msgstr "תצוגה מקדימה"
-
-#~ msgid "Filename pattern"
-#~ msgstr "תבנית שם קובץ"
-
-#~ msgid "Insert tag placeholder"
-#~ msgstr "הכנסת תגית ממלאת מקום"
-
-#~ msgid "Move to folder"
-#~ msgstr "העברה לתיקייה"
-
-#~ msgid "Select a folder…"
-#~ msgstr "בחירת תיקייה…"
-
-#~ msgid "Unselect folder"
-#~ msgstr "ביטול בחירת תיקייה"
-
-#~ msgid ""
-#~ "For a list of available placeholders, see the <a href=\"https://gitlab."
-#~ "gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
-#~ "tags\">list of available tags</a>."
-#~ msgstr ""
-#~ "לרשימה של תגיות ממלאות מקום זמינות, יש לעיין ב<a href=\"https://gitlab."
-#~ "gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
-#~ "tags\">רשימת תגיות זמינות</a>."
-
-#~ msgid "Identify Selected Files"
-#~ msgstr "זיהוי קבצים נבחרים"
-
-#~ msgid "Identify"
-#~ msgstr "זיהוי"
-
-#~ msgid "Apply"
-#~ msgstr "החלה"
-
-#~ msgid ""
-#~ "Track information is provided by <a href=\"https://musicbrainz."
-#~ "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
-#~ "href=\"https://acoustid.org\">AcoustID</a> service."
-#~ msgstr ""
-#~ "מידע על רצועה מסופק על ידי <a href=\"https://musicbrainz."
-#~ "org\">Musicbrainz</a>. קבצים ללא נתוני מידע מזוהים באמצעות שירות <a "
-#~ "href=\"https://acoustid.org\">AcoustID</a>."
-
-#~ msgid "File could not be identified"
-#~ msgstr "לא ניתן לזהות את הקובץ"
-
-#~ msgid "File identification"
-#~ msgstr "זיהוי קובץ"
-
-#~ msgid "MusicBrainz confidence treshold"
-#~ msgstr "סף אמינות עבור MusicBrainz"
-
-#~ msgid ""
-#~ "Minimum confidence percentage required for a MusicBrainz search result to "
-#~ "be evaluated"
-#~ msgstr "אחוז האמינות המזערי הנדרש עבור תוצאת חיפוש מ־MusicBrainz כדי להתקבל"
-
-#~ msgid "AcoustID confidence treshold"
-#~ msgstr "סף אמינות עבור AcoustID"
-
-#~ msgid ""
-#~ "Minimum confidence percentage required for an AcoustID lookup result to "
-#~ "be evaluated"
-#~ msgstr "אחוז האמינות המזערי הנדרש עבור תוצאת חיפוש מ־AcoustID כדי להתקבל"
-
-#~ msgid "Downloaded cover art size"
-#~ msgstr "גודל הורדת כיסוי אלבום"
-
-#~ msgid "Do not download covers"
-#~ msgstr "לא להוריד כיסויים"
-
-#~ msgid "250 px"
-#~ msgstr "250 פיקסלים"
-
-#~ msgid "500 px"
-#~ msgstr "500 פיקסלים"
-
-#~ msgid "1200 px"
-#~ msgstr "1200 פיקסלים"
-
-#~ msgid "Maximum size"
-#~ msgstr "גודל מרבי"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Files"
-#~ msgstr "קבצים"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open files"
-#~ msgstr "פתיחת קבצים"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open folder"
-#~ msgstr "פתיחת תיקייה"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Save all modified files"
-#~ msgstr "שמירת כל הקבצים ששונו"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Sidebar"
-#~ msgstr "סרגל צד"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Select previous file in sidebar"
-#~ msgstr "בחירת הקובץ הקודם בסרגל הצד"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Select next file in sidebar"
-#~ msgstr "בחירת הקובץ הבא בסרגל הצד"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Select all files in sidebar"
-#~ msgstr "בחירת כל הקבצים בסרגל הצד"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Remove selected files from sidebar"
-#~ msgstr "הסרת הקבצים הנבחרים מסרגל הצד"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Closes the window if no files are present."
-#~ msgstr "סגירת החלון אם אף קובץ לא מוצג."
-
-#~ msgctxt "shortcut window"
-#~ msgid "Other"
-#~ msgstr "אחר"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Keyboard shortcuts"
-#~ msgstr "צירופי מקשים"
