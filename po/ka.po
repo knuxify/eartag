@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag 0.5.x\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-01-28 09:04+0000\n"
-"PO-Revision-Date: 2024-02-07 05:10+0100\n"
+"POT-Creation-Date: 2024-03-08 14:23+0000\n"
+"PO-Revision-Date: 2024-03-19 05:50+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
@@ -49,6 +49,10 @@ msgid ""
 "tagging programs, Ear Tag does not require the user to set up a music "
 "library folder. It can:"
 msgstr ""
+"Ear Tag მარტივი აუდიოფაილის ჭდეების რედაქტორია. ის ძირითადად განკუთვნილია "
+"სწრაფი ჩასწორებებისთვის, ან ალბომებში/EP-ში. სხვა პროგრამებისგან "
+"განსხვავებით Ear Tag-ს მომხმარებლისგან მუსიკის ბიბლიოთეკის საქაღალდის "
+"მითითება არ სჭირდება. მას შეუძლია:"
 
 #: data/app.drey.EarTag.metainfo.xml.in:71
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
@@ -560,6 +564,9 @@ msgid ""
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
 "available tags</a>."
 msgstr ""
+"ხელმისაწვდომი ადგილმჭერების სანახავად იხილეთ <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">ხელმისაწვდომი ჭდეების სია</a>."
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
@@ -594,6 +601,9 @@ msgid ""
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
 "href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
+"ტრეკის ინფორმაცია მოწოდებულია <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>-ის მიერ. ფაილები მეტამონაცემების გარეშე <a "
+"href=\"https://acoustid.org\">AcoustID</a> სერვისით იდენტიფიცირდება."
 
 #: src/ui/identify/filerow.ui:24
 msgid "File could not be identified"
@@ -605,23 +615,24 @@ msgstr "ფაილის იდენტიფიკაცია"
 
 #: src/ui/settings.ui:14
 msgid "MusicBrainz confidence treshold"
-msgstr ""
+msgstr "MusicBrainz-ის სანდოობის ზღვარი"
 
 #: src/ui/settings.ui:15
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
 msgstr ""
+"მინიმალური სანდოობის პროცენტულობა MusicBrainz-ის ძებნის შედეგის მისაღებად"
 
 #: src/ui/settings.ui:36
 msgid "AcoustID confidence treshold"
-msgstr ""
+msgstr "AcoustID -ის სანდოობის ზღვარი"
 
 #: src/ui/settings.ui:37
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
-msgstr ""
+msgstr "მინიმალური სანდოობის პროცენტულობა AcoustID-ის ძებნის შედეგის მისაღებად"
 
 #: src/ui/settings.ui:58
 msgid "Downloaded cover art size"
