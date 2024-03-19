@@ -950,9 +950,7 @@ class EartagIdentifyDialog(Adw.Window):
                 # TRANSLATORS: {identified} is a placeholder for the number
                 # of tracks that were succesfully identified.
                 # **Do not translate the text between the curly brackets!**
-                _("Identified {identified} tracks").format(
-                    identified=identified
-                )
+                _("Identified {identified} tracks").format(identified=identified)
             )
         )
         self.files = None
