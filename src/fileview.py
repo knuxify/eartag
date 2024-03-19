@@ -275,6 +275,8 @@ class EartagAlbumCoverButton(Adw.Bin):
                 save_path += cover_extension
             shutil.copyfile(cover_path, save_path)
 
+        # TRANSLATORS: {path} is a placeholder for the path.
+        # **Do not change the text between the curly brackets!**
         toast = Adw.Toast.new(_("Saved cover to {path}").format(path=save_path))
         self.get_native().toast_overlay.add_toast(toast)
 

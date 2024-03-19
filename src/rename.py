@@ -33,6 +33,9 @@ def get_formatted_tag(file: "EartagFile", tag: str) -> str:
         value = file.get_property(tag)
         if not value:
             if tag == "title":
+                # TRANSLATORS: Default placeholder string for a missing title
+                # tag, used when renaming files - if the title tag is not
+                # present in the file, this placeholder will be used instead.
                 parsed_value = _("Untitled")
             elif tag_is_int(file, tag):
                 if tag.endswith("tracknumber") or tag.endswith("discnumber"):
@@ -40,6 +43,11 @@ def get_formatted_tag(file: "EartagFile", tag: str) -> str:
                 else:
                     parsed_value = "0"
             else:
+                # TRANSLATORS: Default placeholder string for missing tags,
+                # used when renaming files - if a tag is not present in the
+                # file, this placeholder will be used instead.
+                # {tag_name} is a placeholder for the human-readable tag name.
+                # **Do not change the text between the curly brackets!**
                 parsed_value = _("Unknown {tag_name}").format(tag_name=TAG_NAMES[tag])
 
         else:

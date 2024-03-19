@@ -3,6 +3,8 @@ using Adw 1;
 
 template $EartagLoadingFailureDialog : Adw.MessageDialog {
   heading: _("Failed to Load File");
+  // TRANSLATORS: {f} is a placeholder for the filename.
+  // **Do not change the letter between the curly brackets!**
   body: _("Could not load file {f}. Check the logs for more information.");
   close-response: "close";
   default-response: "close";

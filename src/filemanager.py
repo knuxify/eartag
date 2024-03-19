@@ -70,6 +70,7 @@ def eartagfile_from_path(path):
 
     mimetypes_guess = mimetypes.guess_type(path)[0]
     magic_guess = magic.from_file(path, mime=True)
+
     raise ValueError(
         f"Unsupported file format for file {path} (mimetype: {mimetypes_guess} / {magic_guess})"
     )  # noqa: E501
@@ -144,6 +145,8 @@ class EartagFileManager(GObject.Object):
                     modal=True,
                     transient_for=self.window,
                     heading=_("Failed to save file"),
+                    # TRANSLATORS: {f} is a placeholder for the filename.
+                    # **Do not change the letter between the curly brackets!**
                     body=_(
                         "Could not save file {f}. Check the logs for more information."
                     ).format(

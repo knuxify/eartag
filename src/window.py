@@ -253,7 +253,8 @@ class EartagWindow(Adw.ApplicationWindow):
             self.set_title("{f} — Ear Tag".format(f=file_basename))
             self.window_title.set_subtitle(file_basename)
         else:
-            # TRANSLATOR: Placeholder for file path when multiple files are selected
+            # TRANSLATORS: Placeholder for file path when multiple files are selected.
+            # Shows up in the titlebar of the application.
             _multiple_files = _("(Multiple files selected)")
             self.set_title("{f} — Ear Tag".format(f=_multiple_files))
             self.window_title.set_subtitle(_multiple_files)
@@ -560,6 +561,8 @@ class EartagWindow(Adw.ApplicationWindow):
                 selected_message = _("No files selected")
                 self.remove_selected_button.set_sensitive(False)
             else:
+                # TRANSLATORS: {n} is a placeholder for the amount of files.
+                # **Do not change the letter between the curly brackets!**
                 selected_message = gettext.ngettext(
                     "1 file selected", "{n} files selected", selected_file_count
                 ).format(n=selected_file_count)
@@ -639,6 +642,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(
+            # TRANSLATORS: {n} is a placeholder for the amount of files.
+            # **Do not change the letter between the curly brackets!**
             gettext.ngettext(
                 "Undid changes in 1 file",
                 "Undid changes in {n} files",
@@ -673,6 +678,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
         toast = Adw.Toast.new(
+            # TRANSLATORS: {n} is a placeholder for the amount of files.
+            # **Do not change the letter between the curly brackets!**
             gettext.ngettext(
                 "Redid changes in 1 file",
                 "Redid changes in {n} files",
@@ -718,6 +725,9 @@ class EartagWindow(Adw.ApplicationWindow):
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(
+            # TRANSLATORS: {n} is a placeholder for the amount of files
+            # that tags have been removed from.
+            # **Do not change the letter between the curly brackets!**
             gettext.ngettext(
                 "Removed tags from 1 file",
                 "Removed tags from {n} files",
@@ -751,6 +761,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(
+            # TRANSLATORS: {n} is a placeholder for the amount of files.
+            # **Do not change the letter between the curly brackets!**
             gettext.ngettext(
                 "Undid tag removal in 1 file",
                 "Undid tag removal in {n} files",
