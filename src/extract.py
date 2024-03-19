@@ -275,8 +275,11 @@ class EartagExtractTagsDialog(Adw.Window):
     def on_apply_done(self, *args):
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
-                _("Extracted tags for {extracted} out of {total} tracks").format(
-                    extracted=self.extracted, total=len(self.files)
+                # TRANSLATORS: {extracted} is a placeholder for the number
+                # of tracks the tags were succesfully extracted for.
+                # **Do not translate the text between the curly brackets!**
+                _("Extracted tags for {extracted} tracks").format(
+                    extracted=self.extracted
                 )
             )
         )

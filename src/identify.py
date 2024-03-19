@@ -947,8 +947,11 @@ class EartagIdentifyDialog(Adw.Window):
             return
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
-                _("Identified {identified} out of {total} tracks").format(
-                    identified=identified, total=self.files.get_n_items()
+                # TRANSLATORS: {identified} is a placeholder for the number
+                # of tracks that were succesfully identified.
+                # **Do not translate the text between the curly brackets!**
+                _("Identified {identified} tracks").format(
+                    identified=identified
                 )
             )
         )
