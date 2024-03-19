@@ -17,6 +17,7 @@ from .utils.misc import filename_valid
 from gi.repository import Adw, Gtk, Gio, GObject, Pango
 import re
 import os.path
+import gettext
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/extract.ui")
@@ -275,12 +276,14 @@ class EartagExtractTagsDialog(Adw.Window):
     def on_apply_done(self, *args):
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
-                # TRANSLATORS: {extracted} is a placeholder for the number
-                # of tracks the tags were succesfully extracted for.
-                # **Do not translate the text between the curly brackets!**
-                _("Extracted tags for {extracted} tracks").format(
-                    extracted=self.extracted
-                )
+                gettext.ngettext(
+                    # TRANSLATORS: {extracted} is a placeholder for the number
+                    # of tracks the tags were succesfully extracted for.
+                    # **Do not translate the text between the curly brackets!**
+                    "Extracted tags for 1 track",
+                    "Extracted tags for {extracted} tracks",
+                    self.extracted,
+                ).format(extracted=self.extracted)
             )
         )
         self._close()

@@ -5,6 +5,7 @@ from gi.repository import Adw, Gtk, Gio, GObject, GdkPixbuf
 
 import os
 import html
+import gettext
 
 from .musicbrainz import (
     acoustid_identify_file,
@@ -947,10 +948,14 @@ class EartagIdentifyDialog(Adw.Window):
             return
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
-                # TRANSLATORS: {identified} is a placeholder for the number
-                # of tracks that were succesfully identified.
-                # **Do not translate the text between the curly brackets!**
-                _("Identified {identified} tracks").format(identified=identified)
+                gettext.ngettext(
+                    # TRANSLATORS: {identified} is a placeholder for the number
+                    # of tracks that were succesfully identified.
+                    # **Do not translate the text between the curly brackets!**
+                    "Identified 1 track",
+                    "Identified {identified} tracks",
+                    identified,
+                ).format(identified=identified)
             )
         )
         self.files = None
