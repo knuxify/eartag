@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-02 17:16+0000\n"
-"PO-Revision-Date: 2024-03-02 23:40+0330\n"
+"POT-Creation-Date: 2024-03-19 17:38+0000\n"
+"PO-Revision-Date: 2024-03-21 01:41+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -47,7 +47,7 @@ msgstr "ویرایش برچسب‌های پرونده‌های صوتی"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "آهنگ؛صدا؛برچسب؛برچسب زدن؛برچسب‌زننده؛"
 
-#: data/app.drey.EarTag.metainfo.xml.in:82
+#: data/app.drey.EarTag.metainfo.xml.in:76
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards making "
 "quick edits or bulk-editing tracks in albums/EPs. Unlike other tagging programs, "
@@ -58,23 +58,23 @@ msgstr ""
 "برچسب‌زنی، پلاک گوش نیازی به برپایی شاخهٔ کتابخانهٔ آهنگ‌ها به دست کاربر ندارد. "
 "ویژگی‌ها:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:84
+#: data/app.drey.EarTag.metainfo.xml.in:78
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "ویرایش برچسب‌های پرونده‌های MP3، WAV، M4A، FLAC، OGG و WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:85
+#: data/app.drey.EarTag.metainfo.xml.in:79
 msgid "Modify metadata of multiple files at once"
 msgstr "تغییر یک‌بارهٔ فرادادهٔ چندین پرونده"
 
-#: data/app.drey.EarTag.metainfo.xml.in:86
+#: data/app.drey.EarTag.metainfo.xml.in:80
 msgid "Rename files using information from present tags"
 msgstr "تغییر نام پرونده‌ها با استفاده از اطّلاعات برچسب‌های موجود"
 
-#: data/app.drey.EarTag.metainfo.xml.in:87
+#: data/app.drey.EarTag.metainfo.xml.in:81
 msgid "Identify files using AcoustID"
 msgstr "شناسایی پرونده‌ها با AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:89
+#: data/app.drey.EarTag.metainfo.xml.in:83
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "دسترسی شبکه تنها برای گزینهٔ «تشخیص پرونده‌های گزیده» است."
 
@@ -82,68 +82,69 @@ msgstr "دسترسی شبکه تنها برای گزینهٔ «تشخیص پرو
 msgid "All supported audio files"
 msgstr "تمام پرونده‌های صوتی پشتیبانی شده"
 
-#. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:257 src/fileview.py:756
+#. TRANSLATORS: Placeholder for file path when multiple files are selected.
+#. Shows up in the titlebar of the application.
+#: src/window.py:258 src/fileview.py:758
 msgid "(Multiple files selected)"
 msgstr "(چندین پرونده گزیده)"
 
-#: src/window.py:349 src/ui/nofile.blp:35
+#: src/window.py:350 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "گشودن شاخه"
 
-#: src/window.py:352 src/ui/nofile.blp:24
+#: src/window.py:353 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "گشودن پرونده"
 
-#: src/window.py:419
+#: src/window.py:420
 msgid "No supported files found in opened folder"
 msgstr "هیچ پروندهٔ پشتیبانی شده‌ای در شاخهٔ گشوده پیدا نشد"
 
-#: src/window.py:427
+#: src/window.py:428
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "برخی پرونده‌های گشوده مقدارهایی نامعتبر دارند. نمی‌توان ذخیره کرد"
 
-#: src/window.py:560
+#: src/window.py:561
 msgid "No files selected"
 msgstr "پرونده‌ای گزیده نشده"
 
-#: src/window.py:564
+#: src/window.py:567
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "۱ پرونده گزیده شده"
 msgstr[1] "{n} پرونده گزیده شده"
 
-#: src/window.py:643
+#: src/window.py:648
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "تغییرات ۱ پرونده برگردانده شد"
 msgstr[1] "تغییرات {n} پرونده برگردانده شد"
 
-#: src/window.py:648
+#: src/window.py:653
 msgid "Redo"
 msgstr "انجام دوباره"
 
-#: src/window.py:677
+#: src/window.py:684
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "تغییرات ۱ پرونده دوباره انجام شد"
 msgstr[1] "تغییرات {n} پرونده دوباره انجام شد"
 
-#: src/window.py:722
+#: src/window.py:732
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "برچسب‌ها از پرونده حذف شدند"
 msgstr[1] "برچسب‌ها از {n} پرونده حذف شدند"
 
-#: src/window.py:727 src/fileview.py:306
+#: src/window.py:737 src/fileview.py:308
 msgid "Undo"
 msgstr "برگردان"
 
-#: src/window.py:755
+#: src/window.py:767
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -242,29 +243,29 @@ msgstr "_دربارهٔ پلاک گوش"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "گشودن یا کشیدن پرونده‌های صوتی برای ویرایش فراداده‌هایشان."
 
-#: src/filemanager.py:146
+#: src/filemanager.py:147
 msgid "Failed to save file"
 msgstr "شکست در ذخیرهٔ پرونده"
 
-#: src/filemanager.py:148
+#: src/filemanager.py:151
 #, python-brace-format
 msgid "Could not save file {f}. Check the logs for more information."
 msgstr "ناتوانی در ذخیرهٔ پروندهٔ {f}. برای اطلاعات بیشتر، گزارش را بررسی کنید."
 
 #. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:154
+#: src/filemanager.py:157
 msgid "OK"
 msgstr "تأیید"
 
-#: src/filemanager.py:159
+#: src/filemanager.py:162
 msgid "Saved changes to files"
 msgstr "تغییرات در پرونده‌ها ذخیره شدند"
 
-#: src/filemanager.py:265
+#: src/filemanager.py:268
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "پروندهٔ گشوده فقط‌خواندنیست. تغییرات نمی‌توانند ذخیره شوند"
 
-#: src/filemanager.py:268
+#: src/filemanager.py:271
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "برخی پرونده‌های گشوده فقط‌خواندنیند؛ تغییرات نمی‌توانند ذخیره شوند"
 
@@ -432,26 +433,28 @@ msgstr "گزینش تصویر جلد آلبوم"
 msgid "Save Album Cover To…"
 msgstr "ذخیرهٔ جلد آلبوم در…"
 
-#: src/fileview.py:278
+#. TRANSLATORS: {path} is a placeholder for the path.
+#. **Do not change the text between the curly brackets!**
+#: src/fileview.py:280
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "جلد در {path} ذخیره شد"
 
-#: src/fileview.py:303
+#: src/fileview.py:305
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "جلد از پرونده حذف شد"
 msgstr[1] "جلدها از {n} پرونده حذف شدند"
 
-#: src/fileview.py:771
+#: src/fileview.py:773
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "۱ کانال"
 msgstr[1] "{n} کانال"
 
-#: src/fileview.py:817
+#: src/fileview.py:819
 msgid "(multiple files)"
 msgstr "(چندین پرونده)"
 
@@ -555,11 +558,13 @@ msgstr "_ذخیره و گشودن"
 msgid "Failed to Load File"
 msgstr "شکست در بار کردن پرونده"
 
-#: src/ui/dialogs/loadingfailure.blp:6
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/loadingfailure.blp:8
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr "نتوانست پروندهٔ {f} را بگشاید. بررسی گزارش برای اطّلاعات بیش‌تر."
 
-#: src/ui/dialogs/loadingfailure.blp:12 src/ui/dialogs/renamefailure.blp:12
+#: src/ui/dialogs/loadingfailure.blp:14 src/ui/dialogs/renamefailure.blp:14
 msgid "_OK"
 msgstr "_تأیید"
 
@@ -567,24 +572,34 @@ msgstr "_تأیید"
 msgid "Failed to Rename File"
 msgstr "شکست در تغغیر نام پرونده"
 
-#: src/ui/dialogs/renamefailure.blp:6
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/renamefailure.blp:8
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr "نتوانست نام پروندهٔ {f} را تغییر دهد. بررسی گزارش برای اطّلاعات بیش‌تر."
 
-#: src/rename.py:36
+#. TRANSLATORS: Default placeholder string for a missing title
+#. tag, used when renaming files - if the title tag is not
+#. present in the file, this placeholder will be used instead.
+#: src/rename.py:39
 msgid "Untitled"
 msgstr "بی‌عنوان"
 
-#: src/rename.py:43
+#. TRANSLATORS: Default placeholder string for missing tags,
+#. used when renaming files - if a tag is not present in the
+#. file, this placeholder will be used instead.
+#. {tag_name} is a placeholder for the human-readable tag name.
+#. **Do not change the text between the curly brackets!**
+#: src/rename.py:51
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "{tag_name} ناشناخته"
 
-#: src/rename.py:280
+#: src/rename.py:287
 msgid "Selected folder does not exist"
 msgstr "شاخهٔ گزیده وجود ندارد"
 
-#: src/rename.py:287
+#: src/rename.py:294
 msgid "Selected folder is read-only"
 msgstr "شاخهٔ گزیده فقط‌خواندنیست"
 
@@ -646,10 +661,15 @@ msgstr ""
 "eartag/-/blob/main/src/backends/README.md#available-tags\">سیاههٔ برچسب‌های موجود</"
 "a> را ببینید."
 
-#: src/extract.py:278
+#. TRANSLATORS: {extracted} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/extract.py:283
 #, python-brace-format
-msgid "Extracted tags for {extracted} out of {total} tracks"
-msgstr "برچسب‌های استخراجی برای {extracted} از {total} قطعه"
+msgid "Extracted tags for 1 track"
+msgid_plural "Extracted tags for {extracted} tracks"
+msgstr[0] "برچسب‌های استخراجی برای ۱ قطعه"
+msgstr[1] "برچسب‌های استخراجی برای {extracted} قطعه"
 
 #: src/ui/extract.blp:5
 msgid "Extract Tags from Filename"
@@ -677,18 +697,23 @@ msgstr "گزینش پرونده برای پیش‌نمایش"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:117
+#: src/identify.py:118
 msgid "Other releases"
 msgstr "دیگر انتشارها"
 
-#: src/identify.py:516
+#: src/identify.py:517
 msgid "Unidentified Files"
 msgstr "پرونده‌های شناخته نشده"
 
-#: src/identify.py:950
+#. TRANSLATORS: {identified} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:955
 #, python-brace-format
-msgid "Identified {identified} out of {total} tracks"
-msgstr "{identified}تا از {total} قطعه شناسایی شد"
+msgid "Identified 1 track"
+msgid_plural "Identified {identified} tracks"
+msgstr[0] "۱ قطعه شناسایی شده"
+msgstr[1] "{identified} قطعه شناسایی شده"
 
 #: src/ui/identify/identify.blp:5
 msgid "Identify Selected Files"
@@ -819,6 +844,10 @@ msgstr "دیگر"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "میان‌برهای صفحه‌کلید"
+
+#, python-brace-format
+#~ msgid "Identified {identified} out of {total} tracks"
+#~ msgstr "{identified}تا از {total} قطعه شناسایی شد"
 
 #~ msgid "_Settings"
 #~ msgstr "_تنظیمات"
