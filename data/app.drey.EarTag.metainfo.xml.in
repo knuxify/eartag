@@ -69,7 +69,7 @@
   <url type="homepage">https://gitlab.gnome.org/World/eartag</url>
   <url type="bugtracker">https://gitlab.gnome.org/World/eartag/-/issues</url>
   <url type="contribute">https://gitlab.gnome.org/World/eartag/#contributing</url>
-  <url type="translate">https://gitlab.gnome.org/World/eartag/-/tree/main/po</url>
+  <url type="translate">https://l10n.gnome.org/module/eartag/</url>
   <url type="vcs-browser">https://gitlab.gnome.org/World/eartag/</url>
 
   <description>
