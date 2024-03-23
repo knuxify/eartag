@@ -487,8 +487,8 @@ class EartagWindow(Adw.ApplicationWindow):
         self.identify_dialog.present()
 
     def show_preferences_dialog(self, *args):
-        self.preferences_dialog = EartagPreferencesWindow(self)
-        self.preferences_dialog.present()
+        self.preferences_dialog = EartagPreferencesDialog()
+        self.preferences_dialog.present(self)
 
     def show_extract_dialog(self, *args):
         self.extract_dialog = EartagExtractTagsDialog(self)
@@ -776,15 +776,15 @@ class EartagWindow(Adw.ApplicationWindow):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/settings.ui")
-class EartagPreferencesWindow(Adw.PreferencesWindow):
-    __gtype_name__ = "EartagPreferencesWindow"
+class EartagPreferencesDialog(Adw.PreferencesDialog):
+    __gtype_name__ = "EartagPreferencesDialog"
 
     mb_confidence_spinbutton = Gtk.Template.Child()
     aid_confidence_spinbutton = Gtk.Template.Child()
     cover_size_comborow = Gtk.Template.Child()
 
-    def __init__(self, parent):
-        super().__init__(transient_for=parent, modal=True)
+    def __init__(self):
+        super().__init__()
 
         config.bind(
             "musicbrainz-confidence-treshold",

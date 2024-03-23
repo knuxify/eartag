@@ -128,7 +128,7 @@ class Application(Adw.Application):
         if self.devel:
             version_str += " (dev)"
 
-        about = Adw.AboutWindow(
+        about = Adw.AboutDialog(
             application_name=self._("Ear Tag"),
             application_icon=APP_ID,
             developers=["knuxify"],
@@ -187,10 +187,7 @@ Opened files:
  - {opened_file_list_str}"""
         )
 
-        about.set_modal(True)
-        about.set_transient_for(self.props.active_window)
-
-        about.present()
+        about.present(self.props.active_window)
 
     def on_open_file_action(self, widget, _):
         window = self.get_active_window()
