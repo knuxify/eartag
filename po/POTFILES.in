@@ -29,6 +29,7 @@ src/ui/filelistitem.blp
 src/ui/dialogs/closewarning.blp
 src/ui/dialogs/discardwarning.blp
 src/ui/dialogs/removaldiscardwarning.blp
+src/ui/dialogs/savefailure.blp
 src/ui/dialogs/loadingfailure.blp
 src/ui/dialogs/renamefailure.blp
 

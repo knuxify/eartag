@@ -378,8 +378,8 @@ class EartagWindow(Adw.ApplicationWindow):
             self.open_mode != EartagFileManager.LOAD_INSERT
             and self.file_manager._is_modified
         ):
-            self.discard_warning = EartagDiscardWarningDialog(self, paths)
-            self.discard_warning.show()
+            self.discard_warning = EartagDiscardWarningDialog(self.file_manager, paths)
+            self.discard_warning.present(self)
             return False
 
         self.file_manager.load_files(paths, mode=self.open_mode)
@@ -464,8 +464,8 @@ class EartagWindow(Adw.ApplicationWindow):
             and list(self.file_manager.files)
             and self.file_manager._is_modified
         ):
-            self.close_request_dialog = EartagCloseWarningDialog(self)
-            self.close_request_dialog.present()
+            self.close_request_dialog = EartagCloseWarningDialog(self.file_manager)
+            self.close_request_dialog.present(self)
             return True
 
         MusicBrainzRelease.clear_tempfiles()
@@ -496,7 +496,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_delete_all_tags_dialog(self, *args):
         self.delete_all_tags_dialog = EartagTagDeleteWarningDialog(self)
-        self.delete_all_tags_dialog.present()
+        self.delete_all_tags_dialog.present(self)
 
     # Sidebar
 

@@ -19,6 +19,7 @@ from .utils.misc import find_in_model, cleanup_filename
 from .dialogs import (
     EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog,
+    EartagSaveFailureDialog,
     EartagRenameFailureDialog,
 )
 
@@ -141,22 +142,9 @@ class EartagFileManager(GObject.Object):
             except:
                 traceback.print_exc()
                 file_basename = os.path.basename(file.path)
-                self.error_dialog = Adw.MessageDialog(
-                    modal=True,
-                    transient_for=self.window,
-                    heading=_("Failed to save file"),
-                    # TRANSLATORS: {f} is a placeholder for the filename.
-                    # **Do not change the letter between the curly brackets!**
-                    body=_(
-                        "Could not save file {f}. Check the logs for more information."
-                    ).format(
-                        f=file_basename
-                    ),  # noqa: E501
-                )
-                # TRANSLATORS: "Okay" button in the "failed to save file" dialog
-                self.error_dialog.add_response("ok", _("OK"))
-                self.error_dialog.connect("response", self.close_dialog)
-                self.error_dialog.show()
+                self.error_dialog = EartagSaveFailureDialog(file_basename)
+                self.error_dialog.present(self.window)
+
                 return False
 
         self.window.toast_overlay.add_toast(Adw.Toast.new(_("Saved changes to files")))
@@ -213,7 +201,7 @@ class EartagFileManager(GObject.Object):
         except:
             traceback.print_exc()
             GLib.idle_add(
-                EartagLoadingFailureDialog(self.window, file_basename).present
+                EartagLoadingFailureDialog(file_basename).present, self.window
             )
             return False
 
@@ -326,7 +314,7 @@ class EartagFileManager(GObject.Object):
 
         for file in files:
             if file.is_modified and not force_discard:
-                EartagRemovalDiscardWarningDialog(self, files).present()
+                EartagRemovalDiscardWarningDialog(self, files).present(self.window)
                 return False
 
         self._selection_removed = False
@@ -441,7 +429,7 @@ class EartagFileManager(GObject.Object):
                 self._is_renaming_multiple_files = False
 
                 traceback.print_exc()
-                GLib.idle_add(EartagRenameFailureDialog(self.window, old_path).present)
+                GLib.idle_add(EartagRenameFailureDialog(old_path).present, self.window)
 
                 task.emit_task_done()
                 self.failed = True

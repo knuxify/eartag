@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagDiscardWarningDialog : Adw.MessageDialog {
+template $EartagDiscardWarningDialog : Adw.AlertDialog {
   heading: _("Save Changes?");
   body: _("If you don't save your changes, they will be permanently lost.");
   close-response: "cancel";

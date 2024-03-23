@@ -6,13 +6,12 @@ from . import APP_GRESOURCE_PATH
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/closewarning.ui")
-class EartagCloseWarningDialog(Adw.MessageDialog):
+class EartagCloseWarningDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagCloseWarningDialog"
 
-    def __init__(self, window):
-        super().__init__(modal=True, transient_for=window)
-        self.window = window
-        self.file_manager = window.file_manager
+    def __init__(self, file_manager):
+        super().__init__()
+        self.file_manager = file_manager
 
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
@@ -27,13 +26,12 @@ class EartagCloseWarningDialog(Adw.MessageDialog):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/discardwarning.ui")
-class EartagDiscardWarningDialog(Adw.MessageDialog):
+class EartagDiscardWarningDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagDiscardWarningDialog"
 
-    def __init__(self, window, paths):
-        super().__init__(modal=True, transient_for=window)
+    def __init__(self, file_manager, paths):
         self.paths = paths
-        self.file_manager = window.file_manager
+        self.file_manager = file_manager
 
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
@@ -48,11 +46,11 @@ class EartagDiscardWarningDialog(Adw.MessageDialog):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/removaldiscardwarning.ui")
-class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
+class EartagRemovalDiscardWarningDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagRemovalDiscardWarningDialog"
 
     def __init__(self, file_manager, files):
-        super().__init__(modal=True, transient_for=file_manager.window)
+        super().__init__()
         self.file_manager = file_manager
         self.files = files
 
@@ -68,11 +66,11 @@ class EartagRemovalDiscardWarningDialog(Adw.MessageDialog):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/loadingfailure.ui")
-class EartagLoadingFailureDialog(Adw.MessageDialog):
+class EartagLoadingFailureDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagLoadingFailureDialog"
 
-    def __init__(self, window, filename):
-        super().__init__(modal=True, transient_for=window)
+    def __init__(self, filename):
+        super().__init__()
         self.set_body(self.get_body().format(f=filename))
 
     @Gtk.Template.Callback()
@@ -81,11 +79,24 @@ class EartagLoadingFailureDialog(Adw.MessageDialog):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/renamefailure.ui")
-class EartagRenameFailureDialog(Adw.MessageDialog):
+class EartagRenameFailureDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagRenameFailureDialog"
 
-    def __init__(self, window, filename):
-        super().__init__(modal=True, transient_for=window)
+    def __init__(self, filename):
+        super().__init__()
+        self.set_body(self.get_body().format(f=filename))
+
+    @Gtk.Template.Callback()
+    def handle_response(self, dialog, response):
+        self.close()
+
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/savefailure.ui")
+class EartagSaveFailureDialog(Adw.AlertDialog):
+    __gtype_name__ = "EartagSaveFailureDialog"
+
+    def __init__(self, filename):
+        super().__init__()
         self.set_body(self.get_body().format(f=filename))
 
     @Gtk.Template.Callback()
@@ -94,11 +105,11 @@ class EartagRenameFailureDialog(Adw.MessageDialog):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/tagdeletewarning.ui")
-class EartagTagDeleteWarningDialog(Adw.MessageDialog):
+class EartagTagDeleteWarningDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagTagDeleteWarningDialog"
 
     def __init__(self, window):
-        super().__init__(modal=True, transient_for=window)
+        super().__init__()
         self.window = window
 
     @Gtk.Template.Callback()
