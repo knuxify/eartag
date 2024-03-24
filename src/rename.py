@@ -17,6 +17,7 @@ from .utils.previewselector import EartagPreviewSelectorButton  # noqa: F401
 from gi.repository import Adw, GLib, Gtk, Gio, GObject, Pango
 import os
 import re
+import gettext
 
 
 def tag_is_int(file, tag):
@@ -154,11 +155,13 @@ class EartagRenameDialog(Adw.Dialog):
 
     tag_selector = Gtk.Template.Child()
 
-    def __init__(self, file_manager):
+    def __init__(self, parent):
         super().__init__()
-        self.file_manager = file_manager
+        self.parent = parent
+        self.file_manager = parent.file_manager
         self._folder = None
         self._has_sandboxed_files = False
+        self._renamed = 0
 
         self.files = self.file_manager.selected_files_list.copy()
         for file in self.files:
@@ -332,6 +335,7 @@ class EartagRenameDialog(Adw.Dialog):
         self.set_sensitive(False)
         self.set_can_close(False)
 
+        self._renamed = len(self.files)
         self.file_manager.rename_files(self.files, names)
 
     # Preview
@@ -375,6 +379,18 @@ class EartagRenameDialog(Adw.Dialog):
             self.set_sensitive(True)
             self.error_banner.set_revealed(True)
         else:
+            self.parent.toast_overlay.add_toast(
+                Adw.Toast.new(
+                    gettext.ngettext(
+                        # TRANSLATORS: {renamed} is a placeholder for the number
+                        # of tracks the tags were succesfully extracted for.
+                        # **Do not translate the text between the curly brackets!**
+                        "Renamed 1 file",
+                        "Renamed {renamed} files",
+                        self._renamed,
+                    ).format(renamed=self._renamed)
+                )
+            )
             self.files = None
             self.close()
 
