@@ -1,181 +1,165 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagRenameDialog : Adw.Window {
+template $EartagRenameDialog : Adw.Dialog {
   title: _("Rename Selected Files");
-  default-width: 600;
-  default-height: 300;
-  width-request: 360;
-  height-request: 200;
-  content:
-  WindowHandle {
-    hexpand: true;
-    vexpand: true;
+  content-width: 600;
+  content-height: 300;
+  child:
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-end-title-buttons: false;
+      show-start-title-buttons: false;
 
-    Adw.ToolbarView {
-      [top]
-      Adw.HeaderBar {
-        show-end-title-buttons: false;
-        show-start-title-buttons: false;
+      [start]
+      Button cancel_button {
+        label: _("Cancel");
+        focusable: true;
+        clicked => $on_cancel();
+      }
 
-        [start]
-        Button cancel_button {
-          label: _("Cancel");
-          focusable: true;
-          clicked => $on_cancel();
+      [end]
+      Button rename_button {
+        label: _("Rename");
+        focusable: true;
+        clicked => $do_rename();
 
-          ShortcutController {
-            scope: managed;
-
-            Shortcut {
-              trigger: "Escape";
-              action: "activate";
-            }
-          }
-        }
-
-        [end]
-        Button rename_button {
-          label: _("Rename");
-          focusable: true;
-          clicked => $do_rename();
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+    content:
+    Adw.ToastOverlay toast_overlay {
+      Overlay {
+        [overlay]
+        ProgressBar rename_progress {
+          valign: start;
 
           styles [
-            "suggested-action",
+            "osd",
           ]
         }
-      }
-      content:
-      Adw.ToastOverlay toast_overlay {
-        Overlay {
-          [overlay]
-          ProgressBar rename_progress {
-            valign: start;
+
+        Box {
+          orientation: vertical;
+
+          Adw.Banner sandbox_warning_banner {
+            title: _("Ear Tag needs additional permissions to rename files in-place.");
+            button-label: _("Learn More");
+            button-clicked => $on_sandbox_warning_learn_more();
 
             styles [
-              "osd",
+              "warning",
             ]
           }
 
-          Box {
-            orientation: vertical;
+          Adw.Banner error_banner {
+            title: _("Failed to rename files. Check the logs for more information.");
 
-            Adw.Banner sandbox_warning_banner {
-              title: _("Ear Tag needs additional permissions to rename files in-place.");
-              button-label: _("Learn More");
-              button-clicked => $on_sandbox_warning_learn_more();
+            styles [
+              "error",
+            ]
+          }
 
-              styles [
-                "warning",
-              ]
-            }
+          ScrolledWindow {
+            Adw.Clamp {
+              Box {
+                orientation: vertical;
+                valign: center;
+                vexpand: true;
+                spacing: 12;
+                margin-start: 12;
+                margin-end: 12;
+                margin-top: 12;
+                margin-bottom: 24;
 
-            Adw.Banner error_banner {
-              title: _("Failed to rename files. Check the logs for more information.");
+                ListBox {
+                  hexpand: true;
+                  valign: start;
+                  selection-mode: none;
 
-              styles [
-                "error",
-              ]
-            }
+                  styles [
+                    "boxed-list",
+                  ]
 
-            ScrolledWindow {
-              Adw.Clamp {
-                Box {
-                  orientation: vertical;
-                  valign: center;
-                  vexpand: true;
-                  spacing: 12;
-                  margin-start: 12;
-                  margin-end: 12;
-                  margin-top: 12;
-                  margin-bottom: 24;
+                  Adw.EntryRow preview_entry {
+                    title: _("Preview");
+                    editable: false;
 
-                  ListBox {
-                    hexpand: true;
-                    valign: start;
-                    selection-mode: none;
+                    [suffix]
+                    $EartagPreviewSelectorButton preview_selector_button {
+                    }
+                  }
+                }
 
-                    styles [
-                      "boxed-list",
-                    ]
+                Adw.PreferencesGroup {
+                  Adw.EntryRow filename_entry {
+                    title: _("Filename pattern");
+                    changed => $update_preview();
+                    entry-activated => $do_rename();
 
-                    Adw.EntryRow preview_entry {
-                      title: _("Preview");
-                      editable: false;
+                    [suffix]
+                    $EartagTagSelectorButton tag_selector {
+                      icon-name: "list-add-symbolic";
+                      tooltip-text: _("Insert tag placeholder");
+                      tag-selected => $add_placeholder_from_selector();
 
-                      [suffix]
-                      $EartagPreviewSelectorButton preview_selector_button {
-                      }
+                      styles [
+                        "flat",
+                      ]
                     }
                   }
 
-                  Adw.PreferencesGroup {
-                    Adw.EntryRow filename_entry {
-                      title: _("Filename pattern");
-                      changed => $update_preview();
-                      entry-activated => $do_rename();
+                  Adw.ActionRow folder_selector_row {
+                    title: _("Move to folder");
 
-                      [suffix]
-                      $EartagTagSelectorButton tag_selector {
-                        icon-name: "list-add-symbolic";
-                        tooltip-text: _("Insert tag placeholder");
-                        tag-selected => $add_placeholder_from_selector();
+                    [suffix]
+                    Button folder_selector_button {
+                      icon-name: "folder-open-symbolic";
+                      tooltip-text: _("Select a folder…");
+                      valign: center;
+                      clicked => $show_folder_selector();
 
-                        styles [
-                          "flat",
-                        ]
-                      }
+                      styles [
+                        "flat",
+                      ]
                     }
 
-                    Adw.ActionRow folder_selector_row {
-                      title: _("Move to folder");
+                    [suffix]
+                    Button folder_remove_button {
+                      icon-name: "edit-delete-symbolic";
+                      tooltip-text: _("Unselect folder");
+                      valign: center;
+                      sensitive: false;
+                      clicked => $remove_folder();
 
-                      [suffix]
-                      Button folder_selector_button {
-                        icon-name: "folder-open-symbolic";
-                        tooltip-text: _("Select a folder…");
-                        valign: center;
-                        clicked => $show_folder_selector();
-
-                        styles [
-                          "flat",
-                        ]
-                      }
-
-                      [suffix]
-                      Button folder_remove_button {
-                        icon-name: "edit-delete-symbolic";
-                        tooltip-text: _("Unselect folder");
-                        valign: center;
-                        sensitive: false;
-                        clicked => $remove_folder();
-
-                        styles [
-                          "flat",
-                        ]
-                      }
+                      styles [
+                        "flat",
+                      ]
                     }
                   }
+                }
 
-                  Label {
-                    wrap: true;
-                    use-markup: true;
-                    justify: center;
-                    label: _("For a list of available placeholders, see the <a href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of available tags</a>.");
+                Label {
+                  wrap: true;
+                  use-markup: true;
+                  justify: center;
+                  label: _("For a list of available placeholders, see the <a href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of available tags</a>.");
 
-                    styles [
-                      "dim-label",
-                    ]
-                  }
+                  styles [
+                    "dim-label",
+                  ]
                 }
               }
             }
           }
         }
       }
-
-      ;
     }
+
+    ;
   }
 
   ;

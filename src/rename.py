@@ -130,7 +130,7 @@ def parse_placeholder_string(
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/rename.ui")
-class EartagRenameDialog(Adw.Window):
+class EartagRenameDialog(Adw.Dialog):
     __gtype_name__ = "EartagRenameDialog"
 
     toast_overlay = Gtk.Template.Child()
@@ -154,9 +154,9 @@ class EartagRenameDialog(Adw.Window):
 
     tag_selector = Gtk.Template.Child()
 
-    def __init__(self, window):
-        super().__init__(modal=True, transient_for=window)
-        self.file_manager = window.file_manager
+    def __init__(self, file_manager):
+        super().__init__()
+        self.file_manager = file_manager
         self._folder = None
         self._has_sandboxed_files = False
 
@@ -305,6 +305,7 @@ class EartagRenameDialog(Adw.Window):
         self.preview_selector_button.disconnect(self._preview_update_conn)
         self.preview_selector_button.teardown()
         self.files = None
+        self.set_can_close(True)
         self.close()
 
     @Gtk.Template.Callback()
@@ -329,6 +330,7 @@ class EartagRenameDialog(Adw.Window):
             )
 
         self.set_sensitive(False)
+        self.set_can_close(False)
 
         self.file_manager.rename_files(self.files, names)
 
@@ -368,6 +370,7 @@ class EartagRenameDialog(Adw.Window):
         self.preview_entry.set_attributes(preview_attrs)
 
     def on_done(self, task, *args):
+        self.set_can_close(True)
         if task.failed:
             self.set_sensitive(True)
             self.error_banner.set_revealed(True)

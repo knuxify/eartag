@@ -1,17 +1,16 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagIdentifyDialog : Adw.Window {
+template $EartagIdentifyDialog : Adw.Dialog {
   title: _("Identify Selected Files");
-  default-width: 700;
-  default-height: 550;
-  width-request: 360;
-  height-request: 200;
+  content-width: 700;
+  content-height: 550;
+  close-attempt => $on_cancel();
 
   styles [
     "identify-dialog",
   ]
-  content:
+  child:
   WindowHandle {
     hexpand: true;
     vexpand: true;
@@ -27,15 +26,6 @@ template $EartagIdentifyDialog : Adw.Window {
           label: _("Cancel");
           focusable: true;
           clicked => $on_cancel();
-
-          ShortcutController {
-            scope: managed;
-
-            Shortcut {
-              trigger: "Escape";
-              action: "activate";
-            }
-          }
         }
 
         [end]

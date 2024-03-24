@@ -21,7 +21,7 @@ import gettext
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/extract.ui")
-class EartagExtractTagsDialog(Adw.Window):
+class EartagExtractTagsDialog(Adw.Dialog):
     """Dialog for extracting selected files' tags from their filename."""
 
     __gtype_name__ = "EartagExtractTagsDialog"
@@ -45,7 +45,7 @@ class EartagExtractTagsDialog(Adw.Window):
     preview_selector_button = Gtk.Template.Child()
 
     def __init__(self, parent):
-        super().__init__(modal=True, transient_for=parent)
+        super().__init__()
         self.parent = parent
         self._connections = []
         self.custom_syntax_highlight = EartagPlaceholderSyntaxHighlighter(
@@ -233,6 +233,7 @@ class EartagExtractTagsDialog(Adw.Window):
             self.close()
         self.content_clamp.set_sensitive(False)
         self.apply_button.set_sensitive(False)
+        self.set_can_close(False)
         self.apply_task.reset()
         self.apply_task.run()
 
@@ -294,6 +295,7 @@ class EartagExtractTagsDialog(Adw.Window):
             self.apply_task.stop()
         self.preview_selector_button.disconnect(self._preview_update_conn)
         self.preview_selector_button.teardown()
+        self.set_can_close(True)
         self._close()
 
     def _close(self):
@@ -303,6 +305,7 @@ class EartagExtractTagsDialog(Adw.Window):
         self._connections = []
         self._entry_conn = None
         self.files = None
+        self.set_can_close(True)
         self.close()
 
     def check_for_errors(self, *args):

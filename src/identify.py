@@ -478,7 +478,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/identify/identify.ui")
-class EartagIdentifyDialog(Adw.Window):
+class EartagIdentifyDialog(Adw.Dialog):
     __gtype_name__ = "EartagIdentifyDialog"
 
     id_progress = Gtk.Template.Child()
@@ -490,7 +490,7 @@ class EartagIdentifyDialog(Adw.Window):
     end_button_stack = Gtk.Template.Child()
 
     def __init__(self, window):
-        super().__init__(modal=True, transient_for=window)
+        super().__init__()
         self.parent = window
         self.file_manager = window.file_manager
 
@@ -535,7 +535,7 @@ class EartagIdentifyDialog(Adw.Window):
             0, self.files.get_n_items(), self.file_manager.selected_files_list
         )
 
-        self.connect("close-request", self.on_close_request)
+        self.connect("closed", self.on_close_request)
 
     def on_close_request(self, *args):
         for row in self.release_rows.values():
@@ -553,12 +553,14 @@ class EartagIdentifyDialog(Adw.Window):
         if self.apply_task.is_running:
             self.apply_task.stop()
         self.files = None
+        self.props.can_close = True
         self.close()
 
     @Gtk.Template.Callback()
     def do_identify(self, *args):
         self.identify_button.set_sensitive(False)
         self.apply_button.set_sensitive(False)
+        self.set_can_close(False)
         self.end_button_stack.set_visible_child(self.apply_button)
 
         self.identify_task.reset()
@@ -904,6 +906,7 @@ class EartagIdentifyDialog(Adw.Window):
         except AttributeError:  # this happens when the operation is cancelled
             return
         self.apply_button.set_sensitive(bool(identified))
+        self.set_can_close(True)
         for relrow in self.release_rows.values():
             relrow.toggle_apply_sensitivity(True)
         if not self.files_unidentified.get_n_items():
@@ -914,6 +917,7 @@ class EartagIdentifyDialog(Adw.Window):
         self.apply_button.set_sensitive(False)
         for relrow in self.release_rows.values():
             relrow.toggle_apply_sensitivity(False)
+        self.set_can_close(False)
 
         self.apply_task.reset()
         self.apply_task.run()

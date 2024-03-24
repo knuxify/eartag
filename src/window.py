@@ -479,12 +479,12 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_view.on_close()
 
     def show_rename_dialog(self, *args):
-        self.rename_dialog = EartagRenameDialog(self)
-        self.rename_dialog.present()
+        self.rename_dialog = EartagRenameDialog(self.file_manager)
+        self.rename_dialog.present(self)
 
     def show_identify_dialog(self, *args):
         self.identify_dialog = EartagIdentifyDialog(self)
-        self.identify_dialog.present()
+        self.identify_dialog.present(self)
 
     def show_preferences_dialog(self, *args):
         self.preferences_dialog = EartagPreferencesDialog()
@@ -492,7 +492,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_extract_dialog(self, *args):
         self.extract_dialog = EartagExtractTagsDialog(self)
-        self.extract_dialog.present()
+        self.extract_dialog.present(self)
 
     def show_delete_all_tags_dialog(self, *args):
         self.delete_all_tags_dialog = EartagTagDeleteWarningDialog(self)
