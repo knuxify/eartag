@@ -4,7 +4,7 @@ using Adw 1;
 template $EartagExtractTagsDialog : Adw.Dialog {
   title: _("Extract Tags from Filename");
   content-width: 600;
-  content-height: 200;
+  content-height: 300;
   child:
   Adw.ToolbarView {
     [top]
@@ -41,64 +41,66 @@ template $EartagExtractTagsDialog : Adw.Dialog {
         ]
       }
 
-      Adw.Clamp content_clamp {
-        Box {
-          orientation: vertical;
-          valign: center;
-          vexpand: true;
-          spacing: 12;
-          margin-start: 12;
-          margin-end: 12;
-          margin-top: 12;
-          margin-bottom: 24;
+      ScrolledWindow {
+        Adw.Clamp content_clamp {
+          Box {
+            orientation: vertical;
+            valign: center;
+            vexpand: true;
+            spacing: 12;
+            margin-start: 12;
+            margin-end: 12;
+            margin-top: 12;
+            margin-bottom: 24;
 
-          ListBox {
-            hexpand: true;
-            valign: start;
-            selection-mode: none;
+            ListBox {
+              hexpand: true;
+              valign: start;
+              selection-mode: none;
 
-            styles [
-              "boxed-list",
-            ]
+              styles [
+                "boxed-list",
+              ]
 
-            Adw.EntryRow preview_entry {
-              title: _("Preview");
-              editable: false;
+              Adw.EntryRow preview_entry {
+                title: _("Preview");
+                editable: false;
 
-              [suffix]
-              $EartagPreviewSelectorButton preview_selector_button {
-              }
-            }
-          }
-
-          ListBox {
-            hexpand: true;
-            valign: start;
-            selection-mode: none;
-
-            styles [
-              "boxed-list",
-            ]
-
-            Adw.EntryRow pattern_entry {
-              title: _("Filename pattern");
-              entry-activated => $do_apply();
-
-              [suffix]
-              $EartagTagSelectorButton tag_selector {
-                icon-name: "list-add-symbolic";
-                tooltip-text: _("Insert tag placeholder");
-                tag-selected => $add_tag_from_selector();
-
-                styles [
-                  "flat",
-                ]
+                [suffix]
+                $EartagPreviewSelectorButton preview_selector_button {
+                }
               }
             }
 
-            Adw.SwitchRow toggle_strip_common_suffixes {
-              title: _("Ignore common suffixes");
-              subtitle: _("Automatically ignores ID suffixes often found in filenames of downloaded files. Disable this option if it interferes with your filenames.");
+            ListBox {
+              hexpand: true;
+              valign: start;
+              selection-mode: none;
+
+              styles [
+                "boxed-list",
+              ]
+
+              Adw.EntryRow pattern_entry {
+                title: _("Filename pattern");
+                entry-activated => $do_apply();
+
+                [suffix]
+                $EartagTagSelectorButton tag_selector {
+                  icon-name: "list-add-symbolic";
+                  tooltip-text: _("Insert tag placeholder");
+                  tag-selected => $add_tag_from_selector();
+
+                  styles [
+                    "flat",
+                  ]
+                }
+              }
+
+              Adw.SwitchRow toggle_strip_common_suffixes {
+                title: _("Ignore common suffixes");
+                subtitle: _("Automatically ignores ID suffixes often found in filenames of downloaded files. Disable this option if it interferes with your filenames.");
+              }
             }
           }
         }
