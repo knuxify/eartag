@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-19 17:38+0000\n"
-"PO-Revision-Date: 2024-03-20 08:55+0200\n"
+"POT-Creation-Date: 2024-03-24 09:50+0000\n"
+"PO-Revision-Date: 2024-03-24 15:44+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -259,30 +259,15 @@ msgstr ""
 "Відкрийте або перетягніть сюди якісь файли звукових даних, щоб редагувати "
 "метадані у них."
 
-#: src/filemanager.py:147
-msgid "Failed to save file"
-msgstr "Не вдалося зберегти файл"
-
-#: src/filemanager.py:151
-#, python-brace-format
-msgid "Could not save file {f}. Check the logs for more information."
-msgstr ""
-"Не вдалося зберегти файл {f}. Ознайомтеся із журналом, щоб дізнатися більше."
-
-#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:157
-msgid "OK"
-msgstr "Гаразд"
-
-#: src/filemanager.py:162
+#: src/filemanager.py:150
 msgid "Saved changes to files"
 msgstr "Зміни збережено до файлів"
 
-#: src/filemanager.py:268
+#: src/filemanager.py:256
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "Відкритий файл призначено лише для читання; зміни неможливо зберегти"
 
-#: src/filemanager.py:271
+#: src/filemanager.py:259
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Деякі з відкритих файлів призначено лише для читання; зміни неможливо "
@@ -579,6 +564,23 @@ msgstr "Від_кинути і відкрити"
 msgid "_Save and Open"
 msgstr "З_берегти і відкрити"
 
+#: src/ui/dialogs/savefailure.blp:5
+#| msgid "Failed to save file"
+msgid "Failed to Save File"
+msgstr "Не вдалося зберегти файл"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/savefailure.blp:8
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr ""
+"Не вдалося зберегти файл {f}. Ознайомтеся із журналом, щоб дізнатися більше."
+
+#: src/ui/dialogs/savefailure.blp:14 src/ui/dialogs/loadingfailure.blp:14
+#: src/ui/dialogs/renamefailure.blp:14
+msgid "_OK"
+msgstr "_Гаразд"
+
 #: src/ui/dialogs/loadingfailure.blp:5
 msgid "Failed to Load File"
 msgstr "Не вдалося завантажити файл"
@@ -590,10 +592,6 @@ msgid "Could not load file {f}. Check the logs for more information."
 msgstr ""
 "Не вдалося завантажити файл {f}. Ознайомтеся із журналом, щоб дізнатися "
 "більше."
-
-#: src/ui/dialogs/loadingfailure.blp:14 src/ui/dialogs/renamefailure.blp:14
-msgid "_OK"
-msgstr "_Гаразд"
 
 #: src/ui/dialogs/renamefailure.blp:5
 msgid "Failed to Rename File"
@@ -610,7 +608,7 @@ msgstr ""
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
 #. present in the file, this placeholder will be used instead.
-#: src/rename.py:39
+#: src/rename.py:40
 msgid "Untitled"
 msgstr "Без заголовка"
 
@@ -619,72 +617,86 @@ msgstr "Без заголовка"
 #. file, this placeholder will be used instead.
 #. {tag_name} is a placeholder for the human-readable tag name.
 #. **Do not change the text between the curly brackets!**
-#: src/rename.py:51
+#: src/rename.py:52
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "Невідомий {tag_name}"
 
-#: src/rename.py:287
+#: src/rename.py:290
 msgid "Selected folder does not exist"
 msgstr "Вибраної теки не існує"
 
-#: src/rename.py:294
+#: src/rename.py:297
 msgid "Selected folder is read-only"
 msgstr "Вибрану теку призначено лише для читання"
+
+#. TRANSLATORS: {renamed} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/rename.py:388
+#, python-brace-format
+#| msgid "Removed tags from 1 file"
+#| msgid_plural "Removed tags from {n} files"
+msgid "Renamed 1 file"
+msgid_plural "Renamed {renamed} files"
+msgstr[0] "Перейменовано {renamed} файл"
+msgstr[1] "Перейменовано {renamed} файли"
+msgstr[2] "Перейменовано {renamed} файлів"
+msgstr[3] "Перейменовано {renamed} файл"
 
 #: src/ui/rename.blp:5
 msgid "Rename Selected Files"
 msgstr "Перейменувати позначені файли"
 
-#: src/ui/rename.blp:23 src/ui/extract.blp:22 src/ui/identify/identify.blp:27
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: src/ui/rename.blp:39
+#: src/ui/rename.blp:24
 msgid "Rename"
 msgstr "Перейменувати"
 
-#: src/ui/rename.blp:64
+#: src/ui/rename.blp:49
 msgid "Ear Tag needs additional permissions to rename files in-place."
 msgstr ""
 "«Ear Tag» потрібні додаткові права доступу для перейменування файлів на "
 "місці."
 
-#: src/ui/rename.blp:65
+#: src/ui/rename.blp:50
 msgid "Learn More"
 msgstr "Дізнатися більше"
 
-#: src/ui/rename.blp:74
+#: src/ui/rename.blp:59
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
 "Не вдалося перейменувати файли. Ознайомтеся із журналом, щоб дізнатися "
 "більше."
 
-#: src/ui/rename.blp:103 src/ui/extract.blp:79
+#: src/ui/rename.blp:88 src/ui/extract.blp:66
 msgid "Preview"
 msgstr "Перегляд"
 
-#: src/ui/rename.blp:114 src/ui/extract.blp:98
+#: src/ui/rename.blp:99 src/ui/extract.blp:85
 msgid "Filename pattern"
 msgstr "Шаблон назви файлів"
 
-#: src/ui/rename.blp:121 src/ui/extract.blp:104
+#: src/ui/rename.blp:106 src/ui/extract.blp:91
 msgid "Insert tag placeholder"
 msgstr "Вставити замінник мітки"
 
-#: src/ui/rename.blp:131
+#: src/ui/rename.blp:116
 msgid "Move to folder"
 msgstr "Пересунути до теки"
 
-#: src/ui/rename.blp:136
+#: src/ui/rename.blp:121
 msgid "Select a folder…"
 msgstr "Вибрати теку…"
 
-#: src/ui/rename.blp:148
+#: src/ui/rename.blp:133
 msgid "Unselect folder"
 msgstr "Скасувати вибір теки"
 
-#: src/ui/rename.blp:164
+#: src/ui/rename.blp:149
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
@@ -697,9 +709,8 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:283
+#: src/extract.py:284
 #, python-brace-format
-#| msgid "Extracted tags for {extracted} out of {total} tracks"
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
 msgstr[0] "Видобуто мітки для {extracted} доріжки"
@@ -711,15 +722,15 @@ msgstr[3] "Видобуто мітки для {extracted} доріжки"
 msgid "Extract Tags from Filename"
 msgstr "Видобувати мітки з назви файла"
 
-#: src/ui/extract.blp:38 src/ui/identify/identify.blp:54
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
 msgid "Apply"
 msgstr "Застосувати"
 
-#: src/ui/extract.blp:114
+#: src/ui/extract.blp:101
 msgid "Ignore common suffixes"
 msgstr "Ігнорувати типові суфікси"
 
-#: src/ui/extract.blp:115
+#: src/ui/extract.blp:102
 msgid ""
 "Automatically ignores ID suffixes often found in filenames of downloaded "
 "files. Disable this option if it interferes with your filenames."
@@ -745,7 +756,7 @@ msgstr "Неідентифіковані файли"
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:955
+#: src/identify.py:959
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -758,11 +769,11 @@ msgstr[3] "Ідентифіковано {identified} доріжку"
 msgid "Identify Selected Files"
 msgstr "Ідентифікувати позначені файли"
 
-#: src/ui/identify/identify.blp:44
+#: src/ui/identify/identify.blp:34
 msgid "Identify"
 msgstr "Визначити"
 
-#: src/ui/identify/identify.blp:81
+#: src/ui/identify/identify.blp:71
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
@@ -887,6 +898,9 @@ msgstr "Інше"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Клавіатурні скорочення"
+
+#~ msgid "OK"
+#~ msgstr "Гаразд"
 
 #, python-brace-format
 #~ msgid "Identified {identified} out of {total} tracks"
