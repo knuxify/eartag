@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-19 17:38+0000\n"
-"PO-Revision-Date: 2024-03-19 20:23+0100\n"
+"POT-Creation-Date: 2024-03-24 09:50+0000\n"
+"PO-Revision-Date: 2024-03-24 13:01+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
@@ -242,29 +242,15 @@ msgstr "Ear Tag-ის შეს_ახებ"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "გახსენით ან დააგდეთ აუდიოფაილები, მათი მეტამონაცემების ჩასასწორებლად."
 
-#: src/filemanager.py:147
-msgid "Failed to save file"
-msgstr "ფაილის შენახვა ჩავარდა"
-
-#: src/filemanager.py:151
-#, python-brace-format
-msgid "Could not save file {f}. Check the logs for more information."
-msgstr "ფაილი {f} ვერ შევინახე. მეტი ინფორმაციისთვის იხილეთ ჟურნალი."
-
-#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:157
-msgid "OK"
-msgstr "დიახ"
-
-#: src/filemanager.py:162
+#: src/filemanager.py:150
 msgid "Saved changes to files"
 msgstr "ცვლილებების შენახვა ფაილში"
 
-#: src/filemanager.py:268
+#: src/filemanager.py:256
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "გახსნილი ფაილი მხოლოდ-კითხვადია. ცვლილებებს ვერ შეინახავთ"
 
-#: src/filemanager.py:271
+#: src/filemanager.py:259
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "ზოგიერთი გახსნილი ფაილი მხოლოდ-კითხვადია. ცვლილებებს ვერ შეინახავთ"
 
@@ -555,6 +541,21 @@ msgstr "მოცილება _და გახსნა"
 msgid "_Save and Open"
 msgstr "შენახვა და გახ_სნა"
 
+#: src/ui/dialogs/savefailure.blp:5
+msgid "Failed to Save File"
+msgstr "ფაილის შენახვა ჩავარდა"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/savefailure.blp:8
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr "ფაილი {f} ვერ შევინახე. მეტი ინფორმაციისთვის იხილეთ ჟურნალი."
+
+#: src/ui/dialogs/savefailure.blp:14 src/ui/dialogs/loadingfailure.blp:14
+#: src/ui/dialogs/renamefailure.blp:14
+msgid "_OK"
+msgstr "_დიახ"
+
 #: src/ui/dialogs/loadingfailure.blp:5
 msgid "Failed to Load File"
 msgstr "ფაილის ჩატვირთვის შეცდომა"
@@ -564,10 +565,6 @@ msgstr "ფაილის ჩატვირთვის შეცდომა"
 #: src/ui/dialogs/loadingfailure.blp:8
 msgid "Could not load file {f}. Check the logs for more information."
 msgstr "ფაილი {f} ვერ ჩავტვირთე. მეტი ინფორმაციისთვის იხილეთ ჟურნალი."
-
-#: src/ui/dialogs/loadingfailure.blp:14 src/ui/dialogs/renamefailure.blp:14
-msgid "_OK"
-msgstr "_დიახ"
 
 #: src/ui/dialogs/renamefailure.blp:5
 msgid "Failed to Rename File"
@@ -584,7 +581,7 @@ msgstr ""
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
 #. present in the file, this placeholder will be used instead.
-#: src/rename.py:39
+#: src/rename.py:40
 msgid "Untitled"
 msgstr "უსახელო"
 
@@ -593,71 +590,81 @@ msgstr "უსახელო"
 #. file, this placeholder will be used instead.
 #. {tag_name} is a placeholder for the human-readable tag name.
 #. **Do not change the text between the curly brackets!**
-#: src/rename.py:51
+#: src/rename.py:52
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "უცნობი {tag_name}"
 
-#: src/rename.py:287
+#: src/rename.py:290
 msgid "Selected folder does not exist"
 msgstr "მონიშნული საქაღალდე არ არსებობს"
 
-#: src/rename.py:294
+#: src/rename.py:297
 msgid "Selected folder is read-only"
 msgstr "მონიშნული საქაღალდე მხოლოდ-კითხვადია"
+
+#. TRANSLATORS: {renamed} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/rename.py:388
+#, python-brace-format
+msgid "Renamed 1 file"
+msgid_plural "Renamed {renamed} files"
+msgstr[0] "სახელი გადაერქვა 1 ფაილს"
+msgstr[1] "სახელი გადაერქვა {renamed} ფაილს"
 
 #: src/ui/rename.blp:5
 msgid "Rename Selected Files"
 msgstr "მონიშნული ფაილის სახელის გადარქმევა"
 
-#: src/ui/rename.blp:23 src/ui/extract.blp:22 src/ui/identify/identify.blp:27
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
 msgid "Cancel"
 msgstr "გაუქმება"
 
-#: src/ui/rename.blp:39
+#: src/ui/rename.blp:24
 msgid "Rename"
 msgstr "სახელის გადარქმევა"
 
-#: src/ui/rename.blp:64
+#: src/ui/rename.blp:49
 msgid "Ear Tag needs additional permissions to rename files in-place."
 msgstr ""
 "ადგილზე ფაილის სახელების გადასარქმევად Ear Tag-ს დამატებითი წვდომები "
 "ესაჭიროება."
 
-#: src/ui/rename.blp:65
+#: src/ui/rename.blp:50
 msgid "Learn More"
 msgstr "დაწვრილებით"
 
-#: src/ui/rename.blp:74
+#: src/ui/rename.blp:59
 msgid "Failed to rename files. Check the logs for more information."
 msgstr ""
 "ფაილების სახელის გადარქმევა შეუძლებელია. მეტი ინფორმაციისთვის იხილეთ ჟურნალი."
 
-#: src/ui/rename.blp:103 src/ui/extract.blp:79
+#: src/ui/rename.blp:88 src/ui/extract.blp:66
 msgid "Preview"
 msgstr "მინიატურა"
 
-#: src/ui/rename.blp:114 src/ui/extract.blp:98
+#: src/ui/rename.blp:99 src/ui/extract.blp:85
 msgid "Filename pattern"
 msgstr "ფაილის სახელის ნიმუში"
 
-#: src/ui/rename.blp:121 src/ui/extract.blp:104
+#: src/ui/rename.blp:106 src/ui/extract.blp:91
 msgid "Insert tag placeholder"
 msgstr "ჭდის ადგილმჭერის ჩასმა"
 
-#: src/ui/rename.blp:131
+#: src/ui/rename.blp:116
 msgid "Move to folder"
 msgstr "საქაღალდეში გადატანა"
 
-#: src/ui/rename.blp:136
+#: src/ui/rename.blp:121
 msgid "Select a folder…"
 msgstr "აირჩიეთ საქაღალდე…"
 
-#: src/ui/rename.blp:148
+#: src/ui/rename.blp:133
 msgid "Unselect folder"
 msgstr "საქაღალდის მონიშვნის მოხსნა"
 
-#: src/ui/rename.blp:164
+#: src/ui/rename.blp:149
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
@@ -670,7 +677,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:283
+#: src/extract.py:284
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -681,15 +688,15 @@ msgstr[1] "გამოღებულია ჭდეები {extracted} ტ�
 msgid "Extract Tags from Filename"
 msgstr "ჭდეების ფაილის სახელიდან გამოღება"
 
-#: src/ui/extract.blp:38 src/ui/identify/identify.blp:54
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
 msgid "Apply"
 msgstr "მიღება"
 
-#: src/ui/extract.blp:114
+#: src/ui/extract.blp:101
 msgid "Ignore common suffixes"
 msgstr "ცნობილი სუფიქსების გამოტოვება"
 
-#: src/ui/extract.blp:115
+#: src/ui/extract.blp:102
 msgid ""
 "Automatically ignores ID suffixes often found in filenames of downloaded "
 "files. Disable this option if it interferes with your filenames."
@@ -714,7 +721,7 @@ msgstr "არაიდენტიფიცირებული ფაილ�
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:955
+#: src/identify.py:959
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -725,11 +732,11 @@ msgstr[1] "ამოცნობილია {identified} ტრეკი"
 msgid "Identify Selected Files"
 msgstr "მონიშნული ფაილების იდენტიფიკაცია"
 
-#: src/ui/identify/identify.blp:44
+#: src/ui/identify/identify.blp:34
 msgid "Identify"
 msgstr "იდენტიფიკაცია"
 
-#: src/ui/identify/identify.blp:81
+#: src/ui/identify/identify.blp:71
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
@@ -851,6 +858,9 @@ msgstr "სხვა"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "კლავიატურის მალსახმობები"
+
+#~ msgid "OK"
+#~ msgstr "დიახ"
 
 #, python-brace-format
 #~ msgid "Identified {identified} out of {total} tracks"
