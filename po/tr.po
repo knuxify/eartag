@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-24 09:50+0000\n"
-"PO-Revision-Date: 2024-03-24 16:20+0300\n"
+"POT-Creation-Date: 2024-03-24 14:01+0000\n"
+"PO-Revision-Date: 2024-03-25 16:52+0300\n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -647,7 +647,7 @@ msgstr "Ön izleme"
 
 #: src/ui/rename.blp:99 src/ui/extract.blp:85
 msgid "Filename pattern"
-msgstr "Dosya adı deseni"
+msgstr "Dosya adı örüntüsü"
 
 #: src/ui/rename.blp:106 src/ui/extract.blp:91
 msgid "Insert tag placeholder"
