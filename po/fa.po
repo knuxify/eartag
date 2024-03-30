@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-24 09:50+0000\n"
-"PO-Revision-Date: 2024-03-25 21:28+0330\n"
+"POT-Creation-Date: 2024-03-30 17:35+0000\n"
+"PO-Revision-Date: 2024-03-31 00:00+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -21,14 +21,14 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:132 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:245
+#: src/main.py:140 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:244
 msgid "Ear Tag"
 msgstr "پلاک گوش"
 
 # Keep it
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:142 src/main.py:144
+#: src/main.py:150 src/main.py:152
 msgid "translator-credits"
 msgstr ""
 "دانیال بهزادی <dani.behzi@ubuntu.com>\n"
@@ -78,7 +78,7 @@ msgstr "شناسایی پرونده‌ها با AcoustID"
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "دسترسی شبکه تنها برای گزینهٔ «تشخیص پرونده‌های گزیده» است."
 
-#: src/window.py:117
+#: src/window.py:116
 msgid "All supported audio files"
 msgstr "تمام پرونده‌های صوتی پشتیبانی شده"
 
@@ -88,19 +88,19 @@ msgstr "تمام پرونده‌های صوتی پشتیبانی شده"
 msgid "(Multiple files selected)"
 msgstr "(چندین پرونده گزیده)"
 
-#: src/window.py:350 src/ui/nofile.blp:35
+#: src/window.py:351 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "گشودن شاخه"
 
-#: src/window.py:353 src/ui/nofile.blp:24
+#: src/window.py:354 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "گشودن پرونده"
 
-#: src/window.py:420
+#: src/window.py:421
 msgid "No supported files found in opened folder"
 msgstr "هیچ پروندهٔ پشتیبانی شده‌ای در شاخهٔ گشوده پیدا نشد"
 
-#: src/window.py:428
+#: src/window.py:429
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "برخی پرونده‌های گشوده مقدارهایی نامعتبر دارند. نمی‌توان ذخیره کرد"
 
@@ -160,52 +160,52 @@ msgid "Save"
 msgstr "ذخیره"
 
 #: src/ui/window.blp:122
-msgid "Sort files by track number, album, name"
-msgstr "مرتب کردن پرونده‌ها طبق شمارهٔ قطعه، آلبوم، نام"
-
-#: src/ui/window.blp:129
 msgid "Close file list"
 msgstr "بستن فهرست پرونده"
 
-#: src/ui/window.blp:139
+#: src/ui/window.blp:138
 msgid "Add file"
 msgstr "افزودن پرونده"
 
-#: src/ui/window.blp:145
+#: src/ui/window.blp:144
 msgid "Select multiple files"
 msgstr "گزینش چندین پرونده"
 
-#: src/ui/window.blp:151
+#: src/ui/window.blp:150
 msgid "Search opened files"
 msgstr "جست‌وجوی پرونده‌های گشوده"
 
-#: src/ui/window.blp:194
+#: src/ui/window.blp:193
 msgid "No Results Found"
 msgstr "هیچ نتیجه‌ای پیدا نشد"
 
-#: src/ui/window.blp:195
+#: src/ui/window.blp:194
 msgid "Try a different search query."
 msgstr "آزمودن پرس‌وجویی متفاوت."
 
-#: src/ui/window.blp:208
+#: src/ui/window.blp:207
 msgid "Select all files"
 msgstr "گزینش همهٔ پرونده‌ها"
 
-#: src/ui/window.blp:222
+#: src/ui/window.blp:221
 msgid "Remove selected files"
 msgstr "برداشتن پرونده‌های گزیده"
 
-#: src/ui/window.blp:238
+#: src/ui/window.blp:237
 msgid "Show file list"
 msgstr "نمایش سیاههٔ پرونده‌ها"
 
-#: src/ui/window.blp:269
+#: src/ui/window.blp:262
 msgid "_Open File"
 msgstr "_گشودن پرونده"
 
-#: src/ui/window.blp:274
+#: src/ui/window.blp:267
 msgid "O_pen Folder"
 msgstr "گشودن _شاخه"
+
+#: src/ui/window.blp:274
+msgid "_Sort File List"
+msgstr "_ترتیب سیاههٔ پرونده‌ها"
 
 #: src/ui/window.blp:281
 msgid "_Rename Selected Files"
@@ -493,7 +493,7 @@ msgid "(multiple values)"
 msgstr "(مقدارهای مختلف)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:146
+#: src/filelist.py:147
 msgid "(No title)"
 msgstr "(بدون عنوان)"
 
@@ -851,6 +851,9 @@ msgstr "دیگر"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "میان‌برهای صفحه‌کلید"
+
+#~ msgid "Sort files by track number, album, name"
+#~ msgstr "مرتب کردن پرونده‌ها طبق شمارهٔ قطعه، آلبوم، نام"
 
 #~ msgid "OK"
 #~ msgstr "تأیید"
