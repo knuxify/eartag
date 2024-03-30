@@ -48,8 +48,9 @@ class EartagFileListItem(Gtk.Box):
         if self.bindings:
             for b in self.bindings:
                 b.unbind()
-            self.file.disconnect(self._error_connect)
-            self.file.disconnect(self._title_connect)
+            if self.file:
+                self.file.disconnect(self._error_connect)
+                self.file.disconnect(self._title_connect)
         self.file = file
 
         # self.bindings.append(
