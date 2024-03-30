@@ -65,9 +65,7 @@ class Application(Adw.Application):
         self.create_action("toggle_sidebar", self.on_toggle_sidebar_action, "F9")
         self.create_action("open_menu", self.on_open_menu_action, "F10")
 
-        self.sort_action = self.create_action(
-            "sort", self.on_sort_action, None
-        )
+        self.sort_action = self.create_action("sort", self.on_sort_action, None)
         self.sort_action.set_enabled(False)
 
         self.rename_action = self.create_action("rename", self.on_rename_action, None)
