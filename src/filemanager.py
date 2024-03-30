@@ -15,7 +15,7 @@ from .backends import (
 )
 from .backends.file import EartagFile
 from .utils.bgtask import EartagBackgroundTask, run_threadsafe
-from .utils.misc import find_in_model, cleanup_filename
+from .utils.misc import find_in_model, cleanup_filename, natural_compare
 from .dialogs import (
     EartagRemovalDiscardWarningDialog,
     EartagLoadingFailureDialog,
@@ -490,7 +490,7 @@ class EartagFileManager(GObject.Object):
         # Step 1. Compare album names
         a_album = GLib.utf8_casefold(a.albumsort or a.album or "", -1)
         b_album = GLib.utf8_casefold(b.albumsort or b.album or "", -1)
-        collate = GLib.utf8_collate(a_album, b_album)
+        collate = natural_compare(a_album, b_album)
 
         # Step 2. Compare track numbers
         if collate == 0:
@@ -503,7 +503,7 @@ class EartagFileManager(GObject.Object):
         if collate == 0:
             a_filename = GLib.utf8_casefold(os.path.basename(a.path), -1)
             b_filename = GLib.utf8_casefold(os.path.basename(b.path), -1)
-            collate = GLib.utf8_collate(a_filename, b_filename)
+            collate = natural_compare(a_filename, b_filename)
 
         return collate
 

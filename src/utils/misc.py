@@ -233,3 +233,36 @@ def file_is_sandboxed(path: str) -> bool:
     to work under Flatpak.
     """
     return bool(re.match("^/run/user/[0-9].*/doc", path))
+
+
+def natural_compare(a: str, b: str) -> int:
+    """
+    Compares two strings using the "natural/human sorting" algorithm.
+
+    This returns an integer, satisfying similar constraints to GLib's collate
+    functions: 0 if both strings are the same, 1 if a > b, and -1 if a < b.
+    """
+    a = a.lower()
+    b = b.lower()
+    if a == b:
+        return 0
+
+    # adapted from https://stackoverflow.com/questions/2545532/python-analog-of-phps-natsort-function-sort-a-list-using-a-natural-order-alg
+    def sort_key(s: str) -> list:
+        out = []
+        for x in s:
+            if x.isdecimal():
+                out.append(int(x))
+            else:
+                try:
+                    out[-1] += x
+                except (IndexError, TypeError):
+                    out.append(x)
+        if out[-1] == "":
+            return out[:-1]
+        return out
+
+    sort = sorted([a, b], key=sort_key)
+    if sort[0] == a:
+        return -1
+    return 1
