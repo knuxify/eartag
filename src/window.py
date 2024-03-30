@@ -64,7 +64,6 @@ class EartagWindow(Adw.ApplicationWindow):
     sidebar_headerbar = Gtk.Template.Child()
     sidebar_search_button = Gtk.Template.Child()
     select_multiple_button = Gtk.Template.Child()
-    sort_button = Gtk.Template.Child()
 
     no_file = Gtk.Template.Child()
     file_view = Gtk.Template.Child()
@@ -223,6 +222,7 @@ class EartagWindow(Adw.ApplicationWindow):
         if selected_files_count <= 0:
             try:
                 for action in (
+                    app.sort_action,
                     app.rename_action,
                     app.extract_action,
                     app.identify_action,
@@ -268,6 +268,7 @@ class EartagWindow(Adw.ApplicationWindow):
         try:
             app.undo_all_action.set_enabled(is_modified)
             for action in (
+                app.sort_action,
                 app.rename_action,
                 app.extract_action,
                 app.identify_action,
@@ -443,7 +444,6 @@ class EartagWindow(Adw.ApplicationWindow):
     def hide_sidebar(self, *args):
         self.split_view.set_show_sidebar(False)
 
-    @Gtk.Template.Callback()
     def run_sort(self, *args):
         if self.file_manager.files.get_n_items():
             self.file_manager.sorter.changed(Gtk.SorterChange.DIFFERENT)
