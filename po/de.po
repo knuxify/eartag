@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-24 09:50+0000\n"
-"PO-Revision-Date: 2024-03-29 21:07+0100\n"
+"POT-Creation-Date: 2024-03-30 17:35+0000\n"
+"PO-Revision-Date: 2024-03-30 23:10+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -19,13 +19,13 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:132 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:245
+#: src/main.py:140 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:244
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:142 src/main.py:144
+#: src/main.py:150 src/main.py:152
 msgid "translator-credits"
 msgstr "Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024"
 
@@ -77,7 +77,7 @@ msgstr ""
 "Netzwerkzugriff wird nur verwendet für die »Ausgewählte Dateien "
 "identifizieren«-Option."
 
-#: src/window.py:117
+#: src/window.py:116
 msgid "All supported audio files"
 msgstr "Alle unterstützten Audio-Dateien"
 
@@ -87,19 +87,19 @@ msgstr "Alle unterstützten Audio-Dateien"
 msgid "(Multiple files selected)"
 msgstr "(Mehrere Dateien ausgewählt)"
 
-#: src/window.py:350 src/ui/nofile.blp:35
+#: src/window.py:351 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Ordner öffnen"
 
-#: src/window.py:353 src/ui/nofile.blp:24
+#: src/window.py:354 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Datei öffnen"
 
-#: src/window.py:420
+#: src/window.py:421
 msgid "No supported files found in opened folder"
 msgstr "Keine unterstützten Dateien im geöffneten Ordner gefunden"
 
-#: src/window.py:428
+#: src/window.py:429
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Einige der geöffneten Dateien haben ungültige Werte; Speichern nicht möglich"
@@ -161,52 +161,52 @@ msgid "Save"
 msgstr "Speichern"
 
 #: src/ui/window.blp:122
-msgid "Sort files by track number, album, name"
-msgstr "Dateien sortieren nach Titelnummer, Album, Name"
-
-#: src/ui/window.blp:129
 msgid "Close file list"
 msgstr "Dateiliste schließen"
 
-#: src/ui/window.blp:139
+#: src/ui/window.blp:138
 msgid "Add file"
 msgstr "Datei hinzufügen"
 
-#: src/ui/window.blp:145
+#: src/ui/window.blp:144
 msgid "Select multiple files"
 msgstr "Mehrere Dateien auswählen"
 
-#: src/ui/window.blp:151
+#: src/ui/window.blp:150
 msgid "Search opened files"
 msgstr "Geöffnete Dateien durchsuchen"
 
-#: src/ui/window.blp:194
+#: src/ui/window.blp:193
 msgid "No Results Found"
 msgstr "Keine Ergebnisse gefunden"
 
-#: src/ui/window.blp:195
+#: src/ui/window.blp:194
 msgid "Try a different search query."
 msgstr "Probieren Sie es mit einer anderen Suchanfrage."
 
-#: src/ui/window.blp:208
+#: src/ui/window.blp:207
 msgid "Select all files"
 msgstr "Alle Dateien auswählen"
 
-#: src/ui/window.blp:222
+#: src/ui/window.blp:221
 msgid "Remove selected files"
 msgstr "Ausgewählte Dateien entfernen"
 
-#: src/ui/window.blp:238
+#: src/ui/window.blp:237
 msgid "Show file list"
 msgstr "Dateiliste anzeigen"
 
-#: src/ui/window.blp:269
+#: src/ui/window.blp:262
 msgid "_Open File"
 msgstr "Datei ö_ffnen"
 
-#: src/ui/window.blp:274
+#: src/ui/window.blp:267
 msgid "O_pen Folder"
 msgstr "_Ordner öffnen"
+
+#: src/ui/window.blp:274
+msgid "_Sort File List"
+msgstr "Dateiliste _sortieren"
 
 #: src/ui/window.blp:281
 msgid "_Rename Selected Files"
@@ -502,7 +502,7 @@ msgid "(multiple values)"
 msgstr "(Mehrere Werte)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:146
+#: src/filelist.py:147
 msgid "(No title)"
 msgstr "(Kein Titel)"
 
@@ -879,6 +879,9 @@ msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Tastenkürzel"
 
+#~ msgid "Sort files by track number, album, name"
+#~ msgstr "Dateien sortieren nach Titelnummer, Album, Name"
+
 #~ msgid "OK"
 #~ msgstr "OK"
 
@@ -965,9 +968,6 @@ msgstr "Tastenkürzel"
 
 #~ msgid "Save changes before closing file?"
 #~ msgstr "Änderungen speichern vor dem Schließen der Datei?"
-
-#~ msgid "Sort files"
-#~ msgstr "Dateien sortieren"
 
 #~ msgid "Search"
 #~ msgstr "Suchen"
