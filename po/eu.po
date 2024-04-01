@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-02-28 14:46+0000\n"
-"PO-Revision-Date: 2024-03-02 21:06+0000\n"
+"POT-Creation-Date: 2024-03-30 17:35+0000\n"
+"PO-Revision-Date: 2024-04-01 21:06+0000\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <eu@li.org>\n"
 "Language: eu\n"
@@ -17,13 +17,13 @@ msgstr "Project-Id-Version: eartag main\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:132 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4
+#: src/main.py:140 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:244
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:142 src/main.py:144
+#: src/main.py:150 src/main.py:152
 msgid "translator-credits"
 msgstr "translator-credits"
 
@@ -40,7 +40,7 @@ msgstr "Editatu audio-fitxategien etiketak"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "musika;audioa;etiketa;etiketatzea;etiketatzailea;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:82
+#: data/app.drey.EarTag.metainfo.xml.in:76
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -48,121 +48,200 @@ msgid ""
 "library folder. It can:"
 msgstr "Ear Tag audio-fitxategien etiketak editatzeko aplikazio sinplea da. Bere xedea albumetako pistetan edizio azkarrak egin ahal izatea edo sortakako lana egitea da. Etiketak kudeatzeko beste programa batzuk ez bezala, Ear Tag aplikazioan ez da beharrezkoa musika-liburutegi bat konfiguratzea."
 
-#: data/app.drey.EarTag.metainfo.xml.in:84
+#: data/app.drey.EarTag.metainfo.xml.in:78
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Editatu MP3, WAV, M4A, FLAC, OGG eta WMA fitxategien etiketak"
 
-#: data/app.drey.EarTag.metainfo.xml.in:85
+#: data/app.drey.EarTag.metainfo.xml.in:79
 msgid "Modify metadata of multiple files at once"
 msgstr "Aldatu fitxategi bat baino gehiagoren metadatuak aldi berean"
 
-#: data/app.drey.EarTag.metainfo.xml.in:86
+#: data/app.drey.EarTag.metainfo.xml.in:80
 msgid "Rename files using information from present tags"
 msgstr "Aldatu fitxategien izenak etiketetako informazioa erabiliz"
 
-#: data/app.drey.EarTag.metainfo.xml.in:87
+#: data/app.drey.EarTag.metainfo.xml.in:81
 msgid "Identify files using AcoustID"
 msgstr "Identifikatu fitxategiak AcoustID bidez"
 
-#: data/app.drey.EarTag.metainfo.xml.in:89
+#: data/app.drey.EarTag.metainfo.xml.in:83
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "Sareko sarbidea \"Identifikatu hautatutako fitxategiak\" aukeraren soilik erabiliko da."
 
-#: src/window.py:117
+#: src/window.py:116
 msgid "All supported audio files"
 msgstr "Onartutako audio-fitxategi guztiak"
 
-#. TRANSLATOR: Placeholder for file path when multiple files are selected
-#: src/window.py:257 src/fileview.py:756
+#. TRANSLATORS: Placeholder for file path when multiple files are selected.
+#. Shows up in the titlebar of the application.
+#: src/window.py:258 src/fileview.py:758
 msgid "(Multiple files selected)"
 msgstr "(Fitxategi anitz hautatu da)"
 
-#: src/window.py:349
+#: src/window.py:351 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Ireki karpeta"
 
-#: src/window.py:352
+#: src/window.py:354 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Ireki fitxategia"
 
-#: src/window.py:419
+#: src/window.py:421
 msgid "No supported files found in opened folder"
 msgstr "Ez da onartutako fitxategirik aurkitu karpeta honetan"
 
-#: src/window.py:427
+#: src/window.py:429
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "Irekitako fitxategietako batzuk balio baliogabeak dituzte; ezin dira gorde"
 
-#: src/window.py:560
+#: src/window.py:561
 msgid "No files selected"
 msgstr "Ez da fitxategirik hautatu"
 
-#: src/window.py:564
+#: src/window.py:567
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "Fitxategi 1 hautatu da"
 msgstr[1] "{n} fitxategi hautatu dira"
 
-#: src/window.py:643
+#: src/window.py:648
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Aldaketak desegin dira fitxategi batean"
 msgstr[1] "Aldaketak desegin dira {n} fitxategitan"
 
-#: src/window.py:648
+#: src/window.py:653
 msgid "Redo"
 msgstr "Berregin"
 
-#: src/window.py:677
+#: src/window.py:684
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Aldaketa berregin dira fitxategi batean"
 msgstr[1] "Aldaketak berregin dira {n} fitxategitan"
 
-#: src/window.py:722
+#: src/window.py:732
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Etiketak kendu dira fitxategi batetik"
 msgstr[1] "Etiketak kendu dira {n} fitxategitatik"
 
-#: src/window.py:727 src/fileview.py:306
+#: src/window.py:737 src/fileview.py:308
 msgid "Undo"
 msgstr "Desegin"
 
-#: src/window.py:755
+#: src/window.py:767
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
 msgstr[0] "Etiketak kentzea desegin da fitxategi batean"
 msgstr[1] "Etiketak kentzea desegin da {n} fitxategitan"
 
-#: src/filemanager.py:146
-msgid "Failed to save file"
-msgstr "Huts egin du fitxategia gordetzeak"
+#: src/ui/window.blp:55
+msgid "Drop a file to add it to the opened file list"
+msgstr "Jaregin fitxategi bat irekitako fitxategien zerrendari gehitzeko"
 
-#: src/filemanager.py:148
-#, python-brace-format
-msgid "Could not save file {f}. Check the logs for more information."
-msgstr "Ezin da {f} fitxategia gorde. Begiratu egunkariak informazio gehiagorako."
+#: src/ui/window.blp:110
+msgid "Save"
+msgstr "Gorde"
 
-#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
-#: src/filemanager.py:154
-msgid "OK"
-msgstr "Ados"
+#: src/ui/window.blp:122
+msgid "Close file list"
+msgstr "Itxi fitxategien zerrenda"
 
-#: src/filemanager.py:159
+#: src/ui/window.blp:138
+msgid "Add file"
+msgstr "Gehitu fitxategia"
+
+#: src/ui/window.blp:144
+msgid "Select multiple files"
+msgstr "Hautatu fitxategi anitz"
+
+#: src/ui/window.blp:150
+msgid "Search opened files"
+msgstr "Bilatu irekitako fitxategietan"
+
+#: src/ui/window.blp:193
+msgid "No Results Found"
+msgstr "Ez da emaitzarik aurkitu"
+
+#: src/ui/window.blp:194
+msgid "Try a different search query."
+msgstr "Saiatu bestelako bilaketa batekin."
+
+#: src/ui/window.blp:207
+msgid "Select all files"
+msgstr "Hautatu fitxategi guztiak"
+
+#: src/ui/window.blp:221
+msgid "Remove selected files"
+msgstr "Kendu hautatutako fitxategiak"
+
+#: src/ui/window.blp:237
+msgid "Show file list"
+msgstr "Erakutsi fitxategien zerrenda"
+
+#: src/ui/window.blp:262
+msgid "_Open File"
+msgstr "_Ireki fitxategia"
+
+#: src/ui/window.blp:267
+msgid "O_pen Folder"
+msgstr "I_reki karpeta"
+
+#: src/ui/window.blp:274
+msgid "_Sort File List"
+msgstr "_Ordenatu fitxategi-zerrenda"
+
+#: src/ui/window.blp:281
+msgid "_Rename Selected Files"
+msgstr "_Aldatu hautatutako fitxategien izenak"
+
+#: src/ui/window.blp:286
+msgid "_Extract Tags from Filename"
+msgstr "_Erauzi etiketak fitxategi-izenetik"
+
+#: src/ui/window.blp:291
+msgid "_Identify Selected Files"
+msgstr "I_dentifikatu hautatutako fitxategiak"
+
+#: src/ui/window.blp:298
+msgid "_Undo Changes in Selected Files"
+msgstr "_Desegin aladaketak hautatutako fitxategietan"
+
+#: src/ui/window.blp:303
+msgid "_Remove All Tags in Selected Files"
+msgstr "_Kendu etiketa guztiak hautatutako fitxategietatik"
+
+#: src/ui/window.blp:310
+msgid "_Keyboard Shortcuts"
+msgstr "Las_ter-teklak"
+
+#: src/ui/window.blp:315
+msgid "_Preferences"
+msgstr "_Hobespenak"
+
+#: src/ui/window.blp:320
+msgid "_About Ear Tag"
+msgstr "Ear Tag aplikazioari _buruz"
+
+#: src/ui/nofile.blp:12
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr "Ireki edo arrastatu audio-fitxategiak haien metadatuak aldatzeko."
+
+#: src/filemanager.py:150
 msgid "Saved changes to files"
 msgstr "Aldaketak fitxategietan gorde dira"
 
-#: src/filemanager.py:265
+#: src/filemanager.py:256
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "Irekitako fitxategia irakurtzeko soilik da; aldaketak ezin dira gorde"
 
-#: src/filemanager.py:268
+#: src/filemanager.py:259
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "Irekitako fitxategietako batzuk irakurtzeko soilik dira; aldaketak ezin dira gorde"
 
@@ -174,39 +253,39 @@ msgstr "Luzera"
 msgid "Bitrate"
 msgstr "Bit-emaria"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:54 src/ui/fileview.blp:96
 msgid "Title"
 msgstr "Titulua"
 
-#: src/backends/file.py:55
+#: src/backends/file.py:55 src/ui/fileview.blp:128
 msgid "Artist"
 msgstr "Artista"
 
-#: src/backends/file.py:56
+#: src/backends/file.py:56 src/ui/fileview.blp:211
 msgid "Album"
 msgstr "Albuma"
 
-#: src/backends/file.py:57
+#: src/backends/file.py:57 src/ui/fileview.blp:216
 msgid "Album artist"
 msgstr "Albumaren artista"
 
-#: src/backends/file.py:58
+#: src/backends/file.py:58 src/ui/fileview.blp:175
 msgid "Track number"
 msgstr "Pista-zenbakia"
 
-#: src/backends/file.py:59
+#: src/backends/file.py:59 src/ui/fileview.blp:188
 msgid "Total tracks"
 msgstr "Pistak guztira"
 
-#: src/backends/file.py:60
+#: src/backends/file.py:60 src/ui/fileview.blp:221
 msgid "Genre"
 msgstr "Generoa"
 
-#: src/backends/file.py:61
+#: src/backends/file.py:61 src/ui/fileview.blp:226
 msgid "Release date"
 msgstr "Argitaratze-data"
 
-#: src/backends/file.py:62
+#: src/backends/file.py:62 src/ui/fileview.blp:232
 msgid "Comment"
 msgstr "Iruzkina"
 
@@ -330,366 +409,446 @@ msgstr "Aukeratu albumaren azalaren irudia"
 msgid "Save Album Cover To…"
 msgstr "Gorde albumaren azala hemen…"
 
-#: src/fileview.py:278
+#. TRANSLATORS: {path} is a placeholder for the path.
+#. **Do not change the text between the curly brackets!**
+#: src/fileview.py:280
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Azla {path} karpetan gorde da"
 
-#: src/fileview.py:303
+#: src/fileview.py:305
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "Azala fitxategitik kendu da"
 msgstr[1] "Azala {n} fitxategitatik kendu da"
 
-#: src/fileview.py:771
+#: src/fileview.py:773
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "Kanal 1"
 msgstr[1] "{n} kanal"
 
-#: src/fileview.py:817
+#: src/fileview.py:819
 msgid "(multiple files)"
 msgstr "(fitxategi anitz)"
+
+#: src/ui/fileview.blp:9
+msgid "Loading Files…"
+msgstr "Fitxategiak kargatzen…"
+
+#: src/ui/fileview.blp:17
+msgid "Select a File"
+msgstr "Hautatu fitxategi bat"
+
+#: src/ui/fileview.blp:18
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "Hautatu editatu nahi dituzun fitxategiak irekitako fitxateien zerrendatik."
+
+#: src/ui/fileview.blp:54
+msgid "Previous file"
+msgstr "Aurreko fitxategia"
+
+#: src/ui/fileview.blp:76
+msgid "Next file"
+msgstr "Hurrengo fitxategia"
+
+#: src/ui/filenamerow.blp:5
+msgid "Filename"
+msgstr "Fitxategi-izena"
+
+#: src/ui/albumcoverbutton.blp:73
+msgid "_Choose Image…"
+msgstr "_Aukeratu irudia…"
+
+#: src/ui/albumcoverbutton.blp:79
+msgid "_Save Image…"
+msgstr "_Gorde irudia…"
+
+#: src/ui/albumcoverbutton.blp:85
+msgid "_Remove Cover"
+msgstr "_Kendu irudia"
+
+#: src/ui/albumcoverbutton.blp:111
+msgid "Front"
+msgstr "Aurrealdea"
+
+#: src/ui/albumcoverbutton.blp:116
+msgid "Back"
+msgstr "Atzealdea"
 
 #: src/tagentry.py:128
 msgid "(multiple values)"
 msgstr "(balio anitz)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:146
+#: src/filelist.py:147
 msgid "(No title)"
 msgstr "Titulurik ez)"
 
-#: src/rename.py:36
+#: src/ui/filelistitem.blp:40
+msgid "File has invalid values"
+msgstr "Fitxategiak baliogabeko balioak ditu"
+
+#: src/ui/filelistitem.blp:47
+msgid "File has unsaved changes"
+msgstr "Fitxategiak gorde gabeko aldaketak ditu"
+
+#: src/ui/filelistitem.blp:94
+msgid "Remove from list"
+msgstr "Kendu zerrendatik"
+
+#: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
+#: src/ui/dialogs/removaldiscardwarning.blp:5
+msgid "Save Changes?"
+msgstr "Gorde aldaketak?"
+
+#: src/ui/dialogs/closewarning.blp:6 src/ui/dialogs/discardwarning.blp:6
+#: src/ui/dialogs/removaldiscardwarning.blp:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "Aldaketak gordetzen ez badituzu, betiko galduko dira."
+
+#: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
+#: src/ui/dialogs/removaldiscardwarning.blp:12
+msgid "_Cancel"
+msgstr "_Utzi"
+
+#: src/ui/dialogs/closewarning.blp:13
+#: src/ui/dialogs/removaldiscardwarning.blp:13
+msgid "_Discard and Close"
+msgstr "_Baztertu eta itxi"
+
+#: src/ui/dialogs/closewarning.blp:14
+#: src/ui/dialogs/removaldiscardwarning.blp:14
+msgid "_Save and Close"
+msgstr "_Gorde eta itxi"
+
+#: src/ui/dialogs/discardwarning.blp:13
+msgid "_Discard and Open"
+msgstr "_Baztertu eta ireki"
+
+#: src/ui/dialogs/discardwarning.blp:14
+msgid "_Save and Open"
+msgstr "_Gorde eta ireki"
+
+#: src/ui/dialogs/savefailure.blp:5
+msgid "Failed to Save File"
+msgstr "Huts egin du fitxategia gordetzeak"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/savefailure.blp:8
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr "Ezin da {f} fitxategia gorde. Begiratu egunkariak informazio gehiagorako."
+
+#: src/ui/dialogs/savefailure.blp:14 src/ui/dialogs/loadingfailure.blp:14
+#: src/ui/dialogs/renamefailure.blp:14
+msgid "_OK"
+msgstr "_Ados"
+
+#: src/ui/dialogs/loadingfailure.blp:5
+msgid "Failed to Load File"
+msgstr "Fitxategiaren kargak huts egin du"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/loadingfailure.blp:8
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr "Ezin da {f} fitxategia kargatu. Begiratu egunkariak informazio gehiagorako."
+
+#: src/ui/dialogs/renamefailure.blp:5
+msgid "Failed to Rename File"
+msgstr "Fitxategiaren izena aldatzeak huts egin du"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/renamefailure.blp:8
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr "Ezin da {f} fitxategiaren izena aldatu. Begiratu egunkariak informazio gehiagorako."
+
+#. TRANSLATORS: Default placeholder string for a missing title
+#. tag, used when renaming files - if the title tag is not
+#. present in the file, this placeholder will be used instead.
+#: src/rename.py:40
 msgid "Untitled"
 msgstr "Izengabea"
 
-#: src/rename.py:43
+#. TRANSLATORS: Default placeholder string for missing tags,
+#. used when renaming files - if a tag is not present in the
+#. file, this placeholder will be used instead.
+#. {tag_name} is a placeholder for the human-readable tag name.
+#. **Do not change the text between the curly brackets!**
+#: src/rename.py:52
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "{tag_name} ezezaguna"
 
-#: src/rename.py:280
+#: src/rename.py:290
 msgid "Selected folder does not exist"
 msgstr "Hautatutako fitxategia ez da existitzen"
 
-#: src/rename.py:287
+#: src/rename.py:297
 msgid "Selected folder is read-only"
 msgstr "Hautatutako fitxategia irakurtzeko soilik da"
 
-#: src/extract.py:278
+#. TRANSLATORS: {renamed} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/rename.py:388
 #, python-brace-format
-msgid "Extracted tags for {extracted} out of {total} tracks"
-msgstr "Etiketak erauzi dira {extracted} pistatik, guztira dauden {total} pistatik"
+msgid "Renamed 1 file"
+msgid_plural "Renamed {renamed} files"
+msgstr[0] "Fitxategi baten izena aldatu da"
+msgstr[1] "{renamed} fitxategiren izenak aldatu dira"
+
+#: src/ui/rename.blp:5
+msgid "Rename Selected Files"
+msgstr "Aldatu hautatutako fitxategien izenak"
+
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+msgid "Cancel"
+msgstr "Utzi"
+
+#: src/ui/rename.blp:24
+msgid "Rename"
+msgstr "Aldatu izena"
+
+#: src/ui/rename.blp:49
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr "Ear Tag aplikazioak baimen gehiago behar ditu fitxategien izenak tokian aldatzeko."
+
+#: src/ui/rename.blp:50
+msgid "Learn More"
+msgstr "Ikasi gehiago"
+
+#: src/ui/rename.blp:59
+msgid "Failed to rename files. Check the logs for more information."
+msgstr "Huts egin du fitxategiaren izena aldatzeak. Begiratu egunkariak informazio gehiagorako."
+
+#: src/ui/rename.blp:88 src/ui/extract.blp:66
+msgid "Preview"
+msgstr "Aurrebista"
+
+#: src/ui/rename.blp:99 src/ui/extract.blp:85
+msgid "Filename pattern"
+msgstr "Fitxategi-izenaren eredua"
+
+#: src/ui/rename.blp:106 src/ui/extract.blp:91
+msgid "Insert tag placeholder"
+msgstr "Txertatu etiketaren leku-marka"
+
+#: src/ui/rename.blp:116
+msgid "Move to folder"
+msgstr "Eraman karpeta batera"
+
+#: src/ui/rename.blp:121
+msgid "Select a folder…"
+msgstr "Hautatu karpeta…"
+
+#: src/ui/rename.blp:133
+msgid "Unselect folder"
+msgstr "Desautatu karpeta"
+
+#: src/ui/rename.blp:149
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
+msgstr "Erabilgarri dauden leku-marken zerrenda bat ikusteko, begiratu <a href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">etiketa erabilgarrien zerrenda</a>."
+
+#. TRANSLATORS: {extracted} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/extract.py:284
+#, python-brace-format
+msgid "Extracted tags for 1 track"
+msgid_plural "Extracted tags for {extracted} tracks"
+msgstr[0] "Etiketak erauzi dira pista batetik"
+msgstr[1] "Etiketak erauzi dira {extracted} pistatik"
+
+#: src/ui/extract.blp:5
+msgid "Extract Tags from Filename"
+msgstr "Erauzi etiketak fitxategi-izenetik"
+
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+msgid "Apply"
+msgstr "Aplikatu"
+
+#: src/ui/extract.blp:101
+msgid "Ignore common suffixes"
+msgstr "Ez ikusi egin atzizki arruntei"
+
+#: src/ui/extract.blp:102
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded "
+"files. Disable this option if it interferes with your filenames."
+msgstr "Automatikoki egiten diete ez ikusiarena deskargatutako fitxategietako izenetan sarritan agertzen diren ID atzizkiei. Desgaitu aukera hau zure fitxategi-izenekin oztopoak sortzen baditu."
+
+#: src/ui/previewselectorbutton.blp:4
+msgid "Select file to preview"
+msgstr "Hautatu fitxategia aurrebistarako"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:117
+#: src/identify.py:118
 msgid "Other releases"
 msgstr "Beste argitalpen batzuk"
 
-#: src/identify.py:516
+#: src/identify.py:517
 msgid "Unidentified Files"
 msgstr "Identifikatu gabeko fitxategiak"
 
-#: src/identify.py:950
+#. TRANSLATORS: {identified} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:959
 #, python-brace-format
-msgid "Identified {identified} out of {total} tracks"
-msgstr "{total} pistetatik {identified} identifikatu dira"
+msgid "Identified 1 track"
+msgid_plural "Identified {identified} tracks"
+msgstr[0] "Pista bat identifikatu da"
+msgstr[1] "{identified} pista identifikatu dira"
 
-#~ msgid "Drop a file to add it to the opened file list"
-#~ msgstr "Jaregin fitxategi bat irekitako fitxategien zerrendari gehitzeko"
+#: src/ui/identify/identify.blp:5
+msgid "Identify Selected Files"
+msgstr "Identifikatu hautatutako fitxategiak"
 
-#~ msgid "Save"
-#~ msgstr "Gorde"
+#: src/ui/identify/identify.blp:34
+msgid "Identify"
+msgstr "Identifikatu"
+
+#: src/ui/identify/identify.blp:71
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr "Pistaren informazioa <a href=\"https://musicbrainz.org\">Musicbrainz</a> gunetik jasotzen da. Metadaturik gabeko fitxategiak <a href=\"https://acoustid.org\">AcoustID</a> zerbitzuaren bidez identifikatzen dira."
+
+#: src/ui/identify/filerow.blp:23
+msgid "File could not be identified"
+msgstr "Ezin izan da fitxategia identifikatu"
+
+#: src/ui/settings.blp:7
+msgid "File identification"
+msgstr "Fitxategi-identifikazioa"
+
+#: src/ui/settings.blp:10
+msgid "MusicBrainz confidence treshold"
+msgstr "MusicBrainz konfiantza-atalasea"
+
+#: src/ui/settings.blp:11
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr "MusicBrainz gunearen bilaketa-emaitza bat ebaluatua izan dadin bete behar den gutxieneko konfiantza-ehunekoa"
+
+#: src/ui/settings.blp:25
+msgid "AcoustID confidence treshold"
+msgstr "AcoustID konfiantza-atalasea"
+
+#: src/ui/settings.blp:26
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr "AcoustID gunearen bilaketa-emaitza bat ebaluatua izan dadin bete behar den gutxieneko konfiantza-ehunekoa"
+
+#: src/ui/settings.blp:40
+msgid "Downloaded cover art size"
+msgstr "Deskargatutako azalaren tamaina"
+
+#: src/ui/settings.blp:44
+msgid "Do not download covers"
+msgstr "Ez deskargatu azalak"
+
+#: src/ui/settings.blp:45
+msgid "250 px"
+msgstr "250 px"
+
+#: src/ui/settings.blp:46
+msgid "500 px"
+msgstr "500 px"
+
+#: src/ui/settings.blp:47
+msgid "1200 px"
+msgstr "1200 px"
+
+#: src/ui/settings.blp:48
+msgid "Maximum size"
+msgstr "Gehieneko tamaina"
+
+#: src/ui/shortcuts.blp:11
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "Fitxategiak"
+
+#: src/ui/shortcuts.blp:15
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "Ireki fitxategiak"
+
+#: src/ui/shortcuts.blp:20
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "Ireki karpeta"
+
+#: src/ui/shortcuts.blp:25
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "Gorde aldatutako fitxategi guztiak"
+
+#: src/ui/shortcuts.blp:30
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "Alboko barra"
+
+#: src/ui/shortcuts.blp:34
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Hautatu alboko barrako aurreko fitxategia"
+
+#: src/ui/shortcuts.blp:39
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "Hautatu alboko barrako hurrengo fitxategia"
+
+#: src/ui/shortcuts.blp:44
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "Hautatu alboko barrako fitxategi guztiak"
+
+#: src/ui/shortcuts.blp:49
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "Kendu hautatutako fitxategiak alboko barratik"
+
+#: src/ui/shortcuts.blp:50
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "Leihoa ixten du fitxategirik ez badago."
+
+#: src/ui/shortcuts.blp:55
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "Bestelakoa"
+
+#: src/ui/shortcuts.blp:59
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Laster-teklak"
+
+#~ msgid "OK"
+#~ msgstr "Ados"
+
+#, python-brace-format
+#~ msgid "Identified {identified} out of {total} tracks"
+#~ msgstr "{total} pistetatik {identified} identifikatu dira"
 
 #~ msgid "Sort files by track number, album, name"
 #~ msgstr ""
 #~ "Ordenatu fitxategiak pista-zenbakiaren, albumaren eta izenaren arabera"
 
-#~ msgid "Close file list"
-#~ msgstr "Itxi fitxategien zerrenda"
-
-#~ msgid "Add file"
-#~ msgstr "Gehitu fitxategia"
-
-#~ msgid "Select multiple files"
-#~ msgstr "Hautatu fitxategi anitz"
-
-#~ msgid "Search opened files"
-#~ msgstr "Bilatu irekitako fitxategietan"
-
-#~ msgid "No Results Found"
-#~ msgstr "Ez da emaitzarik aurkitu"
-
-#~ msgid "Try a different search query."
-#~ msgstr "Saiatu bestelako bilaketa batekin."
-
-#~ msgid "Select all files"
-#~ msgstr "Hautatu fitxategi guztiak"
-
-#~ msgid "Remove selected files"
-#~ msgstr "Kendu hautatutako fitxategiak"
-
-#~ msgid "Show file list"
-#~ msgstr "Erakutsi fitxategien zerrenda"
-
-#~ msgid "_Open File"
-#~ msgstr "_Ireki fitxategia"
-
-#~ msgid "O_pen Folder"
-#~ msgstr "I_reki karpeta"
-
-#~ msgid "_Rename Selected Files"
-#~ msgstr "_Aldatu hautatutako fitxategien izenak"
-
-#~ msgid "_Identify Selected Files"
-#~ msgstr "I_dentifikatu hautatutako fitxategiak"
-
-#~ msgid "_Keyboard Shortcuts"
-#~ msgstr "Las_ter-teklak"
-
 #~ msgid "_Settings"
 #~ msgstr "_Ezarpenak"
 
-#~ msgid "_About Ear Tag"
-#~ msgstr "Ear Tag aplikazioari _buruz"
-
-#~ msgid "Open or drag in some audio files to edit their metadata."
-#~ msgstr "Ireki edo arrastatu audio-fitxategiak haien metadatuak aldatzeko."
-
 #~ msgid "More tags"
 #~ msgstr "Etiketa gehiago"
-
-#~ msgid "Loading Files…"
-#~ msgstr "Fitxategiak kargatzen…"
-
-#~ msgid "Select a File"
-#~ msgstr "Hautatu fitxategi bat"
-
-#~ msgid "Select the files you want to edit from the list of opened files."
-#~ msgstr ""
-#~ "Hautatu editatu nahi dituzun fitxategiak irekitako fitxateien zerrendatik."
-
-#~ msgid "Previous file"
-#~ msgstr "Aurreko fitxategia"
-
-#~ msgid "Next file"
-#~ msgstr "Hurrengo fitxategia"
-
-#~ msgid "_Choose Image…"
-#~ msgstr "_Aukeratu irudia…"
-
-#~ msgid "_Save Image…"
-#~ msgstr "_Gorde irudia…"
-
-#~ msgid "_Remove Cover"
-#~ msgstr "_Kendu irudia"
-
-#~ msgid "Front"
-#~ msgstr "Aurrealdea"
-
-#~ msgid "Back"
-#~ msgstr "Atzealdea"
-
-#~ msgid "File has invalid values"
-#~ msgstr "Fitxategiak baliogabeko balioak ditu"
-
-#~ msgid "File has unsaved changes"
-#~ msgstr "Fitxategiak gorde gabeko aldaketak ditu"
-
-#~ msgid "Remove from list"
-#~ msgstr "Kendu zerrendatik"
-
-#~ msgid "Save Changes?"
-#~ msgstr "Gorde aldaketak?"
-
-#~ msgid "If you don't save your changes, they will be permanently lost."
-#~ msgstr "Aldaketak gordetzen ez badituzu, betiko galduko dira."
-
-#~ msgid "_Cancel"
-#~ msgstr "_Utzi"
-
-#~ msgid "_Discard and Close"
-#~ msgstr "_Baztertu eta itxi"
-
-#~ msgid "_Save and Close"
-#~ msgstr "_Gorde eta itxi"
-
-#~ msgid "_Discard and Open"
-#~ msgstr "_Baztertu eta ireki"
-
-#~ msgid "_Save and Open"
-#~ msgstr "_Gorde eta ireki"
-
-#~ msgid "Failed to Load File"
-#~ msgstr "Fitxategiaren kargak huts egin du"
-
-#~ msgid "Could not load file {f}. Check the logs for more information."
-#~ msgstr ""
-#~ "Ezin da {f} fitxategia kargatu. Begiratu egunkariak informazio "
-#~ "gehiagorako."
-
-#~ msgid "_OK"
-#~ msgstr "_Ados"
-
-#~ msgid "Failed to Rename File"
-#~ msgstr "Fitxategiaren izena aldatzeak huts egin du"
-
-#~ msgid "Could not rename file {f}. Check the logs for more information."
-#~ msgstr ""
-#~ "Ezin da {f} fitxategiaren izena aldatu. Begiratu egunkariak informazio "
-#~ "gehiagorako."
-
-#~ msgid "Rename Selected Files"
-#~ msgstr "Aldatu hautatutako fitxategien izenak"
-
-#~ msgid "Cancel"
-#~ msgstr "Utzi"
-
-#~ msgid "Rename"
-#~ msgstr "Aldatu izena"
-
-#~ msgid "Failed to rename files. Check the logs for more information."
-#~ msgstr ""
-#~ "Huts egin du fitxategiaren izena aldatzeak. Begiratu egunkariak "
-#~ "informazio gehiagorako."
-
-#~ msgid "Preview"
-#~ msgstr "Aurrebista"
-
-#~ msgid "Filename pattern"
-#~ msgstr "Fitxategi-izenaren eredua"
-
-#~ msgid "Insert tag placeholder"
-#~ msgstr "Txertatu etiketaren leku-marka"
-
-#~ msgid "Move to folder"
-#~ msgstr "Eraman karpeta batera"
-
-#~ msgid "Select a folder…"
-#~ msgstr "Hautatu karpeta…"
-
-#~ msgid "Unselect folder"
-#~ msgstr "Desautatu karpeta"
-
-#~ msgid ""
-#~ "For a list of available placeholders, see the <a href=\"https://gitlab."
-#~ "gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
-#~ "tags\">list of available tags</a>."
-#~ msgstr ""
-#~ "Erabilgarri dauden leku-marken zerrenda bat ikusteko, begiratu <a "
-#~ "href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/"
-#~ "README.md#available-tags\">etiketa erabilgarrien zerrenda</a>."
-
-#~ msgid "Identify Selected Files"
-#~ msgstr "Identifikatu hautatutako fitxategiak"
-
-#~ msgid "Identify"
-#~ msgstr "Identifikatu"
-
-#~ msgid "Apply"
-#~ msgstr "Aplikatu"
-
-#~ msgid ""
-#~ "Track information is provided by <a href=\"https://musicbrainz."
-#~ "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
-#~ "href=\"https://acoustid.org\">AcoustID</a> service."
-#~ msgstr ""
-#~ "Pistaren informazioa <a href=\"https://musicbrainz.org\">Musicbrainz</a> "
-#~ "gunetik jasotzen da. Metadaturik gabeko fitxategiak <a href=\"https://"
-#~ "acoustid.org\">AcoustID</a> zerbitzuaren bidez identifikatzen dira."
-
-#~ msgid "File could not be identified"
-#~ msgstr "Ezin izan da fitxategia identifikatu"
-
-#~ msgid "File identification"
-#~ msgstr "Fitxategi-identifikazioa"
-
-#~ msgid "MusicBrainz confidence treshold"
-#~ msgstr "MusicBrainz konfiantza-atalasea"
-
-#~ msgid ""
-#~ "Minimum confidence percentage required for a MusicBrainz search result to "
-#~ "be evaluated"
-#~ msgstr ""
-#~ "MusicBrainz gunearen bilaketa-emaitza bat ebaluatua izan dadin bete behar "
-#~ "den gutxieneko konfiantza-ehunekoa"
-
-#~ msgid "AcoustID confidence treshold"
-#~ msgstr "AcoustID konfiantza-atalasea"
-
-#~ msgid ""
-#~ "Minimum confidence percentage required for an AcoustID lookup result to "
-#~ "be evaluated"
-#~ msgstr ""
-#~ "AcoustID gunearen bilaketa-emaitza bat ebaluatua izan dadin bete behar "
-#~ "den gutxieneko konfiantza-ehunekoa"
-
-#~ msgid "Downloaded cover art size"
-#~ msgstr "Deskargatutako azalaren tamaina"
-
-#~ msgid "Do not download covers"
-#~ msgstr "Ez deskargatu azalak"
-
-#~ msgid "250 px"
-#~ msgstr "250 px"
-
-#~ msgid "500 px"
-#~ msgstr "500 px"
-
-#~ msgid "1200 px"
-#~ msgstr "1200 px"
-
-#~ msgid "Maximum size"
-#~ msgstr "Gehieneko tamaina"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Files"
-#~ msgstr "Fitxategiak"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open files"
-#~ msgstr "Ireki fitxategiak"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Open folder"
-#~ msgstr "Ireki karpeta"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Save all modified files"
-#~ msgstr "Gorde aldatutako fitxategi guztiak"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Sidebar"
-#~ msgstr "Alboko barra"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Select previous file in sidebar"
-#~ msgstr "Hautatu alboko barrako aurreko fitxategia"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Select next file in sidebar"
-#~ msgstr "Hautatu alboko barrako hurrengo fitxategia"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Select all files in sidebar"
-#~ msgstr "Hautatu alboko barrako fitxategi guztiak"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Remove selected files from sidebar"
-#~ msgstr "Kendu hautatutako fitxategiak alboko barratik"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Closes the window if no files are present."
-#~ msgstr "Leihoa ixten du fitxategirik ez badago."
-
-#~ msgctxt "shortcut window"
-#~ msgid "Other"
-#~ msgstr "Bestelakoa"
-
-#~ msgctxt "shortcut window"
-#~ msgid "Keyboard shortcuts"
-#~ msgstr "Laster-teklak"
