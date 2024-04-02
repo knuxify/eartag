@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-24 09:50+0000\n"
-"PO-Revision-Date: 2024-03-25 11:51-0300\n"
+"POT-Creation-Date: 2024-03-30 17:35+0000\n"
+"PO-Revision-Date: 2024-04-01 11:47-0300\n"
 "Last-Translator: Leônidas Araújo <leorusvellt@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "Language: pt_BR\n"
@@ -16,16 +16,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.3.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:132 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:245
+#: src/main.py:140 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:244
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:142 src/main.py:144
+#: src/main.py:150 src/main.py:152
 msgid "translator-credits"
 msgstr "Leônidas Araújo <leorusvellt@hotmail.com>"
 
@@ -79,7 +79,7 @@ msgstr ""
 "O acesso à rede é utilizado apenas para a opção \"Identificar arquivos "
 "selecionados\"."
 
-#: src/window.py:117
+#: src/window.py:116
 msgid "All supported audio files"
 msgstr "Todos os arquivos de áudio suportados"
 
@@ -89,19 +89,19 @@ msgstr "Todos os arquivos de áudio suportados"
 msgid "(Multiple files selected)"
 msgstr "(Vários arquivos selecionados)"
 
-#: src/window.py:350 src/ui/nofile.blp:35
+#: src/window.py:351 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Abrir pasta"
 
-#: src/window.py:353 src/ui/nofile.blp:24
+#: src/window.py:354 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Abrir arquivo"
 
-#: src/window.py:420
+#: src/window.py:421
 msgid "No supported files found in opened folder"
 msgstr "Nenhum arquivo compatível encontrado na pasta aberta"
 
-#: src/window.py:428
+#: src/window.py:429
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Alguns dos arquivos abertos possuem valores inválidos; não é possível salvar"
@@ -162,52 +162,52 @@ msgid "Save"
 msgstr "Salvar"
 
 #: src/ui/window.blp:122
-msgid "Sort files by track number, album, name"
-msgstr "Classifique os arquivos por número da faixa, álbum ou nome"
-
-#: src/ui/window.blp:129
 msgid "Close file list"
 msgstr "Fechar lista de arquivos"
 
-#: src/ui/window.blp:139
+#: src/ui/window.blp:138
 msgid "Add file"
 msgstr "Adicionar arquivo"
 
-#: src/ui/window.blp:145
+#: src/ui/window.blp:144
 msgid "Select multiple files"
 msgstr "Selecionar vários arquivos"
 
-#: src/ui/window.blp:151
+#: src/ui/window.blp:150
 msgid "Search opened files"
 msgstr "Pesquisar arquivos abertos"
 
-#: src/ui/window.blp:194
+#: src/ui/window.blp:193
 msgid "No Results Found"
 msgstr "Nenhum resultado encontrado"
 
-#: src/ui/window.blp:195
+#: src/ui/window.blp:194
 msgid "Try a different search query."
 msgstr "Tente uma consulta de pesquisa diferente."
 
-#: src/ui/window.blp:208
+#: src/ui/window.blp:207
 msgid "Select all files"
 msgstr "Selecionar todos os arquivos"
 
-#: src/ui/window.blp:222
+#: src/ui/window.blp:221
 msgid "Remove selected files"
 msgstr "Remover arquivos selecionados"
 
-#: src/ui/window.blp:238
+#: src/ui/window.blp:237
 msgid "Show file list"
 msgstr "Mostrar lista de arquivos"
 
-#: src/ui/window.blp:269
+#: src/ui/window.blp:262
 msgid "_Open File"
 msgstr "Abrir arquiv_o"
 
-#: src/ui/window.blp:274
+#: src/ui/window.blp:267
 msgid "O_pen Folder"
 msgstr "_Abrir pasta"
+
+#: src/ui/window.blp:274
+msgid "_Sort File List"
+msgstr "Cla_ssificar lista de arquivos"
 
 #: src/ui/window.blp:281
 msgid "_Rename Selected Files"
@@ -497,7 +497,7 @@ msgid "(multiple values)"
 msgstr "(valores múltiplos)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:146
+#: src/filelist.py:147
 msgid "(No title)"
 msgstr "(Sem título)"
 
@@ -872,6 +872,9 @@ msgstr "Outro"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Atalhos do teclado"
+
+#~ msgid "Sort files by track number, album, name"
+#~ msgstr "Classifique os arquivos por número da faixa, álbum ou nome"
 
 #~ msgid "OK"
 #~ msgstr "Ok"
