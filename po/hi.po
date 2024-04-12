@@ -1,0 +1,852 @@
+# Hindi translation for eartag.
+# Copyright (C) 2024 eartag's COPYRIGHT HOLDER
+# This file is distributed under the same license as the eartag package.
+# Scrambled777 <weblate.scrambled777@simplelogin.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: eartag main\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
+"POT-Creation-Date: 2024-03-29 20:09+0000\n"
+"PO-Revision-Date: 2024-03-30 11:58+0530\n"
+"Last-Translator: Scrambled777 <weblate.scrambled777@simplelogin.com>\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 46.0\n"
+
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
+#: src/main.py:132 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:245
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:142 src/main.py:144
+msgid "translator-credits"
+msgstr "Scrambled777 <weblate.scrambled777@simplelogin.com>"
+
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr "टैग संपादक"
+
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr "ऑडियो फाइल टैग संपादन"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "music;audio;tag;tagging;tagger;संगीत;ऑडियो;टैग;टैगिंग;टैगर;"
+
+#: data/app.drey.EarTag.metainfo.xml.in:76
+msgid ""
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder. It can:"
+msgstr ""
+"Ear Tag एक सरल ऑडियो फाइल टैग संपादक है। यह मुख्य रूप से एल्बम/EP's में त्वरित संपादन या "
+"बड़े पैमाने पर ट्रैक संपादन के लिए तैयार है। अन्य टैगिंग प्रोग्रामों के विपरीत, Ear Tag के लिए "
+"उपयोगकर्ता को संगीत लाइब्रेरी फोल्डर सेट करने की आवश्यकता नहीं होती है। यह:"
+
+#: data/app.drey.EarTag.metainfo.xml.in:78
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr "MP3, WAV, M4A, FLAC, OGG और WMA फाइलों के टैग संपादित करें"
+
+#: data/app.drey.EarTag.metainfo.xml.in:79
+msgid "Modify metadata of multiple files at once"
+msgstr "एक साथ कई फाइलों के मेटाडेटा को संशोधित करें"
+
+#: data/app.drey.EarTag.metainfo.xml.in:80
+msgid "Rename files using information from present tags"
+msgstr "वर्तमान टैग से जानकारी का उपयोग करके फाइलों का नाम बदलें"
+
+#: data/app.drey.EarTag.metainfo.xml.in:81
+msgid "Identify files using AcoustID"
+msgstr "AcoustID का उपयोग करके फाइलों की पहचान करें"
+
+#: data/app.drey.EarTag.metainfo.xml.in:83
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr ""
+"नेटवर्क पहुंच का उपयोग केवल \"चयनित फाइलों की पहचान करें\" विकल्प के लिए किया जाता है।"
+
+#: src/window.py:117
+msgid "All supported audio files"
+msgstr "सभी समर्थित ऑडियो फाइलें"
+
+#. TRANSLATORS: Placeholder for file path when multiple files are selected.
+#. Shows up in the titlebar of the application.
+#: src/window.py:258 src/fileview.py:758
+msgid "(Multiple files selected)"
+msgstr "(एकाधिक फाइलें चयनित)"
+
+#: src/window.py:350 src/ui/nofile.blp:35
+msgid "Open Folder"
+msgstr "फोल्डर खोलें"
+
+#: src/window.py:353 src/ui/nofile.blp:24
+msgid "Open File"
+msgstr "फाइल खोलें"
+
+#: src/window.py:420
+msgid "No supported files found in opened folder"
+msgstr "खोले गए फोल्डर में कोई समर्थित फाइल नहीं मिली"
+
+#: src/window.py:428
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr "कुछ खोली गई फाइलों में अमान्य मान हैं; सहेज नहीं सकते"
+
+#: src/window.py:561
+msgid "No files selected"
+msgstr "कोई फाइल चयनित नहीं"
+
+#: src/window.py:567
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "1 फाइल चयनित"
+msgstr[1] "{n} फाइलें चयनित"
+
+#: src/window.py:648
+#, python-brace-format
+msgid "Undid changes in 1 file"
+msgid_plural "Undid changes in {n} files"
+msgstr[0] "1 फाइल में परिवर्तन पूर्ववत किया"
+msgstr[1] "{n} फाइलों में परिवर्तन पूर्ववत किया"
+
+#: src/window.py:653
+msgid "Redo"
+msgstr "पुनः करें"
+
+#: src/window.py:684
+#, python-brace-format
+msgid "Redid changes in 1 file"
+msgid_plural "Redid changes in {n} files"
+msgstr[0] "1 फाइल में परिवर्तन पुनः किया"
+msgstr[1] "{n} फाइलों में परिवर्तन पुनः किया"
+
+#: src/window.py:732
+#, python-brace-format
+msgid "Removed tags from 1 file"
+msgid_plural "Removed tags from {n} files"
+msgstr[0] "1 फाइल से टैग हटाये गये"
+msgstr[1] "{n} फाइलों से टैग हटाये गये"
+
+#: src/window.py:737 src/fileview.py:308
+msgid "Undo"
+msgstr "पूर्ववत"
+
+#: src/window.py:767
+#, python-brace-format
+msgid "Undid tag removal in 1 file"
+msgid_plural "Undid tag removal in {n} files"
+msgstr[0] "1 फाइल में टैग हटाना पूर्ववत किया"
+msgstr[1] "{n} फाइलों में टैग हटाना पूर्ववत किया"
+
+#: src/ui/window.blp:55
+msgid "Drop a file to add it to the opened file list"
+msgstr "किसी फाइल को खुली हुई फाइल सूची में जोड़ने के लिए उसे छोड़ें"
+
+#: src/ui/window.blp:110
+msgid "Save"
+msgstr "सहेजें"
+
+#: src/ui/window.blp:122
+msgid "Sort files by track number, album, name"
+msgstr "ट्रैक नंबर, एल्बम, नाम के आधार पर फाइलें क्रमबद्ध करें"
+
+#: src/ui/window.blp:129
+msgid "Close file list"
+msgstr "फाइल सूची बंद करें"
+
+#: src/ui/window.blp:139
+msgid "Add file"
+msgstr "फाइल जोड़ें"
+
+#: src/ui/window.blp:145
+msgid "Select multiple files"
+msgstr "एकाधिक फाइलें चुनें"
+
+#: src/ui/window.blp:151
+msgid "Search opened files"
+msgstr "खोली गई फाइलें खोजें"
+
+#: src/ui/window.blp:194
+msgid "No Results Found"
+msgstr "कोई परिणाम नहीं मिला"
+
+#: src/ui/window.blp:195
+msgid "Try a different search query."
+msgstr "कोई भिन्न खोज क्वेरी आज़माएँ."
+
+#: src/ui/window.blp:208
+msgid "Select all files"
+msgstr "सभी फाइलें चुनें"
+
+#: src/ui/window.blp:222
+msgid "Remove selected files"
+msgstr "चयनित फाइलें हटाएँ"
+
+#: src/ui/window.blp:238
+msgid "Show file list"
+msgstr "फाइल सूची दिखाएँ"
+
+#: src/ui/window.blp:269
+msgid "_Open File"
+msgstr "फाइल खोलें (_O)"
+
+#: src/ui/window.blp:274
+msgid "O_pen Folder"
+msgstr "फोल्डर खोलें (_p)"
+
+#: src/ui/window.blp:281
+msgid "_Rename Selected Files"
+msgstr "चयनित फाइलों का नाम बदलें (_R)"
+
+#: src/ui/window.blp:286
+msgid "_Extract Tags from Filename"
+msgstr "फाइलनाम से टैग निकालें (_E)"
+
+#: src/ui/window.blp:291
+msgid "_Identify Selected Files"
+msgstr "चयनित फाइलों को पहचानें (_I)"
+
+#: src/ui/window.blp:298
+msgid "_Undo Changes in Selected Files"
+msgstr "चयनित फाइलों में परिवर्तन पूर्ववत करें (_U)"
+
+#: src/ui/window.blp:303
+msgid "_Remove All Tags in Selected Files"
+msgstr "चयनित फाइलों में सभी टैग हटाएँ (_R)"
+
+#: src/ui/window.blp:310
+msgid "_Keyboard Shortcuts"
+msgstr "कीबोर्ड शॉर्टकट (_K)"
+
+#: src/ui/window.blp:315
+msgid "_Preferences"
+msgstr "प्राथमिकताएँ (_P)"
+
+#: src/ui/window.blp:320
+msgid "_About Ear Tag"
+msgstr "Ear Tag के बारे में (_A)"
+
+#: src/ui/nofile.blp:12
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr "कुछ ऑडियो फाइलों के मेटाडेटा को संपादित करने के लिए उन्हें खोलें या खींचें।"
+
+#: src/filemanager.py:150
+msgid "Saved changes to files"
+msgstr "फाइलों में परिवर्तन सहेजे गए"
+
+#: src/filemanager.py:256
+msgid "Opened file is read-only; changes cannot be saved"
+msgstr "खोली गई फाइल केवल-पढ़ने योग्य है; परिवर्तन सहेजे नहीं जा सकते"
+
+#: src/filemanager.py:259
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr "खोली गई कुछ फाइलें केवल-पढ़ने के लिए हैं; परिवर्तन सहेजे नहीं जा सकते"
+
+#: src/backends/file.py:51
+msgid "Length"
+msgstr "लंबाई"
+
+#: src/backends/file.py:52
+msgid "Bitrate"
+msgstr "बिटरेट"
+
+#: src/backends/file.py:54 src/ui/fileview.blp:96
+msgid "Title"
+msgstr "शीर्षक"
+
+#: src/backends/file.py:55 src/ui/fileview.blp:128
+msgid "Artist"
+msgstr "कलाकार"
+
+#: src/backends/file.py:56 src/ui/fileview.blp:211
+msgid "Album"
+msgstr "एल्बम"
+
+#: src/backends/file.py:57 src/ui/fileview.blp:216
+msgid "Album artist"
+msgstr "एल्बम कलाकार"
+
+#: src/backends/file.py:58 src/ui/fileview.blp:175
+msgid "Track number"
+msgstr "ट्रैक संख्या"
+
+#: src/backends/file.py:59 src/ui/fileview.blp:188
+msgid "Total tracks"
+msgstr "कुल ट्रैक"
+
+#: src/backends/file.py:60 src/ui/fileview.blp:221
+msgid "Genre"
+msgstr "शैली"
+
+#: src/backends/file.py:61 src/ui/fileview.blp:226
+msgid "Release date"
+msgstr "रिलीज़ की तारीख"
+
+#: src/backends/file.py:62 src/ui/fileview.blp:232
+msgid "Comment"
+msgstr "टिप्पणी"
+
+#: src/backends/file.py:64
+msgid "(Select a tag)"
+msgstr "(एक टैग चुनें)"
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/backends/file.py:66
+msgid "BPM"
+msgstr "BPM"
+
+#: src/backends/file.py:67
+msgid "Compilation"
+msgstr "संकलन"
+
+#: src/backends/file.py:68
+msgid "Composer"
+msgstr "संगीतकार"
+
+#: src/backends/file.py:69
+msgid "Copyright"
+msgstr "कॉपीराइट"
+
+#: src/backends/file.py:70
+msgid "Encoded by"
+msgstr "इनके द्वारा एन्कोड"
+
+#: src/backends/file.py:71
+msgid "Mood"
+msgstr "मनोदशा"
+
+#. TRANSLATORS: Orchestra conductor
+#: src/backends/file.py:73
+msgid "Conductor"
+msgstr "कंडक्टर"
+
+#: src/backends/file.py:74
+msgid "Arranger"
+msgstr "व्यवस्थाकर्ता"
+
+#: src/backends/file.py:75
+msgid "Disc number"
+msgstr "डिस्क संख्या"
+
+#: src/backends/file.py:76
+msgid "Publisher"
+msgstr "प्रकाशक"
+
+#: src/backends/file.py:78
+msgid "Language"
+msgstr "भाषा"
+
+#: src/backends/file.py:79
+msgid "Disc subtitle"
+msgstr "डिस्क उपशीर्षक"
+
+#: src/backends/file.py:80
+msgid "Website/URL"
+msgstr "वेबसाइट/URL"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:84
+msgid "Album artist (sort)"
+msgstr "एल्बम कलाकार (क्रमबद्ध)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:87
+msgid "Album (sort)"
+msgstr "एल्बम (क्रमबद्ध)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:90
+msgid "Composer (sort)"
+msgstr "संगीतकार (क्रमबद्ध)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:93
+msgid "Artist (sort)"
+msgstr "कलाकार (क्रमबद्ध)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:96
+msgid "Title (sort)"
+msgstr "शीर्षक (क्रमबद्ध)"
+
+#: src/backends/file.py:98
+msgid "MusicBrainz Artist ID"
+msgstr "MusicBrainz कलाकार ID"
+
+#: src/backends/file.py:99
+msgid "MusicBrainz Album ID"
+msgstr "MusicBrainz एल्बम ID"
+
+#: src/backends/file.py:100
+msgid "MusicBrainz Album Artist ID"
+msgstr "MusicBrainz एल्बम कलाकार ID"
+
+#: src/backends/file.py:101
+msgid "MusicBrainz Release Track ID"
+msgstr "MusicBrainz ट्रैक रिलीज ID"
+
+#: src/backends/file.py:102
+msgid "MusicBrainz Recording ID"
+msgstr "MusicBrainz रिकॉर्डिंग ID"
+
+#: src/backends/file.py:103
+msgid "MusicBrainz Release Group ID"
+msgstr "MusicBrainz रिलीज ग्रुप ID"
+
+#: src/fileview.py:196
+msgid "Select Album Cover Image"
+msgstr "एल्बम कवर छवि चुनें"
+
+#: src/fileview.py:247
+msgid "Save Album Cover To…"
+msgstr "एल्बम कवर को यहां सहेजें..."
+
+#. TRANSLATORS: {path} is a placeholder for the path.
+#. **Do not change the text between the curly brackets!**
+#: src/fileview.py:280
+#, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "कवर को {path} में सहेजा गया"
+
+#: src/fileview.py:305
+#, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "फाइल से कवर हटाया गया"
+msgstr[1] "{n} फाइलों से कवर हटाये गये"
+
+#: src/fileview.py:773
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "1 चैनल"
+msgstr[1] "{n} चैनल"
+
+#: src/fileview.py:819
+msgid "(multiple files)"
+msgstr "(एकाधिक फाइलें)"
+
+#: src/ui/fileview.blp:9
+msgid "Loading Files…"
+msgstr "फाइलें लोड हो रही हैं..."
+
+#: src/ui/fileview.blp:17
+msgid "Select a File"
+msgstr "फाइल चुनें"
+
+#: src/ui/fileview.blp:18
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "खोली गई फाइलों की सूची से वे फाइलें चुनें जिन्हें आप संपादित करना चाहते हैं।"
+
+#: src/ui/fileview.blp:54
+msgid "Previous file"
+msgstr "पिछली फाइल"
+
+#: src/ui/fileview.blp:76
+msgid "Next file"
+msgstr "अगली फाइल"
+
+#: src/ui/filenamerow.blp:5
+msgid "Filename"
+msgstr "फाइलनाम"
+
+#: src/ui/albumcoverbutton.blp:73
+msgid "_Choose Image…"
+msgstr "छवि चुनें… (_C)"
+
+#: src/ui/albumcoverbutton.blp:79
+msgid "_Save Image…"
+msgstr "छवि सहेजें… (_S)"
+
+#: src/ui/albumcoverbutton.blp:85
+msgid "_Remove Cover"
+msgstr "कवर हटाएँ (_R)"
+
+#: src/ui/albumcoverbutton.blp:111
+msgid "Front"
+msgstr "सामने"
+
+#: src/ui/albumcoverbutton.blp:116
+msgid "Back"
+msgstr "पीछे"
+
+#: src/tagentry.py:128
+msgid "(multiple values)"
+msgstr "(एकाधिक मान)"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/filelist.py:146
+msgid "(No title)"
+msgstr "(कोई शीर्षक नहीं)"
+
+#: src/ui/filelistitem.blp:40
+msgid "File has invalid values"
+msgstr "फाइल में अमान्य मान हैं"
+
+#: src/ui/filelistitem.blp:47
+msgid "File has unsaved changes"
+msgstr "फाइल में सहेजे न गए परिवर्तन हैं"
+
+#: src/ui/filelistitem.blp:94
+msgid "Remove from list"
+msgstr "सूची से निकालें"
+
+#: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
+#: src/ui/dialogs/removaldiscardwarning.blp:5
+msgid "Save Changes?"
+msgstr "परिवर्तन सहेजें?"
+
+#: src/ui/dialogs/closewarning.blp:6 src/ui/dialogs/discardwarning.blp:6
+#: src/ui/dialogs/removaldiscardwarning.blp:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "यदि आप अपने परिवर्तन सहेजते नहीं हैं, तो वे स्थायी रूप से खो जाएंगे।"
+
+#: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
+#: src/ui/dialogs/removaldiscardwarning.blp:12
+msgid "_Cancel"
+msgstr "रद्द (_C)"
+
+#: src/ui/dialogs/closewarning.blp:13
+#: src/ui/dialogs/removaldiscardwarning.blp:13
+msgid "_Discard and Close"
+msgstr "खारिज और बंद करें (_D)"
+
+#: src/ui/dialogs/closewarning.blp:14
+#: src/ui/dialogs/removaldiscardwarning.blp:14
+msgid "_Save and Close"
+msgstr "सहेजें और बंद करें (_S)"
+
+#: src/ui/dialogs/discardwarning.blp:13
+msgid "_Discard and Open"
+msgstr "खारिज और खोलें (_D)"
+
+#: src/ui/dialogs/discardwarning.blp:14
+msgid "_Save and Open"
+msgstr "सहेजें और खोलें (_S)"
+
+#: src/ui/dialogs/savefailure.blp:5
+msgid "Failed to Save File"
+msgstr "फाइल सहेजने में विफल"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/savefailure.blp:8
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr "फाइल {f} सहेजा नहीं जा सका. अधिक जानकारी के लिए लॉग जांचें"
+
+#: src/ui/dialogs/savefailure.blp:14 src/ui/dialogs/loadingfailure.blp:14
+#: src/ui/dialogs/renamefailure.blp:14
+msgid "_OK"
+msgstr "ठीक है (_O)"
+
+#: src/ui/dialogs/loadingfailure.blp:5
+msgid "Failed to Load File"
+msgstr "फाइल लोड करने में विफल"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/loadingfailure.blp:8
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr "फाइल {f} लोड नहीं हो सका. अधिक जानकारी के लिए लॉग जांचें."
+
+#: src/ui/dialogs/renamefailure.blp:5
+msgid "Failed to Rename File"
+msgstr "फाइल का नाम बदलने में विफल"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/renamefailure.blp:8
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr "फाइल {f} का नाम नहीं बदला जा सका. अधिक जानकारी के लिए लॉग जांचें."
+
+#. TRANSLATORS: Default placeholder string for a missing title
+#. tag, used when renaming files - if the title tag is not
+#. present in the file, this placeholder will be used instead.
+#: src/rename.py:40
+msgid "Untitled"
+msgstr "शीर्षकहीन"
+
+#. TRANSLATORS: Default placeholder string for missing tags,
+#. used when renaming files - if a tag is not present in the
+#. file, this placeholder will be used instead.
+#. {tag_name} is a placeholder for the human-readable tag name.
+#. **Do not change the text between the curly brackets!**
+#: src/rename.py:52
+#, python-brace-format
+msgid "Unknown {tag_name}"
+msgstr "अज्ञात {tag_name}"
+
+#: src/rename.py:290
+msgid "Selected folder does not exist"
+msgstr "चयनित फोल्डर मौजूद नहीं है"
+
+#: src/rename.py:297
+msgid "Selected folder is read-only"
+msgstr "चयनित फोल्डर केवल-पढ़ने के लिए है"
+
+#. TRANSLATORS: {renamed} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/rename.py:388
+#, python-brace-format
+msgid "Renamed 1 file"
+msgid_plural "Renamed {renamed} files"
+msgstr[0] "1 फाइल पुनर्नामित"
+msgstr[1] "पुनर्नामित {renamed} फाइलें"
+
+#: src/ui/rename.blp:5
+msgid "Rename Selected Files"
+msgstr "चयनित फाइलों का नाम बदलें"
+
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+msgid "Cancel"
+msgstr "रद्द"
+
+#: src/ui/rename.blp:24
+msgid "Rename"
+msgstr "नाम बदलें"
+
+#: src/ui/rename.blp:49
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr ""
+"Ear Tag को फाइलों का यथास्थान नाम बदलने के लिए अतिरिक्त अनुमतियों की आवश्यकता है।"
+
+#: src/ui/rename.blp:50
+msgid "Learn More"
+msgstr "और जानें"
+
+#: src/ui/rename.blp:59
+msgid "Failed to rename files. Check the logs for more information."
+msgstr "फाइलों का नाम बदलने में विफल। अधिक जानकारी के लिए लॉग जांचें।"
+
+#: src/ui/rename.blp:88 src/ui/extract.blp:66
+msgid "Preview"
+msgstr "पूर्वावलोकन"
+
+#: src/ui/rename.blp:99 src/ui/extract.blp:85
+msgid "Filename pattern"
+msgstr "फाइलनाम स्वरूप"
+
+#: src/ui/rename.blp:106 src/ui/extract.blp:91
+msgid "Insert tag placeholder"
+msgstr "टैग स्थानधारक सम्मिलित करें"
+
+#: src/ui/rename.blp:116
+msgid "Move to folder"
+msgstr "फोल्डर में ले जाएँ"
+
+#: src/ui/rename.blp:121
+msgid "Select a folder…"
+msgstr "फोल्डर चुनें..."
+
+#: src/ui/rename.blp:133
+msgid "Unselect folder"
+msgstr "फोल्डर अचयनित करें"
+
+#: src/ui/rename.blp:149
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
+msgstr ""
+"उपलब्ध स्थानधारक की सूची के लिए, देखें <a href='https://gitlab.gnome.org/World/"
+"eartag/-/blob/main/src/backends/README.md#available-tags'>उपलब्ध टैग की सूची</"
+"a>।"
+
+#. TRANSLATORS: {extracted} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/extract.py:284
+#, python-brace-format
+msgid "Extracted tags for 1 track"
+msgid_plural "Extracted tags for {extracted} tracks"
+msgstr[0] "1 ट्रैक के लिए निष्कर्षित टैग"
+msgstr[1] "{extracted} ट्रैक्स के लिए निष्कर्षित टैग"
+
+#: src/ui/extract.blp:5
+msgid "Extract Tags from Filename"
+msgstr "फाइल नाम से टैग निष्कर्षित करें"
+
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+msgid "Apply"
+msgstr "लागू"
+
+#: src/ui/extract.blp:101
+msgid "Ignore common suffixes"
+msgstr "सामान्य प्रत्ययों को नजरअंदाज करें"
+
+#: src/ui/extract.blp:102
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded "
+"files. Disable this option if it interferes with your filenames."
+msgstr ""
+"डाउनलोड की गई फाइलों के फाइल नामों में अक्सर पाए जाने वाले ID प्रत्ययों को स्वचालित रूप से "
+"अनदेखा कर देता है। यदि यह विकल्प आपके फाइल नामों में हस्तक्षेप करता है तो इसे अक्षम कर दें।"
+
+#: src/ui/previewselectorbutton.blp:4
+msgid "Select file to preview"
+msgstr "पूर्वावलोकन करने के लिए फाइल चुनें"
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:118
+msgid "Other releases"
+msgstr "अन्य रिलीज़"
+
+#: src/identify.py:517
+msgid "Unidentified Files"
+msgstr "अज्ञात फाइलें"
+
+#. TRANSLATORS: {identified} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:959
+#, python-brace-format
+msgid "Identified 1 track"
+msgid_plural "Identified {identified} tracks"
+msgstr[0] "1 ट्रैक की पहचान की गई"
+msgstr[1] "{identified} ट्रैक की पहचान की गई"
+
+#: src/ui/identify/identify.blp:5
+msgid "Identify Selected Files"
+msgstr "चयनित फाइलों को पहचानें"
+
+#: src/ui/identify/identify.blp:34
+msgid "Identify"
+msgstr "पहचानें"
+
+#: src/ui/identify/identify.blp:71
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"ट्रैक की जानकारी <a href=\"https://musicbrainz.org\">Musicbrainz</a> द्वारा "
+"प्रदान की जाती है। बिना मेटाडेटा वाली फाइलों की पहचान <a href=\"https://acoustid."
+"org\">AcoustID</a> सेवा का उपयोग करके की जाती है।"
+
+#: src/ui/identify/filerow.blp:23
+msgid "File could not be identified"
+msgstr "फाइल की पहचान नहीं हो पाई"
+
+#: src/ui/settings.blp:7
+msgid "File identification"
+msgstr "फाइल पहचान"
+
+#: src/ui/settings.blp:10
+msgid "MusicBrainz confidence treshold"
+msgstr "MusicBrainz आत्मविश्वास सीमा"
+
+#: src/ui/settings.blp:11
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr "MusicBrainz खोज परिणाम के मूल्यांकन के लिए न्यूनतम आत्मविश्वास प्रतिशत आवश्यक है"
+
+#: src/ui/settings.blp:25
+msgid "AcoustID confidence treshold"
+msgstr "AcoustID आत्मविश्वास सीमा"
+
+#: src/ui/settings.blp:26
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr "AcoustID लुकअप परिणाम के मूल्यांकन के लिए न्यूनतम आत्मविश्वास प्रतिशत आवश्यक है"
+
+#: src/ui/settings.blp:40
+msgid "Downloaded cover art size"
+msgstr "डाउनलोड किया गया कवर कला आकार"
+
+#: src/ui/settings.blp:44
+msgid "Do not download covers"
+msgstr "कवर डाउनलोड न करें"
+
+#: src/ui/settings.blp:45
+msgid "250 px"
+msgstr "250 px"
+
+#: src/ui/settings.blp:46
+msgid "500 px"
+msgstr "500 px"
+
+#: src/ui/settings.blp:47
+msgid "1200 px"
+msgstr "1200 px"
+
+#: src/ui/settings.blp:48
+msgid "Maximum size"
+msgstr "अधिकतम आकार"
+
+#: src/ui/shortcuts.blp:11
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "फाइलें"
+
+#: src/ui/shortcuts.blp:15
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "फाइलें खोलें"
+
+#: src/ui/shortcuts.blp:20
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "फोल्डर खोलें"
+
+#: src/ui/shortcuts.blp:25
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "सभी संशोधित फाइलें सहेजें"
+
+#: src/ui/shortcuts.blp:30
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "साइडबार"
+
+#: src/ui/shortcuts.blp:34
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "साइडबार में पिछली फाइल चुनें"
+
+#: src/ui/shortcuts.blp:39
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "साइडबार में अगली फाइल चुनें"
+
+#: src/ui/shortcuts.blp:44
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "साइडबार में सभी फाइलें चुनें"
+
+#: src/ui/shortcuts.blp:49
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "साइडबार से चयनित फाइलें हटाएँ"
+
+#: src/ui/shortcuts.blp:50
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "यदि कोई फाइल मौजूद नहीं है तो विंडो बंद कर देता है।"
+
+#: src/ui/shortcuts.blp:55
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "अन्य"
+
+#: src/ui/shortcuts.blp:59
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "कीबोर्ड शॉर्टकट"
