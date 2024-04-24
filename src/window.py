@@ -311,9 +311,10 @@ class EartagWindow(Adw.ApplicationWindow):
             self.drop_target.reject()
             self.on_drag_unhover()
             return False
+
         for file in files:
             path = file.get_path()
-            if not is_valid_music_file(path):
+            if not os.path.isdir(path) and not is_valid_music_file(path):
                 self.drop_target.reject()
                 self.on_drag_unhover()
 
@@ -330,10 +331,9 @@ class EartagWindow(Adw.ApplicationWindow):
     def on_drag_drop(self, drop_target, value, *args):
         files = value.get_files()
         paths = []
-        for file in files:
-            paths.append(file.get_path())
+
         self.open_mode = EartagFileManager.LOAD_INSERT
-        self.open_files(paths)
+        self.load_files_from_paths([f.get_path() for f in files])
         self.open_mode = EartagFileManager.LOAD_OVERWRITE
         self.on_drag_unhover()
 
@@ -407,21 +407,26 @@ class EartagWindow(Adw.ApplicationWindow):
         if not response:
             return
 
-        paths = []
-        for file in response:
-            _path = file.get_path()
-            if os.path.isdir(_path):
-                for _file in os.listdir(_path):
-                    _fpath = os.path.join(_path, _file)
-                    if os.path.isfile(_fpath) and is_valid_music_file(_fpath):
-                        paths.append(_fpath)
+        return self.load_files_from_paths([f.get_path() for f in response])
+
+    def load_files_from_paths(self, paths):
+        """Loads files from a list of paths: handles both files and folders."""
+        paths_valid = []
+        for path in paths:
+            if os.path.isdir(path):
+                for file in os.listdir(path):
+                    fpath = os.path.join(path, file)
+                    if os.path.isfile(fpath) and is_valid_music_file(fpath):
+                        paths_valid.append(fpath)
             else:
-                paths.append(_path)
-        if not paths:
+                paths_valid.append(path)
+
+        if not paths_valid:
             toast = Adw.Toast.new(_("No supported files found in opened folder"))
             self.toast_overlay.add_toast(toast)
             return
-        return self.open_files(paths)
+
+        return self.open_files(paths_valid)
 
     def toggle_save_button(self, *args):
         if self.file_manager.has_error:
