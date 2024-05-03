@@ -548,10 +548,13 @@ class EartagIdentifyDialog(Adw.Dialog):
 
     @Gtk.Template.Callback()
     def on_cancel(self, *args):
-        if self.identify_task.is_running:
-            self.identify_task.stop()
-        if self.apply_task.is_running:
-            self.apply_task.stop()
+        try:
+            if self.identify_task.is_running:
+                self.identify_task.stop()
+            if self.apply_task.is_running:
+                self.apply_task.stop()
+        except AttributeError:
+            pass
         self.files = None
         self.props.can_close = True
         self.close()
@@ -943,6 +946,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.apply_task.emit_task_done()
 
     def on_apply_done(self, *args):
+        self.props.can_close = True
         self.file_manager.emit("refresh-needed")
         try:
             identified = (
