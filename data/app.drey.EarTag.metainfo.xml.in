@@ -25,6 +25,10 @@
   </requires>
 
   <releases>
+    <release version="0.6.1" date="2024-05-03">
+      <description><p>Updated to use the latest GNOME 46 runtime. From 0.6.0 notes:</p>
+      <p>Improved the functionality of the "Rename Selected Files" option, added an option to extract tags from filenames, refreshed the main UI design</p></description>
+    </release>
     <release version="0.6.0" date="2024-02-22">
       <description><p>Improved the functionality of the "Rename Selected Files" option, added an option to extract tags from filenames, refreshed the main UI design</p></description>
     </release>
