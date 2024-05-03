@@ -270,7 +270,7 @@ class EartagRenameDialog(Adw.Dialog):
     @Gtk.Template.Callback()
     def show_folder_selector(self, *args):
         self.folder_chooser.select_folder(
-            self, None, self.select_folder_from_selector, None
+            self.parent, None, self.select_folder_from_selector, None
         )
 
     def select_folder_from_selector(self, source, result, data):
