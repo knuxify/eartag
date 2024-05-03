@@ -247,7 +247,7 @@ def natural_compare(a: str, b: str) -> int:
     if a == b:
         return 0
 
-    # adapted from https://stackoverflow.com/questions/2545532/python-analog-of-phps-natsort-function-sort-a-list-using-a-natural-order-alg
+    # adapted from https://stackoverflow.com/questions/2545532
     def sort_key(s: str) -> list:
         out = []
         for x in s:

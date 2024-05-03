@@ -170,8 +170,8 @@ def backend_read_empty(file, skip_cover=False):
             assert not file.has_tag(prop)
         except AssertionError:
             raise ValueError(
-                f"example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend."
-            )  # noqa: E501
+                f"example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend."  # noqa: E501
+            )
 
     assert file.get_property("is_modified") is False
     if not skip_cover:

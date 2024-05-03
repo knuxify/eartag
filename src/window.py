@@ -330,7 +330,6 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def on_drag_drop(self, drop_target, value, *args):
         files = value.get_files()
-        paths = []
 
         self.open_mode = EartagFileManager.LOAD_INSERT
         self.load_files_from_paths([f.get_path() for f in files])

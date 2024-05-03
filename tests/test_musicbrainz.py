@@ -113,8 +113,8 @@ def test_musicbrainz_covers():
 
 @pytest.mark.networked_tests
 def test_musicbrainz_file_set(
-    dummy_file,
-):  # noqa: F811; flake8 doesn't understand fixtures
+    dummy_file,  # noqa: F811; flake8 doesn't understand fixtures
+):
     """Tests the MusicBrainz file wrappers."""
 
     # Test with not enough data

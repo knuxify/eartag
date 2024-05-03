@@ -11,8 +11,8 @@ def pytest_addoption(parser):
     parser.addoption(
         "--networked_tests",
         action="store_true",
-        help="Enable MusicBrainz and AcoustID test; not recommended unless you're doing development on them",
-    )  # noqa: E501
+        help="Enable MusicBrainz and AcoustID test; not recommended unless you're doing development on them",  # noqa: E501
+    )
 
 
 def pytest_runtest_setup(item):
