@@ -146,7 +146,9 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
                 error = True
                 continue
 
-            if tag_name == "" or (not self.allow_duplicates and tag_name in present_tags):
+            if tag_name == "" or (
+                not self.allow_duplicates and tag_name in present_tags
+            ):
                 continue
 
             if tag_name not in VALID_TAGS + ("length", "bitrate"):
