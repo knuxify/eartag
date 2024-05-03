@@ -267,6 +267,10 @@ class EartagExtractTagsDialog(Adw.Dialog):
                         except (TypeError, ValueError):
                             pass
                     else:
+                        try:
+                            value = value.strip()
+                        except AttributeError:
+                            pass
                         run_threadsafe(file.set_property, tag, value)
 
             self.extracted += 1
