@@ -92,7 +92,6 @@ def parse_placeholder_string(
     n = 0
     offset = 0
     out = placeholder
-    present_tags = set()
     _positions = []
     for match in re.finditer(r"{.*?}".encode("utf-8"), placeholder):
         try:
@@ -103,13 +102,11 @@ def parse_placeholder_string(
         if "{" in tag_name or "}" in tag_name:
             continue
 
-        if tag_name == "" or tag_name in present_tags:
+        if tag_name == "":
             continue
 
         if tag_name not in VALID_TAGS + ("length", "bitrate"):
             continue
-
-        present_tags.add(tag_name)
 
         formatted_value = get_formatted_tag(file, tag_name).encode("utf-8")
         out = out.replace(("{" + tag_name + "}").encode("utf-8"), formatted_value, 1)

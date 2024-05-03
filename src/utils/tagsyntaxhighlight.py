@@ -146,13 +146,14 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
                 error = True
                 continue
 
-            if tag_name == "" or tag_name in present_tags:
+            if tag_name == "" or (not self.allow_duplicates and tag_name in present_tags):
                 continue
 
             if tag_name not in VALID_TAGS + ("length", "bitrate"):
                 continue
 
-            present_tags.add(tag_name)
+            if not self.allow_duplicates:
+                present_tags.add(tag_name)
 
             # Add bracket colors
             for position in (match.span(0)[0], match.span(0)[1] - 1):
