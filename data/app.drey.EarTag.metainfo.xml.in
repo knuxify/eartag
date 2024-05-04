@@ -8,6 +8,11 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
 
+  <developer_name translatable="no">knuxify</developer_name>
+  <developer id="io.github.knuxify">
+    <name translatable="no">knuxify</name>
+  </developer>
+
   <launchable type="desktop-id">@APP_ID@.desktop</launchable>
 
   <translation type="gettext">app.drey.EarTag</translation>
