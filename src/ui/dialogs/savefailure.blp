@@ -1,16 +1,16 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagSaveFailureDialog : Adw.AlertDialog {
-	heading: _("Failed to Save File");
-	// TRANSLATORS: {f} is a placeholder for the filename.
-	// **Do not change the letter between the curly brackets!**
-	body: _("Could not save file {f}. Check the logs for more information.");
-	close-response: "close";
-	default-response: "close";
-	response => $handle_response();
+template $EartagSaveFailureDialog: Adw.AlertDialog {
+  heading: _("Failed to Save File");
+  // TRANSLATORS: {f} is a placeholder for the filename.
+  // **Do not change the letter between the curly brackets!**
+  body: _("Could not save file {f}. Check the logs for more information.");
+  close-response: "close";
+  default-response: "close";
+  response => $handle_response();
 
-	responses [
-		close: _("_OK"),
-	]
+  responses [
+    close: _("_OK"),
+  ]
 }

@@ -1,6 +1,6 @@
 using Gtk 4.0;
 
-template $EartagFileListItem : Box {
+template $EartagFileListItem: Box {
   hexpand: true;
   spacing: 12;
 
@@ -78,11 +78,9 @@ template $EartagFileListItem : Box {
     Stack acoustid_info_stack {
       visible: false;
 
-      Label acoustid_info_label {
-      }
+      Label acoustid_info_label {}
 
-      Spinner acoustid_loading_icon {
-      }
+      Spinner acoustid_loading_icon {}
     }
 
     Button remove_button {

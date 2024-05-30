@@ -1,14 +1,14 @@
 using Gtk 4.0;
 
-template $EartagPreviewSelectorButton : MenuButton {
+template $EartagPreviewSelectorButton: MenuButton {
   tooltip-text: _("Select file to preview");
   valign: center;
 
   styles [
     "flat",
   ]
-  popover:
-  Popover popover {
+
+  popover: Popover popover {
     autohide: true;
 
     styles [
@@ -35,7 +35,5 @@ template $EartagPreviewSelectorButton : MenuButton {
         }
       }
     }
-  }
-
-  ;
+  };
 }

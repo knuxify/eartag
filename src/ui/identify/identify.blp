@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagIdentifyDialog : Adw.Dialog {
+template $EartagIdentifyDialog: Adw.Dialog {
   title: _("Identify Selected Files");
   content-width: 700;
   content-height: 550;
@@ -10,8 +10,8 @@ template $EartagIdentifyDialog : Adw.Dialog {
   styles [
     "identify-dialog",
   ]
-  child:
-  WindowHandle {
+
+  child: WindowHandle {
     hexpand: true;
     vexpand: true;
 
@@ -86,7 +86,5 @@ template $EartagIdentifyDialog : Adw.Dialog {
         }
       }
     }
-  }
-
-  ;
+  };
 }

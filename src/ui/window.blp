@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagWindow : Adw.ApplicationWindow {
+template $EartagWindow: Adw.ApplicationWindow {
   default-width: 900;
   default-height: 700;
   width-request: 360;
@@ -9,6 +9,7 @@ template $EartagWindow : Adw.ApplicationWindow {
 
   Adw.Breakpoint {
     condition ("max-width: 620sp")
+
     setters {
       split_view.collapsed: true;
     }
@@ -71,10 +72,7 @@ template $EartagWindow : Adw.ApplicationWindow {
           orientation: vertical;
 
           Adw.HeaderBar empty_headerbar {
-            title-widget:             Label {
-            }
-
-            ;
+            title-widget: Label {};
 
             styles [
               "flat",
@@ -87,22 +85,18 @@ template $EartagWindow : Adw.ApplicationWindow {
             }
           }
 
-          $EartagNoFile no_file_widget {
-          }
+          $EartagNoFile no_file_widget {}
         }
 
         Adw.OverlaySplitView split_view {
-          sidebar:           Adw.ToolbarView sidebar_view {
+          sidebar: Adw.ToolbarView sidebar_view {
             width-request: 300;
 
             [top]
             Adw.HeaderBar sidebar_headerbar {
               show-end-title-buttons: false;
-              title-widget:
-              Label {
-              }
 
-              ;
+              title-widget: Label {};
 
               [start]
               Button save_button {
@@ -185,8 +179,7 @@ template $EartagWindow : Adw.ApplicationWindow {
                 }
               }
 
-              Box sidebar_no_files {
-              }
+              Box sidebar_no_files {}
 
               Adw.StatusPage no_results {
                 icon-name: "system-search-symbolic";
@@ -222,11 +215,9 @@ template $EartagWindow : Adw.ApplicationWindow {
                 clicked => $remove_selected();
               }
             }
-          }
+          };
 
-          ;
-          content:
-          Adw.ToolbarView container {
+          content: Adw.ToolbarView container {
             [top]
             Adw.HeaderBar headerbar {
               show-start-title-buttons: false;
@@ -245,11 +236,8 @@ template $EartagWindow : Adw.ApplicationWindow {
               }
             }
 
-            $EartagFileView file_view {
-            }
-          }
-
-          ;
+            $EartagFileView file_view {}
+          };
         }
       }
     }

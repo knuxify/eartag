@@ -1,10 +1,10 @@
 using Gtk 4.0;
 
-template $EartagTagSelectorButton : MenuButton {
+template $EartagTagSelectorButton: MenuButton {
   icon-name: "list-add-symbolic";
   valign: center;
-  popover:
-  Popover tag_list_popover {
+
+  popover: Popover tag_list_popover {
     autohide: true;
 
     styles [
@@ -32,7 +32,5 @@ template $EartagTagSelectorButton : MenuButton {
         }
       }
     }
-  }
-
-  ;
+  };
 }

@@ -1,12 +1,12 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagRenameDialog : Adw.Dialog {
+template $EartagRenameDialog: Adw.Dialog {
   title: _("Rename Selected Files");
   content-width: 600;
   content-height: 300;
-  child:
-  Adw.ToolbarView {
+
+  child: Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
       show-end-title-buttons: false;
@@ -30,8 +30,8 @@ template $EartagRenameDialog : Adw.Dialog {
         ]
       }
     }
-    content:
-    Adw.ToastOverlay toast_overlay {
+
+    content: Adw.ToastOverlay toast_overlay {
       Overlay {
         [overlay]
         ProgressBar rename_progress {
@@ -89,8 +89,7 @@ template $EartagRenameDialog : Adw.Dialog {
                     editable: false;
 
                     [suffix]
-                    $EartagPreviewSelectorButton preview_selector_button {
-                    }
+                    $EartagPreviewSelectorButton preview_selector_button {}
                   }
                 }
 
@@ -157,10 +156,6 @@ template $EartagRenameDialog : Adw.Dialog {
           }
         }
       }
-    }
-
-    ;
-  }
-
-  ;
+    };
+  };
 }

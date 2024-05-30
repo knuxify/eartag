@@ -1,12 +1,12 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagExtractTagsDialog : Adw.Dialog {
+template $EartagExtractTagsDialog: Adw.Dialog {
   title: _("Extract Tags from Filename");
   content-width: 600;
   content-height: 300;
-  child:
-  Adw.ToolbarView {
+
+  child: Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
       show-end-title-buttons: false;
@@ -67,8 +67,7 @@ template $EartagExtractTagsDialog : Adw.Dialog {
                 editable: false;
 
                 [suffix]
-                $EartagPreviewSelectorButton preview_selector_button {
-                }
+                $EartagPreviewSelectorButton preview_selector_button {}
               }
             }
 
@@ -106,7 +105,5 @@ template $EartagExtractTagsDialog : Adw.Dialog {
         }
       }
     }
-  }
-
-  ;
+  };
 }

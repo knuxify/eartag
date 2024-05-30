@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagAlbumCoverButton : Adw.Bin {
+template $EartagAlbumCoverButton: Adw.Bin {
   width-request: 196;
   height-request: 196;
   halign: center;
@@ -57,12 +57,10 @@ template $EartagAlbumCoverButton : Adw.Bin {
 
     $EartagPopoverButton button {
       popover: "menu_popover";
-      child:
-      $EartagAlbumCoverImage cover_image {
-        pixel-size: "196";
-      }
 
-      ;
+      child: $EartagAlbumCoverImage cover_image {
+        pixel-size: "196";
+      };
     }
   }
 }

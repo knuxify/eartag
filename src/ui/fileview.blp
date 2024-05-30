@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template $EartagFileView : Stack {
+template $EartagFileView: Stack {
   transition-type: crossfade;
 
   Adw.StatusPage loading {
@@ -36,8 +36,7 @@ template $EartagFileView : Stack {
           margin-end: 12;
 
           Overlay cover_overlay {
-            $EartagAlbumCoverButton album_cover {
-            }
+            $EartagAlbumCoverButton album_cover {}
 
             [overlay]
             Revealer previous_file_button_revealer {
@@ -243,12 +242,10 @@ template $EartagFileView : Stack {
                 "boxed-list",
               ]
 
-              $EartagFilenameRow filename_entry {
-              }
+              $EartagFilenameRow filename_entry {}
             }
 
-            $EartagMoreTagsGroup more_tags_group {
-            }
+            $EartagMoreTagsGroup more_tags_group {}
           }
         }
       }
