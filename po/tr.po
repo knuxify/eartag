@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-03-30 17:35+0000\n"
-"PO-Revision-Date: 2024-03-31 03:55+0300\n"
+"POT-Creation-Date: 2024-05-03 14:37+0000\n"
+"PO-Revision-Date: 2024-05-09 10:43+0300\n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -18,17 +18,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.3\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:140 data/app.drey.EarTag.desktop.in:3
+#: src/main.py:138 data/app.drey.EarTag.desktop.in:3
 #: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:244
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 # Keep it
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:150 src/main.py:152
+#: src/main.py:148 src/main.py:150
 msgid "translator-credits"
 msgstr ""
 "Sabri Ünal <yakushabb@gmail.com>\n"
@@ -45,9 +45,10 @@ msgstr "Ses dosyası etiketlerini düzenle"
 
 #: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
-msgstr "müzik;ses;etiket;etiketleme;etiketleyici;"
+msgstr ""
+"music;audio;tag;tagging;tagger;müzik;ses;etiket;etiketleme;etiketleyici;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:76
+#: data/app.drey.EarTag.metainfo.xml.in:80
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -60,23 +61,23 @@ msgstr ""
 "kullanıcının bir müzik kütüphanesi klasörü kurmasını gerektirmez. "
 "Yetenekleri şunlardır:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:78
+#: data/app.drey.EarTag.metainfo.xml.in:82
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "MP3, WAV, M4A, FLAC, OGG ve WMA dosyalarının etiketlerini düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:79
+#: data/app.drey.EarTag.metainfo.xml.in:83
 msgid "Modify metadata of multiple files at once"
 msgstr "Birden fazla dosyanın üst verilerini aynı anda düzenleme"
 
-#: data/app.drey.EarTag.metainfo.xml.in:80
+#: data/app.drey.EarTag.metainfo.xml.in:84
 msgid "Rename files using information from present tags"
 msgstr "Etiketlerdeki bilgileri kullanarak dosyaları yeniden adlandırma"
 
-#: data/app.drey.EarTag.metainfo.xml.in:81
+#: data/app.drey.EarTag.metainfo.xml.in:85
 msgid "Identify files using AcoustID"
 msgstr "AcoustID kullanarak dosyaları tanımla"
 
-#: data/app.drey.EarTag.metainfo.xml.in:83
+#: data/app.drey.EarTag.metainfo.xml.in:87
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Ağ erişimi yalnızca \"Seçilen Dosyaları Tanımla\" seçeneği için kullanılır."
@@ -99,53 +100,53 @@ msgstr "Klasör Aç"
 msgid "Open File"
 msgstr "Dosya Aç"
 
-#: src/window.py:421
+#: src/window.py:425
 msgid "No supported files found in opened folder"
 msgstr "Açılan klasörde desteklenen dosya bulunamadı"
 
-#: src/window.py:429
+#: src/window.py:434
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Açılan dosyalardan bazılarının geçersiz değerleri var; değişiklikler "
 "kaydedilemez"
 
-#: src/window.py:561
+#: src/window.py:566
 msgid "No files selected"
 msgstr "Hiçbir dosya seçilmedi"
 
-#: src/window.py:567
+#: src/window.py:572
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} dosya seçildi"
 
-#: src/window.py:648
+#: src/window.py:653
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "{n} dosyadaki değişiklikleri geri al"
 
-#: src/window.py:653
+#: src/window.py:658
 msgid "Redo"
 msgstr "Yinele"
 
-#: src/window.py:684
+#: src/window.py:689
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "{n} dosyadaki değişiklikleri yine yap"
 
-#: src/window.py:732
+#: src/window.py:737
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "{n}dosyadan etiketler kaldırıldı"
 
-#: src/window.py:737 src/fileview.py:308
+#: src/window.py:742 src/fileview.py:308
 msgid "Undo"
 msgstr "Geri Al"
 
-#: src/window.py:767
+#: src/window.py:772
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -597,18 +598,18 @@ msgstr "Başlıksız"
 msgid "Unknown {tag_name}"
 msgstr "{tag_name} bilinmiyor"
 
-#: src/rename.py:290
+#: src/rename.py:287
 msgid "Selected folder does not exist"
 msgstr "Seçilen klasör yok"
 
-#: src/rename.py:297
+#: src/rename.py:294
 msgid "Selected folder is read-only"
 msgstr "Seçilen klasör salt okunur"
 
 #. TRANSLATORS: {renamed} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/rename.py:388
+#: src/rename.py:385
 #, python-brace-format
 msgid "Renamed 1 file"
 msgid_plural "Renamed {renamed} files"
@@ -678,7 +679,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:284
+#: src/extract.py:288
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -722,7 +723,7 @@ msgstr "Tanımlanmamış Dosyalar"
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:959
+#: src/identify.py:963
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
