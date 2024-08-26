@@ -9,8 +9,9 @@ from . import APP_GRESOURCE_PATH
 class EartagCloseWarningDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagCloseWarningDialog"
 
-    def __init__(self, file_manager):
+    def __init__(self, window, file_manager):
         super().__init__()
+        self.window = window
         self.file_manager = file_manager
 
     @Gtk.Template.Callback()

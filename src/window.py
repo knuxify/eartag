@@ -468,7 +468,9 @@ class EartagWindow(Adw.ApplicationWindow):
             and list(self.file_manager.files)
             and self.file_manager._is_modified
         ):
-            self.close_request_dialog = EartagCloseWarningDialog(self.file_manager)
+            self.close_request_dialog = EartagCloseWarningDialog(
+                self, self.file_manager
+            )
             self.close_request_dialog.present(self)
             return True
 
