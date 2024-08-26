@@ -130,23 +130,23 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             self.mg_file.clear_pictures()
             for _pic in pic_list:
                 self.mg_file.add_picture(_pic)
-        else:
-            pic_list = list(self.mg_file.get("metadata_block_picture", []))
-            for b64_data in pic_list.copy():
-                try:
-                    data = base64.b64decode(b64_data)
-                except (TypeError, ValueError):
-                    continue
 
-                try:
-                    cover_picture = Picture(data)
-                except FLACError:
-                    continue
+        pic_list = list(self.mg_file.get("metadata_block_picture", []))
+        for b64_data in pic_list.copy():
+            try:
+                data = base64.b64decode(b64_data)
+            except (TypeError, ValueError):
+                continue
 
-                if cover_picture.type in pictypes:
-                    pic_list.remove(b64_data)
+            try:
+                cover_picture = Picture(data)
+            except FLACError:
+                continue
 
-            self.mg_file["metadata_block_picture"] = pic_list
+            if cover_picture.type in pictypes:
+                pic_list.remove(b64_data)
+
+        self.mg_file["metadata_block_picture"] = pic_list
 
         if not clear_only:
             self._cleanup_cover(cover_type)
@@ -202,16 +202,16 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
         if isinstance(self.mg_file, FLAC):
             self.mg_file.add_picture(picture)
+
+        picture_data = picture.write()
+        encoded_data = base64.b64encode(picture_data)
+        vcomment_value = encoded_data.decode("ascii")
+        if "metadata_block_picture" in self.mg_file:
+            self.mg_file["metadata_block_picture"] = [
+                vcomment_value
+            ] + self.mg_file["metadata_block_picture"]
         else:
-            picture_data = picture.write()
-            encoded_data = base64.b64encode(picture_data)
-            vcomment_value = encoded_data.decode("ascii")
-            if "metadata_block_picture" in self.mg_file:
-                self.mg_file["metadata_block_picture"] = [
-                    vcomment_value
-                ] + self.mg_file["metadata_block_picture"]
-            else:
-                self.mg_file["metadata_block_picture"] = [vcomment_value]
+            self.mg_file["metadata_block_picture"] = [vcomment_value]
 
         self.mark_as_modified(prop)
 
