@@ -207,9 +207,9 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         encoded_data = base64.b64encode(picture_data)
         vcomment_value = encoded_data.decode("ascii")
         if "metadata_block_picture" in self.mg_file:
-            self.mg_file["metadata_block_picture"] = [
-                vcomment_value
-            ] + self.mg_file["metadata_block_picture"]
+            self.mg_file["metadata_block_picture"] = [vcomment_value] + self.mg_file[
+                "metadata_block_picture"
+            ]
         else:
             self.mg_file["metadata_block_picture"] = [vcomment_value]
 
