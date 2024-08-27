@@ -1,0 +1,855 @@
+# Finnish translation for eartag.
+# Copyright (C) 2024 eartag's COPYRIGHT HOLDER
+# This file is distributed under the same license as the eartag package.
+# Jiri Grönroos <jiri.gronroos@iki.fi>,  2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: eartag main\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
+"POT-Creation-Date: 2024-08-26 14:04+0000\n"
+"PO-Revision-Date: 2024-08-27 19:17+0300\n"
+"Last-Translator: \n"
+"Language-Team: Finnish <Finnish>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.4\n"
+
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
+#: src/main.py:138 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:235
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:148 src/main.py:150
+msgid "translator-credits"
+msgstr "Jiri Grönroos"
+
+#: data/app.drey.EarTag.desktop.in:4
+msgid "Tag Editor"
+msgstr "Tunnistemuokkain"
+
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:5 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr "Muokkaa äänitiedostojen tunnisteita"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "music;audio;tag;tagging;tagger;tagi;tunniste;musiikki;ääni;"
+
+#: data/app.drey.EarTag.metainfo.xml.in:85
+msgid ""
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder. It can:"
+msgstr ""
+"Ear Tag on yksinkertainen äänitiedostojen tunnisteiden (tagien) muokkain. Se "
+"on pääasiallisesti suunnattu nopeita muokkauksia varten tai albumien useiden "
+"tiedostojen massamuokkaukseen. Toisin kuin monet muut sovellukset, Ear Tag "
+"ei vaadi, että käyttäjä asettaa musiikkikirjastokansion. Ominaisuudet:"
+
+#: data/app.drey.EarTag.metainfo.xml.in:87
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr "Muokkaa MP3-, WAV-, M4A-, FLAC-, OGG- ja WMA-tiedostojen tunnisteita"
+
+#: data/app.drey.EarTag.metainfo.xml.in:88
+msgid "Modify metadata of multiple files at once"
+msgstr "Muokkaa useiden tiedostojen metatietoja samanaikaisesti"
+
+#: data/app.drey.EarTag.metainfo.xml.in:89
+msgid "Rename files using information from present tags"
+msgstr ""
+"Nimeä tiedostot uudelleen käyttäen olemassa olevien tunnisteiden tietoja"
+
+#: data/app.drey.EarTag.metainfo.xml.in:90
+msgid "Identify files using AcoustID"
+msgstr "Tunnista tiedostot käyttäen AcoustID:tä"
+
+#: data/app.drey.EarTag.metainfo.xml.in:92
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr ""
+"Pääsyä verkkoon käytetään vain \"Tunnista valitut tiedostot\"-asetukselle."
+
+#: src/window.py:116
+msgid "All supported audio files"
+msgstr "Kaikki tuetut äänitiedostot"
+
+#. TRANSLATORS: Placeholder for file path when multiple files are selected.
+#. Shows up in the titlebar of the application.
+#: src/window.py:258 src/fileview.py:758
+msgid "(Multiple files selected)"
+msgstr "(Useita tiedostoja valittu)"
+
+#: src/window.py:350 src/ui/nofile.blp:35
+msgid "Open Folder"
+msgstr "Avaa kansio"
+
+#: src/window.py:353 src/ui/nofile.blp:24
+msgid "Open File"
+msgstr "Avaa tiedosto"
+
+#: src/window.py:424
+msgid "No supported files found in opened folder"
+msgstr "Avatusta kansiosta ei löytynyt tuettuja tiedostoja"
+
+#: src/window.py:433
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr ""
+"Joissain avatuissa tiedostoissa on virheellisiä arvoja; ei voi tallentaa"
+
+#: src/window.py:567
+msgid "No files selected"
+msgstr "Tiedostoja ei ole valittu"
+
+#: src/window.py:573
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "1 tiedosto valittu"
+msgstr[1] "{n} tiedostoa valittu"
+
+#: src/window.py:654
+#, python-brace-format
+msgid "Undid changes in 1 file"
+msgid_plural "Undid changes in {n} files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/window.py:659
+msgid "Redo"
+msgstr "Tee uudelleen"
+
+#: src/window.py:690
+#, python-brace-format
+msgid "Redid changes in 1 file"
+msgid_plural "Redid changes in {n} files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/window.py:738
+#, python-brace-format
+msgid "Removed tags from 1 file"
+msgid_plural "Removed tags from {n} files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/window.py:743 src/fileview.py:308
+msgid "Undo"
+msgstr "Kumoa"
+
+#: src/window.py:773
+#, python-brace-format
+msgid "Undid tag removal in 1 file"
+msgid_plural "Undid tag removal in {n} files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/ui/window.blp:56
+msgid "Drop a file to add it to the opened file list"
+msgstr "Pudota tiedosto lisätäksesi sen avattujen tiedostojen luetteloon"
+
+#: src/ui/window.blp:104
+msgid "Save"
+msgstr "Tallenna"
+
+#: src/ui/window.blp:116
+msgid "Close file list"
+msgstr "Sulje tiedostolista"
+
+#: src/ui/window.blp:132
+msgid "Add file"
+msgstr "Lisää tiedosto"
+
+#: src/ui/window.blp:138
+msgid "Select multiple files"
+msgstr "Valitse useita tiedostoja"
+
+#: src/ui/window.blp:144
+msgid "Search opened files"
+msgstr ""
+
+#: src/ui/window.blp:186
+msgid "No Results Found"
+msgstr "Tuloksia ei löytynyt"
+
+#: src/ui/window.blp:187
+msgid "Try a different search query."
+msgstr "Kokeile eri hakuehtoja."
+
+#: src/ui/window.blp:200
+msgid "Select all files"
+msgstr "Valitse kaikki tiedostot"
+
+#: src/ui/window.blp:214
+msgid "Remove selected files"
+msgstr "Poista valitut tiedostot"
+
+#: src/ui/window.blp:228
+msgid "Show file list"
+msgstr "Näytä tiedostolista"
+
+#: src/ui/window.blp:250
+msgid "_Open File"
+msgstr "_Avaa tiedosto"
+
+#: src/ui/window.blp:255
+msgid "O_pen Folder"
+msgstr "A_vaa kansio"
+
+#: src/ui/window.blp:262
+msgid "_Sort File List"
+msgstr "_Järjestä tiedostoluettelo"
+
+#: src/ui/window.blp:269
+msgid "_Rename Selected Files"
+msgstr "_Nimeä valitut tiedostot uudelleen"
+
+#: src/ui/window.blp:274
+msgid "_Extract Tags from Filename"
+msgstr "_Pura tunnisteet tiedostonimestä"
+
+#: src/ui/window.blp:279
+msgid "_Identify Selected Files"
+msgstr "_Tunnista valitut tiedostot"
+
+#: src/ui/window.blp:286
+msgid "_Undo Changes in Selected Files"
+msgstr "_Kumoa muutokset valittuihin tiedostoihin"
+
+#: src/ui/window.blp:291
+msgid "_Remove All Tags in Selected Files"
+msgstr "_Poista kaikki tunnisteet valituista tiedostoista"
+
+#: src/ui/window.blp:298
+msgid "_Keyboard Shortcuts"
+msgstr "_Pikanäppäimet"
+
+#: src/ui/window.blp:303
+msgid "_Preferences"
+msgstr "_Asetukset"
+
+#: src/ui/window.blp:308
+msgid "_About Ear Tag"
+msgstr "_Tietoja - Ear Tag"
+
+#: src/ui/nofile.blp:12
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr ""
+"Avaa tai tai vedä tähän joitain äänitiedostoja muokataksesi niiden "
+"metatietoja."
+
+#: src/filemanager.py:150
+msgid "Saved changes to files"
+msgstr "Tallenna muutokset tiedostoihin"
+
+#: src/filemanager.py:256
+msgid "Opened file is read-only; changes cannot be saved"
+msgstr "Avattu tiedosto on \"vain luku\"-muodossa; muutoksia ei voi tallentaa"
+
+#: src/filemanager.py:259
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr ""
+"Jotkin avatut tiedostot ovat \"vain luku\"-muodossa; muutoksia ei voi "
+"tallentaa"
+
+#: src/backends/file.py:51
+msgid "Length"
+msgstr "Kesto"
+
+#: src/backends/file.py:52
+msgid "Bitrate"
+msgstr "Bittinopeus"
+
+#: src/backends/file.py:54 src/ui/fileview.blp:95
+msgid "Title"
+msgstr "Nimi"
+
+#: src/backends/file.py:55 src/ui/fileview.blp:127
+msgid "Artist"
+msgstr "Esittäjä"
+
+#: src/backends/file.py:56 src/ui/fileview.blp:210
+msgid "Album"
+msgstr "Albumi"
+
+#: src/backends/file.py:57 src/ui/fileview.blp:215
+msgid "Album artist"
+msgstr "Albumin esittäjä"
+
+#: src/backends/file.py:58 src/ui/fileview.blp:174
+msgid "Track number"
+msgstr "Kappalenumero"
+
+#: src/backends/file.py:59 src/ui/fileview.blp:187
+msgid "Total tracks"
+msgstr "Kappaleita yhteensä"
+
+#: src/backends/file.py:60 src/ui/fileview.blp:220
+msgid "Genre"
+msgstr "Tyyli"
+
+#: src/backends/file.py:61 src/ui/fileview.blp:225
+msgid "Release date"
+msgstr "Julkaisupäivä"
+
+#: src/backends/file.py:62 src/ui/fileview.blp:231
+msgid "Comment"
+msgstr "Kommentti"
+
+#: src/backends/file.py:64
+msgid "(Select a tag)"
+msgstr "(Valitse tunniste)"
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/backends/file.py:66
+msgid "BPM"
+msgstr "BPM"
+
+#: src/backends/file.py:67
+msgid "Compilation"
+msgstr "Kokoelma"
+
+#: src/backends/file.py:68
+msgid "Composer"
+msgstr "Säveltäjä"
+
+#: src/backends/file.py:69
+msgid "Copyright"
+msgstr "Tekijänoikeus"
+
+#: src/backends/file.py:70
+msgid "Encoded by"
+msgstr ""
+
+#: src/backends/file.py:71
+msgid "Mood"
+msgstr ""
+
+#. TRANSLATORS: Orchestra conductor
+#: src/backends/file.py:73
+msgid "Conductor"
+msgstr "Kapellimestari"
+
+#: src/backends/file.py:74
+msgid "Arranger"
+msgstr "Järjestäjä"
+
+#: src/backends/file.py:75
+msgid "Disc number"
+msgstr "Levynumero"
+
+#: src/backends/file.py:76
+msgid "Publisher"
+msgstr "Julkaisija"
+
+#: src/backends/file.py:78
+msgid "Language"
+msgstr "Kieli"
+
+#: src/backends/file.py:79
+msgid "Disc subtitle"
+msgstr ""
+
+#: src/backends/file.py:80
+msgid "Website/URL"
+msgstr "Verkkosivu/URL-osoite"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:84
+msgid "Album artist (sort)"
+msgstr ""
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:87
+msgid "Album (sort)"
+msgstr ""
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:90
+msgid "Composer (sort)"
+msgstr ""
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:93
+msgid "Artist (sort)"
+msgstr ""
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:96
+msgid "Title (sort)"
+msgstr ""
+
+#: src/backends/file.py:98
+msgid "MusicBrainz Artist ID"
+msgstr ""
+
+#: src/backends/file.py:99
+msgid "MusicBrainz Album ID"
+msgstr ""
+
+#: src/backends/file.py:100
+msgid "MusicBrainz Album Artist ID"
+msgstr ""
+
+#: src/backends/file.py:101
+msgid "MusicBrainz Release Track ID"
+msgstr ""
+
+#: src/backends/file.py:102
+msgid "MusicBrainz Recording ID"
+msgstr ""
+
+#: src/backends/file.py:103
+msgid "MusicBrainz Release Group ID"
+msgstr ""
+
+#: src/fileview.py:196
+msgid "Select Album Cover Image"
+msgstr "Valitse albumin kansikuva"
+
+#: src/fileview.py:247
+msgid "Save Album Cover To…"
+msgstr "Tallenna albumin kansi…"
+
+#. TRANSLATORS: {path} is a placeholder for the path.
+#. **Do not change the text between the curly brackets!**
+#: src/fileview.py:280
+#, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "Kansi tallennettu sijaintiin {path}"
+
+#: src/fileview.py:305
+#, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "Kansi poistettu tiedostosta"
+msgstr[1] "Kansi poistettu {n} tiedostosta"
+
+#: src/fileview.py:773
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "1 kanava"
+msgstr[1] "{n} kanavaa"
+
+#: src/fileview.py:819
+msgid "(multiple files)"
+msgstr "(useita tiedostoja)"
+
+#: src/ui/fileview.blp:9
+msgid "Loading Files…"
+msgstr "Ladataan tiedostoja…"
+
+#: src/ui/fileview.blp:17
+msgid "Select a File"
+msgstr "Valitse tiedosto"
+
+#: src/ui/fileview.blp:18
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
+"Valitse avattujen tiedostojen luettelosta ne tiedostot, joita haluat muokata."
+
+#: src/ui/fileview.blp:53
+msgid "Previous file"
+msgstr "Edellinen tiedosto"
+
+#: src/ui/fileview.blp:75
+msgid "Next file"
+msgstr "Seuraava tiedosto"
+
+#: src/ui/filenamerow.blp:5
+msgid "Filename"
+msgstr "Tiedostonimi"
+
+#: src/ui/albumcoverbutton.blp:71
+msgid "_Choose Image…"
+msgstr "_Valitse kuva…"
+
+#: src/ui/albumcoverbutton.blp:77
+msgid "_Save Image…"
+msgstr "Tallenna _kuva…"
+
+#: src/ui/albumcoverbutton.blp:83
+msgid "_Remove Cover"
+msgstr "_Poista kansi"
+
+#: src/ui/albumcoverbutton.blp:109
+msgid "Front"
+msgstr "Etu"
+
+#: src/ui/albumcoverbutton.blp:114
+msgid "Back"
+msgstr "Taka"
+
+#: src/tagentry.py:128
+msgid "(multiple values)"
+msgstr "(useita arvoja)"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/filelist.py:147
+msgid "(No title)"
+msgstr ""
+
+#: src/ui/filelistitem.blp:40
+msgid "File has invalid values"
+msgstr "Tiedostossa on virheelliset arvot"
+
+#: src/ui/filelistitem.blp:47
+msgid "File has unsaved changes"
+msgstr "Tiedostossa on tallentamattomia muutoksia"
+
+#: src/ui/filelistitem.blp:92
+msgid "Remove from list"
+msgstr "Poista luettelosta"
+
+#: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
+#: src/ui/dialogs/removaldiscardwarning.blp:5
+msgid "Save Changes?"
+msgstr "Tallennetaanko muutokset?"
+
+#: src/ui/dialogs/closewarning.blp:6 src/ui/dialogs/discardwarning.blp:6
+#: src/ui/dialogs/removaldiscardwarning.blp:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "Jos et tallenna muutokset, ne katoavat lopullisesti."
+
+#: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
+#: src/ui/dialogs/removaldiscardwarning.blp:12
+msgid "_Cancel"
+msgstr "_Peru"
+
+#: src/ui/dialogs/closewarning.blp:13
+#: src/ui/dialogs/removaldiscardwarning.blp:13
+msgid "_Discard and Close"
+msgstr "_Hylkää ja sulje"
+
+#: src/ui/dialogs/closewarning.blp:14
+#: src/ui/dialogs/removaldiscardwarning.blp:14
+msgid "_Save and Close"
+msgstr "_Tallenna ja sulje"
+
+#: src/ui/dialogs/discardwarning.blp:13
+msgid "_Discard and Open"
+msgstr "_Hylkää ja avaa"
+
+#: src/ui/dialogs/discardwarning.blp:14
+msgid "_Save and Open"
+msgstr "_Tallenna ja avaa"
+
+#: src/ui/dialogs/savefailure.blp:5
+msgid "Failed to Save File"
+msgstr "Tiedoston tallennus epäonnistui"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/savefailure.blp:8
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr "Tiedostoa {f} ei voitu tallentaa. Tarkista lisätiedot lokista."
+
+#: src/ui/dialogs/savefailure.blp:14 src/ui/dialogs/loadingfailure.blp:14
+#: src/ui/dialogs/renamefailure.blp:14
+msgid "_OK"
+msgstr "_OK"
+
+#: src/ui/dialogs/loadingfailure.blp:5
+msgid "Failed to Load File"
+msgstr "Tiedoston lataaminen epäonnistui"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/loadingfailure.blp:8
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr "Tiedostoa {f} ei voitu ladata. Tarkista lisätiedot lokista."
+
+#: src/ui/dialogs/renamefailure.blp:5
+msgid "Failed to Rename File"
+msgstr "Tiedoston nimeäminen uudelleen epäonnistui"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/renamefailure.blp:8
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr "Tiedostoa {f} ei voitu nimetä uudelleen. Tarkista lisätiedot lokista."
+
+#. TRANSLATORS: Default placeholder string for a missing title
+#. tag, used when renaming files - if the title tag is not
+#. present in the file, this placeholder will be used instead.
+#: src/rename.py:40
+msgid "Untitled"
+msgstr "Nimetön"
+
+#. TRANSLATORS: Default placeholder string for missing tags,
+#. used when renaming files - if a tag is not present in the
+#. file, this placeholder will be used instead.
+#. {tag_name} is a placeholder for the human-readable tag name.
+#. **Do not change the text between the curly brackets!**
+#: src/rename.py:52
+#, python-brace-format
+msgid "Unknown {tag_name}"
+msgstr "Tuntematon {tag_name}"
+
+#: src/rename.py:287
+msgid "Selected folder does not exist"
+msgstr "Valittua kansiota ei ole olemassa"
+
+#: src/rename.py:294
+msgid "Selected folder is read-only"
+msgstr "Valittu kansio on \"vain luku\"-muodossa"
+
+#. TRANSLATORS: {renamed} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/rename.py:385
+#, python-brace-format
+msgid "Renamed 1 file"
+msgid_plural "Renamed {renamed} files"
+msgstr[0] "1 tiedosto nimetty uudelleen"
+msgstr[1] "{renamed} tiedostoa nimetty uudelleen"
+
+#: src/ui/rename.blp:5
+msgid "Rename Selected Files"
+msgstr "Nimeä valitut tiedostot uudelleen"
+
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+msgid "Cancel"
+msgstr "Peru"
+
+#: src/ui/rename.blp:24
+msgid "Rename"
+msgstr "Nimeä uudelleen"
+
+#: src/ui/rename.blp:49
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr ""
+
+#: src/ui/rename.blp:50
+msgid "Learn More"
+msgstr "Lue lisää"
+
+#: src/ui/rename.blp:59
+msgid "Failed to rename files. Check the logs for more information."
+msgstr ""
+"Tiedostojen nimeäminen uudelleen epäonnistui. Tarkista lisätiedot lokista."
+
+#: src/ui/rename.blp:88 src/ui/extract.blp:66
+msgid "Preview"
+msgstr "Esikatselu"
+
+#: src/ui/rename.blp:98 src/ui/extract.blp:84
+msgid "Filename pattern"
+msgstr "Tiedostonimen kaava"
+
+#: src/ui/rename.blp:105 src/ui/extract.blp:90
+msgid "Insert tag placeholder"
+msgstr ""
+
+#: src/ui/rename.blp:115
+msgid "Move to folder"
+msgstr "Siirrä kansioon"
+
+#: src/ui/rename.blp:120
+msgid "Select a folder…"
+msgstr "Valitse kansio…"
+
+#: src/ui/rename.blp:132
+msgid "Unselect folder"
+msgstr "Älä valitse kansiota"
+
+#: src/ui/rename.blp:148
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
+msgstr ""
+
+#. TRANSLATORS: {extracted} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/extract.py:288
+#, python-brace-format
+msgid "Extracted tags for 1 track"
+msgid_plural "Extracted tags for {extracted} tracks"
+msgstr[0] "1 kappaleen tunnisteet purettu"
+msgstr[1] "{extracted} kappaleen tunnisteet purettu"
+
+#: src/ui/extract.blp:5
+msgid "Extract Tags from Filename"
+msgstr "Pura tunnisteet tiedostonimestä"
+
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+msgid "Apply"
+msgstr "Toteuta"
+
+#: src/ui/extract.blp:100
+msgid "Ignore common suffixes"
+msgstr ""
+
+#: src/ui/extract.blp:101
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded "
+"files. Disable this option if it interferes with your filenames."
+msgstr ""
+
+#: src/ui/previewselectorbutton.blp:4
+msgid "Select file to preview"
+msgstr "Valitse tiedosto esikatselua varten"
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:118
+msgid "Other releases"
+msgstr "Muut julkaisut"
+
+#: src/identify.py:517
+msgid "Unidentified Files"
+msgstr "Tunnistamattomat tiedostot"
+
+#. TRANSLATORS: {identified} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:963
+#, python-brace-format
+msgid "Identified 1 track"
+msgid_plural "Identified {identified} tracks"
+msgstr[0] "1 kappale tunnistettu"
+msgstr[1] "{identified} kappaletta tunnistettu"
+
+#: src/ui/identify/identify.blp:5
+msgid "Identify Selected Files"
+msgstr "Tunnista valitut tiedostot"
+
+#: src/ui/identify/identify.blp:34
+msgid "Identify"
+msgstr "Tunnista"
+
+#: src/ui/identify/identify.blp:71
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"Kappaletiedot tarjoaa <a href=\"https://musicbrainz.org\">Musicbrainz</a>. "
+"Tiedostot, joissa ei ole metatietoja, tunnistetaan <a href=\"https://"
+"acoustid.org\">AcoustID</a>-palvelulla."
+
+#: src/ui/identify/filerow.blp:22
+msgid "File could not be identified"
+msgstr "Tiedostoa ei voitu tunnistaa"
+
+#: src/ui/settings.blp:7
+msgid "File identification"
+msgstr "Tiedoston tunnistus"
+
+#: src/ui/settings.blp:10
+msgid "MusicBrainz confidence treshold"
+msgstr "MusicBrainzin luottamuksen kynnysarvo"
+
+#: src/ui/settings.blp:11
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr ""
+
+#: src/ui/settings.blp:23
+msgid "AcoustID confidence treshold"
+msgstr "AcoustID:n luottamuksen kynnysarvo"
+
+#: src/ui/settings.blp:24
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr ""
+
+#: src/ui/settings.blp:36
+msgid "Downloaded cover art size"
+msgstr "Ladatun kansikuvan koko"
+
+#: src/ui/settings.blp:40
+msgid "Do not download covers"
+msgstr "Älä lataa kansia"
+
+#: src/ui/settings.blp:41
+msgid "250 px"
+msgstr "250 px"
+
+#: src/ui/settings.blp:42
+msgid "500 px"
+msgstr "500 px"
+
+#: src/ui/settings.blp:43
+msgid "1200 px"
+msgstr "1200 px"
+
+#: src/ui/settings.blp:44
+msgid "Maximum size"
+msgstr "Enimmäiskoko"
+
+#: src/ui/shortcuts.blp:11
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "Tiedostot"
+
+#: src/ui/shortcuts.blp:15
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "Avaa tiedostoja"
+
+#: src/ui/shortcuts.blp:20
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "Avaa kansio"
+
+#: src/ui/shortcuts.blp:25
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "Tallenna kaikki muokatut tiedostot"
+
+#: src/ui/shortcuts.blp:30
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "Sivupalkki"
+
+#: src/ui/shortcuts.blp:34
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Valitse edellinen sivupalkin tiedosto"
+
+#: src/ui/shortcuts.blp:39
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "Valitse seuraava sivupalkin tiedosto"
+
+#: src/ui/shortcuts.blp:44
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "Valitse kaikki sivupalkin tiedostot"
+
+#: src/ui/shortcuts.blp:49
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "Poista valitut tiedostot sivupalkista"
+
+#: src/ui/shortcuts.blp:50
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "Sulkee ikkunan, jos tiedostoja ei ole läsnä."
+
+#: src/ui/shortcuts.blp:55
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "Muut"
+
+#: src/ui/shortcuts.blp:59
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Pikanäppäimet"
