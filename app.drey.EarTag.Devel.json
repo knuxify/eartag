@@ -100,10 +100,6 @@
                 {
                     "type": "patch",
                     "path": ".chromaprint_ffmpeg5.patch"
-                },
-                {
-                    "type": "patch",
-                    "path": ".chromaprint_ffmpeg7.patch"
                 }
             ],
             "cleanup": [
