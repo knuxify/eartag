@@ -258,8 +258,11 @@ def natural_compare(a: str, b: str) -> int:
                     out[-1] += x
                 except (IndexError, TypeError):
                     out.append(x)
-        if out[-1] == "":
-            return out[:-1]
+        try:
+            if out[-1] == "":
+                return out[:-1]
+        except (IndexError, TypeError):
+            pass
         return out
 
     sort = sorted([a, b], key=sort_key)
