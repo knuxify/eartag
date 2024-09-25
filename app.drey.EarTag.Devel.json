@@ -87,18 +87,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://github.com/acoustid/chromaprint/releases/download/v1.5.1/chromaprint-1.5.1.tar.gz",
-                    "sha256": "a1aad8fa3b8b18b78d3755b3767faff9abb67242e01b478ec9a64e190f335e1c",
-                    "x-checker-data": {
-                        "type": "anitya",
-                        "project-id": 286,
-                        "stable-only": true,
-                        "url-template": "https://github.com/acoustid/chromaprint/releases/download/v$version/chromaprint-$version.tar.gz"
-                    }
-                },
-                {
-                    "type": "patch",
-                    "path": ".chromaprint_ffmpeg5.patch"
+                    "url": "https://github.com/acoustid/chromaprint/archive/aa67c95b9e486884a6d3ee8b0c91207d8c2b0551.tar.gz",
+                    "sha256": "88e13f065e31d59d102339d956d0e2f99b125386e4d58ae7de6f09b90104b90f"
                 },
                 {
                     "type": "patch",
