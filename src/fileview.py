@@ -465,7 +465,9 @@ class EartagMoreTagsGroup(Gtk.Box):
     def refresh_tag_filter(self, *args):
         """Refreshes the filter for the additional tag add row."""
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-        self.tag_entry_listbox.props.visible = bool([i for i in self.get_rows_sorted().keys() if i in EXTRA_TAGS])
+        self.tag_entry_listbox.props.visible = bool(
+            [i for i in self.get_rows_sorted().keys() if i in EXTRA_TAGS]
+        )
 
     @Gtk.Template.Callback()
     def add_row_from_selector(self, selector, tag):
