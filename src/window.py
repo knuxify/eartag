@@ -101,7 +101,7 @@ class EartagWindow(Adw.ApplicationWindow):
     loading_progressbar_revealer = Gtk.Template.Child()
 
     def __init__(self, application, paths=None, devel=False):
-        super().__init__(application=application, title="Ear Tag")
+        super().__init__(application=application, title=_("Ear Tag"))
         self._undo_all_data = {}
 
         if devel:
@@ -237,7 +237,7 @@ class EartagWindow(Adw.ApplicationWindow):
                     action.set_enabled(False)
             except AttributeError:
                 return
-            self.set_title("Ear Tag")
+            self.set_title(_("Ear Tag"))
             self.window_title.set_subtitle("")
             if self.file_manager.files:
                 self.file_view.content_stack.set_visible_child(
@@ -252,16 +252,17 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_view.content_stack.set_visible_child(self.file_view.content_scroll)
 
         # Set up window title and file info label
+        _title = _("Ear Tag")
         if len(files) == 1:
             file = files[0]
             file_basename = os.path.basename(file.path)
-            self.set_title("{f} — Ear Tag".format(f=file_basename))
+            self.set_title("{f} — {title}".format(f=file_basename, title=_title))
             self.window_title.set_subtitle(file_basename)
         else:
             # TRANSLATORS: Placeholder for file path when multiple files are selected.
             # Shows up in the titlebar of the application.
             _multiple_files = _("(Multiple files selected)")
-            self.set_title("{f} — Ear Tag".format(f=_multiple_files))
+            self.set_title("{f} — {title}".format(f=_multiple_files, title=_title))
             self.window_title.set_subtitle(_multiple_files)
 
         is_modified = False
