@@ -107,6 +107,8 @@ class EartagWindow(Adw.ApplicationWindow):
         if devel:
             self.add_css_class("devel")
 
+        self.set_icon_name(application.get_application_id())
+
         self.file_chooser = Gtk.FileDialog(modal=True)
         self._cancellable = Gio.Cancellable.new()
 
