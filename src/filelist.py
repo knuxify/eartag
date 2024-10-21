@@ -86,6 +86,11 @@ class EartagFileListItem(Gtk.Box):
         self._error_connect = self.file.connect("notify::has-error", self.handle_error)
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
+
+        self.long_press_gesture = Gtk.GestureLongPress.new()
+        self.long_press_gesture.connect("pressed", self.on_long_press)
+        self.add_controller(self.long_press_gesture)
+
         self.update_selected_status()
 
     def on_destroy(self, *args):
@@ -99,6 +104,8 @@ class EartagFileListItem(Gtk.Box):
         except AttributeError:
             pass
         self.file = None
+        self.remove_controller(self.long_press_gesture)
+        del self.long_press_gesture
 
     def on_title_notify(self, *args):
         # Because calling notify on a property doesn't update bind_property,
@@ -131,6 +138,15 @@ class EartagFileListItem(Gtk.Box):
     def update_selected_status(self, *args):
         self._selected = self.file_manager.is_selected(self.file)
         self.notify("selected")
+
+    def on_long_press(self, *args):
+        if self.filelist.props.selection_mode is False:
+            self.filelist._ignore_activate = True
+            if not self.props.selected:
+                self.file_manager.select_file(self.file, unselect_other=True)
+                self._selected = True
+                self.notify("selected")
+            self.filelist.force_switch_into_selection_mode()
 
     @Gtk.Template.Callback()
     def remove_item(self, *args):
@@ -186,6 +202,7 @@ class EartagFileList(Gtk.ListView):
         self._widgets = {}
 
         # See on_activate function for explaination
+        self._ignore_activate = False
         self.connect("activate", self.on_activate)
         self.key_controller = Gtk.EventControllerKey.new()
         self.key_controller.connect("key-pressed", self.key_pressed)
@@ -242,6 +259,13 @@ class EartagFileList(Gtk.ListView):
         if self.file_manager.get_n_selected() >= 2 and not self.props.selection_mode:
             self.props.selection_mode = True
 
+    def force_switch_into_selection_mode(self, *args):
+        """
+        Force-enable selection mode.
+        """
+        if not self.props.selection_mode:
+            self.props.selection_mode = True
+
     def remove_selected(self):
         """Removes selected files."""
         if not self.file_manager:
@@ -250,6 +274,10 @@ class EartagFileList(Gtk.ListView):
         self.file_manager.remove_files(old_selected)
 
     def on_activate(self, list, index):
+        if self._ignore_activate is True:
+            self._ignore_activate = False
+            return
+
         if self.props.selection_mode:
             # Gtk.MultiSelection doesn't have a way to force every click
             # to count a selection - instead, a single click unselects

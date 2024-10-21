@@ -148,6 +148,7 @@ class EartagWindow(Adw.ApplicationWindow):
             "revealed",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
+        self.sidebar_file_list.connect("notify::selection-mode", self.update_selection_mode)
 
         self.connect("close-request", self.on_close_request)
 
@@ -586,6 +587,11 @@ class EartagWindow(Adw.ApplicationWindow):
     @selection_mode.setter
     def selection_mode(self, value):
         self.sidebar_file_list.selection_mode = value
+        # Workaround for the text not showing up on initial load
+        self.refresh_actionbar_button_state()
+
+    def update_selection_mode(self, filelist, *args):
+        self.notify("selection-mode")
         # Workaround for the text not showing up on initial load
         self.refresh_actionbar_button_state()
 
