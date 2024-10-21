@@ -29,72 +29,90 @@ class Application(Adw.Application):
         self.paths = []
         self.connect("open", self.on_open)
 
-    def on_open(self, window, files, *args):
-        for file in files:
-            path = file.get_path()
-            if path:
-                if not os.path.exists(path):
-                    continue
-                if os.path.isdir(path):
-                    for _file in os.listdir(path):
-                        _fpath = os.path.join(path, _file)
-                        if os.path.isfile(_fpath) and is_valid_music_file(_fpath):
-                            self.paths.append(_fpath)
-                    continue
-                elif not is_valid_music_file(path):
-                    continue
-                self.paths.append(path)
+    def on_open(self, app, files, *args):
+        print("on_open called")
+
+        if self.props.active_window:
+            window = self.props.active_window
+            window.open_mode = EartagFileManager.LOAD_INSERT
+
+            paths = []
+            for file in files:
+                path = file.get_path()
+                if path:
+                    paths.append(path)
+            window.load_files_from_paths(paths)
+
+            window.open_mode = EartagFileManager.LOAD_OVERWRITE
+        else:
+            for file in files:
+                path = file.get_path()
+                print(file, path)
+                if path:
+                    if not os.path.exists(path):
+                        continue
+                    if os.path.isdir(path):
+                        for _file in os.listdir(path):
+                            _fpath = os.path.join(path, _file)
+                            if os.path.isfile(_fpath) and is_valid_music_file(_fpath):
+                                self.paths.append(_fpath)
+                        continue
+                    elif not is_valid_music_file(path):
+                        continue
+                    self.paths.append(path)
         self.do_activate()
 
     def do_activate(self):
+        print("do_activate called")
+
         win = self.props.active_window
         if not win:
             win = EartagWindow(application=self, paths=self.paths, devel=self.devel)
-        self.create_action("preferences", self.on_preferences_action, None)
-        self.create_action("about", self.on_about_action, None)
+            self.create_action("preferences", self.on_preferences_action, None)
+            self.create_action("about", self.on_about_action, None)
 
-        self.create_action("open_file", self.on_open_file_action, "<Ctrl>o")
-        self.create_action("save", self.on_save_action, "<Ctrl>s")
-        self.create_action("open_folder", self.on_open_folder_action, "<Ctrl>d")
+            self.create_action("open_file", self.on_open_file_action, "<Ctrl>o")
+            self.create_action("save", self.on_save_action, "<Ctrl>s")
+            self.create_action("open_folder", self.on_open_folder_action, "<Ctrl>d")
 
-        self.create_action("next_file", self.on_next_action, "<Alt>Right")
-        self.create_action("previous_file", self.on_previous_action, "<Alt>Left")
-        self.create_action("close_selected", self.on_close_selected_action, "<Ctrl>w")
-        self.create_action("select_all", self.on_select_all_action, "<Ctrl><Shift>a")
+            self.create_action("next_file", self.on_next_action, "<Alt>Right")
+            self.create_action("previous_file", self.on_previous_action, "<Alt>Left")
+            self.create_action("close_selected", self.on_close_selected_action, "<Ctrl>w")
+            self.create_action("select_all", self.on_select_all_action, "<Ctrl><Shift>a")
 
-        self.create_action("toggle_sidebar", self.on_toggle_sidebar_action, "F9")
-        self.create_action("open_menu", self.on_open_menu_action, "F10")
+            self.create_action("toggle_sidebar", self.on_toggle_sidebar_action, "F9")
+            self.create_action("open_menu", self.on_open_menu_action, "F10")
 
-        self.sort_action = self.create_action("sort", self.on_sort_action, None)
-        self.sort_action.set_enabled(False)
+            self.sort_action = self.create_action("sort", self.on_sort_action, None)
+            self.sort_action.set_enabled(False)
 
-        self.rename_action = self.create_action("rename", self.on_rename_action, None)
-        self.rename_action.set_enabled(False)
+            self.rename_action = self.create_action("rename", self.on_rename_action, None)
+            self.rename_action.set_enabled(False)
 
-        self.extract_action = self.create_action(
-            "extract", self.on_extract_action, None
-        )
-        self.extract_action.set_enabled(False)
+            self.extract_action = self.create_action(
+                "extract", self.on_extract_action, None
+            )
+            self.extract_action.set_enabled(False)
 
-        self.identify_action = self.create_action(
-            "identify", self.on_identify_action, None
-        )
-        self.identify_action.set_enabled(False)
+            self.identify_action = self.create_action(
+                "identify", self.on_identify_action, None
+            )
+            self.identify_action.set_enabled(False)
 
-        self.undo_all_action = self.create_action(
-            "undo_all", self.on_undo_all_action, None
-        )
-        self.undo_all_action.set_enabled(False)
+            self.undo_all_action = self.create_action(
+                "undo_all", self.on_undo_all_action, None
+            )
+            self.undo_all_action.set_enabled(False)
 
-        self.delete_all_tags_action = self.create_action(
-            "delete_all_tags", self.on_delete_all_tags_action, None
-        )
-        self.delete_all_tags_action.set_enabled(False)
+            self.delete_all_tags_action = self.create_action(
+                "delete_all_tags", self.on_delete_all_tags_action, None
+            )
+            self.delete_all_tags_action.set_enabled(False)
 
-        self.create_action("quit", self.on_quit_action, "<Ctrl>q")
+            self.create_action("quit", self.on_quit_action, "<Ctrl>q")
 
-        win.present()
-        self._ = _
+            win.present()
+            self._ = _
 
     def create_action(self, name, callback, accel=None):
         """Add an Action and connect to a callback"""
