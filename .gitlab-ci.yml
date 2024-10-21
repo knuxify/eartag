@@ -6,7 +6,7 @@ stages:
 .build-common:
   stage: build-and-test
   script:
-    - meson setup _build -Denable_networked_tests=true
+    - meson setup _build
     - meson compile -C _build
     - meson test "eartag*:" -v -C _build
     - meson install -C _build
