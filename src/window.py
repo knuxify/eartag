@@ -148,7 +148,9 @@ class EartagWindow(Adw.ApplicationWindow):
             "revealed",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.sidebar_file_list.connect("notify::selection-mode", self.update_selection_mode)
+        self.sidebar_file_list.connect(
+            "notify::selection-mode", self.update_selection_mode
+        )
 
         self.connect("close-request", self.on_close_request)
 
