@@ -19,6 +19,7 @@ src/fileview.py
 src/ui/fileview.blp
 src/ui/filenamerow.blp
 src/ui/albumcoverbutton.blp
+src/ui/moretagsgroup.blp
 src/tagentry.py
 
 # Sidebar
