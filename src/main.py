@@ -30,8 +30,6 @@ class Application(Adw.Application):
         self.connect("open", self.on_open)
 
     def on_open(self, app, files, *args):
-        print("on_open called")
-
         if self.props.active_window:
             window = self.props.active_window
             window.open_mode = EartagFileManager.LOAD_INSERT
@@ -47,7 +45,6 @@ class Application(Adw.Application):
         else:
             for file in files:
                 path = file.get_path()
-                print(file, path)
                 if path:
                     if not os.path.exists(path):
                         continue
@@ -63,8 +60,6 @@ class Application(Adw.Application):
         self.do_activate()
 
     def do_activate(self):
-        print("do_activate called")
-
         win = self.props.active_window
         if not win:
             win = EartagWindow(application=self, paths=self.paths, devel=self.devel)
