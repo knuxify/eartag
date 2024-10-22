@@ -615,7 +615,7 @@ class MusicBrainzRelease(GObject.Object):
     @classmethod
     def clear_tempfiles(cls):
         """Closes all cover tempfiles."""
-        for tmp in cls.cover_cache:
+        for tmp in cls.cover_cache.values():
             try:
                 tmp.close()
             except AttributeError:
