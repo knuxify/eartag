@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-10-21 09:14+0000\n"
-"PO-Revision-Date: 2024-10-21 20:46+0300\n"
+"POT-Creation-Date: 2024-10-22 12:13+0000\n"
+"PO-Revision-Date: 2024-10-22 23:02+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -455,7 +455,7 @@ msgstr[1] "Вилучено обкладинки з {n} файлів"
 msgstr[2] "Вилучено обкладинки з {n} файлів"
 msgstr[3] "Вилучено обкладинки з {n} файла"
 
-#: src/fileview.py:775
+#: src/fileview.py:774
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -464,7 +464,7 @@ msgstr[1] "{n} канали"
 msgstr[2] "{n} каналів"
 msgstr[3] "{n} канал"
 
-#: src/fileview.py:821
+#: src/fileview.py:819
 msgid "(multiple files)"
 msgstr "(декілька доріжок)"
 
@@ -549,6 +549,7 @@ msgstr "Якщо ви не збережете внесені зміни, їх б
 
 #: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
 #: src/ui/dialogs/removaldiscardwarning.blp:12
+#: src/ui/dialogs/tagdeletewarning.blp:12
 msgid "_Cancel"
 msgstr "_Скасувати"
 
@@ -609,6 +610,21 @@ msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
 "Не вдалося перейменувати файл {f}. Ознайомтеся із журналом, щоб дізнатися "
 "більше."
+
+#: src/ui/dialogs/tagdeletewarning.blp:5
+msgid "Delete All Tags?"
+msgstr "Вилучити усі мітки?"
+
+#: src/ui/dialogs/tagdeletewarning.blp:6
+msgid ""
+"This will remove all tags from the file, including ones that cannot be "
+"viewed in Ear Tag."
+msgstr ""
+"Буде вилучено усі мітки з файла, зокрема ті мітки, які не показує Ear Tag."
+
+#: src/ui/dialogs/tagdeletewarning.blp:13
+msgid "_Delete"
+msgstr "Ви_лучити"
 
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
