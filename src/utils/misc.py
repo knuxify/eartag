@@ -250,19 +250,12 @@ def natural_compare(a: str, b: str) -> int:
     # adapted from https://stackoverflow.com/questions/2545532
     def sort_key(s: str) -> list:
         out = []
-        for x in s:
-            if x.isdecimal():
-                out.append(int(x))
+        parts = re.split(r"(\d+)", s)
+        for part in parts:
+            if part.isdigit():
+                out.append(int(part))
             else:
-                try:
-                    out[-1] += x
-                except (IndexError, TypeError):
-                    out.append(x)
-        try:
-            if out[-1] == "":
-                return out[:-1]
-        except (IndexError, TypeError):
-            pass
+                out.append(part)
         return out
 
     sort = sorted([a, b], key=sort_key)
