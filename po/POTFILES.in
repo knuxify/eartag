@@ -33,6 +33,7 @@ src/ui/dialogs/removaldiscardwarning.blp
 src/ui/dialogs/savefailure.blp
 src/ui/dialogs/loadingfailure.blp
 src/ui/dialogs/renamefailure.blp
+src/ui/dialogs/tagdeletewarning.blp
 
 # Rename dialog
 src/rename.py
