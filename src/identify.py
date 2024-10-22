@@ -103,11 +103,18 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self._rel_model = Gio.ListStore(item_type=MusicBrainzRelease)
 
         self.release_popover = Gtk.Popover()
+        self.release_popover_scrolled_window = Gtk.ScrolledWindow()
         self.release_popover_list = Gtk.ListBox()
         self.release_popover_list.bind_model(self._rel_model, self.rel_row_create)
         self.release_popover_list.add_css_class("boxed-list")
         self.release_popover_list.set_selection_mode(Gtk.SelectionMode.NONE)
-        self.release_popover.set_child(self.release_popover_list)
+        self.release_popover_scrolled_window.set_policy(
+            Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC
+        )
+        self.release_popover_scrolled_window.set_propagate_natural_height(True)
+        self.release_popover_scrolled_window.set_propagate_natural_width(True)
+        self.release_popover_scrolled_window.set_child(self.release_popover_list)
+        self.release_popover.set_child(self.release_popover_scrolled_window)
         self._relswitch_first_row = None
 
         self.release_popover_toggle = Gtk.MenuButton(popover=self.release_popover)
