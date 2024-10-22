@@ -368,6 +368,9 @@ class EartagFileManager(GObject.Object):
 
     def remove_all(self):
         """Clear the opened file ist.."""
+        for file in self.files:
+            file.on_remove()
+
         self.files.remove_all()
         self.file_paths = set()
         self.selected_files.unselect_all()
