@@ -378,7 +378,7 @@ class EartagRenameDialog(Adw.Dialog):
         else:
             self.parent.toast_overlay.add_toast(
                 Adw.Toast.new(
-                    gettext.ngettext(
+                    ngettext(
                         # TRANSLATORS: {renamed} is a placeholder for the number
                         # of tracks the tags were succesfully extracted for.
                         # **Do not translate the text between the curly brackets!**

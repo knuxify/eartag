@@ -301,7 +301,7 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         self.cover_image.on_cover_change()
 
-        remove_msg = gettext.ngettext(
+        remove_msg = ngettext(
             "Removed cover from file", "Removed covers from {n} files", len(self.files)
         ).format(n=len(self.files))
         toast = Adw.Toast.new(remove_msg)
@@ -771,9 +771,7 @@ class EartagFileInfoLabel(Gtk.Label):
         elif channels == 2:
             channels_readable = "Stereo"
         else:
-            channels_readable = gettext.ngettext(
-                "1 channel", "{n} channels", channels
-            ).format(
+            channels_readable = ngettext("1 channel", "{n} channels", channels).format(
                 n=channels
             )  # noqa: E501
 

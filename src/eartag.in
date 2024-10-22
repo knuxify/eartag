@@ -24,7 +24,7 @@ try:
     locale.textdomain('app.drey.EarTag')
 except:
     print("Python built without locale support, some translations may not work!")
-gettext.install('app.drey.EarTag', localedir)
+gettext.install('app.drey.EarTag', localedir, names=['ngettext'])
 
 if __name__ == '__main__':
     import gi

@@ -281,7 +281,7 @@ class EartagExtractTagsDialog(Adw.Dialog):
     def on_apply_done(self, *args):
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
-                gettext.ngettext(
+                ngettext(
                     # TRANSLATORS: {extracted} is a placeholder for the number
                     # of tracks the tags were succesfully extracted for.
                     # **Do not translate the text between the curly brackets!**

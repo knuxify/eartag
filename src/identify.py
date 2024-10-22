@@ -956,7 +956,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             return
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
-                gettext.ngettext(
+                ngettext(
                     # TRANSLATORS: {identified} is a placeholder for the number
                     # of tracks that were succesfully identified.
                     # **Do not translate the text between the curly brackets!**

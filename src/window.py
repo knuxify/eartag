@@ -575,7 +575,7 @@ class EartagWindow(Adw.ApplicationWindow):
             else:
                 # TRANSLATORS: {n} is a placeholder for the amount of files.
                 # **Do not change the letter between the curly brackets!**
-                selected_message = gettext.ngettext(
+                selected_message = ngettext(
                     "1 file selected", "{n} files selected", selected_file_count
                 ).format(n=selected_file_count)
                 self.remove_selected_button.set_sensitive(True)
@@ -661,7 +661,7 @@ class EartagWindow(Adw.ApplicationWindow):
         toast = Adw.Toast.new(
             # TRANSLATORS: {n} is a placeholder for the amount of files.
             # **Do not change the letter between the curly brackets!**
-            gettext.ngettext(
+            ngettext(
                 "Undid changes in 1 file",
                 "Undid changes in {n} files",
                 self._undo_all_count,
@@ -697,7 +697,7 @@ class EartagWindow(Adw.ApplicationWindow):
         toast = Adw.Toast.new(
             # TRANSLATORS: {n} is a placeholder for the amount of files.
             # **Do not change the letter between the curly brackets!**
-            gettext.ngettext(
+            ngettext(
                 "Redid changes in 1 file",
                 "Redid changes in {n} files",
                 self._redo_all_count,
@@ -745,7 +745,7 @@ class EartagWindow(Adw.ApplicationWindow):
             # TRANSLATORS: {n} is a placeholder for the amount of files
             # that tags have been removed from.
             # **Do not change the letter between the curly brackets!**
-            gettext.ngettext(
+            ngettext(
                 "Removed tags from 1 file",
                 "Removed tags from {n} files",
                 self._delete_all_tags_count,
@@ -780,7 +780,7 @@ class EartagWindow(Adw.ApplicationWindow):
         toast = Adw.Toast.new(
             # TRANSLATORS: {n} is a placeholder for the amount of files.
             # **Do not change the letter between the curly brackets!**
-            gettext.ngettext(
+            ngettext(
                 "Undid tag removal in 1 file",
                 "Undid tag removal in {n} files",
                 self._undo_delete_all_count,
