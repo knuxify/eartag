@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-10-21 09:14+0000\n"
-"PO-Revision-Date: 2024-10-21 17:55+0200\n"
+"POT-Creation-Date: 2024-10-22 12:13+0000\n"
+"PO-Revision-Date: 2024-10-23 07:52+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -450,7 +450,7 @@ msgstr[1] "Odstranjena naslovnica iz {n} datoteke"
 msgstr[2] "Odstranjena naslovnica iz {n} datotek"
 msgstr[3] "Odstranjena naslovnica iz {n} datotek"
 
-#: src/fileview.py:775
+#: src/fileview.py:774
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -459,7 +459,7 @@ msgstr[1] "{n} kanal"
 msgstr[2] "{n} kanala"
 msgstr[3] "{n} kanali"
 
-#: src/fileview.py:821
+#: src/fileview.py:819
 msgid "(multiple files)"
 msgstr "(več datotek)"
 
@@ -544,6 +544,7 @@ msgstr "Če sprememb ne shranite, bodo trajno izgubljene."
 
 #: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
 #: src/ui/dialogs/removaldiscardwarning.blp:12
+#: src/ui/dialogs/tagdeletewarning.blp:12
 msgid "_Cancel"
 msgstr "_Prekliči"
 
@@ -603,6 +604,22 @@ msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
 "Datoteke {f} ni bilo mogoče preimenovati. Za več informacij preverite "
 "zapisnike."
+
+#: src/ui/dialogs/tagdeletewarning.blp:5
+msgid "Delete All Tags?"
+msgstr "Želite izbrisati vse značke?"
+
+#: src/ui/dialogs/tagdeletewarning.blp:6
+msgid ""
+"This will remove all tags from the file, including ones that cannot be "
+"viewed in Ear Tag."
+msgstr ""
+"S tem boste iz datoteke odstranili vse značke, vključno s tistimi, ki si jih "
+"ni mogoče ogledati v tem programu"
+
+#: src/ui/dialogs/tagdeletewarning.blp:13
+msgid "_Delete"
+msgstr "I_zbriši"
 
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
