@@ -242,7 +242,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         row = EartagIdentifyAltReleaseRow(self, rel)
         if self._relswitch_first_row:
             row.apply_checkbox.set_active(False)
-            self._relswitch_first_row.apply_checkbox.set_group(row.apply_checkbox)
+            row.apply_checkbox.set_group(self._relswitch_first_row.apply_checkbox)
             self._relswitch_first_row.set_sensitive(True)
         else:
             self._relswitch_first_row = row
