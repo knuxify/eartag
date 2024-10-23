@@ -532,6 +532,11 @@ class MusicBrainzRelease(GObject.Object):
 
     def update_thumbnail(self):
         """Downloads the thumbnail for the release from coverartarchive.org"""
+        if config.get_enum("musicbrainz-cover-size") == 0:
+            self.cover_tempfiles["thumbnail"] = ""
+            self.notify("thumbnail-path")
+            return
+
         url = f"https://coverartarchive.org/release/{self.release_id}/front-250"
         if url in MusicBrainzRelease.cover_cache:
             self.cover_tempfiles["thumbnail"] = MusicBrainzRelease.cover_cache[url]
@@ -730,6 +735,11 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
     def update_thumbnail(self):
         """Downloads the thumbnail for the release from coverartarchive.org"""
+        if config.get_enum("musicbrainz-cover-size") == 0:
+            self.cover_tempfiles["thumbnail"] = ""
+            self.notify("thumbnail-path")
+            return
+
         url = f"https://coverartarchive.org/release-group/{self.relgroup_id}/front-250"
         if url in MusicBrainzRelease.cover_cache:
             self.cover_tempfiles["thumbnail"] = MusicBrainzRelease.cover_cache[url]
