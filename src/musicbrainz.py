@@ -53,7 +53,7 @@ def make_request(url, raw=False, _recursion=0):
     headers = {"User-Agent": USER_AGENT}
     try:
         request = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(request) as data_raw:
+        with urllib.request.urlopen(request, timeout=30) as data_raw:
             if raw:
                 data = data_raw.read()
             else:
