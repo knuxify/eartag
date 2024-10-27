@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-10-21 09:14+0000\n"
-"PO-Revision-Date: 2024-10-22 15:32+0330\n"
+"POT-Creation-Date: 2024-10-22 12:13+0000\n"
+"PO-Revision-Date: 2024-10-27 12:31+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <>\n"
 "Language: fa\n"
@@ -435,14 +435,14 @@ msgid_plural "Removed covers from {n} files"
 msgstr[0] "جلد از پرونده حذف شد"
 msgstr[1] "جلدها از {n} پرونده حذف شدند"
 
-#: src/fileview.py:775
+#: src/fileview.py:774
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "۱ کانال"
 msgstr[1] "{n} کانال"
 
-#: src/fileview.py:821
+#: src/fileview.py:819
 msgid "(multiple files)"
 msgstr "(چندین پرونده)"
 
@@ -527,6 +527,7 @@ msgstr "اگر تغییراتتان را ذخیره نکنید، برای همی
 
 #: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
 #: src/ui/dialogs/removaldiscardwarning.blp:12
+#: src/ui/dialogs/tagdeletewarning.blp:12
 msgid "_Cancel"
 msgstr "_لغو"
 
@@ -580,6 +581,22 @@ msgstr "شکست در تغغیر نام پرونده"
 #: src/ui/dialogs/renamefailure.blp:8
 msgid "Could not rename file {f}. Check the logs for more information."
 msgstr "نتوانست نام پروندهٔ {f} را تغییر دهد. بررسی گزارش برای اطّلاعات بیش‌تر."
+
+#: src/ui/dialogs/tagdeletewarning.blp:5
+msgid "Delete All Tags?"
+msgstr "حذف همهٔ برچسب‌ها؟"
+
+#: src/ui/dialogs/tagdeletewarning.blp:6
+msgid ""
+"This will remove all tags from the file, including ones that cannot be viewed in "
+"Ear Tag."
+msgstr ""
+"این کار همهٔ برچسب‌ها حتا آن‌هایی که در پلاک گوش دیده نمی‌شوند را از پرونده برخواهد "
+"داشت."
+
+#: src/ui/dialogs/tagdeletewarning.blp:13
+msgid "_Delete"
+msgstr "_حذف"
 
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
