@@ -440,6 +440,7 @@ class EartagMoreTagsGroup(Gtk.Box):
         self._last_loaded_filetypes = []
         self._last_present_tags = {}  # id: tags
         self._ignore_tag_selector = False
+        self._height_below_360 = False
 
         # We can select multiple files of multiple types at once, but
         # they're not guaranteed to all have the same available extra tags.
@@ -730,6 +731,18 @@ class EartagMoreTagsGroup(Gtk.Box):
 
         self.skip_filter_change = False
 
+    @GObject.Property(type=bool, default=False)
+    def height_below_360(self):
+        """Hack to fix https://gitlab.gnome.org/World/eartag/-/merge_requests/130"""
+        return self._height_below_360
+
+    @height_below_360.setter
+    def height_below_360(self, value):
+        self._height_below_360 = value
+        if value is True:
+            self.tag_selector.set_direction(Gtk.ArrowType.UP)
+        else:
+            self.tag_selector.set_direction(Gtk.ArrowType.DOWN)
 
 class EartagFileInfoLabel(Gtk.Label):
     """Label showing information about opened files."""
@@ -1035,3 +1048,13 @@ class EartagFileView(Gtk.Stack):
     @compact.setter
     def compact(self, value):
         self.more_tags_group.compact = value
+
+    @GObject.Property(type=bool, default=False)
+    def height_below_360(self):
+        """Hack to fix https://gitlab.gnome.org/World/eartag/-/merge_requests/130"""
+        return self.more_tags_group.height_below_360
+
+    @height_below_360.setter
+    def height_below_360(self, value):
+        self.more_tags_group.height_below_360 = value
+

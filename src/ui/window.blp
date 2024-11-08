@@ -15,6 +15,14 @@ template $EartagWindow: Adw.ApplicationWindow {
     }
   }
 
+  Adw.Breakpoint {
+    condition ("max-height: 360sp")
+
+    setters {
+      file_view.height_below_360: true;
+    }
+  }
+
   Overlay overlay {
     hexpand: true;
     vexpand: true;
