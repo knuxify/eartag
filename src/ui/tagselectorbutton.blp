@@ -6,6 +6,7 @@ template $EartagTagSelectorButton: MenuButton {
 
   popover: Popover tag_list_popover {
     autohide: true;
+    height-request: 200;
 
     styles [
       "menu",
@@ -26,6 +27,7 @@ template $EartagTagSelectorButton: MenuButton {
         vscrollbar-policy: automatic;
         propagate-natural-width: true;
         propagate-natural-height: true;
+        max-content-height: 400;
 
         ListView tag_list {
           single-click-activate: true;
