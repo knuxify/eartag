@@ -744,6 +744,7 @@ class EartagMoreTagsGroup(Gtk.Box):
         else:
             self.tag_selector.set_direction(Gtk.ArrowType.DOWN)
 
+
 class EartagFileInfoLabel(Gtk.Label):
     """Label showing information about opened files."""
 
@@ -1057,4 +1058,3 @@ class EartagFileView(Gtk.Stack):
     @height_below_360.setter
     def height_below_360(self, value):
         self.more_tags_group.height_below_360 = value
-
