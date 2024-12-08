@@ -224,6 +224,14 @@ class EartagWindow(Adw.ApplicationWindow):
 
         # Set up the active view (hide fileview if there are no selected files)
         selected_files_count = self.file_manager.get_n_selected()
+
+        if selected_files_count == self.file_manager.get_n_files():
+            self.select_all_button.set_icon_name("edit-select-none-symbolic")
+            self.select_all_button.set_tooltip_text(_("Unselect all files"))
+        else:
+            self.select_all_button.set_icon_name("edit-select-all-symbolic")
+            self.select_all_button.set_tooltip_text(_("Select all files"))
+
         if selected_files_count <= 0:
             try:
                 for action in (

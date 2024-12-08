@@ -510,6 +510,9 @@ class EartagFileManager(GObject.Object):
 
         return collate
 
+    def get_n_files(self):
+        return self.files.get_n_items()
+
     def select_all(self, *args):
         self.selected_files.select_all()
 
