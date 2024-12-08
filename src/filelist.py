@@ -88,7 +88,7 @@ class EartagFileListItem(Gtk.Box):
         self.coverart_image.bind_to_file(file)
 
         self.long_press_gesture = Gtk.GestureLongPress.new()
-        self.long_press_gesture.connect("pressed", self.on_long_press)
+        self._long_press_connect = self.long_press_gesture.connect("pressed", self.on_long_press)
         self.add_controller(self.long_press_gesture)
 
         self.update_selected_status()
@@ -104,6 +104,7 @@ class EartagFileListItem(Gtk.Box):
         except AttributeError:
             pass
         self.file = None
+        self.long_press_gesture.disconnect(self._long_press_connect)
         self.remove_controller(self.long_press_gesture)
         del self.long_press_gesture
 
@@ -150,6 +151,11 @@ class EartagFileListItem(Gtk.Box):
 
     @Gtk.Template.Callback()
     def remove_item(self, *args):
+        # HACK: When the remove button is pressed, the long-press gesture gets
+        # triggered. (It seems that the click is not freed correctly?)
+        # Might be the same issue as https://gitlab.gnome.org/GNOME/gtk/-/issues/5794
+        self.props.sensitive = False
+        self.props.sensitive = True
         if self.file_manager.remove_files([self.file]):
             self.on_destroy()
 
