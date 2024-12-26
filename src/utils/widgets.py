@@ -248,7 +248,7 @@ class EartagModelExpanderRow(Adw.ExpanderRow):
         super().__init__()
         self.model = None
 
-        # In today's episode of "fun facts about GTK/Adw internals:
+        # In today's episode of "fun facts about GTK/Adw internals":
         # did you know that an AdwExpanderRow consists of not one, but *two*
         # listboxes? That's right - the expander row appears to be a ListBox
         # of its own, and right below it is a GtkRevealer with *another*
