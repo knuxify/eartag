@@ -7,23 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-10-22 12:13+0000\n"
-"PO-Revision-Date: 2024-10-23 07:52+0200\n"
+"POT-Creation-Date: 2025-01-11 13:56+0000\n"
+"PO-Revision-Date: 2025-01-11 19:57+0100\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:240
-#: src/window.py:255 src/ui/window.blp:235 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
+#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -45,7 +45,7 @@ msgstr "Urejajte značke zvočnih datotek"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "glasba;zvok;audio;avdio;tag;značka;označevanje;tagger;označevalnik;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:89
+#: data/app.drey.EarTag.metainfo.xml.in:97
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -57,23 +57,23 @@ msgstr ""
 "razliko od drugih programov za označevanje Ear Tag od uporabnika ne zahteva, "
 "da nastavi mapo glasbene knjižnice. Z njim lahko:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:91
+#: data/app.drey.EarTag.metainfo.xml.in:99
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Urejajte značke datotek MP3, WAV, M4A, FLAC, OGG in WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:92
+#: data/app.drey.EarTag.metainfo.xml.in:100
 msgid "Modify metadata of multiple files at once"
 msgstr "Spremenite metapodatke več datotek hkrati"
 
-#: data/app.drey.EarTag.metainfo.xml.in:93
+#: data/app.drey.EarTag.metainfo.xml.in:101
 msgid "Rename files using information from present tags"
 msgstr "Preimenujte datoteke z informacijami iz sedanjih značk"
 
-#: data/app.drey.EarTag.metainfo.xml.in:94
+#: data/app.drey.EarTag.metainfo.xml.in:102
 msgid "Identify files using AcoustID"
 msgstr "Prepoznavate datoteke s programom AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:96
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Dostop do omrežja se uporablja samo za možnost »Prepoznavanje izbranih "
@@ -83,34 +83,42 @@ msgstr ""
 msgid "All supported audio files"
 msgstr "Vse podprte zvočne datoteke"
 
+#: src/window.py:230
+msgid "Unselect all files"
+msgstr "Prekliči izbor vseh datotek"
+
+#: src/window.py:233 src/ui/window.blp:208
+msgid "Select all files"
+msgstr "Izberi vse datoteke"
+
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:264 src/fileview.py:760
+#: src/window.py:272 src/fileview.py:774
 msgid "(Multiple files selected)"
 msgstr "(Izbranih je več datotek)"
 
-#: src/window.py:356 src/ui/nofile.blp:35
+#: src/window.py:364 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Odpri mapo"
 
-#: src/window.py:359 src/ui/nofile.blp:24
+#: src/window.py:367 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Odpri datoteko"
 
-#: src/window.py:430
+#: src/window.py:438
 msgid "No supported files found in opened folder"
 msgstr "V odprti mapi ni podprtih datotek"
 
-#: src/window.py:439
+#: src/window.py:447
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Nekatere odprte datoteke imajo neveljavne vrednosti; ni mogoče shraniti"
 
-#: src/window.py:573
+#: src/window.py:581
 msgid "No files selected"
 msgstr "Izbrana ni nobena datoteka"
 
-#: src/window.py:579
+#: src/window.py:587
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -119,7 +127,7 @@ msgstr[1] "{n} izbrana datoteka"
 msgstr[2] "{n} izbrani datoteki"
 msgstr[3] "{n} izbrane datoteke"
 
-#: src/window.py:665
+#: src/window.py:673
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -128,11 +136,11 @@ msgstr[1] "Razveljavljene spremembe v {n} datoteki"
 msgstr[2] "Razveljavljene spremembe v {n} datotekah"
 msgstr[3] "Razveljavljene spremembe v {n} datotekah"
 
-#: src/window.py:670
+#: src/window.py:678
 msgid "Redo"
 msgstr "Ponovno uveljavi"
 
-#: src/window.py:701
+#: src/window.py:709
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -141,7 +149,7 @@ msgstr[1] "Ponovljene spremembe v {n} datoteki"
 msgstr[2] "Ponovljene spremembe v {n} datotekah"
 msgstr[3] "Ponovljene spremembe v {n} datotekah"
 
-#: src/window.py:749
+#: src/window.py:757
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -150,11 +158,11 @@ msgstr[1] "Odstranjene značke iz {n} datoteke"
 msgstr[2] "Odstranjene značke iz {n} datotek"
 msgstr[3] "Odstranjene značke iz {n} datotek"
 
-#: src/window.py:754 src/fileview.py:308
+#: src/window.py:762 src/fileview.py:308
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: src/window.py:784
+#: src/window.py:792
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -163,91 +171,87 @@ msgstr[1] "Razveljavljeno odstranjevanje oznake v {n} datoteki"
 msgstr[2] "Razveljavljeno odstranjevanje oznake v {n} datotekah"
 msgstr[3] "Razveljavljeno odstranjevanje oznake v {n} datotekah"
 
-#: src/ui/window.blp:56
+#: src/ui/window.blp:64
 msgid "Drop a file to add it to the opened file list"
 msgstr "Spustite datoteko, da jo dodate na seznam odprtih datotek"
 
-#: src/ui/window.blp:104
+#: src/ui/window.blp:112
 msgid "Save"
 msgstr "Shrani"
 
-#: src/ui/window.blp:116
+#: src/ui/window.blp:124
 msgid "Close file list"
 msgstr "Zapri seznam datotek"
 
-#: src/ui/window.blp:132
+#: src/ui/window.blp:140
 msgid "Add file"
 msgstr "Dodaj datoteko"
 
-#: src/ui/window.blp:138
+#: src/ui/window.blp:146
 msgid "Select multiple files"
 msgstr "Izberi več datotek"
 
-#: src/ui/window.blp:144
+#: src/ui/window.blp:152
 msgid "Search opened files"
 msgstr "Iskanje po odprtih datotekah"
 
-#: src/ui/window.blp:186
+#: src/ui/window.blp:194
 msgid "No Results Found"
 msgstr "Ni najdenih zadetkov."
 
-#: src/ui/window.blp:187
+#: src/ui/window.blp:195
 msgid "Try a different search query."
 msgstr "Poskusite uporabiti drugo iskalno poizvedbo."
 
-#: src/ui/window.blp:200
-msgid "Select all files"
-msgstr "Izberi vse datoteke"
-
-#: src/ui/window.blp:214
+#: src/ui/window.blp:222
 msgid "Remove selected files"
 msgstr "Odstrani izbrane datoteke"
 
-#: src/ui/window.blp:228
+#: src/ui/window.blp:236
 msgid "Show file list"
 msgstr "Pokaži seznam datotek"
 
-#: src/ui/window.blp:250
+#: src/ui/window.blp:258
 msgid "_Open File"
 msgstr "_Odpri datoteko"
 
-#: src/ui/window.blp:255
+#: src/ui/window.blp:263
 msgid "O_pen Folder"
 msgstr "O_dpri mapo"
 
-#: src/ui/window.blp:262
+#: src/ui/window.blp:270
 msgid "_Sort File List"
 msgstr "_Razvrsti seznam datotek"
 
-#: src/ui/window.blp:269
+#: src/ui/window.blp:277
 msgid "_Rename Selected Files"
 msgstr "_Preimenuj izbrane datoteke"
 
-#: src/ui/window.blp:274
+#: src/ui/window.blp:282
 msgid "_Extract Tags from Filename"
 msgstr "Iz_vleci značke iz imena datoteke"
 
-#: src/ui/window.blp:279
+#: src/ui/window.blp:287
 msgid "_Identify Selected Files"
 msgstr "_Identificiraj izbrane datoteke"
 
-#: src/ui/window.blp:286
+#: src/ui/window.blp:294
 msgid "_Undo Changes in Selected Files"
 msgstr "_Razveljavi spremembe v izbranih datotekah"
 
-#: src/ui/window.blp:291
+#: src/ui/window.blp:299
 msgid "_Remove All Tags in Selected Files"
 msgstr "_Odstrani vse značke v izbranih datotekah"
 
-#: src/ui/window.blp:298
+#: src/ui/window.blp:306
 msgid "_Keyboard Shortcuts"
 msgstr "_Tipkovne bližnjice"
 
-#: src/ui/window.blp:303
+#: src/ui/window.blp:311
 msgid "_Preferences"
 msgstr "_Možnosti"
 
-#: src/ui/window.blp:308
+#: src/ui/window.blp:316
 msgid "_About Ear Tag"
 msgstr "_O programu Ear Tag"
 
@@ -450,7 +454,7 @@ msgstr[1] "Odstranjena naslovnica iz {n} datoteke"
 msgstr[2] "Odstranjena naslovnica iz {n} datotek"
 msgstr[3] "Odstranjena naslovnica iz {n} datotek"
 
-#: src/fileview.py:774
+#: src/fileview.py:788
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -459,7 +463,7 @@ msgstr[1] "{n} kanal"
 msgstr[2] "{n} kanala"
 msgstr[3] "{n} kanali"
 
-#: src/fileview.py:819
+#: src/fileview.py:833
 msgid "(multiple files)"
 msgstr "(več datotek)"
 
@@ -516,7 +520,7 @@ msgid "(multiple values)"
 msgstr "(več vrednosti)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:163
+#: src/filelist.py:171
 msgid "(No title)"
 msgstr "(Brez naslova)"
 
@@ -714,8 +718,8 @@ msgid ""
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
 "available tags</a>."
 msgstr ""
-"Če si želite ogledati seznam ograd, ki so na voljo, si oglejte <a href="
-"\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README."
+"Če si želite ogledati seznam ograd, ki so na voljo, si oglejte <a "
+"href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README."
 "md#available-tags\">seznam razpoložljivih značk</a>."
 
 #. TRANSLATORS: {extracted} is a placeholder for the number
@@ -756,18 +760,18 @@ msgstr "Izberite datoteko za predogled"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:118
+#: src/identify.py:125
 msgid "Other releases"
 msgstr "Druge izdaje"
 
-#: src/identify.py:517
+#: src/identify.py:524
 msgid "Unidentified Files"
 msgstr "Neidentificirane datoteke"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:963
+#: src/identify.py:970
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -786,12 +790,12 @@ msgstr "Identificiraj"
 
 #: src/ui/identify/identify.blp:71
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz.org"
-"\">Musicbrainz</a>. Files without metadata are identified using the <a href="
-"\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
-"Informacije o skladbi zagotavlja <a href=\"https://musicbrainz.org"
-"\">Musicbrainz</a>. Datoteke brez metapodatkov se identificirajo s "
+"Informacije o skladbi zagotavlja <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Datoteke brez metapodatkov se identificirajo s "
 "storitvijo <a href=\"https://acoustid.org\">AcoustID</a> ."
 
 #: src/ui/identify/filerow.blp:22
