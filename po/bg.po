@@ -1,14 +1,14 @@
 # Bulgarian translation of eartag po-file.
 # Copyright (C) 2024 eartag's COPYRIGHT HOLDER
 # This file is distributed under the same license as the eartag package.
-# twlvnn kraftwerk <kraft_werk@tutanota.com>, 2024.
+# twlvnn kraftwerk <kraft_werk@tutanota.com>, 2024, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-11-24 11:11+0000\n"
-"PO-Revision-Date: 2024-11-01 21:11+0100\n"
+"POT-Creation-Date: 2025-01-12 19:38+0000\n"
+"PO-Revision-Date: 2025-01-11 16:32+0200\n"
 "Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict-notifications@fsa-bg.org>\n"
 "Language: bg\n"
@@ -21,13 +21,13 @@ msgstr ""
 "X-DL-Branch: main\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
-"X-Generator: Gtranslator 47.0\n"
+"X-Generator: Gtranslator 47.1\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:240
-#: src/window.py:255 src/ui/window.blp:243 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
+#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -35,8 +35,8 @@ msgstr "Ear Tag"
 #: src/main.py:167 src/main.py:169
 msgid "translator-credits"
 msgstr ""
-"twlvnn kraftwerk &lt;<a href='mailto:kraft_werk@tutanota."
-"com'>kraft_werk@tutanota.com</a>&gt;"
+"twlvnn kraftwerk &lt;<a "
+"href='mailto:kraft_werk@tutanota.com'>kraft_werk@tutanota.com</a>&gt;"
 
 #: data/app.drey.EarTag.desktop.in:4
 msgid "Tag Editor"
@@ -51,7 +51,7 @@ msgstr "Редактиране на етикетите на звукови фа�
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "музика;аудио;звук;етикет;етикиране;music;audio;tag;tagging;tagger;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:93
+#: data/app.drey.EarTag.metainfo.xml.in:97
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -63,24 +63,24 @@ msgstr ""
 "дискове. За разлика от други подобни програми „Ear Tag“ не изисква от "
 "потребителя да създаде фонотека. „Ear Tag“ може да:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:95
+#: data/app.drey.EarTag.metainfo.xml.in:99
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr ""
 "Редактира етикетите на файлове във формат MP3, WAV, M4A, FLAC, OGG и WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:96
+#: data/app.drey.EarTag.metainfo.xml.in:100
 msgid "Modify metadata of multiple files at once"
 msgstr "Променя метаданните на множество файлове наведнъж"
 
-#: data/app.drey.EarTag.metainfo.xml.in:97
+#: data/app.drey.EarTag.metainfo.xml.in:101
 msgid "Rename files using information from present tags"
 msgstr "Преименува файлове на базата на съществуващите етикети"
 
-#: data/app.drey.EarTag.metainfo.xml.in:98
+#: data/app.drey.EarTag.metainfo.xml.in:102
 msgid "Identify files using AcoustID"
 msgstr "Идентифицира файлове с помощта на AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:100
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Достъп до мрежата се използва само за опцията „Идентифициране на избраните "
@@ -90,71 +90,79 @@ msgstr ""
 msgid "All supported audio files"
 msgstr "Всички поддържани аудиофайлове"
 
+#: src/window.py:230
+msgid "Unselect all files"
+msgstr "Махане на избора на всички файлове"
+
+#: src/window.py:233 src/ui/window.blp:208
+msgid "Select all files"
+msgstr "Избиране на всички файлове"
+
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:264 src/fileview.py:774
+#: src/window.py:272 src/fileview.py:774
 msgid "(Multiple files selected)"
 msgstr "(Избрани са множество файлове)"
 
-#: src/window.py:356 src/ui/nofile.blp:35
+#: src/window.py:364 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Отваряне на папка"
 
-#: src/window.py:359 src/ui/nofile.blp:24
+#: src/window.py:367 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Отваряне на файл"
 
-#: src/window.py:430
+#: src/window.py:438
 msgid "No supported files found in opened folder"
 msgstr "Няма поддържани файлове в отворената папка"
 
-#: src/window.py:439
+#: src/window.py:447
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Някои от отворените файлове са с неправилни стойности: не може да бъдат "
 "запазени"
 
-#: src/window.py:573
+#: src/window.py:581
 msgid "No files selected"
 msgstr "Няма избран файл"
 
-#: src/window.py:579
+#: src/window.py:587
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "1 избран файл"
 msgstr[1] "{n} избрани файла"
 
-#: src/window.py:665
+#: src/window.py:673
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Отменени са промените в 1 файл"
 msgstr[1] "Отменени са промените в {n} файла"
 
-#: src/window.py:670
+#: src/window.py:678
 msgid "Redo"
 msgstr "Повтаряне"
 
-#: src/window.py:701
+#: src/window.py:709
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Повторени са промените в 1 файл"
 msgstr[1] "Повторени са промените в {n} файла"
 
-#: src/window.py:749
+#: src/window.py:757
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Премахнати са етикетите в 1 файл"
 msgstr[1] "Премахнати са етикетите в {n} файла"
 
-#: src/window.py:754 src/fileview.py:308
+#: src/window.py:762 src/fileview.py:308
 msgid "Undo"
 msgstr "Отмяна"
 
-#: src/window.py:784
+#: src/window.py:792
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -192,10 +200,6 @@ msgstr "Няма намерени резултати"
 #: src/ui/window.blp:195
 msgid "Try a different search query."
 msgstr "Oпитайте различно търсене."
-
-#: src/ui/window.blp:208
-msgid "Select all files"
-msgstr "Избиране на всички файлове"
 
 #: src/ui/window.blp:222
 msgid "Remove selected files"
@@ -266,8 +270,8 @@ msgstr "Отвореният файл е само за четене: проме�
 #: src/filemanager.py:259
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
-"Някои от отворените файлове са само за четене: промените в тях не може да "
-"се запазят"
+"Някои от отворените файлове са само за четене: промените в тях не може да се "
+"запазят"
 
 #: src/backends/file.py:51
 msgid "Length"
@@ -512,7 +516,7 @@ msgid "(multiple values)"
 msgstr "(множество стойности)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:163
+#: src/filelist.py:171
 msgid "(No title)"
 msgstr "(Без заглавие)"
 
@@ -705,9 +709,9 @@ msgstr "Без избиране на папката"
 
 #: src/ui/rename.blp:148
 msgid ""
-"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
-"available tags</a>."
+"For a list of available placeholders, see the <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">list of available tags</a>."
 msgstr ""
 "За наличните заместители вижте <a href='https://gitlab.gnome.org/World/"
 "eartag/-/blob/main/src/backends/README.md#available-tags'>списъка на "
@@ -778,13 +782,13 @@ msgstr "Идентифициране"
 
 #: src/ui/identify/identify.blp:71
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
-"href=\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://"
+"musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified "
+"using the <a href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
-"Информацията за песните се предоставя от <a href='https://musicbrainz."
-"org'>Musicbrainz</a>. Файловете без метаданни се идентифицират чрез услугата "
-"<a href='https://acoustid.org'>AcoustID</a>."
+"Информацията за песните се предоставя от <a href='https://"
+"musicbrainz.org'>Musicbrainz</a>. Файловете без метаданни се идентифицират "
+"чрез услугата <a href='https://acoustid.org'>AcoustID</a>."
 
 #: src/ui/identify/filerow.blp:22
 msgid "File could not be identified"
