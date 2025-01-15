@@ -1,15 +1,15 @@
 # Swedish translation for eartag.
-# Copyright © 2024 eartag's COPYRIGHT HOLDER
+# Copyright © 2024-2025 eartag's COPYRIGHT HOLDER
 # This file is distributed under the same license as the eartag package.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2024.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2024, 2025.
 # Luna Jernberg <droidbittin@gmail.com>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-10-22 20:10+0000\n"
-"PO-Revision-Date: 2024-10-29 20:53+0100\n"
+"POT-Creation-Date: 2025-01-11 13:56+0000\n"
+"PO-Revision-Date: 2025-01-11 15:08+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -22,8 +22,8 @@ msgstr ""
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:240
-#: src/window.py:255 src/ui/window.blp:235 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
+#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -50,7 +50,7 @@ msgstr "Redigera ljudfilstaggar"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "musik;ljud;tagg;taggning;taggare;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:89
+#: data/app.drey.EarTag.metainfo.xml.in:97
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -62,23 +62,23 @@ msgstr ""
 "skillnad från andra taggningsprogram så kräver inte Ear Tag att användaren "
 "konfigurerar en musikbiblioteksmapp. Den kan:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:91
+#: data/app.drey.EarTag.metainfo.xml.in:99
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Redigera taggar för MP3-, WAV-, M4A-, FLAC-, OGG- och WMA-filer"
 
-#: data/app.drey.EarTag.metainfo.xml.in:92
+#: data/app.drey.EarTag.metainfo.xml.in:100
 msgid "Modify metadata of multiple files at once"
 msgstr "Ändra metadata på flera filer samtidigt"
 
-#: data/app.drey.EarTag.metainfo.xml.in:93
+#: data/app.drey.EarTag.metainfo.xml.in:101
 msgid "Rename files using information from present tags"
 msgstr "Byta namn på filer med information från befintliga taggar"
 
-#: data/app.drey.EarTag.metainfo.xml.in:94
+#: data/app.drey.EarTag.metainfo.xml.in:102
 msgid "Identify files using AcoustID"
 msgstr "Identifiera filer med AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:96
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Nätverksåtkomst används endast för alternativet ”Identifiera markerade "
@@ -88,160 +88,164 @@ msgstr ""
 msgid "All supported audio files"
 msgstr "Alla ljudfiler som stöds"
 
+#: src/window.py:230
+msgid "Unselect all files"
+msgstr "Avmarkera alla filer"
+
+#: src/window.py:233 src/ui/window.blp:208
+msgid "Select all files"
+msgstr "Markera alla filer"
+
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:264 src/fileview.py:760
+#: src/window.py:272 src/fileview.py:774
 msgid "(Multiple files selected)"
 msgstr "(Flera filer markerade)"
 
-#: src/window.py:356 src/ui/nofile.blp:35
+#: src/window.py:364 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Öppna mapp"
 
-#: src/window.py:359 src/ui/nofile.blp:24
+#: src/window.py:367 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Öppna fil"
 
-#: src/window.py:430
+#: src/window.py:438
 msgid "No supported files found in opened folder"
 msgstr "Inga filer som stöds hittade i öppnad mapp"
 
-#: src/window.py:439
+#: src/window.py:447
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "Några av de öppnade filerna har ogiltiga värden. Kan inte spara"
 
-#: src/window.py:573
+#: src/window.py:581
 msgid "No files selected"
 msgstr "Inga filer markerade"
 
-#: src/window.py:579
+#: src/window.py:587
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "1 fil markerad"
 msgstr[1] "{n} filer markerade"
 
-#: src/window.py:665
+#: src/window.py:673
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Ångrade ändringar i 1 fil"
 msgstr[1] "Ångrade ändringar i {n} filer"
 
-#: src/window.py:670
+#: src/window.py:678
 msgid "Redo"
 msgstr "Gör om"
 
-#: src/window.py:701
+#: src/window.py:709
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Gjorde om ändringar i 1 fil"
 msgstr[1] "Gjorde om ändringar i {n} filer"
 
-#: src/window.py:749
+#: src/window.py:757
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Tog bort taggar från 1 fil"
 msgstr[1] "Tog bort taggar från {n} filer"
 
-#: src/window.py:754 src/fileview.py:308
+#: src/window.py:762 src/fileview.py:308
 msgid "Undo"
 msgstr "Ångra"
 
-#: src/window.py:784
+#: src/window.py:792
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
 msgstr[0] "Ångrade taggborttagning i 1 fil"
 msgstr[1] "Ångrade taggborttagning i {n} filer"
 
-#: src/ui/window.blp:56
+#: src/ui/window.blp:64
 msgid "Drop a file to add it to the opened file list"
 msgstr "Släpp en fil för att lägga till den i listan över öppnade filer"
 
-#: src/ui/window.blp:104
+#: src/ui/window.blp:112
 msgid "Save"
 msgstr "Spara"
 
-#: src/ui/window.blp:116
+#: src/ui/window.blp:124
 msgid "Close file list"
 msgstr "Stäng fillista"
 
-#: src/ui/window.blp:132
+#: src/ui/window.blp:140
 msgid "Add file"
 msgstr "Lägg till fil"
 
-#: src/ui/window.blp:138
+#: src/ui/window.blp:146
 msgid "Select multiple files"
 msgstr "Välj flera filer"
 
-#: src/ui/window.blp:144
+#: src/ui/window.blp:152
 msgid "Search opened files"
 msgstr "Sök öppnade filer"
 
-#: src/ui/window.blp:186
+#: src/ui/window.blp:194
 msgid "No Results Found"
 msgstr "Inga resultat hittades"
 
-#: src/ui/window.blp:187
+#: src/ui/window.blp:195
 msgid "Try a different search query."
 msgstr "Försök med en annan sökning."
 
-#: src/ui/window.blp:200
-msgid "Select all files"
-msgstr "Markera alla filer"
-
-#: src/ui/window.blp:214
+#: src/ui/window.blp:222
 msgid "Remove selected files"
 msgstr "Ta bort markerade filer"
 
-#: src/ui/window.blp:228
+#: src/ui/window.blp:236
 msgid "Show file list"
 msgstr "Visa fillista"
 
-#: src/ui/window.blp:250
+#: src/ui/window.blp:258
 msgid "_Open File"
 msgstr "Ö_ppna fil"
 
-#: src/ui/window.blp:255
+#: src/ui/window.blp:263
 msgid "O_pen Folder"
 msgstr "Öpp_na mapp"
 
-#: src/ui/window.blp:262
+#: src/ui/window.blp:270
 msgid "_Sort File List"
 msgstr "_Sortera fillista"
 
-#: src/ui/window.blp:269
+#: src/ui/window.blp:277
 msgid "_Rename Selected Files"
 msgstr "_Byt namn på markerade filer"
 
-#: src/ui/window.blp:274
+#: src/ui/window.blp:282
 msgid "_Extract Tags from Filename"
 msgstr "_Extrahera taggar från filnamn"
 
-#: src/ui/window.blp:279
+#: src/ui/window.blp:287
 msgid "_Identify Selected Files"
 msgstr "_Identifiera markerade filer"
 
-#: src/ui/window.blp:286
+#: src/ui/window.blp:294
 msgid "_Undo Changes in Selected Files"
 msgstr "Å_ngra ändringar i markerade filer"
 
-#: src/ui/window.blp:291
+#: src/ui/window.blp:299
 msgid "_Remove All Tags in Selected Files"
 msgstr "_Ta bort alla taggar i markerade filer"
 
-#: src/ui/window.blp:298
+#: src/ui/window.blp:306
 msgid "_Keyboard Shortcuts"
 msgstr "_Tangentbordsgenvägar"
 
-#: src/ui/window.blp:303
+#: src/ui/window.blp:311
 msgid "_Preferences"
 msgstr "_Inställningar"
 
-#: src/ui/window.blp:308
+#: src/ui/window.blp:316
 msgid "_About Ear Tag"
 msgstr "_Om Ear Tag"
 
@@ -440,14 +444,14 @@ msgid_plural "Removed covers from {n} files"
 msgstr[0] "Tog bort omslag från fil"
 msgstr[1] "Tog bort omslag från {n} filer"
 
-#: src/fileview.py:774
+#: src/fileview.py:788
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "1 kanal"
 msgstr[1] "{n} kanaler"
 
-#: src/fileview.py:819
+#: src/fileview.py:833
 msgid "(multiple files)"
 msgstr "(flera filer)"
 
@@ -504,7 +508,7 @@ msgid "(multiple values)"
 msgstr "(flera värden)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:163
+#: src/filelist.py:171
 msgid "(No title)"
 msgstr "(Ingen titel)"
 
@@ -692,12 +696,12 @@ msgstr "Avmarkera mapp"
 
 #: src/ui/rename.blp:148
 msgid ""
-"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
-"available tags</a>."
+"For a list of available placeholders, see the <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">list of available tags</a>."
 msgstr ""
-"För en lista över tillgängliga platshållare, se <a href=\"https://gitlab."
-"gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"För en lista över tillgängliga platshållare, se <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
 "tags\">listan över tillgängliga taggar</a>."
 
 #. TRANSLATORS: {extracted} is a placeholder for the number
@@ -764,12 +768,12 @@ msgstr "Identifiera"
 
 #: src/ui/identify/identify.blp:71
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
-"href=\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://"
+"musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified "
+"using the <a href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
-"Spårinformation tillhandahålls av <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>. Filer utan metadata identifieras med <a "
+"Spårinformation tillhandahålls av <a href=\"https://"
+"musicbrainz.org\">Musicbrainz</a>. Filer utan metadata identifieras med <a "
 "href=\"https://acoustid.org\">AcoustID</a>-tjänsten."
 
 #: src/ui/identify/filerow.blp:22
