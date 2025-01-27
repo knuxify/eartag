@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the app.drey.EarTag package.
 # Automatically generated, 2023.
 # Óscar Fernández Díaz <oscfdezdz@tuta.io>, 2023.
-# Julián Villodre <jvillodrede@gmail.com>, 2024.
+# Julián Villodre <jvillodrede@gmail.com>, 2024-2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-11-24 11:11+0000\n"
-"PO-Revision-Date: 2024-12-15 23:38+0100\n"
+"POT-Creation-Date: 2025-01-12 12:00+0000\n"
+"PO-Revision-Date: 2025-01-25 23:44+0100\n"
 "Last-Translator: Julián Villodre <jvillodrede@gmail.com>\n"
 "Language-Team: es_ES\n"
 "Language: es_ES\n"
@@ -23,8 +23,8 @@ msgstr ""
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:240
-#: src/window.py:255 src/ui/window.blp:243 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
+#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -48,7 +48,7 @@ msgstr "Editar etiquetas de archivos de audio"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;música;etiqueta;etiquetado;etiquetador;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:93
+#: data/app.drey.EarTag.metainfo.xml.in:97
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -61,23 +61,23 @@ msgstr ""
 "Tag no requiere que el usuario configure una carpeta de biblioteca de "
 "música. Se puede:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:95
+#: data/app.drey.EarTag.metainfo.xml.in:99
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Editar etiquetas de archivos MP3, WAV, M4A, FLAC, OGG y WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:96
+#: data/app.drey.EarTag.metainfo.xml.in:100
 msgid "Modify metadata of multiple files at once"
 msgstr "Modificar los metadatos de varios archivos a la vez"
 
-#: data/app.drey.EarTag.metainfo.xml.in:97
+#: data/app.drey.EarTag.metainfo.xml.in:101
 msgid "Rename files using information from present tags"
 msgstr "Renombrar archivos usando la información de las etiquetas actuales"
 
-#: data/app.drey.EarTag.metainfo.xml.in:98
+#: data/app.drey.EarTag.metainfo.xml.in:102
 msgid "Identify files using AcoustID"
 msgstr "Identificar archivos mediante AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:100
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "El acceso a la red sólo se usa para la opción \"Identificar archivos "
@@ -87,71 +87,79 @@ msgstr ""
 msgid "All supported audio files"
 msgstr "Todos los archivos de sonido soportados"
 
+#: src/window.py:230
+msgid "Unselect all files"
+msgstr "Deseleccionar todos los archivos"
+
+#: src/window.py:233 src/ui/window.blp:208
+msgid "Select all files"
+msgstr "Seleccionar todos los archivos"
+
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:264 src/fileview.py:774
+#: src/window.py:272 src/fileview.py:774
 msgid "(Multiple files selected)"
 msgstr "(Varios archivos seleccionados)"
 
-#: src/window.py:356 src/ui/nofile.blp:35
+#: src/window.py:364 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Abrir carpeta"
 
-#: src/window.py:359 src/ui/nofile.blp:24
+#: src/window.py:367 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Abrir archivo"
 
-#: src/window.py:430
+#: src/window.py:438
 msgid "No supported files found in opened folder"
 msgstr "No se han encontrado archivos compatibles en la carpeta abierta"
 
-#: src/window.py:439
+#: src/window.py:447
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Algunos de los archivos abiertos tienen valores no válidos; no se pueden "
 "guardar"
 
-#: src/window.py:573
+#: src/window.py:581
 msgid "No files selected"
 msgstr "No hay archivos seleccionados"
 
-#: src/window.py:579
+#: src/window.py:587
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "1 archivo seleccionado"
 msgstr[1] "{n} archivos seleccionados"
 
-#: src/window.py:665
+#: src/window.py:673
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Cambios deshechos en 1 archivo"
 msgstr[1] "Cambios deshechos en {n} archivos"
 
-#: src/window.py:670
+#: src/window.py:678
 msgid "Redo"
 msgstr "Rehacer"
 
-#: src/window.py:701
+#: src/window.py:709
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Cambios rehechos en 1 archivo"
 msgstr[1] "Cambios rehechos en {n} archivos"
 
-#: src/window.py:749
+#: src/window.py:757
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Etiquetas eliminadas de 1 archivo"
 msgstr[1] "Etiquetas eliminadas de {n} archivos"
 
-#: src/window.py:754 src/fileview.py:308
+#: src/window.py:762 src/fileview.py:308
 msgid "Undo"
 msgstr "Deshacer"
 
-#: src/window.py:784
+#: src/window.py:792
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -189,10 +197,6 @@ msgstr "No se han encontrado resultados"
 #: src/ui/window.blp:195
 msgid "Try a different search query."
 msgstr "Pruebe con otra búsqueda."
-
-#: src/ui/window.blp:208
-msgid "Select all files"
-msgstr "Seleccionar todos los archivos"
 
 #: src/ui/window.blp:222
 msgid "Remove selected files"
@@ -508,7 +512,7 @@ msgid "(multiple values)"
 msgstr "(valores múltiples)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:163
+#: src/filelist.py:171
 msgid "(No title)"
 msgstr "(Sin título)"
 
