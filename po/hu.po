@@ -1,14 +1,14 @@
 # Hungarian translation for eartag.
-# Copyright (C) 2024 Free Software Foundation, Inc.
+# Copyright (C) 2024, 2025 Free Software Foundation, Inc.
 # This file is distributed under the same license as the eartag package.
 #
-# Balázs Úr <ur.balazs at fsf dot hu>, 2024.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2024-05-19 11:20+0000\n"
-"PO-Revision-Date: 2024-05-20 21:42+0200\n"
+"POT-Creation-Date: 2025-02-10 19:38+0000\n"
+"PO-Revision-Date: 2025-02-28 18:01+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
@@ -16,16 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
-#: src/main.py:138 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.blp:244
+#. Set up window title and file info label
+#: src/main.py:157 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
+#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Füljelző"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:148 src/main.py:150
+#: src/main.py:167 src/main.py:169
 msgid "translator-credits"
 msgstr "Úr Balázs <ur dot balazs at fsf dot hu>, 2024."
 
@@ -42,7 +44,7 @@ msgstr "Hangfájlcímkék szerkesztése"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "zene;hang;címke;címkézés;címkéző;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:85
+#: data/app.drey.EarTag.metainfo.xml.in:97
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -55,187 +57,192 @@ msgstr ""
 "igényli, hogy a felhasználó zenegyűjtemény-mappát állítson be. Az alkalmazás "
 "az alábbiakra képes:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:87
+#: data/app.drey.EarTag.metainfo.xml.in:99
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "MP3, WAV, M4A, FLAC, OGG és WMA fájlok címkéinek szerkesztése"
 
-#: data/app.drey.EarTag.metainfo.xml.in:88
+#: data/app.drey.EarTag.metainfo.xml.in:100
 msgid "Modify metadata of multiple files at once"
 msgstr "Egyszerre több fájl metaadatainak módosítása"
 
-#: data/app.drey.EarTag.metainfo.xml.in:89
+#: data/app.drey.EarTag.metainfo.xml.in:101
 msgid "Rename files using information from present tags"
 msgstr "Fájlok átnevezése a meglévő címkékben lévő információk használatával"
 
-#: data/app.drey.EarTag.metainfo.xml.in:90
+#: data/app.drey.EarTag.metainfo.xml.in:102
 msgid "Identify files using AcoustID"
 msgstr "Fájlok azonosítása az AcoustID használatával"
 
-#: data/app.drey.EarTag.metainfo.xml.in:92
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Hálózati hozzáférést csak a „Kiválasztott fájlok azonosítása” lehetőséghez "
 "használ."
 
-#: src/window.py:116
+#: src/window.py:118
 msgid "All supported audio files"
 msgstr "Az összes támogatott hangfájl"
 
+#: src/window.py:230
+#| msgid "Select all files"
+msgid "Unselect all files"
+msgstr "Összes fájl kijelölésének megszüntetése"
+
+#: src/window.py:233 src/ui/window.blp:208
+msgid "Select all files"
+msgstr "Összes fájl kiválasztása"
+
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:258 src/fileview.py:758
+#: src/window.py:272 src/fileview.py:774
 msgid "(Multiple files selected)"
 msgstr "(Több fájl van kiválasztva)"
 
-#: src/window.py:350 src/ui/nofile.blp:35
+#: src/window.py:364 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Mappa megnyitása"
 
-#: src/window.py:353 src/ui/nofile.blp:24
+#: src/window.py:367 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Fájl megnyitása"
 
-#: src/window.py:424
+#: src/window.py:438
 msgid "No supported files found in opened folder"
 msgstr "Nem találhatók támogatott fájlok a megnyitott mappában"
 
-#: src/window.py:433
+#: src/window.py:447
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Néhány megnyitott fájl érvénytelen értékekkel rendelkezik, nem lehet menteni"
 
-#: src/window.py:565
+#: src/window.py:581
 msgid "No files selected"
 msgstr "Nincsenek fájlok kiválasztva"
 
-#: src/window.py:571
+#: src/window.py:587
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "1 fájl kiválasztva"
 msgstr[1] "{n} fájl kiválasztva"
 
-#: src/window.py:652
+#: src/window.py:673
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Változtatások visszavonva 1 fájlban"
 msgstr[1] "Változtatások visszavonva {n} fájlban"
 
-#: src/window.py:657
+#: src/window.py:678
 msgid "Redo"
 msgstr "Ismétlés"
 
-#: src/window.py:688
+#: src/window.py:709
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Változtatások megismételve 1 fájlban"
 msgstr[1] "Változtatások megismételve {n} fájlban"
 
-#: src/window.py:736
+#: src/window.py:757
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Címkék eltávolítva 1 fájlból"
 msgstr[1] "Címkék eltávolítva {n} fájlból"
 
-#: src/window.py:741 src/fileview.py:308
+#: src/window.py:762 src/fileview.py:308
 msgid "Undo"
 msgstr "Visszavonás"
 
-#: src/window.py:771
+#: src/window.py:792
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
 msgstr[0] "Címkeeltávolítás visszavonva 1 fájlban"
 msgstr[1] "Címkeeltávolítás visszavonva {n} fájlban"
 
-#: src/ui/window.blp:55
+#: src/ui/window.blp:64
 msgid "Drop a file to add it to the opened file list"
 msgstr "Dobjon ide egy fájlt, hogy hozzáadja a megnyitott fájlok listájához"
 
-#: src/ui/window.blp:110
+#: src/ui/window.blp:112
 msgid "Save"
 msgstr "Mentés"
 
-#: src/ui/window.blp:122
+#: src/ui/window.blp:124
 msgid "Close file list"
 msgstr "Fájllista bezárása"
 
-#: src/ui/window.blp:138
+#: src/ui/window.blp:140
 msgid "Add file"
 msgstr "Fájl hozzáadása"
 
-#: src/ui/window.blp:144
+#: src/ui/window.blp:146
 msgid "Select multiple files"
 msgstr "Több fájl kiválasztása"
 
-#: src/ui/window.blp:150
+#: src/ui/window.blp:152
 msgid "Search opened files"
 msgstr "Megnyitott fájlok keresése"
 
-#: src/ui/window.blp:193
+#: src/ui/window.blp:194
 msgid "No Results Found"
 msgstr "Nincsenek találatok"
 
-#: src/ui/window.blp:194
+#: src/ui/window.blp:195
 msgid "Try a different search query."
 msgstr "Próbáljon egy másik keresési kérést."
 
-#: src/ui/window.blp:207
-msgid "Select all files"
-msgstr "Összes fájl kiválasztása"
-
-#: src/ui/window.blp:221
+#: src/ui/window.blp:222
 msgid "Remove selected files"
 msgstr "Kiválasztott fájlok eltávolítása"
 
-#: src/ui/window.blp:237
+#: src/ui/window.blp:236
 msgid "Show file list"
 msgstr "Fájllista megjelenítése"
 
-#: src/ui/window.blp:262
+#: src/ui/window.blp:258
 msgid "_Open File"
 msgstr "Fájl _megnyitása"
 
-#: src/ui/window.blp:267
+#: src/ui/window.blp:263
 msgid "O_pen Folder"
 msgstr "Ma_ppa megnyitása"
 
-#: src/ui/window.blp:274
+#: src/ui/window.blp:270
 msgid "_Sort File List"
 msgstr "Fájllista _rendezése"
 
-#: src/ui/window.blp:281
+#: src/ui/window.blp:277
 msgid "_Rename Selected Files"
 msgstr "Kiválasztott fájlok át_nevezése"
 
-#: src/ui/window.blp:286
+#: src/ui/window.blp:282
 msgid "_Extract Tags from Filename"
 msgstr "Címkék _kinyerése a fájlnévből"
 
-#: src/ui/window.blp:291
+#: src/ui/window.blp:287
 msgid "_Identify Selected Files"
 msgstr "Kiválasztott fájlok _azonosítása"
 
-#: src/ui/window.blp:298
+#: src/ui/window.blp:294
 msgid "_Undo Changes in Selected Files"
 msgstr "Változtatások _visszavonása a kiválasztott fájlokban"
 
-#: src/ui/window.blp:303
+#: src/ui/window.blp:299
 msgid "_Remove All Tags in Selected Files"
 msgstr "Az összes címke _eltávolítása a kiválasztott fájlokban"
 
-#: src/ui/window.blp:310
+#: src/ui/window.blp:306
 msgid "_Keyboard Shortcuts"
 msgstr "_Gyorsbillentyűk"
 
-#: src/ui/window.blp:315
+#: src/ui/window.blp:311
 msgid "_Preferences"
 msgstr "_Beállítások"
 
-#: src/ui/window.blp:320
+#: src/ui/window.blp:316
 msgid "_About Ear Tag"
 msgstr "A Füljelző _névjegye"
 
@@ -266,39 +273,39 @@ msgstr "Hossz"
 msgid "Bitrate"
 msgstr "Bitsebesség"
 
-#: src/backends/file.py:54 src/ui/fileview.blp:96
+#: src/backends/file.py:54 src/ui/fileview.blp:95
 msgid "Title"
 msgstr "Cím"
 
-#: src/backends/file.py:55 src/ui/fileview.blp:128
+#: src/backends/file.py:55 src/ui/fileview.blp:127
 msgid "Artist"
 msgstr "Előadó"
 
-#: src/backends/file.py:56 src/ui/fileview.blp:211
+#: src/backends/file.py:56 src/ui/fileview.blp:210
 msgid "Album"
 msgstr "Album"
 
-#: src/backends/file.py:57 src/ui/fileview.blp:216
+#: src/backends/file.py:57 src/ui/fileview.blp:215
 msgid "Album artist"
 msgstr "Album előadója"
 
-#: src/backends/file.py:58 src/ui/fileview.blp:175
+#: src/backends/file.py:58 src/ui/fileview.blp:174
 msgid "Track number"
 msgstr "Szám sorszáma"
 
-#: src/backends/file.py:59 src/ui/fileview.blp:188
+#: src/backends/file.py:59 src/ui/fileview.blp:187
 msgid "Total tracks"
 msgstr "Számok darabszáma"
 
-#: src/backends/file.py:60 src/ui/fileview.blp:221
+#: src/backends/file.py:60 src/ui/fileview.blp:220
 msgid "Genre"
 msgstr "Műfaj"
 
-#: src/backends/file.py:61 src/ui/fileview.blp:226
+#: src/backends/file.py:61 src/ui/fileview.blp:225
 msgid "Release date"
 msgstr "Kiadás dátuma"
 
-#: src/backends/file.py:62 src/ui/fileview.blp:232
+#: src/backends/file.py:62 src/ui/fileview.blp:231
 msgid "Comment"
 msgstr "Megjegyzés"
 
@@ -436,14 +443,14 @@ msgid_plural "Removed covers from {n} files"
 msgstr[0] "Borító eltávolítva a fájlból"
 msgstr[1] "Borítók eltávolítva {n} fájlból"
 
-#: src/fileview.py:773
+#: src/fileview.py:788
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "1 csatorna"
 msgstr[1] "{n} csatorna"
 
-#: src/fileview.py:819
+#: src/fileview.py:833
 msgid "(multiple files)"
 msgstr "(több fájl)"
 
@@ -460,11 +467,11 @@ msgid "Select the files you want to edit from the list of opened files."
 msgstr ""
 "Válassza ki a szerkeszteni kívánt fájlokat a megnyitott fájlok listájából."
 
-#: src/ui/fileview.blp:54
+#: src/ui/fileview.blp:53
 msgid "Previous file"
 msgstr "Előző fájl"
 
-#: src/ui/fileview.blp:76
+#: src/ui/fileview.blp:75
 msgid "Next file"
 msgstr "Következő fájl"
 
@@ -472,32 +479,36 @@ msgstr "Következő fájl"
 msgid "Filename"
 msgstr "Fájlnév"
 
-#: src/ui/albumcoverbutton.blp:73
+#: src/ui/albumcoverbutton.blp:71
 msgid "_Choose Image…"
 msgstr "Kép _kiválasztása…"
 
-#: src/ui/albumcoverbutton.blp:79
+#: src/ui/albumcoverbutton.blp:77
 msgid "_Save Image…"
 msgstr "Kép _mentése…"
 
-#: src/ui/albumcoverbutton.blp:85
+#: src/ui/albumcoverbutton.blp:83
 msgid "_Remove Cover"
 msgstr "Borító _eltávolítása"
 
-#: src/ui/albumcoverbutton.blp:111
+#: src/ui/albumcoverbutton.blp:109
 msgid "Front"
 msgstr "Első"
 
-#: src/ui/albumcoverbutton.blp:116
+#: src/ui/albumcoverbutton.blp:114
 msgid "Back"
 msgstr "Hátsó"
+
+#: src/ui/moretagsgroup.blp:18
+msgid "Add tag"
+msgstr "Címke hozzáadása"
 
 #: src/tagentry.py:128
 msgid "(multiple values)"
 msgstr "(több érték)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:147
+#: src/filelist.py:171
 msgid "(No title)"
 msgstr "(Nincs cím)"
 
@@ -509,7 +520,7 @@ msgstr "A fájl érvénytelen értékekkel rendelkezik"
 msgid "File has unsaved changes"
 msgstr "A fájl mentetlen változtatásokkal rendelkezik"
 
-#: src/ui/filelistitem.blp:94
+#: src/ui/filelistitem.blp:92
 msgid "Remove from list"
 msgstr "Eltávolítás a listáról"
 
@@ -525,6 +536,7 @@ msgstr "Ha nem menti a változtatásokat, akkor az összes véglegesen elvész."
 
 #: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
 #: src/ui/dialogs/removaldiscardwarning.blp:12
+#: src/ui/dialogs/tagdeletewarning.blp:12
 msgid "_Cancel"
 msgstr "_Mégse"
 
@@ -586,6 +598,22 @@ msgid "Could not rename file {f}. Check the logs for more information."
 msgstr ""
 "Nem sikerült átnevezni a(z) {f} fájlt. További információkért nézze meg a "
 "naplókat."
+
+#: src/ui/dialogs/tagdeletewarning.blp:5
+msgid "Delete All Tags?"
+msgstr "Törli az összes címkét?"
+
+#: src/ui/dialogs/tagdeletewarning.blp:6
+msgid ""
+"This will remove all tags from the file, including ones that cannot be "
+"viewed in Ear Tag."
+msgstr ""
+"Ez eltávolítja az összes címkét a fájlból, beleértve azokat is, amelyek nem"
+" láthatók a Füljelzőben."
+
+#: src/ui/dialogs/tagdeletewarning.blp:13
+msgid "_Delete"
+msgstr "_Törlés"
 
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
@@ -654,27 +682,27 @@ msgstr ""
 msgid "Preview"
 msgstr "Előnézet"
 
-#: src/ui/rename.blp:99 src/ui/extract.blp:85
+#: src/ui/rename.blp:98 src/ui/extract.blp:84
 msgid "Filename pattern"
 msgstr "Fájlnévminta"
 
-#: src/ui/rename.blp:106 src/ui/extract.blp:91
+#: src/ui/rename.blp:105 src/ui/extract.blp:90
 msgid "Insert tag placeholder"
 msgstr "Címkehelykitöltő beszúrása"
 
-#: src/ui/rename.blp:116
+#: src/ui/rename.blp:115
 msgid "Move to folder"
 msgstr "Áthelyezés mappába"
 
-#: src/ui/rename.blp:121
+#: src/ui/rename.blp:120
 msgid "Select a folder…"
 msgstr "Mappa kiválasztása…"
 
-#: src/ui/rename.blp:133
+#: src/ui/rename.blp:132
 msgid "Unselect folder"
 msgstr "Mappa kiválasztásának megszüntetése"
 
-#: src/ui/rename.blp:149
+#: src/ui/rename.blp:148
 msgid ""
 "For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
@@ -702,11 +730,11 @@ msgstr "Címkék kinyerése a fájlnévből"
 msgid "Apply"
 msgstr "Alkalmaz"
 
-#: src/ui/extract.blp:101
+#: src/ui/extract.blp:100
 msgid "Ignore common suffixes"
 msgstr "Gyakori utótagok mellőzése"
 
-#: src/ui/extract.blp:102
+#: src/ui/extract.blp:101
 msgid ""
 "Automatically ignores ID suffixes often found in filenames of downloaded "
 "files. Disable this option if it interferes with your filenames."
@@ -721,18 +749,18 @@ msgstr "Fájl kiválasztása az előnézethez"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:118
+#: src/identify.py:125
 msgid "Other releases"
 msgstr "Egyéb kiadások"
 
-#: src/identify.py:517
+#: src/identify.py:524
 msgid "Unidentified Files"
 msgstr "Azonosítatlan fájlok"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:963
+#: src/identify.py:970
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -757,7 +785,7 @@ msgstr ""
 "biztosítja. A metaadat nélküli fájlok az <a href=\"https://acoustid."
 "org\">AcoustID</a> szolgáltatás használatával kerülnek azonosításra."
 
-#: src/ui/identify/filerow.blp:23
+#: src/ui/identify/filerow.blp:22
 msgid "File could not be identified"
 msgstr "Nem sikerült azonosítani a fájlt"
 
@@ -777,11 +805,11 @@ msgstr ""
 "A MusicBrainz keresési eredményének kiértékeléséhez szükséges legkisebb "
 "megbízhatósági százalék"
 
-#: src/ui/settings.blp:25
+#: src/ui/settings.blp:23
 msgid "AcoustID confidence treshold"
 msgstr "AcoustID megbízhatósági küszöbszint"
 
-#: src/ui/settings.blp:26
+#: src/ui/settings.blp:24
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
@@ -789,27 +817,27 @@ msgstr ""
 "Az AcoustID keresési eredményének kiértékeléséhez szükséges legkisebb "
 "megbízhatósági százalék"
 
-#: src/ui/settings.blp:40
+#: src/ui/settings.blp:36
 msgid "Downloaded cover art size"
 msgstr "Letöltött borítókép mérete"
 
-#: src/ui/settings.blp:44
+#: src/ui/settings.blp:40
 msgid "Do not download covers"
 msgstr "Ne töltsön le borítókat"
 
-#: src/ui/settings.blp:45
+#: src/ui/settings.blp:41
 msgid "250 px"
 msgstr "250 képpont"
 
-#: src/ui/settings.blp:46
+#: src/ui/settings.blp:42
 msgid "500 px"
 msgstr "500 képpont"
 
-#: src/ui/settings.blp:47
+#: src/ui/settings.blp:43
 msgid "1200 px"
 msgstr "1200 képpont"
 
-#: src/ui/settings.blp:48
+#: src/ui/settings.blp:44
 msgid "Maximum size"
 msgstr "Legnagyobb méret"
 
@@ -872,3 +900,4 @@ msgstr "Egyéb"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Gyorsbillentyűk"
+
