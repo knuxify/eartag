@@ -277,9 +277,10 @@ def backend_write_empty(file, skip_channels=False):
         file.set_property("totaltracknumber", 1)
         assert file.has_tag("tracknumber")
         file.set_property("tracknumber", 0)
-        assert file.has_tag("tracknumber")
+        assert file.has_tag("totaltracknumber")
         file.set_property("totaltracknumber", 0)
         assert not file.has_tag("tracknumber")
+        assert not file.has_tag("totaltracknumber")
 
         file.set_property("tracknumber", 1)
         file.set_property("totaltracknumber", 1)
