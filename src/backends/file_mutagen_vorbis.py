@@ -36,6 +36,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     )  # fmt: skip
 
     _replaces = {
+        "totaltracknumber": "tracktotal",
         "releasedate": "date",
         # There"s also ENCODED-BY, but confusingly it represents... the person doing the encoding?
         "encodedby": "encoder",
@@ -351,20 +352,19 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     @tracknumber.setter
     def tracknumber(self, value):
-        if self.totaltracknumber:
-            self.set_tag(
-                "tracknumber",
-                "{n}/{t}".format(n=str(value), t=str(self.totaltracknumber)),
-            )
+        if value:
+            self.set_tag("tracknumber", str(value))
         else:
-            if value:
-                self.set_tag("tracknumber", str(value))
-            elif self.has_tag("tracknumber"):
-                self.delete_tag("tracknumber")
+            self.delete_tag("tracknumber")
         self.mark_as_modified("tracknumber")
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
+        totalnum_raw = self.get_tag("totaltracknumber")
+        if totalnum_raw:
+            return int(totalnum_raw)
+
+        # Fall back to parsing track number with "/" (older Ear Tag versions)
         tracknum_raw = self.get_tag("tracknumber")
         if not tracknum_raw:
             return None
@@ -374,15 +374,19 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
-        if self.tracknumber:
-            self.set_tag(
-                "tracknumber", "{n}/{t}".format(n=str(self.tracknumber), t=str(value))
-            )
-        else:
-            if value:
-                self.set_tag("tracknumber", "0/{t}".format(t=str(value)))
-            elif self.has_tag("tracknumber"):
+        # Fix up track numbers with "/"
+        if "/" in (self.get_tag("tracknumber") or ""):
+            if self.tracknumber:
+                self.set_tag("tracknumber", str(self.tracknumber))
+            else:
                 self.delete_tag("tracknumber")
+            self.mark_as_modified("tracknumber")
+
+        if value:
+            self.set_tag("totaltracknumber", str(value))
+        else:
+            self.delete_tag("totaltracknumber")
+
         self.mark_as_modified("totaltracknumber")
 
     @GObject.Property(type=int)
