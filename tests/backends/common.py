@@ -194,13 +194,18 @@ def backend_write(file, skip_channels=False):
         assert file.has_tag(prop), f"tag {prop} not found in file"
 
     if file._supports_album_covers:
-        file.set_property("front_cover_path", os.path.join(EXAMPLES_DIR, "cover.png"))
-        assert file.get_property("front_cover_path")
+        for cover_filetype in ("jpg", "jp2", "bmp", "webp", "png"):
+            file.set_property(
+                "front_cover_path",
+                os.path.join(EXAMPLES_DIR, f"cover.{cover_filetype}"),
+            )
+            assert file.get_property("front_cover_path")
 
-        file.set_property(
-            "back_cover_path", os.path.join(EXAMPLES_DIR, "cover_back.png")
-        )
-        assert file.get_property("back_cover_path")
+            file.set_property(
+                "back_cover_path",
+                os.path.join(EXAMPLES_DIR, f"cover_back.{cover_filetype}"),
+            )
+            assert file.get_property("back_cover_path")
 
     assert file.get_property("is_modified") is True
     props_set = set(tuple(file.handled_properties) + tuple(file.supported_extra_tags))

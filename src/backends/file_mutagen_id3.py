@@ -4,6 +4,8 @@
 from gi.repository import GObject
 import magic
 import mimetypes
+import io
+from PIL import Image
 
 import mutagen.id3
 from mutagen.id3 import PictureType
@@ -278,10 +280,21 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         else:
             raise ValueError
 
-        with open(value, "rb") as cover_file:
-            data = cover_file.read()
-
+        # Allowed types are JPEG or PNG. For other types, convert to PNG first.
         mime = magic.from_file(value, mime=True)
+        if mime == "image/jpg":
+            mime = "image/jpeg"
+
+        if mime in ("image/jpeg", "image/png"):
+            with open(value, "rb") as cover_file:
+                data = cover_file.read()
+        else:
+            # Convert to PNG
+            with Image.open(value) as img:
+                out = io.BytesIO()
+                img.save(out, format="PNG")
+                data = out.getvalue()
+            mime = "image/png"
 
         # Remove conflicting covers
         self.delete_cover(cover_type, clear_only=True)

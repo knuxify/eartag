@@ -5,6 +5,7 @@ from gi.repository import GObject
 import base64
 import magic
 import mimetypes
+import io
 from PIL import Image
 
 from mutagen.flac import FLAC, Picture, error as FLACError
@@ -170,8 +171,21 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         else:
             raise ValueError
 
-        with open(value, "rb") as cover_file:
-            data = cover_file.read()
+        # Allowed types are JPEG or PNG. For other types, convert to PNG first.
+        mime = magic.from_file(value, mime=True)
+        if mime == "image/jpg":
+            mime = "image/jpeg"
+
+        if mime in ("image/jpeg", "image/png"):
+            with open(value, "rb") as cover_file:
+                data = cover_file.read()
+        else:
+            # Convert to PNG
+            with Image.open(value) as img:
+                out = io.BytesIO()
+                img.save(out, format="PNG")
+                data = out.getvalue()
+            mime = "image/png"
 
         # shamelessly stolen from
         # https://stackoverflow.com/questions/1996577/how-can-i-get-the-depth-of-a-jpg-file
@@ -192,11 +206,11 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         picture = Picture()
         picture.data = data
         picture.type = pictype
-        picture.mime = magic.from_file(value, mime=True)
-        img = Image.open(value)
-        picture.width = img.width
-        picture.height = img.height
-        picture.depth = mode_to_bpp[img.mode]
+        picture.mime = mime
+        with Image.open(value) as img:
+            picture.width = img.width
+            picture.height = img.height
+            picture.depth = mode_to_bpp[img.mode]
 
         # Remove all conflicting pictures
         self.delete_cover(cover_type, clear_only=True)

@@ -117,7 +117,16 @@ PopoverMenu menu_popover {
 }
 
 FileFilter image_file_filter {
+  name: "All supported image files";
+
   mime-types [
-    "image/*",
+    // Supported natively by most formats:
+    "image/jpg",
+    "image/jpeg",
+    "image/png",
+    // Converted using Pillow:
+    "image/bmp",
+    "image/jp2",
+    "image/webp",
   ]
 }

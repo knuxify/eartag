@@ -5,6 +5,8 @@ from gi.repository import GObject
 import magic
 import mimetypes
 import struct
+import io
+from PIL import Image
 
 import mutagen.asf
 from mutagen.id3 import PictureType
@@ -229,8 +231,23 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         else:
             raise ValueError
 
-        with open(value, "rb") as cover_file:
-            data = cover_file.read()
+        # TODO: Figure out which filetypes are supported.
+        # For now, we only support JPEG and PNG; for other types, we convert
+        # to PNG first.
+        mime = magic.from_file(value, mime=True)
+        if mime == "image/jpg":
+            mime = "image/jpeg"
+
+        if mime in ("image/jpeg", "image/png"):
+            with open(value, "rb") as cover_file:
+                data = cover_file.read()
+        else:
+            # Convert to PNG
+            with Image.open(value) as img:
+                out = io.BytesIO()
+                img.save(out, format="PNG")
+                data = out.getvalue()
+            mime = "image/png"
 
         pictures = []
         if "WM/Picture" in self.mg_file.tags:

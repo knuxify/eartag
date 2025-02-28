@@ -27,7 +27,16 @@ VALID_AUDIO_MIMES = (
     "video/x-wmv",
 )
 
-VALID_IMAGE_MIMES = ("image/jpeg", "image/png")
+VALID_IMAGE_MIMES = (
+    # Supported natively by most formats:
+    "image/jpg",
+    "image/jpeg",
+    "image/png",
+    # Converted using Pillow:
+    "image/bmp",
+    "image/jp2",
+    "image/webp",
+)
 
 
 def is_valid_music_file(path):

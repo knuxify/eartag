@@ -5,6 +5,8 @@ from gi.repository import GObject
 import base64
 import magic
 import mimetypes
+import io
+from PIL import Image
 
 from mutagen.mp4 import MP4Cover
 
@@ -186,6 +188,16 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if not value:
             self.delete_cover()
             return
+
+        # Only PNG is allowed. For other types, convert to PNG first.
+        if magic.from_file(value, mime=True) == "image/png":
+            with open(value, "rb") as cover_file:
+                data = cover_file.read()
+        else:
+            with Image.open(value) as img:
+                out = io.BytesIO()
+                img.save(out, format="PNG")
+                data = out.getvalue()
 
         with open(value, "rb") as cover_file:
             data = cover_file.read()

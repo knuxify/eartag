@@ -35,7 +35,7 @@ def test_valid_music_file(file_name):
 
 @pytest.mark.parametrize(
     "file_name",
-    ["aconcagua.jpg", "cover.png"],
+    ["cover.jpg", "cover.png", "cover.jp2", "cover.webp", "cover.bmp"],
 )
 def test_valid_image_file(file_name):
     assert is_valid_image_file(f"{EXAMPLES_DIRECTORY}/{file_name}") is True

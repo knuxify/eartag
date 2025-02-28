@@ -6,13 +6,15 @@ from ..utils.bgtask import run_threadsafe
 import gi
 
 gi.require_version("GdkPixbuf", "2.0")
-from gi.repository import GObject, GdkPixbuf
+from gi.repository import GObject, GdkPixbuf, GLib
 import filecmp
+import io
 import os
 import re
 import shutil
 import tempfile
 import uuid
+from PIL import Image
 
 BASIC_TAGS = (
     "title", "artist", "album", "albumartist", "tracknumber",
@@ -116,16 +118,47 @@ class EartagFileCover:
         if not self.cover_path:
             return
 
-        with open(self.cover_path, "rb") as cover_file:
-            self.cover_data = cover_file.read()
+        try:
+            self.cover_small = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                self.cover_path, 48, 48, True
+            )
 
-        self.cover_small = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            self.cover_path, 48, 48, True
-        )
+            self.cover_large = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                self.cover_path, 196, 196, True
+            )
+        except GLib.GError:
+            # Load using Pillow
+            with Image.open(self.cover_path) as img:
 
-        self.cover_large = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-            self.cover_path, 196, 196, True
-        )
+                def img_to_pixbuf(img: Image) -> GdkPixbuf.Pixbuf:
+                    """Convert a Pillow image to a GdkPixbuf."""
+
+                    # Pillow's raw image data is returned as a list of tuples
+                    # with (R, G, B) values. This function converts them into
+                    # GBytes.
+                    data = GLib.Bytes.new(
+                        bytes([x for xs in img.getdata() for x in xs])
+                    )
+
+                    return GdkPixbuf.Pixbuf.new_from_bytes(
+                        data,
+                        GdkPixbuf.Colorspace.RGB,
+                        img.has_transparency_data,
+                        8,
+                        img.width,
+                        img.height,
+                        img.width * 3,
+                    )
+
+                img_small = img.convert("RGB")
+                img_small.thumbnail((48, 48))
+
+                self.cover_small = img_to_pixbuf(img_small)
+
+                img_large = img.convert("RGB")
+                img_large.thumbnail((192, 192))
+
+                self.cover_large = img_to_pixbuf(img_large)
 
     def __eq__(self, other):
         if not isinstance(other, EartagFileCover):
