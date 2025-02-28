@@ -143,14 +143,14 @@ def backend_read(file, skip_channels=False):
                 file.get_property("front_cover_path"),
                 os.path.join(EXAMPLES_DIR, "cover.png"),
                 shallow=False,
-            ), "cover art not found in file"  # noqa: E501
+            ), "cover art differs from test value"  # noqa: E501
 
             assert file.get_property("back_cover_path"), "back cover not found in file"
             assert filecmp.cmp(
                 file.get_property("back_cover_path"),
                 os.path.join(EXAMPLES_DIR, "cover_back.png"),
                 shallow=False,
-            ), "back cover not found in file"  # noqa: E501
+            ), "back cover differs from test value"  # noqa: E501
         except TypeError:
             raise ValueError("cover art not found in file")
 

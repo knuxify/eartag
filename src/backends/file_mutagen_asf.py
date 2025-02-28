@@ -94,12 +94,12 @@ def unpack_image(data):
     return (mime, description, data, picture_type)
 
 
-def pack_image(image_data, image_type=3, description="thumbnail"):
+def pack_image(image_data, mime: str, image_type=3, description="thumbnail"):
     """Packs an image into ASF format."""
     size = len(image_data)
 
     data = struct.pack("<bi", image_type, size)
-    data += magic.from_buffer(image_data, mime=True).encode("utf-16-le") + b"\x00\x00"
+    data += mime.encode("utf-16-le") + b"\x00\x00"
     data += description.encode("utf-16-le") + b"\x00\x00"
     data += image_data
 
@@ -249,14 +249,14 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
                 data = out.getvalue()
             mime = "image/png"
 
+        # Remove all conflicting pictures
+        self.delete_cover(cover_type, clear_only=True)
+
         pictures = []
         if "WM/Picture" in self.mg_file.tags:
             pictures = self.mg_file.tags["WM/Picture"]
 
-        # Remove all conflicting pictures
-        self.delete_cover(cover_type, clear_only=True)
-
-        packed_data = pack_image(data, image_type=pictype)
+        packed_data = pack_image(data, mime, image_type=pictype)
         pictures.append(mutagen.asf.ASFValue(packed_data, mutagen.asf.BYTEARRAY))
 
         self.mg_file.tags["WM/Picture"] = pictures
