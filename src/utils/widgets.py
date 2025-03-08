@@ -67,12 +67,13 @@ class EartagEditableLabel(Gtk.EditableLabel):
 
         # The layout is:
         # GtkEditableLabel
+        #  -> GtkPopover (since GTK 4.17)
         #  -> GtkStack
         #     -> GtkStackPage
         #        -> GtkLabel
-        # We use "get_first_child" since that's the easiest way to get
+        # We use "get_last_child" since that's the easiest way to get
         # the direct child of the object (EditableLabel has no get_child).
-        stack = self.get_first_child()
+        stack = self.get_last_child()
         label = stack.get_pages()[0].get_child()
         editable = stack.get_pages()[1].get_child()
 
