@@ -84,8 +84,8 @@
 .prev-next-button-container button { outline-color: rgb(from var(--accent-color) r g b / calc(alpha * 0.5)); }
 
 /* Apply focus colors to editable labels */
-.editablelabel entry {
-	background-color: transparent;
+.editablelabel {
+	border-radius: 6px;
 }
 
 .editablelabel:hover {
@@ -93,6 +93,7 @@
 }
 
 .editablelabel entry {
+	background-color: transparent;
 	padding-top: 1px;
 }
 
