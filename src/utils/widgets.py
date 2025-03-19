@@ -50,86 +50,148 @@ class EartagPopoverButton(Gtk.Box):
         self.append(self._popover)
 
 
-class EartagEditableLabel(Gtk.EditableLabel):
-    """
-    Editable labels are missing a few nice features that we need
-    (namely proper centering and word wrapping), but since they're
-    just GtkStacks with a regular GtkLabel inside, we can modify
-    them to suit our needs. This class automates the process.
-    """
+def _delegate_getter(self, prop):
+    return self.entry.get_delegate().get_property(prop)
+
+
+def _delegate_setter(self, prop, value):
+    return self.entry.get_delegate().set_property(prop, value)
+
+
+class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
+    """Editable label widget."""
 
     __gtype_name__ = "EartagEditableLabel"
 
     def __init__(self):
         super().__init__()
-        self._placeholder = ""
-        self._original_placeholder = ""
+        self._last_edit_state = None
 
-        # The layout is:
-        # GtkEditableLabel
-        #  -> GtkPopover (since GTK 4.17)
-        #  -> GtkStack
-        #     -> GtkStackPage
-        #        -> GtkLabel
-        # We use "get_last_child" since that's the easiest way to get
-        # the direct child of the object (EditableLabel has no get_child).
-        stack = self.get_last_child()
-        label = stack.get_pages()[0].get_child()
-        editable = stack.get_pages()[1].get_child()
+        self.add_css_class("editablelabel")
 
-        # If we make the editable label focusable, clicking on it to edit it
-        # then clicking on another field will cause the editable label to
-        # return the focus to itself. Making it unfocusable fixes it, but also
-        # makes it impossible to switch to it using the keyboard. So instead,
-        # we make the inner stack focusable, which avoids this behavior while
-        # still making the label selectable with the keyboard.
-        self.set_focusable(False)
-        stack.set_focusable(True)
+        self.entry = Gtk.Entry(valign=Gtk.Align.CENTER)
+        self.entry.set_alignment(0.5)
+        self.label = Gtk.Label(
+            can_focus=False,
+            can_target=False,
+            wrap=True,
+            valign=Gtk.Align.CENTER,
+            lines=3,
+            wrap_mode=Pango.WrapMode.WORD_CHAR,
+            ellipsize=Pango.EllipsizeMode.MIDDLE,
+            max_width_chars=128,
+            justify=Gtk.Justification.CENTER,
+            halign=Gtk.Align.CENTER,
+        )
+        self.label.set_cursor(Gdk.Cursor.new_from_name("text"))
 
-        label.set_wrap(True)
-        label.set_wrap_mode(Pango.WrapMode.WORD_CHAR)
-        label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-        label.set_lines(3)
-        label.set_max_width_chars(128)
-        label.set_justify(Gtk.Justification.CENTER)
-        label.set_cursor(Gdk.Cursor.new_from_name("text"))
-        self.set_alignment(0.5)
+        self.set_child(self.entry)
+        self.add_overlay(self.label)
+        self.set_measure_overlay(self.label, True)
 
-        self.bind_property(
+        self.entry.bind_property(
             "placeholder-text",
-            editable,
+            self,
             "placeholder-text",
-            GObject.BindingFlags.SYNC_CREATE,
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
+        )
+        self.entry.get_delegate().bind_property(
+            "has-focus", self, "editing", GObject.BindingFlags.SYNC_CREATE
         )
 
-        self.connect("notify::editing", self.display_placeholder)
-        self.connect("notify::text", self.display_placeholder)
+        self.entry.get_delegate().connect("changed", self.update_label)
+        self.entry.connect("notify::placeholder-text", self.update_label)
+        self.update_label()
 
-        self.label = label
-        self.editable = editable
-        self.stack = stack
-        self.display_placeholder()
+        self.connect("notify::editing", self.update_editing)
+        self.update_editing()
 
-    def display_placeholder(self, *args):
-        """Displays/hides placeholder in non-editing mode as needed."""
-        if not self.get_text():
-            self.label.set_label(self.placeholder_text)
-            self.label.add_css_class("dim-label")
+        self.init_delegate()
+
+    def update_editing(self, *args):
+        if self._last_edit_state == self.props.editing:
+            return
+
+        if self.props.editing:
+            # Grab current size of label
+            self.entry.set_size_request(-1, self.label.get_height())
+            # Switch which bit is visible
+            self.label.props.opacity = 0
+            self.entry.props.opacity = 1
         else:
-            self.label.remove_css_class("dim-label")
-        self.stack.update_property(
-            [Gtk.AccessibleProperty.LABEL], [self.label.get_label()]
-        )
+            # Reset size request
+            self.entry.set_size_request(-1, -1)
+            # Switch which bit is visible
+            self.label.props.opacity = 1
+            self.entry.props.opacity = 0
 
-    @GObject.Property(type=str)
-    def placeholder_text(self):
-        """Placeholder to display when the text is empty."""
-        return self._placeholder
+        self.update_label()
 
-    @placeholder_text.setter
-    def placeholder_text(self, value):
-        self._placeholder = value
-        self.display_placeholder()
+        self._last_edit_state = self.props.editing
+
+    def update_label(self, *args):
+        if self.entry.props.text:
+            self.label.set_text(self.entry.props.text)
+            self.label.remove_css_class("dimmed")
+        else:
+            self.label.set_text(self.entry.props.placeholder_text or "")
+            self.label.add_css_class("dimmed")
+
+    def do_get_delegate(self):
+        return self.entry.get_delegate()
+
+    # Properties (TODO: find a better way to auto-proxy them?)
+    cursor_position = GObject.Property(
+        type=int,
+        default=0,
+        getter=lambda self: _delegate_getter(self, "cursor_position"),
+        flags=GObject.ParamFlags.READABLE,
+    )
+    editable = GObject.Property(
+        type=bool,
+        default=True,
+        getter=lambda self: _delegate_getter(self, "editable"),
+        setter=lambda self, value: _delegate_setter(self, "editable", value),
+    )
+    enable_undo = GObject.Property(
+        type=bool,
+        default=True,
+        getter=lambda self: _delegate_getter(self, "enable_undo"),
+        setter=lambda self, value: _delegate_setter(self, "enable_undo", value),
+    )
+    max_width_chars = GObject.Property(
+        type=int,
+        default=-1,
+        getter=lambda self: _delegate_getter(self, "max_width_chars"),
+        setter=lambda self, value: _delegate_setter(self, "max_width_chars", value),
+    )
+    selection_bound = GObject.Property(
+        type=int,
+        default=0,
+        getter=lambda self: _delegate_getter(self, "selection_bound"),
+        setter=lambda self, value: _delegate_setter(self, "selection_bound", value),
+    )
+    text = GObject.Property(
+        type=str,
+        getter=lambda self: _delegate_getter(self, "text"),
+        setter=lambda self, value: _delegate_setter(self, "text", value),
+    )
+    width_chars = GObject.Property(
+        type=int,
+        default=-1,
+        getter=lambda self: _delegate_getter(self, "width_chars"),
+        setter=lambda self, value: _delegate_setter(self, "width_chars", value),
+    )
+    xalign = GObject.Property(
+        type=float,
+        default=0.0,
+        getter=lambda self: _delegate_getter(self, "xalign"),
+        setter=lambda self, value: _delegate_setter(self, "xalign", value),
+    )
+
+    # Custom properties
+    editing = GObject.Property(type=bool, default=False)
+    placeholder_text = GObject.Property(type=str)
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/albumcoverimage.ui")
