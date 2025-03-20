@@ -121,7 +121,7 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         else:
             # Switch which bit is visible
             self.label.props.visible = True
-            #self.label.props.opacity = 1
+            # self.label.props.opacity = 1
             self.entry.props.opacity = 0
 
         self.update_label()
@@ -182,7 +182,9 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         setter=lambda self, value: _delegate_setter(self, "width_chars", value),
     )
     xalign = GObject.Property(
-        type=GObject.type_from_name('gfloat'),  # float converts to gdouble which causes warning
+        type=GObject.type_from_name(
+            "gfloat"
+        ),  # float converts to gdouble which causes warning
         default=0.0,
         getter=lambda self: _delegate_getter(self, "xalign"),
         setter=lambda self, value: _delegate_setter(self, "xalign", value),
