@@ -99,6 +99,20 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
             "has-focus", self, "editing", GObject.BindingFlags.SYNC_CREATE
         )
 
+        for prop in (
+            "cursor-position",
+            "editable",
+            "enable-undo",
+            "max-width-chars",
+            "selection-bound",
+            "text",
+            "width-chars",
+            "xalign",
+        ):
+            self.entry.get_delegate().connect(
+                f"notify::{prop}", lambda obj, data, _prop=prop: self.notify(_prop)
+            )
+
         self.entry.get_delegate().connect("changed", self.update_label)
         self.entry.connect("notify::placeholder-text", self.update_label)
         self.update_label()
@@ -121,7 +135,7 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         else:
             # Switch which bit is visible
             self.label.props.visible = True
-            #self.label.props.opacity = 1
+            # self.label.props.opacity = 1
             self.entry.props.opacity = 0
 
         self.update_label()
@@ -168,7 +182,7 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         type=int,
         default=0,
         getter=lambda self: _delegate_getter(self, "selection_bound"),
-        setter=lambda self, value: _delegate_setter(self, "selection_bound", value),
+        flags=GObject.ParamFlags.READABLE,
     )
     text = GObject.Property(
         type=str,
@@ -182,7 +196,9 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         setter=lambda self, value: _delegate_setter(self, "width_chars", value),
     )
     xalign = GObject.Property(
-        type=GObject.type_from_name('gfloat'),  # float converts to gdouble which causes warning
+        type=GObject.type_from_name(
+            "gfloat"
+        ),  # float converts to gdouble which causes warning
         default=0.0,
         getter=lambda self: _delegate_getter(self, "xalign"),
         setter=lambda self, value: _delegate_setter(self, "xalign", value),
