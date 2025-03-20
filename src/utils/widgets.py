@@ -112,17 +112,16 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         if self._last_edit_state == self.props.editing:
             return
 
+        self.entry.set_size_request(-1, self.label.get_height())
+
         if self.props.editing:
-            # Grab current size of label
-            self.entry.set_size_request(-1, self.label.get_height())
             # Switch which bit is visible
-            self.label.props.opacity = 0
+            self.label.props.visible = False
             self.entry.props.opacity = 1
         else:
-            # Reset size request
-            self.entry.set_size_request(-1, -1)
             # Switch which bit is visible
-            self.label.props.opacity = 1
+            self.label.props.visible = True
+            #self.label.props.opacity = 1
             self.entry.props.opacity = 0
 
         self.update_label()
