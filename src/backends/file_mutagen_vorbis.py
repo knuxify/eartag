@@ -362,7 +362,14 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             return None
         if "/" in tracknum_raw:
             return int(tracknum_raw.split("/")[0])
-        return int(tracknum_raw)
+
+        try:
+            return int(tracknum_raw)
+        except ValueError:
+            # Some files (e.g. vinyl rips) use letters in their numbering scheme,
+            # e.g. A1, A2, etc.; until (unless?) we add support for them, treat them
+            # as invalid for now.
+            return None
 
     @tracknumber.setter
     def tracknumber(self, value):
@@ -384,7 +391,12 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             return None
         if "/" in tracknum_raw:
             return int(tracknum_raw.split("/")[1])
-        return None
+
+        try:
+            return int(tracknum_raw)
+        except ValueError:
+            # See comment in tracknumber.
+            return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
