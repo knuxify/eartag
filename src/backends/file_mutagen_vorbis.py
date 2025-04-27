@@ -383,20 +383,23 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     def totaltracknumber(self):
         totalnum_raw = self.get_tag("totaltracknumber")
         if totalnum_raw:
-            return int(totalnum_raw)
+            try:
+                return int(totalnum_raw)
+            except ValueError:
+                # See comment in tracknumber.
+                return None
 
         # Fall back to parsing track number with "/" (older Ear Tag versions)
         tracknum_raw = self.get_tag("tracknumber")
         if not tracknum_raw:
             return None
         if "/" in tracknum_raw:
-            return int(tracknum_raw.split("/")[1])
+            try:
+                return int(tracknum_raw.split("/")[1])
+            except ValueError:
+                return None
 
-        try:
-            return int(tracknum_raw)
-        except ValueError:
-            # See comment in tracknumber.
-            return None
+        return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
