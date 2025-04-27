@@ -29,6 +29,13 @@ def eartagfile_from_path(path):
     if not os.path.exists(path):
         raise ValueError
 
+    # We do two filetype guesses:
+    # - One with mimetypes.guess_type; this only gets the type from the file
+    #   extension;
+    # - One with magic.from_file; this actually checks the file contents.
+    # The magic guess is given a higher priority (2) than the mimetypes guess (1),
+    # to avoid misdetections in cases where the file extension is incorrect.
+
     mimetypes_guess = mimetypes.guess_type(path)[0]
     magic_guess = magic.from_file(path, mime=True)
 
