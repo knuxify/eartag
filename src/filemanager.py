@@ -24,49 +24,50 @@ from .dialogs import (
 )
 
 
-def is_type_bulk(path, types):
-    mimetypes_guess = mimetypes.guess_type(path)[0]
-    magic_guess = magic.from_file(path, mime=True)
-
-    for type in types:
-        if mimetypes_guess == type or magic_guess == type:
-            return True
-
-    return False
-
-
 def eartagfile_from_path(path):
     """Returns an EartagFile subclass for the provided file."""
     if not os.path.exists(path):
         raise ValueError
 
-    if is_type_bulk(path, ("audio/mp3", "audio/mpeg", "audio/wav", "audio/x-wav")):
+    mimetypes_guess = mimetypes.guess_type(path)[0]
+    magic_guess = magic.from_file(path, mime=True)
+
+    def is_type_bulk(types):
+        if magic_guess in types:
+            return 2
+        if mimetypes_guess in types:
+            return 1
+        return 0
+
+    confidence = {
+        "mp3": is_type_bulk(
+            ("audio/mp3", "audio/mpeg", "audio/x-mpeg", "audio/wav", "audio/x-wav")
+        ),
+        "ogg": is_type_bulk(
+            (
+                "audio/flac",
+                "audio/ogg",
+                "application/ogg",
+                "application/x-ogg",
+                "audio/x-flac",
+                "audio/x-vorbis+ogg",
+            )
+        ),
+        "mp4": is_type_bulk(("audio/x-m4a", "audio/aac", "audio/mp4", "video/mp4")),
+        "wma": is_type_bulk(("audio/x-ms-wma", "audio/wma", "video/x-ms-asf")),
+    }
+
+    filetype = sorted(
+        confidence.keys(), key=lambda ftype: confidence[ftype], reverse=True
+    )[0]
+
+    if filetype == "mp3":
         return EartagFileMutagenID3(path)
-    elif is_type_bulk(
-        path,
-        (
-            "audio/flac",
-            "audio/ogg",
-            "application/ogg",
-            "application/x-ogg",
-            "audio/x-flac",
-            "audio/x-vorbis+ogg",
-        ),
-    ):
+    elif filetype == "ogg":
         return EartagFileMutagenVorbis(path)
-    elif is_type_bulk(
-        path,
-        (
-            "audio/x-m4a",
-            "audio/aac",
-            "audio/mp4",
-            "audio/x-mpeg",
-            "audio/mpeg",
-            "video/mp4",
-        ),
-    ):
+    elif filetype == "mp4":
         return EartagFileMutagenMP4(path)
-    elif is_type_bulk(path, ("audio/x-ms-wma", "audio/wma", "video/x-ms-asf")):
+    elif filetype == "wma":
         return EartagFileMutagenASF(path)
 
     mimetypes_guess = mimetypes.guess_type(path)[0]
