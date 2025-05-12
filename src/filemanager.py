@@ -127,36 +127,11 @@ class EartagFileManager(GObject.Object):
         self._selection_removed = False
 
         # Create background task runners
+        self.save_task = EartagBackgroundTask(self._save)
         self.load_task = EartagBackgroundTask(self._load_files)
         self.rename_task = EartagBackgroundTask(self._rename_files)
 
         self.selected_files.connect("selection-changed", self.do_selection_changed)
-
-    @GObject.Signal
-    def save_started(self):
-        pass
-
-    def save(self):
-        """Saves changes in all files."""
-        if not self.is_modified or self.has_error:
-            return False
-
-        for file in self.files:
-            if not file.is_writable or not file.is_modified:
-                continue
-
-            try:
-                file.save()
-            except:
-                traceback.print_exc()
-                file_basename = os.path.basename(file.path)
-                self.error_dialog = EartagSaveFailureDialog(file_basename)
-                self.error_dialog.present(self.window)
-
-                return False
-
-        self.window.toast_overlay.add_toast(Adw.Toast.new(_("Saved changes to files")))
-        return True
 
     def update_modified_status(self, file, *args):
         """Responsible for setting the is_modified property."""
@@ -175,6 +150,54 @@ class EartagFileManager(GObject.Object):
             self._error_files.remove(file.id)
 
         self.set_property("has_error", bool(self._error_files))
+
+    #
+    # Saving
+    #
+
+    def save(self):
+        """Saves changes in all files."""
+        # self.save_task is set up in the init functions
+        self.save_task.stop()
+        self.save_task.reset()
+        self.save_task.run()
+
+    def _save(self):
+        """Saves changes in all files (internal function)."""
+        if not self.is_modified or self.has_error:
+            return False
+
+        task = self.save_task
+        progress_step = 1 / self.get_n_files()
+
+        for file in self.files:
+            if task.halt:
+                task.emit_task_done()
+                return False
+
+            if not file.is_writable or not file.is_modified:
+                task.increment_progress(progress_step)
+                continue
+
+            try:
+                file.save()
+            except:
+                traceback.print_exc()
+                file_basename = os.path.basename(file.path)
+                self.error_dialog = EartagSaveFailureDialog(file_basename)
+                GLib.idle_add(self.error_dialog.present, self.window)
+
+                task.emit_task_done()
+                return False
+
+            task.increment_progress(progress_step)
+
+        GLib.idle_add(
+            self.window.toast_overlay.add_toast,
+            Adw.Toast.new(_("Saved changes to files")),
+        )
+
+        task.emit_task_done()
 
     #
     # Loading

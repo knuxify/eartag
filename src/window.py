@@ -130,6 +130,9 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.load_task.connect(
             "notify::progress", self.update_loading_progress
         )
+        self.file_manager.save_task.connect(
+            "notify::progress", self.update_loading_progress
+        )
         self.search_bar.bind_property(
             "search-mode-enabled",
             self.sidebar_search_button,
@@ -205,6 +208,9 @@ class EartagWindow(Adw.ApplicationWindow):
             "selection-changed", self.refresh_actionbar_button_state
         )
         self.file_manager.load_task.connect(
+            "notify::progress", self.update_loading_progressbar
+        )
+        self.file_manager.save_task.connect(
             "notify::progress", self.update_loading_progressbar
         )
         self.refresh_actionbar_button_state()
@@ -526,8 +532,8 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         loading_progress = task.progress
         self.loading_progressbar_revealer.set_reveal_child(not loading_progress == 0)
-        self.set_sensitive(loading_progress == 0)
-        self.sidebar_file_list.set_visible(loading_progress == 0)
+        self.sidebar_file_list.set_sensitive(loading_progress == 0)
+        self.file_view.content_clamp.set_sensitive(loading_progress == 0)
         self.loading_progressbar.set_fraction(loading_progress)
 
     def search_changed(self, search_entry, *args):

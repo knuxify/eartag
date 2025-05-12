@@ -881,6 +881,7 @@ class EartagFileView(Gtk.Stack):
     loading = Gtk.Template.Child()
     content_stack = Gtk.Template.Child()
     content_scroll = Gtk.Template.Child()
+    content_clamp = Gtk.Template.Child()
     select_file = Gtk.Template.Child()
 
     important_data_container = Gtk.Template.Child()
