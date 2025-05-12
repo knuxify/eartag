@@ -25,6 +25,10 @@ class EartagPopoverButton(Gtk.Box):
         self._popover = None
         self.toggle_button = Gtk.ToggleButton()
         self.append(self.toggle_button)
+        self.toggle_button.update_relation(
+            (Gtk.AccessibleRelation.LABELLED_BY,),
+            (Gtk.AccessibleList.new_from_list((self,)),),
+        )
 
     @GObject.Property(type=Gtk.Widget)
     def child(self):

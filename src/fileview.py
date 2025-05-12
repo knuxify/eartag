@@ -107,6 +107,16 @@ class EartagAlbumCoverButton(Adw.Bin):
     @cover_type.setter
     def cover_type(self, value):
         self._cover_type = value
+        if self.cover_type == CoverType.FRONT:
+            title = _("Album cover (front)")
+        else:
+            title = _("Album cover (back)")
+
+        Gtk.Accessible.update_property(self, (Gtk.AccessibleProperty.LABEL,), (title,))
+        Gtk.Accessible.update_property(
+            self.button, (Gtk.AccessibleProperty.LABEL,), (title,)
+        )
+        self.button.set_tooltip_text(title)
 
     def update_coverbutton_save_availability(self, *args):
         if self.cover_type == CoverType.FRONT:
