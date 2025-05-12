@@ -483,7 +483,8 @@ class EartagMoreTagsGroup(Gtk.Box):
     @Gtk.Template.Callback()
     def add_row_from_selector(self, selector, tag):
         """Adds a new row based on the tag selector."""
-        self.add_extra_row(tag)
+        row = self.add_extra_row(tag)
+        row.grab_focus()
 
     def tag_filter_func(self, _tag_name, *args):
         """Filter function for the tag dropdown."""
@@ -534,6 +535,8 @@ class EartagMoreTagsGroup(Gtk.Box):
 
         if not skip_filter_refresh:
             self.refresh_tag_filter()
+
+        return row
 
     def remove_extra_row(self, row, skip_filter_refresh=False):
         """

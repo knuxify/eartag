@@ -74,9 +74,9 @@ class EartagTagSelectorButton(Gtk.MenuButton):
             return
         tag = self.tag_names_swapped[selected_item.get_string()]
 
-        self.emit("tag-selected", tag)
-
         self.tag_list_popover.popdown()
+
+        self.emit("tag-selected", tag)
 
         self._ignore_tag_selector = False
 
