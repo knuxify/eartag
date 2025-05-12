@@ -78,8 +78,10 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.apply_checkbox = Gtk.CheckButton()
         self.apply_checkbox.set_active(True)
         self.apply_checkbox.set_sensitive(False)
+        self.apply_checkbox.set_valign(Gtk.Align.CENTER)
         self.apply_checkbox.connect("notify::active", self.toggle_row_checkboxes)
         self.apply_checkbox.add_css_class("selection-mode")
+        self.apply_checkbox.set_tooltip_text(_("Apply identified data"))
         self.add_suffix(self.apply_checkbox)
 
         if release:
