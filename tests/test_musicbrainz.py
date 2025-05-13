@@ -11,6 +11,7 @@ from src.musicbrainz import (
 from src.backends.file_mutagen_id3 import EartagFileMutagenID3
 from .common import dummy_file  # noqa: F401; flake8 doesn't understand fixtures
 
+import time
 import pytest
 import os
 
@@ -28,8 +29,28 @@ def test_musicbrainz_onerel():
     assert (
         rec.release.release_id == "46fee5ba-49cb-4ebd-a6bc-71bbf03a210d"
     ), NOT_FOUND_STR
+
+    rec.release.download_thumbnail()
+    timeout = 30
+    while not rec.release.props.thumbnail_loaded:
+        time.sleep(0.5)
+        print(rec.release.props.thumbnail_loaded)
+        timeout -= 0.5
+        if timeout <= 0:
+            raise Exception("Timeout while loading thumbnail")
+
     assert not rec.release.thumbnail_path
-    rec.release.update_covers()
+
+    rec.release.download_covers()
+    timeout = 30
+    while (
+        not rec.release.props.front_cover_loaded
+        or not rec.release.props.back_cover_loaded
+    ):
+        time.sleep(0.5)
+        timeout -= 0.5
+        if timeout <= 0:
+            raise Exception("Timeout while loading covers")
     assert not rec.front_cover_path
     assert not rec.back_cover_path
 
@@ -67,14 +88,12 @@ def test_musicbrainz_multirel():
     assert rec.tracknumber == 1
     assert rec.totaltracknumber == 12
     assert rec.album == "Effective. Power"
-    assert rec.thumbnail_path
 
     rec.release = rel2
     assert rec.release == rel2
     assert rec.tracknumber == 2
     assert rec.totaltracknumber == 14
     assert rec.album == "effective. Power لُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ 冗"
-    assert rec.thumbnail_path
 
 
 @pytest.mark.networked_tests
@@ -106,7 +125,14 @@ def test_musicbrainz_covers():
     else:
         raise AssertionError
 
-    rel.update_covers()
+    rel.download_covers()
+    timeout = 30
+    while not rel.props.front_cover_loaded or not rel.props.back_cover_loaded:
+        time.sleep(0.5)
+        timeout -= 0.5
+        if timeout <= 0:
+            raise Exception("Timeout while loading covers")
+
     assert rel.front_cover_path
     assert rel.back_cover_path
 
@@ -151,6 +177,14 @@ def test_musicbrainz_file_set(
 
     rec.release = rel
 
+    rel.download_covers()
+    timeout = 30
+    while not rel.props.front_cover_loaded or not rel.props.back_cover_loaded:
+        time.sleep(0.5)
+        timeout -= 0.5
+        if timeout <= 0:
+            raise Exception("Timeout while loading thumbnail")
+
     rec.apply_data_to_file(dummy_file)
 
     assert dummy_file.title == "Royal Blue Walls"
@@ -159,6 +193,7 @@ def test_musicbrainz_file_set(
     assert dummy_file.albumartist == "Jane Remover"
     assert dummy_file.tracknumber == 1
     assert dummy_file.totaltracknumber == 2
+
     assert dummy_file.front_cover_path
     assert not dummy_file.back_cover_path
 

@@ -6,6 +6,7 @@ from gi.repository import Adw, Gtk, Gio, GObject, GdkPixbuf
 import os
 import html
 import gettext
+import time
 
 from .musicbrainz import (
     acoustid_identify_file,
@@ -27,18 +28,24 @@ class EartagIdentifyCoverImage(Gtk.Stack):
 
     no_cover = Gtk.Template.Child()
     cover_image = Gtk.Template.Child()
+    loading_icon = Gtk.Template.Child()
+
+    loading = GObject.Property(type=bool, default=False)
+    cover_path = GObject.Property(type=str, default="")
 
     def __init__(self):
         super().__init__()
         self._cover_path = None
+        self.connect("notify::loading", self.update)
+        self.connect("notify::cover-path", self.update)
 
-    @GObject.Property(type=str)
-    def cover_path(self):
-        return self._cover_path
+    def update(self, *args):
+        """Update the cover according to the current state."""
+        if self.props.loading:
+            self.set_visible_child(self.loading_icon)
+            return
 
-    @cover_path.setter
-    def cover_path(self, path):
-        self._cover_path = path
+        path = self.props.cover_path
 
         if not path or not os.path.exists(path):
             self.set_visible_child(self.no_cover)
@@ -126,6 +133,9 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         # This allows the user to switch between different releases of an album, EP, etc.
         self.release_popover_toggle.set_tooltip_text(_("Other releases"))
         self.release_popover_toggle.set_icon_name("view-more-symbolic")
+        self.release_popover_toggle.connect(
+            "notify::active", self.download_alt_release_thumbnails
+        )
         self.add_suffix(self.release_popover_toggle)
 
     def bind_to_release(self, release):
@@ -139,6 +149,12 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
                 "cover_path",
                 GObject.BindingFlags.SYNC_CREATE,
             ),
+            self.release.bind_property(
+                "thumbnail_loaded",
+                self.cover_image,
+                "loading",
+                GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN,
+            ),
         ]
         self._connections = [
             self.release.connect("notify::title", self.update_title),
@@ -148,6 +164,8 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         ]
         self.update_title()
         self.update_subtitle()
+
+        release.download_thumbnail()
 
     def unbind(self):
         for binding in self._bindings:
@@ -254,6 +272,21 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         )
         return row
 
+    def download_alt_release_thumbnails(self, *args):
+        """
+        Start downloading alternative release thumbnails when the popover
+        is opened.
+        """
+        if not self.release_popover_toggle.props.active:
+            return
+
+        for rel in self._rel_model:
+            if (
+                not rel.thumbnail_loaded
+                and not rel.download_thumbnail_task.props.is_running
+            ):
+                rel.download_thumbnail()
+
     def set_release_from_selector(self, _t1, _t2, rel_id):
         rel = None
         for rel in self._rel_model:
@@ -297,6 +330,12 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
                 self.cover_image,
                 "cover_path",
                 GObject.BindingFlags.SYNC_CREATE,
+            ),
+            self.release.bind_property(
+                "thumbnail_loaded",
+                self.cover_image,
+                "loading",
+                GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN,
             ),
         ]
         self._connections = [
@@ -401,11 +440,9 @@ class EartagIdentifyFileRow(Adw.ActionRow):
     def start_loading(self):
         self.suffix_stack.set_visible(True)
         self.suffix_stack.set_visible_child(self.loading_icon)
-        self.loading_icon.start()
 
     def mark_as_unidentified(self):
         self.suffix_stack.set_visible_child(self.not_found_icon)
-        self.loading_icon.stop()
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/identify/recordingrow.ui")
@@ -470,11 +507,9 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     def start_loading(self):
         self.suffix_stack.set_visible(True)
         self.suffix_stack.set_visible_child(self.loading_icon)
-        self.loading_icon.start()
 
     def mark_as_unidentified(self):
         self.suffix_stack.set_visible_child(self.not_found_icon)
-        self.loading_icon.stop()
 
     @Gtk.Template.Callback()
     def toggle_apply(self, toggle, *args):
@@ -948,7 +983,14 @@ class EartagIdentifyDialog(Adw.Dialog):
                 return
 
             rec = self.recordings[file.id]
-            rec.release.update_covers()
+            rec.release.download_covers()
+            # TODO: Make a queue of cover downloads. Right now we just block
+            #       until the covers are downloaded
+            while (
+                not rec.release.props.front_cover_loaded
+                or not rec.release.props.back_cover_loaded
+            ):
+                time.sleep(0.25)
             run_threadsafe(rec.apply_data_to_file, file)
             self.apply_task.increment_progress(progress_step)
 
