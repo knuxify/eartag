@@ -75,14 +75,6 @@ template $EartagFileListItem: Box {
   Box suffixes {
     spacing: 6;
 
-    Stack acoustid_info_stack {
-      visible: false;
-
-      Label acoustid_info_label {}
-
-      Spinner acoustid_loading_icon {}
-    }
-
     Button remove_button {
       icon-name: "edit-delete-symbolic";
       clicked => $remove_item();
