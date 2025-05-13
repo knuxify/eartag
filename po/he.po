@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-03-10 11:44+0000\n"
-"PO-Revision-Date: 2025-03-10 21:57+0200\n"
+"POT-Creation-Date: 2025-05-12 17:23+0000\n"
+"PO-Revision-Date: 2025-05-13 10:11+0300\n"
 "Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -18,14 +18,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
-"2 : 3)\n"
-"X-Generator: Gtranslator 47.1\n"
+"2 : 3);\n"
+"X-Generator: Poedit 3.6\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
-#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:254
+#: src/window.py:269 src/ui/window.blp:245 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -49,7 +49,7 @@ msgstr "עריכת תגיות קובצי שמע"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "מוזיקה;מוסיקה;תג;תגיות;תגית;מתייג;תיוג;אודיו;שמע;צליל;שירים;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:97
+#: data/app.drey.EarTag.metainfo.xml.in:101
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -60,23 +60,23 @@ msgstr ""
 "עריכה של מספר רב של רצועות באלבומים/מיני־‏אלבומים. בשונה מתכנות תיוג אחרות, "
 "Ear Tag לא דורש מהמשתמש להגדיר את תיקיית ספריית המוזיקה. הוא יכול:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:99
+#: data/app.drey.EarTag.metainfo.xml.in:103
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "עריכת תגיות קובצי MP3, WAV, M4A, FLAC, OGG ו־WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:100
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid "Modify metadata of multiple files at once"
 msgstr "לשנות נתוני מידע על מספר קבצים בבת אחת"
 
-#: data/app.drey.EarTag.metainfo.xml.in:101
+#: data/app.drey.EarTag.metainfo.xml.in:105
 msgid "Rename files using information from present tags"
 msgstr "לשנות שמות קבצים באמצעות מידע מהתגיות הקיימות בהם"
 
-#: data/app.drey.EarTag.metainfo.xml.in:102
+#: data/app.drey.EarTag.metainfo.xml.in:106
 msgid "Identify files using AcoustID"
 msgstr "לזהות קבצים באמצעות AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:104
+#: data/app.drey.EarTag.metainfo.xml.in:108
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "נדרשת גישה לרשת רק כדי להשתמש באפשרות „זיהוי קבצים נבחרים”."
 
@@ -84,41 +84,41 @@ msgstr "נדרשת גישה לרשת רק כדי להשתמש באפשרות „
 msgid "All supported audio files"
 msgstr "כל קובצי השמע הנתמכים"
 
-#: src/window.py:230
+#: src/window.py:236
 msgid "Unselect all files"
 msgstr "ביטול בחירת כל הקבצים"
 
-#: src/window.py:233 src/ui/window.blp:208
+#: src/window.py:239 src/ui/window.blp:210
 msgid "Select all files"
 msgstr "בחירת כל הקבצים"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:272 src/fileview.py:774
+#: src/window.py:278 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "(מספר רב של קבצים נבחרים)"
 
-#: src/window.py:364 src/ui/nofile.blp:35
+#: src/window.py:370 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "פתיחת תיקיה"
 
-#: src/window.py:367 src/ui/nofile.blp:24
+#: src/window.py:373 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "פתיחת קובץ"
 
-#: src/window.py:438
+#: src/window.py:444
 msgid "No supported files found in opened folder"
 msgstr "לא נמצאו קבצים נתמכים בתיקייה שנפתחה"
 
-#: src/window.py:447
+#: src/window.py:453
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "לחלק מהקבצים הפתוחים יש ערכים לא תקינים; לא ניתן לבצע שמירה"
 
-#: src/window.py:581
+#: src/window.py:587
 msgid "No files selected"
 msgstr "לא נבחרו קבצים"
 
-#: src/window.py:587
+#: src/window.py:593
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -127,7 +127,7 @@ msgstr[1] "נבחרו שני קבצים"
 msgstr[2] "נבחרו {n} קבצים"
 msgstr[3] "נבחרו {n} קבצים"
 
-#: src/window.py:673
+#: src/window.py:679
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -136,11 +136,11 @@ msgstr[1] "בוטלו שינויים בשני קבצים"
 msgstr[2] "בוטלו שינויים ב־{n} קבצים"
 msgstr[3] "בוטלו שינויים ב־{n} קבצים"
 
-#: src/window.py:678
+#: src/window.py:684
 msgid "Redo"
 msgstr "ביצוע מחדש"
 
-#: src/window.py:709
+#: src/window.py:715
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -149,7 +149,7 @@ msgstr[1] "השינויים בשני הקבצים בוצעו מחדש"
 msgstr[2] "השינויים ב־{n} הקבצים בוצעו מחדש"
 msgstr[3] "השינויים ב־{n} הקבצים בוצעו מחדש"
 
-#: src/window.py:757
+#: src/window.py:763
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -158,11 +158,11 @@ msgstr[1] "הוסרו תגיות משני קבצים"
 msgstr[2] "הוסרו תגיות מ־{n} קבצים"
 msgstr[3] "הוסרו תגיות מ־{n} קבצים"
 
-#: src/window.py:762 src/fileview.py:308
+#: src/window.py:768 src/fileview.py:318
 msgid "Undo"
 msgstr "ביטול"
 
-#: src/window.py:792
+#: src/window.py:798
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -195,63 +195,68 @@ msgstr "בחירה מרובה של קבצים"
 msgid "Search opened files"
 msgstr "חיפוש בקבצים הפתוחים"
 
-#: src/ui/window.blp:194
+#. TRANSLATORS: Search entry placeholder for "Search opened files" option
+#: src/ui/window.blp:163 src/ui/previewselectorbutton.blp:25
+msgid "Search by title, artist, filename…"
+msgstr "חיפוש לפי כותרת, יוצר/ת, שם קובץ…"
+
+#: src/ui/window.blp:196
 msgid "No Results Found"
 msgstr "לא נמצאו תוצאות"
 
-#: src/ui/window.blp:195
+#: src/ui/window.blp:197
 msgid "Try a different search query."
 msgstr "יש לנסות מילים שונות לחיפוש."
 
-#: src/ui/window.blp:222
+#: src/ui/window.blp:224
 msgid "Remove selected files"
 msgstr "הסתרת הקבצים הנבחרים"
 
-#: src/ui/window.blp:236
+#: src/ui/window.blp:238
 msgid "Show file list"
 msgstr "הצגת רשימת הקבצים"
 
-#: src/ui/window.blp:258
+#: src/ui/window.blp:260
 msgid "_Open File"
 msgstr "_פתיחת קובץ"
 
-#: src/ui/window.blp:263
+#: src/ui/window.blp:265
 msgid "O_pen Folder"
 msgstr "פתיחת _תיקייה"
 
-#: src/ui/window.blp:270
+#: src/ui/window.blp:272
 msgid "_Sort File List"
 msgstr "_מיון רשימת הקבצים"
 
-#: src/ui/window.blp:277
+#: src/ui/window.blp:279
 msgid "_Rename Selected Files"
 msgstr "_שינוי שם לקבצים הנבחרים"
 
-#: src/ui/window.blp:282
+#: src/ui/window.blp:284
 msgid "_Extract Tags from Filename"
 msgstr "_חילוץ תגיות משם קובץ"
 
-#: src/ui/window.blp:287
+#: src/ui/window.blp:289
 msgid "_Identify Selected Files"
 msgstr "_זיהוי הקבצים הנבחרים"
 
-#: src/ui/window.blp:294
+#: src/ui/window.blp:296
 msgid "_Undo Changes in Selected Files"
 msgstr "_ביטול השינויים בקבצים הנבחרים"
 
-#: src/ui/window.blp:299
+#: src/ui/window.blp:301
 msgid "_Remove All Tags in Selected Files"
 msgstr "ה_סרת כל התגיות בקבצים הנבחרים"
 
-#: src/ui/window.blp:306
+#: src/ui/window.blp:308
 msgid "_Keyboard Shortcuts"
 msgstr "_צירופי מקשים"
 
-#: src/ui/window.blp:311
+#: src/ui/window.blp:313
 msgid "_Preferences"
 msgstr "ה_עדפות"
 
-#: src/ui/window.blp:316
+#: src/ui/window.blp:318
 msgid "_About Ear Tag"
 msgstr "_על אודות Ear Tag"
 
@@ -259,15 +264,15 @@ msgstr "_על אודות Ear Tag"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "יש לפתוח או לגרור קובצי שמע כדי לערוך את נתוני המידע שלהם."
 
-#: src/filemanager.py:150
+#: src/filemanager.py:197
 msgid "Saved changes to files"
 msgstr "נשמרו שינויים לקבצים"
 
-#: src/filemanager.py:256
+#: src/filemanager.py:287
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "הקובץ הנפתח הוא לקריאה בלבד; לא תהיה אפשרות לשמור שינויים"
 
-#: src/filemanager.py:259
+#: src/filemanager.py:290
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "חלק מהקבצים הפתוחים הנם לקריאה בלבד; לא תהיה אפשרות לשמור שינויים"
 
@@ -427,22 +432,30 @@ msgstr "מזהה הקלטה ב־MusicBrainz"
 msgid "MusicBrainz Release Group ID"
 msgstr "מזהה קבוצת שחרור ב־MusicBrainz"
 
-#: src/fileview.py:196
+#: src/fileview.py:111
+msgid "Album cover (front)"
+msgstr "עטיפת אלבום (חזית)"
+
+#: src/fileview.py:113
+msgid "Album cover (back)"
+msgstr "עטיפת אלבום (גב)"
+
+#: src/fileview.py:206
 msgid "Select Album Cover Image"
 msgstr "בחירת תמונת כיסוי אלבום"
 
-#: src/fileview.py:247
+#: src/fileview.py:257
 msgid "Save Album Cover To…"
 msgstr "שמירת כיסוי אלבום אל…"
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
-#: src/fileview.py:280
+#: src/fileview.py:290
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "שמירת כיסוי אל {path}"
 
-#: src/fileview.py:305
+#: src/fileview.py:315
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
@@ -451,7 +464,7 @@ msgstr[1] "הוסר כיסוי משני קבצים"
 msgstr[2] "הוסר כיסוי מ־{n} קבצים"
 msgstr[3] "הוסר כיסוי מ־{n} קבצים"
 
-#: src/fileview.py:788
+#: src/fileview.py:801
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -460,7 +473,7 @@ msgstr[1] "שני ערוצים"
 msgstr[2] "‫{n} ערוצים"
 msgstr[3] "‫{n} ערוצים"
 
-#: src/fileview.py:833
+#: src/fileview.py:846
 msgid "(multiple files)"
 msgstr "(מספר קבצים רב)"
 
@@ -708,13 +721,13 @@ msgstr "ביטול בחירת תיקייה"
 
 #: src/ui/rename.blp:148
 msgid ""
-"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
-"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
-"available tags</a>."
+"For a list of available placeholders, see the <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">list of available tags</a>."
 msgstr ""
-"לרשימה של תגיות ממלאות מקום זמינות, יש לעיין ב<a href=\"https://gitlab.gnome."
-"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">רשימת "
-"תגיות זמינות</a>."
+"לרשימה של תגיות ממלאות מקום זמינות, יש לעיין ב<a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">רשימת תגיות זמינות</a>."
 
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
@@ -752,20 +765,24 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "נא לבחור קובץ לתצוגה מקדימה"
 
+#: src/identify.py:84 src/ui/identify/recordingrow.blp:15
+msgid "Apply identified data"
+msgstr "החלת נתונים שזוהו"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:125
+#: src/identify.py:127
 msgid "Other releases"
 msgstr "שחרורים אחרים"
 
-#: src/identify.py:524
+#: src/identify.py:526
 msgid "Unidentified Files"
 msgstr "קבצים שלא זוהו"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:970
+#: src/identify.py:972
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -784,13 +801,13 @@ msgstr "זיהוי"
 
 #: src/ui/identify/identify.blp:71
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz."
-"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
-"href=\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://"
+"musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified "
+"using the <a href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
 "מידע על רצועה מסופק על ידי <a href=\"https://musicbrainz.org\">Musicbrainz</"
-"a>. קבצים ללא נתוני מידע מזוהים באמצעות שירות <a href=\"https://acoustid."
-"org\">AcoustID</a>."
+"a>. קבצים ללא נתוני מידע מזוהים באמצעות שירות <a href=\"https://"
+"acoustid.org\">AcoustID</a>."
 
 #: src/ui/identify/filerow.blp:22
 msgid "File could not be identified"
