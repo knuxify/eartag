@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-03-20 09:27+0000\n"
+"POT-Creation-Date: 2025-05-12 17:23+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ser82-png <asvmail.as@gmail.com>\n"
 "Language-Team: \n"
@@ -23,8 +23,8 @@ msgstr ""
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
-#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:254
+#: src/window.py:269 src/ui/window.blp:245 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -89,43 +89,43 @@ msgstr ""
 msgid "All supported audio files"
 msgstr "Все поддерживаемые аудиофайлы"
 
-#: src/window.py:230
+#: src/window.py:236
 msgid "Unselect all files"
 msgstr "Снять выделение со всех файлов"
 
-#: src/window.py:233 src/ui/window.blp:208
+#: src/window.py:239 src/ui/window.blp:210
 msgid "Select all files"
 msgstr "Выбрать все файлы"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:272 src/fileview.py:774
+#: src/window.py:278 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "(Выбрано несколько файлов)"
 
-#: src/window.py:364 src/ui/nofile.blp:35
+#: src/window.py:370 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Открыть папку"
 
-#: src/window.py:367 src/ui/nofile.blp:24
+#: src/window.py:373 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Открыть файл"
 
-#: src/window.py:438
+#: src/window.py:444
 msgid "No supported files found in opened folder"
 msgstr "В открытой папке не найдено поддерживаемых файлов"
 
-#: src/window.py:447
+#: src/window.py:453
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Некоторые из открытых файлов имеют недопустимые значения; сохранить не "
 "удалось"
 
-#: src/window.py:581
+#: src/window.py:587
 msgid "No files selected"
 msgstr "Файлы не выбраны"
 
-#: src/window.py:587
+#: src/window.py:593
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -133,7 +133,7 @@ msgstr[0] "{n} файл выбран"
 msgstr[1] "{n} файла выбрано"
 msgstr[2] "{n} файлов выбрано"
 
-#: src/window.py:673
+#: src/window.py:679
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -141,11 +141,11 @@ msgstr[0] "Отменены изменения в {n} файле"
 msgstr[1] "Отменены изменения в {n} файлах"
 msgstr[2] "Отменены изменения в {n} файлах"
 
-#: src/window.py:678
+#: src/window.py:684
 msgid "Redo"
 msgstr "Вернуть"
 
-#: src/window.py:709
+#: src/window.py:715
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -153,7 +153,7 @@ msgstr[0] "Изменения в {n} файле были возвращены"
 msgstr[1] "Изменения в {n} файлах были возвращены"
 msgstr[2] "Изменения в {n} файлах были возвращены"
 
-#: src/window.py:757
+#: src/window.py:763
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -161,11 +161,11 @@ msgstr[0] "Теги удалены из {n} файла"
 msgstr[1] "Теги удалены из {n} файлов"
 msgstr[2] "Теги удалены из {n} файлов"
 
-#: src/window.py:762 src/fileview.py:308
+#: src/window.py:768 src/fileview.py:318
 msgid "Undo"
 msgstr "Отменить"
 
-#: src/window.py:792
+#: src/window.py:798
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -197,63 +197,68 @@ msgstr "Выбрать несколько файлов"
 msgid "Search opened files"
 msgstr "Поиск среди открытых файлов"
 
-#: src/ui/window.blp:194
+#. TRANSLATORS: Search entry placeholder for "Search opened files" option
+#: src/ui/window.blp:163 src/ui/previewselectorbutton.blp:25
+msgid "Search by title, artist, filename…"
+msgstr "Поиск по названию, исполнителю, названию файла…"
+
+#: src/ui/window.blp:196
 msgid "No Results Found"
 msgstr "Не найдено результатов"
 
-#: src/ui/window.blp:195
+#: src/ui/window.blp:197
 msgid "Try a different search query."
 msgstr "Попробуйте другой поисковый запрос."
 
-#: src/ui/window.blp:222
+#: src/ui/window.blp:224
 msgid "Remove selected files"
 msgstr "Переименовать выбранные файлы"
 
-#: src/ui/window.blp:236
+#: src/ui/window.blp:238
 msgid "Show file list"
 msgstr "Показать список файлов"
 
-#: src/ui/window.blp:258
+#: src/ui/window.blp:260
 msgid "_Open File"
 msgstr "_Открыть файл"
 
-#: src/ui/window.blp:263
+#: src/ui/window.blp:265
 msgid "O_pen Folder"
 msgstr "О_ткрыть папку"
 
-#: src/ui/window.blp:270
+#: src/ui/window.blp:272
 msgid "_Sort File List"
 msgstr "Упо_рядочить список файлов"
 
-#: src/ui/window.blp:277
+#: src/ui/window.blp:279
 msgid "_Rename Selected Files"
 msgstr "_Переименовать выбранные файлы"
 
-#: src/ui/window.blp:282
+#: src/ui/window.blp:284
 msgid "_Extract Tags from Filename"
 msgstr "И_звлечь теги из названия файла"
 
-#: src/ui/window.blp:287
+#: src/ui/window.blp:289
 msgid "_Identify Selected Files"
 msgstr "_Идентифицировать выбранные файлы"
 
-#: src/ui/window.blp:294
+#: src/ui/window.blp:296
 msgid "_Undo Changes in Selected Files"
 msgstr "_Отменить изменения в выбранных файлах"
 
-#: src/ui/window.blp:299
+#: src/ui/window.blp:301
 msgid "_Remove All Tags in Selected Files"
 msgstr "_Удалить все теги в выбранных файлах"
 
-#: src/ui/window.blp:306
+#: src/ui/window.blp:308
 msgid "_Keyboard Shortcuts"
 msgstr "_Комбинации клавиш"
 
-#: src/ui/window.blp:311
+#: src/ui/window.blp:313
 msgid "_Preferences"
 msgstr "_Параметры"
 
-#: src/ui/window.blp:316
+#: src/ui/window.blp:318
 msgid "_About Ear Tag"
 msgstr "_О приложении"
 
@@ -263,16 +268,16 @@ msgstr ""
 "Откройте или перетащите необходимые аудиофайлы, чтобы отредактировать их "
 "метаданные."
 
-#: src/filemanager.py:150
+#: src/filemanager.py:197
 msgid "Saved changes to files"
 msgstr "Изменения в файлах сохранены"
 
-#: src/filemanager.py:256
+#: src/filemanager.py:287
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr ""
 "Открытый файл доступен только для чтения; изменения не могут быть сохранены"
 
-#: src/filemanager.py:259
+#: src/filemanager.py:290
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Некоторые из открытых файлов доступы только для чтения; изменения не могут "
@@ -434,22 +439,30 @@ msgstr "ID записи на MusicBrainz"
 msgid "MusicBrainz Release Group ID"
 msgstr "ID группы выпуска на MusicBrainz"
 
-#: src/fileview.py:196
+#: src/fileview.py:111
+msgid "Album cover (front)"
+msgstr "Обложка альбома (лицевая сторона)"
+
+#: src/fileview.py:113
+msgid "Album cover (back)"
+msgstr "Обложка альбома (задняя сторона)"
+
+#: src/fileview.py:206
 msgid "Select Album Cover Image"
 msgstr "Выберите изображение обложки альбома"
 
-#: src/fileview.py:247
+#: src/fileview.py:257
 msgid "Save Album Cover To…"
 msgstr "Сохранить обложку альбома в…"
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
-#: src/fileview.py:280
+#: src/fileview.py:290
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Обложка сохранена в {path}"
 
-#: src/fileview.py:305
+#: src/fileview.py:315
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
@@ -457,7 +470,7 @@ msgstr[0] "Обложка удалена из {n} файла"
 msgstr[1] "Обложка удалена из {n} файлов"
 msgstr[2] "Обложка удалена из {n} файлов"
 
-#: src/fileview.py:788
+#: src/fileview.py:801
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -465,7 +478,7 @@ msgstr[0] "{n} канал"
 msgstr[1] "{n} канала"
 msgstr[2] "{n} каналов"
 
-#: src/fileview.py:833
+#: src/fileview.py:846
 msgid "(multiple files)"
 msgstr "(несколько файлов)"
 
@@ -768,20 +781,24 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "Выбрать файл для предварительного просмотра"
 
+#: src/identify.py:84 src/ui/identify/recordingrow.blp:15
+msgid "Apply identified data"
+msgstr "Применить идентифицированные данные"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:125
+#: src/identify.py:127
 msgid "Other releases"
 msgstr "Другие выпуски"
 
-#: src/identify.py:524
+#: src/identify.py:526
 msgid "Unidentified Files"
 msgstr "Неидентифицированные файлы"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:970
+#: src/identify.py:972
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -988,9 +1005,6 @@ msgstr "Комбинации клавиш"
 #~ "Файлы идентифицируются с помощью службы <a href=\"https://acoustid."
 #~ "org\">AcoustID</a>. Дополнительная информация предоставлена по ссылке <a "
 #~ "href=\"https://musicbrainz.org\">Musicbrainz</a>."
-
-#~ msgid "Album cover"
-#~ msgstr "Обложка альбома"
 
 #, fuzzy
 #~ msgid "_Open…"
