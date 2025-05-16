@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-02-28 21:00+0000\n"
-"PO-Revision-Date: 2025-03-02 14:14+0800\n"
+"POT-Creation-Date: 2025-05-13 20:38+0000\n"
+"PO-Revision-Date: 2025-05-16 16:45+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 47.1\n"
+"X-Generator: Gtranslator 48.0\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
-#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:254
+#: src/window.py:269 src/ui/window.blp:245 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -44,7 +44,7 @@ msgstr "编辑音频文件标签"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;音乐;音频;标签;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:97
+#: data/app.drey.EarTag.metainfo.xml.in:101
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -55,23 +55,23 @@ msgstr ""
 "唱片中的曲目。不像其它标签编辑程序，Ear Tag 不需要用户设置一个音乐库文件夹。"
 "它可以："
 
-#: data/app.drey.EarTag.metainfo.xml.in:99
+#: data/app.drey.EarTag.metainfo.xml.in:103
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "编辑 MP3、WAV、M4A、FLAC、OGG 和 WMA 文件的标签"
 
-#: data/app.drey.EarTag.metainfo.xml.in:100
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid "Modify metadata of multiple files at once"
 msgstr "同时修改多个文件的元数据"
 
-#: data/app.drey.EarTag.metainfo.xml.in:101
+#: data/app.drey.EarTag.metainfo.xml.in:105
 msgid "Rename files using information from present tags"
 msgstr "使用来自呈现标签的信息重命名文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:102
+#: data/app.drey.EarTag.metainfo.xml.in:106
 msgid "Identify files using AcoustID"
 msgstr "使用 AcoustID 识别文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:104
+#: data/app.drey.EarTag.metainfo.xml.in:108
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
@@ -79,73 +79,73 @@ msgstr "网络访问仅用于“识别选中文件”选项。"
 msgid "All supported audio files"
 msgstr "所有支持的音频文件"
 
-#: src/window.py:230
+#: src/window.py:236
 msgid "Unselect all files"
 msgstr "取消全选文件"
 
-#: src/window.py:233 src/ui/window.blp:208
+#: src/window.py:239 src/ui/window.blp:210
 msgid "Select all files"
 msgstr "选择所有文件"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:272 src/fileview.py:774
+#: src/window.py:278 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "（已选择多个文件）"
 
-#: src/window.py:364 src/ui/nofile.blp:35
+#: src/window.py:370 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "打开文件夹"
 
-#: src/window.py:367 src/ui/nofile.blp:24
+#: src/window.py:373 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/window.py:438
+#: src/window.py:444
 msgid "No supported files found in opened folder"
 msgstr "在打开的文件夹中未发现支持的文件"
 
-#: src/window.py:447
+#: src/window.py:453
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "部分打开的文件具有无效值；无法保存"
 
-#: src/window.py:581
+#: src/window.py:587
 msgid "No files selected"
 msgstr "未选择文件"
 
-#: src/window.py:587
+#: src/window.py:593
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "已选择 {n} 个文件"
 
-#: src/window.py:673
+#: src/window.py:679
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "已撤消在 {n} 个文件中的修改"
 
-#: src/window.py:678
+#: src/window.py:684
 msgid "Redo"
 msgstr "重做"
 
-#: src/window.py:709
+#: src/window.py:715
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "已重做在 {n} 个文件中的修改"
 
-#: src/window.py:757
+#: src/window.py:763
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "已从 {n} 个文件移除标签"
 
-#: src/window.py:762 src/fileview.py:308
+#: src/window.py:768 src/fileview.py:318
 msgid "Undo"
 msgstr "撤消"
 
-#: src/window.py:792
+#: src/window.py:798
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -175,63 +175,68 @@ msgstr "选择多个文件"
 msgid "Search opened files"
 msgstr "搜索打开的文件"
 
-#: src/ui/window.blp:194
+#. TRANSLATORS: Search entry placeholder for "Search opened files" option
+#: src/ui/window.blp:163 src/ui/previewselectorbutton.blp:25
+msgid "Search by title, artist, filename…"
+msgstr "搜索曲名、艺人、文件名…"
+
+#: src/ui/window.blp:196
 msgid "No Results Found"
 msgstr "未找到结果"
 
-#: src/ui/window.blp:195
+#: src/ui/window.blp:197
 msgid "Try a different search query."
 msgstr "尝试不同的搜索关键词。"
 
-#: src/ui/window.blp:222
+#: src/ui/window.blp:224
 msgid "Remove selected files"
 msgstr "移除选中文件"
 
-#: src/ui/window.blp:236
+#: src/ui/window.blp:238
 msgid "Show file list"
 msgstr "显示文件列表"
 
-#: src/ui/window.blp:258
+#: src/ui/window.blp:260
 msgid "_Open File"
 msgstr "打开文件(_O)"
 
-#: src/ui/window.blp:263
+#: src/ui/window.blp:265
 msgid "O_pen Folder"
 msgstr "打开文件夹(_P)"
 
-#: src/ui/window.blp:270
+#: src/ui/window.blp:272
 msgid "_Sort File List"
 msgstr "排序文件列表(_S)"
 
-#: src/ui/window.blp:277
+#: src/ui/window.blp:279
 msgid "_Rename Selected Files"
 msgstr "重命名选中文件(_R)"
 
-#: src/ui/window.blp:282
+#: src/ui/window.blp:284
 msgid "_Extract Tags from Filename"
 msgstr "从文件名提取标签(_E)"
 
-#: src/ui/window.blp:287
+#: src/ui/window.blp:289
 msgid "_Identify Selected Files"
 msgstr "识别选中文件(_I)"
 
-#: src/ui/window.blp:294
+#: src/ui/window.blp:296
 msgid "_Undo Changes in Selected Files"
 msgstr "撤消选中文件的修改(_U)"
 
-#: src/ui/window.blp:299
+#: src/ui/window.blp:301
 msgid "_Remove All Tags in Selected Files"
 msgstr "移除选中文件的所有标签(_R)"
 
-#: src/ui/window.blp:306
+#: src/ui/window.blp:308
 msgid "_Keyboard Shortcuts"
 msgstr "键盘快捷键(_K)"
 
-#: src/ui/window.blp:311
+#: src/ui/window.blp:313
 msgid "_Preferences"
 msgstr "首选项(_P)"
 
-#: src/ui/window.blp:316
+#: src/ui/window.blp:318
 msgid "_About Ear Tag"
 msgstr "关于 Ear Tag(_A)"
 
@@ -239,15 +244,15 @@ msgstr "关于 Ear Tag(_A)"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "打开或拖拽一些音频文件来编辑它们的元数据。"
 
-#: src/filemanager.py:150
+#: src/filemanager.py:197
 msgid "Saved changes to files"
 msgstr "已将修改保存到文件"
 
-#: src/filemanager.py:256
+#: src/filemanager.py:287
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "打开的文件为只读；修改无法保存"
 
-#: src/filemanager.py:259
+#: src/filemanager.py:290
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "部分打开的文件为只读；修改无法保存"
 
@@ -407,34 +412,42 @@ msgstr "MusicBrainz 录制标识"
 msgid "MusicBrainz Release Group ID"
 msgstr "MusicBrainz 发行组标识"
 
-#: src/fileview.py:196
+#: src/fileview.py:111
+msgid "Album cover (front)"
+msgstr "专辑封面（前）"
+
+#: src/fileview.py:113
+msgid "Album cover (back)"
+msgstr "专辑封面（后）"
+
+#: src/fileview.py:206
 msgid "Select Album Cover Image"
 msgstr "选择专辑封面图像"
 
-#: src/fileview.py:247
+#: src/fileview.py:257
 msgid "Save Album Cover To…"
 msgstr "保存专辑封面至…"
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
-#: src/fileview.py:280
+#: src/fileview.py:290
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "已将封面保存至 {path}"
 
-#: src/fileview.py:305
+#: src/fileview.py:315
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "已从 {n} 个文件移除封面"
 
-#: src/fileview.py:788
+#: src/fileview.py:801
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "{n} 声道"
 
-#: src/fileview.py:833
+#: src/fileview.py:846
 msgid "(multiple files)"
 msgstr "（多个文件）"
 
@@ -507,7 +520,7 @@ msgstr "文件具有无效值"
 msgid "File has unsaved changes"
 msgstr "文件有未保存的更改"
 
-#: src/ui/filelistitem.blp:92
+#: src/ui/filelistitem.blp:84
 msgid "Remove from list"
 msgstr "从列表移除"
 
@@ -718,20 +731,24 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "选择文件来预览"
 
+#: src/identify.py:84 src/ui/identify/recordingrow.blp:15
+msgid "Apply identified data"
+msgstr "应用已识别的数据"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:125
+#: src/identify.py:127
 msgid "Other releases"
 msgstr "其它发行"
 
-#: src/identify.py:524
+#: src/identify.py:526
 msgid "Unidentified Files"
 msgstr "未识别的文件"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:970
+#: src/identify.py:972
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -921,6 +938,3 @@ msgstr "键盘快捷键"
 #~ msgstr ""
 #~ "文件是通过使用 <a href=\"https://acoustid.org\">AcoustID</a> 服务来识别"
 #~ "的。附加信息由 <a href=\"https://musicbrainz.org\">Musicbrainz</a> 提供。"
-
-#~ msgid "Album cover"
-#~ msgstr "专辑封面"
