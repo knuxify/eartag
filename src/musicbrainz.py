@@ -2,20 +2,26 @@
 Contains code for interacting with the MusicBrainz API.
 """
 
-import acoustid
 import json
-import magic
-import mimetypes
 import os.path
-import tempfile
 import time
 import traceback
 import urllib
 import urllib.parse
 import urllib.request
-import queue
+
+# HACK: The Gst backend of audioread, which is used by acoustid, is not very
+# happy when the GLib async event loop policy is set up.
+# Force-disable the Gst backend.
+import audioread
+
+audioread._gst_available = lambda: False
+import acoustid
 
 from gi.repository import GObject, GLib
+
+from .main import event_loop
+from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
 
 try:
     from . import ACOUSTID_API_KEY, VERSION
@@ -41,7 +47,6 @@ if TEST_SUITE:
     GLib.idle_add = lambda x, *args, **kwargs: x(*args, **kwargs)
 
 from .utils import simplify_string, simplify_compare, title_case_preserve_uppercase
-from .utils.bgtask import EartagBackgroundTask
 
 LAST_REQUEST = 0
 
@@ -88,42 +93,6 @@ def make_request(url, raw=False, _recursion=0):
     return data
 
 
-def make_cover_request(url, raw=False, _recursion=0):
-    """
-    Alternative version of make_request for use in cover downloading functions.
-    Does not have a cooldown, uses a lock to manage downloads.
-    """
-    if _recursion > 3:
-        return None
-
-    headers = {"User-Agent": USER_AGENT}
-    try:
-        request = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(request, timeout=30) as data_raw:
-            if raw:
-                data = data_raw.read()
-            else:
-                data = json.loads(data_raw.read())
-    except urllib.error.HTTPError as e:
-        if e.code in (403, 404):
-            return None
-        elif e.code == 503:
-            time.sleep(3)
-            return make_cover_request(url, raw=raw, _recursion=(_recursion + 1))
-        else:
-            print("Exception encountered during request for URL:", url)
-            traceback.print_exc()
-            return None
-    except urllib.error.URLError:
-        time.sleep(3)
-        return make_cover_request(url, raw=raw, _recursion=(_recursion + 1))
-    except:
-        traceback.print_exc()
-        return None
-
-    return data
-
-
 def build_url(endpoint, id="", **kwargs):
     """Builds a MusicBrainz API endpoint URL."""
     args = []
@@ -136,146 +105,63 @@ def build_url(endpoint, id="", **kwargs):
     return f'https://musicbrainz.org/ws/2/{endpoint}?{"&".join(args)}&fmt=json'
 
 
-def _download_thumbnail(self, category: str):
-    """
-    Common function shared by MusicBrainzRelease and MusicBrainzReleaseGroup
-    to download and cache the thumbnail image.
+class EartagCAACover(GObject.Object):
+    """Represents a cover art from the Cover Art Archive."""
 
-    `self` is one of the aforementioned objects; `category` is one of "release",
-    "release-group".
+    path = GObject.Property(type=str, default="")
+    loaded = GObject.Property(type=bool, default=False)
 
-    Assumes the presence of the following properties:
-    - thumbnail-path
-    - thumbnail-loaded
-    """
-    if self.props.thumbnail_loaded:
-        return
+    cover_downloader = EartagQueuedDownloader(mode=EartagDownloaderMode.MODE_FILE)
 
-    def _do_notify(self):
-        self.notify("thumbnail-path")
-        self.props.thumbnail_loaded = True
-
-    if config.get_enum("musicbrainz-cover-size") == 0:
-        self.cover_tempfiles["thumbnail"] = ""
-        GLib.idle_add(_do_notify, self)
-        return
-
-    if category == "release":
-        url = f"https://coverartarchive.org/release/{self.release_id}/front-250"
-    else:
-        url = f"https://coverartarchive.org/release-group/{self.relgroup_id}/front-250"
-
-    if url in MusicBrainzRelease.cover_cache:
-        self.cover_tempfiles["thumbnail"] = MusicBrainzRelease.cover_cache[url]
-        GLib.idle_add(_do_notify, self)
-        return
-
-    if category == "release":
-        if not self.full_data["cover-art-archive"]["front"]:
-            MusicBrainzRelease.cover_cache[url] = None
-            # Try to get thumbnail for group instead
-            self.group.download_thumbnail()
-            GLib.idle_add(_do_notify, self)
-            return
-
-    data = make_cover_request(url, raw=True)
-    if not data:
-        if category == "release":
-            # Try to get thumbnail for group instead
-            self.group.download_thumbnail()
-        GLib.idle_add(_do_notify, self)
-        return
-
-    cover_extension = mimetypes.guess_extension(magic.from_buffer(data, mime=True))
-    self.cover_tempfiles["thumbnail"] = tempfile.NamedTemporaryFile(
-        suffix=cover_extension
-    )
-    self.cover_tempfiles["thumbnail"].write(data)
-    self.cover_tempfiles["thumbnail"].flush()
-    MusicBrainzRelease.cover_cache[url] = self.cover_tempfiles["thumbnail"]
-
-    GLib.idle_add(_do_notify, self)
-
-
-def _download_covers(self, category: str):
-    """
-    Common function shared by MusicBrainzRelease and MusicBrainzReleaseGroup
-    to download and cache the front/back cover image.
-
-    `self` is one of the aforementioned objects; `category` is one of "release",
-    "release-group".
-
-    Assumes the presence of the following properties:
-    - {front,back}-cover-path
-    - {front,back}-cover-loaded
-    - cover_tempfiles (Python property)
-    """
-    if self.props.front_cover_loaded and (
-        category != "release" or self.props.back_cover_loaded
+    def __init__(
+        self, item_type: str, item_id: str, cover_type: str, cover_size: int = -1
     ):
-        return
+        """
+        Initialize the CAACover object.
 
-    def _do_notify(self, cover: str):
-        self.notify(f"{cover}-cover-path")
-        self.set_property(f"{cover}-cover-loaded", True)
+        :param item_type: Type of item to download the cover for (release, release-group)
+        :param item_id: ID of the item to download the cover for
+        :param cover_type: Type of the cover to download: thumbnail, front, back
+        :param cover_size: Size of the cover to download: 0, 250, 500, 1200, 2000 (max size)
+        """
+        super().__init__()
 
-    if config.get_enum("musicbrainz-cover-size") == 0:
-        GLib.idle_add(_do_notify, self, "front")
-        if category == "release":
-            GLib.idle_add(_do_notify, self, "back")
-        return
+        if cover_size == -1:
+            cover_size = int(config.get_enum("musicbrainz-cover-size"))
+        if cover_size not in (0, 250, 500, 1200, 2000):
+            raise ValueError("Cover size must be one of 0, 250, 500, 1200, 2000")
+        if cover_type not in ("thumbnail", "front", "back"):
+            raise ValueError("Cover type must be one of thumbnail, front, back")
+        if cover_type == "back" and item_type == "release-group":
+            raise ValueError("Back cover is not supported for release groups")
 
-    if category == "release":
-        cover_types = ("front", "back")
-    else:
-        cover_types = ("front",)
+        self.item_type = item_type
+        self.item_id = item_id
 
-    for cover in cover_types:
-        if category == "release":
-            url = f"https://coverartarchive.org/release/{self.release_id}/{cover}"
+        if cover_type == "thumbnail":
+            self.cover_type = "front"
+            self.cover_size = 250
         else:
-            url = (
-                f"https://coverartarchive.org/release-group/{self.relgroup_id}/{cover}"
-            )
+            self.cover_type = cover_type
+            self.cover_size = cover_size
 
-        if category == "release" and cover == "front":
-            if not self.full_data["cover-art-archive"][cover]:
-                MusicBrainzRelease.cover_cache[url] = None
-                # Try to get covers for group instead
-                self.group.download_covers()
-                self.cover_tempfiles[cover] = ""
-                GLib.idle_add(_do_notify, self, cover)
-                continue
+    @property
+    def url(self):
+        """The URL to the cover."""
+        url = f"https://coverartarchive.org/{self.item_type}/{self.item_id}/{self.cover_type}"
+        if self.cover_size not in (0, 2000):
+            url += f"-{self.cover_size}"
+        return url
 
-        if config.get_enum("musicbrainz-cover-size") in (250, 500, 1200):
-            url += "-" + str(config.get_enum("musicbrainz-cover-size"))
-
-        if url in MusicBrainzRelease.cover_cache:
-            if MusicBrainzRelease.cover_cache[url]:
-                self.cover_tempfiles[cover] = MusicBrainzRelease.cover_cache[url]
-            else:
-                self.cover_tempfiles[cover] = ""
-            GLib.idle_add(_do_notify, self, cover)
-            continue
-
-        data = make_cover_request(url, raw=True)
-        if not data:
-            if category == "release":
-                # Try to get thumbnail for group instead
-                self.group.download_covers()
-            self.cover_tempfiles[cover] = ""
-            GLib.idle_add(_do_notify, self, cover)
-            continue
-
-        cover_extension = mimetypes.guess_extension(magic.from_buffer(data, mime=True))
-        self.cover_tempfiles[cover] = tempfile.NamedTemporaryFile(
-            suffix=cover_extension
-        )
-        self.cover_tempfiles[cover].write(data)
-        self.cover_tempfiles[cover].flush()
-        MusicBrainzRelease.cover_cache[url] = self.cover_tempfiles[cover]
-
-        GLib.idle_add(_do_notify, self, cover)
+    async def download(self):
+        try:
+            tempfile = await EartagCAACover.cover_downloader.download(self.url)
+        except Exception as e:
+            print(e)
+            tempfile = False
+        if tempfile:
+            self.props.path = tempfile.name
+        self.props.loaded = True
 
 
 def get_recordings_for_file(file):
@@ -361,9 +247,6 @@ class MusicBrainzRecording(GObject.Object):
 
     SELECT_RELEASE_FIRST = -1
 
-    thumbnail_loaded = GObject.Property(type=bool, default=False)
-    front_cover_loaded = GObject.Property(type=bool, default=False)
-
     def __init__(self, recording_id=None, release_id=None, file=None):
         super().__init__()
         self._recording_id = None
@@ -447,8 +330,6 @@ class MusicBrainzRecording(GObject.Object):
             for rel in self.available_releases:
                 if rel == self.release:
                     continue
-                if rel.cover_tempfiles["thumbnail"]:
-                    rel.cover_tempfiles["thumbnail"].close()
 
     def apply_data_to_file(self, file):
         """
@@ -460,7 +341,8 @@ class MusicBrainzRecording(GObject.Object):
             print("No release")
             return False
 
-        self.release.download_covers()
+        # Covers are downloaded by the identify process ahead of time
+
         for prop in (
             "title",
             "artist",
@@ -592,7 +474,7 @@ class MusicBrainzRecording(GObject.Object):
         return self.recording_id == other.recording_id
 
     def __hash__(self):
-        return id(self)
+        return hash(self.recording_id)
 
 
 class MusicBrainzRelease(GObject.Object):
@@ -604,22 +486,10 @@ class MusicBrainzRelease(GObject.Object):
     full_data_cache = {}
     obj_cache = {}  # id: MusicBrainzRelease
 
-    thumbnail_loaded = GObject.Property(type=bool, default=False)
-    front_cover_loaded = GObject.Property(type=bool, default=False)
-    back_cover_loaded = GObject.Property(type=bool, default=False)
-
     def __init__(self, release_data, from_id=False):
         super().__init__()
         self.mb_data = release_data
         self._from_id = from_id
-        self.cover_tempfiles = {
-            "thumbnail": None,
-            "front": MusicBrainzRelease.NEED_UPDATE_COVER,
-            "back": MusicBrainzRelease.NEED_UPDATE_COVER,
-        }
-
-        self.download_thumbnail_task = EartagBackgroundTask(_download_thumbnail)
-        self.download_covers_task = EartagBackgroundTask(_download_covers)
 
         # Get full release data
         if self.release_id not in MusicBrainzRelease.full_data_cache:
@@ -637,6 +507,8 @@ class MusicBrainzRelease(GObject.Object):
                 )
             )
 
+        self.thumbnail_dl_task = None
+
         self.full_data = MusicBrainzRelease.full_data_cache[self.release_id]
         if from_id:
             self.mb_data = self.full_data
@@ -646,16 +518,15 @@ class MusicBrainzRelease(GObject.Object):
 
         self.group = MusicBrainzReleaseGroup(self.mb_data["release-group"])
 
+        self.thumbnail = EartagCAACover("release", self.release_id, "thumbnail")
+        self.front_cover = EartagCAACover("release", self.release_id, "front")
+        self.back_cover = EartagCAACover("release", self.release_id, "back")
+
     @staticmethod
     def setup_from_id(id):
         if id in MusicBrainzRelease.obj_cache:
             return MusicBrainzRelease.obj_cache[id]
         return MusicBrainzRelease(release_data={}, from_id=id)
-
-    def dispose(self):
-        for temp in self.cover_tempfiles.values():
-            if temp and temp != MusicBrainzRelease.NEED_UPDATE_COVER:
-                temp.close()
 
     @GObject.Property(type=str)
     def release_id(self):
@@ -707,56 +578,67 @@ class MusicBrainzRelease(GObject.Object):
 
     @GObject.Property(type=str)
     def thumbnail_path(self):
-        if not self.cover_tempfiles["thumbnail"]:
+        if not self.thumbnail.props.path:
             return self.group.thumbnail_path
-        return self.cover_tempfiles["thumbnail"].name
+        return self.thumbnail.props.path
+
+    @GObject.Property(type=bool, default=False)
+    def thumbnail_loaded(self):
+        return self.thumbnail.props.loaded
 
     @GObject.Property(type=str)
     def front_cover_path(self):
-        if not self.cover_tempfiles["front"]:
-            return self.group.front_cover_path
-        elif self.cover_tempfiles["front"] == MusicBrainzRelease.NEED_UPDATE_COVER:
+        if not self.front_cover.props.loaded:
             raise ValueError(
                 "Covers have not been downloaded yet; run download_covers()"
             )
-        return self.cover_tempfiles["front"].name
+        if not self.front_cover.props.path:
+            return self.group.front_cover_path
+        return self.front_cover.props.path
 
     @GObject.Property(type=str)
     def back_cover_path(self):
-        if not self.cover_tempfiles["back"]:
-            return ""
-        elif self.cover_tempfiles["back"] == MusicBrainzRelease.NEED_UPDATE_COVER:
+        if not self.back_cover.props.loaded:
             raise ValueError(
                 "Covers have not been downloaded yet; run download_covers()"
             )
-        return self.cover_tempfiles["back"].name
+        if not self.back_cover.props.path:
+            return self.group.back_cover_path
+        return self.back_cover.props.path
 
-    def download_thumbnail(self):
+    def queue_thumbnail_download(self):
         """Queues a download of the thumbnail for the release from coverartarchive.org"""
-        # NOTE: The actual implementation of this function is in the global
-        #       _download_thumbnail function.
+        if (
+            self.thumbnail_dl_task
+            and not self.thumbnail.props.loaded
+            and not self.thumbnail_dl_task.done()
+        ):
+            self.thumbnail_dl_task.cancel()
+        self.thumbnail_dl_task = event_loop.create_task(self.download_thumbnail_async())
 
-        self.download_thumbnail_task.stop()
-        self.download_thumbnail_task.reset(kwargs={"self": self, "category": "release"})
-        self.download_thumbnail_task.run()
+    async def download_thumbnail_async(self):
+        """Downloads the covers for the release from coverartarchive.org"""
+        await self.thumbnail.download()
+        if not self.thumbnail.props.loaded:
+            await self.group.thumbnail.download()
+        self.notify("thumbnail-path")
+        self.notify("thumbnail-loaded")
 
-    def download_covers(self):
-        """Queues a download of the covers for the release from coverartarchive.org"""
-        # NOTE: The actual implementation of this function is in the global
-        #       _download_covers function.
-
-        self.download_covers_task.stop()
-        self.download_covers_task.reset(kwargs={"self": self, "category": "release"})
-        self.download_covers_task.run()
+    async def download_covers_async(self):
+        """Downloads the covers for the release from coverartarchive.org"""
+        await self.front_cover.download()
+        if not self.front_cover.props.loaded:
+            await self.group.front_cover.download()
+        self.notify("front-cover-path")
+        await self.back_cover.download()
+        if not self.back_cover.props.loaded:
+            await self.group.back_cover.download()
+        self.notify("back-cover-path")
 
     @classmethod
     def clear_tempfiles(cls):
         """Closes all cover tempfiles."""
-        for tmp in cls.cover_cache.values():
-            try:
-                tmp.close()
-            except AttributeError:
-                pass
+        # TODO FIXME
 
     def __str__(self):
         return f"MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})"
@@ -770,7 +652,7 @@ class MusicBrainzRelease(GObject.Object):
         return self.release_id == other.release_id
 
     def __hash__(self):
-        return id(self)
+        return hash(self.release_id)
 
 
 class MusicBrainzReleaseGroup(GObject.Object):
@@ -783,17 +665,9 @@ class MusicBrainzReleaseGroup(GObject.Object):
     full_data_cache = {}
     obj_cache = {}
 
-    thumbnail_loaded = GObject.Property(type=bool, default=False)
-    front_cover_loaded = GObject.Property(type=bool, default=False)
-    # Release groups have no back cover
-
     def __init__(self, relgroup_data, from_id=False):
         super().__init__()
         self._releases = None
-        self.cover_tempfiles = {
-            "thumbnail": None,
-            "front": MusicBrainzRelease.NEED_UPDATE_COVER,
-        }
 
         if relgroup_data:
             groupid = relgroup_data["id"]
@@ -812,6 +686,9 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
         if groupid not in MusicBrainzReleaseGroup.obj_cache:
             MusicBrainzReleaseGroup.obj_cache[groupid] = self
+
+        self.thumbnail = EartagCAACover("release-group", self.relgroup_id, "thumbnail")
+        self.front_cover = EartagCAACover("release-group", self.relgroup_id, "front")
 
     @staticmethod
     def setup_from_id(id):
@@ -851,38 +728,15 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
     @GObject.Property(type=str)
     def thumbnail_path(self):
-        if not self.cover_tempfiles["thumbnail"]:
-            return ""
-        if self.cover_tempfiles["thumbnail"] == MusicBrainzReleaseGroup.NO_COVER:
-            return ""
-        return self.cover_tempfiles["thumbnail"].name
+        return self.thumbnail.props.path
 
     @GObject.Property(type=str)
     def front_cover_path(self):
-        if (
-            not self.cover_tempfiles["front"]
-            or self.cover_tempfiles["front"] == MusicBrainzReleaseGroup.NO_COVER
-        ):
-            return ""
-        elif self.cover_tempfiles["front"] == MusicBrainzRelease.NEED_UPDATE_COVER:
+        if not self.front_cover.props.loaded:
             raise ValueError(
                 "Covers have not been downloaded yet; run download_covers()"
             )
-        return self.cover_tempfiles["front"].name
-
-    # NOTE: The update_{thumbnail,covers} implementations in MusicBrainzRelease
-    #       are implemented as background tasks, but these are not. This is
-    #       on purpose - the only case in which these functions are called are
-    #       from within update_{thumbnail,covers} in the release, and making
-    #       them both async would cause race conditions.
-
-    def download_thumbnail(self):
-        """Downloads the thumbnail for the release from coverartarchive.org"""
-        _download_thumbnail(self, "release-group")
-
-    def download_covers(self):
-        """Downloads the covers for the release from coverartarchive.org"""
-        _download_covers(self, "release-group")
+        return self.front_cover.props.path
 
     def __eq__(self, other):
         if not isinstance(other, MusicBrainzReleaseGroup):
@@ -890,7 +744,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
         return self.relgroup_id == other.relgroup_id
 
     def __hash__(self):
-        return id(self)
+        return hash(self.relgroup_id)
 
 
 def acoustid_identify_file(file):
