@@ -2,7 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .config import config, DLCoverSize
-from .utils.bgtask import EartagBackgroundTask, run_threadsafe
+from .utils.bgtask import EartagBackgroundTask
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import (
     EartagCloseWarningDialog,
@@ -622,16 +622,10 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def scroll_to_top(self):
         """Scrolls to the top of the file list."""
-        GLib.idle_add(self._scroll_to_top)
-
-    def _scroll_to_top(self):
         self.sidebar_list_scroll.get_vadjustment().set_value(0)
 
     def scroll_to_index(self, index):
         """Scrolls to file at the specified index."""
-        GLib.idle_add(self._scroll_to_index, index)
-
-    def _scroll_to_index(self, index):
         item_height = self.sidebar_file_list.get_first_child().get_height()
         vadjust = self.sidebar_list_scroll.get_vadjustment()
         new_value = item_height * (index + 1)
@@ -644,10 +638,9 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def undo_all(self, *args):
         self.set_sensitive(False)
-        self.undo_all_task.reset()
         self.undo_all_task.run()
 
-    def _undo_all(self, *args):
+    async def _undo_all(self, *args):
         """Undo all changes and add the option to re-do them."""
         self._undo_all_data = {}
         self._undo_all_count = 0
@@ -660,13 +653,7 @@ class EartagWindow(Adw.ApplicationWindow):
             for tag in file.modified_tags:
                 self._undo_all_data[file.id][tag] = file.get_property(tag)
 
-            run_threadsafe(file.undo_all)
-
-        if self._undo_all_count == 0:
-            self.undo_all_task.emit_task_done()
-            return
-
-        self.undo_all_task.emit_task_done()
+            file.undo_all()
 
     def _undo_all_done(self, *args):
         self.file_view.more_tags_group.slow_refresh_entries()
@@ -688,10 +675,9 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def redo_all(self, *args):
         self.set_sensitive(False)
-        self.redo_all_task.reset()
         self.redo_all_task.run()
 
-    def _redo_all(self, *args):
+    async def _redo_all(self, *args):
         """Reverses undo_all."""
         self._redo_all_count = 0
         for file in self.file_manager.files:
@@ -699,11 +685,9 @@ class EartagWindow(Adw.ApplicationWindow):
                 self._redo_all_count += 1
                 for tag, value in self._undo_all_data[file.id].items():
                     if tag in file.int_properties + file.float_properties and not value:
-                        run_threadsafe(file.set_property, tag, 0)
+                        file.set_property(tag, 0)
                     else:
-                        run_threadsafe(file.set_property, tag, value)
-
-        self.redo_all_task.emit_task_done()
+                        file.set_property(tag, value)
 
     def _redo_all_done(self, *args):
         self.file_view.more_tags_group.slow_refresh_entries()
@@ -735,10 +719,9 @@ class EartagWindow(Adw.ApplicationWindow):
     # "Delete all tags" option
     def do_delete_all_tags(self, *args):
         self.set_sensitive(False)
-        self.delete_all_tags_task.reset()
         self.delete_all_tags_task.run()
 
-    def _delete_all_tags(self, *args):
+    async def _delete_all_tags(self, *args):
         """Undo all changes and add the option to re-do them."""
         self._delete_all_tags_undo_data = {}
         files = self.file_manager.selected_files_list.copy()
@@ -747,9 +730,7 @@ class EartagWindow(Adw.ApplicationWindow):
             self._delete_all_tags_undo_data[file.id] = {}
             for prop in file.modified_tags:
                 self._delete_all_tags_undo_data[file.id][prop] = file.get_property(prop)
-            run_threadsafe(file.delete_all_raw)
-
-        self.delete_all_tags_task.emit_task_done()
+            file.delete_all_raw()
 
     def _delete_all_tags_done(self, *args):
         self.file_view.more_tags_group.slow_refresh_entries()
@@ -772,10 +753,9 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def undo_delete_all_tags(self, *args):
         self.set_sensitive(False)
-        self.undo_delete_all_tags_task.reset()
         self.undo_delete_all_tags_task.run()
 
-    def _undo_delete_all_tags(self, *args):
+    async def _undo_delete_all_tags(self, *args):
         """Reverses undo_all."""
         self._undo_delete_all_count = 0
         for file in self.file_manager.files:
@@ -783,9 +763,7 @@ class EartagWindow(Adw.ApplicationWindow):
                 self._undo_delete_all_count += 1
                 file.reload(thread_safe=True)
                 for prop, value in self._delete_all_tags_undo_data[file.id].items():
-                    run_threadsafe(file.set_property, prop, value)
-
-        self.undo_delete_all_tags_task.emit_task_done()
+                    file.set_property(prop, value)
 
     def _undo_delete_all_tags_done(self, *args):
         self.file_view.more_tags_group.slow_refresh_entries()

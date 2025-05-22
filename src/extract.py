@@ -4,7 +4,7 @@
 from . import APP_GRESOURCE_PATH
 from .backends.file import EartagFile, VALID_TAGS, EXTRA_TAGS
 from .config import config
-from .utils.bgtask import EartagBackgroundTask, run_threadsafe
+from .utils.bgtask import EartagBackgroundTask
 from .utils.extracttags import extract_tags_from_filename
 from .utils.tagsyntaxhighlight import (
     EartagPlaceholderSyntaxHighlighter,
@@ -234,19 +234,14 @@ class EartagExtractTagsDialog(Adw.Dialog):
         self.content_clamp.set_sensitive(False)
         self.apply_button.set_sensitive(False)
         self.set_can_close(False)
-        self.apply_task.reset()
         self.apply_task.run()
 
-    def apply_func(self):
+    async def apply_func(self):
         self.extracted = 0
 
         progress_step = 1 / len(self.files)
 
         for file in self.files:
-            if self.apply_task.halt:
-                self.apply_task.emit_task_done()
-                return
-
             filename = os.path.basename(file.path)
             extract = self.get_extracted(filename, positions=False)
             if not extract:
@@ -258,12 +253,12 @@ class EartagExtractTagsDialog(Adw.Dialog):
                 ):
                     if tag in file.int_properties:
                         try:
-                            run_threadsafe(file.set_property, tag, int(value))
+                            file.set_property(tag, int(value))
                         except (TypeError, ValueError):
                             pass
                     elif tag in file.float_properties:
                         try:
-                            run_threadsafe(file.set_property, tag, float(value))
+                            file.set_property(tag, float(value))
                         except (TypeError, ValueError):
                             pass
                     else:
@@ -271,12 +266,10 @@ class EartagExtractTagsDialog(Adw.Dialog):
                             value = value.strip()
                         except AttributeError:
                             pass
-                        run_threadsafe(file.set_property, tag, value)
+                        file.set_property(tag, value)
 
             self.extracted += 1
             self.apply_task.increment_progress(progress_step)
-
-        self.apply_task.emit_task_done()
 
     def on_apply_done(self, *args):
         self.parent.toast_overlay.add_toast(

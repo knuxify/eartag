@@ -14,7 +14,7 @@ from .backends import (
     EartagFileMutagenASF,
 )
 from .backends.file import EartagFile
-from .utils.bgtask import EartagBackgroundTask, run_threadsafe
+from .utils.bgtask import EartagBackgroundTask
 from .utils.misc import find_in_model, cleanup_filename, natural_compare
 from .dialogs import (
     EartagRemovalDiscardWarningDialog,
@@ -159,10 +159,9 @@ class EartagFileManager(GObject.Object):
         """Saves changes in all files."""
         # self.save_task is set up in the init functions
         self.save_task.stop()
-        self.save_task.reset()
         self.save_task.run()
 
-    def _save(self):
+    async def _save(self):
         """Saves changes in all files (internal function)."""
         if not self.is_modified or self.has_error:
             return False
@@ -171,10 +170,6 @@ class EartagFileManager(GObject.Object):
         progress_step = 1 / self.get_n_files()
 
         for file in self.files:
-            if task.halt:
-                task.emit_task_done()
-                return False
-
             if not file.is_writable or not file.is_modified:
                 task.increment_progress(progress_step)
                 continue
@@ -185,19 +180,13 @@ class EartagFileManager(GObject.Object):
                 traceback.print_exc()
                 file_basename = os.path.basename(file.path)
                 self.error_dialog = EartagSaveFailureDialog(file_basename)
-                GLib.idle_add(self.error_dialog.present, self.window)
+                self.error_dialog.present(self.window)
 
-                task.emit_task_done()
                 return False
 
             task.increment_progress(progress_step)
 
-        GLib.idle_add(
-            self.window.toast_overlay.add_toast,
-            Adw.Toast.new(_("Saved changes to files")),
-        )
-
-        task.emit_task_done()
+        self.window.toast_overlay.add_toast(Adw.Toast.new(_("Saved changes to files")))
 
     #
     # Loading
@@ -210,14 +199,14 @@ class EartagFileManager(GObject.Object):
         """
         # self.load_task is set up in the init functions
         self.load_task.stop()
-        self.load_task.reset(kwargs={"paths": paths, "mode": mode})
+        self.load_task.set_args(kwargs={"paths": paths, "mode": mode})
 
         if mode == self.LOAD_OVERWRITE and self.files:
             self.remove_all()
 
         self.load_task.run()
 
-    def _load_single_file(self, path):
+    async def _load_single_file(self, path):
         """
         Loads a single file. Used internally in _load_multiple_files, which should be
         used for all file loading operations.
@@ -231,9 +220,7 @@ class EartagFileManager(GObject.Object):
             _file = eartagfile_from_path(path)
         except:
             traceback.print_exc()
-            GLib.idle_add(
-                EartagLoadingFailureDialog(file_basename).present, self.window
-            )
+            EartagLoadingFailureDialog(file_basename).present(self.window)
             return False
 
         self._connections[_file.id] = (
@@ -247,31 +234,23 @@ class EartagFileManager(GObject.Object):
 
         return True
 
-    def _load_files(self, paths, mode=1):
+    async def _load_files(self, paths, mode=1):
         """Loads files with the provided paths."""
         task = self.load_task
         self._files_buffer = []
 
         if not paths:
-            task.emit_task_done()
             return True
 
         file_count = len(paths)
         progress_step = 1 / file_count
 
         for path in paths:
-            if task.halt:
-                # We don't emit "task-done" here because the only case where loading is
-                # halted this way is if another load operation is about to begin
-                task.emit_task_done()
-                return False
-
-            if not self._load_single_file(path):
-                run_threadsafe(self.files.splice, 0, 0, self._files_buffer)
+            if not await self._load_single_file(path):
+                self.files.splice(0, 0, self._files_buffer)
                 self._files_buffer = []
 
-                task.emit_task_done()
-                GLib.idle_add(self.refresh_state)
+                self.refresh_state()
                 self.failed = True
                 return False
 
@@ -289,26 +268,23 @@ class EartagFileManager(GObject.Object):
                 unwritable_msg = _(
                     "Some of the opened files are read-only; changes cannot be saved"
                 )  # noqa: E501
-            GLib.idle_add(
-                self.window.toast_overlay.add_toast, Adw.Toast.new(unwritable_msg)
-            )
+            self.window.toast_overlay.add_toast(Adw.Toast.new(unwritable_msg))
 
-        run_threadsafe(self.files.splice, 0, 0, self._files_buffer)
+        self.files.splice(0, 0, self._files_buffer)
         first_file = None
         if self._files_buffer and mode == self.LOAD_INSERT:
             first_file = self._files_buffer[0]
         self._files_buffer = []
 
-        task.emit_task_done()
-        GLib.idle_add(self.refresh_state)
+        self.refresh_state()
         if mode == self.LOAD_INSERT:
             if self.get_n_selected() < 2 and first_file:
-                run_threadsafe(self.select_file, first_file, True)
+                self.select_file(first_file, True)
         else:
-            run_threadsafe(self.emit, "select-first")
+            self.emit("select-first")
 
         if mode == self.LOAD_OVERWRITE:
-            run_threadsafe(self.emit, "refresh-needed")
+            self.emit("refresh-needed")
 
     #
     # Removal
@@ -421,10 +397,10 @@ class EartagFileManager(GObject.Object):
 
     def rename_files(self, *args, **kwargs):
         self.rename_task.wait_for_completion()
-        self.rename_task.reset(args=args, kwargs=kwargs)
+        self.rename_task.set_args(args=args, kwargs=kwargs)
         self.rename_task.run()
 
-    def _rename_files(self, files, names):
+    async def _rename_files(self, files, names):
         """
         Renames multiple files and adds some harnesses to prevent potential
         data loss (for example due to overwriting an existing file).
@@ -463,13 +439,12 @@ class EartagFileManager(GObject.Object):
                 self._is_renaming_multiple_files = False
 
                 traceback.print_exc()
-                GLib.idle_add(EartagRenameFailureDialog(old_path).present, self.window)
+                EartagRenameFailureDialog(old_path).present(self.window)
 
-                task.emit_task_done()
                 self.failed = True
                 return False
 
-            run_threadsafe(file.notify, "path")
+            file.notify("path")
 
             try:
                 self.file_paths.remove(old_path)
@@ -480,8 +455,7 @@ class EartagFileManager(GObject.Object):
             n += 1
             task.increment_progress(progress_step)
 
-        task.emit_task_done()
-        GLib.idle_add(self.refresh_state)
+        self.refresh_state()
 
     #
     # File list sort and filter

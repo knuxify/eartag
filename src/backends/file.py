@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from ..utils.bgtask import run_threadsafe
-
 import gi
 
 gi.require_version("GdkPixbuf", "2.0")
@@ -391,33 +389,20 @@ class EartagFile(GObject.Object):
         self._path = value
         self.load_from_file(value)
 
-        if thread_safe:
-            for tag, tag_value in modifications.items():
-                run_threadsafe(self.set_property, tag, tag_value)
-        else:
-            for tag, tag_value in modifications.items():
-                self.set_property(tag, tag_value)
+        for tag, tag_value in modifications.items():
+            self.set_property(tag, tag_value)
 
     def reload(self, thread_safe: bool = False):
         """Reloads the file and discards all modifications."""
         self.load_from_file(self.props.path)
-        if thread_safe:
-            for prop in (
-                BASIC_TAGS
-                + tuple(self.supported_extra_tags)
-                + ("front_cover_path", "back_cover_path")
-            ):
-                run_threadsafe(self.notify, prop)
+        for prop in (
+            BASIC_TAGS
+            + tuple(self.supported_extra_tags)
+            + ("front_cover_path", "back_cover_path")
+        ):
+            self.notify(prop)
 
-            run_threadsafe(self.mark_as_unmodified)
-        else:
-            for prop in (
-                BASIC_TAGS
-                + tuple(self.supported_extra_tags)
-                + ("front_cover_path", "back_cover_path")
-            ):
-                self.notify(prop)
-            self.mark_as_unmodified()
+        self.mark_as_unmodified()
 
     def mark_as_modified(self, tag, notify_prop: bool = False):
         if not self._is_modified:
