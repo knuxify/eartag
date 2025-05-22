@@ -18,8 +18,9 @@ import os
 NOT_FOUND_STR = "Could not find one of the required releases (did something move at MusicBrainz, or do we have no internet?)"  # noqa: E501
 
 
+@pytest.mark.asyncio
 @pytest.mark.networked_tests
-def test_musicbrainz_onerel():
+async def test_musicbrainz_onerel():
     # Recording with one release, no cover path
 
     # https://musicbrainz.org/recording/cad1f61b-a1f1-4d00-9e01-bcd193eac54b
@@ -30,27 +31,10 @@ def test_musicbrainz_onerel():
         rec.release.release_id == "46fee5ba-49cb-4ebd-a6bc-71bbf03a210d"
     ), NOT_FOUND_STR
 
-    rec.release.download_thumbnail()
-    timeout = 30
-    while not rec.release.props.thumbnail_loaded:
-        time.sleep(0.5)
-        print(rec.release.props.thumbnail_loaded)
-        timeout -= 0.5
-        if timeout <= 0:
-            raise Exception("Timeout while loading thumbnail")
-
+    await rec.release.download_thumbnail_async()
     assert not rec.release.thumbnail_path
 
-    rec.release.download_covers()
-    timeout = 30
-    while (
-        not rec.release.props.front_cover_loaded
-        or not rec.release.props.back_cover_loaded
-    ):
-        time.sleep(0.5)
-        timeout -= 0.5
-        if timeout <= 0:
-            raise Exception("Timeout while loading covers")
+    await rec.release.download_covers_async()
     assert not rec.front_cover_path
     assert not rec.back_cover_path
 
@@ -96,8 +80,9 @@ def test_musicbrainz_multirel():
     assert rec.album == "effective. Power لُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ 冗"
 
 
+@pytest.mark.asyncio
 @pytest.mark.networked_tests
-def test_musicbrainz_covers():
+async def test_musicbrainz_covers():
     # Release with front and back cover
     # https://musicbrainz.org/recording/0d9dfe92-f7a9-482e-a94f-5e49d5ebd145
     rec = MusicBrainzRecording("0d9dfe92-f7a9-482e-a94f-5e49d5ebd145")
@@ -125,20 +110,14 @@ def test_musicbrainz_covers():
     else:
         raise AssertionError
 
-    rel.download_covers()
-    timeout = 30
-    while not rel.props.front_cover_loaded or not rel.props.back_cover_loaded:
-        time.sleep(0.5)
-        timeout -= 0.5
-        if timeout <= 0:
-            raise Exception("Timeout while loading covers")
-
+    await rel.download_covers_async()
     assert rel.front_cover_path
     assert rel.back_cover_path
 
 
+@pytest.mark.asyncio
 @pytest.mark.networked_tests
-def test_musicbrainz_file_set(
+async def test_musicbrainz_file_set(
     dummy_file,  # noqa: F811; flake8 doesn't understand fixtures
 ):
     """Tests the MusicBrainz file wrappers."""
@@ -177,13 +156,7 @@ def test_musicbrainz_file_set(
 
     rec.release = rel
 
-    rel.download_covers()
-    timeout = 30
-    while not rel.props.front_cover_loaded or not rel.props.back_cover_loaded:
-        time.sleep(0.5)
-        timeout -= 0.5
-        if timeout <= 0:
-            raise Exception("Timeout while loading thumbnail")
+    await rel.download_covers_async()
 
     rec.apply_data_to_file(dummy_file)
 
