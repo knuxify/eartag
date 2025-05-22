@@ -20,7 +20,7 @@ import acoustid
 
 from gi.repository import GObject, GLib
 
-from .main import event_loop
+from ._async import event_loop
 from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
 
 try:

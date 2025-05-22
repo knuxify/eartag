@@ -69,6 +69,7 @@ configure_file(
 
 eartag_sources = [
   '__init__.py',
+  '_async.py',
   'config.py',
   'dialogs.py',
   'extract.py',
