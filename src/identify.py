@@ -8,7 +8,7 @@ import os
 import html
 import gettext
 
-from .main import event_loop
+from ._async import event_loop
 from .musicbrainz import (
     acoustid_identify_file,
     get_recordings_for_file,

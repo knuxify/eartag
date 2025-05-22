@@ -13,12 +13,8 @@ from gi.repository import Adw, Gtk, Gio
 
 # asyncio setup
 import asyncio
-from gi.events import GLibEventLoopPolicy
-
-policy = GLibEventLoopPolicy()
+from ._async import policy
 asyncio.set_event_loop_policy(policy)
-event_loop = policy.get_event_loop()
-event_loop.set_exception_handler(None)  # set default exception handler
 
 from . import APP_ID, APP_GRESOURCE_PATH
 from .utils.validation import is_valid_music_file
