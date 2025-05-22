@@ -3,11 +3,12 @@
 
 from gi.repository import Adw, Gtk, Gio, GObject, GdkPixbuf
 
+import asyncio
 import os
 import html
 import gettext
-import time
 
+from .main import event_loop
 from .musicbrainz import (
     acoustid_identify_file,
     get_recordings_for_file,
@@ -165,7 +166,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.update_title()
         self.update_subtitle()
 
-        release.download_thumbnail()
+        release.queue_thumbnail_download()
 
     def unbind(self):
         for binding in self._bindings:
@@ -281,11 +282,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             return
 
         for rel in self._rel_model:
-            if (
-                not rel.thumbnail_loaded
-                and not rel.download_thumbnail_task.props.is_running
-            ):
-                rel.download_thumbnail()
+            rel.queue_thumbnail_download()
 
     def set_release_from_selector(self, _t1, _t2, rel_id):
         rel = None
@@ -533,6 +530,8 @@ class EartagIdentifyDialog(Adw.Dialog):
     apply_button = Gtk.Template.Child()
     end_button_stack = Gtk.Template.Child()
 
+    apply_progress = GObject.Property(type=float, minimum=0, maximum=1)
+
     def __init__(self, window):
         super().__init__()
         self.parent = window
@@ -553,7 +552,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.release_rows = {}  # release.id: EartagIdentifyReleaseRow
 
         self.identify_task = EartagBackgroundTask(self.identify_files)
-        self.apply_task = EartagBackgroundTask(self.apply_func)
+        self.apply_task = None
 
         # For some reason we can't create this from the template, so it
         # has to be added here:
@@ -572,8 +571,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.identify_task.bind_property("progress", self.id_progress, "fraction")
         self.identify_task.connect("task-done", self.on_identify_done)
 
-        self.apply_task.bind_property("progress", self.id_progress, "fraction")
-        self.apply_task.connect("task-done", self.on_apply_done)
+        self.bind_property("apply-progress", self.id_progress, "fraction")
 
         self.files.splice(
             0, self.files.get_n_items(), self.file_manager.selected_files_list
@@ -966,35 +964,44 @@ class EartagIdentifyDialog(Adw.Dialog):
             relrow.toggle_apply_sensitivity(False)
         self.set_can_close(False)
 
-        self.apply_task.reset()
-        self.apply_task.run()
+        self.apply_task = event_loop.create_task(self.apply_func())
+        self.apply_task.add_done_callback(self.on_apply_done)
 
-    def apply_func(self, *args, **kwargs):
+    async def apply_func(self):
         files = [file for file in self.files if file.id in self.apply_files]
         if not files:
-            self.apply_task.emit_task_done()
             return
 
-        progress_step = 1 / len(files)
-
+        # Step 1. Download covers
+        releases = set()
         for file in files:
-            if self.apply_task.halt:
-                self.apply_task.emit_task_done()
-                return
-
             rec = self.recordings[file.id]
-            rec.release.download_covers()
-            # TODO: Make a queue of cover downloads. Right now we just block
-            #       until the covers are downloaded
-            while (
-                not rec.release.props.front_cover_loaded
-                or not rec.release.props.back_cover_loaded
-            ):
-                time.sleep(0.25)
-            run_threadsafe(rec.apply_data_to_file, file)
-            self.apply_task.increment_progress(progress_step)
+            releases.add(rec.release)
 
-        self.apply_task.emit_task_done()
+        progress_step = 1 / (len(files) + len(releases))
+
+        sem = asyncio.Semaphore(5)
+        _tasks = set()
+        async with asyncio.TaskGroup() as tg:
+            while releases:
+                async with sem:
+                    _tasks.add(tg.create_task(releases.pop().download_covers_async()))
+                    self.props.apply_progress = (
+                        self.props.apply_progress + progress_step
+                    )
+
+        del releases
+        del _tasks
+        del sem
+
+        # Step 2. Apply tags to files
+        for file in files:
+            rec = self.recordings[file.id]
+
+            rec.apply_data_to_file(file)
+            self.props.apply_progress = self.props.apply_progress + progress_step
+
+        return
 
     def on_apply_done(self, *args):
         self.props.can_close = True

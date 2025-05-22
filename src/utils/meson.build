@@ -10,7 +10,8 @@ utils_sources = [
   'tagsyntaxhighlight.py',
   'previewselector.py',
   'validation.py',
-  'widgets.py'
+  'widgets.py',
+  'queuedl.py',
 ]
 
 install_data(utils_sources, install_dir: modulesubdir)
