@@ -38,14 +38,6 @@ else:
     USER_AGENT = f"Ear Tag/{VERSION} (https://gitlab.gnome.org/World/eartag)"
     TEST_SUITE = False
 
-if TEST_SUITE:
-    # Terrible hack. Tests do not have a GLib context, so idle_add calls
-    # get happily ignored; thus, we override GLib.idle_add so that the functions
-    # are called immediately. This is not a problem in the test suite (we only
-    # need to do this because changing a property that is bound to an UI element
-    # can cause UI crashes).
-    GLib.idle_add = lambda x, *args, **kwargs: x(*args, **kwargs)
-
 from .utils import simplify_string, simplify_compare, title_case_preserve_uppercase
 
 LAST_REQUEST = 0

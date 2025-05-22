@@ -14,7 +14,6 @@ from gi.repository import Adw, Gtk, Gio
 # asyncio setup
 import asyncio
 from ._async import policy
-asyncio.set_event_loop_policy(policy)
 
 from . import APP_ID, APP_GRESOURCE_PATH
 from .utils.validation import is_valid_music_file
@@ -283,5 +282,6 @@ Opened files:
 
 
 def main(version, devel):
+    asyncio.set_event_loop_policy(policy)
     app = Application(version, devel)
     return app.run(sys.argv)

@@ -17,7 +17,7 @@ from .musicbrainz import (
     MusicBrainzReleaseGroup,
 )
 from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equal
-from .utils.bgtask import EartagBackgroundTask, run_threadsafe
+from .utils.bgtask import EartagBackgroundTask
 from .utils.widgets import EartagModelExpanderRow
 from .backends.file import EartagFile
 from . import APP_GRESOURCE_PATH
@@ -255,9 +255,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         Used by the identification process to fill in the release switcher
         button model.
         """
-        return run_threadsafe(
-            self._rel_model.splice, 0, self._rel_model.get_n_items(), releases
-        )
+        return self._rel_model.splice(0, self._rel_model.get_n_items(), releases)
 
     def rel_row_create(self, rel, *args):
         row = EartagIdentifyAltReleaseRow(self, rel)
@@ -608,7 +606,6 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.set_can_close(False)
         self.end_button_stack.set_visible_child(self.apply_button)
 
-        self.identify_task.reset()
         self.identify_task.run()
 
     def _identify_set_recording(self, file, rec):
@@ -623,30 +620,24 @@ class EartagIdentifyDialog(Adw.Dialog):
         if rec.release.release_id in self.release_rows:
             row = self.release_rows[rec.release.release_id]
             row._filter_changed = False
-            run_threadsafe(row.update_filter)
+            row.update_filter()
             row._filter_changed = False
         else:
             self.release_rows[rec.release.release_id] = EartagIdentifyReleaseRow(
                 self, rec.release
             )
-            run_threadsafe(
-                self.content_listbox.prepend, self.release_rows[rec.release.release_id]
-            )
+            self.content_listbox.prepend(self.release_rows[rec.release.release_id])
 
         self._filter_changed = False
-        run_threadsafe(self.unidentified_filter.changed, Gtk.FilterChange.DIFFERENT)
+        self.unidentified_filter.changed(Gtk.FilterChange.DIFFERENT)
         self._filter_changed = False
 
         self.apply_files.append(file.id)
 
-    def identify_files(self, *args, **kwargs):
+    async def identify_files(self, *args, **kwargs):
         progress_step = 1 / len(self.files)
 
         for file in self.files:
-            if self.identify_task.halt:
-                self.identify_task.emit_task_done()
-                return
-
             unid_index = find_in_model(self.files_unidentified, file)
             if unid_index < 0:
                 n = 0
@@ -665,17 +656,12 @@ class EartagIdentifyDialog(Adw.Dialog):
                 continue
 
             unid_row = self.unidentified_row.get_row_at_index(unid_index)
-            run_threadsafe(unid_row.start_loading)
+            unid_row.start_loading()
 
             recordings = []
 
             if file.title and file.artist:
                 recordings = get_recordings_for_file(file)
-
-            # Halt again if needed; the previous operation takes a while
-            if self.identify_task.halt:
-                self.identify_task.emit_task_done()
-                return
 
             if not recordings or len(recordings) > 1:
                 id_confidence, id_recording = acoustid_identify_file(file)
@@ -705,29 +691,20 @@ class EartagIdentifyDialog(Adw.Dialog):
                     if match:
                         recordings = [id_recording]
 
-            # Halt again if needed; the previous operation takes a while
-            if self.identify_task.halt:
-                self.identify_task.emit_task_done()
-                return
-
             if recordings:
                 rec = recordings[0]
                 if not rec.available_releases:
-                    run_threadsafe(unid_row.mark_as_unidentified)
+                    unid_row.mark_as_unidentified()
                 else:
                     self._identify_set_recording(file, rec)
                     self.identify_task.increment_progress(progress_step)
             else:
-                run_threadsafe(unid_row.mark_as_unidentified)
+                unid_row.mark_as_unidentified()
 
         # Once we have identified all the files we could, check in
         # the releases we have to make sure we can't find other tracks
         # (MusicBrainz lookups tend to lose a few tracks on the way):
         for file in list(self.files_unidentified).copy():
-            if self.identify_task.halt:
-                self.identify_task.emit_task_done()
-                return
-
             rec = None
             for row in self.release_rows.values():
                 rel = row.release
@@ -745,11 +722,6 @@ class EartagIdentifyDialog(Adw.Dialog):
                         continue
 
                 for track in row.release.tracks:
-                    # Halt again if needed; the previous operation takes a while
-                    if self.identify_task.halt:
-                        self.identify_task.emit_task_done()
-                        return
-
                     if reg_and_simple_cmp(track["title"], file.title):
                         try:
                             rec = MusicBrainzRecording(
@@ -786,9 +758,8 @@ class EartagIdentifyDialog(Adw.Dialog):
                         if simplify_compare(s_track["title"], b_track["title"]):
                             for rec in self.release_rows[s_rel.release_id].recordings:
                                 rec.release = b_rel
-                            run_threadsafe(
-                                self.content_listbox.remove,
-                                self.release_rows[s_rel.release_id],
+                            self.content_listbox.remove(
+                                self.release_rows[s_rel.release_id]
                             )
                             del self.release_rows[s_rel.release_id]
 
@@ -806,10 +777,6 @@ class EartagIdentifyDialog(Adw.Dialog):
                 groups[rel.group.relgroup_id].append(rel)
 
         for group_id, our_releases in groups.items():
-            if self.identify_task.halt:
-                self.identify_task.emit_task_done()
-                return
-
             group = MusicBrainzReleaseGroup.setup_from_id(group_id)
             if len(group.releases) == 1:
                 self.release_rows[
@@ -830,11 +797,6 @@ class EartagIdentifyDialog(Adw.Dialog):
                 if rel in our_releases:
                     rf.append(rel)
             releases = rf + [r for r in releases if r not in rf]
-
-            # The previous operation might take a while, halt if needed
-            if self.identify_task.halt:
-                self.identify_task.emit_task_done()
-                return
 
             rel_recordings = {}  # recording: file
 
@@ -923,8 +885,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                     self.release_rows[rec.release.release_id] = (
                         EartagIdentifyReleaseRow(self, rec.release)
                     )
-                    run_threadsafe(
-                        self.content_listbox.prepend,
+                    self.content_listbox.prepend(
                         self.release_rows[rec.release.release_id],
                     )
 
@@ -939,9 +900,7 @@ class EartagIdentifyDialog(Adw.Dialog):
 
                 if row._rec_filter_model.get_n_items() == 0:
                     del self.release_rows[k]
-                    run_threadsafe(self.content_listbox.remove, row)
-
-        self.identify_task.emit_task_done()
+                    self.content_listbox.remove(row)
 
     def on_identify_done(self, task, *args):
         try:
@@ -989,7 +948,6 @@ class EartagIdentifyDialog(Adw.Dialog):
                     self.props.apply_progress = (
                         self.props.apply_progress + progress_step
                     )
-
         del releases
         del _tasks
         del sem
@@ -1001,7 +959,6 @@ class EartagIdentifyDialog(Adw.Dialog):
             rec.apply_data_to_file(file)
             self.props.apply_progress = self.props.apply_progress + progress_step
 
-        return
 
     def on_apply_done(self, *args):
         self.props.can_close = True

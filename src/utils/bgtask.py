@@ -2,9 +2,12 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject, GLib
-import threading
 import time
 import traceback
+import asyncio
+
+from .._async import event_loop
+from typing import Coroutine
 
 
 class EartagBackgroundTask(GObject.Object):
@@ -16,49 +19,37 @@ class EartagBackgroundTask(GObject.Object):
     to signify a progress change. This is a float from 0 to 1 and is
     passed directly to GtkProgressBar.
 
-    Also provides an optional "halt" property; target functions can
-    check for this property to stop an operation early.
-
-    Remember to pass all code that interacts with GTK through
-    GLib.idle_add().
+    The passed target function must be an async function/coroutine.
     """
 
-    def __init__(self, target, *args, **kwargs):
+    def __init__(self, target: Coroutine, *args, **kwargs):
         super().__init__()
         self._progress = 0
         self.target = target
-        self.reset(args, kwargs)
+        self.set_args(args, kwargs)
+        self.task = None
+
+    def set_args(self, args=None, kwargs=None):
+        if args:
+            self.args = args
+        else:
+            self.args = []
+        if kwargs:
+            self.kwargs = kwargs
+        else:
+            self.kwargs = {}
 
     def wait_for_completion(self):
-        while self.thread.is_alive():
+        while self.task and not self.task.done():
             time.sleep(0.25)
 
     def stop(self):
-        self.halt = True
-        self.wait_for_completion()
-        self.halt = False
+        if self.task and not self.task.done():
+            self.task.cancel()
 
     def run(self):
-        self.thread.start()
-
-    def reset(self, args=[], kwargs=[]):
-        """Re-creates the inner thread with new args and kwargs."""
-        self._is_done = False
-        self.thread = None
-        self.halt = False
-        self.failed = False
-        if args and kwargs:
-            self.thread = threading.Thread(
-                target=self.target, daemon=True, args=args, kwargs=kwargs
-            )
-        elif args:
-            self.thread = threading.Thread(target=self.target, daemon=True, args=args)
-        elif kwargs:
-            self.thread = threading.Thread(
-                target=self.target, daemon=True, kwargs=kwargs
-            )
-        else:
-            self.thread = threading.Thread(target=self.target, daemon=True)
+        self.task = asyncio.create_task(self.target(*self.args, **self.kwargs))
+        self.task.add_done_callback(self.emit_task_done)
 
     @GObject.Property(type=float, minimum=0, maximum=1)
     def progress(self):
@@ -81,69 +72,27 @@ class EartagBackgroundTask(GObject.Object):
 
     @GObject.Property(type=bool, default=False)
     def is_running(self):
-        if not self.thread:
+        if not self.task:
             return False
-        return self.thread.is_alive()
+        return not self.task.done()
 
     def reset_progress(self):
         self.props.progress = 0
 
-    def set_progress_threadsafe(self, value):
+    def set_progress(self, value):
         """
-        Wrapper around self.props.progress that updates the progress, wrapped
-        around GLib.idle_add. This is the preferred way for users to set the
-        progress variable.
+        Wrapper around self.props.progress that updates the progress.
         """
-        GLib.idle_add(self.set_property, "progress", value)
+        self.props.progress = value
 
     def increment_progress(self, value):
         """
-        Wrapper around self.props.progress that increments the progress, wrapped
-        around GLib.idle_add. This is the preferred way for users to increment the
-        progress variable.
+        Wrapper around self.props.progress that increments the progress.
         """
-        self.set_progress_threadsafe(self.props.progress + value)
+        self.props.progress = self.props.progress + value
 
-    def emit_task_done(self):
+    def emit_task_done(self, *args):
         """
-        Wrapper around self.emit('task-done') that is wrapped around
-        GLib.idle_add. This is the preferred way for users to emit the
-        task-done signal.
+        Wrapper around self.emit('task-done').
         """
-        GLib.idle_add(self.emit, "task-done")
-
-
-class EartagIdleFunc:
-    """
-    Wrapper around GLib.idle_add() that has the ability to parse the return
-    value.
-    """
-
-    def __init__(self, func, *args, **kwargs):
-        self._function_done = False
-        self._function_ret = None
-        self._run_event = None
-        self.func = func
-        self.args = args
-        self.kwargs = kwargs
-
-    def func_wrapper(self):
-        try:
-            self._function_ret = self.func(*self.args, **self.kwargs)
-        except:
-            traceback.print_exc()
-        self._run_event.set()
-        self._function_done = True
-
-    def run(self):
-        self._function_done = False
-        self._function_ret = None
-        self._run_event = threading.Event()
-        GLib.idle_add(self.func_wrapper)
-        self._run_event.wait()
-        return self._function_ret
-
-
-def run_threadsafe(func, *args, **kwargs):
-    idle_func = EartagIdleFunc(func, *args, **kwargs)
-    return idle_func.run()
+        self.emit("task-done")
