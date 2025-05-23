@@ -12,6 +12,7 @@ import re
 import shutil
 import tempfile
 import uuid
+import asyncio
 from PIL import Image
 
 BASIC_TAGS = (
@@ -370,9 +371,9 @@ class EartagFile(GObject.Object):
     @path.setter
     def path(self, value):
         """Moves the file to the new location."""
-        self._set_path(value)
+        raise ValueError("Use set_path_async to change the file path.")
 
-    def _set_path(self, value: str):
+    async def set_path_async(self, value: str):
         """
         Moves the file to the new location.
         (Internal function that does not notify the path property; used by the
@@ -385,8 +386,9 @@ class EartagFile(GObject.Object):
         for tag in self.modified_tags:
             modifications[tag] = self.get_property(tag)
 
-        shutil.move(self._path, value)
+        await asyncio.to_thread(shutil.move, self._path, value)
         self._path = value
+        # FIXME: load_from_file needs to be made async
         self.load_from_file(value)
 
         for tag, tag_value in modifications.items():
