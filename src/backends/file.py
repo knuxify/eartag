@@ -370,9 +370,9 @@ class EartagFile(GObject.Object):
     @path.setter
     def path(self, value):
         """Moves the file to the new location."""
-        self._set_path(value, thread_safe=False)
+        self._set_path(value)
 
-    def _set_path(self, value: str, thread_safe: bool = False):
+    def _set_path(self, value: str):
         """
         Moves the file to the new location.
         (Internal function that does not notify the path property; used by the
@@ -392,7 +392,7 @@ class EartagFile(GObject.Object):
         for tag, tag_value in modifications.items():
             self.set_property(tag, tag_value)
 
-    def reload(self, thread_safe: bool = False):
+    def reload(self):
         """Reloads the file and discards all modifications."""
         self.load_from_file(self.props.path)
         for prop in (

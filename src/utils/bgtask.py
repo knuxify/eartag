@@ -48,7 +48,7 @@ class EartagBackgroundTask(GObject.Object):
             self.task.cancel()
 
     def run(self):
-        self.task = asyncio.create_task(self.target(*self.args, **self.kwargs))
+        self.task = event_loop.create_task(self.target(*self.args, **self.kwargs))
         self.task.add_done_callback(self.emit_task_done)
 
     @GObject.Property(type=float, minimum=0, maximum=1)

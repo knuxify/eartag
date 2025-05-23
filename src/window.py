@@ -18,6 +18,7 @@ from .identify import EartagIdentifyDialog
 from .extract import EartagExtractTagsDialog
 from . import APP_GRESOURCE_PATH, DEVEL
 
+import asyncio
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
 import gettext
@@ -761,7 +762,7 @@ class EartagWindow(Adw.ApplicationWindow):
         for file in self.file_manager.files:
             if file.id in self._delete_all_tags_undo_data:
                 self._undo_delete_all_count += 1
-                file.reload(thread_safe=True)
+                await asyncio.to_thread(file.reload)
                 for prop, value in self._delete_all_tags_undo_data[file.id].items():
                     file.set_property(prop, value)
 
