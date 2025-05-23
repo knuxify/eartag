@@ -2,6 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import Adw, Gio, GObject, GLib, Gtk
+import asyncio
 import magic
 import mimetypes
 import os.path
@@ -175,7 +176,7 @@ class EartagFileManager(GObject.Object):
                 continue
 
             try:
-                file.save()
+                await asyncio.to_thread(file.save)
             except:
                 traceback.print_exc()
                 file_basename = os.path.basename(file.path)
@@ -206,7 +207,7 @@ class EartagFileManager(GObject.Object):
 
         self.load_task.run()
 
-    async def _load_single_file(self, path):
+    def _load_single_file(self, path):
         """
         Loads a single file. Used internally in _load_multiple_files, which should be
         used for all file loading operations.
@@ -246,7 +247,7 @@ class EartagFileManager(GObject.Object):
         progress_step = 1 / file_count
 
         for path in paths:
-            if not await self._load_single_file(path):
+            if not await asyncio.to_thread(self._load_single_file, path):
                 self.files.splice(0, 0, self._files_buffer)
                 self._files_buffer = []
 
@@ -434,7 +435,7 @@ class EartagFileManager(GObject.Object):
                     os.makedirs(os.path.dirname(new_path), exist_ok=True)
 
             try:
-                file._set_path(new_path, thread_safe=True)
+                await asyncio.to_thread(file._set_path, new_path)
             except:
                 self._is_renaming_multiple_files = False
 

@@ -2,6 +2,7 @@
 Contains code for interacting with the MusicBrainz API.
 """
 
+import asyncio
 import json
 import os.path
 import time
@@ -14,7 +15,6 @@ import urllib.request
 # happy when the GLib async event loop policy is set up.
 # Force-disable the Gst backend.
 import audioread
-
 audioread._gst_available = lambda: False
 import acoustid
 
@@ -27,62 +27,15 @@ try:
     from . import ACOUSTID_API_KEY, VERSION
 except ImportError:  # handle test suite import
     from tests.common import ACOUSTID_API_KEY, VERSION, config
-
-    USER_AGENT = (
-        f"Ear Tag (Test suite)/{VERSION} (https://gitlab.gnome.org/World/eartag)"
-    )
-    TEST_SUITE = True
 else:
     from .config import config
-
-    USER_AGENT = f"Ear Tag/{VERSION} (https://gitlab.gnome.org/World/eartag)"
-    TEST_SUITE = False
 
 from .utils import simplify_string, simplify_compare, title_case_preserve_uppercase
 
 LAST_REQUEST = 0
 
 
-def make_request(url, raw=False, _recursion=0):
-    """Wrapper for urllib.request.Request that handles the setup."""
-    global LAST_REQUEST
-
-    if _recursion > 3:
-        return None
-
-    # MusicBrainz requires a cooldown of max. 1 request per second.
-    # Try to adjust to this cooldown as best as possible.
-    while (time.time() - LAST_REQUEST) <= 1:
-        time.sleep(0.1)
-
-    LAST_REQUEST = time.time()
-
-    headers = {"User-Agent": USER_AGENT}
-    try:
-        request = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(request, timeout=30) as data_raw:
-            if raw:
-                data = data_raw.read()
-            else:
-                data = json.loads(data_raw.read())
-    except urllib.error.HTTPError as e:
-        if e.code in (403, 404):
-            return None
-        elif e.code == 503:
-            time.sleep(3)
-            return make_request(url, raw=raw, _recursion=(_recursion + 1))
-        else:
-            print("Exception encountered during request for URL:", url)
-            traceback.print_exc()
-            return None
-    except urllib.error.URLError:
-        time.sleep(3)
-        return make_request(url, raw=raw, _recursion=(_recursion + 1))
-    except:
-        traceback.print_exc()
-        return None
-
-    return data
+mb_query = EartagQueuedDownloader(EartagDownloaderMode.MODE_JSON, simultaneous_downloads=1, throttle=True)
 
 
 def build_url(endpoint, id="", **kwargs):
@@ -156,7 +109,7 @@ class EartagCAACover(GObject.Object):
         self.props.loaded = True
 
 
-def get_recordings_for_file(file):
+async def get_recordings_for_file(file):
     """
     Takes an EartagFile and returns a list of MusicBrainzRecording objects
     that might match the query.
@@ -170,7 +123,7 @@ def get_recordings_for_file(file):
         "release": file.album or "",
     }
 
-    search_data = make_request(
+    search_data = await mb_query.download(
         build_url(
             "recording",
             "",
@@ -191,7 +144,7 @@ def get_recordings_for_file(file):
         if not query_data["artist"]:
             return []
 
-        search_data = make_request(
+        search_data = await mb_query.download(
             build_url(
                 "recording",
                 "",
@@ -215,9 +168,12 @@ def get_recordings_for_file(file):
         except ValueError:
             continue
 
+        await rec.update_data()
+
         if file.album:
             _break = False
             for rel in rec.available_releases:
+                print(rel)
                 if rel.title == file.album or simplify_compare(rel.title, file.album):
                     ret.insert(0, rec)
                     rec.release = rel
@@ -253,9 +209,9 @@ class MusicBrainzRecording(GObject.Object):
     def dispose(self):
         self.release.dispose()
 
-    def update_data(self):
+    async def update_data(self):
         """Updates the internal data struct."""
-        self.mb_data = make_request(
+        self.mb_data = await mb_query.download(
             build_url(
                 "recording",
                 self._recording_id,
@@ -370,8 +326,6 @@ class MusicBrainzRecording(GObject.Object):
         if self._recording_id == value:
             return
         self._recording_id = value
-        if value:
-            self.update_data()
 
     def get_releases(self):
         """Returns a list of MusicBrainzRelease object that match the file."""
@@ -475,35 +429,13 @@ class MusicBrainzRelease(GObject.Object):
     NEED_UPDATE_COVER = -2
 
     cover_cache = {}
-    full_data_cache = {}
     obj_cache = {}  # id: MusicBrainzRelease
 
-    def __init__(self, release_data, from_id=False):
+    def __init__(self, release_data):
         super().__init__()
         self.mb_data = release_data
-        self._from_id = from_id
-
-        # Get full release data
-        if self.release_id not in MusicBrainzRelease.full_data_cache:
-            MusicBrainzRelease.full_data_cache[self.release_id] = make_request(
-                build_url(
-                    "release",
-                    self.release_id,
-                    inc=[
-                        "artist-credits",
-                        "recordings",
-                        "release-groups",
-                        "genres",
-                        "media",
-                    ],
-                )
-            )
 
         self.thumbnail_dl_task = None
-
-        self.full_data = MusicBrainzRelease.full_data_cache[self.release_id]
-        if from_id:
-            self.mb_data = self.full_data
 
         if self.release_id not in MusicBrainzRelease.obj_cache:
             MusicBrainzRelease.obj_cache[self.release_id] = self
@@ -515,15 +447,33 @@ class MusicBrainzRelease(GObject.Object):
         self.back_cover = EartagCAACover("release", self.release_id, "back")
 
     @staticmethod
-    def setup_from_id(id):
+    async def _fetch_full_data(id):
+        return await mb_query.download(
+                build_url(
+                    "release",
+                    id,
+                    inc=[
+                        "artist-credits",
+                        "recordings",
+                        "release-groups",
+                        "genres",
+                        "media",
+                    ],
+                )
+            )
+
+    async def fetch_full_data(self):
+        self.full_data = await self._fetch_full_data(self.release_id)
+
+    @staticmethod
+    async def setup_from_id(id):
         if id in MusicBrainzRelease.obj_cache:
             return MusicBrainzRelease.obj_cache[id]
-        return MusicBrainzRelease(release_data={}, from_id=id)
+        data = await MusicBrainzRelease._fetch_full_data(id)
+        return MusicBrainzRelease(release_data=data)
 
     @GObject.Property(type=str)
     def release_id(self):
-        if self._from_id:
-            return self._from_id
         return self.mb_data["id"]
 
     @GObject.Property(type=str)
@@ -552,9 +502,9 @@ class MusicBrainzRelease(GObject.Object):
     def totaltracknumber(self):
         return int(self.mb_data["media"][0]["track-count"])
 
-    @property
-    def tracks(self):
-        return self.full_data["media"][0]["tracks"]
+    #@property
+    #def tracks(self):
+    #	return self.full_data["media"][0]["tracks"]
 
     @GObject.Property(type=str)
     def status(self):
@@ -582,7 +532,7 @@ class MusicBrainzRelease(GObject.Object):
     def front_cover_path(self):
         if not self.front_cover.props.loaded:
             raise ValueError(
-                "Covers have not been downloaded yet; run download_covers()"
+                "Covers have not been downloaded yet; run download_covers_async()"
             )
         if not self.front_cover.props.path:
             return self.group.front_cover_path
@@ -592,7 +542,7 @@ class MusicBrainzRelease(GObject.Object):
     def back_cover_path(self):
         if not self.back_cover.props.loaded:
             raise ValueError(
-                "Covers have not been downloaded yet; run download_covers()"
+                "Covers have not been downloaded yet; run download_covers_async()"
             )
         if not self.back_cover.props.path:
             return self.group.back_cover_path
@@ -654,27 +604,15 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
     NO_COVER = -2
 
-    full_data_cache = {}
     obj_cache = {}
 
-    def __init__(self, relgroup_data, from_id=False):
+    def __init__(self, relgroup_data):
         super().__init__()
         self._releases = None
 
-        if relgroup_data:
-            groupid = relgroup_data["id"]
-        elif from_id:
-            groupid = from_id
+        groupid = relgroup_data["id"]
 
-        if groupid not in MusicBrainzReleaseGroup.full_data_cache:
-            MusicBrainzReleaseGroup.full_data_cache[groupid] = make_request(
-                build_url("release-group", groupid, inc=["releases"])
-            )
-
-        if not MusicBrainzReleaseGroup.full_data_cache[groupid]:
-            MusicBrainzReleaseGroup.full_data_cache[groupid] = relgroup_data
-
-        self.mb_data = MusicBrainzReleaseGroup.full_data_cache[groupid]
+        self.mb_data = relgroup_data
 
         if groupid not in MusicBrainzReleaseGroup.obj_cache:
             MusicBrainzReleaseGroup.obj_cache[groupid] = self
@@ -683,10 +621,17 @@ class MusicBrainzReleaseGroup(GObject.Object):
         self.front_cover = EartagCAACover("release-group", self.relgroup_id, "front")
 
     @staticmethod
-    def setup_from_id(id):
+    async def _fetch_full_data(groupid):
+        return await mb_query.download(
+            build_url("release-group", groupid, inc=["releases"])
+        )
+
+    @staticmethod
+    async def setup_from_id(id):
         if id in MusicBrainzReleaseGroup.obj_cache:
             return MusicBrainzReleaseGroup.obj_cache[id]
-        return MusicBrainzReleaseGroup({}, from_id=id)
+        data = await MusicBrainzReleaseGroup._fetch_full_data(id)
+        return MusicBrainzReleaseGroup(relgroup_data=data)
 
     @GObject.Property(type=str)
     def relgroup_id(self):
@@ -713,10 +658,14 @@ class MusicBrainzReleaseGroup(GObject.Object):
     @GObject.Property
     def releases(self):
         if not self._releases:
-            self._releases = [
-                MusicBrainzRelease.setup_from_id(id) for id in self.release_ids
-            ]
+            raise ValueError("Releases have not been initialized yet; run get_releases_async()")
         return self._releases
+
+    async def get_releases_async(self):
+        if not self._releases:
+            self._releases = [
+                await MusicBrainzRelease.setup_from_id(id) for id in self.release_ids
+            ]
 
     @GObject.Property(type=str)
     def thumbnail_path(self):
@@ -726,7 +675,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
     def front_cover_path(self):
         if not self.front_cover.props.loaded:
             raise ValueError(
-                "Covers have not been downloaded yet; run download_covers()"
+                "Covers have not been downloaded yet; run download_covers_async()"
             )
         return self.front_cover.props.path
 
@@ -739,7 +688,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
         return hash(self.relgroup_id)
 
 
-def acoustid_identify_file(file):
+async def acoustid_identify_file(file):
     """
     Uses AcoustID and Chromaprint to identify a track's data.
 
@@ -747,7 +696,7 @@ def acoustid_identify_file(file):
     object for the file, or (0.0, None) if it couldn't be found.
     """
     try:
-        results = acoustid.match(ACOUSTID_API_KEY, file.path, parse=False)
+        results = await asyncio.to_thread(acoustid.match, ACOUSTID_API_KEY, file.path, parse=False)
         if "results" not in results or not results["results"]:
             return (0.0, None)
     except:
@@ -766,7 +715,6 @@ def acoustid_identify_file(file):
     if "recordings" in acoustid_data:
         musicbrainz_id = acoustid_data["recordings"][0]["id"]
         rec = MusicBrainzRecording(musicbrainz_id, file=file)
-
         return (acoustid_data["score"], rec)
 
     return (0.0, None)
