@@ -1,6 +1,7 @@
 import os
 import shutil
 import filecmp
+import pytest
 
 from src.backends.file import CoverType
 
@@ -80,7 +81,8 @@ prop_to_example_string = {
 # Actual test functions will follow
 
 
-def run_backend_tests(file_class, extension, skip_channels=False):
+@pytest.mark.asyncio
+async def run_backend_tests(file_class, extension, skip_channels=False):
     # Simple read test
     if not REGENERATE_EXAMPLES:
         file_read = file_class(os.path.join(EXAMPLES_DIR, f"example.{extension}"))
@@ -110,9 +112,9 @@ def run_backend_tests(file_class, extension, skip_channels=False):
 
     # File rename test; do this twice: once for no tags, once for all tags
     with TestFile("test_rename", extension, "notags", remove=False) as file_rename:
-        backend_rename(file_class(file_rename))
+        await backend_rename(file_class(file_rename))
     with TestFile("test_rename", extension, "alltags", remove=False) as file_rename:
-        backend_rename(file_class(file_rename))
+        await backend_rename(file_class(file_rename))
 
     # Test full-length release date and validation
     if file_class._supports_full_dates:
@@ -357,7 +359,8 @@ def backend_delete(file):
     backend_read_empty(file_class(file.path))
 
 
-def backend_rename(file):
+@pytest.mark.asyncio
+async def backend_rename(file):
     """Tests the ability of the file to be renamed."""
     original_path = file.props.path
     orig_copy_path = original_path + "-orig"
@@ -366,7 +369,7 @@ def backend_rename(file):
 
     file.set_property("title", "Moved Title")
 
-    file.set_property("path", new_path)
+    await file.set_path_async(new_path)
 
     assert not os.path.exists(original_path)
     assert os.path.exists(new_path)

@@ -435,7 +435,7 @@ class EartagFileManager(GObject.Object):
                     os.makedirs(os.path.dirname(new_path), exist_ok=True)
 
             try:
-                await asyncio.to_thread(file._set_path, new_path)
+                await file.set_path_async(new_path)
             except:
                 self._is_renaming_multiple_files = False
 
