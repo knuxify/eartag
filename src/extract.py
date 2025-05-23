@@ -4,7 +4,7 @@
 from . import APP_GRESOURCE_PATH
 from .backends.file import EartagFile, VALID_TAGS, EXTRA_TAGS
 from .config import config
-from .utils.bgtask import EartagBackgroundTask
+from .utils.asynctask import EartagAsyncTask
 from .utils.extracttags import extract_tags_from_filename
 from .utils.tagsyntaxhighlight import (
     EartagPlaceholderSyntaxHighlighter,
@@ -97,7 +97,7 @@ class EartagExtractTagsDialog(Adw.Dialog):
             "extract-pattern", self.pattern_entry, "text", Gio.SettingsBindFlags.DEFAULT
         )
 
-        self.apply_task = EartagBackgroundTask(self.apply_func)
+        self.apply_task = EartagAsyncTask(self.apply_func)
         self.apply_task.bind_property("progress", self.rename_progress, "fraction")
         self.apply_task.connect("task-done", self.on_apply_done)
 

@@ -2,7 +2,7 @@ modulesubdir = join_paths(moduledir, 'utils')
 
 utils_sources = [
   '__init__.py',
-  'bgtask.py',
+  'asynctask.py',
   'extracttags.py',
   'limiters.py',
   'misc.py',

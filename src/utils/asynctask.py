@@ -10,10 +10,9 @@ from .._async import event_loop
 from typing import Coroutine
 
 
-class EartagBackgroundTask(GObject.Object):
+class EartagAsyncTask(GObject.Object):
     """
-    Convenience class for creating tasks that run in the background
-    without freezing the UI.
+    Convenience class for creating async tasks.
 
     Provides a "progress" property that can be used by target functions
     to signify a progress change. This is a float from 0 to 1 and is
