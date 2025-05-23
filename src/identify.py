@@ -11,7 +11,6 @@ import gettext
 from ._async import event_loop
 from .musicbrainz import (
     acoustid_identify_file,
-    get_recordings_for_file,
     MusicBrainzRecording,
     MusicBrainzRelease,
     MusicBrainzReleaseGroup,
@@ -661,11 +660,10 @@ class EartagIdentifyDialog(Adw.Dialog):
             recordings = []
 
             if file.title and file.artist:
-                recordings = await get_recordings_for_file(file)
+                recordings = await MusicBrainzRecording.get_recordings_for_file(file)
 
             if not recordings or len(recordings) > 1:
                 id_confidence, id_recording = await acoustid_identify_file(file)
-                await id_recording.update_data()
 
                 # Make sure the recording we got from AcoustID matches the
                 # file we have:
@@ -683,6 +681,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                             match = False
                             for rel in id_recording.available_releases:
                                 if reg_and_simple_cmp(rel.title, file.album):
+                                    id_recording._release = rel
                                     match = True
                                     break
                         else:
@@ -778,7 +777,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                 groups[rel.group.relgroup_id].append(rel)
 
         for group_id, our_releases in groups.items():
-            group = MusicBrainzReleaseGroup.setup_from_id(group_id)
+            group = await MusicBrainzReleaseGroup.new_for_id(group_id)
             await group.get_releases_async()
             if len(group.releases) == 1:
                 self.release_rows[
@@ -957,6 +956,14 @@ class EartagIdentifyDialog(Adw.Dialog):
         # Step 2. Apply tags to files
         for file in files:
             rec = self.recordings[file.id]
+            # Ugly quirk: since release objects are derived from the data in the
+            # recording object, and not shared, downloading covers for one does
+            # not mark the covers for all recordings as downloaded.
+            #
+            # We run download_covers_async() on each of the recordings to update
+            # the cover data; no actual data gets downloaded, since covers are
+            # cached.
+            await rec.download_covers_async()
 
             rec.apply_data_to_file(file)
             self.props.apply_progress = self.props.apply_progress + progress_step

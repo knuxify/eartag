@@ -46,8 +46,17 @@ class EartagAsyncTask(GObject.Object):
         if self.task and not self.task.done():
             self.task.cancel()
 
+    async def _run(self):
+        try:
+            return await self.target(*self.args, **self.kwargs)
+        except Exception as e:
+            # HACK: We do exception handling here since for some reason it
+            # doesn't print the exceptions otherwise
+            traceback.print_exc()
+            raise e from e
+
     def run(self):
-        self.task = event_loop.create_task(self.target(*self.args, **self.kwargs))
+        self.task = event_loop.create_task(self._run())
         self.task.add_done_callback(self.emit_task_done)
 
     @GObject.Property(type=float, minimum=0, maximum=1)

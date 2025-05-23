@@ -4,9 +4,8 @@ Tests MusicBrainz functions.
 
 from src.musicbrainz import (
     MusicBrainzRecording,
-    get_recordings_for_file,
     acoustid_identify_file,
-    make_request,
+#	make_request,
 )
 from src.backends.file_mutagen_id3 import EartagFileMutagenID3
 from .common import dummy_file  # noqa: F401; flake8 doesn't understand fixtures
@@ -24,7 +23,7 @@ async def test_musicbrainz_onerel():
     # Recording with one release, no cover path
 
     # https://musicbrainz.org/recording/cad1f61b-a1f1-4d00-9e01-bcd193eac54b
-    rec = MusicBrainzRecording("cad1f61b-a1f1-4d00-9e01-bcd193eac54b")
+    rec = await MusicBrainzRecording.new_for_id("cad1f61b-a1f1-4d00-9e01-bcd193eac54b")
     assert rec, NOT_FOUND_STR
     # https://musicbrainz.org/release/46fee5ba-49cb-4ebd-a6bc-71bbf03a210d
     assert (
@@ -39,13 +38,14 @@ async def test_musicbrainz_onerel():
     assert not rec.back_cover_path
 
 
+@pytest.mark.asyncio
 @pytest.mark.networked_tests
-def test_musicbrainz_multirel():
+async def test_musicbrainz_multirel():
     # Recording with multiple releases, each with its own tracklists, and with
     # different names (but still under one release group).
     # Also a pretty good test for exotic title characters...
     # https://musicbrainz.org/recording/812aed4e-776f-41d5-aefc-bad0e9226526
-    rec = MusicBrainzRecording("812aed4e-776f-41d5-aefc-bad0e9226526")
+    rec = await MusicBrainzRecording.new_for_id("812aed4e-776f-41d5-aefc-bad0e9226526")
     assert rec, NOT_FOUND_STR
     assert rec._release == MusicBrainzRecording.SELECT_RELEASE_FIRST
     try:
@@ -85,7 +85,7 @@ def test_musicbrainz_multirel():
 async def test_musicbrainz_covers():
     # Release with front and back cover
     # https://musicbrainz.org/recording/0d9dfe92-f7a9-482e-a94f-5e49d5ebd145
-    rec = MusicBrainzRecording("0d9dfe92-f7a9-482e-a94f-5e49d5ebd145")
+    rec = await MusicBrainzRecording.new_for_id("0d9dfe92-f7a9-482e-a94f-5e49d5ebd145")
     assert rec, NOT_FOUND_STR
 
     # https://musicbrainz.org/release/2a335fce-7750-444a-b511-f912fa1a165e
@@ -124,7 +124,7 @@ async def test_musicbrainz_file_set(
 
     # Test with not enough data
     try:
-        get_recordings_for_file(dummy_file)
+        await MusicBrainzRecording.get_recordings_for_file(dummy_file)
     except ValueError:
         pass
     else:
@@ -134,7 +134,7 @@ async def test_musicbrainz_file_set(
     dummy_file.title = "Royal Blue Walls"
     dummy_file.artist = "Jane Remover"
 
-    recordings = get_recordings_for_file(dummy_file)
+    recordings = await MusicBrainzRecording.get_recordings_for_file(dummy_file)
     assert recordings
     assert len(recordings) > 0
 
@@ -199,10 +199,11 @@ def acoustid_file():
 @pytest.mark.skip(
     reason="Currently broken, looks like it's misidentifying the track; not our fault"
 )  # noqa: E501
+@pytest.mark.asyncio
 @pytest.mark.networked_tests
-def test_acoustid_identify(acoustid_file):
+async def test_acoustid_identify(acoustid_file):
     """Tests the AcoustID identification function."""
-    ident = acoustid_identify_file(acoustid_file)
+    ident = await acoustid_identify_file(acoustid_file)
     assert ident
     assert ident[1]
     ident[1].apply_data_to_file(acoustid_file)
