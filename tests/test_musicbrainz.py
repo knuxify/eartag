@@ -5,7 +5,7 @@ Tests MusicBrainz functions.
 from src.musicbrainz import (
     MusicBrainzRecording,
     acoustid_identify_file,
-#	make_request,
+    # 	make_request,
 )
 from src.backends.file_mutagen_id3 import EartagFileMutagenID3
 from .common import dummy_file  # noqa: F401; flake8 doesn't understand fixtures

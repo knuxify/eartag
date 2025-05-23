@@ -968,7 +968,6 @@ class EartagIdentifyDialog(Adw.Dialog):
             rec.apply_data_to_file(file)
             self.props.apply_progress = self.props.apply_progress + progress_step
 
-
     def on_apply_done(self, *args):
         self.props.can_close = True
         self.file_manager.emit("refresh-needed")

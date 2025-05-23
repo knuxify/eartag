@@ -186,9 +186,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.delete_all_tags_task.connect("task-done", self._delete_all_tags_done)
 
         self._undo_delete_all_count = 0
-        self.undo_delete_all_tags_task = EartagAsyncTask(
-            self._undo_delete_all_tags
-        )
+        self.undo_delete_all_tags_task = EartagAsyncTask(self._undo_delete_all_tags)
         self.undo_delete_all_tags_task.connect(
             "task-done", self._undo_delete_all_tags_done
         )
