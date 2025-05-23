@@ -17,7 +17,7 @@ from .musicbrainz import (
     MusicBrainzReleaseGroup,
 )
 from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equal
-from .utils.bgtask import EartagBackgroundTask
+from .utils.asynctask import EartagAsyncTask
 from .utils.widgets import EartagModelExpanderRow
 from .backends.file import EartagFile
 from . import APP_GRESOURCE_PATH
@@ -549,7 +549,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.apply_files = []
         self.release_rows = {}  # release.id: EartagIdentifyReleaseRow
 
-        self.identify_task = EartagBackgroundTask(self.identify_files)
+        self.identify_task = EartagAsyncTask(self.identify_files)
         self.apply_task = None
 
         # For some reason we can't create this from the template, so it

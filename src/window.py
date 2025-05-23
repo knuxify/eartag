@@ -2,7 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .config import config, DLCoverSize
-from .utils.bgtask import EartagBackgroundTask
+from .utils.asynctask import EartagAsyncTask
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import (
     EartagCloseWarningDialog,
@@ -172,21 +172,21 @@ class EartagWindow(Adw.ApplicationWindow):
 
         # Tasks for undo/redo all option
         self._undo_all_count = 0
-        self.undo_all_task = EartagBackgroundTask(self._undo_all)
+        self.undo_all_task = EartagAsyncTask(self._undo_all)
         self.undo_all_task.connect("task-done", self._undo_all_done)
 
         self._redo_all_count = 0
-        self.redo_all_task = EartagBackgroundTask(self._redo_all)
+        self.redo_all_task = EartagAsyncTask(self._redo_all)
         self.redo_all_task.connect("task-done", self._redo_all_done)
 
         # Task for delete all tags option
 
         self._delete_all_tags_count = 0
-        self.delete_all_tags_task = EartagBackgroundTask(self._delete_all_tags)
+        self.delete_all_tags_task = EartagAsyncTask(self._delete_all_tags)
         self.delete_all_tags_task.connect("task-done", self._delete_all_tags_done)
 
         self._undo_delete_all_count = 0
-        self.undo_delete_all_tags_task = EartagBackgroundTask(
+        self.undo_delete_all_tags_task = EartagAsyncTask(
             self._undo_delete_all_tags
         )
         self.undo_delete_all_tags_task.connect(

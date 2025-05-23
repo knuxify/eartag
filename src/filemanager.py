@@ -15,7 +15,7 @@ from .backends import (
     EartagFileMutagenASF,
 )
 from .backends.file import EartagFile
-from .utils.bgtask import EartagBackgroundTask
+from .utils.asynctask import EartagAsyncTask
 from .utils.misc import find_in_model, cleanup_filename, natural_compare
 from .dialogs import (
     EartagRemovalDiscardWarningDialog,
@@ -128,9 +128,9 @@ class EartagFileManager(GObject.Object):
         self._selection_removed = False
 
         # Create background task runners
-        self.save_task = EartagBackgroundTask(self._save)
-        self.load_task = EartagBackgroundTask(self._load_files)
-        self.rename_task = EartagBackgroundTask(self._rename_files)
+        self.save_task = EartagAsyncTask(self._save)
+        self.load_task = EartagAsyncTask(self._load_files)
+        self.rename_task = EartagAsyncTask(self._rename_files)
 
         self.selected_files.connect("selection-changed", self.do_selection_changed)
 
