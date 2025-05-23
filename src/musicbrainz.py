@@ -10,6 +10,7 @@ import traceback
 import urllib
 import urllib.parse
 import urllib.request
+from typing import List, Self
 
 # HACK: The Gst backend of audioread, which is used by acoustid, is not very
 # happy when the GLib async event loop policy is set up.
@@ -44,6 +45,8 @@ def build_url(endpoint, id="", **kwargs):
     for argname, argdata in kwargs.items():
         if isinstance(argdata, list) or isinstance(argdata, tuple):
             argdata = "+".join(argdata)
+        elif argname == "query" and isinstance(argdata, dict):
+            argdata = " AND ".join([f"{k}:{v}" for k, v in argdata.items() if v])
         args.append(f'{argname}={urllib.parse.quote(argdata, encoding="utf-8")}')
     if id:
         return f'https://musicbrainz.org/ws/2/{endpoint}/{id}?{"&".join(args)}&fmt=json'
@@ -109,108 +112,55 @@ class EartagCAACover(GObject.Object):
         self.props.loaded = True
 
 
-async def get_recordings_for_file(file):
-    """
-    Takes an EartagFile and returns a list of MusicBrainzRecording objects
-    that might match the query.
-    """
-    if not file.title or not file.artist:
-        raise ValueError("Not enough data for a query; need at least title and artist")
-
-    query_data = {
-        "recording": file.title,
-        "artist": file.artist,
-        "release": file.album or "",
-    }
-
-    search_data = await mb_query.download(
-        build_url(
-            "recording",
-            "",
-            query=" AND ".join([f"{k}:{v}" for k, v in query_data.items() if v]),
-        )
-    )
-
-    if (
-        not search_data
-        or "recordings" not in search_data
-        or not search_data["recordings"]
-    ):
-        # Try to use simplified title/artist:
-        query_data["title"] = simplify_string(file.title)
-        if not query_data["title"]:
-            return []
-        query_data["artist"] = simplify_string(file.title)
-        if not query_data["artist"]:
-            return []
-
-        search_data = await mb_query.download(
-            build_url(
-                "recording",
-                "",
-                query=" AND ".join([f"{k}:{v}" for k, v in query_data.items() if v]),
-            )
-        )
-        if (
-            not search_data
-            or "recordings" not in search_data
-            or not search_data["recordings"]
-        ):
-            return []
-
-    ret = []
-    for r in search_data["recordings"]:
-        if r["score"] < config["musicbrainz-confidence-treshold"]:
-            continue
-
-        try:
-            rec = MusicBrainzRecording(r["id"], file=file)
-        except ValueError:
-            continue
-
-        await rec.update_data()
-
-        if file.album:
-            _break = False
-            for rel in rec.available_releases:
-                print(rel)
-                if rel.title == file.album or simplify_compare(rel.title, file.album):
-                    ret.insert(0, rec)
-                    rec.release = rel
-                    rec.available_releases.insert(
-                        0, rec.available_releases.pop(rec.available_releases.index(rel))
-                    )
-                    _break = True
-                    break
-            if _break:
-                continue
-
-        ret.append(rec)
-
-    return ret
-
-
 class MusicBrainzRecording(GObject.Object):
     __gtype_name__ = "MusicBrainzRecording"
 
     SELECT_RELEASE_FIRST = -1
 
-    def __init__(self, recording_id=None, release_id=None, file=None):
+    def __init__(self, data: dict):
         super().__init__()
-        self._recording_id = None
-        self._prefill_release_id = release_id
-        if file:
-            self._album = file.album
-        else:
-            self._album = None
+        self._recording_id = data["id"]
+        self.mb_data = data
+        self._available_releases = None
         self._release = MusicBrainzRecording.SELECT_RELEASE_FIRST
-        self.recording_id = recording_id
+
+        if "releases" in data:
+            self._fetch_available_releases()
+
+        if len(self._available_releases) == 1:
+            self._release = self._available_releases[0]
+        elif len(self._available_releases) == 0:
+            self._release = None
 
     def dispose(self):
         self.release.dispose()
 
-    async def update_data(self):
-        """Updates the internal data struct."""
+    @property
+    def available_releases(self):
+        if self._available_releases is None:
+            self._fetch_available_releases()
+        return self._available_releases
+
+    def _fetch_available_releases(self):
+        """Fill the self.available_releases list with releases (as MusicBrainzRelease objects)."""
+        if "releases" not in self.mb_data:
+            print("Warning: run fetch_full_data_async() to get release data")
+            return []
+
+        available_releases = [MusicBrainzRelease(rel) for rel in self.mb_data["releases"]]
+
+        # Prefer albums, then EPs, then singles, then others.
+        sort_key = {"album": 0, "ep": 1, "single": 2, "other": 3}
+        available_releases.sort(key=lambda rel: sort_key.get(rel.group.primary_type, 4))
+
+        # Move unofficial releases and compilations to the end of the list.
+        available_releases.sort(key=lambda rel: int(rel.status != "official"))  # official = 0, unofficial = 1
+        available_releases.sort(key=lambda rel: int("compilation" in rel.group.secondary_types))  # not compilation = 0, compilation = 1
+
+        self._available_releases = available_releases
+
+    async def fetch_full_data_async(self):
+        """Get full data; this is required for some properties."""
         self.mb_data = await mb_query.download(
             build_url(
                 "recording",
@@ -219,65 +169,159 @@ class MusicBrainzRecording(GObject.Object):
             )
         )
 
-        if not self.mb_data or "title" not in self.mb_data or not self.mb_data["title"]:
-            raise ValueError("Could not get recording data")
+    @staticmethod
+    async def new_for_id(recording_id: str) -> Self:
+        """Create a new MusicBrainzRecording object with the given ID."""
+        data = await mb_query.download(
+            build_url(
+                "recording",
+                recording_id,
+                inc=("releases", "genres", "artist-credits", "media", "release-groups"),
+            )
+        )
+        return MusicBrainzRecording(data)
 
-        self.available_releases = self.get_releases()
+    @staticmethod
+    async def get_recordings_for_file(file, overrides: dict = None) -> List[Self]:
+        """
+        Search for recordings matching information extracted from the file.
 
-        # Sort available releases by usefulness. Prefer albums (digital),
-        # then albums (physical media), then singles, then compilations.
-        comps = []
-        for rel in self.available_releases.copy():
-            if rel.status != "official":
-                self.available_releases.remove(rel)
-                comps.append(rel)
-                continue
-            if "compilation" in rel.group.secondary_types:
-                self.available_releases.remove(rel)
-                comps.append(rel)
-                continue
+        Returns a list of MusicBrainzRecording files.
+        """
 
-        rels = []
-        for reltype in ("album", "ep", "single", "other"):
-            checked_ids = []
-            for rel in self.available_releases + comps:
-                if rel.group.relgroup_id in checked_ids:
-                    continue
-                if rel.group.primary_type == reltype:
-                    rels.append(rel)
-                    checked_ids.append(rel.group.relgroup_id)
-
-        missing = [rel for rel in self.available_releases if rel not in rels]
-        rels = rels + missing
-
-        if self._album:
-            for rel in rels.copy():
-                if rel.title == self._album or simplify_compare(rel.title, self._album):
-                    rels.insert(0, rels.pop(rels.index(rel)))
-
-        self.available_releases = rels
-
-        if len(self.available_releases) == 1:
-            self.release = self.available_releases[0]
-        elif self._album:
-            album_rels = [r for r in self.available_releases if r.title == self._album]
-            if len(album_rels) == 1:
-                self.release = album_rels[0]
-
-        if len(self.available_releases) > 1 and self._prefill_release_id:
-            for rel in self.available_releases:
-                if rel.release_id == self._prefill_release_id:
-                    self.release = rel
-                    break
-
-        try:
-            self.release
-        except ValueError:
-            pass
+        if overrides:
+            title = overrides.get("title", file.props.title)
+            artist = overrides.get("artist", file.props.artist)
+            album = overrides.get("album", file.props.album)
         else:
-            for rel in self.available_releases:
-                if rel == self.release:
-                    continue
+            title = file.props.title
+            artist = file.props.artist
+            album = file.props.album
+
+        if not title:
+            raise ValueError("Not enough data for query; title is needed")
+
+        # Query MusicBrainz based on the available metadata
+        async def _query_recordings(_title, _artist, _album):
+            _data = await mb_query.download(
+                build_url("recording", "", query={
+                    "recording": _title,
+                    "artist": _artist,
+                    "release": _album,
+                })
+            )
+            return [r for r in _data.get("recordings", [])
+                    if r.get("score") >= config["musicbrainz-confidence-treshold"]
+                        or simplify_string(r.get("title", "")) == simplify_string(_title)
+                            and simplify_string(r.get("artist-credits", [])[0].get("name", "")) == simplify_string(_artist)]
+
+        search_data = {}
+        # For convenience, each possible "method" of querying is numbered;
+        # the number increases with each query iteration. This is done so that
+        # once one of the methods works, we can quickly break out of the loop.
+        fetch_method = 0
+        while not search_data:
+
+            # Method 0. Perform a regular query with all the parameters.
+            if fetch_method == 0:
+                search_data = await _query_recordings(title, artist, album)
+
+            # Method 1. Perform a query without the album, if we are given one.
+            elif fetch_method == 1:
+                if album:
+                    search_data = await _query_recordings(title, artist, "")
+
+            # Method 2. Simplify title and artist.
+            elif fetch_method == 2:
+                search_data = await _query_recordings(simplify_string(title), simplify_string(artist), simplify_string(album))
+
+            # Method 3. Same as 2, but without album, if we are given one.
+            elif fetch_method == 3:
+                if album:
+                    search_data = await _query_recordings(simplify_string(title), simplify_string(artist), "")
+
+            # Once we have exhausted all methods, return empty data.
+            else:
+                return []
+
+            fetch_method += 1
+
+        # Convert the search results to MusicBrainzRecording objects
+        ret = []
+        for r in search_data:
+            try:
+                rec = MusicBrainzRecording(r)
+            except:
+                traceback.print_exc()
+                continue
+
+            # The data we get from the search results is partial and doesn't include
+            # useful information like releases, so we need to fetch it after the fact:
+            await rec.fetch_full_data_async()
+
+            # If there are multiple releases available, try to pick the one that matches
+            # the most file metadata (album and track number)
+            if len(rec.available_releases) > 1:
+                rels = rec.available_releases.copy()
+
+                # Check 1. Check if the album title matches
+                if album:
+                    rels_q = [rel for rel in rels if album == rel.title]
+                    # Check 1.5. Check if the simplified album title matches
+                    if not rels_q and simplify_string(album):
+                        rels_q = [rel for rel in rels if simplify_string(album) == simplify_string(rel.title)]
+                    # These two lines ensure that we don't end up with 0 releases post-query;
+                    # they are present in the remaining checks as well
+                    if rels_q:
+                        rels = rels_q
+
+                # Check 2. Check if the release date matches
+                releasedate = file.props.releasedate
+                if releasedate:
+                    rels_q = [rel for rel in rels if releasedate == rel.releasedate]
+                    # Check 2.5: Check if the release year matches
+                    if not rels_q and len(releasedate) >= 4:
+                        rels_q = [rel for rel in rels if releasedate[:4] == rel.releasedate[:4]]
+                    if rels_q:
+                        rels = rels_q
+
+                # Check 3. Check if the total track number matches
+                totaltracknumber = file.props.totaltracknumber
+                if totaltracknumber:
+                    rels_q = [rel for rel in rels if (rel.totaltracknumber and totaltracknumber == rel.totaltracknumber) or not rel.totaltracknumber]
+                    if rels_q:
+                        rels = rels_q
+
+                # Sort from oldest to newest
+                rels.sort(key=lambda rel: rel.releasedate)
+
+                # The first remaining release wins
+                if rels:
+                    rec._release = rels[0]
+
+                del rels
+
+            ret.append(rec)
+
+        # Sort the resulting recordings by which one matches our file the best
+        def _rec_file_cmp(rec) -> int:
+            out = 0
+            for prop in (
+                "title",
+                "artist",
+                "album",
+                "releasedate",
+                "tracknumber",
+                "totaltracknumber",
+            ):
+                if file.has_tag(prop):
+                    out += int(file.get_property(prop) == rec.get_property(prop))
+
+            return out
+
+        ret.sort(key=_rec_file_cmp, reverse=True)  # The larger the number, the more tag matches
+
+        return ret
 
     def apply_data_to_file(self, file):
         """
@@ -309,7 +353,7 @@ class MusicBrainzRecording(GObject.Object):
         file.props.musicbrainz_recordingid = self.recording_id
         file.props.musicbrainz_albumid = self.release.release_id
         file.props.musicbrainz_releasegroupid = self.release.group.relgroup_id
-        file.props.musicbrainz_trackid = self.release.mb_data["media"][0]["tracks"][0][
+        file.props.musicbrainz_trackid = self.media.get("tracks", self.media.get("track"))[0][
             "id"
         ]
         file.props.musicbrainz_artistid = self.mb_data["artist-credit"][0]["artist"][
@@ -326,14 +370,6 @@ class MusicBrainzRecording(GObject.Object):
         if self._recording_id == value:
             return
         self._recording_id = value
-
-    def get_releases(self):
-        """Returns a list of MusicBrainzRelease object that match the file."""
-        releases = []
-        if "releases" in self.mb_data:
-            for release in self.mb_data["releases"]:
-                releases.append(MusicBrainzRelease(release))
-        return releases
 
     @GObject.Property()
     def release(self):
@@ -382,13 +418,28 @@ class MusicBrainzRecording(GObject.Object):
             return title_case_preserve_uppercase(self.mb_data["genres"][0]["name"])
         return self.release.genre
 
+    @property
+    def media(self):
+        """Shorthand for the "media" property of the current release."""
+        return self.release.mb_data.get("media")[0]
+
     @GObject.Property(type=int)
     def tracknumber(self):
-        return int(self.release.mb_data["media"][0]["tracks"][0]["number"])
+        # Weird MusicBrainz bug: In search queries it's "track", in direct
+        # by-ID queries it's "tracks".
+        try:
+            return int(self.media.get("tracks", self.media.get("track"))[0]["number"])
+        except ValueError:
+            # HACK until we properly support vinyl track numbers.
+            return 0
 
     @GObject.Property(type=int)
     def totaltracknumber(self):
-        return int(self.release.mb_data["media"][0]["track-count"])
+        try:
+            return int(self.media["track-count"])
+        except ValueError:
+            # HACK until we properly support vinyl track numbers.
+            return 0
 
     @GObject.Property(type=str)
     def releasedate(self):
@@ -408,7 +459,7 @@ class MusicBrainzRecording(GObject.Object):
 
     def __str__(self):
         return (
-            f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})"
+            f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist} ({self.disambiguation}))"
         )
 
     def __repr__(self):
@@ -429,16 +480,12 @@ class MusicBrainzRelease(GObject.Object):
     NEED_UPDATE_COVER = -2
 
     cover_cache = {}
-    obj_cache = {}  # id: MusicBrainzRelease
 
     def __init__(self, release_data):
         super().__init__()
         self.mb_data = release_data
 
         self.thumbnail_dl_task = None
-
-        if self.release_id not in MusicBrainzRelease.obj_cache:
-            MusicBrainzRelease.obj_cache[self.release_id] = self
 
         self.group = MusicBrainzReleaseGroup(self.mb_data["release-group"])
 
@@ -447,8 +494,8 @@ class MusicBrainzRelease(GObject.Object):
         self.back_cover = EartagCAACover("release", self.release_id, "back")
 
     @staticmethod
-    async def _fetch_full_data(id):
-        return await mb_query.download(
+    async def new_for_id(id):
+        data = await mb_query.download(
                 build_url(
                     "release",
                     id,
@@ -461,16 +508,7 @@ class MusicBrainzRelease(GObject.Object):
                     ],
                 )
             )
-
-    async def fetch_full_data(self):
-        self.full_data = await self._fetch_full_data(self.release_id)
-
-    @staticmethod
-    async def setup_from_id(id):
-        if id in MusicBrainzRelease.obj_cache:
-            return MusicBrainzRelease.obj_cache[id]
-        data = await MusicBrainzRelease._fetch_full_data(id)
-        return MusicBrainzRelease(release_data=data)
+        return MusicBrainzRelease(data)
 
     @GObject.Property(type=str)
     def release_id(self):
@@ -502,10 +540,6 @@ class MusicBrainzRelease(GObject.Object):
     def totaltracknumber(self):
         return int(self.mb_data["media"][0]["track-count"])
 
-    #@property
-    #def tracks(self):
-    #	return self.full_data["media"][0]["tracks"]
-
     @GObject.Property(type=str)
     def status(self):
         if "status" in self.mb_data and self.mb_data["status"]:
@@ -514,7 +548,7 @@ class MusicBrainzRelease(GObject.Object):
 
     @GObject.Property(type=str)
     def disambiguation(self):
-        return self.mb_data["disambiguation"]
+        return '; '.join([x for x in (self.mb_data["media"][0].get("format", None), self.mb_data.get("disambiguation", None)) if x])
 
     # Covers
 
@@ -544,8 +578,6 @@ class MusicBrainzRelease(GObject.Object):
             raise ValueError(
                 "Covers have not been downloaded yet; run download_covers_async()"
             )
-        if not self.back_cover.props.path:
-            return self.group.back_cover_path
         return self.back_cover.props.path
 
     def queue_thumbnail_download(self):
@@ -569,12 +601,10 @@ class MusicBrainzRelease(GObject.Object):
     async def download_covers_async(self):
         """Downloads the covers for the release from coverartarchive.org"""
         await self.front_cover.download()
-        if not self.front_cover.props.loaded:
+        if not self.front_cover.props.path:
             await self.group.front_cover.download()
         self.notify("front-cover-path")
         await self.back_cover.download()
-        if not self.back_cover.props.loaded:
-            await self.group.back_cover.download()
         self.notify("back-cover-path")
 
     @classmethod
@@ -604,8 +634,6 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
     NO_COVER = -2
 
-    obj_cache = {}
-
     def __init__(self, relgroup_data):
         super().__init__()
         self._releases = None
@@ -613,9 +641,6 @@ class MusicBrainzReleaseGroup(GObject.Object):
         groupid = relgroup_data["id"]
 
         self.mb_data = relgroup_data
-
-        if groupid not in MusicBrainzReleaseGroup.obj_cache:
-            MusicBrainzReleaseGroup.obj_cache[groupid] = self
 
         self.thumbnail = EartagCAACover("release-group", self.relgroup_id, "thumbnail")
         self.front_cover = EartagCAACover("release-group", self.relgroup_id, "front")
@@ -627,9 +652,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
         )
 
     @staticmethod
-    async def setup_from_id(id):
-        if id in MusicBrainzReleaseGroup.obj_cache:
-            return MusicBrainzReleaseGroup.obj_cache[id]
+    async def new_for_id(id):
         data = await MusicBrainzReleaseGroup._fetch_full_data(id)
         return MusicBrainzReleaseGroup(relgroup_data=data)
 
@@ -647,7 +670,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
     @GObject.Property(type=str)
     def secondary_types(self):
         try:
-            return [t.lower() for t in self.mb_data["secondary-types"]]
+            return [t.lower() for t in self.mb_data.get("secondary-types", [])]
         except AttributeError:
             return []
 
@@ -664,7 +687,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
     async def get_releases_async(self):
         if not self._releases:
             self._releases = [
-                await MusicBrainzRelease.setup_from_id(id) for id in self.release_ids
+                await MusicBrainzRelease.new_for_id(id) for id in self.release_ids
             ]
 
     @GObject.Property(type=str)
@@ -714,7 +737,7 @@ async def acoustid_identify_file(file):
 
     if "recordings" in acoustid_data:
         musicbrainz_id = acoustid_data["recordings"][0]["id"]
-        rec = MusicBrainzRecording(musicbrainz_id, file=file)
+        rec = await MusicBrainzRecording.new_for_id(musicbrainz_id)
         return (acoustid_data["score"], rec)
 
     return (0.0, None)
