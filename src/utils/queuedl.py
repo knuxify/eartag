@@ -39,7 +39,12 @@ class EartagQueuedDownloader:
     store it in a cache (for JSON/text data) or save to a tempfile (for files).
     """
 
-    def __init__(self, mode: EartagDownloaderMode, simultaneous_downloads: int = 3, throttle: bool = False):
+    def __init__(
+        self,
+        mode: EartagDownloaderMode,
+        simultaneous_downloads: int = 3,
+        throttle: bool = False,
+    ):
         """Initializes a queued downloader."""
         self.mode = mode
         # Key - URL, value - data. Value of False is equivalent to an error.
@@ -70,7 +75,9 @@ class EartagQueuedDownloader:
 
             async with aiohttp.ClientSession() as session:
                 async with RetryClient(client_session=session) as retry_session:
-                    async with retry_session.get(url, timeout=60, headers={"User-Agent": USER_AGENT}) as response:
+                    async with retry_session.get(
+                        url, timeout=60, headers={"User-Agent": USER_AGENT}
+                    ) as response:
                         if response.status != 200:
                             data = False
                         else:
