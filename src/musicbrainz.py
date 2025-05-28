@@ -127,14 +127,6 @@ class MusicBrainzRecording(GObject.Object):
         self._available_releases = None
         self._release = MusicBrainzRecording.SELECT_RELEASE_FIRST
 
-        if "releases" in data:
-            self._fetch_available_releases()
-
-        if len(self._available_releases) == 1:
-            self._release = self._available_releases[0]
-        elif len(self._available_releases) == 0:
-            self._release = None
-
     def dispose(self):
         self.release.dispose()
 
