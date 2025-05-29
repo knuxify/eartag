@@ -220,7 +220,7 @@ class MusicBrainzRecording(GObject.Object):
                 for r in _data.get("recordings", [])
                 if r.get("score") >= config["musicbrainz-confidence-treshold"]
                 or simplify_string(r.get("title", "")) == simplify_string(_title)
-                and simplify_string(r.get("artist-credits", [])[0].get("name", ""))
+                and simplify_string(r.get("artist-credit", [{}])[0].get("name", ""))
                 == simplify_string(_artist)
             ]
 
@@ -489,6 +489,10 @@ class MusicBrainzRecording(GObject.Object):
     @GObject.Property(type=str)
     def back_cover_path(self):
         return self.release.back_cover_path
+
+    async def download_covers_async(self):
+        """Downloads the covers for the release from coverartarchive.org"""
+        return await self.release.download_covers_async()
 
     def __str__(self):
         return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist} ({self.disambiguation}))"
