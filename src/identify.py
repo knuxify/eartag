@@ -636,18 +636,9 @@ class EartagIdentifyDialog(Adw.Dialog):
     async def identify_files(self, *args, **kwargs):
         progress_step = 1 / len(self.files)
 
+        # Step 1. Go over each file and find recordings
         for file in self.files:
             unid_index = find_in_model(self.files_unidentified, file)
-            if unid_index < 0:
-                n = 0
-                _file = self.files_unidentified.get_item(n)
-                while _file:
-                    if _file.id == file.id:
-                        unid_index = n
-                        break
-                    n += 1
-                    _file = self.files_unidentified.get_item(n)
-
             if unid_index < 0:
                 print(
                     "Could not find file in unidentifed filter, this should never happen!"
@@ -660,9 +651,29 @@ class EartagIdentifyDialog(Adw.Dialog):
             recordings = []
 
             if file.title and file.artist:
+                # For files with a title/artist tag, look up the data in MusicBrainz
                 recordings = await MusicBrainzRecording.get_recordings_for_file(file)
+            else:
+                # Try to guess title and artist from filename
+                filename = os.path.basename(file.path)
+                # Split the title into two parts - one before a dash/em-dash, one after
+                part1 = filename.split("-")[0].split("—")[0]
+                part2 = filename[len(part1):]
+                # Remove common suffixes
+                part2 = part2.split("[")[0]
+                # If part1 is numeric, assume it's a track number
+                if part1.isnumeric():
+                    part1 = part2
+                    part2 = ""
 
-            if not recordings or len(recordings) > 1:
+                if part1 and part2:
+                    recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1, "artist": part2})
+                    recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part2, "artist": part1})
+                elif part1:
+                    recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1})
+
+            # If we don't find anything or we find multiple recordings, try AcoustID
+            if not recordings or len(recordings) > 1 or not file.title or not file.artist:
                 id_confidence, id_recording = await acoustid_identify_file(file)
 
                 # Make sure the recording we got from AcoustID matches the
@@ -700,208 +711,6 @@ class EartagIdentifyDialog(Adw.Dialog):
                     self.identify_task.increment_progress(progress_step)
             else:
                 unid_row.mark_as_unidentified()
-
-        # Once we have identified all the files we could, check in
-        # the releases we have to make sure we can't find other tracks
-        # (MusicBrainz lookups tend to lose a few tracks on the way):
-        for file in list(self.files_unidentified).copy():
-            rec = None
-            for row in self.release_rows.values():
-                rel = row.release
-
-                # Check if the release matches our artist and album
-                if rel.artist != file.artist and not simplify_compare(
-                    rel.artist, file.artist
-                ):
-                    continue
-
-                if file.album:
-                    if rel.title != file.album and not simplify_compare(
-                        rel.title, file.album
-                    ):
-                        continue
-
-                for track in row.release.tracks:
-                    if reg_and_simple_cmp(track["title"], file.title):
-                        try:
-                            rec = MusicBrainzRecording(
-                                track["recording"]["id"], file=file
-                            )
-                            if rec:
-                                self._identify_set_recording(file, rec)
-                                break
-                        except ValueError:
-                            pass
-                if rec:
-                    break
-            if rec:
-                continue
-
-            self.identify_task.increment_progress(progress_step)
-
-        # Sometimes, a single track will end up getting misidentified as part
-        # of another release; look through "small releases" and try to group
-        # them into larger releases.
-
-        small_rels = []
-        big_rels = []
-        for rel in [row.release for row in self.release_rows.values()]:
-            if rel.totaltracknumber < 2:
-                small_rels.append(rel)
-            else:
-                big_rels.append(rel)
-
-        for s_rel in small_rels:
-            for s_track in s_rel.tracks:
-                for b_rel in big_rels:
-                    for b_track in b_rel.tracks:
-                        if simplify_compare(s_track["title"], b_track["title"]):
-                            for rec in self.release_rows[s_rel.release_id].recordings:
-                                rec.release = b_rel
-                            self.content_listbox.remove(
-                                self.release_rows[s_rel.release_id]
-                            )
-                            del self.release_rows[s_rel.release_id]
-
-        # At the very end, go back through available release groups and try
-        # to find common releases to group together.
-        # TODO: This code could probably be modified to use less loops,
-        # but this current iteration is focused more on accuracy and clear
-        # code than speed.
-
-        groups = {}  # group ID: releases for this group
-        for rel in [row.release for row in self.release_rows.values()]:
-            if rel.group.relgroup_id not in groups:
-                groups[rel.group.relgroup_id] = [rel]
-            else:
-                groups[rel.group.relgroup_id].append(rel)
-
-        for group_id, our_releases in groups.items():
-            group = await MusicBrainzReleaseGroup.new_for_id(group_id)
-            await group.get_releases_async()
-            if len(group.releases) == 1:
-                self.release_rows[
-                    group.releases[0].release_id
-                ].refresh_alternative_releases([group.releases[0]])
-
-                continue
-            releases = group.releases.copy()
-
-            # (Explaination of the rf variable: this allows us to preserve the
-            # loop order, since just doing a list.insert(list.pop(list.index(...)))
-            # manouver would cause the releases to go in backwards order which would
-            # throw off our existing order.)
-
-            # Prioritize releases we already found
-            rf = []
-            for rel in releases.copy():
-                if rel in our_releases:
-                    rf.append(rel)
-            releases = rf + [r for r in releases if r not in rf]
-
-            rel_recordings = {}  # recording: file
-
-            # Get a list of recordings for this release group, and the files
-            # they represent
-            for rel in our_releases:
-                for file_id, rec in self.recordings.items():
-                    if rec.release == rel:
-                        for file in self.files:
-                            if file.id == file_id:
-                                rel_recordings[rec] = file
-
-            # rel_files = dict((v,k) for k,v in rel_recordings.items())
-
-            # Now that we have all the data we need, proceed with the
-            # grouping heuristics:
-
-            preferred_release = None
-
-            # HEURISTIC 1
-            # If our files have an album name, and if it's the same for all
-            # of them, prioritize the releases that match the album name
-            # (in simple match or not).
-
-            if (
-                all_equal([f.album for f in rel_recordings.values()])
-                and list(rel_recordings.values())[0].album
-            ):
-                _album = list(rel_recordings.values())[0].album
-
-                rf = []
-                for rel in releases.copy():
-                    if simplify_compare(rel.title, _album):
-                        rf.append(rel)
-                releases = rf + [r for r in releases if r not in rf]
-
-            # HEURISTIC 2
-            # If our files have a total track number, and if it's the same
-            # for all of them, prioritize the releases with the same amount
-            # of tracks.
-            # (If we don't have a total track number, try to guess from the
-            # amount of matching recordings, so long as that number is
-            # plausibly high (> 2).)
-
-            _total_tracks = None
-
-            if all_equal([f.totaltracknumber for f in rel_recordings.values()]):
-                _total_tracks = self.files[0].totaltracknumber
-
-            if not _total_tracks and len(rel_recordings) > 2:
-                _total_tracks = len(rel_recordings)
-
-            if _total_tracks:
-                rf = []
-                for rel in releases.copy():
-                    if rel.totaltracknumber == _total_tracks:
-                        rf.append(rel)
-                releases = rf + [r for r in releases if r not in rf]
-
-            # HEURISTIC 3:
-            # Remove releases that aren't present in all recordings.
-            for rec in rel_recordings:
-                for rel in releases.copy():
-                    if rel.release_id not in [
-                        r.release_id for r in rec.available_releases
-                    ]:
-                        releases.remove(rel)
-
-            # If we end up with no releases after this, continue.
-            if not releases:
-                continue
-
-            # Once we have ran our releases list through all the releases,
-            # pick the first one we got:
-
-            preferred_release = releases[0]
-
-            # This release will now be applied to all matching recordings.
-
-            for rec in rel_recordings:
-                rec.release = preferred_release
-
-                if rec.release.release_id in self.release_rows:
-                    self.release_rows[rec.release.release_id].update_filter()
-                else:
-                    self.release_rows[rec.release.release_id] = (
-                        EartagIdentifyReleaseRow(self, rec.release)
-                    )
-                    self.content_listbox.prepend(
-                        self.release_rows[rec.release.release_id],
-                    )
-
-            self.release_rows[
-                preferred_release.release_id
-            ].refresh_alternative_releases(
-                [rel for rel in releases if rel.totaltracknumber >= len(rel_recordings)]
-            )
-
-            for k, row in list(self.release_rows.items()).copy():
-                row.update_filter()
-
-                if row._rec_filter_model.get_n_items() == 0:
-                    del self.release_rows[k]
-                    self.content_listbox.remove(row)
 
     def on_identify_done(self, task, *args):
         try:
