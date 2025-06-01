@@ -25,6 +25,7 @@ async def test_musicbrainz_onerel():
     # https://musicbrainz.org/recording/cad1f61b-a1f1-4d00-9e01-bcd193eac54b
     rec = await MusicBrainzRecording.new_for_id("cad1f61b-a1f1-4d00-9e01-bcd193eac54b")
     assert rec, NOT_FOUND_STR
+    rec.sort_releases()
     # https://musicbrainz.org/release/46fee5ba-49cb-4ebd-a6bc-71bbf03a210d
     assert (
         rec.release.release_id == "46fee5ba-49cb-4ebd-a6bc-71bbf03a210d"
@@ -54,6 +55,8 @@ async def test_musicbrainz_multirel():
         pass
     else:
         raise AssertionError
+
+    rec.sort_releases()
 
     # streaming release, https://musicbrainz.org/release/5cfa8773-e8b4-4a5d-b858-4d8230aa27ed
     rel1 = None
@@ -87,6 +90,7 @@ async def test_musicbrainz_covers():
     # https://musicbrainz.org/recording/0d9dfe92-f7a9-482e-a94f-5e49d5ebd145
     rec = await MusicBrainzRecording.new_for_id("0d9dfe92-f7a9-482e-a94f-5e49d5ebd145")
     assert rec, NOT_FOUND_STR
+    rec.sort_releases()
 
     # https://musicbrainz.org/release/2a335fce-7750-444a-b511-f912fa1a165e
     rel = None
