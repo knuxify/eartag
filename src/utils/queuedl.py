@@ -75,7 +75,9 @@ class EartagQueuedDownloader:
                     await asyncio.sleep((1000 - (cur_time - self._last_request)) / 1000)
 
             async with aiohttp.ClientSession() as session:
-                async with RetryClient(client_session=session, exceptions=[ClientConnectorError]) as retry_session:
+                async with RetryClient(
+                    client_session=session, exceptions=[ClientConnectorError]
+                ) as retry_session:
                     async with retry_session.get(
                         url, timeout=60, headers={"User-Agent": USER_AGENT}
                     ) as response:

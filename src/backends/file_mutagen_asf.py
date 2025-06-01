@@ -283,11 +283,15 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
         if front_cover:
             cover_extension = mimetypes.guess_extension(front_cover[1])
-            await self.create_cover_tempfile(CoverType.FRONT, front_cover[0], cover_extension)
+            await self.create_cover_tempfile(
+                CoverType.FRONT, front_cover[0], cover_extension
+            )
 
         if back_cover:
             cover_extension = mimetypes.guess_extension(back_cover[1])
-            await self.create_cover_tempfile(CoverType.BACK, back_cover[0], cover_extension)
+            await self.create_cover_tempfile(
+                CoverType.BACK, back_cover[0], cover_extension
+            )
 
     @GObject.Property(type=str)
     def releasedate(self):

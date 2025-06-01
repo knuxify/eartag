@@ -85,7 +85,9 @@ prop_to_example_string = {
 async def run_backend_tests(file_class, extension, skip_channels=False):
     # Simple read test
     if not REGENERATE_EXAMPLES:
-        file_read = await file_class.new_from_path(os.path.join(EXAMPLES_DIR, f"example.{extension}"))
+        file_read = await file_class.new_from_path(
+            os.path.join(EXAMPLES_DIR, f"example.{extension}")
+        )
         backend_read(file_read, skip_channels)
 
     # Simple write test
@@ -96,7 +98,9 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
     with TestFile(
         "test_write_individual", extension, "notags"
     ) as file_write_individual:
-        await backend_write_individual(await file_class.new_from_path(file_write_individual), skip_channels)
+        await backend_write_individual(
+            await file_class.new_from_path(file_write_individual), skip_channels
+        )
 
     # Tag deletion test
     with TestFile("test_delete", extension, "alltags") as file_delete:
@@ -108,7 +112,9 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
 
     # Make sure tags are deleted when set to empty values
     with TestFile("test_write_empty", extension, "alltags") as file_write_empty:
-        await backend_write_empty(await file_class.new_from_path(file_write_empty), skip_channels)
+        await backend_write_empty(
+            await file_class.new_from_path(file_write_empty), skip_channels
+        )
 
     # File rename test; do this twice: once for no tags, once for all tags
     with TestFile("test_rename", extension, "notags", remove=False) as file_rename:
@@ -121,7 +127,9 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
         with TestFile(
             "test_full_releasedate", extension, "alltags"
         ) as file_full_releasedate:
-            await backend_full_releasedate(await file_class.new_from_path(file_full_releasedate))
+            await backend_full_releasedate(
+                await file_class.new_from_path(file_full_releasedate)
+            )
 
     # Comprehensive cover art test
     if file_class._supports_album_covers:

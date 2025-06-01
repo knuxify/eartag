@@ -273,7 +273,9 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
                     magic.from_buffer(picture_back, mime=True)
                 )
 
-            await self.create_cover_tempfile(CoverType.BACK, picture_back, cover_extension)
+            await self.create_cover_tempfile(
+                CoverType.BACK, picture_back, cover_extension
+            )
 
     @GObject.Property(type=str)
     def releasedate(self):

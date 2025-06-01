@@ -666,13 +666,15 @@ class EartagIdentifyDialog(Adw.Dialog):
             try:
                 if file.title and file.artist:
                     # For files with a title/artist tag, look up the data in MusicBrainz
-                    recordings = await MusicBrainzRecording.get_recordings_for_file(file)
+                    recordings = await MusicBrainzRecording.get_recordings_for_file(
+                        file
+                    )
                 else:
                     # Try to guess title and artist from filename
                     filename = os.path.basename(file.path)
                     # Split the title into two parts - one before a dash/em-dash, one after
                     part1 = filename.split("-")[0].split("—")[0]
-                    part2 = filename[len(part1):]
+                    part2 = filename[len(part1) :]
                     # Remove common suffixes
                     part2 = part2.split("[")[0]
                     # If part1 is numeric, assume it's a track number
@@ -681,13 +683,30 @@ class EartagIdentifyDialog(Adw.Dialog):
                         part2 = ""
 
                     if part1 and part2:
-                        recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1, "artist": part2})
-                        recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part2, "artist": part1})
+                        recordings += (
+                            await MusicBrainzRecording.get_recordings_for_file(
+                                file, overrides={"title": part1, "artist": part2}
+                            )
+                        )
+                        recordings += (
+                            await MusicBrainzRecording.get_recordings_for_file(
+                                file, overrides={"title": part2, "artist": part1}
+                            )
+                        )
                     elif part1:
-                        recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1})
+                        recordings += (
+                            await MusicBrainzRecording.get_recordings_for_file(
+                                file, overrides={"title": part1}
+                            )
+                        )
 
                 # If we don't find anything or we find multiple recordings, try AcoustID
-                if not recordings or len(recordings) > 1 or not file.title or not file.artist:
+                if (
+                    not recordings
+                    or len(recordings) > 1
+                    or not file.title
+                    or not file.artist
+                ):
                     id_confidence, id_recording = await acoustid_identify_file(file)
 
                     # Make sure the recording we got from AcoustID matches the
@@ -710,7 +729,9 @@ class EartagIdentifyDialog(Adw.Dialog):
                                         match = True
                                         break
                             else:
-                                if not reg_and_simple_cmp(id_recording.album, file.album):
+                                if not reg_and_simple_cmp(
+                                    id_recording.album, file.album
+                                ):
                                     match = False
 
                         if match:
@@ -767,9 +788,13 @@ class EartagIdentifyDialog(Adw.Dialog):
                     if rel_id in rel_trackcount:
                         rel_trackcount[rel_id].add(rec.recording_id)
                     else:
-                        rel_trackcount[rel_id] = {rec.recording_id, }
+                        rel_trackcount[rel_id] = {
+                            rec.recording_id,
+                        }
 
-            rel_trackcount_sorted = sorted(rel_trackcount.items(), key=lambda v: len(v[1]), reverse=True)
+            rel_trackcount_sorted = sorted(
+                rel_trackcount.items(), key=lambda v: len(v[1]), reverse=True
+            )
 
             target_release = rel_trackcount_sorted[0][0]
             target_rel_recordings = set()

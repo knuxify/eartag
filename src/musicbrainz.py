@@ -119,6 +119,7 @@ class EartagCAACover(GObject.Object):
     def clear_tempfiles(cls):
         return cls.cover_downloader.clear_tempfiles()
 
+
 class MusicBrainzRecording(GObject.Object):
     __gtype_name__ = "MusicBrainzRecording"
 
@@ -316,7 +317,13 @@ class MusicBrainzRecording(GObject.Object):
 
             # Sort from oldest to newest. We append "zz-zz" to year-only releasedates in the sorting key
             # to make sure that full release dates take precedence.
-            rels.sort(key=lambda rel: rel.releasedate if len(rel.releasedate) > 4 else rel.releasedate + "-zz-zz")
+            rels.sort(
+                key=lambda rel: (
+                    rel.releasedate
+                    if len(rel.releasedate) > 4
+                    else rel.releasedate + "-zz-zz"
+                )
+            )
 
             # Prefer albums, then EPs, then singles, then others.
             sort_key = {"album": 0, "ep": 1, "single": 2, "other": 3}
@@ -328,7 +335,10 @@ class MusicBrainzRecording(GObject.Object):
 
             # Move unofficial releases and compilations to the end of the list.
             rels.sort(
-                key=lambda rel: int(rel.status != "official" or "compilation" in rel.group.secondary_types)  # official = 0, unofficial = 1
+                key=lambda rel: int(
+                    rel.status != "official"
+                    or "compilation" in rel.group.secondary_types
+                )  # official = 0, unofficial = 1
             )
 
             _original_rels = rels.copy()
@@ -357,9 +367,7 @@ class MusicBrainzRecording(GObject.Object):
                 # Check 2.5: Check if the release year matches
                 if not rels_q and len(releasedate) >= 4:
                     rels_q = [
-                        rel
-                        for rel in rels
-                        if releasedate[:4] == rel.releasedate[:4]
+                        rel for rel in rels if releasedate[:4] == rel.releasedate[:4]
                     ]
                 if rels_q:
                     rels = rels_q
@@ -549,7 +557,9 @@ class MusicBrainzRecording(GObject.Object):
     def __str__(self):
         if self.disambiguation:
             return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist} ({self.disambiguation}))"
-        return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})"
+        return (
+            f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})"
+        )
 
     def __repr__(self):
         return self.__str__()
