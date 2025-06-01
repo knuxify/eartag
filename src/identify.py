@@ -560,7 +560,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.release_rows = {}  # release.id: EartagIdentifyReleaseRow
 
         self.identify_task = EartagAsyncTask(self.identify_files)
-        self.apply_task = None
+        self.apply_task = EartagAsyncTask(self.apply_func)
 
         # For some reason we can't create this from the template, so it
         # has to be added here:
@@ -579,7 +579,8 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.identify_task.bind_property("progress", self.id_progress, "fraction")
         self.identify_task.connect("task-done", self.on_identify_done)
 
-        self.bind_property("apply-progress", self.id_progress, "fraction")
+        self.apply_task.bind_property("progress", self.id_progress, "fraction")
+        self.apply_task.connect("task-done", self.on_apply_done)
 
         self.files.splice(
             0, self.files.get_n_items(), self.file_manager.selected_files_list
@@ -846,8 +847,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             relrow.toggle_apply_sensitivity(False)
         self.set_can_close(False)
 
-        self.apply_task = event_loop.create_task(self.apply_func())
-        self.apply_task.add_done_callback(self.on_apply_done)
+        self.apply_task.run()
 
     async def apply_func(self):
         files = [file for file in self.files if file.id in self.apply_files]
@@ -868,9 +868,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             while releases:
                 async with sem:
                     _tasks.add(tg.create_task(releases.pop().download_covers_async()))
-                    self.props.apply_progress = (
-                        self.props.apply_progress + progress_step
-                    )
+                    self.apply_task.increment_progress(progress_step)
         del releases
         del _tasks
         del sem
@@ -888,7 +886,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             await rec.download_covers_async()
 
             rec.apply_data_to_file(file)
-            self.props.apply_progress = self.props.apply_progress + progress_step
+            self.apply_task.increment_progress(progress_step)
 
     def on_apply_done(self, *args):
         self.props.can_close = True
