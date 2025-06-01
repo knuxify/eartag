@@ -1,3 +1,9 @@
+include:
+  - project: 'gnome/citemplates'
+    file: 'flatpak/flatpak-ci-initiative-sdk-extensions.yml'
+  - project: 'gnome/citemplates'
+    file: 'templates/default-rules.yml'
+
 stages:
   - lint
   - build-and-test
@@ -36,8 +42,6 @@ lint-alpine:
   allow_failure: true
 
 # Flatpak build CI
-
-include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
 .vars-devel:
   stage: flatpak
