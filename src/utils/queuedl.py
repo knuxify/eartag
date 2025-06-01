@@ -134,6 +134,7 @@ class EartagQueuedDownloader:
             return
 
         for tmp in self.cache.values():
-            tmp.close()
+            if tmp:
+                tmp.close()
 
         del self.cache
