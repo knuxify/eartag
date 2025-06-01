@@ -6,7 +6,7 @@ Code for generic queued downloader.
 import asyncio
 from aiohttp.client_exceptions import ClientConnectorError
 import aiohttp
-from aiohttp_retry import RetryClient
+from aiohttp_retry import RetryClient, ExponentialRetry
 from enum import Enum
 from tempfile import NamedTemporaryFile
 from typing import Union
@@ -68,6 +68,13 @@ class EartagQueuedDownloader:
             # If the URL is cached, just return the data
             return self.get_cached(url)
 
+        retry_options = ExponentialRetry(
+            attempts=3,
+            exceptions={ClientConnectorError},
+            factor=1,
+            statuses={500, 502, 503, 504},
+        )
+
         async with self.semaphore:
             if self.throttle:
                 cur_time = time.time()
@@ -76,7 +83,7 @@ class EartagQueuedDownloader:
 
             async with aiohttp.ClientSession() as session:
                 async with RetryClient(
-                    client_session=session, exceptions=[ClientConnectorError]
+                    client_session=session, retry_options=retry_options
                 ) as retry_session:
                     async with retry_session.get(
                         url, timeout=60, headers={"User-Agent": USER_AGENT}
