@@ -190,11 +190,13 @@ def acoustid_file():
 
     file = os.path.join(os.path.dirname(__file__), "Sneaky_Snitch.mp3")
     if not os.path.exists(file):
-        # We steal the MusicBrain module's download function since it's neat!
-        data = make_request(
-            "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Sneaky%20Snitch.mp3",
-            raw=True,
-        )  # noqa: E501
+        # FIXME: This used to use the make_request function from the musicbrainz module;
+        # however, we have since switched to a QueuedDownloader and that function has been
+        # dropped. When we get around to re-enabling this test, fix this.
+        # data = make_request(
+        #	"https://incompetech.com/music/royalty-free/mp3-royaltyfree/Sneaky%20Snitch.mp3",
+        #	raw=True,
+        #)  # noqa: E501
         with open(file, "wb") as file_writable:
             file_writable.write(data)
     return EartagFileMutagenID3(file)
