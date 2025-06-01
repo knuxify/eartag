@@ -372,7 +372,7 @@ class EartagRenameDialog(Adw.Dialog):
 
     def on_done(self, task, *args):
         self.set_can_close(True)
-        if self._failed:
+        if self.file_manager.failed:
             self.set_sensitive(True)
             self.error_banner.set_revealed(True)
         else:

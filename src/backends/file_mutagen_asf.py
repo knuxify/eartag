@@ -138,9 +138,9 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         "musicbrainz_recordingid", "musicbrainz_releasegroupid"
     )  # fmt: skip
 
-    def load_from_file(self, path):
-        super().load_from_file(path)
-        self.load_cover()
+    async def load_from_file(self, path):
+        await super().load_from_file(path)
+        await self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()
 
@@ -263,7 +263,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
         self.mark_as_modified(prop)
 
-    def load_cover(self):
+    async def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
         if "WM/Picture" not in self.mg_file.tags:
             return None
@@ -283,11 +283,11 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
         if front_cover:
             cover_extension = mimetypes.guess_extension(front_cover[1])
-            self.create_cover_tempfile(CoverType.FRONT, front_cover[0], cover_extension)
+            await self.create_cover_tempfile(CoverType.FRONT, front_cover[0], cover_extension)
 
         if back_cover:
             cover_extension = mimetypes.guess_extension(back_cover[1])
-            self.create_cover_tempfile(CoverType.BACK, back_cover[0], cover_extension)
+            await self.create_cover_tempfile(CoverType.BACK, back_cover[0], cover_extension)
 
     @GObject.Property(type=str)
     def releasedate(self):

@@ -25,7 +25,7 @@ from .dialogs import (
 )
 
 
-def eartagfile_from_path(path):
+async def eartagfile_from_path(path):
     """Returns an EartagFile subclass for the provided file."""
     if not os.path.exists(path):
         raise ValueError
@@ -70,16 +70,13 @@ def eartagfile_from_path(path):
     )[0]
 
     if filetype == "mp3":
-        return EartagFileMutagenID3(path)
+        return await EartagFileMutagenID3.new_from_path(path)
     elif filetype == "ogg":
-        return EartagFileMutagenVorbis(path)
+        return await EartagFileMutagenVorbis.new_from_path(path)
     elif filetype == "mp4":
-        return EartagFileMutagenMP4(path)
+        return await EartagFileMutagenMP4.new_from_path(path)
     elif filetype == "wma":
-        return EartagFileMutagenASF(path)
-
-    mimetypes_guess = mimetypes.guess_type(path)[0]
-    magic_guess = magic.from_file(path, mime=True)
+        return await EartagFileMutagenASF.new_from_path(path)
 
     raise ValueError(
         f"Unsupported file format for file {path} (mimetype: {mimetypes_guess} / {magic_guess})"
@@ -207,7 +204,7 @@ class EartagFileManager(GObject.Object):
 
         self.load_task.run()
 
-    def _load_single_file(self, path):
+    async def _load_single_file(self, path):
         """
         Loads a single file. Used internally in _load_multiple_files, which should be
         used for all file loading operations.
@@ -218,7 +215,7 @@ class EartagFileManager(GObject.Object):
         file_basename = os.path.basename(path)
 
         try:
-            _file = eartagfile_from_path(path)
+            _file = await eartagfile_from_path(path)
         except:
             traceback.print_exc()
             EartagLoadingFailureDialog(file_basename).present(self.window)
@@ -239,6 +236,7 @@ class EartagFileManager(GObject.Object):
         """Loads files with the provided paths."""
         task = self.load_task
         self._files_buffer = []
+        self.failed = False
 
         if not paths:
             return True
@@ -247,7 +245,7 @@ class EartagFileManager(GObject.Object):
         progress_step = 1 / file_count
 
         for path in paths:
-            if not await asyncio.to_thread(self._load_single_file, path):
+            if not await self._load_single_file(path):
                 self.files.splice(0, 0, self._files_buffer)
                 self._files_buffer = []
 
@@ -407,6 +405,7 @@ class EartagFileManager(GObject.Object):
         data loss (for example due to overwriting an existing file).
         """
         task = self.rename_task
+        self.failed = False
 
         progress_step = 1 / len(files)
         n = 0

@@ -46,9 +46,9 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         "musicbrainz_recordingid": "musicbrainz_trackid"
     }  # fmt: skip
 
-    def load_from_file(self, path):
-        super().load_from_file(path)
-        self.load_cover()
+    async def load_from_file(self, path):
+        await super().load_from_file(path)
+        await self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()
 
@@ -230,7 +230,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
         self.mark_as_modified(prop)
 
-    def _load_cover(self, cover_type: CoverType):
+    async def _load_cover(self, cover_type: CoverType):
         """Loads cover data from file."""
         if cover_type == CoverType.FRONT:
             prop = "front_cover_path"
@@ -266,7 +266,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
                 if picture:
                     cover_extension = mimetypes.guess_extension(picture.mime)
-                    self.create_cover_tempfile(
+                    await self.create_cover_tempfile(
                         cover_type, picture.data, cover_extension
                     )
             elif cover_type == CoverType.BACK:
@@ -277,7 +277,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
                 if picture_back:
                     cover_extension = mimetypes.guess_extension(picture_back.mime)
-                    self.create_cover_tempfile(
+                    await self.create_cover_tempfile(
                         cover_type, picture_back.data, cover_extension
                     )
 
@@ -315,13 +315,13 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
             if cover_front:
                 cover_extension = mimetypes.guess_extension(cover_front.mime)
-                self.create_cover_tempfile(
+                await self.create_cover_tempfile(
                     CoverType.FRONT, cover_front.data, cover_extension
                 )
 
             if cover_back:
                 cover_extension = mimetypes.guess_extension(cover_back.mime)
-                self.create_cover_tempfile(
+                await self.create_cover_tempfile(
                     CoverType.BACK, cover_back.data, cover_extension
                 )
 
@@ -346,14 +346,14 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 if not cover_extension and mimes and len(mimes) == len(covers):
                     cover_extension = mimes[n]
 
-                self.create_cover_tempfile(cover_type, data, cover_extension)
+                await self.create_cover_tempfile(cover_type, data, cover_extension)
                 n += 1
 
         self.notify(prop)
 
-    def load_cover(self):
+    async def load_cover(self):
         for cover_type in (CoverType.FRONT, CoverType.BACK):
-            self._load_cover(cover_type)
+            await self._load_cover(cover_type)
 
     @GObject.Property(type=int)
     def tracknumber(self):

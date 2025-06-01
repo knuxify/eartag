@@ -113,14 +113,14 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         "musicbrainz_recordingid", "musicbrainz_releasegroupid"
     )  # fmt: skip
 
-    def load_from_file(self, path):
-        super().load_from_file(path)
+    async def load_from_file(self, path):
+        await super().load_from_file(path)
         if not self.mg_file.tags:
             try:
                 self.mg_file.add_tags()
             except (mutagen.id3._util.error, mutagen.wave.error):
                 pass
-        self.load_cover()
+        await self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()
 
@@ -333,7 +333,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
         self.mark_as_modified(prop)
 
-    def load_cover(self):
+    async def load_cover(self):
         """Loads the covers from the file and saves them to a temporary file."""
         front_picture = None
         back_picture = None
@@ -354,7 +354,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
         if front_picture:
             cover_extension = mimetypes.guess_extension(front_picture.mime)
-            self.create_cover_tempfile(
+            await self.create_cover_tempfile(
                 CoverType.FRONT, front_picture.data, cover_extension
             )
 
@@ -366,7 +366,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
         if back_picture:
             cover_extension = mimetypes.guess_extension(back_picture.mime)
-            self.create_cover_tempfile(
+            await self.create_cover_tempfile(
                 CoverType.BACK, back_picture.data, cover_extension
             )
 

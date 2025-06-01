@@ -224,6 +224,13 @@ class EartagFile(GObject.Object):
         self.connect("notify::front-cover-path", self._update_front_cover)
         self.connect("notify::back-cover-path", self._update_back_cover)
 
+    @classmethod
+    async def new_from_path(cls, path):
+        """Create a new EartagFile instance for the file with the given path."""
+        file = cls(path)
+        await file.load_from_file(path)
+        return file
+
     def on_remove(self, *args):
         if self.front_cover_tempfile:
             self.front_cover_tempfile.close()
@@ -388,15 +395,14 @@ class EartagFile(GObject.Object):
 
         await asyncio.to_thread(shutil.move, self._path, value)
         self._path = value
-        # FIXME: load_from_file needs to be made async
-        self.load_from_file(value)
+        await self.load_from_file(value)
 
         for tag, tag_value in modifications.items():
             self.set_property(tag, tag_value)
 
-    def reload(self):
+    async def reload(self):
         """Reloads the file and discards all modifications."""
-        self.load_from_file(self.props.path)
+        await self.load_from_file(self.props.path)
         for prop in (
             BASIC_TAGS
             + tuple(self.supported_extra_tags)
@@ -525,11 +531,15 @@ class EartagFile(GObject.Object):
             return self.back_cover_tempfile
         raise ValueError("Incorrect cover type")
 
-    def create_cover_tempfile(self, cover_type: CoverType, data, extension):
+    async def create_cover_tempfile(self, cover_type: CoverType, data, extension):
         """Writes data to the cover tempfile for the given cover type."""
         _tempfile = tempfile.NamedTemporaryFile(suffix=extension)
-        _tempfile.write(data)
-        _tempfile.flush()
+
+        def _write_cover(tmp):
+            tmp.write(data)
+            tmp.flush()
+
+        await asyncio.to_thread(_write_cover, _tempfile)
 
         if cover_type == CoverType.FRONT:
             self.front_cover_tempfile = _tempfile

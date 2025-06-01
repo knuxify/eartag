@@ -85,48 +85,48 @@ prop_to_example_string = {
 async def run_backend_tests(file_class, extension, skip_channels=False):
     # Simple read test
     if not REGENERATE_EXAMPLES:
-        file_read = file_class(os.path.join(EXAMPLES_DIR, f"example.{extension}"))
+        file_read = await file_class.new_from_path(os.path.join(EXAMPLES_DIR, f"example.{extension}"))
         backend_read(file_read, skip_channels)
 
     # Simple write test
     with TestFile("test_write", extension, "notags") as file_write:
-        backend_write(file_class(file_write), skip_channels)
+        await backend_write(await file_class.new_from_path(file_write), skip_channels)
 
     # One-by-one write test
     with TestFile(
         "test_write_individual", extension, "notags"
     ) as file_write_individual:
-        backend_write_individual(file_class(file_write_individual), skip_channels)
+        await backend_write_individual(await file_class.new_from_path(file_write_individual), skip_channels)
 
     # Tag deletion test
     with TestFile("test_delete", extension, "alltags") as file_delete:
-        backend_delete(file_class(file_delete))
+        await backend_delete(await file_class.new_from_path(file_delete))
 
     # delete_all_raw function test
     with TestFile("test_delete_all_raw", extension, "alltags") as file_delete_all_raw:
-        backend_delete_all_raw(file_class(file_delete_all_raw))
+        backend_delete_all_raw(await file_class.new_from_path(file_delete_all_raw))
 
     # Make sure tags are deleted when set to empty values
     with TestFile("test_write_empty", extension, "alltags") as file_write_empty:
-        backend_write_empty(file_class(file_write_empty), skip_channels)
+        await backend_write_empty(await file_class.new_from_path(file_write_empty), skip_channels)
 
     # File rename test; do this twice: once for no tags, once for all tags
     with TestFile("test_rename", extension, "notags", remove=False) as file_rename:
-        await backend_rename(file_class(file_rename))
+        await backend_rename(await file_class.new_from_path(file_rename))
     with TestFile("test_rename", extension, "alltags", remove=False) as file_rename:
-        await backend_rename(file_class(file_rename))
+        await backend_rename(await file_class.new_from_path(file_rename))
 
     # Test full-length release date and validation
     if file_class._supports_full_dates:
         with TestFile(
             "test_full_releasedate", extension, "alltags"
         ) as file_full_releasedate:
-            backend_full_releasedate(file_class(file_full_releasedate))
+            await backend_full_releasedate(await file_class.new_from_path(file_full_releasedate))
 
     # Comprehensive cover art test
     if file_class._supports_album_covers:
         with TestFile("test_cover", extension, "notags") as file_cover:
-            backend_test_covers(file_class(file_cover))
+            await backend_test_covers(await file_class.new_from_path(file_cover))
 
 
 def backend_read(file, skip_channels=False):
@@ -185,7 +185,7 @@ def backend_read_empty(file, skip_cover=False):
         )
 
 
-def backend_write(file, skip_channels=False):
+async def backend_write(file, skip_channels=False):
     """Tests common backend write functions."""
     backend_read_empty(file)
 
@@ -222,14 +222,14 @@ def backend_write(file, skip_channels=False):
     assert not file.modified_tags
 
     file_class = type(file)
-    backend_read(file_class(file.path), skip_channels)
+    backend_read(await file_class.new_from_path(file.path), skip_channels)
 
     if REGENERATE_EXAMPLES:
         extension = os.path.splitext(file.path)[1]
         shutil.copyfile(file.path, os.path.join(EXAMPLES_DIR, f"example{extension}"))
 
 
-def backend_write_individual(empty_file, skip_channels=False):
+async def backend_write_individual(empty_file, skip_channels=False):
     """Tests common backend write functions by writing each property separately."""
     backend_read_empty(empty_file)
     empty_file_path = empty_file.path
@@ -242,7 +242,7 @@ def backend_write_individual(empty_file, skip_channels=False):
         )
         shutil.copyfile(empty_file_path, new_file_path)
         target_value = prop_to_example_string[prop]
-        file = file_class(new_file_path)
+        file = await file_class.new_from_path(new_file_path)
         file.set_property(prop, target_value)
 
         assert file.is_modified
@@ -251,7 +251,7 @@ def backend_write_individual(empty_file, skip_channels=False):
 
         file.save()
 
-        file_read = file_class(new_file_path)
+        file_read = await file_class.new_from_path(new_file_path)
         assert file_read.get_property(prop) == target_value
         for _prop in empty_file.handled_properties:
             if _prop != prop and prop != "totaltracknumber":
@@ -260,7 +260,7 @@ def backend_write_individual(empty_file, skip_channels=False):
         os.remove(new_file_path)
 
 
-def backend_write_empty(file, skip_channels=False):
+async def backend_write_empty(file, skip_channels=False):
     """Tests whether writing empty values removes the tag from the file."""
     for prop in file.handled_properties + file.supported_extra_tags:
         # tracknumber/totaltracknumber have separate handling as they're stored
@@ -317,10 +317,10 @@ def backend_write_empty(file, skip_channels=False):
     assert not file.modified_tags
 
     file_class = type(file)
-    backend_read_empty(file_class(file.path), skip_cover=True)
+    backend_read_empty(await file_class.new_from_path(file.path), skip_cover=True)
 
 
-def backend_delete(file):
+async def backend_delete(file):
     """Tests common backend delete functions."""
     for prop in file.handled_properties + file.supported_extra_tags:
         file.delete_tag(prop)
@@ -356,10 +356,9 @@ def backend_delete(file):
         assert file.get_property("is_modified") is False
 
     file_class = type(file)
-    backend_read_empty(file_class(file.path))
+    backend_read_empty(await file_class.new_from_path(file.path))
 
 
-@pytest.mark.asyncio
 async def backend_rename(file):
     """Tests the ability of the file to be renamed."""
     original_path = file.props.path
@@ -399,23 +398,23 @@ def backend_delete_all_raw(file):
         assert prop in file.modified_tags
 
 
-def backend_full_releasedate(file):
+async def backend_full_releasedate(file):
     """Tests various values for the releasedate field."""
     path = file.props.path
     file_class = type(file)
     for value in ("0000", "2022", "2022-01", "2022-01-31"):
-        file = file_class(path)
+        file = await file_class.new_from_path(path)
         file.set_property("releasedate", value)
         assert file.is_modified
         assert file._releasedate_cached == value
         file.save()
-        file = file_class(path)
+        file = await file_class.new_from_path(path)
         assert (
             file.get_property("releasedate") == value
         ), f'Invalid date value (expected "{value}", got "{file.get_property("releasedate")}")'  # noqa: E501
 
 
-def backend_test_covers(file):
+async def backend_test_covers(file):
     """
     Tests cover art functions and asserts they are all in place.
     Must be called on an empty file.
@@ -454,7 +453,7 @@ def backend_test_covers(file):
 
     # Re-load to make sure cover art is set
     file_class = type(file)
-    reloaded_file = file_class(file.path)
+    reloaded_file = await file_class.new_from_path(file.path)
     assert reloaded_file.props.front_cover_path
     assert filecmp.cmp(
         reloaded_file.props.front_cover_path, front_cover_path, shallow=False
@@ -474,7 +473,7 @@ def backend_test_covers(file):
 
     # Re-load to make sure cover art is set
     file_class = type(file)
-    reloaded_file = file_class(file.path)
+    reloaded_file = await file_class.new_from_path(file.path)
     assert reloaded_file.props.front_cover_path
     assert filecmp.cmp(
         reloaded_file.props.front_cover_path, front_cover_path, shallow=False
@@ -543,7 +542,7 @@ def backend_test_covers(file):
     assert "back_cover_path" not in file.modified_tags
 
     file_class = type(file)
-    reloaded_file = file_class(file.path)
+    reloaded_file = await file_class.new_from_path(file.path)
     assert not reloaded_file.props.front_cover_path
     assert reloaded_file.props.back_cover_path
     assert filecmp.cmp(
@@ -562,7 +561,7 @@ def backend_test_covers(file):
     assert "front_cover_path" not in file.modified_tags
 
     file_class = type(file)
-    reloaded_file = file_class(file.path)
+    reloaded_file = await file_class.new_from_path(file.path)
     assert reloaded_file.props.front_cover_path
     assert reloaded_file.props.back_cover_path
     assert filecmp.cmp(

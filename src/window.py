@@ -760,7 +760,7 @@ class EartagWindow(Adw.ApplicationWindow):
         for file in self.file_manager.files:
             if file.id in self._delete_all_tags_undo_data:
                 self._undo_delete_all_count += 1
-                await asyncio.to_thread(file.reload)
+                await file.reload()
                 for prop, value in self._delete_all_tags_undo_data[file.id].items():
                     file.set_property(prop, value)
 

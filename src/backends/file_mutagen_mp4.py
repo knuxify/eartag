@@ -84,11 +84,11 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         "musicbrainz_recordingid", "musicbrainz_releasegroupid"
     )  # fmt: skip
 
-    def load_from_file(self, path):
-        super().load_from_file(path)
+    async def load_from_file(self, path):
+        await super().load_from_file(path)
         if self.mg_file.tags is None:
             self.mg_file.add_tags()
-        self.load_cover()
+        await self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()
 
@@ -238,7 +238,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             self._back_cover_path = value
             self.mark_as_modified("back_cover_path")
 
-    def load_cover(self):
+    async def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
         if "covr" not in self.mg_file.tags or not self.mg_file.tags["covr"]:
             self._front_cover_path = None
@@ -256,7 +256,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
                     magic.from_buffer(picture, mime=True)
                 )
 
-            self.create_cover_tempfile(CoverType.FRONT, picture, cover_extension)
+            await self.create_cover_tempfile(CoverType.FRONT, picture, cover_extension)
 
         try:
             picture_back = self.mg_file.tags["covr"][1]
@@ -273,7 +273,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
                     magic.from_buffer(picture_back, mime=True)
                 )
 
-            self.create_cover_tempfile(CoverType.BACK, picture_back, cover_extension)
+            await self.create_cover_tempfile(CoverType.BACK, picture_back, cover_extension)
 
     @GObject.Property(type=str)
     def releasedate(self):

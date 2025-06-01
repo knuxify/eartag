@@ -2,6 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject
+import asyncio
 import mutagen
 
 from .file import EartagFile
@@ -15,10 +16,9 @@ class EartagFileMutagenCommon(EartagFile):
     def __init__(self, path):
         super().__init__(path)
         self.mg_file = None
-        self.load_from_file(path)
 
-    def load_from_file(self, path):
-        self.mg_file = mutagen.File(path)
+    async def load_from_file(self, path):
+        self.mg_file = await asyncio.to_thread(mutagen.File, path)
 
     def save(self):
         """Saves the changes to the file."""
