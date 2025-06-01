@@ -10,7 +10,7 @@ import traceback
 import urllib
 import urllib.parse
 import urllib.request
-from typing import List, Self
+from typing import List, Self, Optional
 
 # HACK: The Gst backend of audioread, which is used by acoustid, is not very
 # happy when the GLib async event loop policy is set up.
@@ -24,6 +24,7 @@ from gi.repository import GObject, GLib
 
 from ._async import event_loop
 from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
+from .backends.file import EartagFile
 
 try:
     from . import ACOUSTID_API_KEY, VERSION
@@ -114,6 +115,9 @@ class EartagCAACover(GObject.Object):
             self.props.path = tempfile.name
         self.props.loaded = True
 
+    @classmethod
+    def clear_tempfiles(cls):
+        return cls.cover_downloader.clear_tempfiles()
 
 class MusicBrainzRecording(GObject.Object):
     __gtype_name__ = "MusicBrainzRecording"
@@ -145,18 +149,6 @@ class MusicBrainzRecording(GObject.Object):
         available_releases = [
             MusicBrainzRelease(rel) for rel in self.mb_data["releases"]
         ]
-
-        # Prefer albums, then EPs, then singles, then others.
-        sort_key = {"album": 0, "ep": 1, "single": 2, "other": 3}
-        available_releases.sort(key=lambda rel: sort_key.get(rel.group.primary_type, 4))
-
-        # Move unofficial releases and compilations to the end of the list.
-        available_releases.sort(
-            key=lambda rel: int(rel.status != "official")
-        )  # official = 0, unofficial = 1
-        available_releases.sort(
-            key=lambda rel: int("compilation" in rel.group.secondary_types)
-        )  # not compilation = 0, compilation = 1
 
         self._available_releases = available_releases
 
@@ -274,63 +266,8 @@ class MusicBrainzRecording(GObject.Object):
             # useful information like releases, so we need to fetch it after the fact:
             await rec.fetch_full_data_async()
 
-            # If there are multiple releases available, try to pick the one that matches
-            # the most file metadata (album and track number)
-            if len(rec.available_releases) > 1:
-                rels = rec.available_releases.copy()
-
-                # Check 1. Check if the album title matches
-                if album:
-                    rels_q = [rel for rel in rels if album == rel.title]
-                    # Check 1.5. Check if the simplified album title matches
-                    if not rels_q and simplify_string(album):
-                        rels_q = [
-                            rel
-                            for rel in rels
-                            if simplify_string(album) == simplify_string(rel.title)
-                        ]
-                    # These two lines ensure that we don't end up with 0 releases post-query;
-                    # they are present in the remaining checks as well
-                    if rels_q:
-                        rels = rels_q
-
-                # Check 2. Check if the release date matches
-                releasedate = file.props.releasedate
-                if releasedate:
-                    rels_q = [rel for rel in rels if releasedate == rel.releasedate]
-                    # Check 2.5: Check if the release year matches
-                    if not rels_q and len(releasedate) >= 4:
-                        rels_q = [
-                            rel
-                            for rel in rels
-                            if releasedate[:4] == rel.releasedate[:4]
-                        ]
-                    if rels_q:
-                        rels = rels_q
-
-                # Check 3. Check if the total track number matches
-                totaltracknumber = file.props.totaltracknumber
-                if totaltracknumber:
-                    rels_q = [
-                        rel
-                        for rel in rels
-                        if (
-                            rel.totaltracknumber
-                            and totaltracknumber == rel.totaltracknumber
-                        )
-                        or not rel.totaltracknumber
-                    ]
-                    if rels_q:
-                        rels = rels_q
-
-                # Sort from oldest to newest
-                rels.sort(key=lambda rel: rel.releasedate)
-
-                # The first remaining release wins
-                if rels:
-                    rec._release = rels[0]
-
-                del rels
+            # Sort releases in the recording
+            rec.sort_releases(file=file)
 
             ret.append(rec)
 
@@ -355,6 +292,103 @@ class MusicBrainzRecording(GObject.Object):
         )  # The larger the number, the more tag matches
 
         return ret
+
+    def sort_releases(self, file: Optional[EartagFile] = None):
+        """Sort available releases and pick the best matching one."""
+        album = file.props.album if file else ""
+        releasedate = file.props.releasedate if file else ""
+        totaltracknumber = file.props.totaltracknumber if file else ""
+
+        # If there are no releases, set release to None
+        if len(self.available_releases) == 0:
+            self._release = None
+
+        # If there is only one release, pick it
+        elif len(self.available_releases) == 1:
+            self._release = self.available_releases[0]
+
+        # If there are multiple releases available, try to pick the one that matches
+        # the most file metadata (album and track number)
+        elif len(self.available_releases) > 1:
+            rels = self.available_releases.copy()
+
+            ## First, sort the releases:
+
+            # Sort from oldest to newest. We append "zz-zz" to year-only releasedates in the sorting key
+            # to make sure that full release dates take precedence.
+            rels.sort(key=lambda rel: rel.releasedate if len(rel.releasedate) > 4 else rel.releasedate + "-zz-zz")
+
+            # Prefer albums, then EPs, then singles, then others.
+            sort_key = {"album": 0, "ep": 1, "single": 2, "other": 3}
+            rels.sort(key=lambda rel: sort_key.get(rel.group.primary_type, 4))
+
+            # Prefer digital releases over physical releases
+            sort_key = {"Digital Media": 0, "CD": 1, "Casette": 2, "Vinyl": 3}
+            rels.sort(key=lambda rel: sort_key.get(rel.format, 4))
+
+            # Move unofficial releases and compilations to the end of the list.
+            rels.sort(
+                key=lambda rel: int(rel.status != "official" or "compilation" in rel.group.secondary_types)  # official = 0, unofficial = 1
+            )
+
+            _original_rels = rels.copy()
+
+            ## If we have information about the release based on metadata, drop releases
+            ## that don't match them, unless we end up with no releases
+
+            # Check 1. Check if the album title matches
+            if album:
+                rels_q = [rel for rel in rels if album == rel.title]
+                # Check 1.5. Check if the simplified album title matches
+                if not rels_q and simplify_string(album):
+                    rels_q = [
+                        rel
+                        for rel in rels
+                        if simplify_string(album) == simplify_string(rel.title)
+                    ]
+                # These two lines ensure that we don't end up with 0 releases post-query;
+                # they are present in the remaining checks as well
+                if rels_q:
+                    rels = rels_q
+
+            # Check 2. Check if the release date matches
+            if releasedate:
+                rels_q = [rel for rel in rels if releasedate == rel.releasedate]
+                # Check 2.5: Check if the release year matches
+                if not rels_q and len(releasedate) >= 4:
+                    rels_q = [
+                        rel
+                        for rel in rels
+                        if releasedate[:4] == rel.releasedate[:4]
+                    ]
+                if rels_q:
+                    rels = rels_q
+
+            # Check 3. Check if the total track number matches
+            if totaltracknumber:
+                rels_q = [
+                    rel
+                    for rel in rels
+                    if (
+                        rel.totaltracknumber
+                        and totaltracknumber == rel.totaltracknumber
+                    )
+                    or not rel.totaltracknumber
+                ]
+                if rels_q:
+                    rels = rels_q
+
+            # If we end up with no releases somehow, go back to pre-heuristic releases
+            if not rels:
+                rels = _original_rels
+
+            # The first remaining release wins
+            self._release = rels[0]
+
+            # Save sorted releases to available_releases for later algorithms to re-use
+            self._available_releases = rels
+
+            del rels
 
     def apply_data_to_file(self, file):
         """
@@ -439,17 +473,23 @@ class MusicBrainzRecording(GObject.Object):
 
     @GObject.Property(type=str)
     def album(self):
-        return self.release.title
+        if self.release is not None:
+            return self.release.title
+        return ""
 
     @GObject.Property(type=str)
     def albumartist(self):
-        return self.release.artist
+        if self.release is not None:
+            return self.release.artist
+        return ""
 
     @GObject.Property(type=str)
     def genre(self):
-        if "genres" in self.mb_data and self.mb_data["genres"]:
-            return title_case_preserve_uppercase(self.mb_data["genres"][0]["name"])
-        return self.release.genre
+        if self.release is not None:
+            if "genres" in self.mb_data and self.mb_data["genres"]:
+                return title_case_preserve_uppercase(self.mb_data["genres"][0]["name"])
+            return self.release.genre
+        return ""
 
     @property
     def media(self):
@@ -476,26 +516,40 @@ class MusicBrainzRecording(GObject.Object):
 
     @GObject.Property(type=str)
     def releasedate(self):
-        return self.release.releasedate
+        if self.release is not None:
+            return self.release.releasedate
+        return ""
+
+    @GObject.Property(type=str)
+    def disambiguation(self):
+        return self.mb_data.get("disambiguation", "")
 
     @GObject.Property(type=str)
     def thumbnail_path(self):
-        return self.release.thumbnail_path
+        if self.release is not None:
+            return self.release.thumbnail_path
+        return ""
 
     @GObject.Property(type=str)
     def front_cover_path(self):
-        return self.release.front_cover_path
+        if self.release is not None:
+            return self.release.front_cover_path
+        return ""
 
     @GObject.Property(type=str)
     def back_cover_path(self):
-        return self.release.back_cover_path
+        if self.release is not None:
+            return self.release.back_cover_path
+        return ""
 
     async def download_covers_async(self):
         """Downloads the covers for the release from coverartarchive.org"""
         return await self.release.download_covers_async()
 
     def __str__(self):
-        return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist} ({self.disambiguation}))"
+        if self.disambiguation:
+            return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist} ({self.disambiguation}))"
+        return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})"
 
     def __repr__(self):
         return self.__str__()
@@ -565,10 +619,10 @@ class MusicBrainzRelease(GObject.Object):
 
     @GObject.Property(type=str)
     def releasedate(self):
-        if "first-release-date" in self.group.mb_data:
-            return self.group.mb_data["first-release-date"]
         if "date" in self.mb_data:
             return self.mb_data["date"]
+        if "first-release-date" in self.group.mb_data:
+            return self.group.mb_data["first-release-date"]
         return ""
 
     @GObject.Property(type=int)
@@ -582,12 +636,16 @@ class MusicBrainzRelease(GObject.Object):
         return "official"
 
     @GObject.Property(type=str)
+    def format(self):
+        return self.mb_data["media"][0].get("format", "")
+
+    @GObject.Property(type=str)
     def disambiguation(self):
         return "; ".join(
             [
                 x
                 for x in (
-                    self.mb_data["media"][0].get("format", None),
+                    self.props.format,
                     self.mb_data.get("disambiguation", None),
                 )
                 if x
@@ -651,13 +709,8 @@ class MusicBrainzRelease(GObject.Object):
         await self.back_cover.download()
         self.notify("back-cover-path")
 
-    @classmethod
-    def clear_tempfiles(cls):
-        """Closes all cover tempfiles."""
-        # TODO FIXME
-
     def __str__(self):
-        return f"MusicBrainzRelease {self.release_id} ({self.title} - {self.artist})"
+        return f"MusicBrainzRelease {self.release_id} ({self.title} - {self.artist} ({self.disambiguation}))"
 
     def __repr__(self):
         return self.__str__()
@@ -786,6 +839,7 @@ async def acoustid_identify_file(file):
     if "recordings" in acoustid_data:
         musicbrainz_id = acoustid_data["recordings"][0]["id"]
         rec = await MusicBrainzRecording.new_for_id(musicbrainz_id)
+        rec.sort_releases()  # Sort releases in the recording
         return (acoustid_data["score"], rec)
 
     return (0.0, None)

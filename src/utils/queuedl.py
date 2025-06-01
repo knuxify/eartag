@@ -4,6 +4,7 @@ Code for generic queued downloader.
 """
 
 import asyncio
+from aiohttp.client_exceptions import ClientConnectorError
 import aiohttp
 from aiohttp_retry import RetryClient
 from enum import Enum
@@ -74,7 +75,7 @@ class EartagQueuedDownloader:
                     await asyncio.sleep((1000 - (cur_time - self._last_request)) / 1000)
 
             async with aiohttp.ClientSession() as session:
-                async with RetryClient(client_session=session) as retry_session:
+                async with RetryClient(client_session=session, exceptions=[ClientConnectorError]) as retry_session:
                     async with retry_session.get(
                         url, timeout=60, headers={"User-Agent": USER_AGENT}
                     ) as response:
@@ -117,3 +118,13 @@ class EartagQueuedDownloader:
         False is returned. If the URL is not cached, None is returned.
         """
         return self.cache.get(url, None)
+
+    def clear_tempfiles(self):
+        """For queued downloaders in file mode, close all tempfiles."""
+        if not self.mode == EartagDownloaderMode.MODE_FILE:
+            return
+
+        for tmp in self.cache.values():
+            tmp.close()
+
+        del self.cache

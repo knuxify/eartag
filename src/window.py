@@ -9,7 +9,7 @@ from .dialogs import (
     EartagDiscardWarningDialog,
     EartagTagDeleteWarningDialog,
 )
-from .musicbrainz import MusicBrainzRelease
+from .musicbrainz import EartagCAACover
 from .fileview import EartagFileView  # noqa: F401
 from .filemanager import EartagFileManager
 from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
@@ -493,7 +493,7 @@ class EartagWindow(Adw.ApplicationWindow):
             self.close_request_dialog.present(self)
             return True
 
-        MusicBrainzRelease.clear_tempfiles()
+        EartagCAACover.clear_tempfiles()
 
         for file in self.file_manager.files:
             file.on_remove()

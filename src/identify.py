@@ -7,6 +7,7 @@ import asyncio
 import os
 import html
 import gettext
+import traceback
 
 from ._async import event_loop
 from .musicbrainz import (
@@ -492,7 +493,17 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.parent = None
 
     def update_title(self, *args):
-        self.set_title(html.escape(self.recording.title))
+        title = html.escape(self.recording.title)
+        if self.recording.disambiguation:
+            opacity = 0.55
+            if Adw.StyleManager.get_default().get_high_contrast():
+                opacity = 0.9
+            title += (
+                f' <span alpha="{int(opacity * 100)}%">('
+                + html.escape(self.recording.disambiguation)
+                + ")</span>"
+            )
+        self.set_title(title)
 
     def update_subtitle(self, *args):
         self._subtitle = f'{self.recording.artist or "N/A"} • {self.recording.album or "N/A"} ({self.file_name or "N/A"})'  # noqa: E501
@@ -636,6 +647,8 @@ class EartagIdentifyDialog(Adw.Dialog):
     async def identify_files(self, *args, **kwargs):
         progress_step = 1 / len(self.files)
 
+        found_recordings = []
+
         # Step 1. Go over each file and find recordings
         for file in self.files:
             unid_index = find_in_model(self.files_unidentified, file)
@@ -650,67 +663,142 @@ class EartagIdentifyDialog(Adw.Dialog):
 
             recordings = []
 
-            if file.title and file.artist:
-                # For files with a title/artist tag, look up the data in MusicBrainz
-                recordings = await MusicBrainzRecording.get_recordings_for_file(file)
-            else:
-                # Try to guess title and artist from filename
-                filename = os.path.basename(file.path)
-                # Split the title into two parts - one before a dash/em-dash, one after
-                part1 = filename.split("-")[0].split("—")[0]
-                part2 = filename[len(part1):]
-                # Remove common suffixes
-                part2 = part2.split("[")[0]
-                # If part1 is numeric, assume it's a track number
-                if part1.isnumeric():
-                    part1 = part2
-                    part2 = ""
-
-                if part1 and part2:
-                    recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1, "artist": part2})
-                    recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part2, "artist": part1})
-                elif part1:
-                    recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1})
-
-            # If we don't find anything or we find multiple recordings, try AcoustID
-            if not recordings or len(recordings) > 1 or not file.title or not file.artist:
-                id_confidence, id_recording = await acoustid_identify_file(file)
-
-                # Make sure the recording we got from AcoustID matches the
-                # file we have:
-                if id_recording:
-                    match = True
-                    if file.title and not reg_and_simple_cmp(
-                        id_recording.title, file.title
-                    ):
-                        match = False
-
-                    if file.album:
-                        try:
-                            id_recording.release
-                        except ValueError:  # multiple releases
-                            match = False
-                            for rel in id_recording.available_releases:
-                                if reg_and_simple_cmp(rel.title, file.album):
-                                    id_recording._release = rel
-                                    match = True
-                                    break
-                        else:
-                            if not reg_and_simple_cmp(id_recording.album, file.album):
-                                match = False
-
-                    if match:
-                        recordings = [id_recording]
-
-            if recordings:
-                rec = recordings[0]
-                if not rec.available_releases:
-                    unid_row.mark_as_unidentified()
+            try:
+                if file.title and file.artist:
+                    # For files with a title/artist tag, look up the data in MusicBrainz
+                    recordings = await MusicBrainzRecording.get_recordings_for_file(file)
                 else:
-                    self._identify_set_recording(file, rec)
-                    self.identify_task.increment_progress(progress_step)
-            else:
+                    # Try to guess title and artist from filename
+                    filename = os.path.basename(file.path)
+                    # Split the title into two parts - one before a dash/em-dash, one after
+                    part1 = filename.split("-")[0].split("—")[0]
+                    part2 = filename[len(part1):]
+                    # Remove common suffixes
+                    part2 = part2.split("[")[0]
+                    # If part1 is numeric, assume it's a track number
+                    if part1.isnumeric():
+                        part1 = part2
+                        part2 = ""
+
+                    if part1 and part2:
+                        recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1, "artist": part2})
+                        recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part2, "artist": part1})
+                    elif part1:
+                        recordings += await MusicBrainzRecording.get_recordings_for_file(file, overrides={"title": part1})
+
+                # If we don't find anything or we find multiple recordings, try AcoustID
+                if not recordings or len(recordings) > 1 or not file.title or not file.artist:
+                    id_confidence, id_recording = await acoustid_identify_file(file)
+
+                    # Make sure the recording we got from AcoustID matches the
+                    # file we have:
+                    if id_recording:
+                        match = True
+                        if file.title and not reg_and_simple_cmp(
+                            id_recording.title, file.title
+                        ):
+                            match = False
+
+                        if file.album:
+                            try:
+                                id_recording.release
+                            except ValueError:  # multiple releases
+                                match = False
+                                for rel in id_recording.available_releases:
+                                    if reg_and_simple_cmp(rel.title, file.album):
+                                        id_recording._release = rel
+                                        match = True
+                                        break
+                            else:
+                                if not reg_and_simple_cmp(id_recording.album, file.album):
+                                    match = False
+
+                        if match:
+                            recordings = [id_recording]
+
+                if recordings:
+                    rec = recordings[0]
+                    found_recordings.append(rec)
+                    if not rec.available_releases:
+                        unid_row.mark_as_unidentified()
+                    else:
+                        self._identify_set_recording(file, rec)
+                        self.identify_task.increment_progress(progress_step)
+                else:
+                    unid_row.mark_as_unidentified()
+
+            except asyncio.exceptions.CancelledError:
+                return
+
+            except:  # noqa: E722
+                # Prevent crashes in recording identification from aborting the identification
+                print(f"Failure while identifying file {file}:")
+                traceback.print_exc()
                 unid_row.mark_as_unidentified()
+                continue
+
+        # Once we're done identifying all recordings, go back through found releases and
+        # group together releases belonging to the same release group.
+        #
+        # We need to do this since we might be dealing with a "deluxe edition" with extra
+        # tracks; in that case, all tracks should fall under the deluxe edition.
+
+        groups = {}  # group ID: releases for this group
+        for rel in [row.release for row in self.release_rows.values()]:
+            if rel.group.relgroup_id not in groups:
+                groups[rel.group.relgroup_id] = [rel]
+            else:
+                groups[rel.group.relgroup_id].append(rel)
+
+        group_recs = {}  # group ID: recordings for this group
+        for rec in found_recordings:
+            if rec.release.group.relgroup_id in group_recs:
+                group_recs[rec.release.group.relgroup_id].append(rec)
+            else:
+                group_recs[rec.release.group.relgroup_id] = [rec]
+
+        # For each group, figure out which one contains the most of our identified
+        # recordings. The one that covers the most wins.
+        for group_id, releases in groups.items():
+            rel_trackcount = {}  # release ID: [recording IDs]
+            for rec in group_recs[group_id]:
+                rec_rel_ids = [rel.release_id for rel in rec.available_releases]
+                for rel_id in rec_rel_ids:
+                    if rel_id in rel_trackcount:
+                        rel_trackcount[rel_id].add(rec.recording_id)
+                    else:
+                        rel_trackcount[rel_id] = {rec.recording_id, }
+
+            rel_trackcount_sorted = sorted(rel_trackcount.items(), key=lambda v: len(v[1]), reverse=True)
+
+            target_release = rel_trackcount_sorted[0][0]
+            target_rel_recordings = set()
+
+            for rec in group_recs[group_id]:
+                for rel in rec.available_releases:
+                    if rel.release_id == target_release:
+                        target_rel_recordings.add(rec.recording_id)
+                        rec.release = rel
+                        break
+
+            # Set up alternative releases
+            alt_releases = set()
+            for rel_id, rec_ids in rel_trackcount.items():
+                if rel_id == target_release:
+                    continue
+
+                if rec_ids.issubset(rel_trackcount[target_release]):
+                    alt_releases.add(rel_id)
+
+            self.release_rows[target_release].refresh_alternative_releases(
+                [rel for rel in releases if rel.release_id in alt_releases]
+            )
+
+        for k, row in list(self.release_rows.items()).copy():
+            row.update_filter()
+            if row._rec_filter_model.get_n_items() == 0:
+                del self.release_rows[k]
+                self.content_listbox.remove(row)
 
     def on_identify_done(self, task, *args):
         try:

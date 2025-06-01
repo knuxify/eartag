@@ -59,7 +59,7 @@ class EartagAsyncTask(GObject.Object):
         self.task = event_loop.create_task(self._run())
         self.task.add_done_callback(self.emit_task_done)
 
-    @GObject.Property(type=float, minimum=0, maximum=1)
+    @GObject.Property(type=float, minimum=0, maximum=1.0000001)
     def progress(self):
         """
         Float from 0 to 1 signifying the current progress of the operation.
