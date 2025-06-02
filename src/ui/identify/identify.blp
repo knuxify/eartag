@@ -15,71 +15,73 @@ template $EartagIdentifyDialog: Adw.Dialog {
     hexpand: true;
     vexpand: true;
 
-    Adw.ToolbarView {
-      [top]
-      Adw.HeaderBar {
-        show-end-title-buttons: false;
-        show-start-title-buttons: false;
+    Adw.ToastOverlay toast_overlay {
+      Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar {
+          show-end-title-buttons: false;
+          show-start-title-buttons: false;
 
-        [start]
-        Button cancel_button {
-          label: _("Cancel");
-          focusable: true;
-          clicked => $on_cancel();
+          [start]
+          Button cancel_button {
+            label: _("Cancel");
+            focusable: true;
+            clicked => $on_cancel();
+          }
+
+          [end]
+          Stack end_button_stack {
+            Button identify_button {
+              label: _("Identify");
+              focusable: true;
+              clicked => $do_identify();
+
+              styles [
+                "suggested-action",
+              ]
+            }
+
+            Button apply_button {
+              label: _("Apply");
+              focusable: true;
+              clicked => $do_apply();
+
+              styles [
+                "suggested-action",
+              ]
+            }
+          }
         }
 
-        [end]
-        Stack end_button_stack {
-          Button identify_button {
-            label: _("Identify");
-            focusable: true;
-            clicked => $do_identify();
+        Overlay {
+          [overlay]
+          ProgressBar id_progress {
+            valign: start;
 
             styles [
-              "suggested-action",
+              "osd",
             ]
           }
 
-          Button apply_button {
-            label: _("Apply");
-            focusable: true;
-            clicked => $do_apply();
+          ScrolledWindow {
+            hscrollbar-policy: never;
+            vexpand: true;
 
-            styles [
-              "suggested-action",
-            ]
-          }
-        }
-      }
+            Adw.Clamp {
+              Adw.PreferencesGroup content_row_group {
+                description: _("Track information is provided by <a href=\"https://musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified using the <a href=\"https://acoustid.org\">AcoustID</a> service.");
+                margin-start: 12;
+                margin-end: 12;
+                margin-top: 18;
+                margin-bottom: 6;
 
-      Overlay {
-        [overlay]
-        ProgressBar id_progress {
-          valign: start;
+                ListBox content_listbox {
+                  selection-mode: none;
 
-          styles [
-            "osd",
-          ]
-        }
-
-        ScrolledWindow {
-          hscrollbar-policy: never;
-          vexpand: true;
-
-          Adw.Clamp {
-            Adw.PreferencesGroup content_row_group {
-              description: _("Track information is provided by <a href=\"https://musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified using the <a href=\"https://acoustid.org\">AcoustID</a> service.");
-              margin-start: 12;
-              margin-end: 12;
-              margin-top: 18;
-              margin-bottom: 6;
-
-              ListBox content_listbox {
-                selection-mode: none;
-
-                styles [
-                  "boxed-list",
-                ]
+                  styles [
+                    "boxed-list",
+                  ]
+                }
               }
             }
           }

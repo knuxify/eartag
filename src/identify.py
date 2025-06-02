@@ -530,6 +530,8 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
 class EartagIdentifyDialog(Adw.Dialog):
     __gtype_name__ = "EartagIdentifyDialog"
 
+    toast_overlay = Gtk.Template.Child()
+
     id_progress = Gtk.Template.Child()
     content_listbox = Gtk.Template.Child()
 
@@ -840,6 +842,19 @@ class EartagIdentifyDialog(Adw.Dialog):
         if not self.files_unidentified.get_n_items():
             self.unidentified_row.set_visible(False)
 
+        self.toast_overlay.add_toast(
+            Adw.Toast.new(
+                ngettext(
+                    # TRANSLATORS: {identified} is a placeholder for the number
+                    # of tracks that were succesfully identified.
+                    # **Do not translate the text between the curly brackets!**
+                    "Identified 1 track",
+                    "Identified {identified} tracks",
+                    identified,
+                ).format(identified=identified)
+            )
+        )
+
     @Gtk.Template.Callback()
     def do_apply(self, *args):
         self.apply_button.set_sensitive(False)
@@ -900,13 +915,13 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.parent.toast_overlay.add_toast(
             Adw.Toast.new(
                 ngettext(
-                    # TRANSLATORS: {identified} is a placeholder for the number
+                    # TRANSLATORS: {n} is a placeholder for the number
                     # of tracks that were succesfully identified.
                     # **Do not translate the text between the curly brackets!**
-                    "Identified 1 track",
-                    "Identified {identified} tracks",
+                    "Applied changes to 1 track",
+                    "Applied changes to {n} tracks",
                     identified,
-                ).format(identified=identified)
+                ).format(n=identified)
             )
         )
         self.files = None
