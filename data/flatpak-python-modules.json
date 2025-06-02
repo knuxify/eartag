@@ -90,6 +90,20 @@
             ]
         },
         {
+            "name": "python3-frozenlist",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"frozenlist\" --no-build-isolation"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/ee/f4/d744cba2da59b5c1d88823cf9e8a6c74e4659e2b27604ed973be2a0bf5ab/frozenlist-1.6.0.tar.gz",
+                    "sha256": "b99655c32c1c8e06d111e7f41c06c29a5318cb1835df23a45518e02a47c63b68"
+                }
+            ]
+        },
+        {
             "name": "python3-aiohttp",
             "buildsystem": "simple",
             "build-commands": [
