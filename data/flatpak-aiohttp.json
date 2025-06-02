@@ -1,0 +1,30 @@
+{
+    "name": "python3-package-installation",
+    "buildsystem": "simple",
+    "build-commands": [
+        "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} --no-build-isolation aiohttp aiohttp-retry"
+    ],
+    "sources": [
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/39/b0/bddc489288a0e3b05fa05387db9caebc38577204a17db0d5428abae524ba/aiohttp-3.12.7-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+            "sha256": "3a5938973105cd5ff17176e8cb36bc19cac7c82ae7c58c0dbd7e023972d0c708",
+            "only-arches": [
+                "aarch64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/e0/ff/51ae87efce9b53aafd384179f58923bf178f561897cf80054a440fdf8363/aiohttp-3.12.7-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+            "sha256": "94f98e0e5a49f89b252e115844f756c04fc8050f38252a32a3dd994ce8121f10",
+            "only-arches": [
+                "x86_64"
+            ]
+        },
+        {
+            "type": "file",
+            "url": "https://files.pythonhosted.org/packages/1a/99/84ba7273339d0f3dfa57901b846489d2e5c2cd731470167757f1935fffbd/aiohttp_retry-2.9.1-py3-none-any.whl",
+            "sha256": "66d2759d1921838256a05a3f80ad7e724936f083e35be5abb5e16eed6be6dc54"
+        }
+    ]
+}
