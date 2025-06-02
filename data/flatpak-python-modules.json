@@ -98,6 +98,11 @@
             "sources": [
                 {
                     "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/32/af/89487c7bbf433f4079044f3dc32f9a9f887597fe04614a37a292e373e16b/pkgconfig-1.5.5-py3-none-any.whl",
+                    "sha256": "d20023bbeb42ee6d428a0fac6e0904631f545985a10cdd71a20aa58bc47a4209"
+                },
+                {
+                    "type": "file",
                     "url": "https://files.pythonhosted.org/packages/0f/15/5bf3b99495fb160b63f95972b81750f18f7f4e02ad051373b669d17d44f2/aiohappyeyeballs-2.6.1-py3-none-any.whl",
                     "sha256": "f349ba8f4b75cb25c99c5c2d84e997e485204d2902a9597802b0371f09331fb8"
                 },
