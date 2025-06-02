@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-05-12 17:23+0000\n"
-"PO-Revision-Date: 2025-05-13 15:36+0300\n"
+"POT-Creation-Date: 2025-06-02 06:47+0000\n"
+"PO-Revision-Date: 2025-06-02 20:56+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -21,14 +21,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:254
-#: src/window.py:269 src/ui/window.blp:245 src/ui/nofile.blp:11
+#: src/main.py:161 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
+#: src/window.py:268 src/ui/window.blp:245 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:167 src/main.py:169
+#: src/main.py:171 src/main.py:173
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2024"
 
@@ -76,52 +76,53 @@ msgid "Identify files using AcoustID"
 msgstr "Ідентифікувати файли за допомогою AcoustID"
 
 #: data/app.drey.EarTag.metainfo.xml.in:108
-msgid "Network access is only used for the \"Identify selected files\" option."
+msgid ""
+"Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Доступ до мережі буде використано лише для пункту «Ідентифікувати позначені "
 "файли»."
 
-#: src/window.py:118
+#: src/window.py:119
 msgid "All supported audio files"
 msgstr "Усі підтримувані звукові файли"
 
-#: src/window.py:236
+#: src/window.py:235
 msgid "Unselect all files"
 msgstr "Зняти позначення з усіх файлів"
 
-#: src/window.py:239 src/ui/window.blp:210
+#: src/window.py:238 src/ui/window.blp:210
 msgid "Select all files"
 msgstr "Позначити усі файли"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:278 src/fileview.py:787
+#: src/window.py:277 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "(Позначено декілька файлів)"
 
-#: src/window.py:370 src/ui/nofile.blp:35
+#: src/window.py:369 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Відкрити теку"
 
-#: src/window.py:373 src/ui/nofile.blp:24
+#: src/window.py:372 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Відкрити файл"
 
-#: src/window.py:444
+#: src/window.py:443
 msgid "No supported files found in opened folder"
 msgstr "У відкритій теці не знайдено підтримуваних файлів"
 
-#: src/window.py:453
+#: src/window.py:452
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Для деяких з відкритих файлів виявлено некоректні значення; не вдалося "
 "зберегти"
 
-#: src/window.py:587
+#: src/window.py:586
 msgid "No files selected"
 msgstr "Не вибрано жодного файла"
 
-#: src/window.py:593
+#: src/window.py:592
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -130,7 +131,7 @@ msgstr[1] "Позначено {n} файли"
 msgstr[2] "Позначено {n} файлів"
 msgstr[3] "Позначено один файл"
 
-#: src/window.py:679
+#: src/window.py:665
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -139,11 +140,11 @@ msgstr[1] "Скасовано зміни у {n} файлах"
 msgstr[2] "Скасовано зміни у {n} файлах"
 msgstr[3] "Скасовано зміни у {n} файлі"
 
-#: src/window.py:684
+#: src/window.py:670
 msgid "Redo"
 msgstr "Повторити"
 
-#: src/window.py:715
+#: src/window.py:698
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -152,7 +153,7 @@ msgstr[1] "Повторено зміни у {n} файлах"
 msgstr[2] "Повторено зміни у {n} файлах"
 msgstr[3] "Повторено зміни у {n} файлі"
 
-#: src/window.py:763
+#: src/window.py:743
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -161,11 +162,11 @@ msgstr[1] "Вилучено мітки з {n} файлів"
 msgstr[2] "Вилучено мітки з {n} файлів"
 msgstr[3] "Вилучено мітки з {n} файла"
 
-#: src/window.py:768 src/fileview.py:318
+#: src/window.py:748 src/fileview.py:318
 msgid "Undo"
 msgstr "Скасувати"
 
-#: src/window.py:798
+#: src/window.py:775
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -269,183 +270,181 @@ msgstr ""
 "Відкрийте або перетягніть сюди якісь файли звукових даних, щоб редагувати "
 "метадані у них."
 
-#: src/filemanager.py:197
+#: src/filemanager.py:187
 msgid "Saved changes to files"
 msgstr "Зміни збережено до файлів"
 
-#: src/filemanager.py:287
+#: src/filemanager.py:265
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "Відкритий файл призначено лише для читання; зміни неможливо зберегти"
 
-#: src/filemanager.py:290
+#: src/filemanager.py:268
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Деякі з відкритих файлів призначено лише для читання; зміни неможливо "
 "зберегти"
 
-#: src/backends/file.py:53
+#: src/backends/file.py:52
 msgid "Length"
 msgstr "Тривалість"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:53
 msgid "Bitrate"
 msgstr "Бітова швидкість"
 
-#: src/backends/file.py:56 src/ui/fileview.blp:95
+#: src/backends/file.py:55 src/ui/fileview.blp:95
 msgid "Title"
 msgstr "Заголовок"
 
-#: src/backends/file.py:57 src/ui/fileview.blp:127
+#: src/backends/file.py:56 src/ui/fileview.blp:127
 msgid "Artist"
 msgstr "Виконавець"
 
-#: src/backends/file.py:58 src/ui/fileview.blp:210
+#: src/backends/file.py:57 src/ui/fileview.blp:210
 msgid "Album"
 msgstr "Альбом"
 
-#: src/backends/file.py:59 src/ui/fileview.blp:215
+#: src/backends/file.py:58 src/ui/fileview.blp:215
 msgid "Album artist"
 msgstr "Виконавець альбому"
 
-#: src/backends/file.py:60 src/ui/fileview.blp:174
+#: src/backends/file.py:59 src/ui/fileview.blp:174
 msgid "Track number"
 msgstr "Номер доріжки"
 
-#: src/backends/file.py:61 src/ui/fileview.blp:187
+#: src/backends/file.py:60 src/ui/fileview.blp:187
 msgid "Total tracks"
 msgstr "Загалом доріжок"
 
-#: src/backends/file.py:62 src/ui/fileview.blp:220
+#: src/backends/file.py:61 src/ui/fileview.blp:220
 msgid "Genre"
 msgstr "Жанр"
 
-#: src/backends/file.py:63 src/ui/fileview.blp:225
+#: src/backends/file.py:62 src/ui/fileview.blp:225
 msgid "Release date"
 msgstr "Дата випуску"
 
-#: src/backends/file.py:64 src/ui/fileview.blp:231
+#: src/backends/file.py:63 src/ui/fileview.blp:231
 msgid "Comment"
 msgstr "Коментар"
 
-#: src/backends/file.py:66
+#: src/backends/file.py:65
 msgid "(Select a tag)"
 msgstr "(Виберіть мітку)"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:68
+#: src/backends/file.py:67
 msgid "BPM"
 msgstr "Музичний розмір"
 
-#: src/backends/file.py:69
+#: src/backends/file.py:68
 msgid "Compilation"
 msgstr "Компіляція"
 
-#: src/backends/file.py:70
+#: src/backends/file.py:69
 msgid "Composer"
 msgstr "Композитор"
 
-#: src/backends/file.py:71
+#: src/backends/file.py:70
 msgid "Copyright"
 msgstr "Авторські права"
 
-#: src/backends/file.py:72
+#: src/backends/file.py:71
 msgid "Encoded by"
 msgstr "Кодувальник"
 
-#: src/backends/file.py:73
+#: src/backends/file.py:72
 msgid "Mood"
 msgstr "Настрій"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:75
+#: src/backends/file.py:74
 msgid "Conductor"
 msgstr "Диригент"
 
-#: src/backends/file.py:76
+#: src/backends/file.py:75
 msgid "Arranger"
 msgstr "Аранжувальник"
 
-#: src/backends/file.py:77
+#: src/backends/file.py:76
 msgid "Disc number"
 msgstr "Номер диска"
 
-#: src/backends/file.py:78
+#: src/backends/file.py:77
 msgid "Publisher"
 msgstr "Видавець"
 
-#: src/backends/file.py:80
+#: src/backends/file.py:79
 msgid "Language"
 msgstr "Мова"
 
-#: src/backends/file.py:81
+#: src/backends/file.py:80
 msgid "Disc subtitle"
 msgstr "Підзаголовок диска"
 
-#: src/backends/file.py:82
+#: src/backends/file.py:81
 msgid "Website/URL"
 msgstr "Адреса або вебсторінка"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:86
+#: src/backends/file.py:85
 msgid "Album artist (sort)"
 msgstr "Виконавець альбому (упорядкування)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:89
+#: src/backends/file.py:88
 msgid "Album (sort)"
 msgstr "Альбом (упорядкування)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:92
+#: src/backends/file.py:91
 msgid "Composer (sort)"
 msgstr "Композитор (упорядкування)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:95
+#: src/backends/file.py:94
 msgid "Artist (sort)"
 msgstr "Виконавець (упорядкування)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:98
+#: src/backends/file.py:97
 msgid "Title (sort)"
 msgstr "Заголовок (упорядкування)"
 
-#: src/backends/file.py:100
+#: src/backends/file.py:99
 msgid "MusicBrainz Artist ID"
 msgstr "Ідентифікатор виконавця у MusicBrainz"
 
-#: src/backends/file.py:101
+#: src/backends/file.py:100
 msgid "MusicBrainz Album ID"
 msgstr "Ідентифікатор альбому у MusicBrainz"
 
-#: src/backends/file.py:102
+#: src/backends/file.py:101
 msgid "MusicBrainz Album Artist ID"
 msgstr "Ідентифікатор виконавця альбому у MusicBrainz"
 
-#: src/backends/file.py:103
+#: src/backends/file.py:102
 msgid "MusicBrainz Release Track ID"
 msgstr "Ідентифікатор доріжки випуску у MusicBrainz"
 
-#: src/backends/file.py:104
+#: src/backends/file.py:103
 msgid "MusicBrainz Recording ID"
 msgstr "Ідентифікатор запису MusicBrainz"
 
-#: src/backends/file.py:105
+#: src/backends/file.py:104
 msgid "MusicBrainz Release Group ID"
 msgstr "Ідентифікатор групи випуску у MusicBrainz"
 
 #: src/fileview.py:111
-#| msgid "Album (sort)"
 msgid "Album cover (front)"
 msgstr "Обкладинка альбому (передній бік)"
 
 #: src/fileview.py:113
-#| msgid "Album (sort)"
 msgid "Album cover (back)"
 msgstr "Обкладинка альбому (задній бік)"
 
@@ -555,7 +554,7 @@ msgstr "Для файла визначено некоректні значенн
 msgid "File has unsaved changes"
 msgstr "Зміни у файлі не збережено"
 
-#: src/ui/filelistitem.blp:92
+#: src/ui/filelistitem.blp:84
 msgid "Remove from list"
 msgstr "Вилучити зі списку"
 
@@ -689,7 +688,7 @@ msgstr[3] "Перейменовано {renamed} файл"
 msgid "Rename Selected Files"
 msgstr "Перейменувати позначені файли"
 
-#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:27
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -750,7 +749,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:288
+#: src/extract.py:281
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -763,7 +762,7 @@ msgstr[3] "Видобуто мітки для {extracted} доріжки"
 msgid "Extract Tags from Filename"
 msgstr "Видобувати мітки з назви файла"
 
-#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
 msgid "Apply"
 msgstr "Застосувати"
 
@@ -784,26 +783,24 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "Виберіть файл для попереднього перегляду"
 
-#: src/identify.py:84 src/ui/identify/recordingrow.blp:15
-#| msgid "Identified 1 track"
-#| msgid_plural "Identified {identified} tracks"
+#: src/identify.py:92 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "Застосувати визначені дані"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:127
+#: src/identify.py:135
 msgid "Other releases"
 msgstr "Інші випуски"
 
-#: src/identify.py:526
+#: src/identify.py:570
 msgid "Unidentified Files"
 msgstr "Неідентифіковані файли"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:972
+#: src/identify.py:851
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -812,15 +809,29 @@ msgstr[1] "Ідентифіковано {identified} доріжки"
 msgstr[2] "Ідентифіковано {identified} доріжок"
 msgstr[3] "Ідентифіковано {identified} доріжку"
 
+#. TRANSLATORS: {n} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:921
+#, python-brace-format
+#| msgid "Extracted tags for 1 track"
+#| msgid_plural "Extracted tags for {extracted} tracks"
+msgid "Applied changes to 1 track"
+msgid_plural "Applied changes to {n} tracks"
+msgstr[0] "Застосовано зміни до {n} доріжки"
+msgstr[1] "Застосовано зміни до {n} доріжок"
+msgstr[2] "Застосовано зміни до {n} доріжок"
+msgstr[3] "Застосовано зміни до {n} доріжки"
+
 #: src/ui/identify/identify.blp:5
 msgid "Identify Selected Files"
 msgstr "Ідентифікувати позначені файли"
 
-#: src/ui/identify/identify.blp:34
+#: src/ui/identify/identify.blp:35
 msgid "Identify"
 msgstr "Визначити"
 
-#: src/ui/identify/identify.blp:71
+#: src/ui/identify/identify.blp:72
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
