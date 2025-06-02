@@ -108,6 +108,11 @@
                 },
                 {
                     "type": "file",
+                    "url": "https://files.pythonhosted.org/packages/5b/d3/bb000603e46144db2e5055219bbddcf7ab3b10012fcb342695694fb88141/cython-3.1.1.tar.gz",
+                    "sha256": "505ccd413669d5132a53834d792c707974248088c4f60c497deb1b416e366397"
+                },
+                {
+                    "type": "file",
                     "url": "https://files.pythonhosted.org/packages/ee/f4/d744cba2da59b5c1d88823cf9e8a6c74e4659e2b27604ed973be2a0bf5ab/frozenlist-1.6.0.tar.gz",
                     "sha256": "b99655c32c1c8e06d111e7f41c06c29a5318cb1835df23a45518e02a47c63b68"
                 }
