@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-05-13 20:38+0000\n"
-"PO-Revision-Date: 2025-05-13 19:32-0300\n"
+"POT-Creation-Date: 2025-06-02 18:37+0000\n"
+"PO-Revision-Date: 2025-06-02 19:39-0300\n"
 "Last-Translator: Álvaro Burns <>\n"
 "Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao/>\n"
 "Language: pt_BR\n"
@@ -22,14 +22,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:254
-#: src/window.py:269 src/ui/window.blp:245 src/ui/nofile.blp:11
+#: src/main.py:161 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
+#: src/window.py:268 src/ui/window.blp:245 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:167 src/main.py:169
+#: src/main.py:171 src/main.py:173
 msgid "translator-credits"
 msgstr "Leônidas Araújo <leorusvellt@hotmail.com>"
 
@@ -83,82 +83,82 @@ msgstr ""
 "O acesso à rede é utilizado apenas para a opção \"Identificar arquivos "
 "selecionados\"."
 
-#: src/window.py:118
+#: src/window.py:119
 msgid "All supported audio files"
 msgstr "Todos os arquivos de áudio suportados"
 
-#: src/window.py:236
+#: src/window.py:235
 msgid "Unselect all files"
 msgstr "Desmarcar todos os arquivos"
 
-#: src/window.py:239 src/ui/window.blp:210
+#: src/window.py:238 src/ui/window.blp:210
 msgid "Select all files"
 msgstr "Selecionar todos os arquivos"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:278 src/fileview.py:787
+#: src/window.py:277 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "(Vários arquivos selecionados)"
 
-#: src/window.py:370 src/ui/nofile.blp:35
+#: src/window.py:369 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Abrir pasta"
 
-#: src/window.py:373 src/ui/nofile.blp:24
+#: src/window.py:372 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Abrir arquivo"
 
-#: src/window.py:444
+#: src/window.py:443
 msgid "No supported files found in opened folder"
 msgstr "Nenhum arquivo compatível encontrado na pasta aberta"
 
-#: src/window.py:453
+#: src/window.py:452
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Alguns dos arquivos abertos possuem valores inválidos; não é possível salvar"
 
-#: src/window.py:587
+#: src/window.py:586
 msgid "No files selected"
 msgstr "Nenhum arquivo selecionado"
 
-#: src/window.py:593
+#: src/window.py:592
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "1 arquivo selecionado"
 msgstr[1] "{n} arquivos selecionados"
 
-#: src/window.py:679
+#: src/window.py:665
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Alterações desfeitas em 1 arquivo"
 msgstr[1] "Alterações desfeitas em {n} arquivos"
 
-#: src/window.py:684
+#: src/window.py:670
 msgid "Redo"
 msgstr "Refazer"
 
-#: src/window.py:715
+#: src/window.py:698
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Alterações refeitas em 1 arquivo"
 msgstr[1] "Alterações refeitas em {n} arquivos"
 
-#: src/window.py:763
+#: src/window.py:743
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Etiquetas removidas de 1 arquivo"
 msgstr[1] "Etiquetas removidas de {n} arquivos"
 
-#: src/window.py:768 src/fileview.py:318
+#: src/window.py:748 src/fileview.py:318
 msgid "Undo"
 msgstr "Desfazer"
 
-#: src/window.py:798
+#: src/window.py:775
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -258,173 +258,173 @@ msgstr "Sobre o E_ar Tag"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "Abra ou arraste alguns arquivos de áudio para editar seus metadados."
 
-#: src/filemanager.py:197
+#: src/filemanager.py:187
 msgid "Saved changes to files"
 msgstr "Alterações salvas em arquivos"
 
-#: src/filemanager.py:287
+#: src/filemanager.py:265
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "O arquivo aberto é somente leitura; as alterações não podem ser salvas"
 
-#: src/filemanager.py:290
+#: src/filemanager.py:268
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Alguns dos arquivos abertos são somente leitura; as alterações não podem ser "
 "salvas"
 
-#: src/backends/file.py:53
+#: src/backends/file.py:52
 msgid "Length"
 msgstr "Comprimento"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:53
 msgid "Bitrate"
 msgstr "Taxa de bits"
 
-#: src/backends/file.py:56 src/ui/fileview.blp:95
+#: src/backends/file.py:55 src/ui/fileview.blp:95
 msgid "Title"
 msgstr "Título"
 
-#: src/backends/file.py:57 src/ui/fileview.blp:127
+#: src/backends/file.py:56 src/ui/fileview.blp:127
 msgid "Artist"
 msgstr "Artista"
 
-#: src/backends/file.py:58 src/ui/fileview.blp:210
+#: src/backends/file.py:57 src/ui/fileview.blp:210
 msgid "Album"
 msgstr "Álbum"
 
-#: src/backends/file.py:59 src/ui/fileview.blp:215
+#: src/backends/file.py:58 src/ui/fileview.blp:215
 msgid "Album artist"
 msgstr "Artista do álbum"
 
-#: src/backends/file.py:60 src/ui/fileview.blp:174
+#: src/backends/file.py:59 src/ui/fileview.blp:174
 msgid "Track number"
 msgstr "Número da faixa"
 
-#: src/backends/file.py:61 src/ui/fileview.blp:187
+#: src/backends/file.py:60 src/ui/fileview.blp:187
 msgid "Total tracks"
 msgstr "Total de faixas"
 
-#: src/backends/file.py:62 src/ui/fileview.blp:220
+#: src/backends/file.py:61 src/ui/fileview.blp:220
 msgid "Genre"
 msgstr "Gênero"
 
-#: src/backends/file.py:63 src/ui/fileview.blp:225
+#: src/backends/file.py:62 src/ui/fileview.blp:225
 msgid "Release date"
 msgstr "Data de lançamento"
 
-#: src/backends/file.py:64 src/ui/fileview.blp:231
+#: src/backends/file.py:63 src/ui/fileview.blp:231
 msgid "Comment"
 msgstr "Comentário"
 
-#: src/backends/file.py:66
+#: src/backends/file.py:65
 msgid "(Select a tag)"
 msgstr "(Selecione uma etiqueta)"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:68
+#: src/backends/file.py:67
 msgid "BPM"
 msgstr "BPM"
 
-#: src/backends/file.py:69
+#: src/backends/file.py:68
 msgid "Compilation"
 msgstr "Compilação"
 
-#: src/backends/file.py:70
+#: src/backends/file.py:69
 msgid "Composer"
 msgstr "Compositor"
 
-#: src/backends/file.py:71
+#: src/backends/file.py:70
 msgid "Copyright"
 msgstr "Direitos autorais"
 
-#: src/backends/file.py:72
+#: src/backends/file.py:71
 msgid "Encoded by"
 msgstr "Codificado por"
 
-#: src/backends/file.py:73
+#: src/backends/file.py:72
 msgid "Mood"
 msgstr "Humor"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:75
+#: src/backends/file.py:74
 msgid "Conductor"
 msgstr "Regente"
 
-#: src/backends/file.py:76
+#: src/backends/file.py:75
 msgid "Arranger"
 msgstr "Aranjador"
 
-#: src/backends/file.py:77
+#: src/backends/file.py:76
 msgid "Disc number"
 msgstr "Número do disco"
 
-#: src/backends/file.py:78
+#: src/backends/file.py:77
 msgid "Publisher"
 msgstr "Editor"
 
-#: src/backends/file.py:80
+#: src/backends/file.py:79
 msgid "Language"
 msgstr "Idioma"
 
-#: src/backends/file.py:81
+#: src/backends/file.py:80
 msgid "Disc subtitle"
 msgstr "Subtítulo do disco"
 
-#: src/backends/file.py:82
+#: src/backends/file.py:81
 msgid "Website/URL"
 msgstr "Website/URL"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:86
+#: src/backends/file.py:85
 msgid "Album artist (sort)"
 msgstr "Artista do álbum (ordenação)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:89
+#: src/backends/file.py:88
 msgid "Album (sort)"
 msgstr "Álbum (ordenação)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:92
+#: src/backends/file.py:91
 msgid "Composer (sort)"
 msgstr "Compositor (ordenação)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:95
+#: src/backends/file.py:94
 msgid "Artist (sort)"
 msgstr "Artista (ordenação)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:98
+#: src/backends/file.py:97
 msgid "Title (sort)"
 msgstr "Título (ordenação)"
 
-#: src/backends/file.py:100
+#: src/backends/file.py:99
 msgid "MusicBrainz Artist ID"
 msgstr "ID do artista do MusicBrainz"
 
-#: src/backends/file.py:101
+#: src/backends/file.py:100
 msgid "MusicBrainz Album ID"
 msgstr "ID do álbum do MusicBrainz"
 
-#: src/backends/file.py:102
+#: src/backends/file.py:101
 msgid "MusicBrainz Album Artist ID"
 msgstr "ID do artista do álbum do MusicBrainz"
 
-#: src/backends/file.py:103
+#: src/backends/file.py:102
 msgid "MusicBrainz Release Track ID"
 msgstr "ID da faixa de lançamento do MusicBrainz"
 
-#: src/backends/file.py:104
+#: src/backends/file.py:103
 msgid "MusicBrainz Recording ID"
 msgstr "ID de gravação do MusicBrainz"
 
-#: src/backends/file.py:105
+#: src/backends/file.py:104
 msgid "MusicBrainz Release Group ID"
 msgstr "ID do grupo de lançamento do MusicBrainz"
 
@@ -673,7 +673,7 @@ msgstr[1] "Arquivos {renamed} renomeados"
 msgid "Rename Selected Files"
 msgstr "Renomear arquivos selecionados"
 
-#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:27
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -733,7 +733,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:288
+#: src/extract.py:281
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -744,7 +744,7 @@ msgstr[1] "Tags extraídas para faixas {extracted}"
 msgid "Extract Tags from Filename"
 msgstr "Extrair etiquetas do nome do arquivo"
 
-#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -765,39 +765,49 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "Selecione o arquivo para visualizar"
 
-#: src/identify.py:84 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:92 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "Aplique dados identificados"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:127
+#: src/identify.py:135
 msgid "Other releases"
 msgstr "Outros lançamentos"
 
-#: src/identify.py:526
+#: src/identify.py:570
 msgid "Unidentified Files"
 msgstr "Arquivos não identificados"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:972
+#: src/identify.py:851
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
 msgstr[0] "1 faixa identificada"
 msgstr[1] "Faixas {identified} identificadas"
 
+#. TRANSLATORS: {n} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:921
+#, python-brace-format
+msgid "Applied changes to 1 track"
+msgid_plural "Applied changes to {n} tracks"
+msgstr[0] "Aplicada mudanças para 1 faixa"
+msgstr[1] "Aplicada mudanças para {n} faixas"
+
 #: src/ui/identify/identify.blp:5
 msgid "Identify Selected Files"
 msgstr "Identificar arquivos selecionados"
 
-#: src/ui/identify/identify.blp:34
+#: src/ui/identify/identify.blp:35
 msgid "Identify"
 msgstr "Identificar"
 
-#: src/ui/identify/identify.blp:71
+#: src/ui/identify/identify.blp:72
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
