@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-05-13 20:38+0000\n"
-"PO-Revision-Date: 2025-05-16 16:45+0800\n"
+"POT-Creation-Date: 2025-06-02 06:47+0000\n"
+"PO-Revision-Date: 2025-06-03 10:23+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -20,14 +20,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:254
-#: src/window.py:269 src/ui/window.blp:245 src/ui/nofile.blp:11
+#: src/main.py:161 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
+#: src/window.py:268 src/ui/window.blp:245 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:167 src/main.py:169
+#: src/main.py:171 src/main.py:173
 msgid "translator-credits"
 msgstr "lumingzh <lumingzh@qq.com>, 2023-2025."
 
@@ -75,77 +75,77 @@ msgstr "使用 AcoustID 识别文件"
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
-#: src/window.py:118
+#: src/window.py:119
 msgid "All supported audio files"
 msgstr "所有支持的音频文件"
 
-#: src/window.py:236
+#: src/window.py:235
 msgid "Unselect all files"
 msgstr "取消全选文件"
 
-#: src/window.py:239 src/ui/window.blp:210
+#: src/window.py:238 src/ui/window.blp:210
 msgid "Select all files"
 msgstr "选择所有文件"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:278 src/fileview.py:787
+#: src/window.py:277 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "（已选择多个文件）"
 
-#: src/window.py:370 src/ui/nofile.blp:35
+#: src/window.py:369 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "打开文件夹"
 
-#: src/window.py:373 src/ui/nofile.blp:24
+#: src/window.py:372 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/window.py:444
+#: src/window.py:443
 msgid "No supported files found in opened folder"
 msgstr "在打开的文件夹中未发现支持的文件"
 
-#: src/window.py:453
+#: src/window.py:452
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "部分打开的文件具有无效值；无法保存"
 
-#: src/window.py:587
+#: src/window.py:586
 msgid "No files selected"
 msgstr "未选择文件"
 
-#: src/window.py:593
+#: src/window.py:592
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "已选择 {n} 个文件"
 
-#: src/window.py:679
+#: src/window.py:665
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "已撤消在 {n} 个文件中的修改"
 
-#: src/window.py:684
+#: src/window.py:670
 msgid "Redo"
 msgstr "重做"
 
-#: src/window.py:715
+#: src/window.py:698
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "已重做在 {n} 个文件中的修改"
 
-#: src/window.py:763
+#: src/window.py:743
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "已从 {n} 个文件移除标签"
 
-#: src/window.py:768 src/fileview.py:318
+#: src/window.py:748 src/fileview.py:318
 msgid "Undo"
 msgstr "撤消"
 
-#: src/window.py:798
+#: src/window.py:775
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -244,171 +244,171 @@ msgstr "关于 Ear Tag(_A)"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "打开或拖拽一些音频文件来编辑它们的元数据。"
 
-#: src/filemanager.py:197
+#: src/filemanager.py:187
 msgid "Saved changes to files"
 msgstr "已将修改保存到文件"
 
-#: src/filemanager.py:287
+#: src/filemanager.py:265
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "打开的文件为只读；修改无法保存"
 
-#: src/filemanager.py:290
+#: src/filemanager.py:268
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "部分打开的文件为只读；修改无法保存"
 
-#: src/backends/file.py:53
+#: src/backends/file.py:52
 msgid "Length"
 msgstr "时长"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:53
 msgid "Bitrate"
 msgstr "比特率"
 
-#: src/backends/file.py:56 src/ui/fileview.blp:95
+#: src/backends/file.py:55 src/ui/fileview.blp:95
 msgid "Title"
 msgstr "标题"
 
-#: src/backends/file.py:57 src/ui/fileview.blp:127
+#: src/backends/file.py:56 src/ui/fileview.blp:127
 msgid "Artist"
 msgstr "艺人"
 
-#: src/backends/file.py:58 src/ui/fileview.blp:210
+#: src/backends/file.py:57 src/ui/fileview.blp:210
 msgid "Album"
 msgstr "专辑"
 
-#: src/backends/file.py:59 src/ui/fileview.blp:215
+#: src/backends/file.py:58 src/ui/fileview.blp:215
 msgid "Album artist"
 msgstr "专辑艺人"
 
-#: src/backends/file.py:60 src/ui/fileview.blp:174
+#: src/backends/file.py:59 src/ui/fileview.blp:174
 msgid "Track number"
 msgstr "曲目编号"
 
-#: src/backends/file.py:61 src/ui/fileview.blp:187
+#: src/backends/file.py:60 src/ui/fileview.blp:187
 msgid "Total tracks"
 msgstr "全部曲目"
 
-#: src/backends/file.py:62 src/ui/fileview.blp:220
+#: src/backends/file.py:61 src/ui/fileview.blp:220
 msgid "Genre"
 msgstr "流派"
 
-#: src/backends/file.py:63 src/ui/fileview.blp:225
+#: src/backends/file.py:62 src/ui/fileview.blp:225
 msgid "Release date"
 msgstr "发行日期"
 
-#: src/backends/file.py:64 src/ui/fileview.blp:231
+#: src/backends/file.py:63 src/ui/fileview.blp:231
 msgid "Comment"
 msgstr "注释"
 
-#: src/backends/file.py:66
+#: src/backends/file.py:65
 msgid "(Select a tag)"
 msgstr "（选择标签）"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:68
+#: src/backends/file.py:67
 msgid "BPM"
 msgstr "BPM"
 
-#: src/backends/file.py:69
+#: src/backends/file.py:68
 msgid "Compilation"
 msgstr "选辑"
 
-#: src/backends/file.py:70
+#: src/backends/file.py:69
 msgid "Composer"
 msgstr "作曲"
 
-#: src/backends/file.py:71
+#: src/backends/file.py:70
 msgid "Copyright"
 msgstr "版权"
 
-#: src/backends/file.py:72
+#: src/backends/file.py:71
 msgid "Encoded by"
 msgstr "编码人"
 
-#: src/backends/file.py:73
+#: src/backends/file.py:72
 msgid "Mood"
 msgstr "情绪"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:75
+#: src/backends/file.py:74
 msgid "Conductor"
 msgstr "指挥"
 
-#: src/backends/file.py:76
+#: src/backends/file.py:75
 msgid "Arranger"
 msgstr "编曲"
 
-#: src/backends/file.py:77
+#: src/backends/file.py:76
 msgid "Disc number"
 msgstr "盘片序号"
 
-#: src/backends/file.py:78
+#: src/backends/file.py:77
 msgid "Publisher"
 msgstr "出版商"
 
-#: src/backends/file.py:80
+#: src/backends/file.py:79
 msgid "Language"
 msgstr "语言"
 
-#: src/backends/file.py:81
+#: src/backends/file.py:80
 msgid "Disc subtitle"
 msgstr "盘片次标题"
 
-#: src/backends/file.py:82
+#: src/backends/file.py:81
 msgid "Website/URL"
 msgstr "网站/URL"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:86
+#: src/backends/file.py:85
 msgid "Album artist (sort)"
 msgstr "专辑艺人（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:89
+#: src/backends/file.py:88
 msgid "Album (sort)"
 msgstr "专辑（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:92
+#: src/backends/file.py:91
 msgid "Composer (sort)"
 msgstr "作曲（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:95
+#: src/backends/file.py:94
 msgid "Artist (sort)"
 msgstr "艺人（排序）"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:98
+#: src/backends/file.py:97
 msgid "Title (sort)"
 msgstr "标题（排序）"
 
-#: src/backends/file.py:100
+#: src/backends/file.py:99
 msgid "MusicBrainz Artist ID"
 msgstr "MusicBrainz 艺术家标识"
 
-#: src/backends/file.py:101
+#: src/backends/file.py:100
 msgid "MusicBrainz Album ID"
 msgstr "MusicBrainz 专辑标识"
 
-#: src/backends/file.py:102
+#: src/backends/file.py:101
 msgid "MusicBrainz Album Artist ID"
 msgstr "MusicBrainz 专辑艺术家标识"
 
-#: src/backends/file.py:103
+#: src/backends/file.py:102
 msgid "MusicBrainz Release Track ID"
 msgstr "MusicBrainz 发行曲目标识"
 
-#: src/backends/file.py:104
+#: src/backends/file.py:103
 msgid "MusicBrainz Recording ID"
 msgstr "MusicBrainz 录制标识"
 
-#: src/backends/file.py:105
+#: src/backends/file.py:104
 msgid "MusicBrainz Release Group ID"
 msgstr "MusicBrainz 发行组标识"
 
@@ -645,7 +645,7 @@ msgstr[0] "已重命名 {renamed} 个文件"
 msgid "Rename Selected Files"
 msgstr "重命名选中文件"
 
-#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:27
 msgid "Cancel"
 msgstr "取消"
 
@@ -701,7 +701,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:288
+#: src/extract.py:281
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -711,7 +711,7 @@ msgstr[0] "已为 {extracted} 首曲目提取标签"
 msgid "Extract Tags from Filename"
 msgstr "从文件名提取标签"
 
-#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
 msgid "Apply"
 msgstr "应用"
 
@@ -731,38 +731,47 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "选择文件来预览"
 
-#: src/identify.py:84 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:92 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "应用已识别的数据"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:127
+#: src/identify.py:135
 msgid "Other releases"
 msgstr "其它发行"
 
-#: src/identify.py:526
+#: src/identify.py:570
 msgid "Unidentified Files"
 msgstr "未识别的文件"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:972
+#: src/identify.py:851
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
 msgstr[0] "已识别 {identified} 首曲目"
 
+#. TRANSLATORS: {n} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:921
+#, python-brace-format
+msgid "Applied changes to 1 track"
+msgid_plural "Applied changes to {n} tracks"
+msgstr[0] "已将修改应用至 {n} 首曲目"
+
 #: src/ui/identify/identify.blp:5
 msgid "Identify Selected Files"
 msgstr "识别选中文件"
 
-#: src/ui/identify/identify.blp:34
+#: src/ui/identify/identify.blp:35
 msgid "Identify"
 msgstr "识别"
 
-#: src/ui/identify/identify.blp:71
+#: src/ui/identify/identify.blp:72
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
