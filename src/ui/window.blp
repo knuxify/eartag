@@ -23,6 +23,19 @@ template $EartagWindow: Adw.ApplicationWindow {
     }
   }
 
+  // Adw.Breakpoint does not allow multiple breakpoints to be active at once,
+  // so we have to merge the above two together:
+
+  Adw.Breakpoint {
+    condition ("max-height: 360sp and max-width: 620sp")
+
+    setters {
+      split_view.collapsed: true;
+      file_view.height_below_360: true;
+    }
+  }
+
+
   Overlay overlay {
     hexpand: true;
     vexpand: true;
