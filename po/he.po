@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-05-12 17:23+0000\n"
-"PO-Revision-Date: 2025-05-13 10:11+0300\n"
-"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"POT-Creation-Date: 2025-06-04 14:58+0000\n"
+"PO-Revision-Date: 2025-06-10 08:31+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -23,14 +23,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:254
-#: src/window.py:269 src/ui/window.blp:245 src/ui/nofile.blp:11
+#: src/main.py:161 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
+#: src/window.py:268 src/ui/window.blp:258 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:167 src/main.py:169
+#: src/main.py:171 src/main.py:173
 msgid "translator-credits"
 msgstr ""
 "יוסף אור בוצ׳קו <yoseforb@gmail.com>\n"
@@ -80,45 +80,45 @@ msgstr "לזהות קבצים באמצעות AcoustID"
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "נדרשת גישה לרשת רק כדי להשתמש באפשרות „זיהוי קבצים נבחרים”."
 
-#: src/window.py:118
+#: src/window.py:119
 msgid "All supported audio files"
 msgstr "כל קובצי השמע הנתמכים"
 
-#: src/window.py:236
+#: src/window.py:235
 msgid "Unselect all files"
 msgstr "ביטול בחירת כל הקבצים"
 
-#: src/window.py:239 src/ui/window.blp:210
+#: src/window.py:238 src/ui/window.blp:223
 msgid "Select all files"
 msgstr "בחירת כל הקבצים"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:278 src/fileview.py:787
+#: src/window.py:277 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "(מספר רב של קבצים נבחרים)"
 
-#: src/window.py:370 src/ui/nofile.blp:35
+#: src/window.py:369 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "פתיחת תיקיה"
 
-#: src/window.py:373 src/ui/nofile.blp:24
+#: src/window.py:372 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "פתיחת קובץ"
 
-#: src/window.py:444
+#: src/window.py:443
 msgid "No supported files found in opened folder"
 msgstr "לא נמצאו קבצים נתמכים בתיקייה שנפתחה"
 
-#: src/window.py:453
+#: src/window.py:452
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "לחלק מהקבצים הפתוחים יש ערכים לא תקינים; לא ניתן לבצע שמירה"
 
-#: src/window.py:587
+#: src/window.py:586
 msgid "No files selected"
 msgstr "לא נבחרו קבצים"
 
-#: src/window.py:593
+#: src/window.py:592
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -127,7 +127,7 @@ msgstr[1] "נבחרו שני קבצים"
 msgstr[2] "נבחרו {n} קבצים"
 msgstr[3] "נבחרו {n} קבצים"
 
-#: src/window.py:679
+#: src/window.py:665
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -136,11 +136,11 @@ msgstr[1] "בוטלו שינויים בשני קבצים"
 msgstr[2] "בוטלו שינויים ב־{n} קבצים"
 msgstr[3] "בוטלו שינויים ב־{n} קבצים"
 
-#: src/window.py:684
+#: src/window.py:670
 msgid "Redo"
 msgstr "ביצוע מחדש"
 
-#: src/window.py:715
+#: src/window.py:698
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -149,7 +149,7 @@ msgstr[1] "השינויים בשני הקבצים בוצעו מחדש"
 msgstr[2] "השינויים ב־{n} הקבצים בוצעו מחדש"
 msgstr[3] "השינויים ב־{n} הקבצים בוצעו מחדש"
 
-#: src/window.py:763
+#: src/window.py:743
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -158,11 +158,11 @@ msgstr[1] "הוסרו תגיות משני קבצים"
 msgstr[2] "הוסרו תגיות מ־{n} קבצים"
 msgstr[3] "הוסרו תגיות מ־{n} קבצים"
 
-#: src/window.py:768 src/fileview.py:318
+#: src/window.py:748 src/fileview.py:318
 msgid "Undo"
 msgstr "ביטול"
 
-#: src/window.py:798
+#: src/window.py:775
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -171,92 +171,92 @@ msgstr[1] "בוטלה הסרת תגיות משני קבצים"
 msgstr[2] "בוטלה הסרת תגיות מ־{n} קבצים"
 msgstr[3] "בוטלה הסרת תגיות מ־{n} קבצים"
 
-#: src/ui/window.blp:64
+#: src/ui/window.blp:77
 msgid "Drop a file to add it to the opened file list"
 msgstr "יש להשליך קובץ על מנת להוסיף אותו לרשימת הקבצים הפתוחים"
 
-#: src/ui/window.blp:112
+#: src/ui/window.blp:125
 msgid "Save"
 msgstr "שמירה"
 
-#: src/ui/window.blp:124
+#: src/ui/window.blp:137
 msgid "Close file list"
 msgstr "סגירת רשימת קבצים"
 
-#: src/ui/window.blp:140
+#: src/ui/window.blp:153
 msgid "Add file"
 msgstr "הוספת קובץ"
 
-#: src/ui/window.blp:146
+#: src/ui/window.blp:159
 msgid "Select multiple files"
 msgstr "בחירה מרובה של קבצים"
 
-#: src/ui/window.blp:152
+#: src/ui/window.blp:165
 msgid "Search opened files"
 msgstr "חיפוש בקבצים הפתוחים"
 
 #. TRANSLATORS: Search entry placeholder for "Search opened files" option
-#: src/ui/window.blp:163 src/ui/previewselectorbutton.blp:25
+#: src/ui/window.blp:176 src/ui/previewselectorbutton.blp:25
 msgid "Search by title, artist, filename…"
 msgstr "חיפוש לפי כותרת, יוצר/ת, שם קובץ…"
 
-#: src/ui/window.blp:196
+#: src/ui/window.blp:209
 msgid "No Results Found"
 msgstr "לא נמצאו תוצאות"
 
-#: src/ui/window.blp:197
+#: src/ui/window.blp:210
 msgid "Try a different search query."
 msgstr "יש לנסות מילים שונות לחיפוש."
 
-#: src/ui/window.blp:224
+#: src/ui/window.blp:237
 msgid "Remove selected files"
 msgstr "הסתרת הקבצים הנבחרים"
 
-#: src/ui/window.blp:238
+#: src/ui/window.blp:251
 msgid "Show file list"
 msgstr "הצגת רשימת הקבצים"
 
-#: src/ui/window.blp:260
+#: src/ui/window.blp:273
 msgid "_Open File"
 msgstr "_פתיחת קובץ"
 
-#: src/ui/window.blp:265
+#: src/ui/window.blp:278
 msgid "O_pen Folder"
 msgstr "פתיחת _תיקייה"
 
-#: src/ui/window.blp:272
+#: src/ui/window.blp:285
 msgid "_Sort File List"
 msgstr "_מיון רשימת הקבצים"
 
-#: src/ui/window.blp:279
+#: src/ui/window.blp:292
 msgid "_Rename Selected Files"
 msgstr "_שינוי שם לקבצים הנבחרים"
 
-#: src/ui/window.blp:284
+#: src/ui/window.blp:297
 msgid "_Extract Tags from Filename"
 msgstr "_חילוץ תגיות משם קובץ"
 
-#: src/ui/window.blp:289
+#: src/ui/window.blp:302
 msgid "_Identify Selected Files"
 msgstr "_זיהוי הקבצים הנבחרים"
 
-#: src/ui/window.blp:296
+#: src/ui/window.blp:309
 msgid "_Undo Changes in Selected Files"
 msgstr "_ביטול השינויים בקבצים הנבחרים"
 
-#: src/ui/window.blp:301
+#: src/ui/window.blp:314
 msgid "_Remove All Tags in Selected Files"
 msgstr "ה_סרת כל התגיות בקבצים הנבחרים"
 
-#: src/ui/window.blp:308
+#: src/ui/window.blp:321
 msgid "_Keyboard Shortcuts"
 msgstr "_צירופי מקשים"
 
-#: src/ui/window.blp:313
+#: src/ui/window.blp:326
 msgid "_Preferences"
 msgstr "ה_עדפות"
 
-#: src/ui/window.blp:318
+#: src/ui/window.blp:331
 msgid "_About Ear Tag"
 msgstr "_על אודות Ear Tag"
 
@@ -264,171 +264,171 @@ msgstr "_על אודות Ear Tag"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "יש לפתוח או לגרור קובצי שמע כדי לערוך את נתוני המידע שלהם."
 
-#: src/filemanager.py:197
+#: src/filemanager.py:187
 msgid "Saved changes to files"
 msgstr "נשמרו שינויים לקבצים"
 
-#: src/filemanager.py:287
+#: src/filemanager.py:265
 msgid "Opened file is read-only; changes cannot be saved"
 msgstr "הקובץ הנפתח הוא לקריאה בלבד; לא תהיה אפשרות לשמור שינויים"
 
-#: src/filemanager.py:290
+#: src/filemanager.py:268
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "חלק מהקבצים הפתוחים הנם לקריאה בלבד; לא תהיה אפשרות לשמור שינויים"
 
-#: src/backends/file.py:53
+#: src/backends/file.py:52
 msgid "Length"
 msgstr "אורך"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:53
 msgid "Bitrate"
 msgstr "קצב סיביות"
 
-#: src/backends/file.py:56 src/ui/fileview.blp:95
+#: src/backends/file.py:55 src/ui/fileview.blp:95
 msgid "Title"
 msgstr "כותרת"
 
-#: src/backends/file.py:57 src/ui/fileview.blp:127
+#: src/backends/file.py:56 src/ui/fileview.blp:127
 msgid "Artist"
 msgstr "אומן"
 
-#: src/backends/file.py:58 src/ui/fileview.blp:210
+#: src/backends/file.py:57 src/ui/fileview.blp:210
 msgid "Album"
 msgstr "אלבום"
 
-#: src/backends/file.py:59 src/ui/fileview.blp:215
+#: src/backends/file.py:58 src/ui/fileview.blp:215
 msgid "Album artist"
 msgstr "אומן האלבום"
 
-#: src/backends/file.py:60 src/ui/fileview.blp:174
+#: src/backends/file.py:59 src/ui/fileview.blp:174
 msgid "Track number"
 msgstr "מספר רצועה"
 
-#: src/backends/file.py:61 src/ui/fileview.blp:187
+#: src/backends/file.py:60 src/ui/fileview.blp:187
 msgid "Total tracks"
 msgstr "סך הכל רצועות"
 
-#: src/backends/file.py:62 src/ui/fileview.blp:220
+#: src/backends/file.py:61 src/ui/fileview.blp:220
 msgid "Genre"
 msgstr "סוגה"
 
-#: src/backends/file.py:63 src/ui/fileview.blp:225
+#: src/backends/file.py:62 src/ui/fileview.blp:225
 msgid "Release date"
 msgstr "תאריך הוצאה לאור"
 
-#: src/backends/file.py:64 src/ui/fileview.blp:231
+#: src/backends/file.py:63 src/ui/fileview.blp:231
 msgid "Comment"
 msgstr "הערה"
 
-#: src/backends/file.py:66
+#: src/backends/file.py:65
 msgid "(Select a tag)"
 msgstr "(יש לבחור תג)"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:68
+#: src/backends/file.py:67
 msgid "BPM"
 msgstr "BPM"
 
-#: src/backends/file.py:69
+#: src/backends/file.py:68
 msgid "Compilation"
 msgstr "אוסף"
 
-#: src/backends/file.py:70
+#: src/backends/file.py:69
 msgid "Composer"
 msgstr "מלחין"
 
-#: src/backends/file.py:71
+#: src/backends/file.py:70
 msgid "Copyright"
 msgstr "זכויות יוצרים"
 
-#: src/backends/file.py:72
+#: src/backends/file.py:71
 msgid "Encoded by"
 msgstr "קודד על ידי"
 
-#: src/backends/file.py:73
+#: src/backends/file.py:72
 msgid "Mood"
 msgstr "מצב רוח"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:75
+#: src/backends/file.py:74
 msgid "Conductor"
 msgstr "מנצח"
 
-#: src/backends/file.py:76
+#: src/backends/file.py:75
 msgid "Arranger"
 msgstr "מעבד"
 
-#: src/backends/file.py:77
+#: src/backends/file.py:76
 msgid "Disc number"
 msgstr "מספר דיסק"
 
-#: src/backends/file.py:78
+#: src/backends/file.py:77
 msgid "Publisher"
 msgstr "מוציא לאור"
 
-#: src/backends/file.py:80
+#: src/backends/file.py:79
 msgid "Language"
 msgstr "שפה"
 
-#: src/backends/file.py:81
+#: src/backends/file.py:80
 msgid "Disc subtitle"
 msgstr "כותרת משנית של הדיסק"
 
-#: src/backends/file.py:82
+#: src/backends/file.py:81
 msgid "Website/URL"
 msgstr "כתובת אתר אינטרנט"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:86
+#: src/backends/file.py:85
 msgid "Album artist (sort)"
 msgstr "אומן האלבום (מיון)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:89
+#: src/backends/file.py:88
 msgid "Album (sort)"
 msgstr "אלבום (מיון)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:92
+#: src/backends/file.py:91
 msgid "Composer (sort)"
 msgstr "מלחין (מיון)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:95
+#: src/backends/file.py:94
 msgid "Artist (sort)"
 msgstr "אומן (מיון)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:98
+#: src/backends/file.py:97
 msgid "Title (sort)"
 msgstr "כותרת (מיון)"
 
-#: src/backends/file.py:100
+#: src/backends/file.py:99
 msgid "MusicBrainz Artist ID"
 msgstr "מזהה אומן ב־MusicBrainz"
 
-#: src/backends/file.py:101
+#: src/backends/file.py:100
 msgid "MusicBrainz Album ID"
 msgstr "מזהה אלבום ב־MusicBrainz"
 
-#: src/backends/file.py:102
+#: src/backends/file.py:101
 msgid "MusicBrainz Album Artist ID"
 msgstr "מזהה אלבום אומן ב־MusicBrainz"
 
-#: src/backends/file.py:103
+#: src/backends/file.py:102
 msgid "MusicBrainz Release Track ID"
 msgstr "מזהה רצועה בשחרור ב־MusicBrainz"
 
-#: src/backends/file.py:104
+#: src/backends/file.py:103
 msgid "MusicBrainz Recording ID"
 msgstr "מזהה הקלטה ב־MusicBrainz"
 
-#: src/backends/file.py:105
+#: src/backends/file.py:104
 msgid "MusicBrainz Release Group ID"
 msgstr "מזהה קבוצת שחרור ב־MusicBrainz"
 
@@ -442,27 +442,27 @@ msgstr "עטיפת אלבום (גב)"
 
 #: src/fileview.py:206
 msgid "Select Album Cover Image"
-msgstr "בחירת תמונת כיסוי אלבום"
+msgstr "בחירת תמונת עטיפת אלבום"
 
 #: src/fileview.py:257
 msgid "Save Album Cover To…"
-msgstr "שמירת כיסוי אלבום אל…"
+msgstr "שמירת עטיפת אלבום אל…"
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
 #: src/fileview.py:290
 #, python-brace-format
 msgid "Saved cover to {path}"
-msgstr "שמירת כיסוי אל {path}"
+msgstr "שמירת עטיפה אל {path}"
 
 #: src/fileview.py:315
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
-msgstr[0] "הוסר כיסוי מקובץ"
-msgstr[1] "הוסר כיסוי משני קבצים"
-msgstr[2] "הוסר כיסוי מ־{n} קבצים"
-msgstr[3] "הוסר כיסוי מ־{n} קבצים"
+msgstr[0] "הוסרה עטיפה מקובץ"
+msgstr[1] "הוסרה עטיפה משני קבצים"
+msgstr[2] "הוסרה עטיפה מ־{n} קבצים"
+msgstr[3] "הוסרה עטיפה מ־{n} קבצים"
 
 #: src/fileview.py:801
 #, python-brace-format
@@ -546,7 +546,7 @@ msgstr "לקובץ יש ערכים לא תקינים"
 msgid "File has unsaved changes"
 msgstr "לקובץ יש שינויים שלא נשמרו"
 
-#: src/ui/filelistitem.blp:92
+#: src/ui/filelistitem.blp:84
 msgid "Remove from list"
 msgstr "הסרה מהרשימה"
 
@@ -675,7 +675,7 @@ msgstr[3] "השתנה שם של {renamed} קבצים"
 msgid "Rename Selected Files"
 msgstr "שינוי שם הקבצים הנבחרים"
 
-#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:27
 msgid "Cancel"
 msgstr "ביטול"
 
@@ -732,7 +732,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:288
+#: src/extract.py:281
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -745,7 +745,7 @@ msgstr[3] "חולצו תגיות מ־{extracted} רצועות"
 msgid "Extract Tags from Filename"
 msgstr "חילוץ תגיות משם הקובץ"
 
-#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
 msgid "Apply"
 msgstr "החלה"
 
@@ -765,24 +765,24 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "נא לבחור קובץ לתצוגה מקדימה"
 
-#: src/identify.py:84 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:92 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "החלת נתונים שזוהו"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:127
+#: src/identify.py:135
 msgid "Other releases"
 msgstr "שחרורים אחרים"
 
-#: src/identify.py:526
+#: src/identify.py:570
 msgid "Unidentified Files"
 msgstr "קבצים שלא זוהו"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:972
+#: src/identify.py:851
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -791,15 +791,27 @@ msgstr[1] "שתי רצועות זוהו"
 msgstr[2] "{identified} רצועות זוהו"
 msgstr[3] "{identified} רצועות זוהו"
 
+#. TRANSLATORS: {n} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:921
+#, python-brace-format
+msgid "Applied changes to 1 track"
+msgid_plural "Applied changes to {n} tracks"
+msgstr[0] "שינויים הוחלו על רצועה"
+msgstr[1] "שינויים הוחלו על שתי רצועות"
+msgstr[2] "שינויים הוחלו על {n} רצועות"
+msgstr[3] "שינויים הוחלו על {n} רצועות"
+
 #: src/ui/identify/identify.blp:5
 msgid "Identify Selected Files"
 msgstr "זיהוי קבצים נבחרים"
 
-#: src/ui/identify/identify.blp:34
+#: src/ui/identify/identify.blp:35
 msgid "Identify"
 msgstr "זיהוי"
 
-#: src/ui/identify/identify.blp:71
+#: src/ui/identify/identify.blp:72
 msgid ""
 "Track information is provided by <a href=\"https://"
 "musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified "
@@ -839,11 +851,11 @@ msgstr "אחוז האמינות המזערי הנדרש עבור תוצאת חי
 
 #: src/ui/settings.blp:36
 msgid "Downloaded cover art size"
-msgstr "גודל הורדת כיסוי אלבום"
+msgstr "גודל הורדת עטיפת אלבום"
 
 #: src/ui/settings.blp:40
 msgid "Do not download covers"
-msgstr "לא להוריד כיסויים"
+msgstr "לא להוריד עטיפות"
 
 #: src/ui/settings.blp:41
 msgid "250 px"
