@@ -10,7 +10,7 @@ import traceback
 import urllib
 import urllib.parse
 import urllib.request
-from typing import List, Self, Optional
+from typing import List, Self, Optional, Tuple
 
 # HACK: The Gst backend of audioread, which is used by acoustid, is not very
 # happy when the GLib async event loop policy is set up.
@@ -25,6 +25,7 @@ from gi.repository import GObject, GLib
 from ._async import event_loop
 from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
 from .backends.file import EartagFile
+from .logger import logger
 
 try:
     from . import ACOUSTID_API_KEY, VERSION
@@ -195,6 +196,10 @@ class MusicBrainzRecording(GObject.Object):
         if not title:
             raise ValueError("Not enough data for query; title is needed")
 
+        logger.debug(
+            f"Getting recordings for file {os.path.basename(file.path)}; overrides: {overrides}"
+        )
+
         # Query MusicBrainz based on the available metadata
         async def _query_recordings(_title, _artist, _album):
             _data = await mb_query.download(
@@ -217,42 +222,94 @@ class MusicBrainzRecording(GObject.Object):
                 == simplify_string(_artist)
             ]
 
-        search_data = {}
+        search_data = []
+        search_data_ids = set()
         # For convenience, each possible "method" of querying is numbered;
         # the number increases with each query iteration. This is done so that
         # once one of the methods works, we can quickly break out of the loop.
         fetch_method = 0
-        while not search_data:
+        got_useful_result = False
+        while True:
 
             # Method 0. Perform a regular query with all the parameters.
             if fetch_method == 0:
-                search_data = await _query_recordings(title, artist, album)
+                logger.debug("  - Method 0: regular query with all parameters")
+                new_search_data = await _query_recordings(title, artist, album)
 
             # Method 1. Perform a query without the album, if we are given one.
             elif fetch_method == 1:
                 if album:
-                    search_data = await _query_recordings(title, artist, "")
+                    logger.debug("  - Method 1: query with no album")
+                    new_search_data = await _query_recordings(title, artist, "")
+                else:
+                    logger.debug("  - Method 1 (skipped): query with no album")
 
             # Method 2. Simplify title and artist.
             elif fetch_method == 2:
-                search_data = await _query_recordings(
-                    simplify_string(title),
-                    simplify_string(artist),
-                    simplify_string(album),
-                )
+                if (
+                    simplify_string(title) != title
+                    and simplify_string(artist) != artist
+                    and (simplify_string(album) != album or not album)
+                ):
+                    logger.debug("  - Method 2: query with simplified tags")
+                    new_search_data = await _query_recordings(
+                        simplify_string(title),
+                        simplify_string(artist),
+                        simplify_string(album),
+                    )
+                else:
+                    logger.debug("  - Method 2 (skipped): query with simplified tags")
 
             # Method 3. Same as 2, but without album, if we are given one.
             elif fetch_method == 3:
-                if album:
-                    search_data = await _query_recordings(
+                if (
+                    album
+                    and simplify_string(title) != title
+                    and simplify_string(artist) != artist
+                ):
+                    logger.debug(
+                        "  - Method 3: query with simplified tags and no album"
+                    )
+                    new_search_data = await _query_recordings(
                         simplify_string(title), simplify_string(artist), ""
+                    )
+                else:
+                    logger.debug(
+                        "  - Method 3 (skipped): query with simplified tags and no album"
                     )
 
             # Once we have exhausted all methods, return empty data.
             else:
-                return []
+                logger.debug("  - Ran out of methods.")
+                break
 
+            search_data += [
+                r for r in new_search_data if r.get("id") not in search_data_ids
+            ]
+            search_data_ids = search_data_ids.union(
+                set([r.get("id") for r in new_search_data])
+            )
             fetch_method += 1
+
+            # Filter out non-useful results; if we didn't get anything that seems
+            # correct, continue to the next method.
+            from pprint import pprint
+
+            for r in new_search_data:
+                pprint(r)
+                for _rel_data in r.get("releases", []):
+                    if _rel_data.get("status", "Official") == "Official":
+                        if "Compilation" not in _rel_data.get("release-group", {}).get(
+                            "secondary-types", []
+                        ):
+                            got_useful_result = True
+                            break
+
+            if got_useful_result:
+                logger.debug("  ... got useful result!")
+                break
+            else:
+                logger.debug("  ... no useful result, trying next method")
 
         # Convert the search results to MusicBrainzRecording objects
         ret = []
@@ -271,6 +328,29 @@ class MusicBrainzRecording(GObject.Object):
             rec.sort_releases(file=file)
 
             ret.append(rec)
+
+        logger.debug(f"Found {len(ret)} recordings")
+        logger.debug(f"Recordings before sorting: \n{ret}")
+
+        # Sort the recordings by usefulness.
+
+        # Move video recordings to the end
+        ret.sort(key=lambda rec: int(rec.mb_data.get("video", False)))
+
+        # Prefer recordings with earlier release date; tracks with no release date are moved to the end
+        ret.sort(key=lambda rec: rec.releasedate or "Z")
+
+        # Prefer recordings with more legitimate releases
+        def _release_sort(rec) -> int:
+            out = 0
+            for rel in rec.mb_data.get("releases", []):
+                if rel["status"] == "Official" and "Compilation" not in rel.get(
+                    "release_group", {}
+                ).get("secondary-types", []):
+                    out += 1
+            return out
+
+        ret.sort(key=lambda rec: _release_sort(rec), reverse=True)
 
         # Sort the resulting recordings by which one matches our file the best
         def _rec_file_cmp(rec) -> int:
@@ -291,6 +371,8 @@ class MusicBrainzRecording(GObject.Object):
         ret.sort(
             key=_rec_file_cmp, reverse=True
         )  # The larger the number, the more tag matches
+
+        logger.debug(f"Recordings after sorting: \n{ret}")
 
         return ret
 
@@ -820,13 +902,17 @@ class MusicBrainzReleaseGroup(GObject.Object):
         return hash(self.relgroup_id)
 
 
-async def acoustid_identify_file(file):
+async def acoustid_identify_file(file) -> Tuple[float, "MusicBrainzRecording"]:
     """
     Uses AcoustID and Chromaprint to identify a track's data.
 
     Returns a tuple containing the confidence and MusicBrainzRecording
     object for the file, or (0.0, None) if it couldn't be found.
     """
+    logger.debug(
+        f"Running AcoustID identification for file {os.path.basename(file.path)}"
+    )
+
     try:
         results = await asyncio.to_thread(
             acoustid.match, ACOUSTID_API_KEY, file.path, parse=False
@@ -834,22 +920,26 @@ async def acoustid_identify_file(file):
         if "results" not in results or not results["results"]:
             return (0.0, None)
     except:
-        print(
+        logger.warning(
             f"Error while getting AcoustID match for {os.path.basename(file.path)} ({file.id}):"
         )
         traceback.print_exc()
-        print("Continuing without match. (This is not a fatal error!)")
+        logger.warning("Continuing without match. (This is not a fatal error!)")
         return (0.0, None)
 
     acoustid_data = results["results"][0]
+
+    logger.debug(f"AcoustID identification result: {acoustid_data['score']}")
 
     if acoustid_data["score"] * 100 < config["acoustid-confidence-treshold"]:
         return (0.0, None)
 
     if "recordings" in acoustid_data:
         musicbrainz_id = acoustid_data["recordings"][0]["id"]
+        logger.debug(f"AcoustID matched recording is {musicbrainz_id}")
         rec = await MusicBrainzRecording.new_for_id(musicbrainz_id)
         rec.sort_releases()  # Sort releases in the recording
         return (acoustid_data["score"], rec)
 
+    logger.debug("No recordings in AcoustID result")
     return (0.0, None)

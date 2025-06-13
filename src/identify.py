@@ -16,6 +16,7 @@ from .musicbrainz import (
     MusicBrainzRelease,
     MusicBrainzReleaseGroup,
 )
+from .logger import logger
 from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equal
 from .utils.asynctask import EartagAsyncTask
 from .utils.widgets import EartagModelExpanderRow
@@ -255,6 +256,8 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         Used by the identification process to fill in the release switcher
         button model.
         """
+        print(releases)
+        self.release_popover_toggle.set_visible(bool(releases))
         return self._rel_model.splice(0, self._rel_model.get_n_items(), releases)
 
     def rel_row_create(self, rel, *args):
@@ -653,9 +656,10 @@ class EartagIdentifyDialog(Adw.Dialog):
 
         # Step 1. Go over each file and find recordings
         for file in self.files:
+            logger.info(f"Identifying recordings for file: {file}")
             unid_index = find_in_model(self.files_unidentified, file)
             if unid_index < 0:
-                print(
+                logger.error(
                     "Could not find file in unidentifed filter, this should never happen!"
                 )
                 continue
@@ -673,7 +677,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                     )
                 else:
                     # Try to guess title and artist from filename
-                    filename = os.path.basename(file.path)
+                    filename = os.path.splitext(os.path.basename(file.path))[0]
                     # Split the title into two parts - one before a dash/em-dash, one after
                     part1 = filename.split("-")[0].split("—")[0]
                     part2 = filename[len(part1) :]
@@ -683,6 +687,9 @@ class EartagIdentifyDialog(Adw.Dialog):
                     if part1.isnumeric():
                         part1 = part2
                         part2 = ""
+                    logger.debug(
+                        f"No title/artist, guess from filename: {part1}, {part2}"
+                    )
 
                     if part1 and part2:
                         recordings += (
@@ -706,6 +713,10 @@ class EartagIdentifyDialog(Adw.Dialog):
                 if (
                     not recordings
                     or len(recordings) > 1
+                    or (
+                        recordings[0].release
+                        and recordings[0].release.status != "official"
+                    )
                     or not file.title
                     or not file.artist
                 ):
@@ -755,7 +766,7 @@ class EartagIdentifyDialog(Adw.Dialog):
 
             except:  # noqa: E722
                 # Prevent crashes in recording identification from aborting the identification
-                print(f"Failure while identifying file {file}:")
+                logger.error(f"Failure while identifying file {file}:")
                 traceback.print_exc()
                 unid_row.mark_as_unidentified()
                 continue
@@ -766,6 +777,8 @@ class EartagIdentifyDialog(Adw.Dialog):
         # We need to do this since we might be dealing with a "deluxe edition" with extra
         # tracks; in that case, all tracks should fall under the deluxe edition.
 
+        logger.debug("Done identifying files, grouping will now proceed")
+
         groups = {}  # group ID: releases for this group
         for rel in [row.release for row in self.release_rows.values()]:
             if rel.group.relgroup_id not in groups:
@@ -773,12 +786,16 @@ class EartagIdentifyDialog(Adw.Dialog):
             else:
                 groups[rel.group.relgroup_id].append(rel)
 
+        logger.debug(f"Per-group identified releases: {groups}")
+
         group_recs = {}  # group ID: recordings for this group
         for rec in found_recordings:
             if rec.release.group.relgroup_id in group_recs:
                 group_recs[rec.release.group.relgroup_id].append(rec)
             else:
                 group_recs[rec.release.group.relgroup_id] = [rec]
+
+        logger.debug(f"Per-group identified recordings: {group_recs}")
 
         # For each group, figure out which one contains the most of our identified
         # recordings. The one that covers the most wins.
@@ -798,8 +815,12 @@ class EartagIdentifyDialog(Adw.Dialog):
                 rel_trackcount.items(), key=lambda v: len(v[1]), reverse=True
             )
 
+            logger.debug(f"Found {len(rel_trackcount_sorted)} possible releases")
+
             target_release = rel_trackcount_sorted[0][0]
             target_rel_recordings = set()
+
+            logger.debug(f"Selected {target_release} as target release")
 
             for rec in group_recs[group_id]:
                 for rel in rec.available_releases:
@@ -811,14 +832,20 @@ class EartagIdentifyDialog(Adw.Dialog):
             # Set up alternative releases
             alt_releases = set()
             for rel_id, rec_ids in rel_trackcount.items():
-                if rel_id == target_release:
-                    continue
-
-                if rec_ids.issubset(rel_trackcount[target_release]):
+                if rel_trackcount[target_release].issubset(rec_ids):
                     alt_releases.add(rel_id)
 
+            logger.debug(
+                f"Found {len(alt_releases)} alternative releases for release {target_release}:\n{alt_releases}"
+            )
+            all_releases = set()
+            for rec in group_recs[group_id]:
+                if rec.recording_id not in target_rel_recordings:
+                    continue
+                all_releases = all_releases.union(set(rec.available_releases))
+
             self.release_rows[target_release].refresh_alternative_releases(
-                [rel for rel in releases if rel.release_id in alt_releases]
+                [rel for rel in all_releases if rel.release_id in alt_releases]
             )
 
         for k, row in list(self.release_rows.items()).copy():

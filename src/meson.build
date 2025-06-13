@@ -74,6 +74,7 @@ eartag_sources = [
   'dialogs.py',
   'extract.py',
   'identify.py',
+  'logger.py',
   'main.py',
   'musicbrainz.py',
   'filemanager.py',

@@ -4,6 +4,7 @@
 import sys
 import gi
 import os.path
+import logging
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -19,6 +20,7 @@ from . import APP_ID, APP_GRESOURCE_PATH
 from .utils.validation import is_valid_music_file
 from .window import EartagWindow
 from .filemanager import EartagFileManager
+from .logger import logger
 
 
 class Application(Adw.Application):
@@ -32,6 +34,11 @@ class Application(Adw.Application):
         self.devel = devel
         self.paths = []
         self.connect("open", self.on_open)
+        if devel:
+            logger.setLevel(logging.DEBUG)
+        logger.info(
+            f"Starting Ear Tag {version}{' (development mode)' if devel else ''}"
+        )
 
     def on_open(self, app, files, *args):
         if self.props.active_window:
