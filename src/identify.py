@@ -617,7 +617,6 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.identify_button.set_sensitive(False)
         self.apply_button.set_sensitive(False)
         self.set_can_close(False)
-        self.end_button_stack.set_visible_child(self.apply_button)
 
         self.identify_task.run()
 
@@ -835,6 +834,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             )
         except AttributeError:  # this happens when the operation is cancelled
             return
+        self.end_button_stack.set_visible_child(self.apply_button)
         self.apply_button.set_sensitive(bool(identified))
         self.set_can_close(True)
         for relrow in self.release_rows.values():
