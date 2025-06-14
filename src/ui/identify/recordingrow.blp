@@ -20,4 +20,17 @@ template $EartagIdentifyRecordingRow: Adw.ActionRow {
 
     notify::active => $toggle_apply();
   }
+
+  [suffix]
+  Button recording_url_button {
+    icon-name: "external-link-symbolic";
+    valign: center;
+    tooltip-text: _("See recording on MusicBrainz");
+
+    styles [
+      "flat"
+    ]
+
+    clicked => $open_recording_url();
+  }
 }

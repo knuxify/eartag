@@ -128,6 +128,16 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self.release_popover.set_child(self.release_popover_scrolled_window)
         self._relswitch_first_row = None
 
+        self.release_url_button = Gtk.Button()
+        self.release_url_button.set_icon_name("external-link-symbolic")
+        # TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+        self.release_url_button.set_tooltip_text(_("See release on MusicBrainz"))
+        self.release_url_button.set_valign(Gtk.Align.CENTER)
+        self.release_url_button.connect("clicked", self.open_release_url)
+        self.release_url_button.add_css_class("flat")
+        self.release_url_launcher = Gtk.UriLauncher.new("")
+        self.add_suffix(self.release_url_button)
+
         self.release_popover_toggle = Gtk.MenuButton(popover=self.release_popover)
         self.release_popover_toggle.set_valign(Gtk.Align.CENTER)
         self.release_popover_toggle.set_visible(False)
@@ -299,6 +309,17 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
                     break
         self.update_filter()
 
+    def open_release_url(self, *args):
+        """Open the currently bound release's MusicBrainz page."""
+
+        async def _open(self):
+            self.release_url_launcher.props.uri = (
+                f"https://musicbrainz.org/release/{self.release.release_id}"
+            )
+            await self.release_url_launcher.launch(self.get_root())
+
+        asyncio.create_task(_open(self))
+
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/identify/altreleaserow.ui")
 class EartagIdentifyAltReleaseRow(Adw.ActionRow):
@@ -452,6 +473,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     __gtype_name__ = "EartagIdentifyRecordingRow"
 
     apply_checkbox = Gtk.Template.Child()
+    recording_url_button = Gtk.Template.Child()
 
     def __init__(self, parent, recording):
         super().__init__()
@@ -472,6 +494,8 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
                 if file.id == self.file_id:
                     self.file_name = os.path.basename(file.path)
                     break
+
+        self.recording_url_launcher = Gtk.UriLauncher.new("")
 
         self.connect("destroy", self.unbind)
 
@@ -527,6 +551,18 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         elif not toggle.props.active and self.file_id in self.parent.parent.apply_files:
             self.parent.parent.apply_files.remove(self.file_id)
             self.parent.parent.apply_files_changed()
+
+    @Gtk.Template.Callback()
+    def open_recording_url(self, *args):
+        """Open the currently bound recording's MusicBrainz page."""
+
+        async def _open(self):
+            self.recording_url_launcher.props.uri = (
+                f"https://musicbrainz.org/recording/{self.recording.recording_id}"
+            )
+            await self.recording_url_launcher.launch(self.get_root())
+
+        asyncio.create_task(_open(self))
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/identify/identify.ui")

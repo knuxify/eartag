@@ -6,6 +6,7 @@
     <file alias="view-queue-symbolic.svg">assets/icons/view-queue-symbolic.svg</file>
     <file alias="selection-mode-symbolic.svg">assets/icons/selection-mode-symbolic.svg</file>
     <file alias="edit-select-none-symbolic.svg">assets/icons/edit-select-none-symbolic.svg</file>
+    <file alias="external-link-symbolic.svg">assets/icons/external-link-symbolic.svg</file>
   </gresource>
   <gresource prefix="@APP_GRESOURCE_PATH@">
     <file>ui/albumcoverbutton.ui</file>
