@@ -17,9 +17,6 @@ class EartagFileMutagenCommon(EartagFile):
         super().__init__(path)
         self.mg_file = None
 
-    async def load_from_file(self, path):
-        self.mg_file = await asyncio.to_thread(mutagen.File, path)
-
     def save(self):
         """Saves the changes to the file."""
         self.mg_file.save()

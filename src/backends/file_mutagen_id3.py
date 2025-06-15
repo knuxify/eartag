@@ -2,11 +2,14 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject
+import asyncio
 import magic
 import mimetypes
 import io
 from PIL import Image
 
+import mutagen.mp3
+import mutagen.wave
 import mutagen.id3
 from mutagen.id3 import PictureType
 
@@ -114,12 +117,29 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     )  # fmt: skip
 
     async def load_from_file(self, path):
-        await super().load_from_file(path)
+        mimetype = magic.from_file(path, mime=True)
+
+        self.mg_file = None
+        #try:
+        if mimetype in ("audio/mp3", "audio/mpeg", "audio/x-mpeg",):
+            self.mg_file = await asyncio.to_thread(mutagen.mp3.MP3, path)
+        elif mimetype in ("audio/wav", "audio/x-wav"):
+            self.mg_file = await asyncio.to_thread(mutagen.wave.WAVE, path)
+        else:
+            print(f"unknown mime {mimetype}")
+        #except:
+        #	traceback.print_exc()
+        #	pass
+
+        if self.mg_file is None:
+            self.mg_file = await asyncio.to_thread(mutagen.id3.ID3, path)
+
         if not self.mg_file.tags:
             try:
                 self.mg_file.add_tags()
             except (mutagen.id3._util.error, mutagen.wave.error):
                 pass
+
         await self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()

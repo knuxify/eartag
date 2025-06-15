@@ -2,6 +2,7 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject
+import asyncio
 import magic
 import mimetypes
 import struct
@@ -139,7 +140,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     )  # fmt: skip
 
     async def load_from_file(self, path):
-        await super().load_from_file(path)
+        self.mg_file = await asyncio.to_thread(mutagen.asf.ASF, path)
         await self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()

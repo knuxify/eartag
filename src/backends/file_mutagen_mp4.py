@@ -2,12 +2,14 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject
+import asyncio
 import base64
 import magic
 import mimetypes
 import io
 from PIL import Image
 
+import mutagen.mp4
 from mutagen.mp4 import MP4Cover
 
 from .file import CoverType
@@ -85,7 +87,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
     )  # fmt: skip
 
     async def load_from_file(self, path):
-        await super().load_from_file(path)
+        self.mg_file = await asyncio.to_thread(mutagen.mp4.MP4, path)
         if self.mg_file.tags is None:
             self.mg_file.add_tags()
         await self.load_cover()

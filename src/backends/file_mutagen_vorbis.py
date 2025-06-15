@@ -2,12 +2,14 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject
+import asyncio
 import base64
 import magic
 import mimetypes
 import io
 from PIL import Image
 
+import mutagen
 from mutagen.flac import FLAC, Picture, error as FLACError
 from mutagen.id3 import PictureType
 
@@ -16,7 +18,7 @@ from .file_mutagen_common import EartagFileMutagenCommon
 
 
 class EartagFileMutagenVorbis(EartagFileMutagenCommon):
-    """EartagFile handler that uses mutagen for Voris Comment support."""
+    """EartagFile handler that uses mutagen for Vorbis Comment support."""
 
     __gtype_name__ = "EartagFileMutagenVorbis"
     _supports_album_covers = True
@@ -47,7 +49,19 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     }  # fmt: skip
 
     async def load_from_file(self, path):
-        await super().load_from_file(path)
+        from mutagen.oggflac import OggFLAC
+        from mutagen.oggspeex import OggSpeex
+        from mutagen.oggtheora import OggTheora
+        from mutagen.oggvorbis import OggVorbis
+        from mutagen.oggopus import OggOpus
+        from mutagen.ogg import OggFileType
+
+        self.mg_file = await asyncio.to_thread(mutagen.File, path, options=[
+            OggTheora, OggSpeex, OggVorbis, OggOpus, OggFLAC, FLAC
+        ])
+        if self.mg_file is None:
+            raise ValueError("Failed to identify OGG subtype")
+
         await self.load_cover()
         self.setup_present_extra_tags()
         self.setup_original_values()
