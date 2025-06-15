@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-02 06:47+0000\n"
-"PO-Revision-Date: 2025-06-02 20:56+0300\n"
+"POT-Creation-Date: 2025-06-14 19:12+0000\n"
+"PO-Revision-Date: 2025-06-15 19:57+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -21,14 +21,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:161 data/app.drey.EarTag.desktop.in:3
+#: src/main.py:168 data/app.drey.EarTag.desktop.in:3
 #: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
-#: src/window.py:268 src/ui/window.blp:245 src/ui/nofile.blp:11
+#: src/window.py:268 src/ui/window.blp:258 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:171 src/main.py:173
+#: src/main.py:178 src/main.py:180
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2024"
 
@@ -90,7 +90,7 @@ msgstr "Усі підтримувані звукові файли"
 msgid "Unselect all files"
 msgstr "Зняти позначення з усіх файлів"
 
-#: src/window.py:238 src/ui/window.blp:210
+#: src/window.py:238 src/ui/window.blp:223
 msgid "Select all files"
 msgstr "Позначити усі файли"
 
@@ -175,92 +175,92 @@ msgstr[1] "Скасовано вилучення міток з {n} файлів"
 msgstr[2] "Скасовано вилучення міток з {n} файлів"
 msgstr[3] "Скасовано вилучення міток з {n} файла"
 
-#: src/ui/window.blp:64
+#: src/ui/window.blp:77
 msgid "Drop a file to add it to the opened file list"
 msgstr "Скиньте файл, щоб додати його до списку відкритих файлів"
 
-#: src/ui/window.blp:112
+#: src/ui/window.blp:125
 msgid "Save"
 msgstr "Зберегти"
 
-#: src/ui/window.blp:124
+#: src/ui/window.blp:137
 msgid "Close file list"
 msgstr "Закрити список файлів"
 
-#: src/ui/window.blp:140
+#: src/ui/window.blp:153
 msgid "Add file"
 msgstr "Додати файл"
 
-#: src/ui/window.blp:146
+#: src/ui/window.blp:159
 msgid "Select multiple files"
 msgstr "Позначення декількох"
 
-#: src/ui/window.blp:152
+#: src/ui/window.blp:165
 msgid "Search opened files"
 msgstr "Шукати у відкритих файлах"
 
 #. TRANSLATORS: Search entry placeholder for "Search opened files" option
-#: src/ui/window.blp:163 src/ui/previewselectorbutton.blp:25
+#: src/ui/window.blp:176 src/ui/previewselectorbutton.blp:25
 msgid "Search by title, artist, filename…"
 msgstr "Шукати за назвою, виконавцем, назвою файла…"
 
-#: src/ui/window.blp:196
+#: src/ui/window.blp:209
 msgid "No Results Found"
 msgstr "Нічого не знайдено"
 
-#: src/ui/window.blp:197
+#: src/ui/window.blp:210
 msgid "Try a different search query."
 msgstr "Спробуйте інший запит щодо пошуку."
 
-#: src/ui/window.blp:224
+#: src/ui/window.blp:237
 msgid "Remove selected files"
 msgstr "Вилучити позначені файли"
 
-#: src/ui/window.blp:238
+#: src/ui/window.blp:251
 msgid "Show file list"
 msgstr "Показати список файлів"
 
-#: src/ui/window.blp:260
+#: src/ui/window.blp:273
 msgid "_Open File"
 msgstr "_Відкрити файл"
 
-#: src/ui/window.blp:265
+#: src/ui/window.blp:278
 msgid "O_pen Folder"
 msgstr "_Відкрити теку"
 
-#: src/ui/window.blp:272
+#: src/ui/window.blp:285
 msgid "_Sort File List"
 msgstr "_Упорядкувати список файлів"
 
-#: src/ui/window.blp:279
+#: src/ui/window.blp:292
 msgid "_Rename Selected Files"
 msgstr "П_ерейменувати позначені файли"
 
-#: src/ui/window.blp:284
+#: src/ui/window.blp:297
 msgid "_Extract Tags from Filename"
 msgstr "В_идобувати мітки з назви файла"
 
-#: src/ui/window.blp:289
+#: src/ui/window.blp:302
 msgid "_Identify Selected Files"
 msgstr "_Ідентифікувати позначені файли"
 
-#: src/ui/window.blp:296
+#: src/ui/window.blp:309
 msgid "_Undo Changes in Selected Files"
 msgstr "С_касувати зміни у позначених файлах"
 
-#: src/ui/window.blp:301
+#: src/ui/window.blp:314
 msgid "_Remove All Tags in Selected Files"
 msgstr "Ви_лучити усі мітки з позначених файлах"
 
-#: src/ui/window.blp:308
+#: src/ui/window.blp:321
 msgid "_Keyboard Shortcuts"
 msgstr "_Клавіатурні скорочення"
 
-#: src/ui/window.blp:313
+#: src/ui/window.blp:326
 msgid "_Preferences"
 msgstr "_Налаштування"
 
-#: src/ui/window.blp:318
+#: src/ui/window.blp:331
 msgid "_About Ear Tag"
 msgstr "_Про «Ear Tag»"
 
@@ -783,24 +783,29 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "Виберіть файл для попереднього перегляду"
 
-#: src/identify.py:92 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:93 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "Застосувати визначені дані"
 
+#. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+#: src/identify.py:134
+msgid "See release on MusicBrainz"
+msgstr "Див. випуск на MusicBrainz"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:135
+#: src/identify.py:146
 msgid "Other releases"
 msgstr "Інші випуски"
 
-#: src/identify.py:570
+#: src/identify.py:609
 msgid "Unidentified Files"
 msgstr "Неідентифіковані файли"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:851
+#: src/identify.py:914
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -812,10 +817,8 @@ msgstr[3] "Ідентифіковано {identified} доріжку"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:921
+#: src/identify.py:984
 #, python-brace-format
-#| msgid "Extracted tags for 1 track"
-#| msgid_plural "Extracted tags for {extracted} tracks"
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
 msgstr[0] "Застосовано зміни до {n} доріжки"
@@ -844,6 +847,10 @@ msgstr ""
 #: src/ui/identify/filerow.blp:22
 msgid "File could not be identified"
 msgstr "Не вдалося ідентифікувати файл"
+
+#: src/ui/identify/recordingrow.blp:28
+msgid "See recording on MusicBrainz"
+msgstr "Див. запис на MusicBrainz"
 
 #: src/ui/settings.blp:7
 msgid "File identification"
