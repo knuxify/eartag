@@ -120,16 +120,20 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         mimetype = magic.from_file(path, mime=True)
 
         self.mg_file = None
-        #try:
-        if mimetype in ("audio/mp3", "audio/mpeg", "audio/x-mpeg",):
+        # try:
+        if mimetype in (
+            "audio/mp3",
+            "audio/mpeg",
+            "audio/x-mpeg",
+        ):
             self.mg_file = await asyncio.to_thread(mutagen.mp3.MP3, path)
         elif mimetype in ("audio/wav", "audio/x-wav"):
             self.mg_file = await asyncio.to_thread(mutagen.wave.WAVE, path)
         else:
             print(f"unknown mime {mimetype}")
-        #except:
-        #	traceback.print_exc()
-        #	pass
+        # except:
+        # 	traceback.print_exc()
+        # 	pass
 
         if self.mg_file is None:
             self.mg_file = await asyncio.to_thread(mutagen.id3.ID3, path)

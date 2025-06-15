@@ -56,9 +56,11 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         from mutagen.oggopus import OggOpus
         from mutagen.ogg import OggFileType
 
-        self.mg_file = await asyncio.to_thread(mutagen.File, path, options=[
-            OggTheora, OggSpeex, OggVorbis, OggOpus, OggFLAC, FLAC
-        ])
+        self.mg_file = await asyncio.to_thread(
+            mutagen.File,
+            path,
+            options=[OggTheora, OggSpeex, OggVorbis, OggOpus, OggFLAC, FLAC],
+        )
         if self.mg_file is None:
             raise ValueError("Failed to identify OGG subtype")
 
