@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-04 14:58+0000\n"
-"PO-Revision-Date: 2025-06-10 08:31+0300\n"
+"POT-Creation-Date: 2025-06-14 19:12+0000\n"
+"PO-Revision-Date: 2025-06-16 15:36+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -23,14 +23,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:161 data/app.drey.EarTag.desktop.in:3
+#: src/main.py:168 data/app.drey.EarTag.desktop.in:3
 #: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
 #: src/window.py:268 src/ui/window.blp:258 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:171 src/main.py:173
+#: src/main.py:178 src/main.py:180
 msgid "translator-credits"
 msgstr ""
 "יוסף אור בוצ׳קו <yoseforb@gmail.com>\n"
@@ -422,7 +422,7 @@ msgstr "מזהה אלבום אומן ב־MusicBrainz"
 
 #: src/backends/file.py:102
 msgid "MusicBrainz Release Track ID"
-msgstr "מזהה רצועה בשחרור ב־MusicBrainz"
+msgstr "מזהה רצועה בהוצאה לאור ב־MusicBrainz"
 
 #: src/backends/file.py:103
 msgid "MusicBrainz Recording ID"
@@ -430,7 +430,7 @@ msgstr "מזהה הקלטה ב־MusicBrainz"
 
 #: src/backends/file.py:104
 msgid "MusicBrainz Release Group ID"
-msgstr "מזהה קבוצת שחרור ב־MusicBrainz"
+msgstr "מזהה קבוצת הוצאה לאור ב־MusicBrainz"
 
 #: src/fileview.py:111
 msgid "Album cover (front)"
@@ -765,24 +765,29 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "נא לבחור קובץ לתצוגה מקדימה"
 
-#: src/identify.py:92 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:93 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "החלת נתונים שזוהו"
 
+#. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+#: src/identify.py:134
+msgid "See release on MusicBrainz"
+msgstr "הצגת ההוצאה לאור ב־MusicBrainz"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:135
+#: src/identify.py:146
 msgid "Other releases"
-msgstr "שחרורים אחרים"
+msgstr "הוצאות אחרות לאור"
 
-#: src/identify.py:570
+#: src/identify.py:609
 msgid "Unidentified Files"
 msgstr "קבצים שלא זוהו"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:851
+#: src/identify.py:914
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -794,7 +799,7 @@ msgstr[3] "{identified} רצועות זוהו"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:921
+#: src/identify.py:984
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
@@ -824,6 +829,10 @@ msgstr ""
 #: src/ui/identify/filerow.blp:22
 msgid "File could not be identified"
 msgstr "לא ניתן לזהות את הקובץ"
+
+#: src/ui/identify/recordingrow.blp:28
+msgid "See recording on MusicBrainz"
+msgstr "הצגת ההקלטה ב־MusicBrainz"
 
 #: src/ui/settings.blp:7
 msgid "File identification"
