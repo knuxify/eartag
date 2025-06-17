@@ -583,6 +583,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
         if self._identify_imported:
             from .musicbrainz import EartagCAACover
+
             EartagCAACover.clear_tempfiles()
 
         for file in self.file_manager.files:
@@ -601,6 +602,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_identify_dialog(self, *args):
         from .identify import EartagIdentifyDialog
+
         self._identify_imported = True
         self.identify_dialog = EartagIdentifyDialog(self)
         self.identify_dialog.present(self)

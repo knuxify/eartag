@@ -48,7 +48,9 @@ _mimetype_cache = {}
 
 
 def get_mimetype(
-    path: Union[str, os.PathLike], no_extension_guess: bool = False, no_cache: bool = False
+    path: Union[str, os.PathLike],
+    no_extension_guess: bool = False,
+    no_cache: bool = False,
 ) -> Optional[str]:
     """
     Return the mimetype (or None) for the file with the given path or data.
@@ -94,7 +96,11 @@ def is_valid_image_file(path: Union[str, os.PathLike], no_cache: bool = False):
     return is_valid_file(path, VALID_IMAGE_MIMES, no_cache=no_cache)
 
 
-def is_valid_file(path: Union[str, os.PathLike], valid_mime_types: Iterable[str], no_cache: bool = False):
+def is_valid_file(
+    path: Union[str, os.PathLike],
+    valid_mime_types: Iterable[str],
+    no_cache: bool = False,
+):
     """
     Takes a path to a file and returns True if it's supported, False otherwise.
     """
