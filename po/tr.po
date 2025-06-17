@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-13 15:34+0000\n"
+"POT-Creation-Date: 2025-06-17 05:09+0000\n"
 "PO-Revision-Date: 2025-06-14 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -22,15 +22,15 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:168 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
-#: src/window.py:268 src/ui/window.blp:258 src/ui/nofile.blp:11
+#: src/main.py:164 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:120 src/window.py:366
+#: src/window.py:381 src/ui/window.blp:258 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 # Keep it
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:178 src/main.py:180
+#: src/main.py:174 src/main.py:176
 msgid "translator-credits"
 msgstr ""
 "Sabri Ünal <yakushabb@gmail.com>\n"
@@ -84,79 +84,107 @@ msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Ağ erişimi yalnızca \"Seçilen Dosyaları Tanımla\" seçeneği için kullanılır."
 
-#: src/window.py:119
+#: src/window.py:134
 msgid "All supported audio files"
 msgstr "Tüm desteklenen ses dosyaları"
 
-#: src/window.py:235
+#: src/window.py:306
+msgid "Some files failed to load"
+msgstr "Bazı dosyalar yüklenemedi"
+
+#: src/window.py:307
+msgid "More Information"
+msgstr "Daha Çok Bilgi"
+
+#: src/window.py:315
+msgid "No supported files found in opened folder"
+msgstr "Açılan klasörde desteklenen dosya bulunamadı"
+
+#: src/window.py:324
+#, python-brace-format
+msgid "Saved changes to 1 file"
+msgid_plural "Saved changes to {n} files"
+msgstr[0] "Değişiklikler {n} dosyaya kaydedildi"
+
+#: src/window.py:330
+#, python-brace-format
+msgid "Saved changes to {n} files"
+msgstr "Değişiklikler {n} dosyaya kaydedildi"
+
+#: src/window.py:336
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr "Açılan dosyalardan bazıları salt okunur; değişiklikler kaydedilemez"
+
+#: src/window.py:348
 msgid "Unselect all files"
 msgstr "Tüm dosya seçimlerini kaldır"
 
-#: src/window.py:238 src/ui/window.blp:223
+#: src/window.py:351 src/ui/window.blp:223
 msgid "Select all files"
 msgstr "Tüm dosyaları seç"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:277 src/fileview.py:787
+#: src/window.py:390 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "(Birden çok dosya seçildi)"
 
-#: src/window.py:369 src/ui/nofile.blp:35
-msgid "Open Folder"
-msgstr "Klasör Aç"
-
-#: src/window.py:372 src/ui/nofile.blp:24
+#. : TRANSLATORS: Title of the popup for opening a file
+#: src/window.py:480 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Dosya Aç"
 
-#: src/window.py:443
-msgid "No supported files found in opened folder"
-msgstr "Açılan klasörde desteklenen dosya bulunamadı"
+#: src/window.py:482
+msgid "Add File"
+msgstr "Dosya Ekle"
 
-#: src/window.py:452
+#: src/window.py:488 src/ui/nofile.blp:35
+msgid "Open Folder"
+msgstr "Klasör Aç"
+
+#: src/window.py:541
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Açılan dosyalardan bazılarının geçersiz değerleri var; değişiklikler "
 "kaydedilemez"
 
-#: src/window.py:586
+#: src/window.py:674
 msgid "No files selected"
 msgstr "Hiçbir dosya seçilmedi"
 
-#: src/window.py:592
+#: src/window.py:680
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "{n} dosya seçildi"
 
-#: src/window.py:665
+#: src/window.py:753
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "{n} dosyadaki değişiklikleri geri al"
 
-#: src/window.py:670
+#: src/window.py:758
 msgid "Redo"
 msgstr "Yinele"
 
-#: src/window.py:698
+#: src/window.py:786
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "{n} dosyadaki değişiklikleri yine yap"
 
-#: src/window.py:743
+#: src/window.py:831
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "{n} dosyadan etiketler kaldırıldı"
 
-#: src/window.py:748 src/fileview.py:318
+#: src/window.py:836 src/fileview.py:318
 msgid "Undo"
 msgstr "Geri Al"
 
-#: src/window.py:775
+#: src/window.py:863
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -255,18 +283,6 @@ msgstr "Ear Tag _Hakkında"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr ""
 "Üst verilerini düzenlemek için ses dosyalarını açın ya da buraya sürükleyin."
-
-#: src/filemanager.py:187
-msgid "Saved changes to files"
-msgstr "Değişiklikler dosyalara kaydedildi"
-
-#: src/filemanager.py:265
-msgid "Opened file is read-only; changes cannot be saved"
-msgstr "Açılan dosya salt okunur; değişiklikler kaydedilemez"
-
-#: src/filemanager.py:268
-msgid "Some of the opened files are read-only; changes cannot be saved"
-msgstr "Açılan dosyalardan bazıları salt okunur; değişiklikler kaydedilemez"
 
 #: src/backends/file.py:52
 msgid "Length"
@@ -536,6 +552,50 @@ msgstr "Dosyada kaydedilmemiş değişiklikler var"
 msgid "Remove from list"
 msgstr "Listeden kaldır"
 
+#: src/dialogs.py:106
+msgid "Failed to Load Files"
+msgstr "Dosyalar Yüklenemedi"
+
+#: src/dialogs.py:107
+msgid "Some files could not be loaded."
+msgstr "Bazı dosyalar yüklenemedi."
+
+#: src/dialogs.py:110
+msgid "Failed to Rename Files"
+msgstr "Dosyalar Yeniden Adlandırılamadı"
+
+#: src/dialogs.py:111
+msgid "Some files could not be renamed."
+msgstr "Bazı dosyalar yeniden adlandırılamadı."
+
+#: src/dialogs.py:114
+msgid "Failed to Save Files"
+msgstr "Dosyalar Kaydedilemedi"
+
+#: src/dialogs.py:115
+msgid "Some files could not be saved."
+msgstr "Bazı dosyalar kaydedilemedi."
+
+#: src/dialogs.py:118
+msgid "An Error Has Occured"
+msgstr "Hata Oluştu"
+
+#: src/dialogs.py:119
+msgid "An internal error has occured."
+msgstr "İç hata oluştu."
+
+#: src/dialogs.py:125
+msgid ""
+"Please copy the logs below and <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">submit an issue report</a>."
+msgstr ""
+"Lütfen aşağıdaki günlükleri kopyalayın ve <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">hata bildirimi oluşturun.</a>."
+
+#: src/dialogs.py:142
+msgid "Copied error log to clipboard"
+msgstr "Hata günlüğü panoya kopyalandı"
+
 #: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
 #: src/ui/dialogs/removaldiscardwarning.blp:5
 msgid "Save Changes?"
@@ -652,7 +712,7 @@ msgstr "Seçilen klasör salt okunur"
 #. TRANSLATORS: {renamed} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/rename.py:385
+#: src/rename.py:382
 #, python-brace-format
 msgid "Renamed 1 file"
 msgid_plural "Renamed {renamed} files"
@@ -757,20 +817,25 @@ msgstr "Ön izleme için dosya seç"
 msgid "Apply identified data"
 msgstr "Tanımlanan veriyi uygula"
 
+#. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+#: src/identify.py:134
+msgid "See release on MusicBrainz"
+msgstr "Yayını MusicBrainz’de gör"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:136
+#: src/identify.py:146
 msgid "Other releases"
 msgstr "Diğer yayınlar"
 
-#: src/identify.py:573
+#: src/identify.py:609
 msgid "Unidentified Files"
 msgstr "Tanımlanmamış Dosyalar"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:878
+#: src/identify.py:914
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -779,7 +844,7 @@ msgstr[0] "{identified} parça tanımlandı"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:948
+#: src/identify.py:984
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
@@ -806,6 +871,10 @@ msgstr ""
 #: src/ui/identify/filerow.blp:22
 msgid "File could not be identified"
 msgstr "Dosya tanımlanamadı"
+
+#: src/ui/identify/recordingrow.blp:28
+msgid "See recording on MusicBrainz"
+msgstr "Kaydı MusicBrainz’de gör"
 
 #: src/ui/settings.blp:7
 msgid "File identification"
