@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-14 19:12+0000\n"
-"PO-Revision-Date: 2025-06-15 19:57+0300\n"
+"POT-Creation-Date: 2025-06-17 05:09+0000\n"
+"PO-Revision-Date: 2025-06-17 16:47+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -21,14 +21,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:168 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
-#: src/window.py:268 src/ui/window.blp:258 src/ui/nofile.blp:11
+#: src/main.py:164 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:120 src/window.py:366
+#: src/window.py:381 src/ui/window.blp:258 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:178 src/main.py:180
+#: src/main.py:174 src/main.py:176
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2024"
 
@@ -82,47 +82,83 @@ msgstr ""
 "Доступ до мережі буде використано лише для пункту «Ідентифікувати позначені "
 "файли»."
 
-#: src/window.py:119
+#: src/window.py:134
 msgid "All supported audio files"
 msgstr "Усі підтримувані звукові файли"
 
-#: src/window.py:235
+#: src/window.py:306
+msgid "Some files failed to load"
+msgstr "Деякі з файлів не вдалося завантажити"
+
+#: src/window.py:307
+msgid "More Information"
+msgstr "Докладніше"
+
+#: src/window.py:315
+msgid "No supported files found in opened folder"
+msgstr "У відкритій теці не знайдено підтримуваних файлів"
+
+#: src/window.py:324
+#, python-brace-format
+#| msgid "Saved changes to files"
+msgid "Saved changes to 1 file"
+msgid_plural "Saved changes to {n} files"
+msgstr[0] "Збережено зміни до {n} файла"
+msgstr[1] "Збережено зміни до {n} файлів"
+msgstr[2] "Збережено зміни до {n} файлів"
+msgstr[3] "Збережено зміни до {n} файла"
+
+#: src/window.py:330
+#, python-brace-format
+#| msgid "Saved changes to files"
+msgid "Saved changes to {n} files"
+msgstr "Збережено зміни до {n} файлів"
+
+#: src/window.py:336
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr ""
+"Деякі з відкритих файлів призначено лише для читання; зміни неможливо "
+"зберегти"
+
+#: src/window.py:348
 msgid "Unselect all files"
 msgstr "Зняти позначення з усіх файлів"
 
-#: src/window.py:238 src/ui/window.blp:223
+#: src/window.py:351 src/ui/window.blp:223
 msgid "Select all files"
 msgstr "Позначити усі файли"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:277 src/fileview.py:787
+#: src/window.py:390 src/fileview.py:787
 msgid "(Multiple files selected)"
 msgstr "(Позначено декілька файлів)"
 
-#: src/window.py:369 src/ui/nofile.blp:35
-msgid "Open Folder"
-msgstr "Відкрити теку"
-
-#: src/window.py:372 src/ui/nofile.blp:24
+#. : TRANSLATORS: Title of the popup for opening a file
+#: src/window.py:480 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Відкрити файл"
 
-#: src/window.py:443
-msgid "No supported files found in opened folder"
-msgstr "У відкритій теці не знайдено підтримуваних файлів"
+#: src/window.py:482
+#| msgid "Add file"
+msgid "Add File"
+msgstr "Додати файл"
 
-#: src/window.py:452
+#: src/window.py:488 src/ui/nofile.blp:35
+msgid "Open Folder"
+msgstr "Відкрити теку"
+
+#: src/window.py:541
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Для деяких з відкритих файлів виявлено некоректні значення; не вдалося "
 "зберегти"
 
-#: src/window.py:586
+#: src/window.py:674
 msgid "No files selected"
 msgstr "Не вибрано жодного файла"
 
-#: src/window.py:592
+#: src/window.py:680
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -131,7 +167,7 @@ msgstr[1] "Позначено {n} файли"
 msgstr[2] "Позначено {n} файлів"
 msgstr[3] "Позначено один файл"
 
-#: src/window.py:665
+#: src/window.py:753
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -140,11 +176,11 @@ msgstr[1] "Скасовано зміни у {n} файлах"
 msgstr[2] "Скасовано зміни у {n} файлах"
 msgstr[3] "Скасовано зміни у {n} файлі"
 
-#: src/window.py:670
+#: src/window.py:758
 msgid "Redo"
 msgstr "Повторити"
 
-#: src/window.py:698
+#: src/window.py:786
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -153,7 +189,7 @@ msgstr[1] "Повторено зміни у {n} файлах"
 msgstr[2] "Повторено зміни у {n} файлах"
 msgstr[3] "Повторено зміни у {n} файлі"
 
-#: src/window.py:743
+#: src/window.py:831
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -162,11 +198,11 @@ msgstr[1] "Вилучено мітки з {n} файлів"
 msgstr[2] "Вилучено мітки з {n} файлів"
 msgstr[3] "Вилучено мітки з {n} файла"
 
-#: src/window.py:748 src/fileview.py:318
+#: src/window.py:836 src/fileview.py:318
 msgid "Undo"
 msgstr "Скасувати"
 
-#: src/window.py:775
+#: src/window.py:863
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -269,20 +305,6 @@ msgid "Open or drag in some audio files to edit their metadata."
 msgstr ""
 "Відкрийте або перетягніть сюди якісь файли звукових даних, щоб редагувати "
 "метадані у них."
-
-#: src/filemanager.py:187
-msgid "Saved changes to files"
-msgstr "Зміни збережено до файлів"
-
-#: src/filemanager.py:265
-msgid "Opened file is read-only; changes cannot be saved"
-msgstr "Відкритий файл призначено лише для читання; зміни неможливо зберегти"
-
-#: src/filemanager.py:268
-msgid "Some of the opened files are read-only; changes cannot be saved"
-msgstr ""
-"Деякі з відкритих файлів призначено лише для читання; зміни неможливо "
-"зберегти"
 
 #: src/backends/file.py:52
 msgid "Length"
@@ -558,6 +580,57 @@ msgstr "Зміни у файлі не збережено"
 msgid "Remove from list"
 msgstr "Вилучити зі списку"
 
+#: src/dialogs.py:106
+#| msgid "Failed to Load File"
+msgid "Failed to Load Files"
+msgstr "Не вдалося завантажити файли"
+
+#: src/dialogs.py:107
+#| msgid "File could not be identified"
+msgid "Some files could not be loaded."
+msgstr "Деякі файли не вдалося завантажити."
+
+#: src/dialogs.py:110
+#| msgid "Failed to Rename File"
+msgid "Failed to Rename Files"
+msgstr "Не вдалося перейменувати файли"
+
+#: src/dialogs.py:111
+#| msgid "File could not be identified"
+msgid "Some files could not be renamed."
+msgstr "Деякі файли не вдалося перейменувати."
+
+#: src/dialogs.py:114
+#| msgid "Failed to Save File"
+msgid "Failed to Save Files"
+msgstr "Не вдалося зберегти файли"
+
+#: src/dialogs.py:115
+#| msgid "File could not be identified"
+msgid "Some files could not be saved."
+msgstr "Деякі файли не вдалося зберегти."
+
+#: src/dialogs.py:118
+msgid "An Error Has Occured"
+msgstr "Сталася помилка"
+
+#: src/dialogs.py:119
+msgid "An internal error has occured."
+msgstr "Сталася внутрішня помилка."
+
+#: src/dialogs.py:125
+msgid ""
+"Please copy the logs below and <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">submit an issue report</a>."
+msgstr ""
+"Будь ласка, скопіюйте дані журналу нижче і <a"
+" href=\"https://gitlab.gnome.org/World/eartag/-/issues/new\">надішліть звіт"
+" щодо вади</a>."
+
+#: src/dialogs.py:142
+msgid "Copied error log to clipboard"
+msgstr "Журнал помилок скопійовано до буфера обміну даними"
+
 #: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
 #: src/ui/dialogs/removaldiscardwarning.blp:5
 msgid "Save Changes?"
@@ -675,7 +748,7 @@ msgstr "Вибрану теку призначено лише для читан�
 #. TRANSLATORS: {renamed} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/rename.py:385
+#: src/rename.py:382
 #, python-brace-format
 msgid "Renamed 1 file"
 msgid_plural "Renamed {renamed} files"
@@ -963,6 +1036,10 @@ msgstr "Інше"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Клавіатурні скорочення"
+
+#~ msgid "Opened file is read-only; changes cannot be saved"
+#~ msgstr ""
+#~ "Відкритий файл призначено лише для читання; зміни неможливо зберегти"
 
 #~ msgid "Sort files by track number, album, name"
 #~ msgstr "Упорядкувати файли за номером доріжки, альбомом, назвою"
