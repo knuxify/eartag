@@ -593,11 +593,13 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_rename_dialog(self, *args):
         from .rename import EartagRenameDialog
+
         self.rename_dialog = EartagRenameDialog(self)
         self.rename_dialog.present(self)
 
     def show_identify_dialog(self, *args):
         from .identify import EartagIdentifyDialog
+
         self.identify_dialog = EartagIdentifyDialog(self)
         self.identify_dialog.present(self)
 
@@ -607,6 +609,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_extract_dialog(self, *args):
         from .extract import EartagExtractTagsDialog
+
         self.extract_dialog = EartagExtractTagsDialog(self)
         self.extract_dialog.present(self)
 
