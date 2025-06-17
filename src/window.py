@@ -4,6 +4,7 @@
 from .config import config, DLCoverSize
 from .utils.asynctask import EartagAsyncTask
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
+from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .dialogs import (
     EartagErrorType,
     EartagErrorDialog,
@@ -15,9 +16,6 @@ from .musicbrainz import EartagCAACover
 from .fileview import EartagFileView  # noqa: F401
 from .filemanager import EartagFileManager
 from .filelist import EartagFileList, EartagFileListItem  # noqa: F401
-from .rename import EartagRenameDialog
-from .identify import EartagIdentifyDialog
-from .extract import EartagExtractTagsDialog
 from . import APP_GRESOURCE_PATH, DEVEL
 
 import asyncio
@@ -594,10 +592,12 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_view.on_close()
 
     def show_rename_dialog(self, *args):
+        from .rename import EartagRenameDialog
         self.rename_dialog = EartagRenameDialog(self)
         self.rename_dialog.present(self)
 
     def show_identify_dialog(self, *args):
+        from .identify import EartagIdentifyDialog
         self.identify_dialog = EartagIdentifyDialog(self)
         self.identify_dialog.present(self)
 
@@ -606,6 +606,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.preferences_dialog.present(self)
 
     def show_extract_dialog(self, *args):
+        from .extract import EartagExtractTagsDialog
         self.extract_dialog = EartagExtractTagsDialog(self)
         self.extract_dialog.present(self)
 
