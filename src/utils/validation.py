@@ -60,7 +60,6 @@ def get_mimetype(
     :param no_cache: Skip the mimetype cache.
     """
     if not no_cache:
-        global _mimetype_cache
         if path in _mimetype_cache:
             return _mimetype_cache[path]
 
@@ -83,7 +82,7 @@ def get_mimetype(
 
 def get_mimetype_buffer(data):
     """Get mimetype from buffer."""
-    return filetype.match(date, matchers=(filetype.types.AUDIO + filetype.types.IMAGE))
+    return filetype.match(data, matchers=(filetype.types.AUDIO + filetype.types.IMAGE))
 
 
 def is_valid_music_file(path: Union[str, os.PathLike], no_cache: bool = False):
