@@ -225,8 +225,12 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
         if file.supports_album_covers:
             self.on_cover_change()
-            self._connections.append(self.file.connect("notify::front-cover-path", self.on_cover_change))
-            self._connections.append(self.file.connect("notify::back-cover-path", self.on_cover_change))
+            self._connections.append(
+                self.file.connect("notify::front-cover-path", self.on_cover_change)
+            )
+            self._connections.append(
+                self.file.connect("notify::back-cover-path", self.on_cover_change)
+            )
         else:
             self.cover_image.set_from_file(None)
             self.on_cover_change()
