@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 import re
 
 from .misc import is_float
@@ -37,22 +37,48 @@ class EartagEntryLimiters(GObject.Object):
         self.disconnect(self._limiter_connections["destroy"])
         self._limiter_connections = {}
 
+    # The following properties should be copied into the subclass
+    # (see https://gitlab.gnome.org/GNOME/pygobject/-/issues/577)
+    """
+    @GObject.Property(type=bool, default=False)
+    def is_numeric(self):
+        return self._is_numeric_prop
+
+    @is_numeric.setter
+    def is_numeric(self, value):
+        self._is_numeric_prop = value
+
+    @GObject.Property(type=bool, default=False)
+    def is_float(self):
+        return self._is_float_prop
+
+    @is_float.setter
+    def is_float(self, value):
+        self._is_float_prop = value
+
+    @GObject.Property(type=bool, default=False)
+    def is_date(self):
+        return self._is_date_prop
+
+    @is_date.setter
+    def is_date(self, value):
+        self._is_date_prop = value
+    """
+
     #
     # Numeric validator: allows only digits ([0-9]).
     #
 
-    # https://gitlab.gnome.org/GNOME/pygobject/-/issues/577
-    """
-    @GObject.Property(type=bool, default=False)
-    def is_numeric(self):
+    @property
+    def _is_numeric_prop(self):
         try:
             return self._is_numeric
         except AttributeError:
             self._is_numeric = False
             return False
 
-    @is_numeric.setter
-    def is_numeric(self, value):
+    @_is_numeric_prop.setter
+    def _is_numeric_prop(self, value):
         try:
             if value == self._is_numeric:
                 return
@@ -62,16 +88,17 @@ class EartagEntryLimiters(GObject.Object):
         self._is_numeric = value
         if value:
             self.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self._limiter_connections['numeric'] = \
-                self.get_delegate().connect('insert-text', self.disallow_nonnumeric)
+            self._limiter_connections["numeric"] = self.get_delegate().connect(
+                "insert-text", EartagEntryLimiters.disallow_nonnumeric
+            )
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if 'numeric' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['numeric'])
-                del self._limiter_connections['numeric']
-    """
+            if "numeric" in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections["numeric"])
+                del self._limiter_connections["numeric"]
 
-    def disallow_nonnumeric(self, entry, text, length, position, *args):
+    @staticmethod
+    def disallow_nonnumeric(entry, text, length, position, *args):
         if not text:
             return
         if not text.isdigit():
@@ -81,18 +108,16 @@ class EartagEntryLimiters(GObject.Object):
     # Float validator: allows digits and one dot.
     #
 
-    # https://gitlab.gnome.org/GNOME/pygobject/-/issues/577
-    """
-    @GObject.Property(type=bool, default=False)
-    def is_float(self):
+    @property
+    def _is_float_prop(self):
         try:
             return self._is_float
         except AttributeError:
             self._is_float = False
             return False
 
-    @is_float.setter
-    def is_float(self, value):
+    @_is_float_prop.setter
+    def _is_float_prop(self, value):
         try:
             if value == self._is_float:
                 return
@@ -102,16 +127,17 @@ class EartagEntryLimiters(GObject.Object):
         self._is_float = value
         if value:
             self.set_input_purpose(Gtk.InputPurpose.NUMBER)
-            self._limiter_connections['float'] = \
-                self.get_delegate().connect('insert-text', self.disallow_nonfloat)
+            self._limiter_connections["float"] = self.get_delegate().connect(
+                "insert-text", EartagEntryLimiters.disallow_nonfloat
+            )
         else:
             self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if 'float' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['float'])
-                del self._limiter_connections['float']
-    """
+            if "float" in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections["float"])
+                del self._limiter_connections["float"]
 
-    def disallow_nonfloat(self, entry, text, length, position, *args):
+    @staticmethod
+    def disallow_nonfloat(entry, text, length, position, *args):
         if not text:
             return
         if "." in text and "." in entry.get_text():
@@ -123,18 +149,16 @@ class EartagEntryLimiters(GObject.Object):
     # Date validator: allows YYYYYYYYY..., YYYY-MM or YYYY-MM-DD dates.
     #
 
-    # https://gitlab.gnome.org/GNOME/pygobject/-/issues/577
-    """
-    @GObject.Property(type=bool, default=False)
-    def is_date(self):
+    @property
+    def _is_date_prop(self):
         try:
             return self._is_date
         except AttributeError:
             self._is_date = False
             return False
 
-    @is_date.setter
-    def is_date(self, value):
+    @_is_date_prop.setter
+    def _is_date_prop(self, value):
         try:
             if value == self._is_date:
                 return
@@ -144,15 +168,16 @@ class EartagEntryLimiters(GObject.Object):
         self._is_date = value
         self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
         if value:
-            self._limiter_connections['date'] = \
-                self.get_delegate().connect('insert-text', self.disallow_nondate)
+            self._limiter_connections["date"] = self.get_delegate().connect(
+                "insert-text", EartagEntryLimiters.disallow_nondate
+            )
         else:
-            if 'date' in self._limiter_connections:
-                self.disconnect(self._limiter_connections['date'])
-                del self._limiter_connections['date']
-    """
+            if "date" in self._limiter_connections:
+                self.get_delegate().disconnect(self._limiter_connections["date"])
+                del self._limiter_connections["date"]
 
-    def disallow_nondate(self, entry, text, length, position, *args):
+    @staticmethod
+    def disallow_nondate(entry, text, length, position, *args):
         if not text:
             return
         elif not re.match("^[0-9-]*$", text):

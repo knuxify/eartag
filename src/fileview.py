@@ -415,16 +415,12 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.is_float = tag in EartagFile.float_properties
         self.set_title(extra_tag_names[tag])
 
-        self.row_remove_button = Gtk.Button(
+        row_remove_button = Gtk.Button(
             icon_name="edit-delete-symbolic", valign=Gtk.Align.CENTER
         )
-        self.row_remove_button.add_css_class("flat")
-        self.row_remove_button.connect("clicked", self.do_remove_row)
-        self.add_suffix(self.row_remove_button)
-
-    def do_remove_row(self, *args):
-        """Removes the row."""
-        self.parent.remove_and_unbind_extra_row(self)
+        row_remove_button.add_css_class("flat")
+        row_remove_button.connect("clicked", self.parent.remove_and_unbind_extra_row)
+        self.add_suffix(row_remove_button)
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/moretagsgroup.ui")
@@ -515,8 +511,6 @@ class EartagMoreTagsGroup(Gtk.Box):
         """
         Adds an extra row for the given tag. Consumers should make sure that
         a row with this tag doesn't exist yet.
-
-        Returns the newly created row.
         """
         rows = self.get_rows_sorted()
         if tag in rows:
@@ -536,7 +530,7 @@ class EartagMoreTagsGroup(Gtk.Box):
         if not skip_filter_refresh:
             self.refresh_tag_filter()
 
-        return row
+        del row
 
     def remove_extra_row(self, row, skip_filter_refresh=False):
         """
@@ -557,6 +551,10 @@ class EartagMoreTagsGroup(Gtk.Box):
 
         if not skip_filter_refresh:
             self.refresh_tag_filter()
+
+        # TODO: This should not be necessary, drop it once I clean up
+        # the code further
+        row.emit("destroy")
 
     def remove_and_unbind_extra_row(self, row, skip_filter_refresh=False):
         """

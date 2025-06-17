@@ -48,7 +48,19 @@ class EartagTagEntryBase(GObject.Object):
         self._property = property
         self.files = []
         self._connections = {}
-        self.connect("changed", self.on_entry_change)
+        self._connections["changed"] = self.connect("changed", self.on_entry_change)
+        self._connections["destroy"] = self.connect("destroy", self.destroy_tagentry)
+
+    def destroy_tagentry(self, *args):
+        print("destroy_tagentry called")
+        for file in self.files.copy():
+            self.unbind_from_file(file)
+
+        self.disconnect(self._connections["changed"])
+        del self._connections["changed"]
+
+        self.disconnect(self._connections["destroy"])
+        del self._connections["destroy"]
 
     def bind_to_file(self, file):
         if file in self.files:
@@ -176,86 +188,27 @@ class EartagTagEntry(Gtk.Entry, EartagTagEntryBase, EartagEntryLimiters):
 
     @GObject.Property(type=bool, default=False)
     def is_numeric(self):
-        try:
-            return self._is_numeric
-        except AttributeError:
-            self._is_numeric = False
-            return False
+        return self._is_numeric_prop
 
     @is_numeric.setter
     def is_numeric(self, value):
-        try:
-            if value == self._is_numeric:
-                return
-        except AttributeError:
-            pass
-
-        self._is_numeric = value
-        if value:
-            self.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self._limiter_connections["numeric"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonnumeric
-            )
-        else:
-            self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "numeric" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["numeric"])
-                del self._limiter_connections["numeric"]
+        self._is_numeric_prop = value
 
     @GObject.Property(type=bool, default=False)
     def is_float(self):
-        try:
-            return self._is_float
-        except AttributeError:
-            self._is_float = False
-            return False
+        return self._is_float_prop
 
     @is_float.setter
     def is_float(self, value):
-        try:
-            if value == self._is_float:
-                return
-        except AttributeError:
-            pass
-
-        self._is_float = value
-        if value:
-            self.set_input_purpose(Gtk.InputPurpose.NUMBER)
-            self._limiter_connections["float"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonfloat
-            )
-        else:
-            self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "float" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["float"])
-                del self._limiter_connections["float"]
+        self._is_float_prop = value
 
     @GObject.Property(type=bool, default=False)
     def is_date(self):
-        try:
-            return self._is_date
-        except AttributeError:
-            self._is_date = False
-            return False
+        return self._is_date_prop
 
     @is_date.setter
     def is_date(self, value):
-        try:
-            if value == self._is_date:
-                return
-        except AttributeError:
-            pass
-
-        self._is_date = value
-        self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-        if value:
-            self._limiter_connections["date"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nondate
-            )
-        else:
-            if "date" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["date"])
-                del self._limiter_connections["date"]
+        self._is_date_prop = value
 
 
 class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
@@ -299,86 +252,27 @@ class EartagTagEntryRow(Adw.EntryRow, EartagTagEntryBase, EartagEntryLimiters):
 
     @GObject.Property(type=bool, default=False)
     def is_numeric(self):
-        try:
-            return self._is_numeric
-        except AttributeError:
-            self._is_numeric = False
-            return False
+        return self._is_numeric_prop
 
     @is_numeric.setter
     def is_numeric(self, value):
-        try:
-            if value == self._is_numeric:
-                return
-        except AttributeError:
-            pass
-
-        self._is_numeric = value
-        if value:
-            self.set_input_purpose(Gtk.InputPurpose.DIGITS)
-            self._limiter_connections["numeric"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonnumeric
-            )
-        else:
-            self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "numeric" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["numeric"])
-                del self._limiter_connections["numeric"]
+        self._is_numeric_prop = value
 
     @GObject.Property(type=bool, default=False)
     def is_float(self):
-        try:
-            return self._is_float
-        except AttributeError:
-            self._is_float = False
-            return False
+        return self._is_float_prop
 
     @is_float.setter
     def is_float(self, value):
-        try:
-            if value == self._is_float:
-                return
-        except AttributeError:
-            pass
-
-        self._is_float = value
-        if value:
-            self.set_input_purpose(Gtk.InputPurpose.NUMBER)
-            self._limiter_connections["float"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nonfloat
-            )
-        else:
-            self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-            if "float" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["float"])
-                del self._limiter_connections["float"]
+        self._is_float_prop = value
 
     @GObject.Property(type=bool, default=False)
     def is_date(self):
-        try:
-            return self._is_date
-        except AttributeError:
-            self._is_date = False
-            return False
+        return self._is_date_prop
 
     @is_date.setter
     def is_date(self, value):
-        try:
-            if value == self._is_date:
-                return
-        except AttributeError:
-            pass
-
-        self._is_date = value
-        self.set_input_purpose(Gtk.InputPurpose.FREE_FORM)
-        if value:
-            self._limiter_connections["date"] = self.get_delegate().connect(
-                "insert-text", self.disallow_nondate
-            )
-        else:
-            if "date" in self._limiter_connections:
-                self.get_delegate().disconnect(self._limiter_connections["date"])
-                del self._limiter_connections["date"]
+        self._is_date_prop = value
 
 
 class EartagTagEditableLabel(EartagEditableLabel, EartagTagEntryBase):
