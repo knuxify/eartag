@@ -117,6 +117,7 @@ class EartagWindow(Adw.ApplicationWindow):
         super().__init__(application=application, title=_("Ear Tag"))
         self._undo_all_data = {}
         self.error_dialog = None
+        self._identify_imported = False
 
         if devel:
             self.add_css_class("devel")
@@ -580,8 +581,9 @@ class EartagWindow(Adw.ApplicationWindow):
             self.close_request_dialog.present(self)
             return True
 
-        from .musicbrainz import EartagCAACover
-        EartagCAACover.clear_tempfiles()
+        if self._identify_imported:
+            from .musicbrainz import EartagCAACover
+            EartagCAACover.clear_tempfiles()
 
         for file in self.file_manager.files:
             file.on_remove()
@@ -599,7 +601,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def show_identify_dialog(self, *args):
         from .identify import EartagIdentifyDialog
-
+        self._identify_imported = True
         self.identify_dialog = EartagIdentifyDialog(self)
         self.identify_dialog.present(self)
 
