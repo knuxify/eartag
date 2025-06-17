@@ -27,6 +27,7 @@ src/filelist.py
 src/ui/filelistitem.blp
 
 # Error dialogs
+src/dialogs.py
 src/ui/dialogs/closewarning.blp
 src/ui/dialogs/discardwarning.blp
 src/ui/dialogs/removaldiscardwarning.blp
