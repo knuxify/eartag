@@ -3,7 +3,7 @@
 
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES, CoverType
 from .utils import get_readable_length, file_is_sandboxed
-from .utils.validation import is_valid_image_file
+from .utils.validation import get_mimetype, is_valid_image_file
 from .utils.widgets import EartagAlbumCoverImage, EartagPopoverButton  # noqa: F401
 from .tagentry import (  # noqa: F401
     EartagTagEntry,
@@ -15,7 +15,6 @@ from . import APP_GRESOURCE_PATH
 from gi.repository import Adw, Gtk, Gdk, Gio, GLib, GObject
 
 import gettext
-import magic
 import mimetypes
 import shutil
 import os.path
@@ -248,7 +247,7 @@ class EartagAlbumCoverButton(Adw.Bin):
         if not cover_path:
             return
 
-        cover_mime = magic.from_file(cover_path, mime=True)
+        cover_mime = get_mimetype(cover_path)
         cover_extension = mimetypes.guess_extension(cover_mime)
         target_folder, target_filename = os.path.split(self.files[0].path)
         target_filename = os.path.splitext(target_filename)[0] + cover_extension
@@ -279,7 +278,7 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         if cover_path:
             save_path = response.get_path()
-            cover_mime = magic.from_file(cover_path, mime=True)
+            cover_mime = get_mimetype(cover_path)
             cover_extension = mimetypes.guess_extension(cover_mime)
             if cover_extension and not save_path.endswith(cover_extension):
                 save_path += cover_extension

@@ -4,7 +4,6 @@
 from gi.repository import GObject
 import asyncio
 import base64
-import magic
 import mimetypes
 import io
 from PIL import Image
@@ -15,6 +14,7 @@ from mutagen.id3 import PictureType
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.validation import get_mimetype, get_mimetype_buffer
 
 
 class EartagFileMutagenVorbis(EartagFileMutagenCommon):
@@ -188,7 +188,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             raise ValueError
 
         # Allowed types are JPEG or PNG. For other types, convert to PNG first.
-        mime = magic.from_file(value, mime=True)
+        mime = get_mimetype(value)
         if mime == "image/jpg":
             mime = "image/jpeg"
 
@@ -356,9 +356,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 if not data:
                     continue
 
-                cover_extension = mimetypes.guess_extension(
-                    magic.from_buffer(data, mime=True)
-                )
+                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(data))
                 if not cover_extension and mimes and len(mimes) == len(covers):
                     cover_extension = mimes[n]
 

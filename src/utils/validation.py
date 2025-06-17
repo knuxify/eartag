@@ -2,8 +2,13 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 import os.path
-import magic
+import filetype
+from filetype.types import AUDIO as audio_matchers
+from filetype.types import IMAGE as image_matchers
 import mimetypes
+
+from collections.abc import Iterable
+from typing import Union, Optional
 
 VALID_AUDIO_MIMES = (
     "application/ogg",
@@ -39,15 +44,54 @@ VALID_IMAGE_MIMES = (
 )
 
 
-def is_valid_music_file(path):
+_mimetype_cache = {}
+
+
+def get_mimetype(
+    path: Union[str, os.PathLike], no_extension_guess: bool = False
+) -> Optional[str]:
+    """
+    Return the mimetype (or None) for the file with the given path or data.
+
+    :param path: Path to the file (or buffer data).
+    :param no_extension_guess: If True, skips guessing the filetype from the extension.
+    """
+    global _mimetype_cache
+    if path in _mimetype_cache:
+        return _mimetype_cache[path]
+
+    mimetype = filetype.match(path, matchers=(audio_matchers + image_matchers))
+    if not no_extension_guess and (
+        mimetype == "application/octet-stream" or not mimetype
+    ):
+        # Try to guess mimetype from file extension if filetype match fails
+        mimetype = mimetypes.guess_type(path)[0]
+
+    ret = None
+    if mimetype:
+        ret = mimetype.mime
+
+    _mimetype_cache[path] = ret
+
+    return ret
+
+
+def get_mimetype_buffer(data):
+    """Get mimetype from buffer."""
+    return filetype.match(date, matchers=(filetype.types.AUDIO + filetype.types.IMAGE))
+
+
+def is_valid_music_file(path: Union[str, os.PathLike]):
+    """Check if the file at the provided path is a supported audio file."""
     return is_valid_file(path, VALID_AUDIO_MIMES)
 
 
-def is_valid_image_file(path):
+def is_valid_image_file(path: Union[str, os.PathLike]):
+    """Check if the file at the provided path is a supported image file."""
     return is_valid_file(path, VALID_IMAGE_MIMES)
 
 
-def is_valid_file(path, valid_mime_types):
+def is_valid_file(path: Union[str, os.PathLike], valid_mime_types: Iterable[str]):
     """
     Takes a path to a file and returns True if it's supported, False otherwise.
     """
@@ -55,10 +99,7 @@ def is_valid_file(path, valid_mime_types):
     if not os.path.exists(path):
         return False
 
-    mimetype = magic.from_file(path, mime=True)
-    if mimetype == "application/octet-stream":
-        # Try to guess mimetype from filetype if magic fails
-        mimetype = mimetypes.guess_type(path)[0]
+    mimetype = get_mimetype(path)
 
     if not mimetype or mimetype not in valid_mime_types:
         return False

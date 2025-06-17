@@ -17,7 +17,7 @@ import asyncio
 from ._async import policy
 
 from . import APP_ID, APP_GRESOURCE_PATH
-from .utils.validation import is_valid_music_file
+from .utils.validation import is_valid_music_file, get_mimetype
 from .window import EartagFileDialogType, EartagWindow
 from .filemanager import EartagFileManager
 from .logger import logger
@@ -184,15 +184,14 @@ class Application(Adw.Application):
             f"libadwaita: {Adw.get_major_version()}.{Adw.get_minor_version()}.{Adw.get_micro_version()}"  # noqa: E501
         )
 
-        import magic
+        import filetype
 
-        try:
-            lib_versions.append(f"libmagic: {magic.version()}")
-        except NotImplementedError:
-            lib_versions.append("libmagic: version data N/A")
+        lib_versions.append(f"filetype.py: {filetype.version}")
+
         import mutagen
 
         lib_versions.append(f"mutagen: {mutagen.version_string}")
+
         import PIL
 
         lib_versions.append(f"pillow: {PIL.__version__}")
@@ -202,7 +201,7 @@ class Application(Adw.Application):
         opened_file_list = []
         for file in self.props.active_window.file_manager.files:
             opened_file_list.append(
-                f"{file.path}, {magic.from_file(file.path, mime=True)}, {file.__gtype_name__}"
+                f"{file.path}, {get_mimetype(file.path)}, {file.__gtype_name__}"
             )  # noqa: E501
 
         opened_file_list_str = "\n - ".join(opened_file_list) or "None"

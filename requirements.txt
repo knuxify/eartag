@@ -1,0 +1,14 @@
+# This file is used for Flatpak dependency generation.
+# As such, PyGObject is not included.
+audioread
+# Note that flatpak-pip-requirements is broken and doesn't include
+# expandvars (required by frozenlist which is required by aiohttp),
+# so we include it here manually. In the final file, it must be merged
+# into aiohttp's module.
+expandvars
+aiohttp
+aiohttp-retry
+filetype
+mutagen
+pillow
+pyacoustid

@@ -4,7 +4,6 @@
 from gi.repository import GObject
 import asyncio
 import base64
-import magic
 import mimetypes
 import io
 from PIL import Image
@@ -14,6 +13,7 @@ from mutagen.mp4 import MP4Cover
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.validation import get_mimetype, get_mimetype_buffer
 
 EMPTY_COVER = MP4Cover(
     base64.b64decode(
@@ -192,7 +192,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             return
 
         # Only PNG is allowed. For other types, convert to PNG first.
-        if magic.from_file(value, mime=True) == "image/png":
+        if get_mimetype(value) == "image/png":
             with open(value, "rb") as cover_file:
                 data = cover_file.read()
         else:
@@ -254,9 +254,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             elif picture.imageformat == MP4Cover.FORMAT_PNG:
                 cover_extension = ".png"
             else:
-                cover_extension = mimetypes.guess_extension(
-                    magic.from_buffer(picture, mime=True)
-                )
+                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(picture))
 
             await self.create_cover_tempfile(CoverType.FRONT, picture, cover_extension)
 
@@ -271,9 +269,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             elif picture_back.imageformat == MP4Cover.FORMAT_PNG:
                 cover_extension = ".png"
             else:
-                cover_extension = mimetypes.guess_extension(
-                    magic.from_buffer(picture_back, mime=True)
-                )
+                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(picture_back))
 
             await self.create_cover_tempfile(
                 CoverType.BACK, picture_back, cover_extension

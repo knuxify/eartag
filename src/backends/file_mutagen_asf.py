@@ -3,7 +3,6 @@
 
 from gi.repository import GObject
 import asyncio
-import magic
 import mimetypes
 import struct
 import io
@@ -14,6 +13,7 @@ from mutagen.id3 import PictureType
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.validation import get_mimetype
 
 # These are copied from the code for Quod Libet's wma handling:
 KEY_TO_FRAME = {
@@ -235,7 +235,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         # TODO: Figure out which filetypes are supported.
         # For now, we only support JPEG and PNG; for other types, we convert
         # to PNG first.
-        mime = magic.from_file(value, mime=True)
+        mime = get_mimetype(value, mime=True)
         if mime == "image/jpg":
             mime = "image/jpeg"
 

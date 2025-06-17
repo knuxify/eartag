@@ -3,7 +3,6 @@
 
 from gi.repository import GObject
 import asyncio
-import magic
 import mimetypes
 import io
 from PIL import Image
@@ -15,6 +14,7 @@ from mutagen.id3 import PictureType
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.validation import get_mimetype
 
 # These are copied from the code for Mutagen's EasyID3 functions:
 KEY_TO_FRAME = {
@@ -117,7 +117,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     )  # fmt: skip
 
     async def load_from_file(self, path):
-        mimetype = magic.from_file(path, mime=True)
+        mimetype = get_mimetype(path)
 
         self.mg_file = None
         # try:
@@ -305,7 +305,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             raise ValueError
 
         # Allowed types are JPEG or PNG. For other types, convert to PNG first.
-        mime = magic.from_file(value, mime=True)
+        mime = get_mimetype(value)
         if mime == "image/jpg":
             mime = "image/jpeg"
 

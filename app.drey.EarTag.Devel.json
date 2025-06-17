@@ -45,7 +45,6 @@
                 }
             ]
         },
-        "data/flatpak-aiohttp.json",
         "data/flatpak-python-modules.json",
         {
             "name": "python3-pytest",

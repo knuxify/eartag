@@ -3,7 +3,6 @@
 
 from gi.repository import Adw, Gio, GObject, GLib, Gtk
 import asyncio
-import magic
 import mimetypes
 import os.path
 import traceback
@@ -17,7 +16,7 @@ from .backends import (
 from .backends.file import EartagFile
 from .utils.asynctask import EartagAsyncTask, EartagAsyncMultitasker
 from .utils.misc import find_in_model, cleanup_filename, natural_compare
-from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
+from .utils.validation import get_mimetype, is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import EartagRemovalDiscardWarningDialog
 
 
@@ -29,12 +28,12 @@ async def eartagfile_from_path(path):
     # We do two filetype guesses:
     # - One with mimetypes.guess_type; this only gets the type from the file
     #   extension;
-    # - One with magic.from_file; this actually checks the file contents.
+    # - One with get_mimetype; this actually checks the file contents.
     # The magic guess is given a higher priority (2) than the mimetypes guess (1),
     # to avoid misdetections in cases where the file extension is incorrect.
 
     mimetypes_guess = mimetypes.guess_type(path)[0]
-    magic_guess = magic.from_file(path, mime=True)
+    magic_guess = get_mimetype(path, no_extension_guess=True)
 
     def is_type_bulk(types):
         if magic_guess in types:
