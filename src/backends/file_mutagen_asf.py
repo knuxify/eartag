@@ -235,7 +235,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         # TODO: Figure out which filetypes are supported.
         # For now, we only support JPEG and PNG; for other types, we convert
         # to PNG first.
-        mime = get_mimetype(value, mime=True)
+        mime = get_mimetype(value)
         if mime == "image/jpg":
             mime = "image/jpeg"
 
