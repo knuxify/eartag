@@ -372,24 +372,21 @@ class EartagRenameDialog(Adw.Dialog):
 
     def on_done(self, task, *args):
         self.set_can_close(True)
-        if self.file_manager.failed:
-            self.set_sensitive(True)
-            self.error_banner.set_revealed(True)
-        else:
-            self.parent.toast_overlay.add_toast(
-                Adw.Toast.new(
-                    ngettext(
-                        # TRANSLATORS: {renamed} is a placeholder for the number
-                        # of tracks the tags were succesfully extracted for.
-                        # **Do not translate the text between the curly brackets!**
-                        "Renamed 1 file",
-                        "Renamed {renamed} files",
-                        self._renamed,
-                    ).format(renamed=self._renamed)
-                )
+
+        self.parent.toast_overlay.add_toast(
+            Adw.Toast.new(
+                ngettext(
+                    # TRANSLATORS: {renamed} is a placeholder for the number
+                    # of tracks the tags were succesfully extracted for.
+                    # **Do not translate the text between the curly brackets!**
+                    "Renamed 1 file",
+                    "Renamed {renamed} files",
+                    self._renamed,
+                ).format(renamed=self._renamed)
             )
-            self.files = None
-            self.close()
+        )
+        self.files = None
+        self.close()
 
     @Gtk.Template.Callback()
     def on_sandbox_warning_learn_more(self, *args):

@@ -18,7 +18,7 @@ from ._async import policy
 
 from . import APP_ID, APP_GRESOURCE_PATH
 from .utils.validation import is_valid_music_file
-from .window import EartagWindow
+from .window import EartagFileDialogType, EartagWindow
 from .filemanager import EartagFileManager
 from .logger import logger
 
@@ -41,18 +41,14 @@ class Application(Adw.Application):
         )
 
     def on_open(self, app, files, *args):
-        if self.props.active_window:
-            window = self.props.active_window
-            window.open_mode = EartagFileManager.LOAD_INSERT
-
+        window = self.props.active_window
+        if window:
             paths = []
             for file in files:
                 path = file.get_path()
                 if path:
                     paths.append(path)
-            window.load_files_from_paths(paths)
-
-            window.open_mode = EartagFileManager.LOAD_OVERWRITE
+            window.file_manager.load_files(paths)
         else:
             for file in files:
                 path = file.get_path()
@@ -227,13 +223,15 @@ Opened files:
 
     def on_open_file_action(self, widget, _):
         window = self.get_active_window()
-        window.open_mode = EartagFileManager.LOAD_OVERWRITE
-        window.show_file_chooser()
+        window.show_file_chooser(
+            EartagFileDialogType.TYPE_FILE | EartagFileDialogType.MODE_OVERWRITE
+        )
 
     def on_open_folder_action(self, widget, _):
         window = self.get_active_window()
-        window.open_mode = EartagFileManager.LOAD_OVERWRITE
-        window.show_file_chooser(folders=True)
+        window.show_file_chooser(
+            EartagFileDialogType.TYPE_FOLDER | EartagFileDialogType.MODE_OVERWRITE
+        )
 
     def on_next_action(self, *args):
         win = self.props.active_window

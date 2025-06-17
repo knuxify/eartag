@@ -15,14 +15,10 @@ from .backends import (
     EartagFileMutagenASF,
 )
 from .backends.file import EartagFile
-from .utils.asynctask import EartagAsyncTask
+from .utils.asynctask import EartagAsyncTask, EartagAsyncMultitasker
 from .utils.misc import find_in_model, cleanup_filename, natural_compare
-from .dialogs import (
-    EartagRemovalDiscardWarningDialog,
-    EartagLoadingFailureDialog,
-    EartagSaveFailureDialog,
-    EartagRenameFailureDialog,
-)
+from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
+from .dialogs import EartagRemovalDiscardWarningDialog
 
 
 async def eartagfile_from_path(path):
@@ -124,10 +120,17 @@ class EartagFileManager(GObject.Object):
         self._selected_file_ids = []
         self._selection_removed = False
 
-        # Create background task runners
-        self.save_task = EartagAsyncTask(self._save)
-        self.load_task = EartagAsyncTask(self._load_files)
-        self.rename_task = EartagAsyncTask(self._rename_files)
+        # Create Multitaskers for queued operations
+        self.load_task = EartagAsyncMultitasker(self._load_single_file, workers=3)
+        self.load_task.connect("task-done", self.on_file_load)
+        self.load_task.connect("notify::is-running", self.notify_busy)
+
+        self.save_task = EartagAsyncMultitasker(self._save_single_file, workers=3)
+        self.save_task.connect("notify::is-running", self.notify_busy)
+
+        self.rename_task = EartagAsyncMultitasker(self._rename_single_file, workers=3)
+        self.rename_task.connect("task-done", self.refresh_state)
+        self.rename_task.connect("notify::is-running", self.notify_busy)
 
         self.selected_files.connect("selection-changed", self.do_selection_changed)
 
@@ -155,54 +158,70 @@ class EartagFileManager(GObject.Object):
 
     def save(self):
         """Saves changes in all files."""
-        # self.save_task is set up in the init functions
-        self.save_task.stop()
-        self.save_task.run()
-
-    async def _save(self):
-        """Saves changes in all files (internal function)."""
         if not self.is_modified or self.has_error:
-            return False
+            return
 
-        task = self.save_task
-        progress_step = 1 / self.get_n_files()
+        # self.save_task is set up in the init functions
+        self.save_task.spawn_workers()
+        self.save_task.queue_put_multiple([f for f in self.files], mark_as_done=True)
 
-        for file in self.files:
-            if not file.is_writable or not file.is_modified:
-                task.increment_progress(progress_step)
-                continue
-
-            try:
-                await asyncio.to_thread(file.save)
-            except:
-                traceback.print_exc()
-                file_basename = os.path.basename(file.path)
-                self.error_dialog = EartagSaveFailureDialog(file_basename)
-                self.error_dialog.present(self.window)
-
-                return False
-
-            task.increment_progress(progress_step)
-
-        self.window.toast_overlay.add_toast(Adw.Toast.new(_("Saved changes to files")))
+    async def _save_single_file(self, file):
+        """Saves changes in a single file."""
+        if not file.is_writable or not file.is_modified:
+            return
+        return await asyncio.to_thread(file.save)
 
     #
     # Loading
     #
 
-    def load_files(self, paths, mode):
+    def load_files(self, paths: list, overwrite: bool = False):
         """
-        Loads files with the provided paths. This is the recommended way for
-        users to load files.
+        Loads files or folders from the provided paths.
         """
-        # self.load_task is set up in the init functions
-        self.load_task.stop()
-        self.load_task.set_args(kwargs={"paths": paths, "mode": mode})
+        asyncio.create_task(self.load_files_async(paths, overwrite=overwrite))
 
-        if mode == self.LOAD_OVERWRITE and self.files:
+    async def load_files_async(self, paths: list, overwrite: bool = False):
+        """
+        Loads files or folders from the provided paths.
+        """
+        # If we're doing an open-with-overwrite, clear all files first
+        if overwrite:
+            self._load_mode = EartagFileManager.LOAD_OVERWRITE
             self.remove_all()
+        else:
+            self._load_mode = EartagFileManager.LOAD_INSERT
 
-        self.load_task.run()
+        # Spawn file loader process
+        self.load_task.spawn_workers()
+
+        # Fill the loading queue with paths
+        dirs = set()
+        for path in paths:
+            if await asyncio.to_thread(os.path.isfile, path):
+                await self.load_task.queue_put_async(path)
+            elif await asyncio.to_thread(os.path.isdir, path):
+                dirs.add(path)
+
+        depth = 0
+        while dirs and depth < 1:  # TODO: make max depth configurable
+            new_dirs = set()
+
+            for path in dirs:
+                for file in await asyncio.to_thread(os.listdir, path):
+                    fpath = os.path.join(path, file)
+                    if await asyncio.to_thread(os.path.isdir, fpath):
+                        new_dirs.add(fpath)
+                    elif await asyncio.to_thread(
+                        os.path.isfile, fpath
+                    ) and await asyncio.to_thread(is_valid_music_file, fpath):
+                        await self.load_task.queue_put_async(fpath)
+
+            dirs = new_dirs
+            depth += 1
+
+        # Signify that the queue is done
+        self.load_task.queue_done()
 
     async def _load_single_file(self, path):
         """
@@ -214,76 +233,59 @@ class EartagFileManager(GObject.Object):
 
         file_basename = os.path.basename(path)
 
-        try:
-            _file = await eartagfile_from_path(path)
-        except:
-            traceback.print_exc()
-            EartagLoadingFailureDialog(file_basename).present(self.window)
-            return False
+        _file = await eartagfile_from_path(path)
 
         self._connections[_file.id] = (
             _file.connect("modified", self.update_modified_status),
             _file.connect("notify::has-error", self.update_error_status),
         )
 
+        self.files.append(_file)
         self._files_buffer.append(_file)
-
         self.file_paths.add(_file.path)
 
         return True
 
-    async def _load_files(self, paths, mode=1):
-        """Loads files with the provided paths."""
-        task = self.load_task
-        self._files_buffer = []
-        self.failed = False
+    def on_file_load(self, *args):
+        """
+        Actions done after file loading is done.
 
-        if not paths:
-            return True
+        This is called automatically after the loading task is done running.
+        """
+        asyncio.create_task(self.on_file_load_async())
 
-        file_count = len(paths)
-        progress_step = 1 / file_count
+    async def on_file_load_async(self):
+        """
+        Actions done after file loading is done.
 
-        for path in paths:
-            if not await self._load_single_file(path):
-                self.files.splice(0, 0, self._files_buffer)
-                self._files_buffer = []
-
-                self.refresh_state()
-                self.failed = True
-                return False
-
-            task.increment_progress(progress_step)
-
+        This is called automatically after the loading task is done running.
+        """
         has_unwritable = False
         for file in self._files_buffer:
             if not file.is_writable:
                 has_unwritable = True
 
         if has_unwritable:
-            if file_count == 1:
-                unwritable_msg = _("Opened file is read-only; changes cannot be saved")
-            else:
-                unwritable_msg = _(
-                    "Some of the opened files are read-only; changes cannot be saved"
-                )  # noqa: E501
-            self.window.toast_overlay.add_toast(Adw.Toast.new(unwritable_msg))
+            self.emit("has-unwritable")
 
-        self.files.splice(0, 0, self._files_buffer)
         first_file = None
-        if self._files_buffer and mode == self.LOAD_INSERT:
+        if self._files_buffer:
             first_file = self._files_buffer[0]
         self._files_buffer = []
 
         self.refresh_state()
-        if mode == self.LOAD_INSERT:
+        if self._load_mode == self.LOAD_INSERT:
             if self.get_n_selected() < 2 and first_file:
                 self.select_file(first_file, True)
         else:
             self.emit("select-first")
 
-        if mode == self.LOAD_OVERWRITE:
+        del first_file
+
+        if self._load_mode == self.LOAD_OVERWRITE:
             self.emit("refresh-needed")
+
+    has_unwritable = GObject.Signal()
 
     #
     # Removal
@@ -394,37 +396,37 @@ class EartagFileManager(GObject.Object):
     # Renaming
     #
 
-    def rename_files(self, *args, **kwargs):
-        self.rename_task.wait_for_completion()
-        self.rename_task.set_args(args=args, kwargs=kwargs)
-        self.rename_task.run()
+    def rename_files(self, files, names):
+        """Rename each file in the files list to the name in the names list."""
+        self.rename_task.spawn_workers()
+        if len(files) != len(names):
+            raise ValueError("file and name lists are not of equal length")
 
-    async def _rename_files(self, files, names):
+        self.rename_task.queue_put_multiple(
+            [(files[i], names[i]) for i in range(len(files))], mark_as_done=True
+        )
+
+    async def _rename_single_file(self, rename_info):
         """
-        Renames multiple files and adds some harnesses to prevent potential
+        Rename a single file, with some harnesses to prevent potential
         data loss (for example due to overwriting an existing file).
         """
-        task = self.rename_task
-        self.failed = False
+        file, new_path = rename_info
 
-        progress_step = 1 / len(files)
-        n = 0
-        for file in files:
-            old_path = file.props.path
-            new_path = names[n]
-            if old_path == new_path:
-                n += 1
-                continue
+        old_path = file.props.path
+        if old_path == new_path:
+            return
 
-            new_path = cleanup_filename(new_path, allow_path=True, full_path=True)
+        new_path = cleanup_filename(new_path, allow_path=True, full_path=True)
 
+        def _new_path_fixups(new_path: str):
             if os.path.exists(new_path):
                 _orig_new_path = new_path
                 i = 0
                 while os.path.exists(new_path):
                     i += 1
                     filler = f" ({i})"
-                    path_split = os.path.splitext(_orig_new_path)
+                    path_split = os.path.splitext(orig_new_path)
                     # Prevent the filename from becoming too long
                     if len(path_split[0]) > 249:
                         path_split = path_split[(-249 - len(filler)) :]
@@ -432,30 +434,18 @@ class EartagFileManager(GObject.Object):
             else:
                 if not os.path.exists(os.path.dirname(new_path)):
                     os.makedirs(os.path.dirname(new_path), exist_ok=True)
+            return new_path
 
-            try:
-                await file.set_path_async(new_path)
-            except:
-                self._is_renaming_multiple_files = False
+        new_path = await asyncio.to_thread(_new_path_fixups, new_path)
+        await file.set_path_async(new_path)
 
-                traceback.print_exc()
-                EartagRenameFailureDialog(old_path).present(self.window)
+        file.notify("path")
 
-                self.failed = True
-                return False
-
-            file.notify("path")
-
-            try:
-                self.file_paths.remove(old_path)
-            except KeyError:
-                pass
-            self.file_paths.add(new_path)
-
-            n += 1
-            task.increment_progress(progress_step)
-
-        self.refresh_state()
+        try:
+            self.file_paths.remove(old_path)
+        except KeyError:
+            pass
+        self.file_paths.add(new_path)
 
     #
     # File list sort and filter
@@ -641,10 +631,21 @@ class EartagFileManager(GObject.Object):
     def has_error(self, value):
         self._has_error = value
 
+    @GObject.Property(type=bool, default=False)
+    def is_busy(self):
+        return (
+            self.load_task.is_running
+            or self.save_task.is_running
+            or self.rename_task.is_running
+        )
+
+    def notify_busy(self, *args):
+        self.notify("is-busy")
+
     @GObject.Signal
     def refresh_needed(self):
         pass
 
-    def refresh_state(self):
+    def refresh_state(self, *args):
         """Convenience function to refresh the state of the UI"""
         self.emit("refresh-needed")

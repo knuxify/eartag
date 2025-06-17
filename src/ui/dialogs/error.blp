@@ -1,0 +1,34 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $EartagErrorDialog: Adw.AlertDialog {
+  heading: _("An Error Has Occured");
+  body: _("Please copy the logs below and <a href=\"https://gitlab.gnome.org/World/eartag/-/issues/new\">submit an issue report</a>.");
+  body-use-markup: true;
+  close-response: "close";
+  default-response: "close";
+  response => $handle_response();
+
+  responses [
+    close: _("_Close"),
+    copy: _("_Copy to clipboard"),
+  ]
+
+  ScrolledWindow logs_scroll {
+    hscrollbar-policy: never;
+    vscrollbar-policy: automatic;
+    vexpand: true;
+    max-content-height: 300;
+    propagate-natural-height: true;
+
+    TextView logs_view {
+      monospace: true;
+      editable: false;
+      top-margin: 6;
+      bottom-margin: 6;
+      left-margin: 6;
+      right-margin: 6;
+      wrap-mode: word_char;
+    }
+  }
+}

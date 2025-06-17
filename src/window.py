@@ -5,6 +5,8 @@ from .config import config, DLCoverSize
 from .utils.asynctask import EartagAsyncTask
 from .utils.validation import is_valid_music_file, VALID_AUDIO_MIMES
 from .dialogs import (
+    EartagErrorType,
+    EartagErrorDialog,
     EartagCloseWarningDialog,
     EartagDiscardWarningDialog,
     EartagTagDeleteWarningDialog,
@@ -22,6 +24,19 @@ import asyncio
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
 import gettext
+from enum import Flag
+
+
+class EartagFileDialogType(Flag):
+    """Types of file opening dialogs."""
+
+    # Dialog type - file or folder
+    TYPE_FILE = 1
+    TYPE_FOLDER = 2
+
+    # Load mode - overwrite (clear all and load) or insert (append to current)
+    MODE_OVERWRITE = 4
+    MODE_INSERT = 8
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/nofile.ui")
@@ -42,14 +57,16 @@ class EartagNoFile(Adw.Bin):
     @Gtk.Template.Callback()
     def on_add_file(self, *args):
         window = self.get_native()
-        window.open_mode = EartagFileManager.LOAD_OVERWRITE
-        window.show_file_chooser(folders=False)
+        window.show_file_chooser(
+            EartagFileDialogType.TYPE_FILE | EartagFileDialogType.MODE_OVERWRITE
+        )
 
     @Gtk.Template.Callback()
     def on_add_folder(self, *args):
         window = self.get_native()
-        window.open_mode = EartagFileManager.LOAD_OVERWRITE
-        window.show_file_chooser(folders=True)
+        window.show_file_chooser(
+            EartagFileDialogType.TYPE_FOLDER | EartagFileDialogType.MODE_OVERWRITE
+        )
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/window.ui")
@@ -81,8 +98,6 @@ class EartagWindow(Adw.ApplicationWindow):
     force_close = False
     file_chooser_mode = None
 
-    open_mode = EartagFileManager.LOAD_OVERWRITE
-
     # Sidebar
     sidebar_list_stack = Gtk.Template.Child()
     sidebar_list_scroll = Gtk.Template.Child()
@@ -104,6 +119,7 @@ class EartagWindow(Adw.ApplicationWindow):
     def __init__(self, application, paths=None, devel=False):
         super().__init__(application=application, title=_("Ear Tag"))
         self._undo_all_data = {}
+        self.error_dialog = None
 
         if devel:
             self.add_css_class("devel")
@@ -111,13 +127,13 @@ class EartagWindow(Adw.ApplicationWindow):
         self.set_icon_name(application.get_application_id())
 
         self.file_chooser = Gtk.FileDialog(modal=True)
-        self._cancellable = Gio.Cancellable.new()
 
         self.audio_file_filter = Gtk.FileFilter()
         for mime in VALID_AUDIO_MIMES:
             self.audio_file_filter.add_mime_type(mime)
         self.audio_file_filter.set_name(_("All supported audio files"))
 
+        # File manager setup
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
         self.file_manager.connect("notify::is-modified", self.toggle_save_button)
@@ -128,33 +144,42 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.files.connect("items-changed", self.toggle_fileview)
         self.file_manager.connect("refresh-needed", self.update_state)
         self.file_manager.connect("selection-changed", self.update_state)
+        self.file_manager.connect("notify::is-busy", self.update_busy)
+        self.file_manager.connect("refresh-needed", self.refresh_actionbar_button_state)
+        self.file_manager.files.connect(
+            "items-changed", self.refresh_actionbar_button_state
+        )
+        self.file_manager.connect("has-unwritable", self.show_unwritable_toast)
+        self.file_manager.connect(
+            "selection-changed", self.refresh_actionbar_button_state
+        )
+
         self.file_manager.load_task.connect(
-            "notify::progress", self.update_loading_progress
+            "progress-pulse", self.loading_progressbar_pulse
+        )
+        self.file_manager.load_task.connect(
+            "notify::progress", self.update_loading_progressbar
+        )
+        self.file_manager.load_task.connect(
+            "task-done", self.task_done_handler, EartagErrorType.ERROR_LOAD
+        )
+
+        self.file_manager.save_task.connect(
+            "notify::progress", self.update_loading_progressbar
         )
         self.file_manager.save_task.connect(
-            "notify::progress", self.update_loading_progress
+            "task-done", self.task_done_handler, EartagErrorType.ERROR_SAVE
         )
-        self.search_bar.bind_property(
-            "search-mode-enabled",
-            self.sidebar_search_button,
-            "active",
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
+
+        self.file_manager.rename_task.connect(
+            "task-done", self.task_done_handler, EartagErrorType.ERROR_RENAME
         )
-        self.select_multiple_button.bind_property(
-            "active",
-            self,
-            "selection-mode",
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
+
+        self.show_error_action = Gio.SimpleAction.new(
+            "show-error-dialog", GLib.VariantType.new("(is)")
         )
-        self.select_multiple_button.bind_property(
-            "active",
-            self.sidebar_action_bar,
-            "revealed",
-            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
-        )
-        self.sidebar_file_list.connect(
-            "notify::selection-mode", self.update_selection_mode
-        )
+        self.show_error_action.connect("activate", self._show_error_action)
+        self.add_action(self.show_error_action)
 
         self.connect("close-request", self.on_close_request)
 
@@ -180,7 +205,6 @@ class EartagWindow(Adw.ApplicationWindow):
         self.redo_all_task.connect("task-done", self._redo_all_done)
 
         # Task for delete all tags option
-
         self._delete_all_tags_count = 0
         self.delete_all_tags_task = EartagAsyncTask(self._delete_all_tags)
         self.delete_all_tags_task.connect("task-done", self._delete_all_tags_done)
@@ -199,30 +223,119 @@ class EartagWindow(Adw.ApplicationWindow):
         self.search_bar.connect_entry(self.search_entry)
         self.search_entry.connect("search-changed", self.search_changed)
 
-        self.file_manager.connect("refresh-needed", self.refresh_actionbar_button_state)
-        self.file_manager.files.connect(
-            "items-changed", self.refresh_actionbar_button_state
+        self.search_bar.bind_property(
+            "search-mode-enabled",
+            self.sidebar_search_button,
+            "active",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.file_manager.connect(
-            "selection-changed", self.refresh_actionbar_button_state
+        self.select_multiple_button.bind_property(
+            "active",
+            self,
+            "selection-mode",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.file_manager.load_task.connect(
-            "notify::progress", self.update_loading_progressbar
+        self.select_multiple_button.bind_property(
+            "active",
+            self.sidebar_action_bar,
+            "revealed",
+            GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.file_manager.save_task.connect(
-            "notify::progress", self.update_loading_progressbar
+        self.sidebar_file_list.connect(
+            "notify::selection-mode", self.update_selection_mode
         )
+
         self.refresh_actionbar_button_state()
 
         if paths:
             self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
 
-    def update_loading_progress(self, task, *args):
-        loading_progress = task.progress
-        is_loading = loading_progress != 0
-        self.sidebar_headerbar.set_sensitive(not is_loading)
-        if self.file_manager.files.get_n_items() == 0 and is_loading:
-            self.container_stack.set_visible_child(self.split_view)
+    def update_busy(self, task: "EartagAsyncMultitasker", *args):
+        """
+        Mark the window as busy or not busy based on whether the file manager
+        is currently processing a long operation (opening/saving/renaming files).
+
+        Also handles showing error dialogs.
+        """
+        busy = self.file_manager.is_busy
+
+        self.sidebar_headerbar.set_sensitive(not busy)
+        self.loading_progressbar_revealer.set_reveal_child(busy)
+        self.sidebar_file_list.set_sensitive(not busy)
+        self.file_view.content_clamp.set_sensitive(not busy)
+
+        if self.file_manager.load_task.is_running:
+            self.file_view.set_visible_child(self.file_view.loading)
+        else:
+            self.file_view.set_visible_child(self.file_view.content_stack)
+
+        if self.file_manager.files.get_n_items() == 0:
+            if busy:
+                self.container_stack.set_visible_child(self.split_view)
+            else:
+                self.container_stack.set_visible_child(self.no_file)
+
+    def show_error_dialog(self, error_type: EartagErrorType, error_message: str):
+        """Show an error dialog with logs."""
+        error_dialog = EartagErrorDialog(error_type, error_message)
+        error_dialog.present(self)
+
+    def _show_error_action(self, action: Gio.Action, data: GLib.Variant):
+        """Wrapper around show_error_dialog for the win.show-error-dialog option."""
+        error_type_int = data.get_child_value(0).get_int32()
+        error_message = data.get_child_value(1).get_string()
+        return self.show_error_dialog(EartagErrorType(error_type_int), error_message)
+
+    def task_done_handler(self, task, error_type: EartagErrorType):
+        """
+        Handle a long file manager task (opening, saving or renaming) being done.
+
+        The type of task that finished can be derived from the error_type parameter.
+        """
+
+        # If the task encountered an error, show an error dialog
+        if task.errors:
+            error_message = "\n---\n".join(task.errors)
+            if self.file_manager.files.get_n_items() == 0:
+                self.show_error_dialog(error_type, error_message)
+            else:
+                param = GLib.Variant.new_tuple(
+                    GLib.Variant.new_int32(int(error_type)),
+                    GLib.Variant.new_string(error_message),
+                )
+                toast = Adw.Toast.new(_("Some files failed to load"))
+                toast.props.button_label = _("More Information")
+                toast.props.action_name = "win.show-error-dialog"
+                toast.props.action_target = param
+                self.toast_overlay.add_toast(toast)
+
+        # Handle file loading not detecting any supported files
+        if error_type == EartagErrorType.ERROR_LOAD:
+            if self.file_manager.load_task.n_items == 0:
+                toast = Adw.Toast.new(_("No supported files found in opened folder"))
+                self.toast_overlay.add_toast(toast)
+
+        # Handle saving being done
+        if error_type == EartagErrorType.ERROR_SAVE:
+            saved_file_count = self.file_manager.save_task.n_items - len(
+                self.file_manager.load_task.errors
+            )
+            save_message = ngettext(
+                "Saved changes to 1 file",
+                "Saved changes to {n} files",
+                saved_file_count,
+            ).format(n=saved_file_count)
+
+            self.window.toast_overlay.add_toast(
+                Adw.Toast.new(_("Saved changes to {n} files"))
+            )
+
+    def show_unwritable_toast(self, *args):
+        """Show a toast saying that some files are read-only."""
+        unwritable_msg = _(
+            "Some of the opened files are read-only; changes cannot be saved"
+        )  # noqa: E501
+        self.window.toast_overlay.add_toast(Adw.Toast.new(unwritable_msg))
 
     def update_state(self, *args):
         app = self.get_application()
@@ -349,10 +462,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def on_drag_drop(self, drop_target, value, *args):
         files = value.get_files()
-
-        self.open_mode = EartagFileManager.LOAD_INSERT
-        self.load_files_from_paths([f.get_path() for f in files])
-        self.open_mode = EartagFileManager.LOAD_OVERWRITE
+        self.file_manager.load_files([f.get_path() for f in files], overwrite=False)
         self.on_drag_unhover()
 
     @Gtk.Template.Callback()
@@ -360,91 +470,70 @@ class EartagWindow(Adw.ApplicationWindow):
         """Sets the drop highlight to be invisible."""
         revealer.set_visible(revealer.props.child_revealed)
 
-    def show_file_chooser(self, folders=False):
-        """Shows the file chooser."""
-        if self.file_chooser_mode is not None:
-            return
+    async def show_file_chooser_async(self, chooser: EartagFileDialogType):
+        """Show the file chooser dialog and get files from it."""
 
-        if folders:
-            title = _("Open Folder")
-            self.file_chooser_mode = "folders"
+        # Set up title and check for chooser type validity
+        if chooser & EartagFileDialogType.TYPE_FILE:
+            if chooser & EartagFileDialogType.MODE_OVERWRITE:
+                #: TRANSLATORS: Title of the popup for opening a file
+                self.file_chooser.props.title = _("Open File")
+            elif chooser & EartagFileDialogType.MODE_INSERT:
+                self.file_chooser.props.title = _("Add File")
+            else:
+                raise ValueError
+
+        elif chooser & EartagFileDialogType.TYPE_FOLDER:
+            if chooser & EartagFileDialogType.MODE_OVERWRITE:
+                self.file_chooser.props.title = _("Open Folder")
+            else:
+                raise ValueError
+
         else:
-            title = _("Open File")
-            self.file_chooser_mode = "files"
+            raise ValueError
 
-        self.file_chooser.set_title(title)
-
-        if not folders:
+        # Set up filters for file selectors
+        if chooser & EartagFileDialogType.TYPE_FILE:
             _filters = Gio.ListStore.new(Gtk.FileFilter)
             _filters.append(self.audio_file_filter)
             self.file_chooser.set_filters(_filters)
-
-        if folders:
-            self.file_chooser.select_multiple_folders(
-                self, self._cancellable, self.open_file_from_dialog
-            )
         else:
-            self.file_chooser.open_multiple(
-                self, self._cancellable, self.open_file_from_dialog
-            )
+            self.file_chooser.set_filters(None)
 
-    def open_files(self, paths):
-        """
-        Loads the files with the given paths. Note that this does not perform
-        any validation; caller functions are meant to check for this manually.
-        """
+        # If we're doing an overwrite load, warn about discarding changes
         if (
-            self.open_mode != EartagFileManager.LOAD_INSERT
+            chooser & EartagFileDialogType.MODE_OVERWRITE
             and self.file_manager._is_modified
         ):
-            self.discard_warning = EartagDiscardWarningDialog(self.file_manager, paths)
+            self.discard_warning = EartagDiscardWarningDialog()
             self.discard_warning.present(self)
-            return False
+            response = await self.discard_warning.wait_for_response()
 
-        self.file_manager.load_files(paths, mode=self.open_mode)
+            if response == "cancel":
+                del self.discard_warning
+                return
+            elif response == "save":
+                self.file_manager.save()
 
-    def open_file_from_dialog(self, dialog, result):
-        """
-        Callback for a FileChooser that takes the response and opens the file
-        selected in the dialog.
-        """
+            del self.discard_warning
+
+        # Display the dialog
         try:
-            if self.file_chooser_mode == "folders":
-                response = dialog.select_multiple_folders_finish(result)
-            elif self.file_chooser_mode == "files":
-                response = dialog.open_multiple_finish(result)
+            if chooser & EartagFileDialogType.TYPE_FOLDER:
+                gfiles = await self.file_chooser.select_multiple_folders(self, None)
             else:
-                self.file_chooser_mode = None
-                return False
+                gfiles = await self.file_chooser.open_multiple(self, None)
         except GLib.GError:
-            self.file_chooser_mode = None
-            return False
-
-        self.file_chooser_mode = None
-
-        if not response:
             return
 
-        return self.load_files_from_paths([f.get_path() for f in response])
+        await self.file_manager.load_files_async(
+            [f.get_path() for f in gfiles],
+            overwrite=bool(chooser & EartagFileDialogType.MODE_OVERWRITE),
+        )
 
-    def load_files_from_paths(self, paths):
-        """Loads files from a list of paths: handles both files and folders."""
-        paths_valid = []
-        for path in paths:
-            if os.path.isdir(path):
-                for file in os.listdir(path):
-                    fpath = os.path.join(path, file)
-                    if os.path.isfile(fpath) and is_valid_music_file(fpath):
-                        paths_valid.append(fpath)
-            else:
-                paths_valid.append(path)
-
-        if not paths_valid:
-            toast = Adw.Toast.new(_("No supported files found in opened folder"))
-            self.toast_overlay.add_toast(toast)
-            return
-
-        return self.open_files(paths_valid)
+    def show_file_chooser(self, chooser: EartagFileDialogType):
+        """Non-async wrapper around show_file_chooser_async."""
+        asyncio.create_task(self.show_file_chooser_async(chooser))
 
     def toggle_save_button(self, *args):
         if self.file_manager.has_error:
@@ -478,8 +567,9 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def insert_file(self, *args):
-        self.open_mode = EartagFileManager.LOAD_INSERT
-        self.show_file_chooser()
+        self.show_file_chooser(
+            EartagFileDialogType.TYPE_FILE | EartagFileDialogType.MODE_INSERT
+        )
 
     def on_close_request(self, *args):
         if (
@@ -526,14 +616,12 @@ class EartagWindow(Adw.ApplicationWindow):
     # Sidebar
 
     def update_loading_progressbar(self, task, *args):
-        """
-        Updates the loading progressbar's position.
-        """
-        loading_progress = task.progress
-        self.loading_progressbar_revealer.set_reveal_child(not loading_progress == 0)
-        self.sidebar_file_list.set_sensitive(loading_progress == 0)
-        self.file_view.content_clamp.set_sensitive(loading_progress == 0)
-        self.loading_progressbar.set_fraction(loading_progress)
+        """Updates the loading progressbar's position."""
+        self.loading_progressbar.set_fraction(task.progress)
+
+    def loading_progressbar_pulse(self, task, *args):
+        """Updates the loading progressbar's pulse."""
+        self.loading_progressbar.pulse()
 
     def search_changed(self, search_entry, *args):
         """Emitted when the search has changed."""

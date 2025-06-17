@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import Adw, Gtk
+from gi.repository import Adw, Gtk, Gdk
 from . import APP_GRESOURCE_PATH
+
+from enum import IntEnum
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/closewarning.ui")
@@ -30,19 +32,31 @@ class EartagCloseWarningDialog(Adw.AlertDialog):
 class EartagDiscardWarningDialog(Adw.AlertDialog):
     __gtype_name__ = "EartagDiscardWarningDialog"
 
-    def __init__(self, file_manager, paths):
-        self.paths = paths
-        self.file_manager = file_manager
+    def __init__(self):
+        self.closed_event = asyncio.Event()
+        self.response = None
+
+    def __del__(self):
+        self.closed_event.clear()
+        del self.closed_event
+        del self.response
+
+    async def wait_for_response(self):
+        """Wait for a response from the dialog."""
+        await self.closed_event.wait()
+        return self.response
+
+    def present(self):
+        """Show the dialog."""
+        self.closed_event.clear()
+        self.response = None
+        super().present()
 
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
-        if response == "save":
-            if not self.file_manager.save():
-                return False
-        if response != "cancel":
-            self.file_manager.load_files(
-                self.paths, mode=self.file_manager.LOAD_OVERWRITE
-            )
+        """Save the response from the dialog to the response property."""
+        self.response = response
+        self.closed_event.set()
         self.close()
 
 
@@ -66,43 +80,68 @@ class EartagRemovalDiscardWarningDialog(Adw.AlertDialog):
         self.close()
 
 
-@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/loadingfailure.ui")
-class EartagLoadingFailureDialog(Adw.AlertDialog):
-    __gtype_name__ = "EartagLoadingFailureDialog"
+class EartagErrorType(IntEnum):
+    """Error types which can be passed to the EartagErrorDialog."""
 
-    def __init__(self, filename):
+    ERROR_UNKNOWN = 0
+    ERROR_LOAD = 1
+    ERROR_RENAME = 2
+    ERROR_SAVE = 3
+
+
+@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/error.ui")
+class EartagErrorDialog(Adw.AlertDialog):
+    """Generic error dialog with a log view."""
+
+    __gtype_name__ = "EartagErrorDialog"
+
+    logs_view = Gtk.Template.Child()
+
+    def __init__(self, error_type: EartagErrorType, logs: str):
         super().__init__()
-        self.set_body(self.get_body().format(f=filename))
+        self.logs = logs
+
+        if error_type == EartagErrorType.ERROR_LOAD:
+            self.props.heading = _("Failed to Load Files")
+            error_message = _("Some files could not be loaded.")
+
+        elif error_type == EartagErrorType.ERROR_RENAME:
+            self.props.heading = _("Failed to Rename Files")
+            error_message = _("Some files could not be renamed.")
+
+        elif error_type == EartagErrorType.ERROR_SAVE:
+            self.props.heading = _("Failed to Save Files")
+            error_message = _("Some files could not be saved.")
+
+        else:
+            self.props.heading = _("An Error Has Occured")
+            error_message = _("An internal error has occured.")
+
+        self.props.body = (
+            error_message
+            + "\n\n"
+            + _(
+                'Please copy the logs below and <a href="https://gitlab.gnome.org/World/eartag/-/issues/new">submit an issue report</a>.'
+            )
+        )
+
+        self.logs_view.get_buffer().set_text(self.logs)
+
+    def present(self, parent):
+        self._parent = parent
+        super().present(parent)
 
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
+        if response == "copy":
+            self.get_clipboard().set_content(
+                Gdk.ContentProvider.new_for_value(self.logs)
+            )
+            self._parent.toast_overlay.add_toast(
+                Adw.Toast.new(_("Copied error log to clipboard"))
+            )
         self.close()
-
-
-@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/renamefailure.ui")
-class EartagRenameFailureDialog(Adw.AlertDialog):
-    __gtype_name__ = "EartagRenameFailureDialog"
-
-    def __init__(self, filename):
-        super().__init__()
-        self.set_body(self.get_body().format(f=filename))
-
-    @Gtk.Template.Callback()
-    def handle_response(self, dialog, response):
-        self.close()
-
-
-@Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/savefailure.ui")
-class EartagSaveFailureDialog(Adw.AlertDialog):
-    __gtype_name__ = "EartagSaveFailureDialog"
-
-    def __init__(self, filename):
-        super().__init__()
-        self.set_body(self.get_body().format(f=filename))
-
-    @Gtk.Template.Callback()
-    def handle_response(self, dialog, response):
-        self.close()
+        del self._parent
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/tagdeletewarning.ui")
