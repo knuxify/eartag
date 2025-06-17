@@ -421,7 +421,7 @@ class EartagFileManager(GObject.Object):
 
         def _new_path_fixups(new_path: str):
             if os.path.exists(new_path):
-                _orig_new_path = new_path
+                orig_new_path = new_path
                 i = 0
                 while os.path.exists(new_path):
                     i += 1
