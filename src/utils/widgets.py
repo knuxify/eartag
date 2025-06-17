@@ -211,18 +211,22 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def __init__(self):
         super().__init__()
         self._cover_type = CoverType.FRONT
+        self._connections = []
         self.connect("destroy", self.on_destroy)
 
     def on_destroy(self, *args):
-        self.file = None
+        self.unbind_from_file()
 
     def bind_to_file(self, file):
+        if self.file:
+            self.unbind_from_file()
+
         self.file = file
 
         if file.supports_album_covers:
             self.on_cover_change()
-            self.file.connect("notify::front-cover-path", self.on_cover_change)
-            self.file.connect("notify::back-cover-path", self.on_cover_change)
+            self._connections.append(self.file.connect("notify::front-cover-path", self.on_cover_change))
+            self._connections.append(self.file.connect("notify::back-cover-path", self.on_cover_change))
         else:
             self.cover_image.set_from_file(None)
             self.on_cover_change()
@@ -230,6 +234,12 @@ class EartagAlbumCoverImage(Gtk.Stack):
     def unbind_from_file(self, file=None):
         if not self.file or (file and file != self.file):
             return False
+
+        while len(self._connections) > 0:
+            self.file.disconnect(self._connections[0])
+            del self._connections[0]
+
+        del self.file
         self.file = None
 
     def mark_as_empty(self):
