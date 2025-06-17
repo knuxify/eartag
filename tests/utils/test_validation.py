@@ -41,22 +41,17 @@ def test_valid_image_file(file_name):
     assert is_valid_image_file(f"{EXAMPLES_DIRECTORY}/{file_name}") is True
 
 
-@patch("magic.from_file")
-def test_magic_fails_to_get_file_type(mock_magic_from_file):
-    mock_magic_from_file.return_value = "application/octet-stream"
-
-    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES) is True
-
-
-@patch("magic.from_file")
-def test_magic_returns_no_file_type(mock_magic_from_file):
-    mock_magic_from_file.return_value = False
-
-    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES) is False
+@patch("filetype.match", lambda *a, **b: None)
+@patch("mimetypes.guess_type", lambda *a, **b: [])
+def test_magic_returns_no_file_type():
+    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES, no_cache=True) is False
 
 
-@patch("magic.from_file")
-def test_file_type_not_in_valid_mime_types(mock_magic_from_file):
-    mock_magic_from_file.return_value = "audio/invalid"
+class FakeMatch:
+    mime = "audio/invalid"
 
-    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES) is False
+
+@patch("filetype.match", lambda *a, **b: FakeMatch())
+@patch("mimetypes.guess_type", lambda *a, **b: ["audio/invalid2"])
+def test_file_type_not_in_valid_mime_types():
+    assert is_valid_file(example_mp3, VALID_AUDIO_MIMES, no_cache=True) is False

@@ -48,30 +48,33 @@ _mimetype_cache = {}
 
 
 def get_mimetype(
-    path: Union[str, os.PathLike], no_extension_guess: bool = False
+    path: Union[str, os.PathLike], no_extension_guess: bool = False, no_cache: bool = False
 ) -> Optional[str]:
     """
     Return the mimetype (or None) for the file with the given path or data.
 
     :param path: Path to the file (or buffer data).
     :param no_extension_guess: If True, skips guessing the filetype from the extension.
+    :param no_cache: Skip the mimetype cache.
     """
-    global _mimetype_cache
-    if path in _mimetype_cache:
-        return _mimetype_cache[path]
+    if not no_cache:
+        global _mimetype_cache
+        if path in _mimetype_cache:
+            return _mimetype_cache[path]
 
     mimetype = filetype.match(path, matchers=(audio_matchers + image_matchers))
-    if not no_extension_guess and (
-        mimetype == "application/octet-stream" or not mimetype
-    ):
-        # Try to guess mimetype from file extension if filetype match fails
-        mimetype = mimetypes.guess_type(path)[0]
 
     ret = None
     if mimetype:
         ret = mimetype.mime
+    elif not no_extension_guess:
+        # Try to guess mimetype from file extension if filetype match fails
+        guess = mimetypes.guess_type(path)
+        if guess and guess[0]:
+            ret = guess[0]
 
-    _mimetype_cache[path] = ret
+    if not no_cache:
+        _mimetype_cache[path] = ret
 
     return ret
 
@@ -81,17 +84,17 @@ def get_mimetype_buffer(data):
     return filetype.match(date, matchers=(filetype.types.AUDIO + filetype.types.IMAGE))
 
 
-def is_valid_music_file(path: Union[str, os.PathLike]):
+def is_valid_music_file(path: Union[str, os.PathLike], no_cache: bool = False):
     """Check if the file at the provided path is a supported audio file."""
-    return is_valid_file(path, VALID_AUDIO_MIMES)
+    return is_valid_file(path, VALID_AUDIO_MIMES, no_cache=no_cache)
 
 
-def is_valid_image_file(path: Union[str, os.PathLike]):
+def is_valid_image_file(path: Union[str, os.PathLike], no_cache: bool = False):
     """Check if the file at the provided path is a supported image file."""
-    return is_valid_file(path, VALID_IMAGE_MIMES)
+    return is_valid_file(path, VALID_IMAGE_MIMES, no_cache=no_cache)
 
 
-def is_valid_file(path: Union[str, os.PathLike], valid_mime_types: Iterable[str]):
+def is_valid_file(path: Union[str, os.PathLike], valid_mime_types: Iterable[str], no_cache: bool = False):
     """
     Takes a path to a file and returns True if it's supported, False otherwise.
     """
@@ -99,7 +102,7 @@ def is_valid_file(path: Union[str, os.PathLike], valid_mime_types: Iterable[str]
     if not os.path.exists(path):
         return False
 
-    mimetype = get_mimetype(path)
+    mimetype = get_mimetype(path, no_cache=no_cache)
 
     if not mimetype or mimetype not in valid_mime_types:
         return False
