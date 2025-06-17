@@ -250,7 +250,7 @@ class EartagWindow(Adw.ApplicationWindow):
         if paths:
             self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
 
-    def update_busy(self, task: "EartagAsyncMultitasker", *args):
+    def update_busy(self, task, *args):
         """
         Mark the window as busy or not busy based on whether the file manager
         is currently processing a long operation (opening/saving/renaming files).
