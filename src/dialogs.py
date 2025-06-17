@@ -3,6 +3,7 @@
 
 from gi.repository import Adw, Gtk, Gdk
 from . import APP_GRESOURCE_PATH
+import asyncio
 
 from enum import IntEnum
 
