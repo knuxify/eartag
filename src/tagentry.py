@@ -52,7 +52,6 @@ class EartagTagEntryBase(GObject.Object):
         self._connections["destroy"] = self.connect("destroy", self.destroy_tagentry)
 
     def destroy_tagentry(self, *args):
-        print("destroy_tagentry called")
         for file in self.files.copy():
             self.unbind_from_file(file)
 
