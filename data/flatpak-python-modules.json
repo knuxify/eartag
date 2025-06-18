@@ -46,13 +46,8 @@
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/29/ff/a2440069461c63b95fa8b5b89e26eb606e57d8a01391ccaae3738f1b845d/expandvars-1.0.0-py3-none-any.whl",
-                    "sha256": "ff1690eceb90bbdeefd1e4b15f4d217f22a3e66f776c2cb060635d2dde4a7689"
-                },
-                {
-                    "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/79/b1/b64018016eeb087db503b038296fd782586432b9c077fc5c7839e9cb6ef6/frozenlist-1.7.0.tar.gz",
-                    "sha256": "2e310d81923c2437ea8670467121cc3e9b0f76d3043cc1d2331d56c7fb7a3a8f"
+                    "url": "https://files.pythonhosted.org/packages/ee/45/b82e3c16be2182bff01179db177fe144d58b5dc787a7d4492c6ed8b9317f/frozenlist-1.7.0-py3-none-any.whl",
+                    "sha256": "9a5af342e34f7e97caf8c995864c7a396418ae2859cc6fdf1b1073020d516a7e"
                 },
                 {
                     "type": "file",
@@ -66,13 +61,13 @@
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/a6/16/43264e4a779dd8588c21a70f0709665ee8f611211bdd2c87d952cfa7c776/propcache-0.3.2.tar.gz",
-                    "sha256": "20d7d62e4e7ef05f221e0db2856b979540686342e7dd9973b815599c7057e168"
+                    "url": "https://files.pythonhosted.org/packages/cc/35/cc0aaecf278bb4575b8555f2b137de5ab821595ddae9da9d3cd1da4072c7/propcache-0.3.2-py3-none-any.whl",
+                    "sha256": "98f1ec44fb675f5052cccc8e609c46ed23a35a1cfd18545ad4e29002d858a43f"
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/3c/fb/efaa23fa4e45537b827620f04cf8f3cd658b76642205162e072703a5b963/yarl-1.20.1.tar.gz",
-                    "sha256": "d017a4997ee50c91fd5466cef416231bb82177b93b029906cefc542ce14c35ac"
+                    "url": "https://files.pythonhosted.org/packages/b4/2d/2345fce04cfd4bee161bf1e7d9cdc702e3e16109021035dbb24db654a622/yarl-1.20.1-py3-none-any.whl",
+                    "sha256": "83b8eb083fe4683c6115795d9fc1cfaf2cbbefb19b3a1cb68f6527460f483a77"
                 }
             ]
         },
@@ -110,8 +105,8 @@
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/79/b1/b64018016eeb087db503b038296fd782586432b9c077fc5c7839e9cb6ef6/frozenlist-1.7.0.tar.gz",
-                    "sha256": "2e310d81923c2437ea8670467121cc3e9b0f76d3043cc1d2331d56c7fb7a3a8f"
+                    "url": "https://files.pythonhosted.org/packages/ee/45/b82e3c16be2182bff01179db177fe144d58b5dc787a7d4492c6ed8b9317f/frozenlist-1.7.0-py3-none-any.whl",
+                    "sha256": "9a5af342e34f7e97caf8c995864c7a396418ae2859cc6fdf1b1073020d516a7e"
                 },
                 {
                     "type": "file",
@@ -125,13 +120,13 @@
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/a6/16/43264e4a779dd8588c21a70f0709665ee8f611211bdd2c87d952cfa7c776/propcache-0.3.2.tar.gz",
-                    "sha256": "20d7d62e4e7ef05f221e0db2856b979540686342e7dd9973b815599c7057e168"
+                    "url": "https://files.pythonhosted.org/packages/cc/35/cc0aaecf278bb4575b8555f2b137de5ab821595ddae9da9d3cd1da4072c7/propcache-0.3.2-py3-none-any.whl",
+                    "sha256": "98f1ec44fb675f5052cccc8e609c46ed23a35a1cfd18545ad4e29002d858a43f"
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/3c/fb/efaa23fa4e45537b827620f04cf8f3cd658b76642205162e072703a5b963/yarl-1.20.1.tar.gz",
-                    "sha256": "d017a4997ee50c91fd5466cef416231bb82177b93b029906cefc542ce14c35ac"
+                    "url": "https://files.pythonhosted.org/packages/b4/2d/2345fce04cfd4bee161bf1e7d9cdc702e3e16109021035dbb24db654a622/yarl-1.20.1-py3-none-any.whl",
+                    "sha256": "83b8eb083fe4683c6115795d9fc1cfaf2cbbefb19b3a1cb68f6527460f483a77"
                 }
             ]
         },
