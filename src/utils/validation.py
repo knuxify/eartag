@@ -5,6 +5,7 @@ import os.path
 import filetype
 from filetype.types import AUDIO as audio_matchers
 from filetype.types import IMAGE as image_matchers
+from filetype.types.base import Type
 import mimetypes
 
 from collections.abc import Iterable
@@ -43,6 +44,75 @@ VALID_IMAGE_MIMES = (
     "image/webp",
 )
 
+# Custom filetype.py filetypes for formats it doesn't usually support
+
+
+class ImprovedMP3(Type):
+    """
+    Improved MP3 filetype from latest main branch;
+    see https://github.com/h2non/filetype.py/blob/master/filetype/types/audio.py
+    """
+
+    MIME = "audio/mpeg"
+    EXTENSION = "mp3"
+
+    def __init__(self):
+        super(ImprovedMP3, self).__init__(
+            mime=ImprovedMP3.MIME, extension=ImprovedMP3.EXTENSION
+        )
+
+    def match(self, buf):
+        if len(buf) > 2:
+            if buf[0] == 0x49 and buf[1] == 0x44 and buf[2] == 0x33:
+                return True
+
+            if buf[0] == 0xFF:
+                if (
+                    buf[1] == 0xE2  # MPEG 2.5 with error protection
+                    or buf[1] == 0xE3  # MPEG 2.5 w/o error protection
+                    or buf[1] == 0xF2  # MPEG 2 with error protection
+                    or buf[1] == 0xF3  # MPEG 2 w/o error protection
+                    or buf[1] == 0xFA  # MPEG 1 with error protection
+                    or buf[1] == 0xFB  # MPEG 1 w/o error protection
+                ):
+                    return True
+        return False
+
+
+class Wma(Type):
+    """Implements the WMA audio type matcher."""
+
+    MIME = "audio/x-ms-wma"
+    EXTENSION = "wma"
+
+    def __init__(self):
+        super(Wma, self).__init__(mime=Wma.MIME, extension=Wma.EXTENSION)
+
+    def match(self, buf):
+        if len(buf) > 14:
+            if (
+                buf[0] == 0x30
+                and buf[1] == 0x26
+                and buf[2] == 0xB2
+                and buf[3] == 0x75
+                and buf[4] == 0x8E
+                and buf[5] == 0x66
+                and buf[6] == 0xCF
+                and buf[7] == 0x11
+                and buf[8] == 0xA6
+                and buf[9] == 0xD9
+                and buf[10] == 0x00
+                and buf[11] == 0xAA
+                and buf[12] == 0x00
+                and buf[13] == 0x62
+                and buf[14] == 0xCE
+                and buf[15] == 0x6C
+            ):
+                return True
+        return False
+
+
+CUSTOM_MATCHERS = (ImprovedMP3(), Wma())
 
 _mimetype_cache = {}
 
@@ -63,7 +133,9 @@ def get_mimetype(
         if path in _mimetype_cache:
             return _mimetype_cache[path]
 
-    mimetype = filetype.match(path, matchers=(audio_matchers + image_matchers))
+    mimetype = filetype.match(
+        path, matchers=(CUSTOM_MATCHERS + audio_matchers + image_matchers)
+    )
 
     ret = None
     if mimetype:
