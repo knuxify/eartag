@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-02 06:47+0000\n"
-"PO-Revision-Date: 2025-06-02 19:12+0200\n"
+"POT-Creation-Date: 2025-06-17 21:10+0000\n"
+"PO-Revision-Date: 2025-06-18 06:17+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
@@ -20,14 +20,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:161 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:105 src/window.py:253
-#: src/window.py:268 src/ui/window.blp:245 src/ui/nofile.blp:11
+#: src/main.py:164 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:117 src/window.py:364
+#: src/window.py:379 src/ui/window.blp:258 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:171 src/main.py:173
+#: src/main.py:174 src/main.py:176
 msgid "translator-credits"
 msgstr "მთარგმნელის შესახებ"
 
@@ -78,192 +78,209 @@ msgstr ""
 "ქსელთან წვდომა, მხოლოდ, მაშინ ხდება, როცა ჩართულია \"მონიშნული ფაილების "
 "იდენტიფიკაციის\" პარამეტრი."
 
-#: src/window.py:119
+#: src/window.py:132
 msgid "All supported audio files"
 msgstr "ყველა მხარდაჭერილი აუდიოფაილი"
 
-#: src/window.py:235
+#: src/window.py:304
+msgid "Some files failed to load"
+msgstr "ზოგიერთი ფაილის ჩატვირთვა ჩავარდა"
+
+#: src/window.py:305
+msgid "More Information"
+msgstr "მეტი ინფორმაცია"
+
+#: src/window.py:313
+msgid "No supported files found in opened folder"
+msgstr "ღია საქაღალდეში მხარდაჭერილი ფაილები აღმოჩენილი არაა"
+
+#: src/window.py:322
+#, python-brace-format
+msgid "Saved changes to 1 file"
+msgid_plural "Saved changes to {n} files"
+msgstr[0] "ცვლილებები შენახულია 1 ფაილში"
+msgstr[1] "ცვლილებები შენახულია {n} ფაილში"
+
+#: src/window.py:328
+#, python-brace-format
+msgid "Saved changes to {n} files"
+msgstr "ცვლილებები შენახულია {n} ფაილში"
+
+#: src/window.py:334
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr "ზოგიერთი გახსნილი ფაილი მხოლოდ-კითხვადია. ცვლილებებს ვერ შეინახავთ"
+
+#: src/window.py:346
 msgid "Unselect all files"
 msgstr "ყველა ფაილის მონიშვნის მოხსნა"
 
-#: src/window.py:238 src/ui/window.blp:210
+#: src/window.py:349 src/ui/window.blp:223
 msgid "Select all files"
 msgstr "ყველა ფაილის მონიშვნა"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:277 src/fileview.py:787
+#: src/window.py:388 src/fileview.py:784
 msgid "(Multiple files selected)"
 msgstr "(მონიშნულია ერთზე მეტი ფაილი)"
 
-#: src/window.py:369 src/ui/nofile.blp:35
-msgid "Open Folder"
-msgstr "საქაღალდის გახსნა"
-
-#: src/window.py:372 src/ui/nofile.blp:24
+#. : TRANSLATORS: Title of the popup for opening a file
+#: src/window.py:478 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "ფაილის გახსნა"
 
-#: src/window.py:443
-msgid "No supported files found in opened folder"
-msgstr "ღია საქაღალდეში მხარდაჭერილი ფაილები აღმოჩენილი არაა"
+#: src/window.py:480
+msgid "Add File"
+msgstr "ფაილის დამატება"
 
-#: src/window.py:452
+#: src/window.py:486 src/ui/nofile.blp:35
+msgid "Open Folder"
+msgstr "საქაღალდის გახსნა"
+
+#: src/window.py:539
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "ზოგიერთ ღია ფაილს არასწორი მნიშვნელობები გააჩნია და მათი შენახვა შეუძლებელია"
 
-#: src/window.py:586
+#: src/window.py:682
 msgid "No files selected"
 msgstr "ფაილები მონიშნული არაა"
 
-#: src/window.py:592
+#: src/window.py:688
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "არჩეულია 1 ფაილი"
 msgstr[1] "არჩეულია {n} ფაილი"
 
-#: src/window.py:665
+#: src/window.py:761
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "ცვლილებები გაუქმდა 1 ფაილში"
 msgstr[1] "ცვლილებები გაუქმდა {n} ფაილში"
 
-#: src/window.py:670
+#: src/window.py:766
 msgid "Redo"
 msgstr "გამეორება"
 
-#: src/window.py:698
+#: src/window.py:794
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "ცვლილებები განმეორდა 1 ფაილში"
 msgstr[1] "ცვლილებები განმეორდა {n} ფაილში"
 
-#: src/window.py:743
+#: src/window.py:839
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "ჭდეები წაიშალა 1 ფაილიდან"
 msgstr[1] "ჭდეები წაიშალა {n} ფაილიდან"
 
-#: src/window.py:748 src/fileview.py:318
+#: src/window.py:844 src/fileview.py:317
 msgid "Undo"
 msgstr "ბრძანების გაუქმება"
 
-#: src/window.py:775
+#: src/window.py:871
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
 msgstr[0] "ჭდეების წაშლა გაუქმდა 1 ფაილში"
 msgstr[1] "ჭდეების წაშლა გაუქმდა {n} ფაილში"
 
-#: src/ui/window.blp:64
+#: src/ui/window.blp:77
 msgid "Drop a file to add it to the opened file list"
 msgstr "დააგდეთ ფაილი ღია ფაილების სიაში ჩასამატებლად"
 
-#: src/ui/window.blp:112
+#: src/ui/window.blp:125
 msgid "Save"
 msgstr "შენახვა"
 
-#: src/ui/window.blp:124
+#: src/ui/window.blp:137
 msgid "Close file list"
 msgstr "ფაილების სიის დახურვა"
 
-#: src/ui/window.blp:140
+#: src/ui/window.blp:153
 msgid "Add file"
 msgstr "ფაილის დამატება"
 
-#: src/ui/window.blp:146
+#: src/ui/window.blp:159
 msgid "Select multiple files"
 msgstr "აირჩიეთ ბევრი ფაილი"
 
-#: src/ui/window.blp:152
+#: src/ui/window.blp:165
 msgid "Search opened files"
 msgstr "ღია ფაილების ძძებნა"
 
 #. TRANSLATORS: Search entry placeholder for "Search opened files" option
-#: src/ui/window.blp:163 src/ui/previewselectorbutton.blp:25
+#: src/ui/window.blp:176 src/ui/previewselectorbutton.blp:25
 msgid "Search by title, artist, filename…"
 msgstr "ძებნა სათაურით, შემსრულებლით, ფაილის სახელით…"
 
-#: src/ui/window.blp:196
+#: src/ui/window.blp:209
 msgid "No Results Found"
 msgstr "შედეგების გარეშე"
 
-#: src/ui/window.blp:197
+#: src/ui/window.blp:210
 msgid "Try a different search query."
 msgstr "სცადეთ შეცვალოთ ძებნის მოთხოვნები."
 
-#: src/ui/window.blp:224
+#: src/ui/window.blp:237
 msgid "Remove selected files"
 msgstr "მონიშნული ფაილების წაშლა"
 
-#: src/ui/window.blp:238
+#: src/ui/window.blp:251
 msgid "Show file list"
 msgstr "ფაილების სიის ჩვენება"
 
-#: src/ui/window.blp:260
+#: src/ui/window.blp:273
 msgid "_Open File"
 msgstr "ფაილის _გახსნა"
 
-#: src/ui/window.blp:265
+#: src/ui/window.blp:278
 msgid "O_pen Folder"
 msgstr "_საქაღალდის გახსნა"
 
-#: src/ui/window.blp:272
+#: src/ui/window.blp:285
 msgid "_Sort File List"
 msgstr "ფაილების _სიის დალაგება"
 
-#: src/ui/window.blp:279
+#: src/ui/window.blp:292
 msgid "_Rename Selected Files"
 msgstr "მონიშნული ფაილის სახელის გადა_რქმევა"
 
-#: src/ui/window.blp:284
+#: src/ui/window.blp:297
 msgid "_Extract Tags from Filename"
 msgstr "ჭდეების ფაილის სახელიდან გამოღ_ება"
 
-#: src/ui/window.blp:289
+#: src/ui/window.blp:302
 msgid "_Identify Selected Files"
 msgstr "მონიშნული ფაილების _იდენტიფიკაცია"
 
-#: src/ui/window.blp:296
+#: src/ui/window.blp:309
 msgid "_Undo Changes in Selected Files"
 msgstr "ცვლილებების გა_უქმება მონიშნულ ფაილებში"
 
-#: src/ui/window.blp:301
+#: src/ui/window.blp:314
 msgid "_Remove All Tags in Selected Files"
 msgstr "ყველა ჭდის _წაშლა მონიშნულ ფაილებში"
 
-#: src/ui/window.blp:308
+#: src/ui/window.blp:321
 msgid "_Keyboard Shortcuts"
 msgstr "კლავიატურის მალსახმობები"
 
-#: src/ui/window.blp:313
+#: src/ui/window.blp:326
 msgid "_Preferences"
 msgstr "_მორგება"
 
-#: src/ui/window.blp:318
+#: src/ui/window.blp:331
 msgid "_About Ear Tag"
 msgstr "Ear Tag-ის შეს_ახებ"
 
 #: src/ui/nofile.blp:12
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "გახსენით ან დააგდეთ აუდიოფაილები, მათი მეტამონაცემების ჩასასწორებლად."
-
-#: src/filemanager.py:187
-msgid "Saved changes to files"
-msgstr "ცვლილებების შენახვა ფაილში"
-
-#: src/filemanager.py:265
-msgid "Opened file is read-only; changes cannot be saved"
-msgstr "გახსნილი ფაილი მხოლოდ-კითხვადია. ცვლილებებს ვერ შეინახავთ"
-
-#: src/filemanager.py:268
-msgid "Some of the opened files are read-only; changes cannot be saved"
-msgstr "ზოგიერთი გახსნილი ფაილი მხოლოდ-კითხვადია. ცვლილებებს ვერ შეინახავთ"
 
 #: src/backends/file.py:52
 msgid "Length"
@@ -421,44 +438,44 @@ msgstr "MusicBrainz ჩანაწერის ID"
 msgid "MusicBrainz Release Group ID"
 msgstr "MusicBrainz რელიზის ჯგუფის ID"
 
-#: src/fileview.py:111
+#: src/fileview.py:110
 msgid "Album cover (front)"
 msgstr "ალბომის ყდა (წინა)"
 
-#: src/fileview.py:113
+#: src/fileview.py:112
 msgid "Album cover (back)"
 msgstr "ალბომის ყდა (უკანა)"
 
-#: src/fileview.py:206
+#: src/fileview.py:205
 msgid "Select Album Cover Image"
 msgstr "აირჩიეთ ალბომის ყდის გამოსახულება"
 
-#: src/fileview.py:257
+#: src/fileview.py:256
 msgid "Save Album Cover To…"
 msgstr "ალბომის ყრის შენახვა, როგორც…"
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
-#: src/fileview.py:290
+#: src/fileview.py:289
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "ყდა შენახულია ბილიკზე {path}"
 
-#: src/fileview.py:315
+#: src/fileview.py:314
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "წაიშალა ყდა ფაილიდან"
 msgstr[1] "წაიშალა ყდა {n} ფაილიდან"
 
-#: src/fileview.py:801
+#: src/fileview.py:798
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "1 არხი"
 msgstr[1] "{n} არხი"
 
-#: src/fileview.py:846
+#: src/fileview.py:843
 msgid "(multiple files)"
 msgstr "(ერთზე მეტი ფაილი)"
 
@@ -514,7 +531,7 @@ msgstr "ყველა მხარდაჭერილი გამოსა�
 msgid "Add tag"
 msgstr "ჭდის დამატება"
 
-#: src/tagentry.py:128
+#: src/tagentry.py:139
 msgid "(multiple values)"
 msgstr "(ერთზე მეტი მნიშვნელობა)"
 
@@ -534,6 +551,50 @@ msgstr "ფაილს აქვს შეუნახავი ცვლილ
 #: src/ui/filelistitem.blp:84
 msgid "Remove from list"
 msgstr "სიიდან წაშლა"
+
+#: src/dialogs.py:106
+msgid "Failed to Load Files"
+msgstr "ფაილების ჩატვირთვა ჩავარდა"
+
+#: src/dialogs.py:107
+msgid "Some files could not be loaded."
+msgstr "ზოგიერთი ფაილის ჩატვირთვა ვერ მოხერხდა."
+
+#: src/dialogs.py:110
+msgid "Failed to Rename Files"
+msgstr "ფაილების სახელის გადარქმევა ჩავარდა"
+
+#: src/dialogs.py:111
+msgid "Some files could not be renamed."
+msgstr "ზოგიერთი ფაილის სახელის გადარქმევა ვერ მოხერხდა."
+
+#: src/dialogs.py:114
+msgid "Failed to Save Files"
+msgstr "ფაილების შენახვა ჩავარდა."
+
+#: src/dialogs.py:115
+msgid "Some files could not be saved."
+msgstr "ზოგიერთი ფაილის შენახვა ვერ მოხერხდა."
+
+#: src/dialogs.py:118
+msgid "An Error Has Occured"
+msgstr "აღმოჩენილია შეცდომა"
+
+#: src/dialogs.py:119
+msgid "An internal error has occured."
+msgstr "აღმოჩენილია შიდა შეცდომა."
+
+#: src/dialogs.py:125
+msgid ""
+"Please copy the logs below and <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">submit an issue report</a>."
+msgstr ""
+"დააკოპირეთ ჟურნალი ქვემოთ და <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">გახსენით ბილეთი შეცდომის შესახებ</a>."
+
+#: src/dialogs.py:142
+msgid "Copied error log to clipboard"
+msgstr "შეცდომის ჟურნალი დაკოპირდა ბუფერში"
 
 #: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
 #: src/ui/dialogs/removaldiscardwarning.blp:5
@@ -650,7 +711,7 @@ msgstr "მონიშნული საქაღალდე მხოლო�
 #. TRANSLATORS: {renamed} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/rename.py:385
+#: src/rename.py:382
 #, python-brace-format
 msgid "Renamed 1 file"
 msgid_plural "Renamed {renamed} files"
@@ -752,24 +813,29 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "აირჩიეთ ფაილი გადასახედად"
 
-#: src/identify.py:92 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:93 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "ამოცნობილი მონაცემების გადატარება"
 
+#. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+#: src/identify.py:134
+msgid "See release on MusicBrainz"
+msgstr "რელიზის ნახვა MusicBrainz-ზე"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:135
+#: src/identify.py:146
 msgid "Other releases"
 msgstr "სხვა რელიზები"
 
-#: src/identify.py:570
+#: src/identify.py:609
 msgid "Unidentified Files"
 msgstr "არაიდენტიფიცირებული ფაილები"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:851
+#: src/identify.py:914
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -779,7 +845,7 @@ msgstr[1] "ამოცნობილია {identified} ტრეკი"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:921
+#: src/identify.py:984
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
@@ -807,6 +873,10 @@ msgstr ""
 #: src/ui/identify/filerow.blp:22
 msgid "File could not be identified"
 msgstr "ფაილის იდენტიფიკაცია შეუძლებელია"
+
+#: src/ui/identify/recordingrow.blp:28
+msgid "See recording on MusicBrainz"
+msgstr "ჩანაწერის ნახვა MusicBrainz-ზე"
 
 #: src/ui/settings.blp:7
 msgid "File identification"
@@ -916,6 +986,9 @@ msgstr "სხვა"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "კლავიატურის მალსახმობები"
+
+#~ msgid "Opened file is read-only; changes cannot be saved"
+#~ msgstr "გახსნილი ფაილი მხოლოდ-კითხვადია. ცვლილებებს ვერ შეინახავთ"
 
 #~ msgid "Sort files by track number, album, name"
 #~ msgstr "დაალაგეთ ფაილები ტრეკის ნომრით, ალბომით ან სახელით"
