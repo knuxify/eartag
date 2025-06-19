@@ -33,7 +33,7 @@ class EartagEntryLimiters(GObject.Object):
     def _break_limiter_connections(self, *args):
         for conn_type in ("numeric", "float", "date"):
             if conn_type in self._limiter_connections:
-                self.disconnect(self._limiter_connections[conn_type])
+                self.get_delegate().disconnect(self._limiter_connections[conn_type])
         self.disconnect(self._limiter_connections["destroy"])
         self._limiter_connections = {}
 
