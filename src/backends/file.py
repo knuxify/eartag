@@ -179,9 +179,8 @@ class EartagFileCover:
         elif (path2, path1) in cls._filecmp_cache:
             return cls._filecmp_cache[(path2, path1)]
 
-        print(path1, path2)
-
         def _do_cmp(path1, path2):
+            bufsize = 8*1024
             with open(path1, "rb") as fp1, open(path2, "rb") as fp2:
                 while True:
                     b1 = fp1.read(bufsize)
