@@ -13,6 +13,7 @@ import shutil
 import tempfile
 import uuid
 import asyncio
+import hashlib
 from PIL import Image
 
 BASIC_TAGS = (
@@ -108,8 +109,12 @@ TAG_NAMES = {
 class EartagFileCover:
     """This class is only used for comparing two covers on two files."""
 
+    #: File comparison cache used by ._filecmp()
+    _filecmp_cache = {}
+
     def __init__(self, cover_path):
         self.cover_path = cover_path
+        self.cover_hash = None
         if cover_path:
             self.update_cover()
 
@@ -117,54 +122,94 @@ class EartagFileCover:
         if not self.cover_path:
             return
 
-        try:
-            self.cover_small = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-                self.cover_path, 48, 48, True
-            )
+        # Load using Pillow
+        with Image.open(self.cover_path) as img:
+            # Save some metadata for file comparisons
+            self.cover_meta = {
+                "size": (img.width, img.height),
+                "format": img.format,
+                "mode": img.mode,
+            }
 
-            self.cover_large = GdkPixbuf.Pixbuf.new_from_file_at_scale(
-                self.cover_path, 196, 196, True
-            )
-        except GLib.GError:
-            # Load using Pillow
-            with Image.open(self.cover_path) as img:
+            def img_to_pixbuf(img: Image) -> GdkPixbuf.Pixbuf:
+                """Convert a Pillow image to a GdkPixbuf."""
 
-                def img_to_pixbuf(img: Image) -> GdkPixbuf.Pixbuf:
-                    """Convert a Pillow image to a GdkPixbuf."""
+                # Pillow's raw image data is returned as a list of tuples
+                # with (R, G, B) values. This function converts them into
+                # GBytes.
+                data = GLib.Bytes.new(bytes(x for xs in img.getdata() for x in xs))
 
-                    # Pillow's raw image data is returned as a list of tuples
-                    # with (R, G, B) values. This function converts them into
-                    # GBytes.
-                    data = GLib.Bytes.new(
-                        bytes([x for xs in img.getdata() for x in xs])
-                    )
+                return GdkPixbuf.Pixbuf.new_from_bytes(
+                    data,
+                    GdkPixbuf.Colorspace.RGB,
+                    img.has_transparency_data,
+                    8,
+                    img.width,
+                    img.height,
+                    img.width * 3,
+                )
 
-                    return GdkPixbuf.Pixbuf.new_from_bytes(
-                        data,
-                        GdkPixbuf.Colorspace.RGB,
-                        img.has_transparency_data,
-                        8,
-                        img.width,
-                        img.height,
-                        img.width * 3,
-                    )
+            img_rgb = img.convert("RGB")
 
-                img_small = img.convert("RGB")
-                img_small.thumbnail((48, 48))
+            img_small = img_rgb.copy()
+            img_small.thumbnail((48, 48))
 
-                self.cover_small = img_to_pixbuf(img_small)
+            self.cover_small = img_to_pixbuf(img_small)
+            del img_small
 
-                img_large = img.convert("RGB")
-                img_large.thumbnail((192, 192))
+            img_large = img_rgb.copy()
+            img_large.thumbnail((192, 192))
 
-                self.cover_large = img_to_pixbuf(img_large)
+            self.cover_large = img_to_pixbuf(img_large)
+            del img_large
+
+            del img_rgb
+
+    @classmethod
+    def _filecmp(cls, path1: str, path2: str):
+        """
+        Custom cached file comparison implementation.
+
+        filecmp already does caching, but it only applies it when the
+        file signatures match. We expect the files to not change mid-way through
+        them being opened, so we can skip this check and save an IO operation.
+        """
+        if (path1, path2) in cls._filecmp_cache:
+            return cls._filecmp_cache[(path1, path2)]
+        elif (path2, path1) in cls._filecmp_cache:
+            return cls._filecmp_cache[(path2, path1)]
+
+        print(path1, path2)
+
+        def _do_cmp(path1, path2):
+            with open(path1, "rb") as fp1, open(path2, "rb") as fp2:
+                while True:
+                    b1 = fp1.read(bufsize)
+                    b2 = fp2.read(bufsize)
+                    if b1 != b2:
+                        return False
+                    if not b1:
+                        return True
+
+        ret = _do_cmp(path1, path2)
+
+        cls._filecmp_cache[(path1, path2)] = ret
+        cls._filecmp_cache[(path2, path1)] = ret
+
+        return ret
 
     def __eq__(self, other):
         if not isinstance(other, EartagFileCover):
             return False
         if self.cover_path and other.cover_path:
+            # If covers are present in both files, check metadata first, and only
+            # if the metadata is the same, perform a file comparison.
+            # The result of the comparison is cached to avoid blocking IO operations
+            # whenever a diff is done.
             try:
-                return filecmp.cmp(self.cover_path, other.cover_path)
+                return self.cover_meta == other.cover_meta or EartagFileCover._filecmp(
+                    self.cover_path, other.cover_path
+                )
             except FileNotFoundError:
                 return False
         else:
