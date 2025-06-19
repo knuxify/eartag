@@ -7,6 +7,8 @@ from .utils.limiters import EartagEntryLimiters
 from .utils.widgets import EartagEditableLabel
 from .backends.file import EartagFile
 
+from typing import List
+
 
 class EartagTagEntryBase(GObject.Object):
     """
@@ -29,7 +31,7 @@ class EartagTagEntryBase(GObject.Object):
     implemented in the entry class manually.
 
     The files property is managed by this class; the preferred way for users
-    to bind files is to use bind_to_file and unbind_from_file methods.
+    to bind files is to use bind_to_files and unbind_from_files methods.
     """
 
     """
@@ -52,8 +54,7 @@ class EartagTagEntryBase(GObject.Object):
         self._connections["destroy"] = self.connect("destroy", self.destroy_tagentry)
 
     def destroy_tagentry(self, *args):
-        for file in self.files.copy():
-            self.unbind_from_file(file)
+        self.unbind_from_files(self.files.copy())
 
         self.disconnect(self._connections["changed"])
         del self._connections["changed"]
@@ -61,21 +62,25 @@ class EartagTagEntryBase(GObject.Object):
         self.disconnect(self._connections["destroy"])
         del self._connections["destroy"]
 
-    def bind_to_file(self, file):
-        if file in self.files:
-            return
+    def bind_to_files(self, files: List[EartagFile]):
+        """Bind to files from a list."""
+        for file in files:
+            if file in self.files:
+                continue
 
-        self._connections[file.id] = file.connect("modified", self.on_file_change)
-        self.files.append(file)
+            self._connections[file.id] = file.connect("modified", self.on_file_change)
+            self.files.append(file)
 
         self.refresh_text()
 
-    def unbind_from_file(self, file):
-        if file not in self.files:
-            return
+    def unbind_from_files(self, files: List[EartagFile]):
+        """Unbind files in the list."""
+        for file in files:
+            if file not in self.files:
+                continue
 
-        file.disconnect(self._connections[file.id])
-        self.files.remove(file)
+            file.disconnect(self._connections[file.id])
+            self.files.remove(file)
 
         self.refresh_text()
 
@@ -88,9 +93,10 @@ class EartagTagEntryBase(GObject.Object):
             return False
 
         ref = self.files[0].get_property(self.bound_property)
-        for file in self.files:
+        for file in self.files[1:]:
             if file.get_property(self.bound_property) != ref:
                 return True
+
         return False
 
     def on_entry_change(self, *args):

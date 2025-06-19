@@ -218,6 +218,12 @@ class EartagAlbumCoverImage(Gtk.Stack):
         self.unbind_from_file()
 
     def bind_to_file(self, file):
+        """
+        Bind to a file.
+
+        Note that only one file can be bound; binding to a file while a file is
+        already bound will unbind the currently bound file.
+        """
         if self.file:
             self.unbind_from_file()
 
