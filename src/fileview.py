@@ -418,7 +418,9 @@ class EartagExtraTagRow(EartagTagEntryRow):
             icon_name="edit-delete-symbolic", valign=Gtk.Align.CENTER
         )
         self.row_remove_button.add_css_class("flat")
-        self._remove_clicked_connect = self.row_remove_button.connect("clicked", self.remove_button_pressed)
+        self._remove_clicked_connect = self.row_remove_button.connect(
+            "clicked", self.remove_button_pressed
+        )
         self.add_suffix(self.row_remove_button)
         self._destroy_connect = self.connect("destroy", self._on_destroy)
 
@@ -434,6 +436,7 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.disconnect(self._destroy_connect)
         del self.row_remove_button
         del self.parent
+
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/moretagsgroup.ui")
 class EartagMoreTagsGroup(Gtk.Box):
