@@ -414,13 +414,26 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.is_float = tag in EartagFile.float_properties
         self.set_title(extra_tag_names[tag])
 
-        row_remove_button = Gtk.Button(
+        self.row_remove_button = Gtk.Button(
             icon_name="edit-delete-symbolic", valign=Gtk.Align.CENTER
         )
-        row_remove_button.add_css_class("flat")
-        row_remove_button.connect("clicked", self.parent.remove_and_unbind_extra_row)
-        self.add_suffix(row_remove_button)
+        self.row_remove_button.add_css_class("flat")
+        self._remove_clicked_connect = self.row_remove_button.connect("clicked", self.remove_button_pressed)
+        self.add_suffix(self.row_remove_button)
+        self._destroy_connect = self.connect("destroy", self._on_destroy)
 
+    def remove_button_pressed(self, *args):
+        self.parent.remove_and_unbind_extra_row(self)
+
+    def _on_destroy(self, *args):
+        try:
+            self.row_remove_button
+        except AttributeError:
+            return
+        self.row_remove_button.disconnect(self._remove_clicked_connect)
+        self.disconnect(self._destroy_connect)
+        del self.row_remove_button
+        del self.parent
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/moretagsgroup.ui")
 class EartagMoreTagsGroup(Gtk.Box):
@@ -529,7 +542,7 @@ class EartagMoreTagsGroup(Gtk.Box):
         if not skip_filter_refresh:
             self.refresh_tag_filter()
 
-        del row
+        return row
 
     def remove_extra_row(self, row, skip_filter_refresh=False):
         """
