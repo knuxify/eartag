@@ -180,7 +180,7 @@ class EartagFileCover:
             return cls._filecmp_cache[(path2, path1)]
 
         def _do_cmp(path1, path2):
-            bufsize = 8*1024
+            bufsize = 8 * 1024
             with open(path1, "rb") as fp1, open(path2, "rb") as fp2:
                 while True:
                     b1 = fp1.read(bufsize)
@@ -190,7 +190,10 @@ class EartagFileCover:
                     if not b1:
                         return True
 
-        ret = _do_cmp(path1, path2)
+        if os.path.getsize(path1) == os.path.getsize(path2):
+            ret = _do_cmp(path1, path2)
+        else:
+            ret = False
 
         cls._filecmp_cache[(path1, path2)] = ret
         cls._filecmp_cache[(path2, path1)] = ret
@@ -205,10 +208,10 @@ class EartagFileCover:
             # if the metadata is the same, perform a file comparison.
             # The result of the comparison is cached to avoid blocking IO operations
             # whenever a diff is done.
+            if self.cover_meta != other.cover_meta:
+                return False
             try:
-                return self.cover_meta == other.cover_meta or EartagFileCover._filecmp(
-                    self.cover_path, other.cover_path
-                )
+                return EartagFileCover._filecmp(self.cover_path, other.cover_path)
             except FileNotFoundError:
                 return False
         else:
