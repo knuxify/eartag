@@ -14,3 +14,4 @@ repos:
       name: pytest-check
       entry: bash -c 'pytest tests'
       language: system
+      types: [python]
