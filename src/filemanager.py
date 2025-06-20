@@ -3,9 +3,12 @@
 
 from gi.repository import Adw, Gio, GObject, GLib, Gtk
 import asyncio
+import aiofiles
+import aiofiles.os
 import mimetypes
 import os.path
 import traceback
+import stat
 
 from .backends import (
     EartagFileMutagenVorbis,
@@ -16,7 +19,11 @@ from .backends import (
 from .backends.file import EartagFile
 from .utils.asynctask import EartagAsyncTask, EartagAsyncMultitasker
 from .utils.misc import find_in_model, cleanup_filename, natural_compare
-from .utils.validation import get_mimetype, is_valid_music_file, VALID_AUDIO_MIMES
+from .utils.validation import (
+    get_mimetype_async,
+    is_valid_music_file_async,
+    VALID_AUDIO_MIMES,
+)
 from .dialogs import EartagRemovalDiscardWarningDialog
 
 
@@ -33,7 +40,7 @@ async def eartagfile_from_path(path):
     # to avoid misdetections in cases where the file extension is incorrect.
 
     mimetypes_guess = mimetypes.guess_type(path)[0]
-    magic_guess = get_mimetype(path, no_extension_guess=True)
+    magic_guess = await get_mimetype_async(path, no_extension_guess=True)
 
     def is_type_bulk(types):
         if magic_guess in types:
@@ -197,9 +204,10 @@ class EartagFileManager(GObject.Object):
         # Fill the loading queue with paths
         dirs = set()
         for path in paths:
-            if await asyncio.to_thread(os.path.isfile, path):
+            _stat = await aiofiles.os.stat(path)
+            if stat.S_ISREG(_stat.st_mode):
                 await self.load_task.queue_put_async(path)
-            elif await asyncio.to_thread(os.path.isdir, path):
+            elif stat.S_ISDIR(_stat.st_mode):
                 dirs.add(path)
 
         depth = 0
@@ -207,13 +215,14 @@ class EartagFileManager(GObject.Object):
             new_dirs = set()
 
             for path in dirs:
-                for file in await asyncio.to_thread(os.listdir, path):
+                for file in await aiofiles.os.listdir(path):
                     fpath = os.path.join(path, file)
-                    if await asyncio.to_thread(os.path.isdir, fpath):
+                    _stat = await aiofiles.os.stat(fpath)
+                    if stat.S_ISDIR(_stat.st_mode):
                         new_dirs.add(fpath)
-                    elif await asyncio.to_thread(
-                        os.path.isfile, fpath
-                    ) and await asyncio.to_thread(is_valid_music_file, fpath):
+                    elif stat.S_ISREG(
+                        _stat.st_mode
+                    ) and await is_valid_music_file_async(fpath):
                         await self.load_task.queue_put_async(fpath)
 
             dirs = new_dirs

@@ -30,6 +30,7 @@ Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The follo
 - [pyacoustid](https://pypi.org/project/pyacoustid) (used for Identify Selected Files option)
 - [aiohttp](https://pypi.org/project/aiohttp) (used for the downloader used by the Identify Selected Files option)
 - [aiohttp-retry](https://pypi.org/project/aiohttp-retry) (see above)
+- [aiofiles](https://pypi.org/project/aiofiles/) (used during file loading)
 
 ## Building
 

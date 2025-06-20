@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
+import aiofiles
+import aiofiles.os
 import os.path
 import filetype
 from filetype.types import AUDIO as audio_matchers
 from filetype.types import IMAGE as image_matchers
+from filetype.types import VIDEO as video_matchers
 from filetype.types.base import Type
 import mimetypes
 
@@ -113,8 +116,14 @@ class Wma(Type):
 
 
 CUSTOM_MATCHERS = (ImprovedMP3(), Wma())
+FILETYPE_MATCHERS = CUSTOM_MATCHERS + audio_matchers + image_matchers + video_matchers
 
 _mimetype_cache = {}
+
+
+def get_mimetype_buffer(data):
+    """Get mimetype from buffer."""
+    return filetype.match(data, matchers=FILETYPE_MATCHERS)
 
 
 def get_mimetype(
@@ -133,9 +142,7 @@ def get_mimetype(
         if path in _mimetype_cache:
             return _mimetype_cache[path]
 
-    mimetype = filetype.match(
-        path, matchers=(CUSTOM_MATCHERS + audio_matchers + image_matchers)
-    )
+    mimetype = filetype.match(path, matchers=FILETYPE_MATCHERS)
 
     ret = None
     if mimetype:
@@ -152,19 +159,40 @@ def get_mimetype(
     return ret
 
 
-def get_mimetype_buffer(data):
-    """Get mimetype from buffer."""
-    return filetype.match(data, matchers=(filetype.types.AUDIO + filetype.types.IMAGE))
+async def get_mimetype_async(
+    path: Union[str, os.PathLike],
+    no_extension_guess: bool = False,
+    no_cache: bool = False,
+) -> Optional[str]:
+    """
+    Return the mimetype (or None) for the file with the given path or data.
 
+    Async-safe version of get_mimetype.
 
-def is_valid_music_file(path: Union[str, os.PathLike], no_cache: bool = False):
-    """Check if the file at the provided path is a supported audio file."""
-    return is_valid_file(path, VALID_AUDIO_MIMES, no_cache=no_cache)
+    :param path: Path to the file (or buffer data).
+    :param no_extension_guess: If True, skips guessing the filetype from the extension.
+    :param no_cache: Skip the mimetype cache.
+    """
+    if not no_cache:
+        if path in _mimetype_cache:
+            return _mimetype_cache[path]
 
+    async with aiofiles.open(path, "rb") as file:
+        mimetype = get_mimetype_buffer(await file.read(2048))
 
-def is_valid_image_file(path: Union[str, os.PathLike], no_cache: bool = False):
-    """Check if the file at the provided path is a supported image file."""
-    return is_valid_file(path, VALID_IMAGE_MIMES, no_cache=no_cache)
+    ret = None
+    if mimetype:
+        ret = mimetype.mime
+    elif not no_extension_guess:
+        # Try to guess mimetype from file extension if filetype match fails
+        guess = mimetypes.guess_type(path)
+        if guess and guess[0]:
+            ret = guess[0]
+
+    if not no_cache:
+        _mimetype_cache[path] = ret
+
+    return ret
 
 
 def is_valid_file(
@@ -184,3 +212,48 @@ def is_valid_file(
     if not mimetype or mimetype not in valid_mime_types:
         return False
     return True
+
+
+def is_valid_music_file(path: Union[str, os.PathLike], no_cache: bool = False):
+    """Check if the file at the provided path is a supported audio file."""
+    return is_valid_file(path, VALID_AUDIO_MIMES, no_cache=no_cache)
+
+
+def is_valid_image_file(path: Union[str, os.PathLike], no_cache: bool = False):
+    """Check if the file at the provided path is a supported image file."""
+    return is_valid_file(path, VALID_IMAGE_MIMES, no_cache=no_cache)
+
+
+async def is_valid_file_async(
+    path: Union[str, os.PathLike],
+    valid_mime_types: Iterable[str],
+    no_cache: bool = False,
+):
+    """
+    Takes a path to a file and returns True if it's supported, False otherwise.
+
+    Async version of is_valid_file.
+    """
+    # In Flatpak, some files don't exist; double-check to make sure
+    if not await aiofiles.os.path.exists(path):
+        return False
+
+    mimetype = await get_mimetype_async(path, no_cache=no_cache)
+
+    if not mimetype or mimetype not in valid_mime_types:
+        return False
+    return True
+
+
+async def is_valid_music_file_async(
+    path: Union[str, os.PathLike], no_cache: bool = False
+):
+    """Check if the file at the provided path is a supported audio file."""
+    return await is_valid_file_async(path, VALID_AUDIO_MIMES, no_cache=no_cache)
+
+
+async def is_valid_image_file_async(
+    path: Union[str, os.PathLike], no_cache: bool = False
+):
+    """Check if the file at the provided path is a supported image file."""
+    return await is_valid_file_async(path, VALID_IMAGE_MIMES, no_cache=no_cache)
