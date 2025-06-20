@@ -8,6 +8,7 @@ from src.musicbrainz import (
     # 	make_request,
 )
 from src.backends.file_mutagen_id3 import EartagFileMutagenID3
+from .common import dummy_file  # noqa: F401
 
 import pytest
 import os
@@ -117,9 +118,7 @@ async def test_musicbrainz_covers():
 
 @pytest.mark.asyncio
 @pytest.mark.networked_tests
-async def test_musicbrainz_file_set(
-    dummy_file,  # noqa: F811; flake8 doesn't understand fixtures
-):
+async def test_musicbrainz_file_set(dummy_file):  # noqa: F811
     """Tests the MusicBrainz file wrappers."""
 
     # Test with not enough data
