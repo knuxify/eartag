@@ -28,13 +28,13 @@ build-alpine:
   image: alpine:edge
   extends: .build-common
   before_script:
-    - apk add build-base git gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-filetype py3-mutagen py3-pillow py3-aiohttp py3-aiohttp-retry desktop-file-utils appstream-glib gettext py3-pytest py3-pytest-asyncio py3-flake8 py3-pyacoustid ffmpeg
+    - apk add build-base git gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-filetype py3-mutagen py3-pillow py3-aiohttp py3-aiohttp-retry py3-aiofiles desktop-file-utils appstream-glib gettext py3-pytest py3-pytest-asyncio py3-flake8 py3-pyacoustid ffmpeg
 
 lint-alpine:
   image: alpine:edge
   stage: lint
   before_script:
-    - apk add build-base gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-filetype py3-mutagen py3-pillow py3-aiohttp py3-aiohttp-retry desktop-file-utils appstream-glib gettext py3-pytest py3-flake8 black
+    - apk add build-base gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-filetype py3-mutagen py3-pillow py3-aiohttp py3-aiohttp-retry py3-aiofiles desktop-file-utils appstream-glib gettext py3-pytest py3-flake8 black
   script:
     - flake8 . --count --select=E9,F63,F7,F82,F821 --show-source --statistics
     - black --check .
