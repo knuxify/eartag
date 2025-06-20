@@ -32,6 +32,16 @@ Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The follo
 - [aiohttp-retry](https://pypi.org/project/aiohttp-retry) (see above)
 - [aiofiles](https://pypi.org/project/aiofiles/) (used during file loading)
 
+The following packages are required to run tests:
+
+- appstreamcli
+- desktop-file-utils
+- glib-compile-schemas
+- [pytest](https://pypi.org/project/pytest/)
+- [pytest-asyncio](https://pypi.org/project/pytest-asyncio/)
+
+[ruff](https://docs.astral.sh/ruff/) is used for linting/formatting the code.
+
 ## Building
 
 We use the meson build system. The build process is as follows:
