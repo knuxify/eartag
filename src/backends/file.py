@@ -5,15 +5,12 @@ import gi
 
 gi.require_version("GdkPixbuf", "2.0")
 from gi.repository import GObject, GdkPixbuf, GLib
-import filecmp
-import io
 import os
 import re
 import shutil
 import tempfile
 import uuid
 import asyncio
-import hashlib
 from PIL import Image
 
 BASIC_TAGS = (
@@ -44,7 +41,7 @@ class CoverType:
 
 # Workaround for tests not having the _ variable available
 try:
-    _
+    _  # noqa: B018
 except NameError:
     _ = lambda x: x  # noqa: E731
 
@@ -357,12 +354,8 @@ class EartagFile(GObject.Object):
             else:
                 self.original_values[tag] = self.get_property(tag)
         if self._supports_album_covers:
-            self.original_values["front_cover_path"] = self.get_property(
-                "front_cover_path"
-            )
-            self.original_values["back_cover_path"] = self.get_property(
-                "back_cover_path"
-            )
+            self.original_values["front_cover_path"] = self.get_property("front_cover_path")
+            self.original_values["back_cover_path"] = self.get_property("back_cover_path")
 
     def update_writability(self):
         """
@@ -451,9 +444,7 @@ class EartagFile(GObject.Object):
         """Reloads the file and discards all modifications."""
         await self.load_from_file(self.props.path)
         for prop in (
-            BASIC_TAGS
-            + tuple(self.supported_extra_tags)
-            + ("front_cover_path", "back_cover_path")
+            BASIC_TAGS + tuple(self.supported_extra_tags) + ("front_cover_path", "back_cover_path")
         ):
             self.notify(prop)
 

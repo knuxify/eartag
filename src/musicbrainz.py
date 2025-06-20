@@ -3,9 +3,7 @@ Contains code for interacting with the MusicBrainz API.
 """
 
 import asyncio
-import json
 import os.path
-import time
 import traceback
 import urllib
 import urllib.parse
@@ -20,7 +18,7 @@ import audioread
 audioread._gst_available = lambda: False
 import acoustid
 
-from gi.repository import GObject, GLib
+from gi.repository import GObject
 
 from ._async import event_loop
 from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
@@ -28,13 +26,13 @@ from .backends.file import EartagFile
 from .logger import logger
 
 try:
-    from . import ACOUSTID_API_KEY, VERSION
+    from . import ACOUSTID_API_KEY
 except ImportError:  # handle test suite import
-    from tests.common import ACOUSTID_API_KEY, VERSION, config
+    from tests.common import ACOUSTID_API_KEY, config
 else:
     from .config import config
 
-from .utils import simplify_string, simplify_compare, title_case_preserve_uppercase
+from .utils import simplify_string, title_case_preserve_uppercase
 
 LAST_REQUEST = 0
 
@@ -52,10 +50,10 @@ def build_url(endpoint, id="", **kwargs):
             argdata = "+".join(argdata)
         elif argname == "query" and isinstance(argdata, dict):
             argdata = " AND ".join([f"{k}:{v}" for k, v in argdata.items() if v])
-        args.append(f'{argname}={urllib.parse.quote(argdata, encoding="utf-8")}')
+        args.append(f"{argname}={urllib.parse.quote(argdata, encoding='utf-8')}")
     if id:
-        return f'https://musicbrainz.org/ws/2/{endpoint}/{id}?{"&".join(args)}&fmt=json'
-    return f'https://musicbrainz.org/ws/2/{endpoint}?{"&".join(args)}&fmt=json'
+        return f"https://musicbrainz.org/ws/2/{endpoint}/{id}?{'&'.join(args)}&fmt=json"
+    return f"https://musicbrainz.org/ws/2/{endpoint}?{'&'.join(args)}&fmt=json"
 
 
 class EartagCAACover(GObject.Object):
@@ -66,9 +64,7 @@ class EartagCAACover(GObject.Object):
 
     cover_downloader = EartagQueuedDownloader(mode=EartagDownloaderMode.MODE_FILE)
 
-    def __init__(
-        self, item_type: str, item_id: str, cover_type: str, cover_size: int = -1
-    ):
+    def __init__(self, item_type: str, item_id: str, cover_type: str, cover_size: int = -1):
         """
         Initialize the CAACover object.
 
@@ -148,9 +144,7 @@ class MusicBrainzRecording(GObject.Object):
             print("Warning: run fetch_full_data_async() to get release data")
             return []
 
-        available_releases = [
-            MusicBrainzRelease(rel) for rel in self.mb_data["releases"]
-        ]
+        available_releases = [MusicBrainzRelease(rel) for rel in self.mb_data["releases"]]
 
         self._available_releases = available_releases
 
@@ -230,7 +224,6 @@ class MusicBrainzRecording(GObject.Object):
         fetch_method = 0
         got_useful_result = False
         while True:
-
             # Method 0. Perform a regular query with all the parameters.
             if fetch_method == 0:
                 logger.debug("  - Method 0: regular query with all parameters")
@@ -262,33 +255,21 @@ class MusicBrainzRecording(GObject.Object):
 
             # Method 3. Same as 2, but without album, if we are given one.
             elif fetch_method == 3:
-                if (
-                    album
-                    and simplify_string(title) != title
-                    and simplify_string(artist) != artist
-                ):
-                    logger.debug(
-                        "  - Method 3: query with simplified tags and no album"
-                    )
+                if album and simplify_string(title) != title and simplify_string(artist) != artist:
+                    logger.debug("  - Method 3: query with simplified tags and no album")
                     new_search_data = await _query_recordings(
                         simplify_string(title), simplify_string(artist), ""
                     )
                 else:
-                    logger.debug(
-                        "  - Method 3 (skipped): query with simplified tags and no album"
-                    )
+                    logger.debug("  - Method 3 (skipped): query with simplified tags and no album")
 
             # Once we have exhausted all methods, return empty data.
             else:
                 logger.debug("  - Ran out of methods.")
                 break
 
-            search_data += [
-                r for r in new_search_data if r.get("id") not in search_data_ids
-            ]
-            search_data_ids = search_data_ids.union(
-                set([r.get("id") for r in new_search_data])
-            )
+            search_data += [r for r in new_search_data if r.get("id") not in search_data_ids]
+            search_data_ids = search_data_ids.union(set([r.get("id") for r in new_search_data]))
             fetch_method += 1
 
             # Filter out non-useful results; if we didn't get anything that seems
@@ -316,7 +297,7 @@ class MusicBrainzRecording(GObject.Object):
         for r in search_data:
             try:
                 rec = MusicBrainzRecording(r)
-            except:
+            except:  # noqa: E722
                 traceback.print_exc()
                 continue
 
@@ -368,9 +349,7 @@ class MusicBrainzRecording(GObject.Object):
 
             return out
 
-        ret.sort(
-            key=_rec_file_cmp, reverse=True
-        )  # The larger the number, the more tag matches
+        ret.sort(key=_rec_file_cmp, reverse=True)  # The larger the number, the more tag matches
 
         logger.debug(f"Recordings after sorting: \n{ret}")
 
@@ -401,9 +380,7 @@ class MusicBrainzRecording(GObject.Object):
             # to make sure that full release dates take precedence.
             rels.sort(
                 key=lambda rel: (
-                    rel.releasedate
-                    if len(rel.releasedate) > 4
-                    else rel.releasedate + "-zz-zz"
+                    rel.releasedate if len(rel.releasedate) > 4 else rel.releasedate + "-zz-zz"
                 )
             )
 
@@ -418,8 +395,7 @@ class MusicBrainzRecording(GObject.Object):
             # Move unofficial releases and compilations to the end of the list.
             rels.sort(
                 key=lambda rel: int(
-                    rel.status != "official"
-                    or "compilation" in rel.group.secondary_types
+                    rel.status != "official" or "compilation" in rel.group.secondary_types
                 )  # official = 0, unofficial = 1
             )
 
@@ -434,9 +410,7 @@ class MusicBrainzRecording(GObject.Object):
                 # Check 1.5. Check if the simplified album title matches
                 if not rels_q and simplify_string(album):
                     rels_q = [
-                        rel
-                        for rel in rels
-                        if simplify_string(album) == simplify_string(rel.title)
+                        rel for rel in rels if simplify_string(album) == simplify_string(rel.title)
                     ]
                 # These two lines ensure that we don't end up with 0 releases post-query;
                 # they are present in the remaining checks as well
@@ -448,9 +422,7 @@ class MusicBrainzRecording(GObject.Object):
                 rels_q = [rel for rel in rels if releasedate == rel.releasedate]
                 # Check 2.5: Check if the release year matches
                 if not rels_q and len(releasedate) >= 4:
-                    rels_q = [
-                        rel for rel in rels if releasedate[:4] == rel.releasedate[:4]
-                    ]
+                    rels_q = [rel for rel in rels if releasedate[:4] == rel.releasedate[:4]]
                 if rels_q:
                     rels = rels_q
 
@@ -459,10 +431,7 @@ class MusicBrainzRecording(GObject.Object):
                 rels_q = [
                     rel
                     for rel in rels
-                    if (
-                        rel.totaltracknumber
-                        and totaltracknumber == rel.totaltracknumber
-                    )
+                    if (rel.totaltracknumber and totaltracknumber == rel.totaltracknumber)
                     or not rel.totaltracknumber
                 ]
                 if rels_q:
@@ -485,7 +454,7 @@ class MusicBrainzRecording(GObject.Object):
         Takes an EartagFile and applies the data from this recording to it.
         """
         try:
-            self.release
+            self.release  # noqa: B018
         except ValueError:
             print("No release")
             return False
@@ -510,12 +479,8 @@ class MusicBrainzRecording(GObject.Object):
         file.props.musicbrainz_recordingid = self.recording_id
         file.props.musicbrainz_albumid = self.release.release_id
         file.props.musicbrainz_releasegroupid = self.release.group.relgroup_id
-        file.props.musicbrainz_trackid = self.media.get(
-            "tracks", self.media.get("track")
-        )[0]["id"]
-        file.props.musicbrainz_artistid = self.mb_data["artist-credit"][0]["artist"][
-            "id"
-        ]
+        file.props.musicbrainz_trackid = self.media.get("tracks", self.media.get("track"))[0]["id"]
+        file.props.musicbrainz_artistid = self.mb_data["artist-credit"][0]["artist"]["id"]
 
     @GObject.Property(type=str)
     def recording_id(self):
@@ -639,9 +604,7 @@ class MusicBrainzRecording(GObject.Object):
     def __str__(self):
         if self.disambiguation:
             return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist} ({self.disambiguation}))"
-        return (
-            f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})"
-        )
+        return f"MusicBrainzRecording {self.recording_id} ({self.title} - {self.artist})"
 
     def __repr__(self):
         return self.__str__()
@@ -759,9 +722,7 @@ class MusicBrainzRelease(GObject.Object):
     @GObject.Property(type=str)
     def front_cover_path(self):
         if not self.front_cover.props.loaded:
-            raise ValueError(
-                "Covers have not been downloaded yet; run download_covers_async()"
-            )
+            raise ValueError("Covers have not been downloaded yet; run download_covers_async()")
         if not self.front_cover.props.path:
             return self.group.front_cover_path
         return self.front_cover.props.path
@@ -769,9 +730,7 @@ class MusicBrainzRelease(GObject.Object):
     @GObject.Property(type=str)
     def back_cover_path(self):
         if not self.back_cover.props.loaded:
-            raise ValueError(
-                "Covers have not been downloaded yet; run download_covers_async()"
-            )
+            raise ValueError("Covers have not been downloaded yet; run download_covers_async()")
         return self.back_cover.props.path
 
     def queue_thumbnail_download(self):
@@ -827,8 +786,6 @@ class MusicBrainzReleaseGroup(GObject.Object):
         super().__init__()
         self._releases = None
 
-        groupid = relgroup_data["id"]
-
         self.mb_data = relgroup_data
 
         self.thumbnail = EartagCAACover("release-group", self.relgroup_id, "thumbnail")
@@ -836,9 +793,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
 
     @staticmethod
     async def _fetch_full_data(groupid):
-        return await mb_query.download(
-            build_url("release-group", groupid, inc=["releases"])
-        )
+        return await mb_query.download(build_url("release-group", groupid, inc=["releases"]))
 
     @staticmethod
     async def new_for_id(id):
@@ -870,16 +825,12 @@ class MusicBrainzReleaseGroup(GObject.Object):
     @GObject.Property
     def releases(self):
         if not self._releases:
-            raise ValueError(
-                "Releases have not been initialized yet; run get_releases_async()"
-            )
+            raise ValueError("Releases have not been initialized yet; run get_releases_async()")
         return self._releases
 
     async def get_releases_async(self):
         if not self._releases:
-            self._releases = [
-                await MusicBrainzRelease.new_for_id(id) for id in self.release_ids
-            ]
+            self._releases = [await MusicBrainzRelease.new_for_id(id) for id in self.release_ids]
 
     @GObject.Property(type=str)
     def thumbnail_path(self):
@@ -888,9 +839,7 @@ class MusicBrainzReleaseGroup(GObject.Object):
     @GObject.Property(type=str)
     def front_cover_path(self):
         if not self.front_cover.props.loaded:
-            raise ValueError(
-                "Covers have not been downloaded yet; run download_covers_async()"
-            )
+            raise ValueError("Covers have not been downloaded yet; run download_covers_async()")
         return self.front_cover.props.path
 
     def __eq__(self, other):
@@ -909,17 +858,13 @@ async def acoustid_identify_file(file) -> Tuple[float, "MusicBrainzRecording"]:
     Returns a tuple containing the confidence and MusicBrainzRecording
     object for the file, or (0.0, None) if it couldn't be found.
     """
-    logger.debug(
-        f"Running AcoustID identification for file {os.path.basename(file.path)}"
-    )
+    logger.debug(f"Running AcoustID identification for file {os.path.basename(file.path)}")
 
     try:
-        results = await asyncio.to_thread(
-            acoustid.match, ACOUSTID_API_KEY, file.path, parse=False
-        )
+        results = await asyncio.to_thread(acoustid.match, ACOUSTID_API_KEY, file.path, parse=False)
         if "results" not in results or not results["results"]:
             return (0.0, None)
-    except:
+    except:  # noqa: E722
         logger.warning(
             f"Error while getting AcoustID match for {os.path.basename(file.path)} ({file.id}):"
         )

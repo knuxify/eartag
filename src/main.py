@@ -19,7 +19,6 @@ from ._async import policy
 from . import APP_ID, APP_GRESOURCE_PATH
 from .utils.validation import is_valid_music_file, get_mimetype
 from .window import EartagFileDialogType, EartagWindow
-from .filemanager import EartagFileManager
 from .logger import logger
 
 
@@ -36,9 +35,7 @@ class Application(Adw.Application):
         self.connect("open", self.on_open)
         if devel:
             logger.setLevel(logging.DEBUG)
-        logger.info(
-            f"Starting Ear Tag {version}{' (development mode)' if devel else ''}"
-        )
+        logger.info(f"Starting Ear Tag {version}{' (development mode)' if devel else ''}")
 
     def on_open(self, app, files, *args):
         window = self.props.active_window
@@ -79,12 +76,8 @@ class Application(Adw.Application):
 
             self.create_action("next_file", self.on_next_action, "<Alt>Right")
             self.create_action("previous_file", self.on_previous_action, "<Alt>Left")
-            self.create_action(
-                "close_selected", self.on_close_selected_action, "<Ctrl>w"
-            )
-            self.create_action(
-                "select_all", self.on_select_all_action, "<Ctrl><Shift>a"
-            )
+            self.create_action("close_selected", self.on_close_selected_action, "<Ctrl>w")
+            self.create_action("select_all", self.on_select_all_action, "<Ctrl><Shift>a")
 
             self.create_action("toggle_sidebar", self.on_toggle_sidebar_action, "F9")
             self.create_action("open_menu", self.on_open_menu_action, "F10")
@@ -92,24 +85,16 @@ class Application(Adw.Application):
             self.sort_action = self.create_action("sort", self.on_sort_action, None)
             self.sort_action.set_enabled(False)
 
-            self.rename_action = self.create_action(
-                "rename", self.on_rename_action, None
-            )
+            self.rename_action = self.create_action("rename", self.on_rename_action, None)
             self.rename_action.set_enabled(False)
 
-            self.extract_action = self.create_action(
-                "extract", self.on_extract_action, None
-            )
+            self.extract_action = self.create_action("extract", self.on_extract_action, None)
             self.extract_action.set_enabled(False)
 
-            self.identify_action = self.create_action(
-                "identify", self.on_identify_action, None
-            )
+            self.identify_action = self.create_action("identify", self.on_identify_action, None)
             self.identify_action.set_enabled(False)
 
-            self.undo_all_action = self.create_action(
-                "undo_all", self.on_undo_all_action, None
-            )
+            self.undo_all_action = self.create_action("undo_all", self.on_undo_all_action, None)
             self.undo_all_action.set_enabled(False)
 
             self.delete_all_tags_action = self.create_action(
@@ -207,9 +192,9 @@ class Application(Adw.Application):
         opened_file_list_str = "\n - ".join(opened_file_list) or "None"
 
         about.set_debug_info(
-            f"""Ear Tag {self.version}{' (Development version)' if self.devel else ''}
+            f"""Ear Tag {self.version}{" (Development version)" if self.devel else ""}
 
-Running in Flatpak: {os.path.exists('/.flatpak-info') and 'YES' or 'NO'}
+Running in Flatpak: {os.path.exists("/.flatpak-info") and "YES" or "NO"}
 
 Dependency versions:
  - {lib_version_str}

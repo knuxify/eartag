@@ -126,8 +126,7 @@ class EartagPreviewSelectorButton(Gtk.MenuButton):
         query = self.search_entry.get_text()
         if query:
             return (
-                query.lower()
-                in f"{item.props.artist.lower()} {item.props.title.lower()}"
+                query.lower() in f"{item.props.artist.lower()} {item.props.title.lower()}"
                 or query.lower() in os.path.basename(item.path).lower()
             )
         return True

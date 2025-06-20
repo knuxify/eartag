@@ -6,18 +6,15 @@ from gi.repository import Adw, Gtk, Gio, GObject, GdkPixbuf
 import asyncio
 import os
 import html
-import gettext
 import traceback
 
-from ._async import event_loop
 from .musicbrainz import (
     acoustid_identify_file,
     MusicBrainzRecording,
     MusicBrainzRelease,
-    MusicBrainzReleaseGroup,
 )
 from .logger import logger
-from .utils import simplify_compare, reg_and_simple_cmp, find_in_model, all_equal
+from .utils import reg_and_simple_cmp, find_in_model
 from .utils.asynctask import EartagAsyncTask
 from .utils.widgets import EartagModelExpanderRow
 from .backends.file import EartagFile
@@ -145,9 +142,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         # This allows the user to switch between different releases of an album, EP, etc.
         self.release_popover_toggle.set_tooltip_text(_("Other releases"))
         self.release_popover_toggle.set_icon_name("view-more-symbolic")
-        self.release_popover_toggle.connect(
-            "notify::active", self.download_alt_release_thumbnails
-        )
+        self.release_popover_toggle.connect("notify::active", self.download_alt_release_thumbnails)
         self.add_suffix(self.release_popover_toggle)
 
     def bind_to_release(self, release):
@@ -279,9 +274,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         else:
             self._relswitch_first_row = row
             row.set_sensitive(False)
-        row.apply_checkbox.connect(
-            "notify::active", self.set_release_from_selector, rel.release_id
-        )
+        row.apply_checkbox.connect("notify::active", self.set_release_from_selector, rel.release_id)
         return row
 
     def download_alt_release_thumbnails(self, *args):
@@ -451,7 +444,7 @@ class EartagIdentifyFileRow(Adw.ActionRow):
 
     def update_subtitle(self, *args):
         self._subtitle = (
-            f'{self.file.artist or "N/A"} • {self.file.album or "N/A"}'
+            f"{self.file.artist or 'N/A'} • {self.file.album or 'N/A'}"
             + f" ({os.path.basename(self.file.path)})"
         )
         self.set_subtitle(html.escape(self._subtitle))
@@ -483,8 +476,8 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         file_id = None
         self.parent = parent
         assert self.parent
-        for file_id, _rec in self.parent.parent.recordings.items():
-            if _rec.recording_id == recording.recording_id:
+        for _file_id, rec in self.parent.parent.recordings.items():
+            if rec.recording_id == recording.recording_id:
                 break
         self.file_id = file_id
 
@@ -533,7 +526,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.set_title(title)
 
     def update_subtitle(self, *args):
-        self._subtitle = f'{self.recording.artist or "N/A"} • {self.recording.album or "N/A"} ({self.file_name or "N/A"})'  # noqa: E501
+        self._subtitle = f"{self.recording.artist or 'N/A'} • {self.recording.album or 'N/A'} ({self.file_name or 'N/A'})"  # noqa: E501
         self.set_subtitle(html.escape(self._subtitle))
 
     def start_loading(self):
@@ -589,9 +582,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.files = Gio.ListStore(item_type=EartagFile)
         self.unidentified_filter = Gtk.CustomFilter()
         self.unidentified_filter.set_filter_func(self.unidentified_filter_func)
-        self.unidentified_filter.connect(
-            "changed", self.mark_unidentified_filter_as_changed
-        )
+        self.unidentified_filter.connect("changed", self.mark_unidentified_filter_as_changed)
         self.files_unidentified = Gtk.FilterListModel(
             model=self.files, filter=self.unidentified_filter
         )
@@ -611,9 +602,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         cover_dummy = EartagIdentifyCoverImage()
         cover_dummy.set_hexpand(False)
         self.unidentified_row.add_prefix(cover_dummy)
-        self.unidentified_row.bind_model(
-            self.files_unidentified, self.unidentified_row_create
-        )
+        self.unidentified_row.bind_model(self.files_unidentified, self.unidentified_row_create)
 
         self.content_listbox.append(self.unidentified_row)
 
@@ -623,9 +612,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.apply_task.bind_property("progress", self.id_progress, "fraction")
         self.apply_task.connect("task-done", self.on_apply_done)
 
-        self.files.splice(
-            0, self.files.get_n_items(), self.file_manager.selected_files_list
-        )
+        self.files.splice(0, self.files.get_n_items(), self.file_manager.selected_files_list)
 
         self.connect("closed", self.on_close_request)
 
@@ -661,7 +648,7 @@ class EartagIdentifyDialog(Adw.Dialog):
 
     def _identify_set_recording(self, file, rec):
         try:
-            rec.release
+            rec.release  # noqa: B018
         except ValueError:
             rec.release = rec.available_releases[0]
 
@@ -674,9 +661,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             row.update_filter()
             row._filter_changed = False
         else:
-            self.release_rows[rec.release.release_id] = EartagIdentifyReleaseRow(
-                self, rec.release
-            )
+            self.release_rows[rec.release.release_id] = EartagIdentifyReleaseRow(self, rec.release)
             self.content_listbox.prepend(self.release_rows[rec.release.release_id])
 
         self._filter_changed = False
@@ -695,9 +680,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             logger.info(f"Identifying recordings for file: {file}")
             unid_index = find_in_model(self.files_unidentified, file)
             if unid_index < 0:
-                logger.error(
-                    "Could not find file in unidentifed filter, this should never happen!"
-                )
+                logger.error("Could not find file in unidentifed filter, this should never happen!")
                 continue
 
             unid_row = self.unidentified_row.get_row_at_index(unid_index)
@@ -708,9 +691,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             try:
                 if file.title and file.artist:
                     # For files with a title/artist tag, look up the data in MusicBrainz
-                    recordings = await MusicBrainzRecording.get_recordings_for_file(
-                        file
-                    )
+                    recordings = await MusicBrainzRecording.get_recordings_for_file(file)
                 else:
                     # Try to guess title and artist from filename
                     filename = os.path.splitext(os.path.basename(file.path))[0]
@@ -723,36 +704,25 @@ class EartagIdentifyDialog(Adw.Dialog):
                     if part1.isnumeric():
                         part1 = part2
                         part2 = ""
-                    logger.debug(
-                        f"No title/artist, guess from filename: {part1}, {part2}"
-                    )
+                    logger.debug(f"No title/artist, guess from filename: {part1}, {part2}")
 
                     if part1 and part2:
-                        recordings += (
-                            await MusicBrainzRecording.get_recordings_for_file(
-                                file, overrides={"title": part1, "artist": part2}
-                            )
+                        recordings += await MusicBrainzRecording.get_recordings_for_file(
+                            file, overrides={"title": part1, "artist": part2}
                         )
-                        recordings += (
-                            await MusicBrainzRecording.get_recordings_for_file(
-                                file, overrides={"title": part2, "artist": part1}
-                            )
+                        recordings += await MusicBrainzRecording.get_recordings_for_file(
+                            file, overrides={"title": part2, "artist": part1}
                         )
                     elif part1:
-                        recordings += (
-                            await MusicBrainzRecording.get_recordings_for_file(
-                                file, overrides={"title": part1}
-                            )
+                        recordings += await MusicBrainzRecording.get_recordings_for_file(
+                            file, overrides={"title": part1}
                         )
 
                 # If we don't find anything or we find multiple recordings, try AcoustID
                 if (
                     not recordings
                     or len(recordings) > 1
-                    or (
-                        recordings[0].release
-                        and recordings[0].release.status != "official"
-                    )
+                    or (recordings[0].release and recordings[0].release.status != "official")
                     or not file.title
                     or not file.artist
                 ):
@@ -762,14 +732,12 @@ class EartagIdentifyDialog(Adw.Dialog):
                     # file we have:
                     if id_recording:
                         match = True
-                        if file.title and not reg_and_simple_cmp(
-                            id_recording.title, file.title
-                        ):
+                        if file.title and not reg_and_simple_cmp(id_recording.title, file.title):
                             match = False
 
                         if file.album:
                             try:
-                                id_recording.release
+                                id_recording.release  # noqa: B018
                             except ValueError:  # multiple releases
                                 match = False
                                 for rel in id_recording.available_releases:
@@ -778,9 +746,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                                         match = True
                                         break
                             else:
-                                if not reg_and_simple_cmp(
-                                    id_recording.album, file.album
-                                ):
+                                if not reg_and_simple_cmp(id_recording.album, file.album):
                                     match = False
 
                         if match:
@@ -835,7 +801,7 @@ class EartagIdentifyDialog(Adw.Dialog):
 
         # For each group, figure out which one contains the most of our identified
         # recordings. The one that covers the most wins.
-        for group_id, releases in groups.items():
+        for group_id in groups.values():
             rel_trackcount = {}  # release ID: [recording IDs]
             for rec in group_recs[group_id]:
                 rec_rel_ids = [rel.release_id for rel in rec.available_releases]
@@ -892,9 +858,7 @@ class EartagIdentifyDialog(Adw.Dialog):
 
     def on_identify_done(self, task, *args):
         try:
-            identified = (
-                self.files.get_n_items() - self.files_unidentified.get_n_items()
-            )
+            identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
         except AttributeError:  # this happens when the operation is cancelled
             return
         self.end_button_stack.set_visible_child(self.apply_button)
@@ -970,9 +934,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.props.can_close = True
         self.file_manager.emit("refresh-needed")
         try:
-            identified = (
-                self.files.get_n_items() - self.files_unidentified.get_n_items()
-            )
+            identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
         except AttributeError:  # this happens when the operation is cancelled
             return
         self.parent.toast_overlay.add_toast(

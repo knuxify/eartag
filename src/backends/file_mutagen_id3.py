@@ -202,18 +202,12 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             else:
                 stringified = str(value)
 
-            self.mg_file.tags.setall(
-                frame_name, [frame_class(encoding=3, text=[stringified])]
-            )
+            self.mg_file.tags.setall(frame_name, [frame_class(encoding=3, text=[stringified])])
         elif tag_name in FREEFORM_KEYS:
-            txxx = mutagen.id3.TXXX(
-                encoding=3, desc=FREEFORM_KEYS[tag_name], text=[value]
-            )
+            txxx = mutagen.id3.TXXX(encoding=3, desc=FREEFORM_KEYS[tag_name], text=[value])
             self.mg_file.tags.setall("TXXX:" + FREEFORM_KEYS[tag_name], [txxx])
         elif tag_name == "musicbrainz_recordingid":
-            ufid = mutagen.id3.UFID(
-                owner="http://musicbrainz.org", data=bytes(value, "ascii")
-            )
+            ufid = mutagen.id3.UFID(owner="http://musicbrainz.org", data=bytes(value, "ascii"))
             self.mg_file.tags.add(ufid)
         else:
             raise ValueError
@@ -239,7 +233,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         elif tag_name in FREEFORM_KEYS:
             return "TXXX:" + FREEFORM_KEYS[tag_name] in self.mg_file.tags
         elif tag_name == "musicbrainz_recordingid":
-            for key, frame in list(self.mg_file.tags.items()):
+            for _key, frame in list(self.mg_file.tags.items()):
                 if frame.FrameID == "UFID" and frame.owner == "http://musicbrainz.org":
                     return True
             return False
@@ -378,9 +372,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
         if front_picture:
             cover_extension = mimetypes.guess_extension(front_picture.mime)
-            await self.create_cover_tempfile(
-                CoverType.FRONT, front_picture.data, cover_extension
-            )
+            await self.create_cover_tempfile(CoverType.FRONT, front_picture.data, cover_extension)
 
         # Get back cover
         for picture in pictures:
@@ -390,9 +382,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
         if back_picture:
             cover_extension = mimetypes.guess_extension(back_picture.mime)
-            await self.create_cover_tempfile(
-                CoverType.BACK, back_picture.data, cover_extension
-            )
+            await self.create_cover_tempfile(CoverType.BACK, back_picture.data, cover_extension)
 
     @GObject.Property(type=int)
     def tracknumber(self):
@@ -431,9 +421,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     @totaltracknumber.setter
     def totaltracknumber(self, value):
         if self.tracknumber:
-            self.set_tag(
-                "tracknumber", "{n}/{t}".format(n=str(self.tracknumber), t=str(value))
-            )
+            self.set_tag("tracknumber", "{n}/{t}".format(n=str(self.tracknumber), t=str(value)))
         else:
             if value:
                 self.set_tag("tracknumber", "0/{t}".format(t=str(value)))
@@ -504,16 +492,12 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
         if not value:
             self.delete_tag("releasedate")
         elif "releasedate" not in self._error_fields:
-            self.mg_file.tags.setall(
-                "TDRC", [mutagen.id3.TDRC(encoding=3, text=[str(value)])]
-            )
+            self.mg_file.tags.setall("TDRC", [mutagen.id3.TDRC(encoding=3, text=[str(value)])])
             if (
                 "TDOR" not in self.mg_file.tags
                 or self.mg_file.tags["TDOR"] == self.mg_file.tags["TDRC"]
             ):
-                self.mg_file.tags.setall(
-                    "TDOR", [mutagen.id3.TDOR(encoding=3, text=[str(value)])]
-                )
+                self.mg_file.tags.setall("TDOR", [mutagen.id3.TDOR(encoding=3, text=[str(value)])])
         self.mark_as_modified("releasedate")
 
     @GObject.Property(type=int)

@@ -43,7 +43,6 @@ KEY_TO_FRAME = {
     "tracknumber": "trkn",
     "totaltracknumber": "trkn",
     "cover": "covr",
-    "copyright": "cprt",
     "bpm": "tmpo",
     "composer": "\xa9wrt",
     "encodedby": "\xa9enc",  # might be \xa9too
@@ -254,9 +253,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             elif picture.imageformat == MP4Cover.FORMAT_PNG:
                 cover_extension = ".png"
             else:
-                cover_extension = mimetypes.guess_extension(
-                    get_mimetype_buffer(picture)
-                )
+                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(picture))
 
             await self.create_cover_tempfile(CoverType.FRONT, picture, cover_extension)
 
@@ -271,13 +268,9 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             elif picture_back.imageformat == MP4Cover.FORMAT_PNG:
                 cover_extension = ".png"
             else:
-                cover_extension = mimetypes.guess_extension(
-                    get_mimetype_buffer(picture_back)
-                )
+                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(picture_back))
 
-            await self.create_cover_tempfile(
-                CoverType.BACK, picture_back, cover_extension
-            )
+            await self.create_cover_tempfile(CoverType.BACK, picture_back, cover_extension)
 
     @GObject.Property(type=str)
     def releasedate(self):

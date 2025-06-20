@@ -298,9 +298,7 @@ class EartagTagEditableLabel(EartagEditableLabel, EartagTagEntryBase):
     def title(self, value):
         self._title = value
         Gtk.Accessible.update_property(self, (Gtk.AccessibleProperty.LABEL,), (value,))
-        Gtk.Accessible.update_property(
-            self.entry, (Gtk.AccessibleProperty.LABEL,), (value,)
-        )
+        Gtk.Accessible.update_property(self.entry, (Gtk.AccessibleProperty.LABEL,), (value,))
 
     # Custom handler to avoid overwriting the original placeholder
     @GObject.Property(type=str, default=None)

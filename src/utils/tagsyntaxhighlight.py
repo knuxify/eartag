@@ -50,13 +50,9 @@ def pango_attr_iter(attrlist: Pango.AttrList):
             break
 
 
-def attr_foreground_new(
-    color: (int, int, int), start_index, end_index
-) -> Pango.Attribute:
+def attr_foreground_new(color: (int, int, int), start_index, end_index) -> Pango.Attribute:
     """Shorthand function to create a new Pango AttrForeground."""
-    attr = Pango.attr_foreground_new(
-        (color[0]) * 256, (color[1]) * 256, (color[2]) * 256
-    )
+    attr = Pango.attr_foreground_new((color[0]) * 256, (color[1]) * 256, (color[2]) * 256)
     attr.start_index = start_index
     attr.end_index = end_index
     return attr
@@ -146,9 +142,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
                 error = True
                 continue
 
-            if tag_name == "" or (
-                not self.allow_duplicates and tag_name in present_tags
-            ):
+            if tag_name == "" or (not self.allow_duplicates and tag_name in present_tags):
                 continue
 
             if tag_name not in VALID_TAGS + ("length", "bitrate"):
@@ -168,9 +162,7 @@ class EartagPlaceholderSyntaxHighlighter(GObject.Object):
             color = THEMES[self.theme]["placeholder_colors"][
                 n % len(THEMES[self.theme]["placeholder_colors"])
             ]
-            color_attr = attr_foreground_new(
-                color, match.span(0)[0] + 1, match.span(0)[1] - 1
-            )
+            color_attr = attr_foreground_new(color, match.span(0)[0] + 1, match.span(0)[1] - 1)
             attrs.insert(color_attr)
 
             n += 1

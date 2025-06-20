@@ -17,7 +17,6 @@ from .utils.previewselector import EartagPreviewSelectorButton  # noqa: F401
 from gi.repository import Adw, GLib, Gtk, Gio, GObject, Pango
 import os
 import re
-import gettext
 
 
 def tag_is_int(file, tag):
@@ -72,9 +71,7 @@ def get_formatted_tag(file: "EartagFile", tag: str) -> str:
     return parsed_value
 
 
-def parse_placeholder_string(
-    placeholder: str, file: "EartagFile", positions: bool = False
-) -> dict:
+def parse_placeholder_string(placeholder: str, file: "EartagFile", positions: bool = False) -> dict:
     """
     Takes a placeholder string and a file and returns a string filled with the
     placeholders.
@@ -182,9 +179,7 @@ class EartagRenameDialog(Adw.Dialog):
         elif os.path.exists(config["rename-base-folder"]):
             self.props.folder = config["rename-base-folder"]
 
-        self.file_manager.rename_task.bind_property(
-            "progress", self.rename_progress, "fraction"
-        )
+        self.file_manager.rename_task.bind_property("progress", self.rename_progress, "fraction")
         self.file_manager.rename_task.connect("task-done", self.on_done)
 
         config.bind(
@@ -198,9 +193,7 @@ class EartagRenameDialog(Adw.Dialog):
             self.sandbox_warning_banner.props.revealed = True
 
         self.preview_selector_button.set_files(self.files)
-        self.preview_selector_button.set_formatting_function(
-            self.generate_preview_attrs
-        )
+        self.preview_selector_button.set_formatting_function(self.generate_preview_attrs)
         self._preview_update_conn = self.preview_selector_button.connect(
             "notify::selected-index", self.update_preview
         )
@@ -233,16 +226,12 @@ class EartagRenameDialog(Adw.Dialog):
 
         has_sandboxed = self._has_sandboxed_files and not self.props.folder
 
-        self.rename_button.set_sensitive(
-            self.props.validation_passed and not has_sandboxed
-        )
+        self.rename_button.set_sensitive(self.props.validation_passed and not has_sandboxed)
 
     @Gtk.Template.Callback()
     def add_placeholder_from_selector(self, selector, tag, *args):
         """Adds a new placeholder based on the tag selector."""
-        self.filename_entry.insert_text(
-            "{" + tag + "}", self.filename_entry.props.cursor_position
-        )
+        self.filename_entry.insert_text("{" + tag + "}", self.filename_entry.props.cursor_position)
 
     # Move to folder feature
 
@@ -260,15 +249,11 @@ class EartagRenameDialog(Adw.Dialog):
         elif not value.startswith("/run/user/"):
             config["rename-base-folder"] = value
 
-        self.sandbox_warning_banner.props.revealed = (
-            self._has_sandboxed_files and not value
-        )
+        self.sandbox_warning_banner.props.revealed = self._has_sandboxed_files and not value
 
     @Gtk.Template.Callback()
     def show_folder_selector(self, *args):
-        self.folder_chooser.select_folder(
-            self.parent, None, self.select_folder_from_selector, None
-        )
+        self.folder_chooser.select_folder(self.parent, None, self.select_folder_from_selector, None)
 
     def select_folder_from_selector(self, source, result, data):
         try:
@@ -283,16 +268,12 @@ class EartagRenameDialog(Adw.Dialog):
         try:
             assert os.path.exists(folder)
         except AssertionError:
-            self.toast_overlay.add_toast(
-                Adw.Toast.new(_("Selected folder does not exist"))
-            )
+            self.toast_overlay.add_toast(Adw.Toast.new(_("Selected folder does not exist")))
         else:
             try:
                 assert os.access(folder, os.W_OK)
             except AssertionError:
-                self.toast_overlay.add_toast(
-                    Adw.Toast.new(_("Selected folder is read-only"))
-                )
+                self.toast_overlay.add_toast(Adw.Toast.new(_("Selected folder is read-only")))
             else:
                 self.props.folder = response.get_path()
 

@@ -54,7 +54,6 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         from mutagen.oggtheora import OggTheora
         from mutagen.oggvorbis import OggVorbis
         from mutagen.oggopus import OggOpus
-        from mutagen.ogg import OggFileType
 
         self.mg_file = await asyncio.to_thread(
             mutagen.File,
@@ -282,9 +281,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
                 if picture:
                     cover_extension = mimetypes.guess_extension(picture.mime)
-                    await self.create_cover_tempfile(
-                        cover_type, picture.data, cover_extension
-                    )
+                    await self.create_cover_tempfile(cover_type, picture.data, cover_extension)
             elif cover_type == CoverType.BACK:
                 for _picture in self.mg_file.pictures:
                     if _picture.type == PictureType.COVER_BACK:
@@ -293,9 +290,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
                 if picture_back:
                     cover_extension = mimetypes.guess_extension(picture_back.mime)
-                    await self.create_cover_tempfile(
-                        cover_type, picture_back.data, cover_extension
-                    )
+                    await self.create_cover_tempfile(cover_type, picture_back.data, cover_extension)
 
         # 2. Using metadata_block_picture
         elif self.mg_file.get("metadata_block_picture", []):
@@ -331,15 +326,11 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
             if cover_front:
                 cover_extension = mimetypes.guess_extension(cover_front.mime)
-                await self.create_cover_tempfile(
-                    CoverType.FRONT, cover_front.data, cover_extension
-                )
+                await self.create_cover_tempfile(CoverType.FRONT, cover_front.data, cover_extension)
 
             if cover_back:
                 cover_extension = mimetypes.guess_extension(cover_back.mime)
-                await self.create_cover_tempfile(
-                    CoverType.BACK, cover_back.data, cover_extension
-                )
+                await self.create_cover_tempfile(CoverType.BACK, cover_back.data, cover_extension)
 
         # 3. Using the coverart field (and optionally covermime)
         elif cover_type == CoverType.FRONT:

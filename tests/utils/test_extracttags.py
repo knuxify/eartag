@@ -20,15 +20,14 @@ def test_tags_with_positions():
 
 
 def test_tag_include_curly_braces():
-    assert extract_tags_from_filename(
-        "02 - {Pais E Filhos}", "{tracknumber} - {title}"
-    ) == {"tracknumber": "02", "title": "{Pais E Filhos}"}
+    assert extract_tags_from_filename("02 - {Pais E Filhos}", "{tracknumber} - {title}") == {
+        "tracknumber": "02",
+        "title": "{Pais E Filhos}",
+    }
 
 
 def test_unicode_characters():
-    tags = extract_tags_from_filename(
-        "02 - Pais E Filhos 👍", "{tracknumber} - {title}"
-    )
+    tags = extract_tags_from_filename("02 - Pais E Filhos 👍", "{tracknumber} - {title}")
     assert tags == {"tracknumber": "02", "title": "Pais E Filhos 👍"}
 
 

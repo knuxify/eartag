@@ -35,10 +35,7 @@ def test_strip_spaces(filename):
 
 @pytest.mark.parametrize("banned_filename", BANNED_FILENAMES)
 def test_add_underscore_prefix_to_banned_file_name(banned_filename):
-    assert (
-        cleanup_filename(f"/{banned_filename}", full_path=True)
-        == f"/_{banned_filename}"
-    )
+    assert cleanup_filename(f"/{banned_filename}", full_path=True) == f"/_{banned_filename}"
 
 
 def test_replace_point_point_with_underscores():

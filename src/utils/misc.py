@@ -138,9 +138,7 @@ BANNED_FILENAMES = (
 )
 
 
-def cleanup_filename(
-    filename: str, allow_path: bool = False, full_path: bool = False
-) -> str:
+def cleanup_filename(filename: str, allow_path: bool = False, full_path: bool = False) -> str:
     """
     Takes a filename or path and returns a cleaned up version (that is,
     one where invalid characters or tricks like ../ are ignored).
@@ -195,9 +193,7 @@ def cleanup_filename(
     return filename_clean
 
 
-def filename_valid(
-    filename: str, allow_path: bool = False, full_path: bool = False
-) -> bool:
+def filename_valid(filename: str, allow_path: bool = False, full_path: bool = False) -> bool:
     """Returns whether or not a filename is valid."""
     if filename != os.path.normpath(filename):
         return False
@@ -214,12 +210,7 @@ def filename_valid(
             return False
 
     for f in filename.split(os.path.sep):
-        if (
-            f in BANNED_FILENAMES + ("..",)
-            or f.endswith(".")
-            or f != f.strip()
-            or len(f) > 255
-        ):
+        if f in BANNED_FILENAMES + ("..",) or f.endswith(".") or f != f.strip() or len(f) > 255:
             return False
 
     return True

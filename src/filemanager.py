@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import Adw, Gio, GObject, GLib, Gtk
+from gi.repository import Gio, GObject, GLib, Gtk
 import asyncio
 import aiofiles
 import aiofiles.os
 import mimetypes
 import os.path
-import traceback
 import stat
 
 from .backends import (
@@ -17,12 +16,11 @@ from .backends import (
     EartagFileMutagenASF,
 )
 from .backends.file import EartagFile
-from .utils.asynctask import EartagAsyncTask, EartagAsyncMultitasker
+from .utils.asynctask import EartagAsyncMultitasker
 from .utils.misc import find_in_model, cleanup_filename, natural_compare
 from .utils.validation import (
     get_mimetype_async,
     is_valid_music_file_async,
-    VALID_AUDIO_MIMES,
 )
 from .dialogs import EartagRemovalDiscardWarningDialog
 
@@ -67,9 +65,7 @@ async def eartagfile_from_path(path):
         "wma": is_type_bulk(("audio/x-ms-wma", "audio/wma", "video/x-ms-asf")),
     }
 
-    filetype = sorted(
-        confidence.keys(), key=lambda ftype: confidence[ftype], reverse=True
-    )[0]
+    filetype = sorted(confidence.keys(), key=lambda ftype: confidence[ftype], reverse=True)[0]
 
     if filetype == "mp3":
         return await EartagFileMutagenID3.new_from_path(path)
@@ -109,9 +105,7 @@ class EartagFileManager(GObject.Object):
 
         # Set up filter model for search
         self.file_filter_model = Gtk.FilterListModel(model=self.file_sort_model)
-        self.filter = Gtk.CustomFilter.new(
-            self.file_filter_func, self.file_filter_model
-        )
+        self.filter = Gtk.CustomFilter.new(self.file_filter_func, self.file_filter_model)
         self._file_filter_str = ""
         self.file_filter_model.set_filter(self.filter)
 
@@ -220,9 +214,7 @@ class EartagFileManager(GObject.Object):
                     _stat = await aiofiles.os.stat(fpath)
                     if stat.S_ISDIR(_stat.st_mode):
                         new_dirs.add(fpath)
-                    elif stat.S_ISREG(
-                        _stat.st_mode
-                    ) and await is_valid_music_file_async(fpath):
+                    elif stat.S_ISREG(_stat.st_mode) and await is_valid_music_file_async(fpath):
                         await self.load_task.queue_put_async(fpath)
 
             dirs = new_dirs
@@ -238,8 +230,6 @@ class EartagFileManager(GObject.Object):
         """
         if path in self.file_paths:
             return True
-
-        file_basename = os.path.basename(path)
 
         _file = await eartagfile_from_path(path)
 
@@ -641,11 +631,7 @@ class EartagFileManager(GObject.Object):
 
     @GObject.Property(type=bool, default=False)
     def is_busy(self):
-        return (
-            self.load_task.is_running
-            or self.save_task.is_running
-            or self.rename_task.is_running
-        )
+        return self.load_task.is_running or self.save_task.is_running or self.rename_task.is_running
 
     def notify_busy(self, *args):
         self.notify("is-busy")

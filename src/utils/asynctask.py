@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import GObject, GLib
+from gi.repository import GObject
 import time
 import traceback
 import asyncio
@@ -191,18 +191,14 @@ class EartagAsyncMultitasker(EartagAsyncTask):
                 break
             try:
                 await self.target(item, *self.args, **self.kwargs)
-            except Exception as e:
-                self.errors.append(
-                    f"Error while processing {item}:\n\n{traceback.format_exc()}"
-                )
+            except Exception:
+                self.errors.append(f"Error while processing {item}:\n\n{traceback.format_exc()}")
                 logger.error(self.errors[-1])
                 pass
 
             self.n_done += 1
             if self.queue_done_event.is_set():
-                event_loop.create_task(
-                    self.set_progress_threadsafe(self.n_done / self.n_items)
-                )
+                event_loop.create_task(self.set_progress_threadsafe(self.n_done / self.n_items))
             else:
                 self.emit_progress_pulse()
 
@@ -210,7 +206,7 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         self._is_running = True
         self.emit("task-started")
         async with asyncio.TaskGroup() as tg:
-            for i in range(self.workers):
+            for _i in range(self.workers):
                 self.tasks.add(tg.create_task(self._worker()))
         # The task group will block until all tasks are done
         self._is_running = False
@@ -300,9 +296,7 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         :param items: Iterable of items to put in the queue.
         :param mark_as_done: Mark the queue as done once finished.
         """
-        event_loop.create_task(
-            self.queue_put_multiple_async(items, mark_as_done=mark_as_done)
-        )
+        event_loop.create_task(self.queue_put_multiple_async(items, mark_as_done=mark_as_done))
 
     def queue_done(self):
         """

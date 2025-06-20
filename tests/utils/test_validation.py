@@ -55,10 +55,7 @@ async def test_valid_image_file(file_name):
 @patch("mimetypes.guess_type", lambda *a, **b: [])
 async def test_magic_returns_no_file_type():
     assert is_valid_file(example_mp3, VALID_AUDIO_MIMES, no_cache=True) is False
-    assert (
-        await is_valid_file_async(example_mp3, VALID_AUDIO_MIMES, no_cache=True)
-        is False
-    )
+    assert await is_valid_file_async(example_mp3, VALID_AUDIO_MIMES, no_cache=True) is False
 
 
 class FakeMatch:
@@ -70,7 +67,4 @@ class FakeMatch:
 @patch("mimetypes.guess_type", lambda *a, **b: ["audio/invalid2"])
 async def test_file_type_not_in_valid_mime_types():
     assert is_valid_file(example_mp3, VALID_AUDIO_MIMES, no_cache=True) is False
-    assert (
-        await is_valid_file_async(example_mp3, VALID_AUDIO_MIMES, no_cache=True)
-        is False
-    )
+    assert await is_valid_file_async(example_mp3, VALID_AUDIO_MIMES, no_cache=True) is False

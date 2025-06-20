@@ -2,8 +2,6 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import GObject
-import asyncio
-import mutagen
 
 from .file import EartagFile
 

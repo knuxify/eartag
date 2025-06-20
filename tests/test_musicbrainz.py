@@ -8,9 +8,7 @@ from src.musicbrainz import (
     # 	make_request,
 )
 from src.backends.file_mutagen_id3 import EartagFileMutagenID3
-from .common import dummy_file  # noqa: F401; flake8 doesn't understand fixtures
 
-import time
 import pytest
 import os
 
@@ -27,9 +25,7 @@ async def test_musicbrainz_onerel():
     assert rec, NOT_FOUND_STR
     rec.sort_releases()
     # https://musicbrainz.org/release/46fee5ba-49cb-4ebd-a6bc-71bbf03a210d
-    assert (
-        rec.release.release_id == "46fee5ba-49cb-4ebd-a6bc-71bbf03a210d"
-    ), NOT_FOUND_STR
+    assert rec.release.release_id == "46fee5ba-49cb-4ebd-a6bc-71bbf03a210d", NOT_FOUND_STR
 
     await rec.release.download_thumbnail_async()
     assert not rec.release.thumbnail_path
@@ -50,7 +46,7 @@ async def test_musicbrainz_multirel():
     assert rec, NOT_FOUND_STR
     assert rec._release == MusicBrainzRecording.SELECT_RELEASE_FIRST
     try:
-        rec.release
+        rec.release  # noqa: B018
     except ValueError:
         pass
     else:
@@ -101,14 +97,14 @@ async def test_musicbrainz_covers():
     assert rel, NOT_FOUND_STR
 
     try:
-        rel.front_cover_path
+        rel.front_cover_path  # noqa: B018
     except ValueError:
         pass
     else:
         raise AssertionError
 
     try:
-        rel.back_cover_path
+        rel.back_cover_path  # noqa: B018
     except ValueError:
         pass
     else:

@@ -18,9 +18,7 @@ try:
 except ImportError:  # handle test suite import
     from tests.common import VERSION
 
-    USER_AGENT = (
-        f"Ear Tag (Test suite)/{VERSION} (https://gitlab.gnome.org/World/eartag)"
-    )
+    USER_AGENT = f"Ear Tag (Test suite)/{VERSION} (https://gitlab.gnome.org/World/eartag)"
 else:
     USER_AGENT = f"Ear Tag/{VERSION} (https://gitlab.gnome.org/World/eartag)"
 
@@ -97,14 +95,12 @@ class EartagQueuedDownloader:
                             elif self.mode == EartagDownloaderMode.MODE_JSON:
                                 try:
                                     data = await response.json()
-                                except:
+                                except:  # noqa: E722
                                     data = False
 
                             elif self.mode == EartagDownloaderMode.MODE_FILE:
                                 tempfile = NamedTemporaryFile()
-                                async for chunk in response.content.iter_chunked(
-                                    CHUNK_SIZE
-                                ):
+                                async for chunk in response.content.iter_chunked(CHUNK_SIZE):
                                     tempfile.write(chunk)
                                 tempfile.flush()
                                 data = tempfile

@@ -95,9 +95,7 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
         await backend_write(await file_class.new_from_path(file_write), skip_channels)
 
     # One-by-one write test
-    with TestFile(
-        "test_write_individual", extension, "notags"
-    ) as file_write_individual:
+    with TestFile("test_write_individual", extension, "notags") as file_write_individual:
         await backend_write_individual(
             await file_class.new_from_path(file_write_individual), skip_channels
         )
@@ -112,9 +110,7 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
 
     # Make sure tags are deleted when set to empty values
     with TestFile("test_write_empty", extension, "alltags") as file_write_empty:
-        await backend_write_empty(
-            await file_class.new_from_path(file_write_empty), skip_channels
-        )
+        await backend_write_empty(await file_class.new_from_path(file_write_empty), skip_channels)
 
     # File rename test; do this twice: once for no tags, once for all tags
     with TestFile("test_rename", extension, "notags", remove=False) as file_rename:
@@ -124,12 +120,8 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
 
     # Test full-length release date and validation
     if file_class._supports_full_dates:
-        with TestFile(
-            "test_full_releasedate", extension, "alltags"
-        ) as file_full_releasedate:
-            await backend_full_releasedate(
-                await file_class.new_from_path(file_full_releasedate)
-            )
+        with TestFile("test_full_releasedate", extension, "alltags") as file_full_releasedate:
+            await backend_full_releasedate(await file_class.new_from_path(file_full_releasedate))
 
     # Comprehensive cover art test
     if file_class._supports_album_covers:
@@ -140,9 +132,9 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
 def backend_read(file, skip_channels=False):
     """Tests common backend read functions."""
     for prop in file.handled_properties + file.supported_extra_tags:
-        assert (
-            file.get_property(prop) == prop_to_example_string[prop]
-        ), f"Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})"  # noqa: E501
+        assert file.get_property(prop) == prop_to_example_string[prop], (
+            f"Invalid value for property {prop} (expected {type(prop_to_example_string[prop])} {prop_to_example_string[prop]}, got {type(file.get_property(prop))} {file.get_property(prop)})"
+        )  # noqa: E501
 
         assert file.has_tag(prop), f"tag {prop} not found in file"
 
@@ -161,8 +153,8 @@ def backend_read(file, skip_channels=False):
                 os.path.join(EXAMPLES_DIR, "cover_back.png"),
                 shallow=False,
             ), "back cover differs from test value"  # noqa: E501
-        except TypeError:
-            raise ValueError("cover art not found in file")
+        except TypeError as e:
+            raise ValueError("cover art not found in file") from e
 
     assert file.get_property("is_modified") is False
     if (
@@ -178,19 +170,15 @@ def backend_read_empty(file, skip_cover=False):
         try:
             assert not file.get_property(prop)
             assert not file.has_tag(prop)
-        except AssertionError:
+        except AssertionError as e:
             raise ValueError(
                 f"example-notags file has {prop} property set to {file.get_property(prop)}; this either means that something is broken in the file, or in the backend."  # noqa: E501
-            )
+            ) from e
 
     assert file.get_property("is_modified") is False
     if not skip_cover:
-        assert not file.get_property("front_cover_path"), file.get_property(
-            "front_cover_path"
-        )
-        assert not file.get_property("back_cover_path"), file.get_property(
-            "back_cover_path"
-        )
+        assert not file.get_property("front_cover_path"), file.get_property("front_cover_path")
+        assert not file.get_property("back_cover_path"), file.get_property("back_cover_path")
 
 
 async def backend_write(file, skip_channels=False):
@@ -245,9 +233,7 @@ async def backend_write_individual(empty_file, skip_channels=False):
     extension = os.path.splitext(empty_file_path)[1]
 
     for prop in empty_file.handled_properties:
-        new_file_path = os.path.join(
-            EXAMPLES_DIR, f"_example-notags-{prop}.{extension}"
-        )
+        new_file_path = os.path.join(EXAMPLES_DIR, f"_example-notags-{prop}.{extension}")
         shutil.copyfile(empty_file_path, new_file_path)
         target_value = prop_to_example_string[prop]
         file = await file_class.new_from_path(new_file_path)
@@ -314,9 +300,7 @@ async def backend_write_empty(file, skip_channels=False):
         file.set_property("front_cover_path", os.path.join(EXAMPLES_DIR, "cover.png"))
         assert file.get_property("front_cover_path")
 
-        file.set_property(
-            "back_cover_path", os.path.join(EXAMPLES_DIR, "cover_back.png")
-        )
+        file.set_property("back_cover_path", os.path.join(EXAMPLES_DIR, "cover_back.png"))
         assert file.get_property("back_cover_path")
 
     file.save()
@@ -333,9 +317,9 @@ async def backend_delete(file):
     for prop in file.handled_properties + file.supported_extra_tags:
         file.delete_tag(prop)
         assert not file.has_tag(prop), f"tag {prop} erroneously found in file"
-        assert not file.get_property(
-            prop
-        ), f"tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}"  # noqa: E501
+        assert not file.get_property(prop), (
+            f"tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}"
+        )  # noqa: E501
         assert prop in file.modified_tags
 
     assert file.get_property("is_modified") is True
@@ -400,9 +384,9 @@ def backend_delete_all_raw(file):
     assert file.is_modified
     for prop in file.handled_properties + file.supported_extra_tags:
         assert not file.has_tag(prop), f"tag {prop} erroneously found in file"
-        assert not file.get_property(
-            prop
-        ), f"tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}"  # noqa: E501
+        assert not file.get_property(prop), (
+            f"tag {prop} should have been deleted, but has value of {file.get_property(prop)}, {file.mg_file.tags}"
+        )  # noqa: E501
         assert prop in file.modified_tags
 
 
@@ -417,9 +401,9 @@ async def backend_full_releasedate(file):
         assert file._releasedate_cached == value
         file.save()
         file = await file_class.new_from_path(path)
-        assert (
-            file.get_property("releasedate") == value
-        ), f'Invalid date value (expected "{value}", got "{file.get_property("releasedate")}")'  # noqa: E501
+        assert file.get_property("releasedate") == value, (
+            f'Invalid date value (expected "{value}", got "{file.get_property("releasedate")}")'
+        )  # noqa: E501
 
 
 async def backend_test_covers(file):
@@ -431,22 +415,22 @@ async def backend_test_covers(file):
     # Check for presence of required functions
 
     try:
-        file.load_cover
-    except AttributeError:
-        raise AttributeError("Missing function: load_cover")
+        file.load_cover  # noqa: B018
+    except AttributeError as e:
+        raise AttributeError("Missing function: load_cover") from e
     try:
-        file.set_cover_path
-    except AttributeError:
-        raise AttributeError("Missing function: set_cover_path")
+        file.set_cover_path  # noqa: B018
+    except AttributeError as e:
+        raise AttributeError("Missing function: set_cover_path") from e
     try:
-        file.delete_cover
-    except AttributeError:
-        raise AttributeError("Missing function: delete_cover")
+        file.delete_cover  # noqa: B018
+    except AttributeError as e:
+        raise AttributeError("Missing function: delete_cover") from e
     try:
         assert file._front_cover_path is None
         assert file._back_cover_path is None
-    except AttributeError:
-        raise AttributeError("Missing _{front,back}_cover_path variables")
+    except AttributeError as e:
+        raise AttributeError("Missing _{front,back}_cover_path variables") from e
 
     # Set cover art
     front_cover_path = os.path.join(EXAMPLES_DIR, "cover.png")
@@ -463,9 +447,7 @@ async def backend_test_covers(file):
     file_class = type(file)
     reloaded_file = await file_class.new_from_path(file.path)
     assert reloaded_file.props.front_cover_path
-    assert filecmp.cmp(
-        reloaded_file.props.front_cover_path, front_cover_path, shallow=False
-    )
+    assert filecmp.cmp(reloaded_file.props.front_cover_path, front_cover_path, shallow=False)
     del reloaded_file
 
     # Set back cover
@@ -483,13 +465,9 @@ async def backend_test_covers(file):
     file_class = type(file)
     reloaded_file = await file_class.new_from_path(file.path)
     assert reloaded_file.props.front_cover_path
-    assert filecmp.cmp(
-        reloaded_file.props.front_cover_path, front_cover_path, shallow=False
-    )
+    assert filecmp.cmp(reloaded_file.props.front_cover_path, front_cover_path, shallow=False)
     assert reloaded_file.props.back_cover_path
-    assert filecmp.cmp(
-        reloaded_file.props.back_cover_path, back_cover_path, shallow=False
-    )
+    assert filecmp.cmp(reloaded_file.props.back_cover_path, back_cover_path, shallow=False)
     del reloaded_file
 
     # Delete both covers
@@ -553,9 +531,7 @@ async def backend_test_covers(file):
     reloaded_file = await file_class.new_from_path(file.path)
     assert not reloaded_file.props.front_cover_path
     assert reloaded_file.props.back_cover_path
-    assert filecmp.cmp(
-        reloaded_file.props.back_cover_path, back_cover_path, shallow=False
-    )
+    assert filecmp.cmp(reloaded_file.props.back_cover_path, back_cover_path, shallow=False)
     del reloaded_file
 
     front_cover_path = os.path.join(EXAMPLES_DIR, "cover.png")
@@ -572,12 +548,8 @@ async def backend_test_covers(file):
     reloaded_file = await file_class.new_from_path(file.path)
     assert reloaded_file.props.front_cover_path
     assert reloaded_file.props.back_cover_path
-    assert filecmp.cmp(
-        reloaded_file.props.front_cover_path, front_cover_path, shallow=False
-    )
-    assert filecmp.cmp(
-        reloaded_file.props.back_cover_path, back_cover_path, shallow=False
-    )
+    assert filecmp.cmp(reloaded_file.props.front_cover_path, front_cover_path, shallow=False)
+    assert filecmp.cmp(reloaded_file.props.back_cover_path, back_cover_path, shallow=False)
     del reloaded_file
 
     # Test shallow delete (clear_only)

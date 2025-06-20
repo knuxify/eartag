@@ -60,9 +60,7 @@ class ImprovedMP3(Type):
     EXTENSION = "mp3"
 
     def __init__(self):
-        super(ImprovedMP3, self).__init__(
-            mime=ImprovedMP3.MIME, extension=ImprovedMP3.EXTENSION
-        )
+        super(ImprovedMP3, self).__init__(mime=ImprovedMP3.MIME, extension=ImprovedMP3.EXTENSION)
 
     def match(self, buf):
         if len(buf) > 2:
@@ -245,15 +243,11 @@ async def is_valid_file_async(
     return True
 
 
-async def is_valid_music_file_async(
-    path: Union[str, os.PathLike], no_cache: bool = False
-):
+async def is_valid_music_file_async(path: Union[str, os.PathLike], no_cache: bool = False):
     """Check if the file at the provided path is a supported audio file."""
     return await is_valid_file_async(path, VALID_AUDIO_MIMES, no_cache=no_cache)
 
 
-async def is_valid_image_file_async(
-    path: Union[str, os.PathLike], no_cache: bool = False
-):
+async def is_valid_image_file_async(path: Union[str, os.PathLike], no_cache: bool = False):
     """Check if the file at the provided path is a supported image file."""
     return await is_valid_file_async(path, VALID_IMAGE_MIMES, no_cache=no_cache)

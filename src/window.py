@@ -20,7 +20,6 @@ from . import APP_GRESOURCE_PATH, DEVEL
 import asyncio
 from gi.repository import Adw, Gdk, GLib, Gtk, Gio, GObject
 import os
-import gettext
 from enum import Flag
 
 
@@ -136,35 +135,23 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_view.set_file_manager(self.file_manager)
         self.file_manager.connect("notify::is-modified", self.toggle_save_button)
         self.file_manager.connect("notify::has-error", self.toggle_save_button)
-        self.file_manager.connect(
-            "notify::is-selected-modified", self.toggle_undo_all_action
-        )
+        self.file_manager.connect("notify::is-selected-modified", self.toggle_undo_all_action)
         self.file_manager.files.connect("items-changed", self.toggle_fileview)
         self.file_manager.connect("refresh-needed", self.update_state)
         self.file_manager.connect("selection-changed", self.update_state)
         self.file_manager.connect("notify::is-busy", self.update_busy)
         self.file_manager.connect("refresh-needed", self.refresh_actionbar_button_state)
-        self.file_manager.files.connect(
-            "items-changed", self.refresh_actionbar_button_state
-        )
+        self.file_manager.files.connect("items-changed", self.refresh_actionbar_button_state)
         self.file_manager.connect("has-unwritable", self.show_unwritable_toast)
-        self.file_manager.connect(
-            "selection-changed", self.refresh_actionbar_button_state
-        )
+        self.file_manager.connect("selection-changed", self.refresh_actionbar_button_state)
 
-        self.file_manager.load_task.connect(
-            "progress-pulse", self.loading_progressbar_pulse
-        )
-        self.file_manager.load_task.connect(
-            "notify::progress", self.update_loading_progressbar
-        )
+        self.file_manager.load_task.connect("progress-pulse", self.loading_progressbar_pulse)
+        self.file_manager.load_task.connect("notify::progress", self.update_loading_progressbar)
         self.file_manager.load_task.connect(
             "task-done", self.task_done_handler, EartagErrorType.ERROR_LOAD
         )
 
-        self.file_manager.save_task.connect(
-            "notify::progress", self.update_loading_progressbar
-        )
+        self.file_manager.save_task.connect("notify::progress", self.update_loading_progressbar)
         self.file_manager.save_task.connect(
             "task-done", self.task_done_handler, EartagErrorType.ERROR_SAVE
         )
@@ -209,9 +196,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self._undo_delete_all_count = 0
         self.undo_delete_all_tags_task = EartagAsyncTask(self._undo_delete_all_tags)
-        self.undo_delete_all_tags_task.connect(
-            "task-done", self._undo_delete_all_tags_done
-        )
+        self.undo_delete_all_tags_task.connect("task-done", self._undo_delete_all_tags_done)
 
         # Sidebar setup
         self.sidebar_file_list.set_file_manager(self.file_manager)
@@ -239,9 +224,7 @@ class EartagWindow(Adw.ApplicationWindow):
             "revealed",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.sidebar_file_list.connect(
-            "notify::selection-mode", self.update_selection_mode
-        )
+        self.sidebar_file_list.connect("notify::selection-mode", self.update_selection_mode)
 
         self.refresh_actionbar_button_state()
 
@@ -324,15 +307,11 @@ class EartagWindow(Adw.ApplicationWindow):
                 saved_file_count,
             ).format(n=saved_file_count)
 
-            self.window.toast_overlay.add_toast(
-                Adw.Toast.new(_("Saved changes to {n} files"))
-            )
+            self.window.toast_overlay.add_toast(Adw.Toast.new(save_message))
 
     def show_unwritable_toast(self, *args):
         """Show a toast saying that some files are read-only."""
-        unwritable_msg = _(
-            "Some of the opened files are read-only; changes cannot be saved"
-        )  # noqa: E501
+        unwritable_msg = _("Some of the opened files are read-only; changes cannot be saved")  # noqa: E501
         self.window.toast_overlay.add_toast(Adw.Toast.new(unwritable_msg))
 
     def update_state(self, *args):
@@ -364,9 +343,7 @@ class EartagWindow(Adw.ApplicationWindow):
             self.set_title(_("Ear Tag"))
             self.window_title.set_subtitle("")
             if self.file_manager.files:
-                self.file_view.content_stack.set_visible_child(
-                    self.file_view.select_file
-                )
+                self.file_view.content_stack.set_visible_child(self.file_view.select_file)
 
             self.run_sort()
             return False
@@ -418,9 +395,7 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.container_stack.set_visible_child(self.split_view)
-            self.sidebar_headerbar.set_sensitive(
-                self.file_manager.load_task.progress in (0, 1)
-            )
+            self.sidebar_headerbar.set_sensitive(self.file_manager.load_task.progress in (0, 1))
             self.sidebar_list_stack.set_visible_child(self.sidebar_list_scroll)
         else:
             self.container_stack.set_visible_child(self.no_file)
@@ -499,10 +474,7 @@ class EartagWindow(Adw.ApplicationWindow):
             self.file_chooser.set_filters(None)
 
         # If we're doing an overwrite load, warn about discarding changes
-        if (
-            chooser & EartagFileDialogType.MODE_OVERWRITE
-            and self.file_manager._is_modified
-        ):
+        if chooser & EartagFileDialogType.MODE_OVERWRITE and self.file_manager._is_modified:
             self.discard_warning = EartagDiscardWarningDialog()
             self.discard_warning.present(self)
             response = await self.discard_warning.wait_for_response()
@@ -565,9 +537,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def insert_file(self, *args):
-        self.show_file_chooser(
-            EartagFileDialogType.TYPE_FILE | EartagFileDialogType.MODE_INSERT
-        )
+        self.show_file_chooser(EartagFileDialogType.TYPE_FILE | EartagFileDialogType.MODE_INSERT)
 
     def on_close_request(self, *args):
         if (
@@ -575,9 +545,7 @@ class EartagWindow(Adw.ApplicationWindow):
             and list(self.file_manager.files)
             and self.file_manager._is_modified
         ):
-            self.close_request_dialog = EartagCloseWarningDialog(
-                self, self.file_manager
-            )
+            self.close_request_dialog = EartagCloseWarningDialog(self, self.file_manager)
             self.close_request_dialog.present(self)
             return True
 
@@ -641,11 +609,7 @@ class EartagWindow(Adw.ApplicationWindow):
         else:
             self.toggle_fileview()
 
-        if (
-            not self.selection_mode
-            and not self.file_manager.get_n_selected()
-            and n_results
-        ):
+        if not self.selection_mode and not self.file_manager.get_n_selected() and n_results:
             self.file_manager.select_file(self.file_manager.file_filter_model[0])
 
         # Scroll back to top of list
@@ -805,9 +769,7 @@ class EartagWindow(Adw.ApplicationWindow):
     def toggle_undo_all_action(self, *args):
         app = self.get_application()
         try:
-            app.undo_all_action.set_enabled(
-                self.file_manager.props.is_selected_modified
-            )
+            app.undo_all_action.set_enabled(self.file_manager.props.is_selected_modified)
         except AttributeError:
             pass
 

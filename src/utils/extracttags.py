@@ -8,9 +8,7 @@ import re
 EXTRACTABLE_TAGS = VALID_TAGS + ("length", "bitrate")
 
 
-def extract_tags_from_filename(
-    filename: str, placeholder: str, positions: bool = False
-) -> dict:
+def extract_tags_from_filename(filename: str, placeholder: str, positions: bool = False) -> dict:
     """
     Takes a filename and a placeholder string and splits the filename
     up into a dict containing tag data.

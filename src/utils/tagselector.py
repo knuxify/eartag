@@ -29,11 +29,7 @@ class EartagTagSelectorButton(Gtk.MenuButton):
     def __init__(self):
         # Extra tag filter for additional tag field
         self.tag_names = dict(
-            [
-                (k, v)
-                for k, v in TAG_NAMES.items()
-                if k in VALID_TAGS + ("length", "bitrate")
-            ]
+            [(k, v) for k, v in TAG_NAMES.items() if k in VALID_TAGS + ("length", "bitrate")]
         )
         self.tag_names_swapped = dict([(v, k) for k, v in self.tag_names.items()])
         tag_model_nofilter = Gtk.StringList.new(list(self.tag_names.values()))

@@ -135,12 +135,8 @@ class EartagErrorDialog(Adw.AlertDialog):
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
         if response == "copy":
-            self.get_clipboard().set_content(
-                Gdk.ContentProvider.new_for_value(self.logs)
-            )
-            self._parent.toast_overlay.add_toast(
-                Adw.Toast.new(_("Copied error log to clipboard"))
-            )
+            self.get_clipboard().set_content(Gdk.ContentProvider.new_for_value(self.logs))
+            self._parent.toast_overlay.add_toast(Adw.Toast.new(_("Copied error log to clipboard")))
         self.close()
         del self._parent
 

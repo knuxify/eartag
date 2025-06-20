@@ -11,13 +11,13 @@ from .utils.tagsyntaxhighlight import (
     attr_foreground_new,
     THEMES,
 )
+from .utils.previewselector import EartagPreviewSelectorButton  # noqa: F401
 from .utils.tagselector import EartagTagSelectorButton  # noqa: F401
 from .utils.misc import filename_valid
 
 from gi.repository import Adw, Gtk, Gio, GObject, Pango
 import re
 import os.path
-import gettext
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/extract.ui")
@@ -70,9 +70,7 @@ class EartagExtractTagsDialog(Adw.Dialog):
         self.files = parent.file_manager.selected_files_list.copy()
 
         self.preview_selector_button.set_files(self.files)
-        self.preview_selector_button.set_formatting_function(
-            self.generate_preview_attrs
-        )
+        self.preview_selector_button.set_formatting_function(self.generate_preview_attrs)
         self._preview_update_conn = self.preview_selector_button.connect(
             "notify::selected-index", self.update_preview
         )
@@ -89,22 +87,16 @@ class EartagExtractTagsDialog(Adw.Dialog):
             "active",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self._connections.append(
-            self.connect("notify::strip-common-suffixes", self.update_preview)
-        )
+        self._connections.append(self.connect("notify::strip-common-suffixes", self.update_preview))
 
-        config.bind(
-            "extract-pattern", self.pattern_entry, "text", Gio.SettingsBindFlags.DEFAULT
-        )
+        config.bind("extract-pattern", self.pattern_entry, "text", Gio.SettingsBindFlags.DEFAULT)
 
         self.apply_task = EartagAsyncTask(self.apply_func)
         self.apply_task.bind_property("progress", self.rename_progress, "fraction")
         self.apply_task.connect("task-done", self.on_apply_done)
 
         # Custom filter for tag selector to filter out already present tags
-        self.tag_filter = Gtk.CustomFilter.new(
-            self.tag_filter_func, self.tag_selector.tag_model
-        )
+        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_selector.tag_model)
         self.tag_selector.set_filter(self.tag_filter)
 
         self.pattern_entry.connect("changed", self.tag_selector.refresh_tag_filter)
@@ -133,21 +125,15 @@ class EartagExtractTagsDialog(Adw.Dialog):
 
     @Gtk.Template.Callback()
     def add_tag_from_selector(self, selector, tag, *args):
-        self.pattern_entry.insert_text(
-            "{" + tag + "}", self.pattern_entry.props.cursor_position
-        )
+        self.pattern_entry.insert_text("{" + tag + "}", self.pattern_entry.props.cursor_position)
 
     def on_syntax_highlight_error(self, *args):
         if not self.props.validation_passed:
             self.pattern_entry.add_css_class("error")
-            self.apply_button.set_sensitive(
-                False
-            )  # todo: only do this when custom is selected
+            self.apply_button.set_sensitive(False)  # todo: only do this when custom is selected
         else:
             self.pattern_entry.remove_css_class("error")
-            self.apply_button.set_sensitive(
-                True
-            )  # todo: only do this when custom is selected
+            self.apply_button.set_sensitive(True)  # todo: only do this when custom is selected
 
     def get_extracted(self, filename: str, positions: bool = False) -> dict:
         """
@@ -163,11 +149,9 @@ class EartagExtractTagsDialog(Adw.Dialog):
             # so we don't limit it)
             if filename_suffixless.endswith("]"):
                 try:
-                    filename_stripped = re.match(
-                        r"(.*?) \[(.*)\]", filename_suffixless
-                    ).group(1)
+                    filename_stripped = re.match(r"(.*?) \[(.*)\]", filename_suffixless).group(1)
                     assert filename_stripped
-                except:
+                except (AssertionError, AttributeError, IndexError):
                     pass
                 else:
                     filename_suffixless = filename_stripped
@@ -177,9 +161,9 @@ class EartagExtractTagsDialog(Adw.Dialog):
             # YouTube IDs that have numbers or special characters
             # in them.
             try:
-                if re.match(
-                    r"-([A-Za-z0-9_\-]{11})", filename_suffixless[-12:]
-                ) and re.search(r"[0-9_\-]", filename_suffixless[-11:]):
+                if re.match(r"-([A-Za-z0-9_\-]{11})", filename_suffixless[-12:]) and re.search(
+                    r"[0-9_\-]", filename_suffixless[-11:]
+                ):
                     filename_suffixless = filename_suffixless[:-12]
             except IndexError:
                 pass

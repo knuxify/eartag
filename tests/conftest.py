@@ -2,9 +2,7 @@ import pytest
 
 
 def pytest_configure(config):
-    config.addinivalue_line(
-        "markers", "networked_tests: enable MusicBrainz and AcoustID test"
-    )
+    config.addinivalue_line("markers", "networked_tests: enable MusicBrainz and AcoustID test")
 
 
 def pytest_addoption(parser):
@@ -16,7 +14,5 @@ def pytest_addoption(parser):
 
 
 def pytest_runtest_setup(item):
-    if "networked_tests" in item.keywords and not item.config.getoption(
-        "--networked_tests"
-    ):
+    if "networked_tests" in item.keywords and not item.config.getoption("--networked_tests"):
         pytest.skip("need --networked_tests option to run this test")

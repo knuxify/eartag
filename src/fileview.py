@@ -14,7 +14,6 @@ from . import APP_GRESOURCE_PATH
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GLib, GObject
 
-import gettext
 import mimetypes
 import shutil
 import os.path
@@ -64,15 +63,9 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.front_toggle.connect("notify::active", self.update_from_switcher)
         self.front_toggle.set_active(True)
 
-        self.cover_image.connect(
-            "cover-changed", self.update_coverbutton_save_availability
-        )
-        self.cover_image.connect(
-            "notify::cover-type", self.update_coverbutton_save_availability
-        )
-        self.cover_image.connect(
-            "notify::is-empty", self.update_coverbutton_save_availability
-        )
+        self.cover_image.connect("cover-changed", self.update_coverbutton_save_availability)
+        self.cover_image.connect("notify::cover-type", self.update_coverbutton_save_availability)
+        self.cover_image.connect("notify::is-empty", self.update_coverbutton_save_availability)
 
         self.bind_property("cover-type", self.cover_image, "cover-type")
 
@@ -112,9 +105,7 @@ class EartagAlbumCoverButton(Adw.Bin):
             title = _("Album cover (back)")
 
         Gtk.Accessible.update_property(self, (Gtk.AccessibleProperty.LABEL,), (title,))
-        Gtk.Accessible.update_property(
-            self.button, (Gtk.AccessibleProperty.LABEL,), (title,)
-        )
+        Gtk.Accessible.update_property(self.button, (Gtk.AccessibleProperty.LABEL,), (title,))
         self.button.set_tooltip_text(title)
 
     def update_coverbutton_save_availability(self, *args):
@@ -187,9 +178,7 @@ class EartagAlbumCoverButton(Adw.Bin):
                     break
             if not covers_different:
                 self.cover_image.mark_as_nonempty()
-                if self.files[0].supports_album_covers and self.files[0].get_cover(
-                    self.cover_type
-                ):
+                if self.files[0].supports_album_covers and self.files[0].get_cover(self.cover_type):
                     self.cover_image.bind_to_file(self.files[0])
 
         elif len(self.files) == 1:
@@ -211,9 +200,7 @@ class EartagAlbumCoverButton(Adw.Bin):
         _filters.append(self.image_file_filter)
         file_chooser.set_filters(_filters)
 
-        file_chooser.open(
-            self.get_native(), _cancellable, self.open_cover_file_from_dialog
-        )
+        file_chooser.open(self.get_native(), _cancellable, self.open_cover_file_from_dialog)
 
     def open_cover_file_from_dialog(self, dialog, result):
         """
@@ -397,9 +384,7 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.highlight_revealer.set_reveal_child(False)
 
 
-extra_tag_names = dict(
-    [(k, v) for k, v in TAG_NAMES.items() if k in ["none"] + list(EXTRA_TAGS)]
-)
+extra_tag_names = dict([(k, v) for k, v in TAG_NAMES.items() if k in ["none"] + list(EXTRA_TAGS)])
 extra_tag_names_swapped = dict([(v, k) for k, v in extra_tag_names.items()])
 more_item_tag_strings = Gtk.StringList.new(list(extra_tag_names.values()))
 
@@ -431,7 +416,7 @@ class EartagExtraTagRow(EartagTagEntryRow):
 
     def _on_destroy(self, *args):
         try:
-            self.row_remove_button
+            self.row_remove_button  # noqa: B018
         except AttributeError:
             return
         self.row_remove_button.disconnect(self._remove_clicked_connect)
@@ -473,9 +458,7 @@ class EartagMoreTagsGroup(Gtk.Box):
         self.blocked_tags = {}  # type: tags
         self.loaded_filetypes = {}  # type: count
 
-        self.tag_filter = Gtk.CustomFilter.new(
-            self.tag_filter_func, self.tag_selector.tag_model
-        )
+        self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_selector.tag_model)
         self.tag_selector.set_filter(self.tag_filter)
 
     def get_rows_sorted(self):
@@ -817,9 +800,7 @@ class EartagFileInfoLabel(Gtk.Label):
         elif channels == 2:
             channels_readable = "Stereo"
         else:
-            channels_readable = ngettext("1 channel", "{n} channels", channels).format(
-                n=channels
-            )  # noqa: E501
+            channels_readable = ngettext("1 channel", "{n} channels", channels).format(n=channels)  # noqa: E501
 
         if file.bitrate > -1:
             bitrate_readable = str(file.bitrate)
@@ -852,9 +833,7 @@ class EartagFilenameRow(Adw.EntryRow):
     def bind_to_files(self, files):
         for file in files:
             self._files.append(file)
-            self._connections[file.id] = file.connect(
-                "notify::path", self.update_on_bind
-            )
+            self._connections[file.id] = file.connect("notify::path", self.update_on_bind)
         self.update_on_bind()
 
     def unbind_from_files(self, files):
@@ -1009,9 +988,7 @@ class EartagFileView(Gtk.Stack):
 
         # Get list of selected (added)/unselected (removed) files
         added_files = [
-            file
-            for file in self.file_manager.selected_files_list
-            if file not in self.bound_files
+            file for file in self.file_manager.selected_files_list if file not in self.bound_files
         ]
         removed_files = [
             file for file in self.bound_files if not self.file_manager.is_selected(file)

@@ -62,9 +62,7 @@ class EartagFileListItem(Gtk.Box):
         self.on_title_notify()
 
         self.bindings.append(
-            self.file.bind_property(
-                "path", self, "filename", GObject.BindingFlags.SYNC_CREATE
-            )
+            self.file.bind_property("path", self, "filename", GObject.BindingFlags.SYNC_CREATE)
         )
 
         self.bindings.append(
@@ -88,9 +86,7 @@ class EartagFileListItem(Gtk.Box):
         self.coverart_image.bind_to_file(file)
 
         self.long_press_gesture = Gtk.GestureLongPress.new()
-        self._long_press_connect = self.long_press_gesture.connect(
-            "pressed", self.on_long_press
-        )
+        self._long_press_connect = self.long_press_gesture.connect("pressed", self.on_long_press)
         self.add_controller(self.long_press_gesture)
 
         self.update_selected_status()

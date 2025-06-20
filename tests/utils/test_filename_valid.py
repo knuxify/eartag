@@ -76,9 +76,7 @@ def test_filename_ending_with_period_when_paths_are_allowed():
     assert filename_valid("music/example.mp3.", allow_path=True) is False
 
 
-@pytest.mark.parametrize(
-    "filename_with_space", ["music/example.mp3 ", " music/example.mp3"]
-)
+@pytest.mark.parametrize("filename_with_space", ["music/example.mp3 ", " music/example.mp3"])
 def test_filename_with_spaces_when_paths_are_allowed(filename_with_space):
     assert filename_valid(filename_with_space, allow_path=True) is False
 
