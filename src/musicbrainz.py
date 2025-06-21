@@ -274,10 +274,7 @@ class MusicBrainzRecording(GObject.Object):
 
             # Filter out non-useful results; if we didn't get anything that seems
             # correct, continue to the next method.
-            from pprint import pprint
-
             for r in new_search_data:
-                pprint(r)
                 for _rel_data in r.get("releases", []):
                     if _rel_data.get("status", "Official") == "Official":
                         if "Compilation" not in _rel_data.get("release-group", {}).get(
