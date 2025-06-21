@@ -307,7 +307,7 @@ class EartagWindow(Adw.ApplicationWindow):
                 saved_file_count,
             ).format(n=saved_file_count)
 
-            self.window.toast_overlay.add_toast(Adw.Toast.new(save_message))
+            self.toast_overlay.add_toast(Adw.Toast.new(save_message))
 
     def show_unwritable_toast(self, *args):
         """Show a toast saying that some files are read-only."""
