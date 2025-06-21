@@ -801,7 +801,7 @@ class EartagIdentifyDialog(Adw.Dialog):
 
         # For each group, figure out which one contains the most of our identified
         # recordings. The one that covers the most wins.
-        for group_id in groups.values():
+        for group_id in groups.keys():
             rel_trackcount = {}  # release ID: [recording IDs]
             for rec in group_recs[group_id]:
                 rec_rel_ids = [rel.release_id for rel in rec.available_releases]
