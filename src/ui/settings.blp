@@ -4,6 +4,15 @@ using Adw 1;
 template $EartagPreferencesDialog: Adw.PreferencesDialog {
   Adw.PreferencesPage {
     Adw.PreferencesGroup {
+      title: _("General");
+
+      Adw.SwitchRow open_folders_recursively_toggle {
+        title: _("Search for files in subfolders");
+        subtitle: _("When opening a folder, include files from its subfolders");
+      }
+    }
+
+    Adw.PreferencesGroup {
       title: _("File identification");
 
       Adw.SpinRow mb_confidence_spinbutton {

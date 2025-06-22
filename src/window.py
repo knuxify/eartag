@@ -150,6 +150,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.file_manager.load_task.connect(
             "task-done", self.task_done_handler, EartagErrorType.ERROR_LOAD
         )
+        self.file_manager.connect("max-recursion-depth-reached", self.show_max_recursion_toast)
 
         self.file_manager.save_task.connect("notify::progress", self.update_loading_progressbar)
         self.file_manager.save_task.connect(
@@ -312,7 +313,12 @@ class EartagWindow(Adw.ApplicationWindow):
     def show_unwritable_toast(self, *args):
         """Show a toast saying that some files are read-only."""
         unwritable_msg = _("Some of the opened files are read-only; changes cannot be saved")  # noqa: E501
-        self.window.toast_overlay.add_toast(Adw.Toast.new(unwritable_msg))
+        self.toast_overlay.add_toast(Adw.Toast.new(unwritable_msg))
+
+    def show_max_recursion_toast(self, *args):
+        """Show a toast saying that the maximum recursion depth has been reached."""
+        max_depth_msg = _("Maximum folder depth reached, some files may not be loaded")
+        self.toast_overlay.add_toast(Adw.Toast.new(max_depth_msg))
 
     def update_state(self, *args):
         app = self.get_application()
@@ -845,12 +851,20 @@ class EartagWindow(Adw.ApplicationWindow):
 class EartagPreferencesDialog(Adw.PreferencesDialog):
     __gtype_name__ = "EartagPreferencesDialog"
 
+    open_folders_recursively_toggle = Gtk.Template.Child()
     mb_confidence_spinbutton = Gtk.Template.Child()
     aid_confidence_spinbutton = Gtk.Template.Child()
     cover_size_comborow = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
+
+        config.bind(
+            "open-folders-recursively",
+            self.open_folders_recursively_toggle,
+            "active",
+            flags=Gio.SettingsBindFlags.DEFAULT,
+        )
 
         config.bind(
             "musicbrainz-confidence-treshold",

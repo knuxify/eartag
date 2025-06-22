@@ -16,6 +16,7 @@ from .backends import (
     EartagFileMutagenASF,
 )
 from .backends.file import EartagFile
+from .config import config
 from .utils.asynctask import EartagAsyncMultitasker
 from .utils.misc import find_in_model, cleanup_filename, natural_compare
 from .utils.validation import (
@@ -23,7 +24,6 @@ from .utils.validation import (
     is_valid_music_file_async,
 )
 from .dialogs import EartagRemovalDiscardWarningDialog
-
 
 async def eartagfile_from_path(path):
     """Returns an EartagFile subclass for the provided file."""
@@ -175,6 +175,8 @@ class EartagFileManager(GObject.Object):
     # Loading
     #
 
+    max_recursion_depth_reached = GObject.Signal()
+
     def load_files(self, paths: list, overwrite: bool = False):
         """
         Loads files or folders from the provided paths.
@@ -204,8 +206,13 @@ class EartagFileManager(GObject.Object):
             elif stat.S_ISDIR(_stat.st_mode):
                 dirs.add(path)
 
+        if config["open-folders-recursively"]:
+            MAX_DEPTH = 10
+        else:
+            MAX_DEPTH = 1
+
         depth = 0
-        while dirs and depth < 1:  # TODO: make max depth configurable
+        while dirs and depth < MAX_DEPTH:
             new_dirs = set()
 
             for path in dirs:
@@ -219,6 +226,9 @@ class EartagFileManager(GObject.Object):
 
             dirs = new_dirs
             depth += 1
+
+        if MAX_DEPTH != 1 and dirs and depth >= MAX_DEPTH:
+            self.emit("max-recursion-depth-reached")
 
         # Signify that the queue is done
         self.load_task.queue_done()
