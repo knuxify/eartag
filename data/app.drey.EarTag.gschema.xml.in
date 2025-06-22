@@ -9,6 +9,11 @@
   </enum>
 
   <schema id="@APP_ID@" path="@APP_GSCHEMA_PATH@">
+    <key name="open-folders-recursively" type="b">
+      <default>true</default>
+      <summary>When opening a folder, include files from its subfolders</summary>
+    </key>
+
     <key name="rename-placeholder" type="s">
       <default>"{tracknumber} {title} - {artist}"</default>
       <summary>Rename pattern</summary>
