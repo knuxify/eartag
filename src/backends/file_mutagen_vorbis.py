@@ -14,6 +14,7 @@ from mutagen.id3 import PictureType
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.misc import safe_int
 from ..utils.validation import get_mimetype, get_mimetype_buffer
 
 
@@ -366,15 +367,9 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         if not tracknum_raw:
             return None
         if "/" in tracknum_raw:
-            return int(tracknum_raw.split("/")[0])
+            return safe_int(tracknum_raw.split("/")[0])
 
-        try:
-            return int(tracknum_raw)
-        except ValueError:
-            # Some files (e.g. vinyl rips) use letters in their numbering scheme,
-            # e.g. A1, A2, etc.; until (unless?) we add support for them, treat them
-            # as invalid for now.
-            return None
+        return safe_int(tracknum_raw)
 
     @tracknumber.setter
     def tracknumber(self, value):
@@ -388,11 +383,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     def totaltracknumber(self):
         totalnum_raw = self.get_tag("totaltracknumber")
         if totalnum_raw:
-            try:
-                return int(totalnum_raw)
-            except ValueError:
-                # See comment in tracknumber.
-                return None
+            return safe_int(totalnum_raw)
 
         # Fall back to parsing track number with "/" (older Ear Tag versions)
         tracknum_raw = self.get_tag("tracknumber")
@@ -400,8 +391,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
             return None
         if "/" in tracknum_raw:
             try:
-                return int(tracknum_raw.split("/")[1])
-            except ValueError:
+                return safe_int(tracknum_raw.split("/")[1])
+            except (IndexError, ValueError):
                 return None
 
         return None
@@ -429,8 +420,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         if not discnum_raw:
             return None
         if "/" in discnum_raw:
-            return int(discnum_raw.split("/")[0])
-        return int(discnum_raw)
+            return safe_int(discnum_raw.split("/")[0])
+        return safe_int(discnum_raw)
 
     @discnumber.setter
     def discnumber(self, value):

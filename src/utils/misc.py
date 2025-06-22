@@ -253,3 +253,33 @@ def natural_compare(a: str, b: str) -> int:
     if sort[0] == a:
         return -1
     return 1
+
+
+def safe_int(value: int | str | None) -> int | None:
+    """Wrapper around int() that handles invalid values gracefully."""
+    if isinstance(value, int):
+        return value
+    elif isinstance(value, str):
+        value = value.strip()
+    elif not value:
+        return 0
+
+    try:
+        return int(value)
+    except ValueError:
+        return 0
+
+
+def safe_float(value: int | float | str | None) -> float | None:
+    """Wrapper around int() that handles invalid values gracefully."""
+    if isinstance(value, float):
+        return value
+    elif isinstance(value, str):
+        value = value.strip()
+    elif not value:
+        return 0.0
+
+    try:
+        return float(value)
+    except ValueError:
+        return 0.0

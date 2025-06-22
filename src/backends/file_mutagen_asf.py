@@ -13,6 +13,7 @@ from mutagen.id3 import PictureType
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.misc import safe_int
 from ..utils.validation import get_mimetype
 
 # These are copied from the code for Quod Libet's wma handling:
@@ -160,7 +161,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         # trim the trailing .0
         if tag_name in self.float_properties and value % 1 == 0:
             if value:
-                stringified = str(int(value))
+                stringified = str(safe_int(value))
             else:
                 stringified = ""
         else:

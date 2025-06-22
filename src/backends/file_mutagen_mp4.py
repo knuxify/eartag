@@ -13,6 +13,7 @@ from mutagen.mp4 import MP4Cover
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.misc import safe_int
 from ..utils.validation import get_mimetype, get_mimetype_buffer
 
 EMPTY_COVER = MP4Cover(
@@ -112,7 +113,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if frame_name.startswith("----"):
             self.mg_file.tags[frame_name] = [value.encode("utf-8")]
         elif tag_name in ("bpm", "discnumber"):
-            self.mg_file.tags[frame_name] = [int(value)]
+            self.mg_file.tags[frame_name] = [safe_int(value)]
         else:
             self.mg_file.tags[frame_name] = [str(value)]
 
@@ -294,17 +295,17 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
         if "trkn" not in self.mg_file.tags:
             return None
 
-        return int(self.mg_file.tags["trkn"][0][0])
+        return safe_int(self.mg_file.tags["trkn"][0][0])
 
     @tracknumber.setter
     def tracknumber(self, value):
-        if int(value) == -1 or not value:
+        if safe_int(value) == -1 or not value:
             value = 0
         if self.totaltracknumber:
-            self.mg_file.tags["trkn"] = [(int(value), int(self.totaltracknumber))]
+            self.mg_file.tags["trkn"] = [(safe_int(value), safe_int(self.totaltracknumber))]
         else:
             if value:
-                self.mg_file.tags["trkn"] = [(int(value), 0)]
+                self.mg_file.tags["trkn"] = [(safe_int(value), 0)]
             elif self.has_tag("tracknumber"):
                 self.delete_tag("tracknumber")
         self.mark_as_modified("tracknumber")
@@ -316,19 +317,19 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
         tracknum_raw = self.mg_file.tags["trkn"][0]
         if len(tracknum_raw) > 1:
-            return int(tracknum_raw[1])
+            return safe_int(tracknum_raw[1])
         return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
-        if int(value) == -1 or not value:
+        if safe_int(value) == -1 or not value:
             value = 0
 
         if self.tracknumber:
-            self.mg_file.tags["trkn"] = [(int(self.tracknumber), int(value))]
+            self.mg_file.tags["trkn"] = [(safe_int(self.tracknumber), safe_int(value))]
         else:
             if value:
-                self.mg_file.tags["trkn"] = [(0, int(value))]
+                self.mg_file.tags["trkn"] = [(0, safe_int(value))]
             elif self.has_tag("tracknumber"):
                 self.delete_tag("tracknumber")
         self.mark_as_modified("totaltracknumber")
@@ -339,17 +340,17 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             return None
 
         try:
-            return int(self.mg_file.tags["disk"][0][0])
+            return safe_int(self.mg_file.tags["disk"][0][0])
         except KeyError:
-            return int(self.mg_file.tags["DISK"][0][0])
+            return safe_int(self.mg_file.tags["DISK"][0][0])
 
     @discnumber.setter
     def discnumber(self, value):
-        if int(value) == -1 or not value:
+        if safe_int(value) == -1 or not value:
             value = 0
 
         if value:
-            self.mg_file.tags["disk"] = [(int(value), 0)]
+            self.mg_file.tags["disk"] = [(safe_int(value), 0)]
         elif self.has_tag("discnumber"):
             self.delete_tag("discnumber")
         self.mark_as_modified("discnumber")

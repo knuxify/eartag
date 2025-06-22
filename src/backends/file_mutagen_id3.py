@@ -14,6 +14,7 @@ from mutagen.id3 import PictureType
 
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
+from ..utils.misc import safe_int
 from ..utils.validation import get_mimetype
 
 # These are copied from the code for Mutagen's EasyID3 functions:
@@ -198,7 +199,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             # For float values that do not have numbers after the decimal point,
             # trim the trailing .0
             if tag_name in self.float_properties and value % 1 == 0:
-                stringified = str(int(value))
+                stringified = str(safe_int(value))
             else:
                 stringified = str(value)
 
@@ -391,8 +392,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return None
 
         if "/" in tracknum_raw:
-            return int(tracknum_raw.split("/")[0])
-        return int(tracknum_raw)
+            return safe_int(tracknum_raw.split("/")[0])
+        return safe_int(tracknum_raw)
 
     @tracknumber.setter
     def tracknumber(self, value):
@@ -415,7 +416,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return None
 
         if "/" in tracknum_raw:
-            return int(tracknum_raw.split("/")[1])
+            return safe_int(tracknum_raw.split("/")[1])
         return None
 
     @totaltracknumber.setter
@@ -507,8 +508,8 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
             return None
 
         if "/" in discnum_raw:
-            return int(discnum_raw.split("/")[0])
-        return int(discnum_raw)
+            return safe_int(discnum_raw.split("/")[0])
+        return safe_int(discnum_raw)
 
     @discnumber.setter
     def discnumber(self, value):

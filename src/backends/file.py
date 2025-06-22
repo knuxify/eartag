@@ -13,6 +13,8 @@ import uuid
 import asyncio
 from PIL import Image
 
+from ..utils.misc import safe_int, safe_float
+
 BASIC_TAGS = (
     "title", "artist", "album", "albumartist", "tracknumber",
     "totaltracknumber", "genre", "releasedate", "comment"
@@ -665,13 +667,13 @@ class EartagFile(GObject.Object):
     def tracknumber(self):
         value = self.get_tag("tracknumber")
         if value:
-            return int(value)
+            return safe_int(value)
         return None
 
     @tracknumber.setter
     def tracknumber(self, value):
         if value:
-            self.set_tag("tracknumber", int(value))
+            self.set_tag("tracknumber", safe_int(value))
             self.mark_as_modified("tracknumber")
         else:
             self.delete_tag("tracknumber")
@@ -680,13 +682,13 @@ class EartagFile(GObject.Object):
     def totaltracknumber(self):
         value = self.get_tag("totaltracknumber")
         if value:
-            return int(value)
+            return safe_int(value)
         return None
 
     @totaltracknumber.setter
     def totaltracknumber(self, value):
         if value:
-            self.set_tag("totaltracknumber", int(value))
+            self.set_tag("totaltracknumber", safe_int(value))
             self.mark_as_modified("totaltracknumber")
         else:
             self.delete_tag("totaltracknumber")
@@ -793,7 +795,7 @@ class EartagFile(GObject.Object):
             if value:
                 # Some BPMs can be floating point values, so we treat this as a float
                 try:
-                    return float(self.get_tag("bpm"))
+                    return safe_float(self.get_tag("bpm"))
                 except ValueError:
                     return None
         return None
@@ -803,7 +805,7 @@ class EartagFile(GObject.Object):
         if "bpm" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag("bpm", float(value))
+            self.set_tag("bpm", safe_float(value))
             self.mark_as_modified("bpm")
         elif self.has_tag("bpm"):
             self.delete_tag("bpm")
@@ -925,7 +927,7 @@ class EartagFile(GObject.Object):
         if "discnumber" in self.supported_extra_tags:
             value = self.get_tag("discnumber")
             if value:
-                return int(value)
+                return safe_int(value)
         return None
 
     @discnumber.setter
@@ -933,7 +935,7 @@ class EartagFile(GObject.Object):
         if "discnumber" not in self.supported_extra_tags:
             return None
         if value:
-            self.set_tag("discnumber", int(value))
+            self.set_tag("discnumber", safe_int(value))
             self.mark_as_modified("discnumber")
         elif self.has_tag("discnumber"):
             self.delete_tag("discnumber")
