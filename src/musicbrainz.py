@@ -151,22 +151,12 @@ class MusicBrainzRecording(GObject.Object):
     def _fetch_available_releases(self):
         """Fill the self.available_releases list with releases (as MusicBrainzRelease objects)."""
         if "releases" not in self.mb_data:
-            print("Warning: run fetch_full_data_async() to get release data")
+            logger.error("No releases in data, this should never happen!")
             return []
 
         available_releases = [MusicBrainzRelease(rel) for rel in self.mb_data["releases"]]
 
         self._available_releases = available_releases
-
-    async def fetch_full_data_async(self):
-        """Get full data; this is required for some properties."""
-        self.mb_data = await mb_query.download(
-            build_url(
-                "recording",
-                self._recording_id,
-                inc=("releases", "genres", "artist-credits", "media", "release-groups"),
-            )
-        )
 
     @staticmethod
     async def new_for_id(recording_id: str) -> Self:
@@ -307,12 +297,9 @@ class MusicBrainzRecording(GObject.Object):
             try:
                 rec = MusicBrainzRecording(r)
             except:  # noqa: E722
+                logger.error("Error while parsing MusicBrainz recording data")
                 traceback.print_exc()
                 continue
-
-            # The data we get from the search results is partial and doesn't include
-            # useful information like releases, so we need to fetch it after the fact:
-            await rec.fetch_full_data_async()
 
             # Sort releases in the recording
             rec.sort_releases(file=file)
@@ -324,8 +311,19 @@ class MusicBrainzRecording(GObject.Object):
 
         # Sort the recordings by usefulness.
 
+        def dict_diff(dict_a, dict_b, show_value_diff=True):
+            result = {}
+            result["added"] = {k: dict_b[k] for k in set(dict_b) - set(dict_a)}
+            result["removed"] = {k: dict_a[k] for k in set(dict_a) - set(dict_b)}
+            if show_value_diff:
+                common_keys = set(dict_a) & set(dict_b)
+                result["value_diffs"] = {
+                    k: (dict_a[k], dict_b[k]) for k in common_keys if dict_a[k] != dict_b[k]
+                }
+            return result
+
         # Move video recordings to the end
-        ret.sort(key=lambda rec: int(rec.mb_data.get("video", False)))
+        ret.sort(key=lambda rec: int(rec.mb_data.get("video", False) or False))
 
         # Prefer recordings with earlier release date; tracks with no release date are moved to the end
         ret.sort(key=lambda rec: rec.releasedate or "Z")
@@ -489,7 +487,9 @@ class MusicBrainzRecording(GObject.Object):
         file.props.musicbrainz_albumid = self.release.release_id
         file.props.musicbrainz_releasegroupid = self.release.group.relgroup_id
         file.props.musicbrainz_trackid = self.media.get("tracks", self.media.get("track"))[0]["id"]
-        file.props.musicbrainz_artistid = self.mb_data["artist-credit"][0]["artist"]["id"]
+        file.props.musicbrainz_artistid = self.mb_data.get(
+            "artist-credit-id", self.mb_data["artist-credit"][0]["artist"]["id"]
+        )
 
     @GObject.Property(type=str)
     def recording_id(self):
@@ -515,6 +515,7 @@ class MusicBrainzRecording(GObject.Object):
 
         # Update everything that depends on the release:
         for prop in (
+            "title",
             "album",
             "albumartist",
             "genre",
@@ -529,7 +530,11 @@ class MusicBrainzRecording(GObject.Object):
 
     @GObject.Property(type=str)
     def title(self):
-        return self.mb_data["title"]
+        try:
+            # Use title from selected release
+            return self.release.mb_data["media"][0]["track"][0]["title"]
+        except (IndexError, KeyError, TypeError):
+            return self.mb_data["title"]
 
     @GObject.Property(type=str)
     def artist(self):
