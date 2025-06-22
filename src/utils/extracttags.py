@@ -15,6 +15,15 @@ def extract_tags_from_filename(
     """
     Takes a filename and a placeholder string and splits the filename
     up into a dict containing tag data.
+
+    :params filename: Filename or path to file for extraction. The basename and
+        extension are split off inside this function.
+    :params placeholder: The placeholder string for tag extraction.
+    :params positions: If True, instead of returning just the tag contents
+        in the results dict, returns tuples containing the value as the first
+        element and the position span as the second.
+    :params strip_common_suffixes: If True, removes common suffixes found in
+        filenames of downloaded files
     """
     filename = os.path.splitext(os.path.basename(filename))[0]
 
