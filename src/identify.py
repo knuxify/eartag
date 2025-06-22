@@ -16,6 +16,7 @@ from .musicbrainz import (
 from .logger import logger
 from .utils import reg_and_simple_cmp, find_in_model
 from .utils.asynctask import EartagAsyncTask
+from .utils.extracttags import extract_tags_from_filename
 from .utils.widgets import EartagModelExpanderRow
 from .backends.file import EartagFile
 from . import APP_GRESOURCE_PATH
@@ -693,29 +694,27 @@ class EartagIdentifyDialog(Adw.Dialog):
                     # For files with a title/artist tag, look up the data in MusicBrainz
                     recordings = await MusicBrainzRecording.get_recordings_for_file(file)
                 else:
-                    # Try to guess title and artist from filename
-                    filename = os.path.splitext(os.path.basename(file.path))[0]
-                    # Split the title into two parts - one before a dash/em-dash, one after
-                    part1 = filename.split("-")[0].split("—")[0]
-                    part2 = filename[len(part1) :]
-                    # Remove common suffixes
-                    part2 = part2.split("[")[0]
-                    # If part1 is numeric, assume it's a track number
-                    if part1.isnumeric():
-                        part1 = part2
-                        part2 = ""
-                    logger.debug(f"No title/artist, guess from filename: {part1}, {part2}")
+                    logger.debug("No title or artist tag, trying to guess tags from filename...")
+                    tag_guesses = []
+                    for guess_pattern in (
+                        "{artist} - {title}",
+                        "{title} - {artist}",
+                        "{artist} — {title}",
+                        "{title} — {artist}",
+                        "{title}",
+                    ):
+                        tag_guesses.append(
+                            extract_tags_from_filename(
+                                file.path, guess_pattern, strip_common_suffixes=True
+                            )
+                        )
 
-                    if part1 and part2:
+                    for guess in tag_guesses:
+                        if not guess:
+                            continue
+
                         recordings += await MusicBrainzRecording.get_recordings_for_file(
-                            file, overrides={"title": part1, "artist": part2}
-                        )
-                        recordings += await MusicBrainzRecording.get_recordings_for_file(
-                            file, overrides={"title": part2, "artist": part1}
-                        )
-                    elif part1:
-                        recordings += await MusicBrainzRecording.get_recordings_for_file(
-                            file, overrides={"title": part1}
+                            file, overrides=guess
                         )
 
                 # If we don't find anything or we find multiple recordings, try AcoustID
@@ -726,6 +725,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                     or not file.title
                     or not file.artist
                 ):
+                    logger.debug("Trying AcoustID, just to be sure...")
                     id_confidence, id_recording = await acoustid_identify_file(file)
 
                     # Make sure the recording we got from AcoustID matches the

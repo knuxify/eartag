@@ -141,35 +141,11 @@ class EartagExtractTagsDialog(Adw.Dialog):
         and returns a guess (see extract_tags_from_filename function docs
         for more information).
         """
-        filename_suffixless = os.path.splitext(filename)[0]
-
-        if self.props.strip_common_suffixes:
-            # Modern yt-dlp: square brackets with ID inside
-            # (could be YouTube ID, or longer for e.g. SoundCloud,
-            # so we don't limit it)
-            if filename_suffixless.endswith("]"):
-                try:
-                    filename_stripped = re.match(r"(.*?) \[(.*)\]", filename_suffixless).group(1)
-                    assert filename_stripped
-                except (AssertionError, AttributeError, IndexError):
-                    pass
-                else:
-                    filename_suffixless = filename_stripped
-
-            # Old youtube-dl: "-" and then YouTube ID. To minimize
-            # the likelihood for misdetections, we only check for
-            # YouTube IDs that have numbers or special characters
-            # in them.
-            try:
-                if re.match(r"-([A-Za-z0-9_\-]{11})", filename_suffixless[-12:]) and re.search(
-                    r"[0-9_\-]", filename_suffixless[-11:]
-                ):
-                    filename_suffixless = filename_suffixless[:-12]
-            except IndexError:
-                pass
-
         extracted = extract_tags_from_filename(
-            filename_suffixless, self.pattern_entry.get_text(), positions=positions
+            filename,
+            self.pattern_entry.get_text(),
+            positions=positions,
+            strip_common_suffixes=self.props.strip_common_suffixes,
         )
 
         return extracted

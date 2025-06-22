@@ -3,16 +3,47 @@
 
 from ..backends.file import VALID_TAGS
 
+import os.path
 import re
 
 EXTRACTABLE_TAGS = VALID_TAGS + ("length", "bitrate")
 
 
-def extract_tags_from_filename(filename: str, placeholder: str, positions: bool = False) -> dict:
+def extract_tags_from_filename(
+    filename: str, placeholder: str, positions: bool = False, strip_common_suffixes: bool = False
+) -> dict:
     """
     Takes a filename and a placeholder string and splits the filename
     up into a dict containing tag data.
     """
+    filename = os.path.splitext(os.path.basename(filename))[0]
+
+    # Step 0. Strip common suffixes.
+    if strip_common_suffixes:
+        # Modern yt-dlp: square brackets with ID inside
+        # (could be YouTube ID, or longer for e.g. SoundCloud,
+        # so we don't limit it)
+        if filename.endswith("]"):
+            try:
+                filename_stripped = re.match(r"(.*?) \[(.*)\]", filename).group(1)
+                assert filename_stripped
+            except (AssertionError, AttributeError, IndexError):
+                pass
+            else:
+                filename = filename_stripped
+
+        # Old youtube-dl: "-" and then YouTube ID. To minimize
+        # the likelihood for misdetections, we only check for
+        # YouTube IDs that have numbers or special characters
+        # in them.
+        try:
+            if re.match(r"-([A-Za-z0-9_\-]{11})", filename[-12:]) and re.search(
+                r"[0-9_\-]", filename[-11:]
+            ):
+                filename = filename[:-12]
+        except IndexError:
+            pass
+
     # Step 1. Split placeholder string into static strings and placeholders.
     placeholder_split = [x for x in re.split("({.*?})", placeholder) if x]
 

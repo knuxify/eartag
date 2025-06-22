@@ -282,6 +282,8 @@ class MusicBrainzRecording(GObject.Object):
             search_data_ids = search_data_ids.union(set([r.get("id") for r in new_search_data]))
             fetch_method += 1
 
+            logger.debug(f"    Found {len(new_search_data)} new results (total {len(search_data)})")
+
             # Filter out non-useful results; if we didn't get anything that seems
             # correct, continue to the next method.
             for r in new_search_data:
