@@ -28,6 +28,7 @@ Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The follo
 - [mutagen](https://pypi.org/project/mutagen) (used for file tagging)
 - [filetype](https://pypi.org/project/filetype) (used for MIME type detection)
 - [pyacoustid](https://pypi.org/project/pyacoustid) (used for Identify Selected Files option)
+  - [audioread](https://pypi.org/project/audioread/) or ffmpeg as the sound data reading backend
 - [aiohttp](https://pypi.org/project/aiohttp) (used for the downloader used by the Identify Selected Files option)
 - [aiohttp-retry](https://pypi.org/project/aiohttp-retry) (see above)
 - [aiofiles](https://pypi.org/project/aiofiles/) (used during file loading)

@@ -10,20 +10,24 @@ import urllib.parse
 import urllib.request
 from typing import List, Self, Optional, Tuple
 
-# HACK: The Gst backend of audioread, which is used by acoustid, is not very
-# happy when the GLib async event loop policy is set up.
-# Force-disable the Gst backend.
-import audioread
-
-audioread._gst_available = lambda: False
-import acoustid
-
 from gi.repository import GObject
 
 from ._async import event_loop
 from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
 from .backends.file import EartagFile
 from .logger import logger
+
+try:
+    # HACK: The Gst backend of audioread, which is used by acoustid, is not very
+    # happy when the GLib async event loop policy is set up.
+    # Force-disable the Gst backend.
+    import audioread
+
+    audioread._gst_available = lambda: False
+except ImportError:
+    logger.warning("audioread not available, acoustid matches may be affected")
+
+import acoustid
 
 try:
     from . import ACOUSTID_API_KEY
