@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-17 05:09+0000\n"
-"PO-Revision-Date: 2025-06-17 13:32+0200\n"
+"POT-Creation-Date: 2025-06-22 11:08+0000\n"
+"PO-Revision-Date: 2025-06-22 17:21+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -22,14 +22,14 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:164 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:120 src/window.py:366
-#: src/window.py:381 src/ui/window.blp:258 src/ui/nofile.blp:11
+#: src/main.py:149 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:116 src/window.py:349
+#: src/window.py:362 src/ui/window.blp:259 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:174 src/main.py:176
+#: src/main.py:159 src/main.py:161
 msgid "translator-credits"
 msgstr "Martin Srebotnjak <miles@filmsi.net>"
 
@@ -80,23 +80,23 @@ msgstr ""
 "Dostop do omrežja se uporablja samo za možnost »Prepoznavanje izbranih "
 "datotek«."
 
-#: src/window.py:134
+#: src/window.py:131
 msgid "All supported audio files"
 msgstr "Vse podprte zvočne datoteke"
 
-#: src/window.py:306
+#: src/window.py:288
 msgid "Some files failed to load"
 msgstr "Nekaterih datotek ni bilo mogoče naložiti"
 
-#: src/window.py:307
+#: src/window.py:289
 msgid "More Information"
 msgstr "Več podrobnosti"
 
-#: src/window.py:315
+#: src/window.py:297
 msgid "No supported files found in opened folder"
 msgstr "V odprti mapi ni podprtih datotek"
 
-#: src/window.py:324
+#: src/window.py:306
 #, python-brace-format
 msgid "Saved changes to 1 file"
 msgid_plural "Saved changes to {n} files"
@@ -105,53 +105,53 @@ msgstr[1] "Spremembe shranjene v {n} datoteko"
 msgstr[2] "Spremembe shranjene v {n} datoteki"
 msgstr[3] "Spremembe shranjene v {n} datoteke"
 
-#: src/window.py:330
-#, python-brace-format
-msgid "Saved changes to {n} files"
-msgstr "Spremembe shranjene v {n} datotek"
-
-#: src/window.py:336
+#: src/window.py:315
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Nekatere odprte datoteke so samo za branje; sprememb ni mogoče shraniti"
 
-#: src/window.py:348
+#: src/window.py:320
+msgid "Maximum folder depth reached, some files may not be loaded"
+msgstr ""
+"Dosežena je največja globina mape, nekatere datoteke morda ne bodo naložene"
+
+#: src/window.py:331
 msgid "Unselect all files"
 msgstr "Prekliči izbor vseh datotek"
 
-#: src/window.py:351 src/ui/window.blp:223
+#: src/window.py:334 src/ui/window.blp:224
 msgid "Select all files"
 msgstr "Izberi vse datoteke"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:390 src/fileview.py:787
+#: src/window.py:371 src/fileview.py:789
 msgid "(Multiple files selected)"
 msgstr "(Izbranih je več datotek)"
 
 #. : TRANSLATORS: Title of the popup for opening a file
-#: src/window.py:480 src/ui/nofile.blp:24
+#: src/window.py:459 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Odpri datoteko"
 
-#: src/window.py:482
+#: src/window.py:461
 msgid "Add File"
 msgstr "Dodaj datoteko"
 
-#: src/window.py:488 src/ui/nofile.blp:35
+#: src/window.py:467 src/ui/nofile.blp:35
 msgid "Open Folder"
 msgstr "Odpri mapo"
 
-#: src/window.py:541
+#: src/window.py:517
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Nekatere odprte datoteke imajo neveljavne vrednosti; ni mogoče shraniti"
 
-#: src/window.py:674
+#: src/window.py:652
 msgid "No files selected"
 msgstr "Izbrana ni nobena datoteka"
 
-#: src/window.py:680
+#: src/window.py:658
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -160,7 +160,7 @@ msgstr[1] "{n} izbrana datoteka"
 msgstr[2] "{n} izbrani datoteki"
 msgstr[3] "{n} izbrane datoteke"
 
-#: src/window.py:753
+#: src/window.py:731
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -169,11 +169,11 @@ msgstr[1] "Razveljavljene spremembe v {n} datoteki"
 msgstr[2] "Razveljavljene spremembe v {n} datotekah"
 msgstr[3] "Razveljavljene spremembe v {n} datotekah"
 
-#: src/window.py:758
+#: src/window.py:736
 msgid "Redo"
 msgstr "Ponovno uveljavi"
 
-#: src/window.py:786
+#: src/window.py:764
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -182,7 +182,7 @@ msgstr[1] "Ponovljene spremembe v {n} datoteki"
 msgstr[2] "Ponovljene spremembe v {n} datotekah"
 msgstr[3] "Ponovljene spremembe v {n} datotekah"
 
-#: src/window.py:831
+#: src/window.py:807
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -191,11 +191,11 @@ msgstr[1] "Odstranjene značke iz {n} datoteke"
 msgstr[2] "Odstranjene značke iz {n} datotek"
 msgstr[3] "Odstranjene značke iz {n} datotek"
 
-#: src/window.py:836 src/fileview.py:318
+#: src/window.py:812 src/fileview.py:306
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: src/window.py:863
+#: src/window.py:839
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -233,63 +233,63 @@ msgstr "Iskanje po odprtih datotekah"
 msgid "Search by title, artist, filename…"
 msgstr "Iščite po naslovu, izvajalcu, imenu datoteke ..."
 
-#: src/ui/window.blp:209
+#: src/ui/window.blp:210
 msgid "No Results Found"
 msgstr "Ni najdenih zadetkov."
 
-#: src/ui/window.blp:210
+#: src/ui/window.blp:211
 msgid "Try a different search query."
 msgstr "Poskusite uporabiti drugo iskalno poizvedbo."
 
-#: src/ui/window.blp:237
+#: src/ui/window.blp:238
 msgid "Remove selected files"
 msgstr "Odstrani izbrane datoteke"
 
-#: src/ui/window.blp:251
+#: src/ui/window.blp:252
 msgid "Show file list"
 msgstr "Pokaži seznam datotek"
 
-#: src/ui/window.blp:273
+#: src/ui/window.blp:274
 msgid "_Open File"
 msgstr "_Odpri datoteko"
 
-#: src/ui/window.blp:278
+#: src/ui/window.blp:279
 msgid "O_pen Folder"
 msgstr "O_dpri mapo"
 
-#: src/ui/window.blp:285
+#: src/ui/window.blp:286
 msgid "_Sort File List"
 msgstr "_Razvrsti seznam datotek"
 
-#: src/ui/window.blp:292
+#: src/ui/window.blp:293
 msgid "_Rename Selected Files"
 msgstr "_Preimenuj izbrane datoteke"
 
-#: src/ui/window.blp:297
+#: src/ui/window.blp:298
 msgid "_Extract Tags from Filename"
 msgstr "Iz_vleci značke iz imena datoteke"
 
-#: src/ui/window.blp:302
+#: src/ui/window.blp:303
 msgid "_Identify Selected Files"
 msgstr "_Identificiraj izbrane datoteke"
 
-#: src/ui/window.blp:309
+#: src/ui/window.blp:310
 msgid "_Undo Changes in Selected Files"
 msgstr "_Razveljavi spremembe v izbranih datotekah"
 
-#: src/ui/window.blp:314
+#: src/ui/window.blp:315
 msgid "_Remove All Tags in Selected Files"
 msgstr "_Odstrani vse značke v izbranih datotekah"
 
-#: src/ui/window.blp:321
+#: src/ui/window.blp:322
 msgid "_Keyboard Shortcuts"
 msgstr "_Tipkovne bližnjice"
 
-#: src/ui/window.blp:326
+#: src/ui/window.blp:327
 msgid "_Preferences"
 msgstr "_Možnosti"
 
-#: src/ui/window.blp:331
+#: src/ui/window.blp:332
 msgid "_About Ear Tag"
 msgstr "_O programu Ear Tag"
 
@@ -455,30 +455,30 @@ msgstr "ID posnetka MusicBrainz"
 msgid "MusicBrainz Release Group ID"
 msgstr "ID skupine za izdajo MusicBrainz"
 
-#: src/fileview.py:111
+#: src/fileview.py:103
 msgid "Album cover (front)"
 msgstr "Naslovnica albuma (spredaj)"
 
-#: src/fileview.py:113
+#: src/fileview.py:105
 msgid "Album cover (back)"
 msgstr "Naslovnica albuma (zadaj)"
 
-#: src/fileview.py:206
+#: src/fileview.py:196
 msgid "Select Album Cover Image"
 msgstr "Izberite sliko naslovnice albuma"
 
-#: src/fileview.py:257
+#: src/fileview.py:245
 msgid "Save Album Cover To…"
 msgstr "Shrani naslovnico albuma v ..."
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
-#: src/fileview.py:290
+#: src/fileview.py:278
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Shranjena naslovnica v {path}"
 
-#: src/fileview.py:315
+#: src/fileview.py:303
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
@@ -487,7 +487,7 @@ msgstr[1] "Odstranjena naslovnica iz {n} datoteke"
 msgstr[2] "Odstranjena naslovnica iz {n} datotek"
 msgstr[3] "Odstranjena naslovnica iz {n} datotek"
 
-#: src/fileview.py:801
+#: src/fileview.py:803
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
@@ -496,7 +496,7 @@ msgstr[1] "{n} kanal"
 msgstr[2] "{n} kanala"
 msgstr[3] "{n} kanali"
 
-#: src/fileview.py:846
+#: src/fileview.py:849
 msgid "(multiple files)"
 msgstr "(več datotek)"
 
@@ -552,12 +552,12 @@ msgstr "Vse podprte slikovne datoteke"
 msgid "Add tag"
 msgstr "Dodaj značko"
 
-#: src/tagentry.py:128
+#: src/tagentry.py:145
 msgid "(multiple values)"
 msgstr "(več vrednosti)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:171
+#: src/filelist.py:167
 msgid "(No title)"
 msgstr "(Brez naslova)"
 
@@ -613,7 +613,7 @@ msgstr ""
 "Kopirajte spodnje dnevnike in <a href=\"https://gitlab.gnome.org/World/"
 "eartag/-/issues/new\">pošljite poročilo o težavi</a>."
 
-#: src/dialogs.py:142
+#: src/dialogs.py:139
 msgid "Copied error log to clipboard"
 msgstr "Zapisnik napak kopiran v odložišče"
 
@@ -709,7 +709,7 @@ msgstr "I_zbriši"
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
 #. present in the file, this placeholder will be used instead.
-#: src/rename.py:40
+#: src/rename.py:39
 msgid "Untitled"
 msgstr "Neimenovano"
 
@@ -718,23 +718,23 @@ msgstr "Neimenovano"
 #. file, this placeholder will be used instead.
 #. {tag_name} is a placeholder for the human-readable tag name.
 #. **Do not change the text between the curly brackets!**
-#: src/rename.py:52
+#: src/rename.py:51
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "Neznano: {tag_name}"
 
-#: src/rename.py:287
+#: src/rename.py:271
 msgid "Selected folder does not exist"
 msgstr "Izbrana mapa ne obstaja"
 
-#: src/rename.py:294
+#: src/rename.py:276
 msgid "Selected folder is read-only"
 msgstr "Izbrana mapa je samo za branje"
 
 #. TRANSLATORS: {renamed} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/rename.py:382
+#: src/rename.py:363
 #, python-brace-format
 msgid "Renamed 1 file"
 msgid_plural "Renamed {renamed} files"
@@ -806,7 +806,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:281
+#: src/extract.py:241
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -839,29 +839,29 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "Izberite datoteko za predogled"
 
-#: src/identify.py:93 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:91 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "Uveljavi identificirane podatke"
 
 #. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
-#: src/identify.py:134
+#: src/identify.py:132
 msgid "See release on MusicBrainz"
 msgstr "Oglejte si izdajo na MusicBrainz"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:146
+#: src/identify.py:144
 msgid "Other releases"
 msgstr "Druge izdaje"
 
-#: src/identify.py:609
+#: src/identify.py:602
 msgid "Unidentified Files"
 msgstr "Neidentificirane datoteke"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:914
+#: src/identify.py:879
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -873,7 +873,7 @@ msgstr[3] "Identificiranih {identified} posnetki"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:984
+#: src/identify.py:947
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
@@ -909,25 +909,37 @@ msgid "See recording on MusicBrainz"
 msgstr "Oglejte si snemanje na MusicBrainz"
 
 #: src/ui/settings.blp:7
+msgid "General"
+msgstr "Splošno"
+
+#: src/ui/settings.blp:10
+msgid "Search for files in subfolders"
+msgstr "Išči datoteke v podmapah"
+
+#: src/ui/settings.blp:11
+msgid "When opening a folder, include files from its subfolders"
+msgstr "Ob odpiranju mape vključi datoteke iz njenih podmap"
+
+#: src/ui/settings.blp:16
 msgid "File identification"
 msgstr "Identifikacija datoteke"
 
-#: src/ui/settings.blp:10
+#: src/ui/settings.blp:19
 msgid "MusicBrainz confidence treshold"
 msgstr "Prag zaupanja GlasbaBrainz"
 
-#: src/ui/settings.blp:11
+#: src/ui/settings.blp:20
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
 msgstr ""
 "Najmanjši odstotek zaupanja, zahtevan za oceno rezultata iskanja MusicBrainz"
 
-#: src/ui/settings.blp:23
+#: src/ui/settings.blp:32
 msgid "AcoustID confidence treshold"
 msgstr "Prag zaupanja AcoustID"
 
-#: src/ui/settings.blp:24
+#: src/ui/settings.blp:33
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
@@ -935,27 +947,27 @@ msgstr ""
 "Najmanjši odstotek zaupanja, potreben za ovrednotenje rezultata iskanja "
 "AcoustID"
 
-#: src/ui/settings.blp:36
+#: src/ui/settings.blp:45
 msgid "Downloaded cover art size"
 msgstr "Velikost prenesenega ovitka"
 
-#: src/ui/settings.blp:40
+#: src/ui/settings.blp:49
 msgid "Do not download covers"
 msgstr "Ne prenesi ovitkov"
 
-#: src/ui/settings.blp:41
+#: src/ui/settings.blp:50
 msgid "250 px"
 msgstr "250 sl. točk"
 
-#: src/ui/settings.blp:42
+#: src/ui/settings.blp:51
 msgid "500 px"
 msgstr "500 sl. točk"
 
-#: src/ui/settings.blp:43
+#: src/ui/settings.blp:52
 msgid "1200 px"
 msgstr "1200 sl. točk"
 
-#: src/ui/settings.blp:44
+#: src/ui/settings.blp:53
 msgid "Maximum size"
 msgstr "Največja velikost"
 
