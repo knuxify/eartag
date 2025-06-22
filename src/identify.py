@@ -262,9 +262,8 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         Used by the identification process to fill in the release switcher
         button model.
         """
-        print(releases)
         self.release_popover_toggle.set_visible(bool(releases))
-        return self._rel_model.splice(0, self._rel_model.get_n_items(), releases)
+        self._rel_model.splice(0, self._rel_model.get_n_items(), releases)
 
     def rel_row_create(self, rel, *args):
         row = EartagIdentifyAltReleaseRow(self, rel)
@@ -275,6 +274,8 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         else:
             self._relswitch_first_row = row
             row.set_sensitive(False)
+        if rel == self.release:
+            row.apply_checkbox.set_active(True)
         row.apply_checkbox.connect("notify::active", self.set_release_from_selector, rel.release_id)
         return row
 
