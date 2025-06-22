@@ -1,4 +1,4 @@
-exclude = ["build", "output", "subprojects", "venv"]
+exclude = ["build", "output", "subprojects", "venv", ".venv"]
 target-version = "py311"
 builtins = ["_", "ngettext"]
 line-length = 100
