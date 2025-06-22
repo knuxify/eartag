@@ -181,6 +181,10 @@ class Application(Adw.Application):
 
         lib_versions.append(f"pillow: {PIL.__version__}")
 
+        import aiohttp
+
+        lib_versions.append(f"aiohttp: {aiohttp.__version__}")
+
         lib_version_str = "\n - ".join(lib_versions)
 
         opened_file_list = []
