@@ -25,7 +25,10 @@ try:
 
     audioread._gst_available = lambda: False
 except ImportError:
-    logger.warning("audioread not available, acoustid matches may be affected")
+    fpcalc = os.environ.get(FPCALC_ENVVAR, FPCALC_COMMAND)
+    import shutil
+    if not shutil.which(fpcalc):
+        logger.warning("Neither audioread nor fpcalc are available, acoustid matches may be affected")
 
 import acoustid
 
