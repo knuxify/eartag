@@ -25,6 +25,7 @@ from .utils.validation import (
 )
 from .dialogs import EartagRemovalDiscardWarningDialog
 
+
 async def eartagfile_from_path(path):
     """Returns an EartagFile subclass for the provided file."""
     if not os.path.exists(path):

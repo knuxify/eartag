@@ -3,7 +3,7 @@ Contains code for interacting with the MusicBrainz API.
 """
 
 import asyncio
-import os.path
+import os
 import traceback
 import urllib
 import urllib.parse
@@ -25,10 +25,13 @@ try:
 
     audioread._gst_available = lambda: False
 except ImportError:
-    fpcalc = os.environ.get(FPCALC_ENVVAR, FPCALC_COMMAND)
+    fpcalc = os.environ.get("FPCALC", "fpcalc")
     import shutil
+
     if not shutil.which(fpcalc):
-        logger.warning("Neither audioread nor fpcalc are available, acoustid matches may be affected")
+        logger.warning(
+            "Neither audioread nor fpcalc are available, acoustid matches may be affected"
+        )
 
 import acoustid
 
