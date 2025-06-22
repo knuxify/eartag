@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
-from gi.repository import GObject
+from gi.repository import GLib, GObject
 import time
 import traceback
 import asyncio
@@ -179,6 +179,9 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         #: See _worker function for an example of how to use the APIs.
         self.run_raw: bool = False
 
+        #: GLib priority to use for the worker tasks.
+        self.priority: int = GLib.PRIORITY_DEFAULT_IDLE
+
         self.errors = []
 
         self.n_items = 0
@@ -198,7 +201,10 @@ class EartagAsyncMultitasker(EartagAsyncTask):
 
             self.n_done += 1
             if self.queue_done_event.is_set():
-                event_loop.create_task(self.set_progress_threadsafe(self.n_done / self.n_items))
+                _progress_task = event_loop.create_task(
+                    self.set_progress_threadsafe(self.n_done / self.n_items)
+                )
+                _progress_task.set_priority(GLib.PRIORITY_LOW)
             else:
                 self.emit_progress_pulse()
 
@@ -207,7 +213,9 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         self.emit("task-started")
         async with asyncio.TaskGroup() as tg:
             for _i in range(self.workers):
-                self.tasks.add(tg.create_task(self._worker()))
+                _task = tg.create_task(self._worker())
+                _task.set_priority(self.priority)
+                self.tasks.add(_task)
         # The task group will block until all tasks are done
         self._is_running = False
         self.emit_task_done()
