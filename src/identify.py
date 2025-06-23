@@ -75,6 +75,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         self._bindings = []
         self._connections = []
         self.parent = parent
+        self.release = None
         self.obj = None
 
         # Unfortunately we can't set the parent to EartagModelExpanderRow
@@ -154,6 +155,9 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
 
     def bind_to_release(self, release):
         """Takes a MusicBrainzRelease and binds to it."""
+        if self.release:
+            self.unbind()
+
         self.release = release
 
         self._bindings = [
@@ -186,7 +190,8 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
             binding.unbind()
 
         for conn in self._connections:
-            self.release.disconnect(conn)
+            if conn:
+                self.release.disconnect(conn)
 
         self.release = None
 
@@ -301,14 +306,25 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         for rel in self._rel_model:
             if rel.release_id == rel_id:
                 break
-        self.unbind()
-        self.bind_to_release(rel)
+
+        if self.release:
+            del self.parent.release_rows[self.release.release_id]
+
         for rec in self._rec_sorter_model:
             for _rel in rec.available_releases:
                 if _rel.release_id == rel.release_id:
                     rec.release = _rel
                     break
-        self.update_filter()
+
+        if rel_id in self.parent.release_rows:
+            self.parent.content_listbox.remove(self)
+            self.parent.release_rows[rel_id].update_filter()
+            self.parent.release_rows[rel_id].toggle_apply_sensitivity(True)
+        else:
+            self.bind_to_release(rel)
+            self.parent.release_rows[rel_id] = self
+            self.update_filter()
+            self.toggle_apply_sensitivity(True)
 
     def open_release_url(self, *args):
         """Open the currently bound release's MusicBrainz page."""
@@ -366,11 +382,15 @@ class EartagIdentifyAltReleaseRow(Adw.ActionRow):
         self.update_subtitle()
 
     def unbind(self, *args):
-        for binding in self._bindings:
-            binding.unbind()
+        if self.release:
+            for binding in self._bindings:
+                binding.unbind()
 
-        for conn in self._connections:
-            self.release.disconnect(conn)
+            for conn in self._connections:
+                self.release.disconnect(conn)
+
+        self._connections = []
+        self._bindings = []
 
         self.release = None
         self.parent = None
