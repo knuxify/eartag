@@ -22,6 +22,39 @@ template $EartagIdentifyRecordingRow: Adw.ActionRow {
   }
 
   [suffix]
+  MenuButton recording_override_button {
+    icon-name: "document-edit-symbolic";
+    valign: center;
+    tooltip-text: _("Set recording manually");
+
+    styles [
+      "flat"
+    ]
+
+    popover: Popover recording_override_popover {
+      Adw.Clamp {
+        maximum-size: 300;
+
+        Adw.PreferencesGroup {
+          description: _("Search for the track on <a href=\"https://musicbrainz.org/\">MusicBrainz</a>, then paste the MusicBrainz ID or a link to the MusicBrainz recording page here.");
+          margin-top: 6;
+          margin-bottom: 6;
+          margin-start: 6;
+          margin-end: 6;
+
+          Adw.EntryRow recording_override_entry {
+            title: _("Recording ID or URL");
+            show-apply-button: true;
+
+            changed => $validate_recording_override_entry();
+            apply => $set_recording_override_from_entry();
+          }
+        }
+      }
+    };
+  }
+
+  [suffix]
   Button recording_url_button {
     icon-name: "external-link-symbolic";
     valign: center;

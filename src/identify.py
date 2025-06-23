@@ -7,6 +7,7 @@ import asyncio
 import os
 import html
 import traceback
+import re
 
 from .musicbrainz import (
     acoustid_identify_file,
@@ -14,12 +15,16 @@ from .musicbrainz import (
     MusicBrainzRelease,
 )
 from .logger import logger
-from .utils import reg_and_simple_cmp, find_in_model
+from .utils import find_in_model
 from .utils.asynctask import EartagAsyncTask
 from .utils.extracttags import extract_tags_from_filename
 from .utils.widgets import EartagModelExpanderRow
 from .backends.file import EartagFile
 from . import APP_GRESOURCE_PATH
+
+
+MBID_REGEX = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+RECORDING_URL_REGEX = r"^(https?://)?musicbrainz.org/recording/(?P<mbid>" + MBID_REGEX + ")/?$"
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/identify/coverimage.ui")
@@ -470,6 +475,9 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
     apply_checkbox = Gtk.Template.Child()
     recording_url_button = Gtk.Template.Child()
 
+    recording_override_popover = Gtk.Template.Child()
+    recording_override_entry = Gtk.Template.Child()
+
     def __init__(self, parent, recording):
         super().__init__()
         self._bindings = []
@@ -480,6 +488,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         assert self.parent
         for _file_id, rec in self.parent.parent.recordings.items():
             if rec.recording_id == recording.recording_id:
+                file_id = _file_id
                 break
         self.file_id = file_id
 
@@ -558,6 +567,56 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
             await self.recording_url_launcher.launch(self.get_root())
 
         asyncio.create_task(_open(self))
+
+    def get_mbid_from_recording_override_entry(self) -> str | None:
+        """
+        Extract the MBID from the URL or raw ID string given to the recording
+        override entry.
+        """
+        entry_text = self.recording_override_entry.get_text().strip()
+
+        if re.match(f"^{MBID_REGEX}$", entry_text):
+            # Raw MBID
+            mbid = entry_text
+        else:
+            # URL
+            match = re.match(RECORDING_URL_REGEX, entry_text)
+            try:
+                mbid = match.group("mbid")
+            except (AttributeError, IndexError):  # no match
+                return None
+
+        return mbid
+
+    @Gtk.Template.Callback()
+    def validate_recording_override_entry(self, *args):
+        """Validate the contents of the recording override entry."""
+        if self.get_mbid_from_recording_override_entry():
+            self.recording_override_entry.remove_css_class("error")
+            self.recording_override_entry.props.show_apply_button = True
+        else:
+            self.recording_override_entry.add_css_class("error")
+            self.recording_override_entry.props.show_apply_button = False
+
+    @Gtk.Template.Callback()
+    def set_recording_override_from_entry(self, *args):
+        """Apply the recording ID or URL from the recording override entry."""
+
+        async def _set_rec_override(self):
+            mbid = self.get_mbid_from_recording_override_entry()
+            if not mbid:
+                return
+
+            self.recording_override_popover.props.sensitive = False
+
+            rec = await MusicBrainzRecording.new_for_id(mbid)
+
+            self.parent.parent._identify_set_recording(self.file_id, rec)
+            self.parent.parent.on_identify_done(None, show_toast=False)
+
+            self.recording_override_popover.props.sensitive = True
+
+        asyncio.create_task(_set_rec_override(self))
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/identify/identify.ui")
@@ -648,13 +707,26 @@ class EartagIdentifyDialog(Adw.Dialog):
 
         self.identify_task.run()
 
-    def _identify_set_recording(self, file, rec):
+    def _identify_set_recording(self, file_id: str, rec: MusicBrainzRecording):
         try:
             rec.release  # noqa: B018
         except ValueError:
             rec.release = rec.available_releases[0]
 
-        self.recordings[file.id] = rec
+        if file_id in self.recordings:
+            old_rec = self.recordings[file_id]
+            index = self.recordings_model.find(old_rec)[1]
+            if index is not None:
+                self.recordings_model.remove(index)
+            old_relrow = self.release_rows[old_rec.release.release_id]
+            old_relrow._filter_changed = False
+            old_relrow.update_filter()
+            old_relrow._filter_changed = False
+            if old_relrow._rec_sorter_model.get_n_items() == 0:
+                self.content_listbox.remove(old_relrow)
+                del self.release_rows[old_rec.release.release_id]
+
+        self.recordings[file_id] = rec
         self.recordings_model.append(rec)
 
         if rec.release.release_id in self.release_rows:
@@ -670,7 +742,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.unidentified_filter.changed(Gtk.FilterChange.DIFFERENT)
         self._filter_changed = False
 
-        self.apply_files.append(file.id)
+        self.apply_files.append(file_id)
 
     async def identify_files(self, *args, **kwargs):
         progress_step = 1 / len(self.files)
@@ -715,8 +787,10 @@ class EartagIdentifyDialog(Adw.Dialog):
                             continue
 
                         recordings += await MusicBrainzRecording.get_recordings_for_file(
-                            file, overrides=guess
+                            file, overrides=guess, sort=False
                         )
+
+                    recordings = MusicBrainzRecording.sort_recordings(recordings, file=file)
 
                 # If we don't find anything or we find multiple recordings, try AcoustID
                 if (
@@ -729,29 +803,10 @@ class EartagIdentifyDialog(Adw.Dialog):
                     logger.debug("Trying AcoustID, just to be sure...")
                     id_confidence, id_recording = await acoustid_identify_file(file)
 
-                    # Make sure the recording we got from AcoustID matches the
-                    # file we have:
                     if id_recording:
-                        match = True
-                        if file.title and not reg_and_simple_cmp(id_recording.title, file.title):
-                            match = False
-
-                        if file.album:
-                            try:
-                                id_recording.release  # noqa: B018
-                            except ValueError:  # multiple releases
-                                match = False
-                                for rel in id_recording.available_releases:
-                                    if reg_and_simple_cmp(rel.title, file.album):
-                                        id_recording._release = rel
-                                        match = True
-                                        break
-                            else:
-                                if not reg_and_simple_cmp(id_recording.album, file.album):
-                                    match = False
-
-                        if match:
-                            recordings = [id_recording]
+                        recordings = MusicBrainzRecording.sort_recordings(
+                            recordings + [id_recording], file=file
+                        )
 
                 if recordings:
                     rec = recordings[0]
@@ -759,7 +814,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                     if not rec.available_releases:
                         unid_row.mark_as_unidentified()
                     else:
-                        self._identify_set_recording(file, rec)
+                        self._identify_set_recording(file.id, rec)
                         self.identify_task.increment_progress(progress_step)
                 else:
                     unid_row.mark_as_unidentified()
@@ -857,7 +912,7 @@ class EartagIdentifyDialog(Adw.Dialog):
                 del self.release_rows[k]
                 self.content_listbox.remove(row)
 
-    def on_identify_done(self, task, *args):
+    def on_identify_done(self, task, *args, show_toast: bool = True):
         try:
             identified = self.files.get_n_items() - self.files_unidentified.get_n_items()
         except AttributeError:  # this happens when the operation is cancelled
@@ -870,18 +925,19 @@ class EartagIdentifyDialog(Adw.Dialog):
         if not self.files_unidentified.get_n_items():
             self.unidentified_row.set_visible(False)
 
-        self.toast_overlay.add_toast(
-            Adw.Toast.new(
-                ngettext(
-                    # TRANSLATORS: {identified} is a placeholder for the number
-                    # of tracks that were succesfully identified.
-                    # **Do not translate the text between the curly brackets!**
-                    "Identified 1 track",
-                    "Identified {identified} tracks",
-                    identified,
-                ).format(identified=identified)
+        if show_toast:
+            self.toast_overlay.add_toast(
+                Adw.Toast.new(
+                    ngettext(
+                        # TRANSLATORS: {identified} is a placeholder for the number
+                        # of tracks that were succesfully identified.
+                        # **Do not translate the text between the curly brackets!**
+                        "Identified 1 track",
+                        "Identified {identified} tracks",
+                        identified,
+                    ).format(identified=identified)
+                )
             )
-        )
 
     @Gtk.Template.Callback()
     def do_apply(self, *args):

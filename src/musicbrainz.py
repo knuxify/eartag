@@ -14,6 +14,7 @@ from gi.repository import GObject
 
 from ._async import event_loop
 from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
+from .utils.misc import simplify_compare
 from .backends.file import EartagFile
 from .logger import logger
 
@@ -154,6 +155,15 @@ class MusicBrainzRecording(GObject.Object):
             logger.error("No releases in data, this should never happen!")
             return []
 
+        # HACK: Sometimes releases don't have the "artist-credit"; in those cases,
+        # try to get the artist credit from the release group, and if there is none,
+        # fill both it and the release credit with the recording credit.
+        for rel in self.mb_data["releases"]:
+            if "artist-credit" not in rel:
+                if "artist-credit" not in rel["release-group"]:
+                    rel["release-group"]["artist-credit"] = self.mb_data["artist-credit"]
+                rel["artist-credit"] = rel["release-group"]["artist-credit"]
+
         available_releases = [MusicBrainzRelease(rel) for rel in self.mb_data["releases"]]
 
         self._available_releases = available_releases
@@ -198,34 +208,50 @@ class MusicBrainzRecording(GObject.Object):
         ret.sort(key=lambda rec: _release_sort(rec), reverse=True)
 
         # Sort the resulting recordings by which one matches our file the best
-        def _rec_file_cmp(rec) -> int:
-            out = 0
-            for prop in (
-                "artist",
-                "album",
-                "releasedate",
-                "tracknumber",
-                "totaltracknumber",
-            ):
-                if overrides and prop in overrides:
-                    out += int(overrides[prop] == rec.get_property(prop))
-                elif file.has_tag(prop):
-                    out += int(file.get_property(prop) == rec.get_property(prop))
+        if file or overrides:
 
-            # Titles are handled separately, since a single recording may have
-            # multiple alternative titles in various releases
-            title = None
-            if overrides:
-                title = overrides.get("title", None)
-            if not title and file.has_tag("title"):
-                title = file.title
+            def _rec_file_cmp(rec) -> int:
+                out = 0
+                for prop in (
+                    "artist",
+                    "album",
+                    "releasedate",
+                    "tracknumber",
+                    "totaltracknumber",
+                ):
+                    if overrides and prop in overrides:
+                        value = overrides[prop]
+                    elif file and file.has_tag(prop):
+                        value = file.get_property(prop)
+                    else:
+                        continue
 
-            if title:
-                out += int(title in rec.all_titles)
+                    rec_value = rec.get_property(prop)
 
-            return out
+                    if prop in ("artist", "album"):
+                        out += (int(value == rec_value) * 2) + int(
+                            simplify_compare(value, rec_value)
+                        )
+                    else:
+                        out += int(value == rec_value)
 
-        ret.sort(key=_rec_file_cmp, reverse=True)  # The larger the number, the more tag matches
+                # Titles are handled separately, since a single recording may have
+                # multiple alternative titles in various releases
+                title = None
+                if overrides:
+                    title = overrides.get("title", None)
+                if not title and file.has_tag("title"):
+                    title = file.title
+
+                if title:
+                    out += int(title in rec.all_titles) * 2
+                    out += int(
+                        simplify_string(title) in [simplify_string(s) for s in rec.all_titles]
+                    )
+
+                return out
+
+            ret.sort(key=_rec_file_cmp, reverse=True)  # The larger the number, the more tag matches
 
         return ret
 
@@ -242,7 +268,9 @@ class MusicBrainzRecording(GObject.Object):
         return MusicBrainzRecording(data)
 
     @staticmethod
-    async def get_recordings_for_file(file, overrides: dict = None) -> List[Self]:
+    async def get_recordings_for_file(
+        file, overrides: dict = None, sort: bool = True
+    ) -> List[Self]:
         """
         Search for recordings matching information extracted from the file.
 
@@ -380,8 +408,9 @@ class MusicBrainzRecording(GObject.Object):
         logger.debug(f"Found {len(ret)} recordings")
         logger.debug(f"Recordings before sorting: \n{ret}")
 
-        # Sort the recordings by usefulness.
-        ret = MusicBrainzRecording.sort_recordings(ret, file=file, overrides=overrides)
+        if sort:
+            # Sort the recordings by usefulness.
+            ret = MusicBrainzRecording.sort_recordings(ret, file=file, overrides=overrides)
 
         logger.debug(f"Recordings after sorting: \n{ret}")
 
