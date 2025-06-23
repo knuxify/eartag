@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
 "POT-Creation-Date: 2025-06-23 14:10+0000\n"
-"PO-Revision-Date: 2025-06-23 22:00+0200\n"
+"PO-Revision-Date: 2025-06-23 23:19+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
@@ -905,9 +905,8 @@ msgid "File could not be identified"
 msgstr "Datoteke ni bilo mogoče identificirati"
 
 #: src/ui/identify/recordingrow.blp:28
-#, fuzzy
 msgid "Set recording manually"
-msgstr "Ročno nastavitev snemanja"
+msgstr "Ročno nastavite posnetek"
 
 #: src/ui/identify/recordingrow.blp:39
 msgid ""
