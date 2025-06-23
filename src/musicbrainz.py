@@ -159,6 +159,77 @@ class MusicBrainzRecording(GObject.Object):
         self._available_releases = available_releases
 
     @staticmethod
+    def sort_recordings(
+        recordings: list["MusicBrainzRecording"],
+        file: Optional[EartagFile] = None,
+        overrides: Optional[dict[str, str]] = None,
+    ):
+        """Sort a list of recordings by usefulness."""
+
+        ret = recordings.copy()
+
+        def dict_diff(dict_a, dict_b, show_value_diff=True):
+            result = {}
+            result["added"] = {k: dict_b[k] for k in set(dict_b) - set(dict_a)}
+            result["removed"] = {k: dict_a[k] for k in set(dict_a) - set(dict_b)}
+            if show_value_diff:
+                common_keys = set(dict_a) & set(dict_b)
+                result["value_diffs"] = {
+                    k: (dict_a[k], dict_b[k]) for k in common_keys if dict_a[k] != dict_b[k]
+                }
+            return result
+
+        # Move video recordings to the end
+        ret.sort(key=lambda rec: int(rec.mb_data.get("video", False) or False))
+
+        # Prefer recordings with earlier release date; tracks with no release date are moved to the end
+        ret.sort(key=lambda rec: rec.releasedate or "Z")
+
+        # Prefer recordings with more legitimate releases
+        def _release_sort(rec) -> int:
+            out = 0
+            for rel in rec.mb_data.get("releases", []):
+                if rel["status"] == "Official" and "Compilation" not in rel.get(
+                    "release_group", {}
+                ).get("secondary-types", []):
+                    out += 1
+            return out
+
+        ret.sort(key=lambda rec: _release_sort(rec), reverse=True)
+
+        # Sort the resulting recordings by which one matches our file the best
+        def _rec_file_cmp(rec) -> int:
+            out = 0
+            for prop in (
+                "artist",
+                "album",
+                "releasedate",
+                "tracknumber",
+                "totaltracknumber",
+            ):
+                if overrides and prop in overrides:
+                    out += int(overrides[prop] == rec.get_property(prop))
+                elif file.has_tag(prop):
+                    out += int(file.get_property(prop) == rec.get_property(prop))
+
+            # Titles are handled separately, since a single recording may have
+            # multiple alternative titles in various releases
+            title = None
+            if overrides:
+                title = overrides.get("title", None)
+            if not title and file.has_tag("title"):
+                title = file.title
+
+            if title:
+                out += int(title in rec.all_titles)
+
+            return out
+
+        ret.sort(key=_rec_file_cmp, reverse=True)  # The larger the number, the more tag matches
+
+        return ret
+
+    @staticmethod
     async def new_for_id(recording_id: str) -> Self:
         """Create a new MusicBrainzRecording object with the given ID."""
         data = await mb_query.download(
@@ -310,53 +381,7 @@ class MusicBrainzRecording(GObject.Object):
         logger.debug(f"Recordings before sorting: \n{ret}")
 
         # Sort the recordings by usefulness.
-
-        def dict_diff(dict_a, dict_b, show_value_diff=True):
-            result = {}
-            result["added"] = {k: dict_b[k] for k in set(dict_b) - set(dict_a)}
-            result["removed"] = {k: dict_a[k] for k in set(dict_a) - set(dict_b)}
-            if show_value_diff:
-                common_keys = set(dict_a) & set(dict_b)
-                result["value_diffs"] = {
-                    k: (dict_a[k], dict_b[k]) for k in common_keys if dict_a[k] != dict_b[k]
-                }
-            return result
-
-        # Move video recordings to the end
-        ret.sort(key=lambda rec: int(rec.mb_data.get("video", False) or False))
-
-        # Prefer recordings with earlier release date; tracks with no release date are moved to the end
-        ret.sort(key=lambda rec: rec.releasedate or "Z")
-
-        # Prefer recordings with more legitimate releases
-        def _release_sort(rec) -> int:
-            out = 0
-            for rel in rec.mb_data.get("releases", []):
-                if rel["status"] == "Official" and "Compilation" not in rel.get(
-                    "release_group", {}
-                ).get("secondary-types", []):
-                    out += 1
-            return out
-
-        ret.sort(key=lambda rec: _release_sort(rec), reverse=True)
-
-        # Sort the resulting recordings by which one matches our file the best
-        def _rec_file_cmp(rec) -> int:
-            out = 0
-            for prop in (
-                "title",
-                "artist",
-                "album",
-                "releasedate",
-                "tracknumber",
-                "totaltracknumber",
-            ):
-                if file.has_tag(prop):
-                    out += int(file.get_property(prop) == rec.get_property(prop))
-
-            return out
-
-        ret.sort(key=_rec_file_cmp, reverse=True)  # The larger the number, the more tag matches
+        ret = MusicBrainzRecording.sort_recordings(ret, file=file, overrides=overrides)
 
         logger.debug(f"Recordings after sorting: \n{ret}")
 
@@ -535,6 +560,17 @@ class MusicBrainzRecording(GObject.Object):
             return self.release.mb_data["media"][0]["track"][0]["title"]
         except (IndexError, KeyError, TypeError):
             return self.mb_data["title"]
+
+    @property
+    def all_titles(self) -> list[str]:
+        """All track titles in available releases."""
+        out = []
+        for rel in self.available_releases:
+            try:
+                out.append(rel.mb_data["media"][0]["track"][0]["title"])
+            except (IndexError, KeyError, TypeError):
+                pass
+        return out
 
     @GObject.Property(type=str)
     def artist(self):
