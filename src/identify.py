@@ -148,6 +148,7 @@ class EartagIdentifyReleaseRow(EartagModelExpanderRow):
         # This allows the user to switch between different releases of an album, EP, etc.
         self.release_popover_toggle.set_tooltip_text(_("Other releases"))
         self.release_popover_toggle.set_icon_name("view-more-symbolic")
+        self.release_popover_toggle.add_css_class("flat")
         self.release_popover_toggle.connect("notify::active", self.download_alt_release_thumbnails)
         self.add_suffix(self.release_popover_toggle)
 
