@@ -11,7 +11,7 @@ from enum import Enum
 from tempfile import NamedTemporaryFile
 from typing import Union
 import time
-
+from ..logger import logger
 
 try:
     from .. import VERSION
@@ -62,8 +62,11 @@ class EartagQueuedDownloader:
 
     async def download(self, url: str):
         """Perform a download for the given URL."""
+        logger.debug(f"QueuedDL: Downloading {url}...")
+
         if url in self.cache:
             # If the URL is cached, just return the data
+            logger.debug(f"QueuedDL: Found {url} in cache")
             return self.get_cached(url)
 
         retry_options = ExponentialRetry(
@@ -107,6 +110,10 @@ class EartagQueuedDownloader:
 
                         self.cache[url] = data
 
+        if data is False:
+            logger.debug(f"QueuedDL: Download for {url} failed")
+        else:
+            logger.debug(f"QueuedDL: Download for {url} succeeded")
         return data
 
     def get_cached(self, url: str) -> Union[str, dict, NamedTemporaryFile, bool]:
