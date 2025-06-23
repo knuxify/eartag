@@ -8,17 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-22 11:08+0000\n"
-"PO-Revision-Date: 2025-06-22 17:21+0200\n"
+"POT-Creation-Date: 2025-06-23 14:10+0000\n"
+"PO-Revision-Date: 2025-06-23 22:00+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian <gnome-si@googlegroups.com>\n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
-"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
@@ -799,8 +799,8 @@ msgid ""
 "org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
 "available tags</a>."
 msgstr ""
-"Če si želite ogledati seznam ograd, ki so na voljo, si oglejte <a href="
-"\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README."
+"Če si želite ogledati seznam ograd, ki so na voljo, si oglejte <a "
+"href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README."
 "md#available-tags\">seznam razpoložljivih značk</a>."
 
 #. TRANSLATORS: {extracted} is a placeholder for the number
@@ -839,29 +839,29 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "Izberite datoteko za predogled"
 
-#: src/identify.py:91 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:96 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "Uveljavi identificirane podatke"
 
 #. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
-#: src/identify.py:132
+#: src/identify.py:137
 msgid "See release on MusicBrainz"
 msgstr "Oglejte si izdajo na MusicBrainz"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:144
+#: src/identify.py:149
 msgid "Other releases"
 msgstr "Druge izdaje"
 
-#: src/identify.py:602
+#: src/identify.py:662
 msgid "Unidentified Files"
 msgstr "Neidentificirane datoteke"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:879
+#: src/identify.py:936
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -873,7 +873,7 @@ msgstr[3] "Identificiranih {identified} posnetki"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:947
+#: src/identify.py:1004
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
@@ -892,12 +892,12 @@ msgstr "Identificiraj"
 
 #: src/ui/identify/identify.blp:72
 msgid ""
-"Track information is provided by <a href=\"https://musicbrainz.org"
-"\">Musicbrainz</a>. Files without metadata are identified using the <a href="
-"\"https://acoustid.org\">AcoustID</a> service."
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
 msgstr ""
-"Informacije o skladbi zagotavlja <a href=\"https://musicbrainz.org"
-"\">Musicbrainz</a>. Datoteke brez metapodatkov se identificirajo s "
+"Informacije o skladbi zagotavlja <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Datoteke brez metapodatkov se identificirajo s "
 "storitvijo <a href=\"https://acoustid.org\">AcoustID</a> ."
 
 #: src/ui/identify/filerow.blp:22
@@ -905,6 +905,25 @@ msgid "File could not be identified"
 msgstr "Datoteke ni bilo mogoče identificirati"
 
 #: src/ui/identify/recordingrow.blp:28
+#, fuzzy
+msgid "Set recording manually"
+msgstr "Ročno nastavitev snemanja"
+
+#: src/ui/identify/recordingrow.blp:39
+msgid ""
+"Search for the track on <a href=\"https://musicbrainz.org/\">MusicBrainz</"
+"a>, then paste the MusicBrainz ID or a link to the MusicBrainz recording "
+"page here."
+msgstr ""
+"Poiščite skladbo na <a href=\"https://musicbrainz.org/\">MusicBrainz</a>, "
+"nato pa tukaj prilepite ID MusicBrainz ali povezavo do strani poanetka "
+"MusicBrainz."
+
+#: src/ui/identify/recordingrow.blp:46
+msgid "Recording ID or URL"
+msgstr "ID ali URL posnetka"
+
+#: src/ui/identify/recordingrow.blp:61
 msgid "See recording on MusicBrainz"
 msgstr "Oglejte si snemanje na MusicBrainz"
 
