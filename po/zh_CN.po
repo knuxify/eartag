@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-06-22 11:08+0000\n"
-"PO-Revision-Date: 2025-06-23 12:32+0800\n"
+"POT-Creation-Date: 2025-06-23 14:10+0000\n"
+"PO-Revision-Date: 2025-06-25 18:56+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -790,29 +790,29 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "选择文件来预览"
 
-#: src/identify.py:91 src/ui/identify/recordingrow.blp:15
+#: src/identify.py:96 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
 msgstr "应用已识别的数据"
 
 #. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
-#: src/identify.py:132
+#: src/identify.py:137
 msgid "See release on MusicBrainz"
 msgstr "查看 MusicBrainz 上的发行信息"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:144
+#: src/identify.py:149
 msgid "Other releases"
 msgstr "其它发行"
 
-#: src/identify.py:602
+#: src/identify.py:662
 msgid "Unidentified Files"
 msgstr "未识别的文件"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:879
+#: src/identify.py:936
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -821,7 +821,7 @@ msgstr[0] "已识别 {identified} 首曲目"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:947
+#: src/identify.py:1004
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
@@ -849,6 +849,23 @@ msgid "File could not be identified"
 msgstr "文件无法识别"
 
 #: src/ui/identify/recordingrow.blp:28
+msgid "Set recording manually"
+msgstr "手动设定记录"
+
+#: src/ui/identify/recordingrow.blp:39
+msgid ""
+"Search for the track on <a href=\"https://musicbrainz.org/\">MusicBrainz</"
+"a>, then paste the MusicBrainz ID or a link to the MusicBrainz recording "
+"page here."
+msgstr ""
+"在 <a href=\"https://musicbrainz.org/\">MusicBrainz</a> 上搜索该曲目，然后将 "
+"MusicBrainz ID 或指向 MusicBrainz 记录页面的链接粘贴到这里。"
+
+#: src/ui/identify/recordingrow.blp:46
+msgid "Recording ID or URL"
+msgstr "记录标识符或 URL"
+
+#: src/ui/identify/recordingrow.blp:61
 msgid "See recording on MusicBrainz"
 msgstr "查看 MusicBrainz 上的记录"
 
