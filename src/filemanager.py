@@ -18,7 +18,7 @@ from .backends import (
 from .backends.file import EartagFile
 from .config import config
 from .utils.asynctask import EartagAsyncMultitasker
-from .utils.misc import find_in_model, cleanup_filename, natural_compare
+from .utils.misc import find_in_model, cleanup_filename, natural_compare, iter_selection_model
 from .utils.validation import (
     get_mimetype_async,
     is_valid_music_file_async,
@@ -534,9 +534,9 @@ class EartagFileManager(GObject.Object):
             self.selected_files.unselect_item(pos)
 
     def is_selected(self, file):
-        pos = find_in_model(self.file_filter_model, file)
-        if pos >= 0:
-            return self.selected_files.is_selected(pos)
+        for f2 in iter_selection_model(self.selected_files):
+            if file == f2:
+                return True
         return False
 
     def get_n_selected(self):
@@ -552,11 +552,7 @@ class EartagFileManager(GObject.Object):
 
     @property
     def selected_files_list(self):
-        out = []
-        for i in range(self.file_filter_model.get_n_items()):
-            if self.selected_files.is_selected(i):
-                out.append(self.file_filter_model.get_item(i))
-        return out
+        return [file for file in iter_selection_model(self.selected_files)]
 
     @GObject.Signal
     def selection_changed(self):

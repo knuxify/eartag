@@ -233,24 +233,14 @@ def natural_compare(a: str, b: str) -> int:
     This returns an integer, satisfying similar constraints to GLib's collate
     functions: 0 if both strings are the same, 1 if a > b, and -1 if a < b.
     """
-    a = a.lower()
-    b = b.lower()
-    if a == b:
+    # Adapted from https://stackoverflow.com/a/8940266
+    convert = lambda text: int(text) if text.isdigit() else text.lower()  # noqa: E731
+    alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]  # noqa: E731
+    sort = sorted([a, b], key=alphanum_key)
+
+    if sort[0] == sort[1]:
         return 0
-
-    # adapted from https://stackoverflow.com/questions/2545532
-    def sort_key(s: str) -> list:
-        out = []
-        parts = re.split(r"(\d+)", s)
-        for part in parts:
-            if part.isdigit():
-                out.append(int(part))
-            else:
-                out.append(part)
-        return out
-
-    sort = sorted([a, b], key=sort_key)
-    if sort[0] == a:
+    if sort[0] is a:
         return -1
     return 1
 
@@ -283,3 +273,11 @@ def safe_float(value: int | float | str | None) -> float | None:
         return float(value)
     except ValueError:
         return 0.0
+
+
+def iter_selection_model(model):
+    """Iterate over the selected items in a selection model."""
+    selection = model.get_selection()
+    for i in range(selection.get_size()):
+        pos = selection.get_nth(i)
+        yield model.get_item(pos)
