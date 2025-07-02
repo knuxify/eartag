@@ -392,8 +392,6 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.toggle_save_button()
 
-        self.file_view.update_binds()
-
     def toggle_fileview(self, *args):
         """
         Shows/hides the fileview/"no files" message depending on opened files.
