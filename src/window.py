@@ -351,7 +351,6 @@ class EartagWindow(Adw.ApplicationWindow):
             if self.file_manager.files:
                 self.file_view.content_stack.set_visible_child(self.file_view.select_file)
 
-            self.run_sort()
             return False
         else:
             files = self.file_manager.selected_files_list
@@ -531,10 +530,6 @@ class EartagWindow(Adw.ApplicationWindow):
     @Gtk.Template.Callback()
     def hide_sidebar(self, *args):
         self.split_view.set_show_sidebar(False)
-
-    def run_sort(self, *args):
-        if self.file_manager.files.get_n_items():
-            self.file_manager.sorter.changed(Gtk.SorterChange.DIFFERENT)
 
     @Gtk.Template.Callback()
     def on_save(self, *args):
