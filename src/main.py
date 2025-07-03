@@ -179,6 +179,12 @@ class Application(Adw.Application):
 
         lib_versions.append(f"aiohttp: {aiohttp.__version__}")
 
+        import xxhash
+
+        lib_versions.append(
+            f"xxhash: {xxhash.VERSION} (using library version {xxhash.XXHASH_VERSION})"
+        )
+
         lib_version_str = "\n - ".join(lib_versions)
 
         opened_file_list = []

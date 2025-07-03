@@ -431,7 +431,6 @@ class EartagIdentifyFileRow(Adw.ActionRow):
 
     def __init__(self, file):
         super().__init__()
-        self._bindings = []
         self._connections = []
         self.file = None
 
@@ -440,16 +439,12 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         self.bind_to_file(file)
 
     def bind_to_file(self, file):
-        self.file = file
+        if self.file:
+            self.unbind()
 
-        self._bindings = [
-            self.file.bind_property(
-                "front_cover_path",
-                self.cover_image,
-                "cover_path",
-                GObject.BindingFlags.SYNC_CREATE,
-            ),
-        ]
+        self.file = file
+        self.cover_image.bind_to_file(file)
+
         self._connections = [
             self.file.connect("notify::title", self.update_title),
             self.file.connect("notify::artist", self.update_subtitle),
@@ -459,11 +454,9 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         self.update_subtitle()
 
     def unbind(self, *args):
-        for binding in self._bindings:
-            binding.unbind()
-
         for conn in self._connections:
             self.file.disconnect(conn)
+        self.cover_image.unbind_from_file()
 
         self.file = None
 
@@ -1005,7 +998,7 @@ class EartagIdentifyDialog(Adw.Dialog):
             # cached.
             await rec.download_covers_async()
 
-            rec.apply_data_to_file(file)
+            await rec.apply_data_to_file(file)
             self.apply_task.increment_progress(progress_step)
 
     def on_apply_done(self, *args):

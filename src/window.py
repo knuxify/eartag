@@ -117,6 +117,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self._undo_all_data = {}
         self.error_dialog = None
         self._identify_imported = False
+        self._redo_all_called = False
 
         if devel:
             self.add_css_class("devel")
@@ -336,7 +337,6 @@ class EartagWindow(Adw.ApplicationWindow):
         if selected_files_count <= 0:
             try:
                 for action in (
-                    app.sort_action,
                     app.rename_action,
                     app.extract_action,
                     app.identify_action,
@@ -380,7 +380,6 @@ class EartagWindow(Adw.ApplicationWindow):
         try:
             app.undo_all_action.set_enabled(is_modified)
             for action in (
-                app.sort_action,
                 app.rename_action,
                 app.extract_action,
                 app.identify_action,
@@ -714,6 +713,7 @@ class EartagWindow(Adw.ApplicationWindow):
             file.undo_all()
 
     def _undo_all_done(self, *args):
+        self._redo_all_called = False
         self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
 
@@ -728,10 +728,11 @@ class EartagWindow(Adw.ApplicationWindow):
         )
         toast.props.button_label = _("Redo")
         toast.connect("button-clicked", self.redo_all)
-        # toast.connect('dismissed', self.clear_redo_data)
+        toast.connect("dismissed", self.clear_redo_data)
         self.toast_overlay.add_toast(toast)
 
     def redo_all(self, *args):
+        self._redo_all_called = True
         self.set_sensitive(False)
         self.redo_all_task.run()
 
@@ -760,10 +761,14 @@ class EartagWindow(Adw.ApplicationWindow):
             ).format(n=self._redo_all_count)
         )
         self.toast_overlay.add_toast(toast)
+        self._redo_all_called = False
+        self.clear_redo_data()
 
     def clear_redo_data(self, *args):
         """Clears the redo data for the "undo all" option."""
-        self._undo_all_data = {}
+        if not self._redo_all_called:
+            del self._undo_all_data
+            self._undo_all_data = {}
 
     def toggle_undo_all_action(self, *args):
         app = self.get_application()

@@ -3,9 +3,6 @@
 
 from gi.repository import GObject
 import asyncio
-import mimetypes
-import io
-from PIL import Image
 
 import mutagen.mp3
 import mutagen.wave
@@ -15,7 +12,7 @@ from mutagen.id3 import PictureType
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
 from ..utils.misc import safe_int
-from ..utils.validation import get_mimetype
+from ..utils.validation import get_mimetype, get_mimetype_buffer
 
 # These are copied from the code for Mutagen's EasyID3 functions:
 KEY_TO_FRAME = {
@@ -102,6 +99,7 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
 
     __gtype_name__ = "EartagFileMutagenID3"
     _supports_album_covers = True
+    _cover_mimetypes = ["image/jpeg", "image/png"]
     _supports_full_dates = True
 
     supported_extra_tags = (
@@ -286,37 +284,17 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
     def on_remove(self, *args):
         super().on_remove()
 
-    def set_cover_path(self, cover_type: CoverType, value):
-        if not value:
-            return self.delete_cover(cover_type)
-
-        if cover_type == CoverType.FRONT:
-            prop = "front_cover_path"
-            self._front_cover_path = value
-        elif cover_type == CoverType.BACK:
-            prop = "back_cover_path"
-            self._back_cover_path = value
-        else:
+    async def set_cover_from_data(self, cover_type: CoverType, data: str, mime: str | None = None):
+        if cover_type != CoverType.FRONT and cover_type != CoverType.BACK:
             raise ValueError
 
-        # Allowed types are JPEG or PNG. For other types, convert to PNG first.
-        mime = get_mimetype(value)
-        if mime == "image/jpg":
-            mime = "image/jpeg"
+        if not mime:
+            mime = get_mimetype_buffer(data)
 
-        if mime in ("image/jpeg", "image/png"):
-            with open(value, "rb") as cover_file:
-                data = cover_file.read()
-        else:
-            # Convert to PNG
-            with Image.open(value) as img:
-                out = io.BytesIO()
-                img.save(out, format="PNG")
-                data = out.getvalue()
-            mime = "image/png"
-
-        # Remove conflicting covers
-        self.delete_cover(cover_type, clear_only=True)
+        # Set cover in UI and check if it's valid
+        ret = await self._set_cover_from_data(cover_type, data)
+        if ret is False:
+            return
 
         if cover_type == CoverType.FRONT:
             self.mg_file.tags.add(
@@ -350,40 +328,33 @@ class EartagFileMutagenID3(EartagFileMutagenCommon):
                 )
             )
 
-        self.mark_as_modified(prop)
-
     async def load_cover(self):
         """Loads the covers from the file and saves them to a temporary file."""
         front_picture = None
+        front_picture_type = None
         back_picture = None
 
         pictures = self.mg_file.tags.getall("APIC")
-        # Loop twice, first to get cover art (preferred), second to get "other"
 
         for picture in pictures:
-            if picture.type == PictureType.COVER_FRONT:
+            if picture.type == PictureType.COVER_FRONT and (
+                not front_picture or front_picture_type == PictureType.OTHER
+            ):
                 front_picture = picture
-                break
+                front_picture_type = PictureType.COVER_FRONT
 
-        if not front_picture:
-            for picture in pictures:
-                if picture.type == PictureType.OTHER:
-                    front_picture = picture
-                    break
+            elif picture.type == PictureType.OTHER and not front_picture:
+                front_picture = picture
+                front_picture_type = PictureType.OTHER
+
+            elif picture.type == PictureType.COVER_BACK:
+                back_picture = picture
 
         if front_picture:
-            cover_extension = mimetypes.guess_extension(front_picture.mime)
-            await self.create_cover_tempfile(CoverType.FRONT, front_picture.data, cover_extension)
-
-        # Get back cover
-        for picture in pictures:
-            if picture.type == PictureType.COVER_BACK:
-                back_picture = picture
-                break
+            await self._set_cover_from_data(CoverType.FRONT, front_picture.data, modified=False)
 
         if back_picture:
-            cover_extension = mimetypes.guess_extension(back_picture.mime)
-            await self.create_cover_tempfile(CoverType.BACK, back_picture.data, cover_extension)
+            await self._set_cover_from_data(CoverType.BACK, back_picture.data, modified=False)
 
     @GObject.Property(type=int)
     def tracknumber(self):

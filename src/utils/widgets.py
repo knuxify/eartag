@@ -2,7 +2,6 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from gi.repository import Adw, Gdk, Gtk, GObject, Pango
-import os.path
 
 from ..backends.file import CoverType
 from .. import APP_GRESOURCE_PATH
@@ -229,12 +228,7 @@ class EartagAlbumCoverImage(Gtk.Stack):
 
         if file.supports_album_covers:
             self.on_cover_change()
-            self._connections.append(
-                self.file.connect("notify::front-cover-path", self.on_cover_change)
-            )
-            self._connections.append(
-                self.file.connect("notify::back-cover-path", self.on_cover_change)
-            )
+            self._connections.append(self.file.connect("cover-updated", self.on_cover_change))
         else:
             self.cover_image.set_from_file(None)
             self.on_cover_change()
@@ -273,15 +267,13 @@ class EartagAlbumCoverImage(Gtk.Stack):
             return
 
         if self.cover_type == CoverType.FRONT:
-            path = self.file.front_cover_path
             cover = self.file.front_cover
         elif self.cover_type == CoverType.BACK:
-            path = self.file.back_cover_path
             cover = self.file.back_cover
         else:
             raise ValueError(self.cover_type)
 
-        if path and os.path.exists(path):
+        if cover:
             if self.get_visible_child() is not self.cover_image:
                 self.set_visible_child(self.cover_image)
                 self.notify("is-empty")

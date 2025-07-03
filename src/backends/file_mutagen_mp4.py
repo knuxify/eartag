@@ -4,9 +4,6 @@
 from gi.repository import GObject
 import asyncio
 import base64
-import mimetypes
-import io
-from PIL import Image
 
 import mutagen.mp4
 from mutagen.mp4 import MP4Cover
@@ -14,7 +11,7 @@ from mutagen.mp4 import MP4Cover
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
 from ..utils.misc import safe_int
-from ..utils.validation import get_mimetype, get_mimetype_buffer
+from ..utils.validation import get_mimetype_buffer
 
 EMPTY_COVER = MP4Cover(
     base64.b64decode(
@@ -72,6 +69,7 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
     __gtype_name__ = "EartagFileMutagenMP4"
     _supports_album_covers = True
+    _cover_mimetypes = ["image/png"]
     _supports_full_dates = True
 
     supported_extra_tags = (
@@ -186,23 +184,14 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
     def on_remove(self, *args):
         super().on_remove()
 
-    def set_cover_path(self, cover_type: CoverType, value):
-        if not value:
-            self.delete_cover()
+    async def set_cover_from_data(self, cover_type: CoverType, data: str, mime: str | None = None):
+        if not mime:
+            mime = get_mimetype_buffer(data)
+
+        # Set cover in UI and check if it's valid
+        ret = await self._set_cover_from_data(cover_type, data)
+        if ret is False:
             return
-
-        # Only PNG is allowed. For other types, convert to PNG first.
-        if get_mimetype(value) == "image/png":
-            with open(value, "rb") as cover_file:
-                data = cover_file.read()
-        else:
-            with Image.open(value) as img:
-                out = io.BytesIO()
-                img.save(out, format="PNG")
-                data = out.getvalue()
-
-        with open(value, "rb") as cover_file:
-            data = cover_file.read()
 
         cover_val = []
         if "covr" in self.mg_file.tags:
@@ -214,8 +203,6 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
             except IndexError:
                 cover_val.append(MP4Cover(data, MP4Cover.FORMAT_PNG))
             self.mg_file.tags["covr"] = cover_val
-            self._front_cover_path = value
-            self.mark_as_modified("front_cover_path")
 
         elif cover_type == CoverType.BACK:
             # I can't figure out how to specify a back cover in MP4 tags -
@@ -237,8 +224,6 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
                 cover_val[1] = MP4Cover(data, MP4Cover.FORMAT_PNG)
 
             self.mg_file.tags["covr"] = cover_val
-            self._back_cover_path = value
-            self.mark_as_modified("back_cover_path")
 
     async def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
@@ -249,29 +234,15 @@ class EartagFileMutagenMP4(EartagFileMutagenCommon):
 
         picture = self.mg_file.tags["covr"][0]
         if picture != EMPTY_COVER:
-            if picture.imageformat == MP4Cover.FORMAT_JPEG:
-                cover_extension = ".jpg"
-            elif picture.imageformat == MP4Cover.FORMAT_PNG:
-                cover_extension = ".png"
-            else:
-                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(picture))
-
-            await self.create_cover_tempfile(CoverType.FRONT, picture, cover_extension)
+            await self._set_cover_from_data(CoverType.FRONT, picture, modified=False)
 
         try:
             picture_back = self.mg_file.tags["covr"][1]
             assert picture_back != EMPTY_COVER
-        except (AssertionError, IndexError):
+        except (AssertionError, IndexError, KeyError):
             pass
         else:
-            if picture_back.imageformat == MP4Cover.FORMAT_JPEG:
-                cover_extension = ".jpg"
-            elif picture_back.imageformat == MP4Cover.FORMAT_PNG:
-                cover_extension = ".png"
-            else:
-                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(picture_back))
-
-            await self.create_cover_tempfile(CoverType.BACK, picture_back, cover_extension)
+            await self._set_cover_from_data(CoverType.BACK, picture_back, modified=False)
 
     @GObject.Property(type=str)
     def releasedate(self):

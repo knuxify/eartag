@@ -121,7 +121,10 @@ _mimetype_cache = {}
 
 def get_mimetype_buffer(data):
     """Get mimetype from buffer."""
-    return filetype.match(data, matchers=FILETYPE_MATCHERS)
+    mimetype = filetype.match(data, matchers=FILETYPE_MATCHERS)
+    if mimetype:
+        return mimetype.mime
+    return None
 
 
 def get_mimetype(
@@ -171,17 +174,16 @@ async def get_mimetype_async(
     :param no_extension_guess: If True, skips guessing the filetype from the extension.
     :param no_cache: Skip the mimetype cache.
     """
+    ret = None
+
     if not no_cache:
         if path in _mimetype_cache:
             return _mimetype_cache[path]
 
     async with aiofiles.open(path, "rb") as file:
-        mimetype = get_mimetype_buffer(await file.read(2048))
+        ret = get_mimetype_buffer(await file.read(2048))
 
-    ret = None
-    if mimetype:
-        ret = mimetype.mime
-    elif not no_extension_guess:
+    if not ret and not no_extension_guess:
         # Try to guess mimetype from file extension if filetype match fails
         guess = mimetypes.guess_type(path)
         if guess and guess[0]:

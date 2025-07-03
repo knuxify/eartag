@@ -3,7 +3,7 @@ import shutil
 import filecmp
 import pytest
 
-from src.backends.file import CoverType
+from src.backends.file import CoverType, EartagFileCover
 
 # Boilerplate for handling example files
 
@@ -88,7 +88,7 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
         file_read = await file_class.new_from_path(
             os.path.join(EXAMPLES_DIR, f"example.{extension}")
         )
-        backend_read(file_read, skip_channels)
+        await backend_read(file_read, skip_channels)
 
     # Simple write test
     with TestFile("test_write", extension, "notags") as file_write:
@@ -129,7 +129,7 @@ async def run_backend_tests(file_class, extension, skip_channels=False):
             await backend_test_covers(await file_class.new_from_path(file_cover))
 
 
-def backend_read(file, skip_channels=False):
+async def backend_read(file, skip_channels=False):
     """Tests common backend read functions."""
     for prop in file.handled_properties + file.supported_extra_tags:
         assert file.get_property(prop) == prop_to_example_string[prop], (
@@ -140,23 +140,21 @@ def backend_read(file, skip_channels=False):
 
     if file._supports_album_covers:
         try:
-            assert file.get_property("front_cover_path"), "cover art not found in file"
-            assert filecmp.cmp(
-                file.get_property("front_cover_path"),
-                os.path.join(EXAMPLES_DIR, "cover.png"),
-                shallow=False,
-            ), "cover art differs from test value"  # noqa: E501
+            assert file.get_property("front_cover"), "cover art not found in file"
+            assert file.get_property("front_cover") == await EartagFileCover.new_from_path(
+                os.path.join(EXAMPLES_DIR, "cover.png")
+            ), "back cover differs from test value"  # noqa: E501
 
-            assert file.get_property("back_cover_path"), "back cover not found in file"
-            assert filecmp.cmp(
-                file.get_property("back_cover_path"),
-                os.path.join(EXAMPLES_DIR, "cover_back.png"),
-                shallow=False,
+            assert file.get_property("back_cover"), "back cover not found in file"
+            assert file.get_property("back_cover") == await EartagFileCover.new_from_path(
+                os.path.join(EXAMPLES_DIR, "cover_back.png")
             ), "back cover differs from test value"  # noqa: E501
         except TypeError as e:
             raise ValueError("cover art not found in file") from e
 
-    assert file.get_property("is_modified") is False
+    assert file.get_property("is_modified") is False, (
+        f"is_modified is True in a newly loaded file, {file.modified_tags}"
+    )
     if (
         not skip_channels
     ):  # mutagen-mp4, at least with the m4a file, has some trouble with this step
@@ -177,8 +175,8 @@ def backend_read_empty(file, skip_cover=False):
 
     assert file.get_property("is_modified") is False
     if not skip_cover:
-        assert not file.get_property("front_cover_path"), file.get_property("front_cover_path")
-        assert not file.get_property("back_cover_path"), file.get_property("back_cover_path")
+        assert not file.get_property("front_cover")
+        assert not file.get_property("back_cover")
 
 
 async def backend_write(file, skip_channels=False):
@@ -193,23 +191,23 @@ async def backend_write(file, skip_channels=False):
 
     if file._supports_album_covers:
         for cover_filetype in ("jpg", "jp2", "bmp", "webp", "png"):
-            file.set_property(
-                "front_cover_path",
+            await file.set_cover_from_path(
+                CoverType.FRONT,
                 os.path.join(EXAMPLES_DIR, f"cover.{cover_filetype}"),
             )
-            assert file.get_property("front_cover_path")
+            assert file.get_property("front_cover")
 
-            file.set_property(
-                "back_cover_path",
+            await file.set_cover_from_path(
+                CoverType.BACK,
                 os.path.join(EXAMPLES_DIR, f"cover_back.{cover_filetype}"),
             )
-            assert file.get_property("back_cover_path")
+            assert file.get_property("back_cover")
 
     assert file.get_property("is_modified") is True
     props_set = set(tuple(file.handled_properties) + tuple(file.supported_extra_tags))
     if file._supports_album_covers:
-        props_set.add("front_cover_path")
-        props_set.add("back_cover_path")
+        props_set.add("front_cover")
+        props_set.add("back_cover")
     assert set(file.modified_tags) == props_set
 
     file.save()
@@ -218,7 +216,7 @@ async def backend_write(file, skip_channels=False):
     assert not file.modified_tags
 
     file_class = type(file)
-    backend_read(await file_class.new_from_path(file.path), skip_channels)
+    await backend_read(await file_class.new_from_path(file.path), skip_channels)
 
     if REGENERATE_EXAMPLES:
         extension = os.path.splitext(file.path)[1]
@@ -297,11 +295,17 @@ async def backend_write_empty(file, skip_channels=False):
     assert file.get_property("is_modified") is True
 
     if file._supports_album_covers:
-        file.set_property("front_cover_path", os.path.join(EXAMPLES_DIR, "cover.png"))
-        assert file.get_property("front_cover_path")
+        await file.set_cover_from_path(
+            CoverType.FRONT,
+            os.path.join(EXAMPLES_DIR, "cover.png"),
+        )
+        assert file.get_property("front_cover")
 
-        file.set_property("back_cover_path", os.path.join(EXAMPLES_DIR, "cover_back.png"))
-        assert file.get_property("back_cover_path")
+        await file.set_cover_from_path(
+            CoverType.BACK,
+            os.path.join(EXAMPLES_DIR, "cover_back.png"),
+        )
+        assert file.get_property("back_cover")
 
     file.save()
 
@@ -330,18 +334,16 @@ async def backend_delete(file):
 
     if file._supports_album_covers:
         file.delete_cover(CoverType.FRONT)
-        assert not file.has_tag("front-cover-path")
-        assert not file.front_cover_path
-        assert not file.front_cover.cover_path
+        assert not file.has_tag("front-cover")
+        assert not file.front_cover
 
         assert file.get_property("is_modified") is True
         file.save()
         assert file.get_property("is_modified") is False
 
         file.delete_cover(CoverType.BACK)
-        assert not file.has_tag("back-cover-path")
-        assert not file.back_cover_path
-        assert not file.back_cover.cover_path
+        assert not file.has_tag("back-cover")
+        assert not file.back_cover
 
         assert file.get_property("is_modified") is True
         file.save()
@@ -419,161 +421,50 @@ async def backend_test_covers(file):
     except AttributeError as e:
         raise AttributeError("Missing function: load_cover") from e
     try:
-        file.set_cover_path  # noqa: B018
+        file.set_cover_from_data  # noqa: B018
     except AttributeError as e:
-        raise AttributeError("Missing function: set_cover_path") from e
+        raise AttributeError("Missing function: set_cover_from_data") from e
     try:
         file.delete_cover  # noqa: B018
     except AttributeError as e:
         raise AttributeError("Missing function: delete_cover") from e
     try:
-        assert file._front_cover_path is None
-        assert file._back_cover_path is None
+        file._cover_mimetypes  # noqa: B018
     except AttributeError as e:
-        raise AttributeError("Missing _{front,back}_cover_path variables") from e
+        raise AttributeError("Missing variable: _cover_mimetypes") from e
 
     # Set cover art
-    front_cover_path = os.path.join(EXAMPLES_DIR, "cover.png")
-    file.set_cover_path(CoverType.FRONT, front_cover_path)
-    assert file.props.front_cover_path == file._front_cover_path
-    assert file.props.front_cover_path == front_cover_path
-    assert file.get_property("is_modified") is True
-    assert "front_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "front_cover_path" not in file.modified_tags
 
-    # Re-load to make sure cover art is set
-    file_class = type(file)
-    reloaded_file = await file_class.new_from_path(file.path)
-    assert reloaded_file.props.front_cover_path
-    assert filecmp.cmp(reloaded_file.props.front_cover_path, front_cover_path, shallow=False)
-    del reloaded_file
+    for cover_type, cover_prop, cover_path in (
+        (CoverType.FRONT, "front_cover", "cover.png"),
+        (CoverType.BACK, "back_cover", "cover_back.png"),
+    ):
+        await file.set_cover_from_path(
+            cover_type,
+            os.path.join(EXAMPLES_DIR, cover_path),
+        )
+        assert file.get_property(cover_prop)
 
-    # Set back cover
-    back_cover_path = os.path.join(EXAMPLES_DIR, "cover_back.png")
-    file.set_cover_path(CoverType.BACK, back_cover_path)
-    assert file.props.back_cover_path == file._back_cover_path
-    assert file.props.back_cover_path == back_cover_path
-    assert file.get_property("is_modified") is True
-    assert "back_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "back_cover_path" not in file.modified_tags
+        assert file.get_property("is_modified") is True
+        assert cover_prop in file.modified_tags
+        file.save()
+        assert file.get_property("is_modified") is False
+        assert cover_prop not in file.modified_tags
 
-    # Re-load to make sure cover art is set
-    file_class = type(file)
-    reloaded_file = await file_class.new_from_path(file.path)
-    assert reloaded_file.props.front_cover_path
-    assert filecmp.cmp(reloaded_file.props.front_cover_path, front_cover_path, shallow=False)
-    assert reloaded_file.props.back_cover_path
-    assert filecmp.cmp(reloaded_file.props.back_cover_path, back_cover_path, shallow=False)
-    del reloaded_file
+        # Re-load to make sure cover art is set
+        file_class = type(file)
+        reloaded_file = await file_class.new_from_path(file.path)
+        assert reloaded_file.get_property(cover_prop)
+        assert file.get_property(cover_prop) == await EartagFileCover.new_from_path(
+            os.path.join(EXAMPLES_DIR, cover_path)
+        )
+        del reloaded_file
 
-    # Delete both covers
-    file.delete_cover(CoverType.FRONT, clear_only=False)
-    assert not file.props.front_cover_path
-    assert not file._front_cover_path
-    assert file.props.back_cover_path
-    assert file.get_property("is_modified") is True
-    assert "front_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "front_cover_path" not in file.modified_tags
-
-    file.delete_cover(CoverType.BACK, clear_only=False)
-    assert not file.props.front_cover_path
-    assert not file.props.back_cover_path
-    assert not file._back_cover_path
-    assert file.get_property("is_modified") is True
-    assert "back_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "back_cover_path" not in file.modified_tags
-
-    # Delete both covers, now in reverse order!
-    file.set_cover_path(CoverType.FRONT, front_cover_path)
-    file.set_cover_path(CoverType.BACK, back_cover_path)
-    file.save()
-
-    file.delete_cover(CoverType.BACK, clear_only=False)
-    assert file.props.front_cover_path
-    assert not file.props.back_cover_path
-    assert not file._back_cover_path
-    assert file.get_property("is_modified") is True
-    assert "back_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "back_cover_path" not in file.modified_tags
-
-    file.delete_cover(CoverType.FRONT, clear_only=False)
-    assert not file.props.front_cover_path
-    assert not file._front_cover_path
-    assert not file.props.back_cover_path
-    assert file.get_property("is_modified") is True
-    assert "front_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "front_cover_path" not in file.modified_tags
-
-    # Add both covers, now in reverse order!
-    back_cover_path = os.path.join(EXAMPLES_DIR, "cover_back.png")
-    file.set_cover_path(CoverType.BACK, back_cover_path)
-    assert file.props.back_cover_path == file._back_cover_path
-    assert file.props.back_cover_path == back_cover_path
-    assert file.get_property("is_modified") is True
-    assert "back_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "back_cover_path" not in file.modified_tags
-
-    file_class = type(file)
-    reloaded_file = await file_class.new_from_path(file.path)
-    assert not reloaded_file.props.front_cover_path
-    assert reloaded_file.props.back_cover_path
-    assert filecmp.cmp(reloaded_file.props.back_cover_path, back_cover_path, shallow=False)
-    del reloaded_file
-
-    front_cover_path = os.path.join(EXAMPLES_DIR, "cover.png")
-    file.set_cover_path(CoverType.FRONT, front_cover_path)
-    assert file.props.front_cover_path == file._front_cover_path
-    assert file.props.front_cover_path == front_cover_path
-    assert file.get_property("is_modified") is True
-    assert "front_cover_path" in file.modified_tags
-    file.save()
-    assert file.get_property("is_modified") is False
-    assert "front_cover_path" not in file.modified_tags
-
-    file_class = type(file)
-    reloaded_file = await file_class.new_from_path(file.path)
-    assert reloaded_file.props.front_cover_path
-    assert reloaded_file.props.back_cover_path
-    assert filecmp.cmp(reloaded_file.props.front_cover_path, front_cover_path, shallow=False)
-    assert filecmp.cmp(reloaded_file.props.back_cover_path, back_cover_path, shallow=False)
-    del reloaded_file
-
-    # Test shallow delete (clear_only)
-    file.set_cover_path(CoverType.FRONT, front_cover_path)
-    file.set_cover_path(CoverType.BACK, back_cover_path)
-    file.save()
-
-    file.delete_cover(CoverType.FRONT, clear_only=True)
-    assert file.props.front_cover_path
-    assert file.get_property("is_modified") is False
-    assert "front_cover_path" not in file.modified_tags
-    file.save()
-
-    file.delete_cover(CoverType.BACK, clear_only=True)
-    assert file.props.back_cover_path
-    assert file.get_property("is_modified") is False
-    assert "back_cover_path" not in file.modified_tags
-    file.save()
-
-    # Test cover objects
-    file.set_cover_path(CoverType.FRONT, front_cover_path)
-    file.set_cover_path(CoverType.BACK, back_cover_path)
-    file.save()
-
-    assert file.front_cover.cover_path == file.front_cover_path
-    assert file.back_cover.cover_path == file.back_cover_path
-    assert file.front_cover != file.back_cover
+        # Delete cover
+        file.delete_cover(cover_type, clear_only=False)
+        assert not file.get_property(cover_prop)
+        assert file.get_property("is_modified") is True
+        assert cover_prop in file.modified_tags
+        file.save()
+        assert file.get_property("is_modified") is False
+        assert cover_prop not in file.modified_tags

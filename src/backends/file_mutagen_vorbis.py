@@ -4,9 +4,8 @@
 from gi.repository import GObject
 import asyncio
 import base64
-import mimetypes
-import io
 from PIL import Image
+import io
 
 import mutagen
 from mutagen.flac import FLAC, Picture, error as FLACError
@@ -15,7 +14,7 @@ from mutagen.id3 import PictureType
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
 from ..utils.misc import safe_int
-from ..utils.validation import get_mimetype, get_mimetype_buffer
+from ..utils.validation import get_mimetype_buffer
 
 
 class EartagFileMutagenVorbis(EartagFileMutagenCommon):
@@ -23,6 +22,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
 
     __gtype_name__ = "EartagFileMutagenVorbis"
     _supports_album_covers = True
+    _cover_mimetypes = ["image/jpeg", "image/png"]
     _supports_full_dates = True
 
     # There's an official standard and semi-official considerations for tags,
@@ -172,36 +172,21 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     def on_remove(self, *args):
         super().on_remove()
 
-    def set_cover_path(self, cover_type: CoverType, value):
-        if not value:
-            return self.delete_cover(cover_type)
-
+    async def set_cover_from_data(self, cover_type: CoverType, data: str, mime: str | None = None):
         if cover_type == CoverType.FRONT:
             pictype = PictureType.COVER_FRONT
-            prop = "front_cover_path"
-            self._front_cover_path = value
         elif cover_type == CoverType.BACK:
             pictype = PictureType.COVER_BACK
-            prop = "back_cover_path"
-            self._back_cover_path = value
         else:
             raise ValueError
 
-        # Allowed types are JPEG or PNG. For other types, convert to PNG first.
-        mime = get_mimetype(value)
-        if mime == "image/jpg":
-            mime = "image/jpeg"
+        if not mime:
+            mime = get_mimetype_buffer(data)
 
-        if mime in ("image/jpeg", "image/png"):
-            with open(value, "rb") as cover_file:
-                data = cover_file.read()
-        else:
-            # Convert to PNG
-            with Image.open(value) as img:
-                out = io.BytesIO()
-                img.save(out, format="PNG")
-                data = out.getvalue()
-            mime = "image/png"
+        # Set cover in UI and check if it's valid
+        ret = await self._set_cover_from_data(cover_type, data)
+        if ret is False:
+            return
 
         # shamelessly stolen from
         # https://stackoverflow.com/questions/1996577/how-can-i-get-the-depth-of-a-jpg-file
@@ -223,13 +208,14 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         picture.data = data
         picture.type = pictype
         picture.mime = mime
-        with Image.open(value) as img:
-            picture.width = img.width
-            picture.height = img.height
-            picture.depth = mode_to_bpp[img.mode]
 
-        # Remove all conflicting pictures
-        self.delete_cover(cover_type, clear_only=True)
+        def _get_metadata(data, picture):
+            with Image.open(io.BytesIO(data)) as img:
+                picture.width = img.width
+                picture.height = img.height
+                picture.depth = mode_to_bpp[img.mode]
+
+        await asyncio.to_thread(_get_metadata, data, picture)
 
         if isinstance(self.mg_file, FLAC):
             self.mg_file.add_picture(picture)
@@ -244,16 +230,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
         else:
             self.mg_file["metadata_block_picture"] = [vcomment_value]
 
-        self.mark_as_modified(prop)
-
     async def _load_cover(self, cover_type: CoverType):
         """Loads cover data from file."""
-        if cover_type == CoverType.FRONT:
-            prop = "front_cover_path"
-        elif cover_type == CoverType.BACK:
-            prop = "back_cover_path"
-        else:
-            raise ValueError
 
         # See https://mutagen.readthedocs.io/en/latest/user/vcomment.html.
         # There are three ways to get the cover image:
@@ -277,12 +255,10 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                     picture = picture_cover
                 elif picture_other:
                     picture = picture_other
-                else:
-                    self.notify("front_cover_path")
 
                 if picture:
-                    cover_extension = mimetypes.guess_extension(picture.mime)
-                    await self.create_cover_tempfile(cover_type, picture.data, cover_extension)
+                    await self._set_cover_from_data(cover_type, picture.data, modified=False)
+
             elif cover_type == CoverType.BACK:
                 for _picture in self.mg_file.pictures:
                     if _picture.type == PictureType.COVER_BACK:
@@ -290,8 +266,7 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                         break
 
                 if picture_back:
-                    cover_extension = mimetypes.guess_extension(picture_back.mime)
-                    await self.create_cover_tempfile(cover_type, picture_back.data, cover_extension)
+                    await self._set_cover_from_data(cover_type, picture_back.data, modified=False)
 
         # 2. Using metadata_block_picture
         elif self.mg_file.get("metadata_block_picture", []):
@@ -326,17 +301,14 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 cover_front = covers_other[0]
 
             if cover_front:
-                cover_extension = mimetypes.guess_extension(cover_front.mime)
-                await self.create_cover_tempfile(CoverType.FRONT, cover_front.data, cover_extension)
+                await self._set_cover_from_data(CoverType.FRONT, cover_front.data, modified=False)
 
             if cover_back:
-                cover_extension = mimetypes.guess_extension(cover_back.mime)
-                await self.create_cover_tempfile(CoverType.BACK, cover_back.data, cover_extension)
+                await self._set_cover_from_data(CoverType.BACK, cover_back.data, modified=False)
 
         # 3. Using the coverart field (and optionally covermime)
         elif cover_type == CoverType.FRONT:
             covers = self.mg_file.get("coverart", [])
-            mimes = self.mg_file.get("coverartmime", [])
 
             n = 0
             for cover in covers:
@@ -348,14 +320,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
                 if not data:
                     continue
 
-                cover_extension = mimetypes.guess_extension(get_mimetype_buffer(data))
-                if not cover_extension and mimes and len(mimes) == len(covers):
-                    cover_extension = mimes[n]
-
-                await self.create_cover_tempfile(cover_type, data, cover_extension)
+                await self._set_cover_from_data(cover_type, data, modified=False)
                 n += 1
-
-        self.notify(prop)
 
     async def load_cover(self):
         for cover_type in (CoverType.FRONT, CoverType.BACK):

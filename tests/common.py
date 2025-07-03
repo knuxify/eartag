@@ -3,6 +3,7 @@ Contains common test fixtures.
 """
 
 from src.backends.file import EartagFile, CoverType
+from src.utils.validation import get_mimetype_buffer
 import pytest
 import os
 
@@ -37,6 +38,7 @@ class EartagDummyFile(EartagFile):
     __gtype_name__ = "EartagDummyFile"
 
     _supports_album_covers = True
+    _cover_mimetypes = ["image/jpeg", "image/png"]
     _supports_full_dates = True
 
     supported_extra_tags = (
@@ -98,15 +100,19 @@ class EartagDummyFile(EartagFile):
         if not clear_only:
             self._cleanup_cover(cover_type)
 
-    def set_cover_path(self, cover_type, value):
-        if not value:
-            self.delete_cover(cover_type)
-        if cover_type == CoverType.FRONT:
-            self._front_cover_path = value
-        elif cover_type == CoverType.BACK:
-            self._back_cover_path = value
-        else:
+    async def set_cover_from_data(
+        self, cover_type: CoverType, data: bytes, mime: str | None = None
+    ):
+        if cover_type != CoverType.FRONT and cover_type != CoverType.BACK:
             raise ValueError
+
+        if not mime:
+            mime = get_mimetype_buffer(data)
+
+        # Set cover in UI and check if it's valid
+        ret = await self._set_cover_from_data(cover_type, data)
+        if ret is False:
+            return
 
 
 @pytest.fixture

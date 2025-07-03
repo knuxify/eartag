@@ -2,8 +2,9 @@
 # (c) 2023 knuxify and Ear Tag contributors
 
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES, CoverType
+from .logger import logger
 from .utils import get_readable_length, file_is_sandboxed
-from .utils.validation import get_mimetype, is_valid_image_file
+from .utils.validation import is_valid_image_file
 from .utils.widgets import EartagAlbumCoverImage, EartagPopoverButton  # noqa: F401
 from .tagentry import (  # noqa: F401
     EartagTagEntry,
@@ -14,8 +15,9 @@ from . import APP_GRESOURCE_PATH
 
 from gi.repository import Adw, Gtk, Gdk, Gio, GLib, GObject
 
+import asyncio
 import mimetypes
-import shutil
+import traceback
 import os.path
 
 
@@ -118,9 +120,9 @@ class EartagAlbumCoverButton(Adw.Bin):
 
         enable_remove = False
         for file in self.files:
-            if not getattr(file, cover).is_empty():
+            if getattr(file, cover):
                 enable_remove = True
-            break
+                break
 
         self.action_set_enabled("albumcoverbutton.remove", enable_remove)
 
@@ -172,8 +174,6 @@ class EartagAlbumCoverButton(Adw.Bin):
             for _file in self.files:
                 if _file.get_cover(self.cover_type) != our_cover:
                     covers_different = True
-                    if _file.supports_album_covers and _file.front_cover:
-                        self.cover_image.bind_to_file(_file)
                     self.cover_image.mark_as_empty()
                     break
             if not covers_different:
@@ -192,52 +192,47 @@ class EartagAlbumCoverButton(Adw.Bin):
             self.cover_tempdir = None
 
     def show_cover_file_chooser(self, *args):
+        asyncio.create_task(self.show_cover_file_chooser_async())
+
+    async def show_cover_file_chooser_async(self):
         """Shows the file chooser."""
         file_chooser = Gtk.FileDialog(title=_("Select Album Cover Image"), modal=True)
-        _cancellable = Gio.Cancellable.new()
 
         _filters = Gio.ListStore.new(Gtk.FileFilter)
         _filters.append(self.image_file_filter)
         file_chooser.set_filters(_filters)
 
-        file_chooser.open(self.get_native(), _cancellable, self.open_cover_file_from_dialog)
-
-    def open_cover_file_from_dialog(self, dialog, result):
-        """
-        Callback for a FileChooser that takes the response and opens the file
-        selected in the dialog.
-        """
         try:
-            response = dialog.open_finish(result)
+            gfile = await file_chooser.open(self.get_native(), None)
         except GLib.GError:
+            traceback.print_exc()
             return
 
-        if not response:
+        if not gfile:
             return
 
-        if self.cover_type == CoverType.FRONT:
-            for file in self.files:
-                file.front_cover_path = response.get_path()
-                file.notify("front-cover-path")
-        elif self.cover_type == CoverType.BACK:
-            for file in self.files:
-                file.back_cover_path = response.get_path()
-                file.notify("back-cover-path")
+        for file in self.files:
+            try:
+                await file.set_cover_from_path(self.cover_type, gfile.get_path())
+            except:  # noqa: E722
+                logger.error(f"Error while setting cover for file {file}:")
+                traceback.print_exc()
 
         self.cover_image.on_cover_change()
 
     def save_cover(self, *args):
-        """Opens a file dialog to have the cover art to a file."""
+        asyncio.create_task(self.save_cover_async())
 
+    async def save_cover_async(self):
+        """Opens a file dialog to have the cover art to a file."""
         if self.cover_type == CoverType.FRONT:
-            cover_path = self.files[0].front_cover_path
+            cover = self.files[0].front_cover
         elif self.cover_type == CoverType.BACK:
-            cover_path = self.files[0].back_cover_path
-        if not cover_path:
+            cover = self.files[0].back_cover
+        else:
             return
 
-        cover_mime = get_mimetype(cover_path)
-        cover_extension = mimetypes.guess_extension(cover_mime)
+        cover_extension = mimetypes.guess_extension(cover.mime)
         target_folder, target_filename = os.path.split(self.files[0].path)
         target_filename = os.path.splitext(target_filename)[0] + cover_extension
 
@@ -247,54 +242,47 @@ class EartagAlbumCoverButton(Adw.Bin):
             initial_folder=Gio.File.new_for_path(target_folder),
             initial_name=target_filename,
         )
-        _cancellable = Gio.Cancellable.new()
 
-        file_chooser.save(self.get_native(), _cancellable, self._save_cover_response)
-
-    def _save_cover_response(self, dialog, result):
         try:
-            response = dialog.save_finish(result)
+            response = await file_chooser.save(self.get_native(), None)
         except GLib.GError:
             return
 
         if not response:
             return
 
-        if self.cover_type == CoverType.FRONT:
-            cover_path = self.files[0].front_cover_path
-        elif self.cover_type == CoverType.BACK:
-            cover_path = self.files[0].back_cover_path
+        save_path = response.get_path()
 
-        if cover_path:
-            save_path = response.get_path()
-            cover_mime = get_mimetype(cover_path)
-            cover_extension = mimetypes.guess_extension(cover_mime)
-            if cover_extension and not save_path.endswith(cover_extension):
-                save_path += cover_extension
-            shutil.copyfile(cover_path, save_path)
+        if cover_extension and not save_path.endswith(cover_extension):
+            save_path += cover_extension
 
-        # TRANSLATORS: {path} is a placeholder for the path.
-        # **Do not change the text between the curly brackets!**
-        toast = Adw.Toast.new(_("Saved cover to {path}").format(path=save_path))
-        self.get_native().toast_overlay.add_toast(toast)
+        try:
+            await cover.save_to_path(save_path)
+        except:  # noqa: E722
+            logger.error("Failed to save cover:")
+            traceback.print_exc()
+        else:
+            # TRANSLATORS: {path} is a placeholder for the path.
+            # **Do not change the text between the curly brackets!**
+            toast = Adw.Toast.new(_("Saved cover to {path}").format(path=save_path))
+            self.get_native().toast_overlay.add_toast(toast)
 
     def remove_cover(self, *args):
-        self._remove_undo_budder = {}
+        self._remove_undo_buffer = {}
         self._remove_undo_buffer["type"] = self.cover_type
 
         if self.cover_type == CoverType.FRONT:
-            cover_path_prop = "front_cover_path"
+            cover_prop = "front_cover"
         elif self.cover_type == CoverType.BACK:
-            cover_path_prop = "back_cover_path"
+            cover_prop = "back_cover"
 
         for file in self.files:
-            cover_path = file.get_property(cover_path_prop)
-            cover_is_modified = cover_path_prop in file.modified_tags
-            self._remove_undo_buffer[file.id] = (
-                cover_path,
-                cover_path,
+            cover = file.get_property(cover_prop)
+            cover_is_modified = cover_prop in file.modified_tags
+            self._remove_undo_buffer[file.id] = [
+                cover,
                 cover_is_modified,
-            )
+            ]
             file.delete_cover(self.cover_type)
 
         self.cover_image.on_cover_change()
@@ -309,30 +297,39 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.get_native().toast_overlay.add_toast(toast)
 
     def _remove_undo(self, *args):
+        asyncio.create_task(self._remove_undo_async())
+
+    async def _remove_undo_async(self):
         if self._remove_undo_buffer["type"] == CoverType.FRONT:
-            cover_path_prop = "front_cover_path"
+            cover_prop = "front_cover"
         elif self._remove_undo_buffer["type"] == CoverType.BACK:
-            cover_path_prop = "back_cover_path"
+            cover_prop = "back_cover"
+        else:
+            return
 
         file_manager = self.get_native().file_manager
         for file in file_manager.files:
             if file.id not in self._remove_undo_buffer:
                 continue
-            file.set_property(cover_path_prop, self._remove_undo_buffer[file.id][1])
-            was_modified = self._remove_undo_buffer[file.id][2]
+            file.set_property(cover_prop, self._remove_undo_buffer[file.id][0])
+            was_modified = self._remove_undo_buffer[file.id][1]
             if was_modified:
-                file.mark_as_modified(cover_path_prop)
+                file.mark_as_modified(cover_prop)
             else:
-                file.mark_tag_as_unmodified(cover_path_prop)
+                file.mark_tag_as_unmodified(cover_prop)
 
         self.cover_image.on_cover_change()
 
-        self._remove_undo_buffer = {}
+        self._remove_undo_clear()
 
     def _remove_undo_clear(self, *args):
         if "type" not in self._remove_undo_buffer:
             return
 
+        for k, v in self._remove_undo_buffer.items():
+            if k == "type":
+                continue
+            del v[0]  # Make absolutely sure the covers are unreffed
         self._remove_undo_buffer = {}
 
     # Drag-and-drop
@@ -362,15 +359,14 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.handling_drag = False
 
     def on_drag_drop(self, drop_target, value, *args):
+        asyncio.create_task(self.on_drag_drop_async(drop_target, value))
+
+    async def on_drag_drop_async(self, drop_target, value):
         path = value.get_path()
-        if self.cover_type == CoverType.FRONT:
-            for file in self.files:
-                file.front_cover_path = path
-                file.notify("front-cover-path")
-        elif self.cover_type == CoverType.BACK:
-            for file in self.files:
-                file.back_cover_path = path
-                file.notify("back-cover-path")
+        if not path:
+            return
+        for file in self.files:
+            await file.set_cover_from_path(self.cover_type, path)
         self.cover_image.on_cover_change()
         self.on_drag_unhover()
 
@@ -986,13 +982,11 @@ class EartagFileView(Gtk.Stack):
         """
         self.update_buttons()
 
+        _selected_files = self.file_manager.selected_files_list
+
         # Get list of selected (added)/unselected (removed) files
-        added_files = [
-            file for file in self.file_manager.selected_files_list if file not in self.bound_files
-        ]
-        removed_files = [
-            file for file in self.bound_files if not self.file_manager.is_selected(file)
-        ]
+        added_files = [file for file in _selected_files if file not in self.bound_files]
+        removed_files = [file for file in self.bound_files if file not in _selected_files]
 
         # Handle added and removed files
         self._unbind_files(removed_files)

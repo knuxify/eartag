@@ -133,7 +133,7 @@ class EartagFileManager(GObject.Object):
         self.rename_task.connect("task-done", self.refresh_state)
         self.rename_task.connect("notify::is-running", self.notify_busy)
 
-        self.selected_files.connect("selection-changed", self.do_selection_changed)
+        self.selected_files.connect("selection-changed", self.on_selection_changed)
 
     def update_modified_status(self, file, *args):
         """Responsible for setting the is_modified property."""
@@ -544,7 +544,7 @@ class EartagFileManager(GObject.Object):
     def get_n_selected(self):
         return self.selected_files.get_selection().get_size()
 
-    def do_selection_changed(self, *args):
+    def on_selection_changed(self, *args):
         if args:
             self._selected_file_ids = [file.id for file in self.selected_files]
             self.emit("selection-changed")

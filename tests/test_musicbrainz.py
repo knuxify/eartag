@@ -157,7 +157,7 @@ async def test_musicbrainz_file_set(dummy_file):  # noqa: F811
 
     await rel.download_covers_async()
 
-    rec.apply_data_to_file(dummy_file)
+    await rec.apply_data_to_file(dummy_file)
 
     assert dummy_file.title == "Royal Blue Walls"
     assert dummy_file.artist == "Jane Remover"
@@ -166,8 +166,8 @@ async def test_musicbrainz_file_set(dummy_file):  # noqa: F811
     assert dummy_file.tracknumber == 1
     assert dummy_file.totaltracknumber == 2
 
-    assert dummy_file.front_cover_path
-    assert not dummy_file.back_cover_path
+    assert dummy_file.front_cover
+    assert not dummy_file.back_cover
 
 
 @pytest.fixture
@@ -207,7 +207,7 @@ async def test_acoustid_identify(acoustid_file):
     ident = await acoustid_identify_file(acoustid_file)
     assert ident
     assert ident[1]
-    ident[1].apply_data_to_file(acoustid_file)
+    await ident[1].apply_data_to_file(acoustid_file)
     assert acoustid_file.title == "Sneaky Snitch"
     assert acoustid_file.artist == "Kevin MacLeod"
     assert acoustid_file.album == "Mystery"

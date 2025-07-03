@@ -3,10 +3,7 @@
 
 from gi.repository import GObject
 import asyncio
-import mimetypes
 import struct
-import io
-from PIL import Image
 
 import mutagen.asf
 from mutagen.id3 import PictureType
@@ -14,7 +11,6 @@ from mutagen.id3 import PictureType
 from .file import CoverType
 from .file_mutagen_common import EartagFileMutagenCommon
 from ..utils.misc import safe_int
-from ..utils.validation import get_mimetype
 
 # These are copied from the code for Quod Libet's wma handling:
 KEY_TO_FRAME = {
@@ -113,6 +109,7 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
 
     __gtype_name__ = "EartagFileMutagenASF"
     _supports_album_covers = True
+    _cover_mimetypes = ["image/jpeg", "image/png"]
     _supports_full_dates = False
 
     # Copied from file.py, but excludes totaltracknumber, as ASF tags don't
@@ -218,41 +215,18 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
     def on_remove(self, *args):
         super().on_remove()
 
-    def set_cover_path(self, cover_type: CoverType, value):
-        if not value:
-            return self.delete_cover(cover_type)
-
+    async def set_cover_from_data(self, cover_type: CoverType, data: str, mime: str | None = None):
         if cover_type == CoverType.FRONT:
             pictype = PictureType.COVER_FRONT
-            prop = "front_cover_path"
-            self._front_cover_path = value
         elif cover_type == CoverType.BACK:
             pictype = PictureType.COVER_BACK
-            prop = "back_cover_path"
-            self._back_cover_path = value
         else:
             raise ValueError
 
-        # TODO: Figure out which filetypes are supported.
-        # For now, we only support JPEG and PNG; for other types, we convert
-        # to PNG first.
-        mime = get_mimetype(value)
-        if mime == "image/jpg":
-            mime = "image/jpeg"
-
-        if mime in ("image/jpeg", "image/png"):
-            with open(value, "rb") as cover_file:
-                data = cover_file.read()
-        else:
-            # Convert to PNG
-            with Image.open(value) as img:
-                out = io.BytesIO()
-                img.save(out, format="PNG")
-                data = out.getvalue()
-            mime = "image/png"
-
-        # Remove all conflicting pictures
-        self.delete_cover(cover_type, clear_only=True)
+        # Set cover in UI and check if it's valid
+        ret = await self._set_cover_from_data(cover_type, data)
+        if ret is False:
+            return
 
         pictures = []
         if "WM/Picture" in self.mg_file.tags:
@@ -262,8 +236,6 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
         pictures.append(mutagen.asf.ASFValue(packed_data, mutagen.asf.BYTEARRAY))
 
         self.mg_file.tags["WM/Picture"] = pictures
-
-        self.mark_as_modified(prop)
 
     async def load_cover(self):
         """Loads the cover from the file and saves it to a temporary file."""
@@ -279,17 +251,15 @@ class EartagFileMutagenASF(EartagFileMutagenCommon):
             raw_data = picture.value
             mime, description, data, picture_type = unpack_image(raw_data)
             if picture_type == PictureType.COVER_FRONT and not front_cover:
-                front_cover = (data, mime)
+                front_cover = data
             elif picture_type == PictureType.COVER_BACK and not back_cover:
-                back_cover = (data, mime)
+                back_cover = data
 
         if front_cover:
-            cover_extension = mimetypes.guess_extension(front_cover[1])
-            await self.create_cover_tempfile(CoverType.FRONT, front_cover[0], cover_extension)
+            await self._set_cover_from_data(CoverType.FRONT, front_cover, modified=False)
 
         if back_cover:
-            cover_extension = mimetypes.guess_extension(back_cover[1])
-            await self.create_cover_tempfile(CoverType.BACK, back_cover[0], cover_extension)
+            await self._set_cover_from_data(CoverType.BACK, back_cover, modified=False)
 
     @GObject.Property(type=str)
     def releasedate(self):

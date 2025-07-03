@@ -13,3 +13,4 @@ filetype
 mutagen
 pillow
 pyacoustid
+xxhash

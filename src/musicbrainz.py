@@ -15,7 +15,7 @@ from gi.repository import GObject
 from ._async import event_loop
 from .utils.queuedl import EartagQueuedDownloader, EartagDownloaderMode
 from .utils.misc import simplify_compare
-from .backends.file import EartagFile
+from .backends.file import EartagFile, CoverType
 from .logger import logger
 
 try:
@@ -510,7 +510,7 @@ class MusicBrainzRecording(GObject.Object):
 
             del rels
 
-    def apply_data_to_file(self, file):
+    async def apply_data_to_file(self, file):
         """
         Takes an EartagFile and applies the data from this recording to it.
         """
@@ -531,11 +531,15 @@ class MusicBrainzRecording(GObject.Object):
             "releasedate",
             "tracknumber",
             "totaltracknumber",
-            "front_cover_path",
-            "back_cover_path",
         ):
             if self.get_property(prop):
                 file.set_property(prop, self.get_property(prop))
+
+        if self.props.front_cover_path:
+            await file.set_cover_from_path(CoverType.FRONT, self.props.front_cover_path)
+
+        if self.props.back_cover_path:
+            await file.set_cover_from_path(CoverType.BACK, self.props.back_cover_path)
 
         file.props.musicbrainz_recordingid = self.recording_id
         file.props.musicbrainz_albumid = self.release.release_id
