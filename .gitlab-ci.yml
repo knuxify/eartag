@@ -28,7 +28,7 @@ build-alpine:
   image: alpine:edge
   extends: .build-common
   before_script:
-    - apk add build-base git gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-filetype py3-mutagen py3-pillow py3-aiohttp py3-aiohttp-retry py3-aiofiles desktop-file-utils appstream-glib gettext py3-pytest py3-pytest-asyncio py3-flake8 py3-pyacoustid
+    - apk add build-base git gtk4.0-dev libadwaita-dev meson python3 py3-gobject3 py3-filetype py3-mutagen py3-pillow py3-aiohttp py3-aiohttp-retry py3-aiofiles py3-xxhash desktop-file-utils appstream-glib gettext py3-pytest py3-pytest-asyncio py3-flake8 py3-pyacoustid
 
 lint-alpine:
   image: alpine:edge
