@@ -83,7 +83,8 @@
             "config-opts": [
                 "-DCMAKE_BUILD_TYPE:STRING=Release",
                 "-DBUILD_TOOLS:BOOL=ON",
-                "-DBUILD_TESTS:BOOL=OFF"
+                "-DBUILD_TESTS:BOOL=OFF",
+                "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
             ],
             "sources": [
                 {
