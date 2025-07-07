@@ -30,27 +30,31 @@ class EartagFileListItem(Gtk.Box):
         self._title = None
         self._selected = None
         self.filelist = filelist
+
+        self.bindings = []
+        self.connections = []
+
         if self.filelist.selection_mode:
             self.show_selection_button()
+
         self.file_manager = filelist.file_manager
-        self.file_manager.connect("selection-changed", self.update_selected_status)
-        self.filelist.connect("notify::selection-mode", self.toggle_selection_mode)
-        self.connect("destroy", self.on_destroy)
+        self._fm_conn = self.file_manager.connect("selection-changed", self.update_selected_status)
+        self._fl_conn = self.filelist.connect("notify::selection-mode", self.toggle_selection_mode)
+
         self._selected_bind = self.bind_property(
             "selected",
             self.select_button,
             "active",
             GObject.BindingFlags.BIDIRECTIONAL | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.bindings = []
+
+        self.long_press_gesture = Gtk.GestureLongPress.new()
+        self._long_press_connect = self.long_press_gesture.connect("pressed", self.on_long_press)
+        self.add_controller(self.long_press_gesture)
 
     def bind_to_file(self, file):
-        if self.bindings:
-            for b in self.bindings:
-                b.unbind()
-            if self.file:
-                self.file.disconnect(self._error_connect)
-                self.file.disconnect(self._title_connect)
+        if self.file:
+            self.unbind_from_file()
         self.file = file
 
         # self.bindings.append(
@@ -58,7 +62,7 @@ class EartagFileListItem(Gtk.Box):
         # 		"title", self, "title", GObject.BindingFlags.SYNC_CREATE
         # 	)
         # )
-        self._title_connect = self.file.connect("notify::title", self.on_title_notify)
+        self.connections.append(self.file.connect("notify::title", self.on_title_notify))
         self.on_title_notify()
 
         self.bindings.append(
@@ -81,27 +85,42 @@ class EartagFileListItem(Gtk.Box):
                 GObject.BindingFlags.SYNC_CREATE,
             )
         )
-        self._error_connect = self.file.connect("notify::has-error", self.handle_error)
+        self.connections.append(self.file.connect("notify::has-error", self.handle_error))
         self.filename_label.set_label(os.path.basename(file.path))
         self.coverart_image.bind_to_file(file)
 
-        self.long_press_gesture = Gtk.GestureLongPress.new()
-        self._long_press_connect = self.long_press_gesture.connect("pressed", self.on_long_press)
-        self.add_controller(self.long_press_gesture)
-
         self.update_selected_status()
 
-    def on_destroy(self, *args):
-        if self.bindings:
-            for b in self.bindings:
-                b.unbind()
-        self._selected_bind.unbind()
-        try:
-            self.file.disconnect(self._error_connect)
-            self.file.disconnect(self._title_connect)
-        except AttributeError:
-            pass
+    def unbind_from_file(self, file=None):
+        if not self.file or (file and file != self.file):
+            return
+
+        for b in self.bindings:
+            b.unbind()
+        self.bindings = []
+
+        for conn in self.connections:
+            self.file.disconnect(conn)
+        self.connections = []
+
+        self.coverart_image.unbind_from_file(self.file)
+
         self.file = None
+
+    def teardown(self, *args):
+        self.unbind_from_file()
+
+        self.filelist.disconnect(self._fl_conn)
+        del self._fl_conn
+        del self.fileview
+
+        self.file_manager.disconnect(self._fm_conn)
+        del self._fm_conn
+        del self.file_manager
+
+        self.disconnect(self._selected_bind)
+        del self._selected_bind
+
         self.long_press_gesture.disconnect(self._long_press_connect)
         self.remove_controller(self.long_press_gesture)
         del self.long_press_gesture
@@ -124,10 +143,14 @@ class EartagFileListItem(Gtk.Box):
 
     @GObject.Property(type=bool, default=False)
     def selected(self):
+        if not self.file:
+            return False
         return self._selected
 
     @selected.setter
     def selected(self, value):
+        if not self.file:
+            return
         self._selected = value
         if value and not self.file_manager.is_selected(self.file):
             self.file_manager.select_file(self.file)
@@ -135,6 +158,8 @@ class EartagFileListItem(Gtk.Box):
             self.file_manager.unselect_file(self.file)
 
     def update_selected_status(self, *args):
+        if not self.file:
+            return
         self._selected = self.file_manager.is_selected(self.file)
         self.notify("selected")
 
@@ -195,15 +220,9 @@ class EartagFileList(Gtk.ListView):
 
     def __init__(self):
         super().__init__()
-        self.sidebar_factory = Gtk.SignalListItemFactory()
-        self.sidebar_factory.connect("setup", self.setup)
-        self.sidebar_factory.connect("bind", self.bind)
-        self.sidebar_factory.connect("unbind", self.bind)
-        self.set_factory(self.sidebar_factory)
         self._selection_mode = False
         self._ignore_unselect = False
         self.file_manager = None
-        self._widgets = {}
 
         # See on_activate function for explaination
         self._ignore_activate = False
@@ -213,6 +232,13 @@ class EartagFileList(Gtk.ListView):
         self.key_controller.connect("key-released", self.key_released)
         self.add_controller(self.key_controller)
         self.shift_state = False
+
+        self.sidebar_factory = Gtk.SignalListItemFactory()
+        self.sidebar_factory.connect("setup", self.setup)
+        self.sidebar_factory.connect("bind", self.bind)
+        self.sidebar_factory.connect("unbind", self.unbind)
+        self.sidebar_factory.connect("teardown", self.teardown)
+        self.set_factory(self.sidebar_factory)
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -226,11 +252,16 @@ class EartagFileList(Gtk.ListView):
         child = list_item.get_child()
         file = list_item.get_item()
         child.bind_to_file(file)
-        self._widgets[file.id] = child
 
     def unbind(self, factory, list_item):
-        file = list_item.get_item()
-        del self._widgets[file.id]
+        print("unbind called:", list_item.get_item(), list_item.get_child())
+        child = list_item.get_child()
+        child.unbind_from_file()
+
+    def teardown(self, factory, list_item):
+        print("teardown called:", list_item.get_item(), list_item.get_child())
+        child = list_item.get_child()
+        child.teardown()
 
     @GObject.Property(type=bool, default=False)
     def selection_mode(self):
