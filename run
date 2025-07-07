@@ -10,7 +10,24 @@ meson compile -C output
 meson install -C output
 set +e
 
-GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas /tmp/eartag/bin/eartag-devel "$@"
+#GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas /tmp/eartag/bin/eartag-devel "$@"
 ret=$?
+
+if [ "$1" = "memray" ]; then
+	shift
+	[ -e memray-eartag.bin ] && rm memray-eartag.bin
+	[ -e memray-flamegraph-eartag.html ] && rm memray-flamegraph-eartag.html
+	GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas memray run --live -o memray-eartag.bin /tmp/eartag/bin/eartag-devel "$@"
+	ret=$?
+	memray flamegraph memray-eartag.bin
+	xdg-open memray-flamegraph-eartag.html
+elif [ "$1" = "profiler" ]; then
+	shift
+	GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas pyinstrument -r html /tmp/eartag/bin/eartag-devel "$@"
+	ret=$?
+else
+	GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas /tmp/eartag/bin/eartag-devel "$@"
+	ret=$?
+fi
 
 exit $ret
