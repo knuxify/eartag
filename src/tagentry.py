@@ -189,9 +189,9 @@ class EartagTagEntryManager(GObject.Object):
 
         entry.tagentry_placeholder = ""
 
-        if prop in EartagFile.int_values:
+        if prop in EartagFile.int_properties:
             value = safe_int(entry.props.text)
-        elif prop in EartagFile.float_values:
+        elif prop in EartagFile.float_properties:
             value = safe_float(entry.props.text)
         else:
             value = entry.props.text
