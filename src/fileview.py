@@ -7,6 +7,7 @@ from .utils import get_readable_length, file_is_sandboxed
 from .utils.validation import is_valid_image_file
 from .utils.widgets import EartagAlbumCoverImage, EartagPopoverButton  # noqa: F401
 from .tagentry import (  # noqa: F401
+    EartagTagEntryManager,
     EartagTagEntry,
     EartagTagEntryRow,
     EartagTagEditableLabel,
@@ -19,6 +20,8 @@ import asyncio
 import mimetypes
 import traceback
 import os.path
+
+from collections.abc import Iterable
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/albumcoverbutton.ui")
@@ -77,7 +80,7 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.action_set_enabled("albumcoverbutton.save", False)
         self.install_action("albumcoverbutton.remove", None, self.remove_cover)
 
-        self.files = []
+        self.files = set()
 
     def _dropdown_lockup_workaround(self, toggle, *args):
         """
@@ -127,20 +130,21 @@ class EartagAlbumCoverButton(Adw.Bin):
         self.action_set_enabled("albumcoverbutton.remove", enable_remove)
 
     def bind_to_files(self, files):
-        self.files += files
+        self.files |= set(files)
 
+        file = next(iter(self.files))
         if len(self.files) < 2:
-            if not self.files[0].supports_album_covers:
+            if not file.supports_album_covers:
                 self.set_visible(False)
                 self.update_coverbutton_save_availability()
                 return False
             else:
                 self.set_visible(True)
-            self.cover_image.bind_to_file(self.files[0])
+            self.cover_image.bind_to_file(file)
             self.cover_image.mark_as_nonempty()
         else:
             covers_different = False
-            our_cover = self.files[0].get_cover(self.cover_type)
+            our_cover = file.get_cover(self.cover_type)
 
             if False in [f.supports_album_covers for f in self.files]:
                 self.set_visible(False)
@@ -168,22 +172,24 @@ class EartagAlbumCoverButton(Adw.Bin):
             else:
                 self.set_visible(True)
 
-        if len(self.files) > 1:
-            covers_different = False
-            our_cover = self.files[0].get_cover(self.cover_type)
-            for _file in self.files:
-                if _file.get_cover(self.cover_type) != our_cover:
-                    covers_different = True
-                    self.cover_image.mark_as_empty()
-                    break
-            if not covers_different:
-                self.cover_image.mark_as_nonempty()
-                if self.files[0].supports_album_covers and self.files[0].get_cover(self.cover_type):
-                    self.cover_image.bind_to_file(self.files[0])
+        if len(self.files) > 0:
+            file = next(iter(self.files))
+            if len(self.files) > 1:
+                covers_different = False
+                our_cover = file.get_cover(self.cover_type)
+                for _file in self.files:
+                    if _file.get_cover(self.cover_type) != our_cover:
+                        covers_different = True
+                        self.cover_image.mark_as_empty()
+                        break
+                if not covers_different:
+                    self.cover_image.mark_as_nonempty()
+                    if file.supports_album_covers and file.get_cover(self.cover_type):
+                        self.cover_image.bind_to_file(file)
 
-        elif len(self.files) == 1:
-            self.cover_image.bind_to_file(self.files[0])
-            self.cover_image.on_cover_change()
+            elif len(self.files) == 1:
+                self.cover_image.bind_to_file(file)
+                self.cover_image.on_cover_change()
 
     def on_destroy(self, *args):
         self.files = None
@@ -390,12 +396,13 @@ class EartagExtraTagRow(EartagTagEntryRow):
 
     def __init__(self, tag, parent):
         super().__init__()
+        self.props.visible = False
         self.parent = parent
 
         self.bound_property = tag
+
         self.is_numeric = tag in EartagFile.int_properties
         self.is_float = tag in EartagFile.float_properties
-        self.set_title(extra_tag_names[tag])
 
         self.row_remove_button = Gtk.Button(
             icon_name="edit-delete-symbolic", valign=Gtk.Align.CENTER
@@ -405,10 +412,23 @@ class EartagExtraTagRow(EartagTagEntryRow):
             "clicked", self.remove_button_pressed
         )
         self.add_suffix(self.row_remove_button)
+
         self._destroy_connect = self.connect("destroy", self._on_destroy)
 
+    @GObject.Property(type=str, default="")
+    def bound_property(self):
+        try:
+            return self._bound_property
+        except AttributeError:
+            return ""
+
+    @bound_property.setter
+    def bound_property(self, value: str):
+        self._bound_property = value
+        self.set_title(extra_tag_names[value])
+
     def remove_button_pressed(self, *args):
-        self.parent.remove_and_unbind_extra_row(self)
+        self.parent.hide_entry(self.bound_property)
 
     def _on_destroy(self, *args):
         try:
@@ -434,36 +454,92 @@ class EartagMoreTagsGroup(Gtk.Box):
 
     def __init__(self):
         super().__init__()
-        # self.set_title(_('More tags'))
-        self._rows = []
-        self.bound_files = []
-        self.bound_file_ids = []
-        self.skip_filter_change = False
-        self._blocked_tags_cached = []
-        self._present_tags_cached = []
-        self._last_loaded_filetypes = []
-        self._last_present_tags = {}  # id: tags
-        self._ignore_tag_selector = False
-        self._height_below_360 = False
 
-        # We can select multiple files of multiple types at once, but
-        # they're not guaranteed to all have the same available extra tags.
-        # Thus, we assemble a list of "blocked tags" to ignore based on
-        # bound files. A list of these tags can be received by calling the
-        # get_blocked_tags method.
-        self.blocked_tags = {}  # type: tags
-        self.loaded_filetypes = {}  # type: count
+        self.tagentry_manager = EartagTagEntryManager()
+
+        #: Filetypes bound to this entry (gtype name: count).
+        self.filetypes: dict[str, int] = {}
+
+        #: Entry rows under this group.
+        self.entries: dict[str, Gtk.Widget] = {}
+
+        #: Refcounts (how many files have the tag) for tags.
+        self.tag_counts: dict[str, int] = {}
+
+        #: List of currently visible properties.
+        self.visible_props: set[str] = set()
 
         self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_selector.tag_model)
         self.tag_selector.set_filter(self.tag_filter)
 
-    def get_rows_sorted(self):
-        rows = {}
-        for row in self._rows:
-            rows[row.bound_property] = row
-        return rows
+        # Set up the entries for all extra tags. The entries start out hidden;
+        # once they become needed, we show them again. This allows us to
+        # avoid having to create/destroy the row objects every time, and is
+        # relatively cheap since all entry-related operations are only
+        # done in the manager, and only bound to it when shown.
 
-    # "Add additional tag" field
+        for tag in EXTRA_TAGS:
+            self.tag_counts[tag] = 0
+            self.entries[tag] = EartagExtraTagRow(tag, self)
+            self.tag_entry_listbox.append(self.entries[tag])
+
+    # File management
+
+    async def bind_to_files(self, files: Iterable[EartagFile]):
+        """Bind to the files in the provided iterable."""
+        for file in files:
+            present_extra_tags = set(file.present_extra_tags)
+
+            tags_to_add = present_extra_tags - self.tagentry_manager.managed_properties
+
+            for tag in present_extra_tags:
+                if tag in tags_to_add:
+                    self.show_entry(tag)
+                self.tag_counts[tag] += 1
+
+            if file.__gtype_name__ in self.filetypes:
+                self.filetypes[file.__gtype_name__] += 1
+            else:
+                self.filetypes[file.__gtype_name__] = 1
+
+        await self.tagentry_manager.bind_to_files(files)
+
+    async def unbind_from_files(self, files: Iterable[EartagFile]):
+        """Unbind from the files in the provided iterable."""
+        for file in files:
+            present_extra_tags = set(file.present_extra_tags)
+
+            for tag in present_extra_tags:
+                self.tag_counts[tag] -= 1
+                if self.tag_counts[tag] == 0:
+                    self.hide_entry(tag)
+                    self.tagentry_manager.entry_inconsistency[tag] = False
+
+            self.filetypes[file.__gtype_name__] -= 1
+
+        await self.tagentry_manager.unbind_from_files(files)
+
+    # Entry management
+
+    def show_entry(self, prop: str):
+        """Show the extra row for the given property."""
+        self.entries[prop].props.visible = True
+        self.tagentry_manager.add_entry(prop, self.entries[prop])
+        self.visible_props.add(prop)
+
+    def hide_entry(self, prop: str):
+        """Hide the extra row for the given property."""
+        self.entries[prop].props.visible = False
+        self.tagentry_manager.remove_entry(prop)
+        self.visible_props.remove(prop)
+
+    # Tag selection dropdown
+
+    @Gtk.Template.Callback()
+    def add_row_from_selector(self, selector, tag):
+        """Adds a new row based on the tag selector."""
+        self.show_entry(tag)
+        self.entries[tag].grab_focus()
 
     def refresh_tag_filter(self, *args):
         """Refreshes the filter for the additional tag add row."""
@@ -472,18 +548,12 @@ class EartagMoreTagsGroup(Gtk.Box):
             [i for i in self.get_rows_sorted().keys() if i in EXTRA_TAGS]
         )
 
-    @Gtk.Template.Callback()
-    def add_row_from_selector(self, selector, tag):
-        """Adds a new row based on the tag selector."""
-        row = self.add_extra_row(tag)
-        row.grab_focus()
-
     def tag_filter_func(self, _tag_name, *args):
         """Filter function for the tag dropdown."""
         if not self.tag_selector.tag_filter_func(_tag_name):
             return False
 
-        present_tags = list(self.get_rows_sorted().keys())
+        present_tags = self.tagentry_manager.managed_properties
 
         tag_name = _tag_name.get_string()
         tag_prop = self.tag_selector.tag_names_swapped[tag_name]
@@ -494,250 +564,12 @@ class EartagMoreTagsGroup(Gtk.Box):
             return False
         if tag_prop in present_tags:
             return False
-        if tag_prop in self.get_blocked_tags():
-            return False
+        # if tag_prop in self.get_blocked_tags():
+        #    return False
 
         return True
 
-    #
-    # Row management functions
-    #
-
-    def add_extra_row(self, tag, skip_filter_refresh=False):
-        """
-        Adds an extra row for the given tag. Consumers should make sure that
-        a row with this tag doesn't exist yet.
-        """
-        rows = self.get_rows_sorted()
-        if tag in rows:
-            return None
-
-        row = EartagExtraTagRow(tag, self)
-        row.set_title(extra_tag_names[tag])
-        self._rows.append(row)
-        self.tag_entry_listbox.append(row)
-
-        if tag not in self._present_tags_cached:
-            self._present_tags_cached.append(tag)
-
-        row.bind_to_files(self.bound_files)
-
-        if not skip_filter_refresh:
-            self.refresh_tag_filter()
-
-        return row
-
-    def remove_extra_row(self, row, skip_filter_refresh=False):
-        """
-        Removes a 'more tags' row from the fileview.
-        """
-        if row not in self._rows:
-            return
-
-        self._rows.remove(row)
-
-        row.unbind_from_files(set(row.files + self.bound_files))
-
-        if row.bound_property in self._present_tags_cached:
-            self._present_tags_cached.remove(row.bound_property)
-
-        self.tag_entry_listbox.remove(row)
-
-        if not skip_filter_refresh:
-            self.refresh_tag_filter()
-
-        # TODO: This should not be necessary, drop it once I clean up
-        # the code further
-        row.emit("destroy")
-
-    def remove_and_unbind_extra_row(self, row, skip_filter_refresh=False):
-        """
-        Removes a 'more tags' row from the fileview. Used in the callback
-        function of the rows' delete button.
-        """
-        removed_tag = row.bound_property
-        if removed_tag != "none":
-            for file in self.bound_files:
-                if removed_tag in file.present_extra_tags:
-                    file.present_extra_tags.remove(removed_tag)
-                    file.delete_tag(removed_tag)
-
-        self.remove_extra_row(row, skip_filter_refresh=skip_filter_refresh)
-
-    #
-    # File handling functions
-    #
-
-    def get_blocked_tags(self):
-        """
-        Shorthand to get a list of all blocked tags in opened files.
-        """
-        if self._last_loaded_filetypes != list(self.loaded_filetypes.keys()):
-            self._last_loaded_filetypes = list(self.loaded_filetypes.keys())
-            self._blocked_tags_cached = []
-            for filetype, blocklist in self.blocked_tags.items():
-                if filetype not in self.loaded_filetypes:
-                    continue
-                for tag in blocklist:
-                    if tag not in self._blocked_tags_cached:
-                        self._blocked_tags_cached.append(tag)
-
-            self.refresh_tag_filter()
-
-        return self._blocked_tags_cached
-
-    def get_present_tags(self):
-        """
-        Shorthand to get a list of all present tags in opened files.
-
-        This is only used in bind_to_file and unbind_from_file to add/prune
-        newly used/unused entries; for most other cases, you'll likely want
-        self.get_rows_sorted().keys() instead.
-        """
-        blocked_tags = self.get_blocked_tags()
-        last_present_ids = list(self._last_present_tags.keys())
-        if last_present_ids != self.bound_file_ids:
-            removed_files = set(last_present_ids) - set(self.bound_file_ids)
-            added_files = set(self.bound_file_ids) - set(last_present_ids)
-
-            for fid in removed_files:
-                del self._last_present_tags[fid]
-
-            # TODO: this is kinda slow, since we need to iterate over all files
-            # to find the ones with a given ID. Experiment with some ways to
-            # get a file by ID.
-            for fid in added_files:
-                for file in self.bound_files:
-                    if file.id == fid:
-                        break
-                self._last_present_tags[fid] = file.present_extra_tags
-
-            self._present_tags_cached = []
-            for taglist in self._last_present_tags.values():
-                for tag in taglist:
-                    if tag not in self._present_tags_cached and tag not in blocked_tags:
-                        self._present_tags_cached.append(tag)
-
-        return self._present_tags_cached
-
-    def refresh_present_tags(self):
-        """
-        Like the update function of get_present_tags, but handles only
-        existing files, and checks for changes in present extra tags.
-        """
-        blocked_tags = self.get_blocked_tags()
-
-        for file in self.bound_files:
-            self._last_present_tags[file.id] = file.present_extra_tags
-
-        self._present_tags_cached = []
-        for taglist in self._last_present_tags.values():
-            for tag in taglist:
-                if tag not in self._present_tags_cached and tag not in blocked_tags:
-                    self._present_tags_cached.append(tag)
-
-        self.refresh_tag_filter()
-
-    def refresh_entries(self, old_blocked_tags=None):
-        """Adds missing entries and removes unused ones."""
-        blocked_tags = self.get_blocked_tags()
-        present_tags = self.get_present_tags()
-
-        for tag, row in self.get_rows_sorted().items():
-            if tag in blocked_tags or tag not in present_tags:
-                self.remove_extra_row(row, skip_filter_refresh=True)
-
-        for tag in present_tags:
-            if tag not in self._rows:
-                self.add_extra_row(tag, skip_filter_refresh=True)
-
-        if old_blocked_tags is not None and old_blocked_tags != blocked_tags:
-            found_tags = []
-            for tag in set(old_blocked_tags) - set(blocked_tags):
-                for file in self.bound_files:
-                    if tag in file.present_extra_tags:
-                        found_tags.append(tag)
-                        break
-                if tag in found_tags:
-                    continue
-            for tag in found_tags:
-                self.add_extra_row(tag, skip_filter_refresh=True)
-
-        self.refresh_tag_filter()
-
-    def slow_refresh_entries(self):
-        """Like refresh_entries, but forces an update of present tags."""
-        self.refresh_present_tags()
-        self.refresh_entries()
-
-    def bind_to_files(self, files, skip_refresh_entries=False):
-        for row in self._rows:
-            row.bind_to_files(files)
-
-        for file in files:
-            if file in self.bound_files:
-                continue
-
-            self.skip_filter_change = True
-            self.bound_files.append(file)
-            self.bound_file_ids.append(file.id)
-
-            if not skip_refresh_entries:
-                blocked_tags_before_unbind = self.get_blocked_tags()
-            filetype = file.__gtype_name__
-            if filetype not in self.loaded_filetypes:
-                self.loaded_filetypes[filetype] = 1
-
-                # We don't remove this later on purpose - this information is
-                # cached inside of this class for future reference.
-                if filetype not in self.blocked_tags:
-                    self.blocked_tags[filetype] = []
-                    for tag in set(EXTRA_TAGS) - set(file.supported_extra_tags):
-                        self.blocked_tags[filetype].append(tag)
-            else:
-                self.loaded_filetypes[filetype] += 1
-
-            row_tags = self.get_rows_sorted().keys()
-            for tag in file.present_extra_tags:
-                if tag not in row_tags:
-                    self.add_extra_row(tag)
-
-            # Add/remove entries
-            if not skip_refresh_entries:
-                self.refresh_entries(old_blocked_tags=blocked_tags_before_unbind)
-
-            self.skip_filter_change = False
-
-    def unbind_from_files(self, files, skip_refresh_entries=False):
-        for row in self._rows:
-            row.unbind_from_files(files)
-
-        for file in files:
-            if file not in self.bound_files:
-                continue
-
-            filetype = file.__gtype_name__
-            if filetype in self.loaded_filetypes:
-                self.loaded_filetypes[filetype] -= 1
-
-                if self.loaded_filetypes[filetype] == 0:
-                    del self.loaded_filetypes[filetype]
-
-                    for tag in set(EXTRA_TAGS) - set(file.supported_extra_tags):
-                        if tag in self.blocked_tags:
-                            self.blocked_tags.remove(tag)
-
-            if not skip_refresh_entries:
-                blocked_tags_before_unbind = self.get_blocked_tags()
-            self.skip_filter_change = True
-            self.bound_file_ids.remove(file.id)
-            self.bound_files.remove(file)
-
-            # Add/remove entries
-            if not skip_refresh_entries:
-                self.refresh_entries(old_blocked_tags=blocked_tags_before_unbind)
-
-            self.skip_filter_change = False
+    # Miscelaneous
 
     @GObject.Property(type=bool, default=False)
     def height_below_360(self):
@@ -762,25 +594,22 @@ class EartagFileInfoLabel(Gtk.Label):
         super().__init__()
         self.add_css_class("dim-label")
         self.add_css_class("numeric")
-        self._files = []
+        self.files = set()
         self.refresh_label()
 
     def bind_to_files(self, files):
-        self._files += files
+        self.files |= set(files)
         self.refresh_label()
 
     def unbind_from_files(self, files):
-        for file in files:
-            if file in self._files:
-                self._files.remove(file)
-
+        self.files -= set(files)
         self.refresh_label()
 
     def refresh_label(self):
-        if len(self._files) == 0:
+        if len(self.files) == 0:
             self.set_label("")
-        elif len(self._files) == 1:
-            self._set_info_label(self._files[0])
+        elif len(self.files) == 1:
+            self._set_info_label(next(iter(self.files)))
         else:
             self.set_label(_("(Multiple files selected)"))
 
@@ -821,33 +650,33 @@ class EartagFilenameRow(Adw.EntryRow):
 
     def __init__(self):
         super().__init__()
-        self._files = []
+        self.files = set()
         self._connections = {}
         self._title = self.props.title
         self.get_delegate().connect("insert-text", self.validate_input)
 
-    def bind_to_files(self, files):
+    def bind_to_files(self, files: Iterable[EartagFile]):
+        self.files |= set(files)
         for file in files:
-            self._files.append(file)
             self._connections[file.id] = file.connect("notify::path", self.update_on_bind)
         self.update_on_bind()
 
-    def unbind_from_files(self, files):
+    def unbind_from_files(self, files: Iterable[EartagFile]):
         for file in files:
-            if file in self._files:
+            if file in self.files:
                 file.disconnect(self._connections[file.id])
                 del self._connections[file.id]
-                self._files.remove(file)
+                self.files.remove(file)
         self.update_on_bind()
 
     def update_on_bind(self, *args):
-        if len(self._files) > 1:
+        if len(self.files) > 1:
             self.props.title = self._title + " " + _("(multiple files)")
             self.set_editable(False)
             self.props.show_apply_button = False
             self.set_text("")
-        elif len(self._files) == 1:
-            path = self._files[0].path
+        elif len(self.files) == 1:
+            path = next(iter(self.files)).path
             self.props.title = self._title
             self.set_editable(not file_is_sandboxed(path))
             self.props.show_apply_button = True
@@ -860,11 +689,12 @@ class EartagFilenameRow(Adw.EntryRow):
 
     @Gtk.Template.Callback()
     def set_filename(self, *args):
-        if len(self._files) != 1:
+        if len(self.files) != 1:
             return
-        old_path = self._files[0].path
+        file = next(iter(self.files))
+        old_path = file.path
         self.get_native().file_manager.rename_files(
-            (self._files[0],),
+            (file,),
             (os.path.join(os.path.dirname(old_path), self.get_text()),),
         )
 
@@ -905,15 +735,20 @@ class EartagFileView(Gtk.Stack):
     previous_file_button = Gtk.Template.Child()
     next_file_button = Gtk.Template.Child()
 
-    writable = False
-    bound_files = []
-
     def __init__(self):
         """Initializes the EartagFileView."""
         super().__init__()
 
+        self.writable = False
+        self.files = set()
+
         self.bindable_entries = (
             self.album_cover,
+            self.filename_entry,
+            self.file_info,
+        )
+
+        self.tagentries = (
             self.title_entry,
             self.artist_entry,
             self.tracknumber_entry,
@@ -923,14 +758,18 @@ class EartagFileView(Gtk.Stack):
             self.genre_entry,
             self.releasedate_entry,
             self.comment_entry,
-            self.filename_entry,
-            self.file_info,
         )
+
+        self.tagentry_manager = EartagTagEntryManager()
+
+        for tagentry in self.tagentries:
+            self.tagentry_manager.add_entry(tagentry.bound_property, tagentry)
 
         self.previous_fileview_width = 0
 
     def on_close(self):
         self.album_cover.on_destroy()
+        self.tagentry_manager.destroy()
 
     def set_file_manager(self, file_manager):
         self.file_manager = file_manager
@@ -981,21 +820,27 @@ class EartagFileView(Gtk.Stack):
         to the file view.
         """
         self.update_buttons()
+        asyncio.create_task(self._update_binds())
+
+    bind_in_progress = GObject.Property(type=bool, default=False)
+
+    async def _update_binds(self):
+        self.bind_in_progress = True
 
         _selected_files = self.file_manager.selected_files_list
 
         # Get list of selected (added)/unselected (removed) files
-        added_files = [file for file in _selected_files if file not in self.bound_files]
-        removed_files = [file for file in self.bound_files if file not in _selected_files]
+        added_files = [file for file in _selected_files if file not in self.files]
+        removed_files = [file for file in self.files if file not in _selected_files]
 
         # Handle added and removed files
-        self._unbind_files(removed_files)
-        self._bind_files(added_files)
+        await self._unbind_files(removed_files)
+        await self._bind_files(added_files)
 
         # Make save/fields sensitive/insensitive based on whether selected files are
         # all writable
         has_unwritable = False
-        for file in self.file_manager.selected_files_list:
+        for file in _selected_files:
             if not file.is_writable:
                 has_unwritable = True
                 break
@@ -1013,41 +858,35 @@ class EartagFileView(Gtk.Stack):
         adjust = self.content_scroll.get_vadjustment()
         adjust.set_value(adjust.get_lower())
 
-    def _bind_files(self, files):
+        self.bind_in_progress = False
+
+    async def _bind_files(self, files):
         """Binds a file to the fileview. Used internally in update_binds."""
         if not files:
             return
 
-        old_blocked_tags = self.more_tags_group.get_blocked_tags()
-
-        _files_new = [f for f in files if f not in self.bound_files]
-        for file in _files_new:
-            self.bound_files.append(file)
+        self.files |= set(files)
+        await self.tagentry_manager.bind_to_files(files)
 
         for entry in self.bindable_entries:
-            entry.bind_to_files(_files_new)
+            entry.bind_to_files(files)
 
-        self.more_tags_group.bind_to_files(files, skip_refresh_entries=True)
-        self.more_tags_group.refresh_entries(old_blocked_tags=old_blocked_tags)
+        await self.more_tags_group.bind_to_files(files)
 
         self.file_info.refresh_label()
 
-    def _unbind_files(self, files):
+    async def _unbind_files(self, files):
         """Unbinds a file from the fileview. Used internally in update_binds."""
         if not files:
             return
 
-        old_blocked_tags = self.more_tags_group.get_blocked_tags()
-
-        _files_bound = [f for f in files if f in self.bound_files]
-        for file in _files_bound:
-            self.bound_files.remove(file)
+        self.files -= set(files)
+        await self.tagentry_manager.unbind_from_files(files)
 
         for entry in self.bindable_entries:
-            entry.unbind_from_files(_files_bound)
+            entry.unbind_from_files(files)
 
-        self.more_tags_group.unbind_from_files(_files_bound, skip_refresh_entries=True)
-        self.more_tags_group.refresh_entries(old_blocked_tags=old_blocked_tags)
+        await self.more_tags_group.unbind_from_files(files)
 
         self.file_info.refresh_label()
 

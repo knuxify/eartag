@@ -131,6 +131,8 @@ class EartagWindow(Adw.ApplicationWindow):
             self.audio_file_filter.add_mime_type(mime)
         self.audio_file_filter.set_name(_("All supported audio files"))
 
+        self.file_view.connect("notify::bind-in-progress", self.update_busy)
+
         # File manager setup
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
@@ -233,6 +235,10 @@ class EartagWindow(Adw.ApplicationWindow):
         if paths:
             self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
 
+    @GObject.Property(type=bool, default=False)
+    def is_busy(self):
+        return self.file_manager.is_busy or self.file_view.bind_in_progress
+
     def update_busy(self, task, *args):
         """
         Mark the window as busy or not busy based on whether the file manager
@@ -240,7 +246,8 @@ class EartagWindow(Adw.ApplicationWindow):
 
         Also handles showing error dialogs.
         """
-        busy = self.file_manager.is_busy
+        self.notify("is-busy")
+        busy = self.is_busy
 
         self.sidebar_headerbar.set_sensitive(not busy)
         self.loading_progressbar_revealer.set_reveal_child(busy)

@@ -166,6 +166,7 @@ class EartagAsyncMultitasker(EartagAsyncTask):
 
     def __init__(self, target: Coroutine, workers: int, *args, **kwargs):
         super().__init__(target, *args, **kwargs)
+        assert target
         self.queue = asyncio.Queue()
         self.queue_done_event = asyncio.Event()
         self.workers = workers
@@ -194,8 +195,10 @@ class EartagAsyncMultitasker(EartagAsyncTask):
                 break
             try:
                 await self.target(item, *self.args, **self.kwargs)
-            except Exception:
-                self.errors.append(f"Error while processing {item}:\n\n{traceback.format_exc()}")
+            except:  # noqa: E722
+                self.errors.append(
+                    f"{self.target}: Error while processing {item}:\n\n{traceback.format_exc()}"
+                )
                 logger.error(self.errors[-1])
                 pass
 
@@ -227,6 +230,17 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         self.queue_done_event.clear()
         self.clear_errors()
         event_loop.create_task(self._run_multitasker())
+
+    async def spawn_workers_async(self):
+        """
+        Version of spawn_workers for use with async functions (usually task
+        groups).
+        """
+        self.n_items = 0
+        self.n_done = 0
+        self.queue_done_event.clear()
+        self.clear_errors()
+        await self._run_multitasker()
 
     def run(self):
         """Compatibility shim, please use spawn_workers() instead."""
