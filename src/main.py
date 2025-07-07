@@ -77,7 +77,9 @@ class Application(Adw.Application):
             self.create_action("next_file", self.on_next_action, "<Alt>Right")
             self.create_action("previous_file", self.on_previous_action, "<Alt>Left")
             self.create_action("close_selected", self.on_close_selected_action, "<Ctrl>w")
-            self.create_action("select_all", self.on_select_all_action, "<Ctrl><Shift>a")
+            self.select_all_action = self.create_action(
+                "select_all", self.on_select_all_action, "<Ctrl><Shift>a"
+            )
 
             self.create_action("toggle_sidebar", self.on_toggle_sidebar_action, "F9")
             self.create_action("open_menu", self.on_open_menu_action, "F10")

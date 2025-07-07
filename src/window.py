@@ -253,6 +253,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.loading_progressbar_revealer.set_reveal_child(busy)
         self.sidebar_file_list.set_sensitive(not busy)
         self.file_view.content_clamp.set_sensitive(not busy)
+        self.props.application.select_all_action.set_enabled(not busy)
 
         if self.file_manager.load_task.is_running:
             self.file_view.set_visible_child(self.file_view.loading)
@@ -404,7 +405,7 @@ class EartagWindow(Adw.ApplicationWindow):
         """
         if self.file_manager.files.get_n_items() > 0:
             self.container_stack.set_visible_child(self.split_view)
-            self.sidebar_headerbar.set_sensitive(self.file_manager.load_task.progress in (0, 1))
+            self.sidebar_headerbar.set_sensitive(not self.is_busy)
             self.sidebar_list_stack.set_visible_child(self.sidebar_list_scroll)
         else:
             self.container_stack.set_visible_child(self.no_file)
