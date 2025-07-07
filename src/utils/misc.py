@@ -275,9 +275,15 @@ def safe_float(value: int | float | str | None) -> float | None:
         return 0.0
 
 
-def iter_selection_model(model):
+def iter_selection_model(model, position: int = -1, n_items: int = -1):
     """Iterate over the selected items in a selection model."""
-    selection = model.get_selection()
+    if (position >= 0 and n_items < 0) or (n_items >= 0 and position < 0):
+        raise ValueError("Both position and n_items must be set")
+
+    if position >= 0 and n_items >= 0:
+        selection = model.get_selection_range(position, n_items)
+    else:
+        selection = model.get_selection()
     for i in range(selection.get_size()):
         pos = selection.get_nth(i)
         yield model.get_item(pos)

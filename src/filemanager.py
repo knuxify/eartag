@@ -118,8 +118,9 @@ class EartagFileManager(GObject.Object):
         self._modified_files = []
         self._error_files = []
         self._connections = {}
-        self._selected_file_ids = []
+        self._selected_file_ids = set()
         self._selection_removed = False
+        self._is_selected_cache: dict[str, bool] = {}
 
         # Create Multitaskers for queued operations
         self.load_task = EartagAsyncMultitasker(self._load_single_file, workers=3)
@@ -133,7 +134,7 @@ class EartagFileManager(GObject.Object):
         self.rename_task.connect("task-done", self.refresh_state)
         self.rename_task.connect("notify::is-running", self.notify_busy)
 
-        self.selected_files.connect("selection-changed", self.on_selection_changed)
+        self.selected_files.connect("selection-changed", self._on_selection_changed)
 
     def update_modified_status(self, file, *args):
         """Responsible for setting the is_modified property."""
@@ -534,18 +535,24 @@ class EartagFileManager(GObject.Object):
             self.selected_files.unselect_item(pos)
 
     def is_selected(self, file):
-        for f2 in iter_selection_model(self.selected_files):
-            if file == f2:
-                return True
-        return False
+        return file.id in self._selected_file_ids
 
     def get_n_selected(self):
         return self.selected_files.get_selection().get_size()
 
-    def on_selection_changed(self, *args):
-        if args:
-            self._selected_file_ids = [file.id for file in self.selected_files]
-            self.emit("selection-changed")
+    def _on_selection_changed(
+        self, selection_model: Gtk.SelectionModel, position: int, n_items: int
+    ):
+        for i in range(position, position + n_items):
+            file = self.selected_files.get_item(i)
+            is_selected = self.selected_files.is_selected(i)
+
+            if not is_selected and file.id in self._selected_file_ids:
+                self._selected_file_ids.remove(file.id)
+            elif is_selected:
+                self._selected_file_ids.add(file.id)
+
+        self.emit("selection-changed")
 
     def all_selected(self):
         return self.get_n_selected() == self.selected_files.get_n_items()
