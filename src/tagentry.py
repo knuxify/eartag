@@ -188,9 +188,17 @@ class EartagTagEntryManager(GObject.Object):
         self._ignore_file_change = True
 
         entry.tagentry_placeholder = ""
-        value = entry.props.text
+
+        if prop in EartagFile.int_values:
+            value = safe_int(entry.props.text)
+        elif prop in EartagFile.float_values:
+            value = safe_float(entry.props.text)
+        else:
+            value = entry.props.text
+
         for file in self.files:
             file.set_property(prop, value)
+
         self.entry_inconsistency[prop] = False
 
         self._ignore_file_change = False
