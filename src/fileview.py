@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # (c) 2023 knuxify and Ear Tag contributors
 
+from .backends import FILE_CLASSES
 from .backends.file import EartagFile, BASIC_TAGS, EXTRA_TAGS, TAG_NAMES, CoverType
 from .logger import logger
 from .utils import get_readable_length, file_is_sandboxed
@@ -17,6 +18,7 @@ from . import APP_GRESOURCE_PATH
 from gi.repository import Adw, Gtk, Gdk, Gio, GLib, GObject
 
 import asyncio
+from functools import cached_property
 import mimetypes
 import traceback
 import os.path
@@ -428,7 +430,7 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.set_title(extra_tag_names[value])
 
     def remove_button_pressed(self, *args):
-        self.parent.hide_entry(self.bound_property)
+        self.parent.hide_entry(self.bound_property, remove=True)
 
     def _on_destroy(self, *args):
         try:
@@ -460,14 +462,23 @@ class EartagMoreTagsGroup(Gtk.Box):
         #: Filetypes bound to this entry (gtype name: count).
         self.filetypes: dict[str, int] = {}
 
+        # Set up allowed tag lists for each filetype. Since different filetypes
+        # have different sets of allowed extra tags, we store them in this class
+        # and use this information to show/hide certain entries.
+        self.allowed_tags_for_filetype: dict[str, Iterable[str]] = {}
+        for filetype in FILE_CLASSES:
+            self.allowed_tags_for_filetype[filetype.__gtype_name__] = filetype.supported_extra_tags
+
         #: Entry rows under this group.
         self.entries: dict[str, Gtk.Widget] = {}
 
         #: Refcounts (how many files have the tag) for tags.
         self.tag_counts: dict[str, int] = {}
 
-        #: List of currently visible properties.
-        self.visible_props: set[str] = set()
+        #: List of all present properties in files. To get the actually shown
+        #: properties, check self.tagentry_manager.managed_properties
+        #: (since that value excludes blocked tags).
+        self.present_props: set[str] = set()
 
         self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_selector.tag_model)
         self.tag_selector.set_filter(self.tag_filter)
@@ -483,29 +494,63 @@ class EartagMoreTagsGroup(Gtk.Box):
             self.entries[tag] = EartagExtraTagRow(tag, self)
             self.tag_entry_listbox.append(self.entries[tag])
 
+    @cached_property
+    def blocked_tags(self) -> set[str]:
+        """List of tags not allowed for all available filetypes."""
+        allowed_types_values = []
+        for ftype, values in self.allowed_tags_for_filetype.items():
+            if self.filetypes.get(ftype, 0) > 0:
+                allowed_types_values.append(values)
+
+        if allowed_types_values:
+            allowed_types_intersection = set.intersection(*[set(x) for x in allowed_types_values])
+        else:
+            allowed_types_intersection = set(EXTRA_TAGS)
+
+        return set(EXTRA_TAGS) - allowed_types_intersection
+
     # File management
 
     async def bind_to_files(self, files: Iterable[EartagFile]):
         """Bind to the files in the provided iterable."""
+        old_filetypes = set(k for k, v in self.filetypes.items() if v)
         for file in files:
             present_extra_tags = set(file.present_extra_tags)
 
-            tags_to_add = present_extra_tags - self.tagentry_manager.managed_properties
+            tags_to_add = present_extra_tags - self.present_props
 
             for tag in present_extra_tags:
                 if tag in tags_to_add:
                     self.show_entry(tag)
+                    self.present_props.add(tag)
                 self.tag_counts[tag] += 1
 
             if file.__gtype_name__ in self.filetypes:
                 self.filetypes[file.__gtype_name__] += 1
             else:
                 self.filetypes[file.__gtype_name__] = 1
+        new_filetypes = set(k for k, v in self.filetypes.items() if v)
+
+        if old_filetypes != new_filetypes:
+            # Clear cached blocked tags value
+            try:
+                del self.blocked_tags
+            except AttributeError:
+                pass
+
+            # Hide blocked entries
+            for tag in set.intersection(
+                self.blocked_tags, self.tagentry_manager.managed_properties
+            ):
+                self.hide_entry(tag)
+
+            self.refresh_tag_filter()
 
         await self.tagentry_manager.bind_to_files(files)
 
     async def unbind_from_files(self, files: Iterable[EartagFile]):
         """Unbind from the files in the provided iterable."""
+        old_filetypes = set(k for k, v in self.filetypes.items() if v)
         for file in files:
             present_extra_tags = set(file.present_extra_tags)
 
@@ -513,9 +558,25 @@ class EartagMoreTagsGroup(Gtk.Box):
                 self.tag_counts[tag] -= 1
                 if self.tag_counts[tag] == 0:
                     self.hide_entry(tag)
+                    self.present_props.remove(tag)
                     self.tagentry_manager.entry_inconsistency[tag] = False
 
             self.filetypes[file.__gtype_name__] -= 1
+        new_filetypes = set(k for k, v in self.filetypes.items() if v)
+
+        if old_filetypes != new_filetypes:
+            old_blocked_tags = self.blocked_tags.copy()
+
+            # Clear cached blocked tags value
+            try:
+                del self.blocked_tags
+            except AttributeError:
+                pass
+
+            # Unhide blocked entries
+            for tag in old_blocked_tags - self.blocked_tags:
+                if tag in self.present_props:
+                    self.show_entry(tag)
 
         await self.tagentry_manager.unbind_from_files(files)
 
@@ -525,13 +586,17 @@ class EartagMoreTagsGroup(Gtk.Box):
         """Show the extra row for the given property."""
         self.entries[prop].props.visible = True
         self.tagentry_manager.add_entry(prop, self.entries[prop])
-        self.visible_props.add(prop)
+        self.refresh_tag_filter()
 
-    def hide_entry(self, prop: str):
+    def hide_entry(self, prop: str, remove: bool = False):
         """Hide the extra row for the given property."""
         self.entries[prop].props.visible = False
         self.tagentry_manager.remove_entry(prop)
-        self.visible_props.remove(prop)
+        if remove:
+            for file in self.files:
+                file.remove_tag(prop)
+            self.present_props.remove(prop)
+        self.refresh_tag_filter()
 
     # Tag selection dropdown
 
@@ -539,14 +604,13 @@ class EartagMoreTagsGroup(Gtk.Box):
     def add_row_from_selector(self, selector, tag):
         """Adds a new row based on the tag selector."""
         self.show_entry(tag)
+        self.present_props.add(tag)
         self.entries[tag].grab_focus()
 
     def refresh_tag_filter(self, *args):
         """Refreshes the filter for the additional tag add row."""
         self.tag_filter.changed(Gtk.FilterChange.DIFFERENT)
-        self.tag_entry_listbox.props.visible = bool(
-            [i for i in self.get_rows_sorted().keys() if i in EXTRA_TAGS]
-        )
+        self.tag_entry_listbox.props.visible = bool(self.tagentry_manager.managed_properties)
 
     def tag_filter_func(self, _tag_name, *args):
         """Filter function for the tag dropdown."""
@@ -564,8 +628,8 @@ class EartagMoreTagsGroup(Gtk.Box):
             return False
         if tag_prop in present_tags:
             return False
-        # if tag_prop in self.get_blocked_tags():
-        #    return False
+        if tag_prop in self.blocked_tags:
+            return False
 
         return True
 
