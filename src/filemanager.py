@@ -282,8 +282,6 @@ class EartagFileManager(GObject.Object):
             first_file = self._files_buffer[0]
         self._files_buffer = []
 
-        self.sorter.changed(Gtk.SorterChange.DIFFERENT)
-
         self.refresh_state()
         if self._load_mode == self.LOAD_INSERT:
             if self.get_n_selected() < 2 and first_file:
