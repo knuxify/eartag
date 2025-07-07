@@ -254,12 +254,10 @@ class EartagFileList(Gtk.ListView):
         child.bind_to_file(file)
 
     def unbind(self, factory, list_item):
-        print("unbind called:", list_item.get_item(), list_item.get_child())
         child = list_item.get_child()
         child.unbind_from_file()
 
     def teardown(self, factory, list_item):
-        print("teardown called:", list_item.get_item(), list_item.get_child())
         child = list_item.get_child()
         child.teardown()
 
