@@ -185,11 +185,15 @@ class EartagTagEntryManager(GObject.Object):
         if self._ignore_entry_change:
             return
 
+        self._ignore_file_change = True
+
         entry.tagentry_placeholder = ""
         value = entry.props.text
         for file in self.files:
             file.set_property(prop, value)
         self.entry_inconsistency[prop] = False
+
+        self._ignore_file_change = False
 
     def refresh_entry_text(self, prop: str):
         """Refresh the data for the entry with the given property."""
