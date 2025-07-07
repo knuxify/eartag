@@ -201,7 +201,7 @@ class EartagTagEntryManager(GObject.Object):
             entry.tagentry_placeholder = _("(multiple values)")
         else:
             try:
-                entry.props.text = str(next(iter(self.files)).get_property(prop))
+                entry.props.text = str(next(iter(self.files)).get_property(prop) or "")
                 entry.tagentry_placeholder = ""
             except StopIteration:
                 entry.props.text = ""
