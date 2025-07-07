@@ -239,7 +239,7 @@ class EartagWindow(Adw.ApplicationWindow):
     def is_busy(self):
         return self.file_manager.is_busy or self.file_view.bind_in_progress
 
-    def update_busy(self, task, *args):
+    def update_busy(self, *args):
         """
         Mark the window as busy or not busy based on whether the file manager
         is currently processing a long operation (opening/saving/renaming files).
