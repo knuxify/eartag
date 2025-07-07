@@ -255,11 +255,13 @@ class EartagFileList(Gtk.ListView):
 
     def unbind(self, factory, list_item):
         child = list_item.get_child()
-        child.unbind_from_file()
+        if child:
+            child.unbind_from_file()
 
     def teardown(self, factory, list_item):
         child = list_item.get_child()
-        child.teardown()
+        if child:
+            child.teardown()
 
     @GObject.Property(type=bool, default=False)
     def selection_mode(self):
