@@ -17,7 +17,13 @@ if [ "$1" = "memray" ]; then
 	shift
 	[ -e memray-eartag.bin ] && rm memray-eartag.bin
 	[ -e memray-flamegraph-eartag.html ] && rm memray-flamegraph-eartag.html
-	GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas memray run --live -o memray-eartag.bin /tmp/eartag/bin/eartag-devel "$@"
+	GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas memray run --live /tmp/eartag/bin/eartag-devel "$@"
+	ret=$?
+elif [ "$1" = "memray-flamegraph" ]; then
+	shift
+	[ -e memray-eartag.bin ] && rm memray-eartag.bin
+	[ -e memray-flamegraph-eartag.html ] && rm memray-flamegraph-eartag.html
+	GSETTINGS_SCHEMA_DIR=/tmp/eartag/share/glib-2.0/schemas memray run -o memray-eartag.bin /tmp/eartag/bin/eartag-devel "$@"
 	ret=$?
 	memray flamegraph memray-eartag.bin
 	xdg-open memray-flamegraph-eartag.html
