@@ -827,11 +827,11 @@ class EartagFileView(Gtk.Stack):
     async def _update_binds(self):
         self.bind_in_progress = True
 
-        _selected_files = self.file_manager.selected_files_list
+        _selected_files = set(self.file_manager.selected_files_list)
 
         # Get list of selected (added)/unselected (removed) files
-        added_files = [file for file in _selected_files if file not in self.files]
-        removed_files = [file for file in self.files if file not in _selected_files]
+        added_files = _selected_files - self.files
+        removed_files = self.files - _selected_files
 
         # Handle added and removed files
         await self._unbind_files(removed_files)
