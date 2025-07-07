@@ -593,8 +593,10 @@ class EartagMoreTagsGroup(Gtk.Box):
         self.entries[prop].props.visible = False
         self.tagentry_manager.remove_entry(prop)
         if remove:
-            for file in self.files:
-                file.remove_tag(prop)
+            for file in self.tagentry_manager.files:
+                if prop in file.present_extra_tags:
+                    file.present_extra_tags.remove(prop)
+                    file.delete_tag(prop)
             self.present_props.remove(prop)
         self.refresh_tag_filter()
 
