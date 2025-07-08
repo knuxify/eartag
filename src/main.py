@@ -144,7 +144,7 @@ class Application(Adw.Application):
         about = Adw.AboutDialog(
             application_name=self._("Ear Tag"),
             application_icon=APP_ID,
-            developers=["knuxify"],
+            developers=["knuxify https://tilde.town/~knuxify"],
             artists=["Jakub Steiner", "Igor Dyatlov"],
             license_type=Gtk.License.MIT_X11,
             issue_url="https://gitlab.gnome.org/World/eartag/-/issues",
