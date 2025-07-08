@@ -49,4 +49,8 @@ class EartagFileMutagenCommon(EartagFile):
 
     @GObject.Property(type=int, flags=GObject.ParamFlags.READABLE)
     def channels(self):
-        return self.mg_file.info.channels
+        try:
+            return self.mg_file.info.channels
+        except AttributeError:
+            # For some files, Mutagen can't tell the channel count
+            return 0
