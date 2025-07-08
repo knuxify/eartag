@@ -4,7 +4,7 @@
 import gi
 
 gi.require_version("GdkPixbuf", "2.0")
-from gi.repository import GObject, GdkPixbuf, GLib
+from gi.repository import GObject, GdkPixbuf, GLib, Gio
 import os
 import re
 import shutil
@@ -162,19 +162,42 @@ class EartagFileCover:
         out.hash = cover_hash
         out.data = data
 
-        def _get_pixbufs(data: bytes):
-            # Load using Pillow
-            with Image.open(io.BytesIO(data)) as img:
+        try:
+            # Load using GdkPixbuf
+            async def _get_pixbuf_data(data: bytes, size: int):
+                data_bytes = GLib.Bytes.new(data)
+                data_stream = Gio.MemoryInputStream.new_from_bytes(data_bytes)
 
-                def img_to_pixbuf(img: Image) -> GdkPixbuf.Pixbuf:
-                    """Convert a Pillow image to a GdkPixbuf."""
+                out = GdkPixbuf.Pixbuf.new_from_stream_at_scale(data_stream, size, size, True)
 
-                    # Pillow's raw image data is returned as a list of tuples
-                    # with (R, G, B) values. This function converts them into
-                    # GBytes.
-                    data = GLib.Bytes.new(bytes(x for xs in img.getdata() for x in xs))
+                data_stream.close()
+                del data_stream
+                data_bytes.unref()
+                del data_bytes
 
-                    return GdkPixbuf.Pixbuf.new_from_bytes(
+                return out
+
+            async with asyncio.TaskGroup() as tg:
+                task_small = tg.create_task(_get_pixbuf_data(data, 48))
+                task_large = tg.create_task(_get_pixbuf_data(data, 196))
+            out.cover_small = task_small.result()
+            out.cover_large = task_large.result()
+
+        except GLib.GError:
+            logger.warning("An error occured while loading the image with GdkPixbuf:")
+            traceback.print_exc()
+            logger.warning("Falling back to loading with PIL.")
+
+            try:
+                img = await asyncio.to_thread(Image.open, io.BytesIO(data))
+                if img.mode != "RGB":
+                    await asyncio.to_thread(img.convert, "RGB")
+
+                async def _get_pixbuf_pil(img: Image) -> GdkPixbuf.Pixbuf:
+                    data = bytes(x for xs in img.getdata() for x in xs)
+
+                    return await asyncio.to_thread(
+                        GdkPixbuf.Pixbuf.new_from_data,
                         data,
                         GdkPixbuf.Colorspace.RGB,
                         img.has_transparency_data,
@@ -184,28 +207,18 @@ class EartagFileCover:
                         img.width * 3,
                     )
 
-                img_rgb = img.convert("RGB")
+                await asyncio.to_thread(img.thumbnail, (196, 196))
+                out.cover_large = await _get_pixbuf_pil(img)
 
-                img_small = img_rgb.copy()
-                img_small.thumbnail((48, 48))
-                cover_small = img_to_pixbuf(img_small)
-                img_small.close()
+                await asyncio.to_thread(img.thumbnail, (48, 48))
+                out.cover_small = await _get_pixbuf_pil(img)
 
-                img_large = img_rgb.copy()
-                img_large.thumbnail((192, 192))
-                cover_large = img_to_pixbuf(img_large)
-                img_large.close()
+                img.close()
 
-                img_rgb.close()
-
-            return (cover_small, cover_large)
-
-        try:
-            out.cover_small, out.cover_large = await asyncio.to_thread(_get_pixbufs, data)
-        except:  # noqa: E722
-            logger.error("Failed to load cover image:")
-            traceback.print_exc()
-            out = None
+            except:  # noqa: E722
+                logger.error("Failed to load cover image:")
+                traceback.print_exc()
+                out = None
 
         cls._cache[cover_hash] = out
 
