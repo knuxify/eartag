@@ -695,7 +695,6 @@ class EartagIdentifyDialog(Adw.Dialog):
         for row in self.release_rows.values():
             row.unbind()
         self.release_rows = {}
-        self.parent.file_view.more_tags_group.slow_refresh_entries()
 
     def unidentified_row_create(self, file, *args):
         return EartagIdentifyFileRow(file)
