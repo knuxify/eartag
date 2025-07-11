@@ -795,7 +795,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self._delete_all_tags_count = len(files)
         for file in files:
             self._delete_all_tags_undo_data[file.id] = {}
-            for prop in file.modified_tags:
+            for prop in file.present_tags:
                 self._delete_all_tags_undo_data[file.id][prop] = file.get_property(prop)
             file.delete_all_raw()
 
