@@ -44,10 +44,21 @@ template $EartagIdentifyRecordingRow: Adw.ActionRow {
 
           Adw.EntryRow recording_override_entry {
             title: _("Recording ID or URL");
-            show-apply-button: true;
 
             changed => $validate_recording_override_entry();
-            apply => $set_recording_override_from_entry();
+            entry-activated => $set_recording_override_from_entry();
+          }
+
+          Gtk.Button recording_override_apply_button {
+            label: _("Apply");
+            margin-top: 9;
+            halign: center;
+            clicked => $set_recording_override_from_entry();
+
+            styles [
+              "pill",
+              "suggested-action"
+            ]
           }
         }
       }

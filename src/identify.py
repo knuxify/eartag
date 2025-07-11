@@ -431,6 +431,7 @@ class EartagIdentifyFileRow(Adw.ActionRow):
 
     recording_override_popover = Gtk.Template.Child()
     recording_override_entry = Gtk.Template.Child()
+    recording_override_apply_button = Gtk.Template.Child()
 
     def __init__(self, file, parent):
         super().__init__()
@@ -441,6 +442,8 @@ class EartagIdentifyFileRow(Adw.ActionRow):
         self.connect("destroy", self.unbind)
 
         self.bind_to_file(file)
+
+        self.validate_recording_override_entry()
 
     def bind_to_file(self, file):
         if self.file:
@@ -524,6 +527,7 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
 
     recording_override_popover = Gtk.Template.Child()
     recording_override_entry = Gtk.Template.Child()
+    recording_override_apply_button = Gtk.Template.Child()
 
     def __init__(self, parent, recording):
         super().__init__()
@@ -551,6 +555,8 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         self.connect("destroy", self.unbind)
 
         self.bind_to_recording(recording)
+
+        self.validate_recording_override_entry()
 
     def bind_to_recording(self, recording):
         self.recording = recording
@@ -640,10 +646,10 @@ class EartagIdentifyRecordingRow(Adw.ActionRow):
         """Validate the contents of the recording override entry."""
         if self.get_mbid_from_recording_override_entry():
             self.recording_override_entry.remove_css_class("error")
-            self.recording_override_entry.props.show_apply_button = True
+            self.recording_override_apply_button.props.sensitive = True
         else:
             self.recording_override_entry.add_css_class("error")
-            self.recording_override_entry.props.show_apply_button = False
+            self.recording_override_apply_button.props.sensitive = False
 
     @Gtk.Template.Callback()
     def set_recording_override_from_entry(self, *args):
