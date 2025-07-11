@@ -131,6 +131,8 @@ class EartagWindow(Adw.ApplicationWindow):
             self.audio_file_filter.add_mime_type(mime)
         self.audio_file_filter.set_name(_("All supported audio files"))
 
+        self.file_view.connect("notify::bind-in-progress", self.update_busy)
+
         # File manager setup
         self.file_manager = EartagFileManager(self)
         self.file_view.set_file_manager(self.file_manager)
@@ -329,7 +331,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def update_state(self, *args):
         app = self.get_application()
-        return
+
         # Set up the active view (hide fileview if there are no selected files)
         selected_files_count = self.file_manager.get_n_selected()
 
