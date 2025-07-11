@@ -618,17 +618,15 @@ class EartagMoreTagsGroup(Gtk.Box):
         if tag not in EXTRA_TAGS:
             return
         if tag in file.present_extra_tags:
-            if tag in self.present_extra_tags:
-                self.present_extra_tags[tag].add(file.id)
-                if len(self.present_extra_tags[tag]) == 0:
-                    self.show_entry(tag)
+            if tag in self.present_props:
+                self.present_props[tag].add(file.id)
             else:
-                self.present_extra_tags[tag] = set([file.id])
+                self.present_props[tag] = set([file.id])
                 self.show_entry(tag)
         else:
-            if tag in self.present_extra_tags:
-                self.present_extra_tags[tag].remove(file.id)
-                if len(self.present_extra_tags[tag]) == 0:
+            if tag in self.present_props and file.id in self.present_props[tag]:
+                self.present_props[tag].remove(file.id)
+                if len(self.present_props[tag]) == 0:
                     del self.present_props[tag]
                     self.hide_entry(tag)
                     self.tagentry_manager.entry_inconsistency[tag] = False
