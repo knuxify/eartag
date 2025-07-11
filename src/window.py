@@ -249,7 +249,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
         self.sidebar_headerbar.set_sensitive(not busy)
         self.loading_progressbar_revealer.set_reveal_child(busy)
-        self.sidebar_file_list.set_sensitive(not busy)
+        self.sidebar_file_list.set_sensitive(not self.file_manager.is_busy)
         self.file_view.content_clamp.set_sensitive(not busy)
         self.props.application.select_all_action.set_enabled(not busy)
 
