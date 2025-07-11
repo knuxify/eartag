@@ -2,7 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $EartagFileView: Stack {
-  transition-type: crossfade;
+  transition-type: none;
 
   Adw.StatusPage loading {
     icon-name: "content-loading-symbolic";
@@ -10,7 +10,7 @@ template $EartagFileView: Stack {
   }
 
   Stack content_stack {
-    transition-type: crossfade;
+    transition-type: none;
 
     Adw.StatusPage select_file {
       icon-name: "edit-select-all-symbolic";
