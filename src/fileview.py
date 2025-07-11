@@ -515,7 +515,9 @@ class EartagMoreTagsGroup(Gtk.Box):
     # File management
 
     async def bind_to_files(self, files: Iterable[EartagFile]):
-        """Bind to the files in the provided iterable."""
+        """Bind to the files in the provided iterable.
+
+        Remember to call self."""
         old_filetypes = set(k for k, v in self.filetypes.items() if v)
         for file in files:
             if file in self.files:
@@ -571,8 +573,6 @@ class EartagMoreTagsGroup(Gtk.Box):
                 self.present_props[tag].remove(file.id)
                 if len(self.present_props[tag]) == 0:
                     del self.present_props[tag]
-                    self.hide_entry(tag)
-                    self.tagentry_manager.entry_inconsistency[tag] = False
 
             self.filetypes[file.__gtype_name__] -= 1
         new_filetypes = set(k for k, v in self.filetypes.items() if v)
@@ -604,6 +604,7 @@ class EartagMoreTagsGroup(Gtk.Box):
     def hide_entry(self, prop: str):
         """Hide the extra row for the given property."""
         self.entries[prop].props.visible = False
+        self.tagentry_manager.entry_inconsistency[prop] = False
         self.tagentry_manager.remove_entry(prop)
         self.refresh_tag_filter()
 
@@ -623,14 +624,54 @@ class EartagMoreTagsGroup(Gtk.Box):
                 self.present_props[tag].add(file.id)
             else:
                 self.present_props[tag] = set([file.id])
-                self.show_entry(tag)
         else:
             if tag in self.present_props and file.id in self.present_props[tag]:
                 self.present_props[tag].remove(file.id)
                 if len(self.present_props[tag]) == 0:
                     del self.present_props[tag]
-                    self.hide_entry(tag)
-                    self.tagentry_manager.entry_inconsistency[tag] = False
+
+        # The ignore_file_change check here makes sure that we don't remove an
+        # entry when it's cleared by the user by removing the text.
+        if not self.tagentry_manager._ignore_file_change:
+            self.refresh_entry_visibility_for_tag(tag)
+
+    def refresh_entry_visibility(self):
+        """
+        Synchronize entry state with self.present_props.
+
+        There are two cases where the state is desynced:
+
+        - During binding/unbinding, we don't show/hide entries immediately;
+          this is a bit of an ugly hack to prevent the entry from getting cleared
+          then filled again during the unbind/bind cycle, which causes a
+          distracting animation.
+
+        - The state can get desynchronized if the user adds a tag entry, types
+          something in, then removes it; in those cases, we can't immediately
+          hide the entry. At the same time, we must hide the entry if it is
+          either deleted manually or the underlying tag disappears because of
+          an undo, redo or delete all tags operation.
+        """
+        target_props = set(self.present_props.keys()) - self.blocked_tags
+        current_props = self.tagentry_manager.managed_properties
+
+        # Entries to show:
+        for tag in target_props - current_props:
+            self.show_entry(tag)
+
+        # Entries to hide:
+        for tag in current_props - target_props:
+            self.hide_entry(tag)
+
+    def refresh_entry_visibility_for_tag(self, tag: str):
+        """Same as refresh_entry_visibility, but for a single tag."""
+        target_props = set(self.present_props.keys()) - self.blocked_tags
+        current_props = self.tagentry_manager.managed_properties
+
+        if tag in target_props and tag not in current_props:
+            self.show_entry(tag)
+        elif tag not in target_props and tag in current_props:
+            self.hide_entry(tag)
 
     # Tag selection dropdown
 
@@ -934,6 +975,11 @@ class EartagFileView(Gtk.Stack):
         # Handle added and removed files
         await self._unbind_files(removed_files)
         await self._bind_files(added_files)
+
+        # We show/hide new entries only as necessary once the bind/unbind are
+        # done; otherwise the entry is hidden, cleared, then shown and uncleared,
+        # which causes a distracting animation.
+        self.more_tags_group.refresh_entry_visibility()
 
         # Make save/fields sensitive/insensitive based on whether selected files are
         # all writable
