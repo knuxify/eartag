@@ -165,12 +165,12 @@ class EartagFileManager(GObject.Object):
 
         # self.save_task is set up in the init functions
         self.save_task.spawn_workers()
-        self.save_task.queue_put_multiple([f for f in self.files], mark_as_done=True)
+        self.save_task.queue_put_multiple(
+            [f for f in self.files if f.is_writable and f.is_modified], mark_as_done=True
+        )
 
     async def _save_single_file(self, file):
         """Saves changes in a single file."""
-        if not file.is_writable or not file.is_modified:
-            return
         return await asyncio.to_thread(file.save)
 
     #
