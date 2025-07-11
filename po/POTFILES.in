@@ -21,6 +21,7 @@ src/ui/filenamerow.blp
 src/ui/albumcoverbutton.blp
 src/ui/moretagsgroup.blp
 src/tagentry.py
+src/utils/widgets.py
 
 # Sidebar
 src/filelist.py
