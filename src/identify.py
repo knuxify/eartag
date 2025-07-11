@@ -429,10 +429,14 @@ class EartagIdentifyFileRow(Adw.ActionRow):
     loading_icon = Gtk.Template.Child()
     not_found_icon = Gtk.Template.Child()
 
-    def __init__(self, file):
+    recording_override_popover = Gtk.Template.Child()
+    recording_override_entry = Gtk.Template.Child()
+
+    def __init__(self, file, parent):
         super().__init__()
         self._connections = []
         self.file = None
+        self.parent = parent
 
         self.connect("destroy", self.unbind)
 
@@ -476,6 +480,35 @@ class EartagIdentifyFileRow(Adw.ActionRow):
 
     def mark_as_unidentified(self):
         self.suffix_stack.set_visible_child(self.not_found_icon)
+
+    def get_mbid_from_recording_override_entry(self):
+        # Reuse the IdentifyRecordingRow function for convenience
+        return EartagIdentifyRecordingRow.get_mbid_from_recording_override_entry(self)
+
+    @Gtk.Template.Callback()
+    def validate_recording_override_entry(self, *args):
+        # Reuse the IdentifyRecordingRow function for convenience
+        return EartagIdentifyRecordingRow.validate_recording_override_entry(self)
+
+    @Gtk.Template.Callback()
+    def set_recording_override_from_entry(self, *args):
+        """Apply the recording ID or URL from the recording override entry."""
+
+        async def _set_rec_override(self):
+            mbid = self.get_mbid_from_recording_override_entry()
+            if not mbid:
+                return
+
+            self.recording_override_popover.props.sensitive = False
+
+            rec = await MusicBrainzRecording.new_for_id(mbid)
+
+            self.parent._identify_set_recording(self.file.id, rec)
+            self.parent.on_identify_done(None, show_toast=False)
+
+            self.recording_override_popover.props.sensitive = True
+
+        asyncio.create_task(_set_rec_override(self))
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/identify/recordingrow.ui")
@@ -697,7 +730,7 @@ class EartagIdentifyDialog(Adw.Dialog):
         self.release_rows = {}
 
     def unidentified_row_create(self, file, *args):
-        return EartagIdentifyFileRow(file)
+        return EartagIdentifyFileRow(file, self)
 
     @Gtk.Template.Callback()
     def on_cancel(self, *args):
