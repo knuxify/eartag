@@ -722,7 +722,6 @@ class EartagWindow(Adw.ApplicationWindow):
 
     def _undo_all_done(self, *args):
         self._redo_all_called = False
-        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(
@@ -757,7 +756,6 @@ class EartagWindow(Adw.ApplicationWindow):
                         file.set_property(tag, value)
 
     def _redo_all_done(self, *args):
-        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
         toast = Adw.Toast.new(
             # TRANSLATORS: {n} is a placeholder for the amount of files.
@@ -802,7 +800,6 @@ class EartagWindow(Adw.ApplicationWindow):
             file.delete_all_raw()
 
     def _delete_all_tags_done(self, *args):
-        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(
@@ -835,7 +832,6 @@ class EartagWindow(Adw.ApplicationWindow):
                     file.set_property(prop, value)
 
     def _undo_delete_all_tags_done(self, *args):
-        self.file_view.more_tags_group.slow_refresh_entries()
         self.set_sensitive(True)
 
         toast = Adw.Toast.new(

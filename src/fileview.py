@@ -399,7 +399,6 @@ class EartagExtraTagRow(EartagTagEntryRow):
     def __init__(self, tag, parent):
         super().__init__()
         self.props.visible = False
-        self.parent = parent
 
         self.bound_property = tag
 
@@ -431,7 +430,7 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.set_title(extra_tag_names[value])
 
     def remove_button_pressed(self, *args):
-        self.parent.hide_entry(self.bound_property, remove=True)
+        self.parent.remove_tag(self.bound_property)
 
     def _on_destroy(self, *args):
         try:
@@ -463,6 +462,12 @@ class EartagMoreTagsGroup(Gtk.Box):
         #: Filetypes bound to this entry (gtype name: count).
         self.filetypes: dict[str, int] = {}
 
+        #: Files bound to this entry.
+        self.files: set[EartagFile] = set()
+
+        #: File connections.
+        self.file_connections: dict[str, list[int]] = {}
+
         # Set up allowed tag lists for each filetype. Since different filetypes
         # have different sets of allowed extra tags, we store them in this class
         # and use this information to show/hide certain entries.
@@ -473,13 +478,10 @@ class EartagMoreTagsGroup(Gtk.Box):
         #: Entry rows under this group.
         self.entries: dict[str, Gtk.Widget] = {}
 
-        #: Refcounts (how many files have the tag) for tags.
-        self.tag_counts: dict[str, int] = {}
-
-        #: List of all present properties in files. To get the actually shown
-        #: properties, check self.tagentry_manager.managed_properties
+        #: All present properties in files, and the IDs of the files that have them.
+        #: To get the actually shown properties, check self.tagentry_manager.managed_properties
         #: (since that value excludes blocked tags).
-        self.present_props: set[str] = set()
+        self.present_props: dict[str, set[str]] = {}
 
         self.tag_filter = Gtk.CustomFilter.new(self.tag_filter_func, self.tag_selector.tag_model)
         self.tag_selector.set_filter(self.tag_filter)
@@ -491,7 +493,6 @@ class EartagMoreTagsGroup(Gtk.Box):
         # done in the manager, and only bound to it when shown.
 
         for tag in EXTRA_TAGS:
-            self.tag_counts[tag] = 0
             self.entries[tag] = EartagExtraTagRow(tag, self)
             self.tag_entry_listbox.append(self.entries[tag])
 
@@ -516,15 +517,21 @@ class EartagMoreTagsGroup(Gtk.Box):
         """Bind to the files in the provided iterable."""
         old_filetypes = set(k for k, v in self.filetypes.items() if v)
         for file in files:
+            if file in self.files:
+                continue
+            self.files.add(file)
+            self.file_connections[file.id] = [file.connect("modified", self.on_file_modified)]
+
             present_extra_tags = set(file.present_extra_tags)
 
-            tags_to_add = present_extra_tags - self.present_props
-
             for tag in present_extra_tags:
-                if tag in tags_to_add:
+                if tag in self.present_props:
+                    self.present_props[tag].add(file.id)
+                    if len(self.present_props[tag]) == 1:
+                        self.show_entry(tag)
+                else:
+                    self.present_props[tag] = set((file.id,))
                     self.show_entry(tag)
-                    self.present_props.add(tag)
-                self.tag_counts[tag] += 1
 
             if file.__gtype_name__ in self.filetypes:
                 self.filetypes[file.__gtype_name__] += 1
@@ -545,21 +552,25 @@ class EartagMoreTagsGroup(Gtk.Box):
             ):
                 self.hide_entry(tag)
 
-            self.refresh_tag_filter()
-
         await self.tagentry_manager.bind_to_files(files)
 
     async def unbind_from_files(self, files: Iterable[EartagFile]):
         """Unbind from the files in the provided iterable."""
         old_filetypes = set(k for k, v in self.filetypes.items() if v)
         for file in files:
+            if file not in self.files:
+                continue
+            self.files.remove(file)
+            for conn in self.file_connections[file.id]:
+                file.disconnect(conn)
+
             present_extra_tags = set(file.present_extra_tags)
 
             for tag in present_extra_tags:
-                self.tag_counts[tag] -= 1
-                if self.tag_counts[tag] == 0:
+                self.present_props[tag].remove(file.id)
+                if len(self.present_props[tag]) == 0:
+                    del self.present_props[tag]
                     self.hide_entry(tag)
-                    self.present_props.remove(tag)
                     self.tagentry_manager.entry_inconsistency[tag] = False
 
             self.filetypes[file.__gtype_name__] -= 1
@@ -589,17 +600,38 @@ class EartagMoreTagsGroup(Gtk.Box):
         self.tagentry_manager.add_entry(prop, self.entries[prop])
         self.refresh_tag_filter()
 
-    def hide_entry(self, prop: str, remove: bool = False):
+    def hide_entry(self, prop: str):
         """Hide the extra row for the given property."""
         self.entries[prop].props.visible = False
         self.tagentry_manager.remove_entry(prop)
-        if remove:
-            for file in self.tagentry_manager.files:
-                if prop in file.present_extra_tags:
-                    file.present_extra_tags.remove(prop)
-                    file.delete_tag(prop)
-            self.present_props.remove(prop)
         self.refresh_tag_filter()
+
+    def remove_tag(self, prop: str):
+        """Remove the tag from all open files."""
+        for file in self.tagentry_manager.files:
+            if prop in file.present_extra_tags:
+                file.present_extra_tags.remove(prop)
+                file.delete_tag(prop)
+
+    def on_file_modified(self, file: EartagFile, tag: str):
+        """Handle a file being modified, in case an extra tag is added/removed."""
+        if tag not in EXTRA_TAGS:
+            return
+        if tag in file.present_extra_tags:
+            if tag in self.present_extra_tags:
+                self.present_extra_tags[tag].add(file.id)
+                if len(self.present_extra_tags[tag]) == 0:
+                    self.show_entry(tag)
+            else:
+                self.present_extra_tags[tag] = set([file.id])
+                self.show_entry(tag)
+        else:
+            if tag in self.present_extra_tags:
+                self.present_extra_tags[tag].remove(file.id)
+                if len(self.present_extra_tags[tag]) == 0:
+                    del self.present_props[tag]
+                    self.hide_entry(tag)
+                    self.tagentry_manager.entry_inconsistency[tag] = False
 
     # Tag selection dropdown
 
