@@ -24,6 +24,7 @@ class EartagPopoverButton(Gtk.Box):
         self._popover = None
         self.toggle_button = Gtk.ToggleButton()
         self.append(self.toggle_button)
+        self.props.accessible_role = Gtk.AccessibleRole.GROUP
         self.toggle_button.update_relation(
             (Gtk.AccessibleRelation.LABELLED_BY,),
             (Gtk.AccessibleList.new_from_list((self,)),),
@@ -88,8 +89,26 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         )
         self.label.set_cursor(Gdk.Cursor.new_from_name("text"))
 
+        self.icon = Gtk.Image(
+            icon_name="document-edit-symbolic",
+            can_focus=False,
+            can_target=False,
+            receives_default=False,
+            halign=Gtk.Align.END,
+            valign=Gtk.Align.CENTER,
+            accessible_role=Gtk.AccessibleRole.PRESENTATION,
+        )
+        self.icon.add_css_class("edit-icon")
+        self.bind_property(
+            "editing",
+            self.icon,
+            "visible",
+            GObject.BindingFlags.SYNC_CREATE | GObject.BindingFlags.INVERT_BOOLEAN,
+        )
+
         self.set_child(self.entry)
         self.add_overlay(self.label)
+        self.add_overlay(self.icon)
         self.set_measure_overlay(self.label, True)
 
         self.entry.bind_property(
@@ -105,6 +124,8 @@ class EartagEditableLabel(Gtk.Overlay, Gtk.Editable):
         self.entry.get_delegate().connect("changed", self.update_label)
         self.entry.connect("notify::placeholder-text", self.update_label)
         self.update_label()
+
+        self.props.accessible_role = Gtk.AccessibleRole.GROUP
 
         self.connect("notify::editing", self.update_editing)
         self.update_editing()

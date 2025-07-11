@@ -409,6 +409,7 @@ class EartagExtraTagRow(EartagTagEntryRow):
         self.row_remove_button = Gtk.Button(
             icon_name="edit-delete-symbolic", valign=Gtk.Align.CENTER
         )
+        self.row_remove_button.props.tooltip_text = _("Remove tag")
         self.row_remove_button.add_css_class("flat")
         self._remove_clicked_connect = self.row_remove_button.connect(
             "clicked", self.remove_button_pressed

@@ -86,69 +86,27 @@ template $EartagFileView: Stack {
             orientation: vertical;
             spacing: 6;
 
-            Overlay {
+            $EartagTagEditableLabel title_entry {
+              title: _("Title");
+              bound-property: "title";
+              margin-start: "12";
+              margin-end: "12";
+
               styles [
-                "editable-label-overlay",
+                "title-1",
               ]
-
-              $EartagTagEditableLabel title_entry {
-                title: _("Title");
-                bound-property: "title";
-                margin-start: "12";
-                margin-end: "12";
-
-                styles [
-                  "title-1",
-                ]
-              }
-
-              [overlay]
-              Image {
-                icon-name: "document-edit-symbolic";
-                receives-default: false;
-                can-target: false;
-                can-focus: false;
-                halign: end;
-                visible: bind title_entry.editing no-sync-create inverted;
-                margin-end: 12;
-
-                styles [
-                  "edit-icon",
-                ]
-              }
             }
 
-            Overlay {
+            $EartagTagEditableLabel artist_entry {
+              title: _("Artist");
+              bound-property: "artist";
+              margin-start: "12";
+              margin-end: "12";
+
               styles [
-                "editable-label-overlay",
+                "title-3",
+                "artist",
               ]
-
-              $EartagTagEditableLabel artist_entry {
-                title: _("Artist");
-                bound-property: "artist";
-                margin-start: "12";
-                margin-end: "12";
-
-                styles [
-                  "title-3",
-                  "artist",
-                ]
-              }
-
-              [overlay]
-              Image {
-                icon-name: "document-edit-symbolic";
-                receives-default: false;
-                can-target: false;
-                can-focus: false;
-                halign: end;
-                visible: bind artist_entry.editing no-sync-create inverted;
-                margin-end: 12;
-
-                styles [
-                  "edit-icon",
-                ]
-              }
             }
 
             $EartagFileInfoLabel file_info {
@@ -169,6 +127,7 @@ template $EartagFileView: Stack {
             Box tracknumber_box {
               spacing: 6;
               hexpand: true;
+              accessible-role: list;
 
               $EartagTagEntryRow tracknumber_entry {
                 title: _("Track number");

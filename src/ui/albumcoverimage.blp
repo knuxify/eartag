@@ -3,6 +3,7 @@ using Gtk 4.0;
 template $EartagAlbumCoverImage: Stack {
   hexpand: true;
   visible-child: no_cover;
+  accessible-role: presentation;
 
   styles [
     "cover-image",
@@ -13,6 +14,7 @@ template $EartagAlbumCoverImage: Stack {
     pixel-size: 96;
     halign: center;
     valign: center;
+    accessible-role: presentation;
   }
 
   Image cover_image {
@@ -20,5 +22,6 @@ template $EartagAlbumCoverImage: Stack {
     vexpand: true;
     pixel-size: 196;
     overflow: hidden;
+    accessible-role: presentation;
   }
 }
