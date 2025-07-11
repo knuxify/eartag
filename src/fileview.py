@@ -399,6 +399,7 @@ class EartagExtraTagRow(EartagTagEntryRow):
     def __init__(self, tag, parent):
         super().__init__()
         self.props.visible = False
+        self.parent = parent
 
         self.bound_property = tag
 
