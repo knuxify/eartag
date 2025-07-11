@@ -638,7 +638,7 @@ class EartagMoreTagsGroup(Gtk.Box):
     def add_row_from_selector(self, selector, tag):
         """Adds a new row based on the tag selector."""
         self.show_entry(tag)
-        self.present_props.add(tag)
+        self.present_props[tag] = set(f.id for f in self.files if f.has_tag(tag))
         self.entries[tag].grab_focus()
 
     def refresh_tag_filter(self, *args):
