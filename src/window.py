@@ -41,11 +41,18 @@ class EartagNoFile(Adw.Bin):
 
     nofile_status = Gtk.Template.Child()
     open_file = Gtk.Template.Child()
+    open_recursive = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
         if DEVEL:
             self.nofile_status.set_icon_name("app.drey.EarTag.Devel")
+        config.bind(
+            "open-folders-recursively",
+            self.open_recursive,
+            "active",
+            flags=Gio.SettingsBindFlags.DEFAULT,
+        )
 
     def grab_button_focus(self, *args):
         self.open_file.grab_focus()

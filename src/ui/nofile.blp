@@ -22,6 +22,7 @@ template $EartagNoFile: Adw.Bin {
 
         Button open_file {
           label: _("Open File");
+          halign: center;
           focusable: true;
           clicked => $on_add_file();
 
@@ -33,13 +34,29 @@ template $EartagNoFile: Adw.Bin {
 
         Button open_folder {
           label: _("Open Folder");
+          halign: center;
           clicked => $on_add_folder();
 
           styles [
             "pill",
           ]
         }
+
+        CheckButton open_recursive {
+          label: _("Include Files from Subfolders");
+          tooltip-text: _("When opening a folder, include files from its subfolders");
+
+          styles [
+            "subtitle"
+          ]
+        }
       }
     }
   }
+}
+SizeGroup {
+  widgets [
+    open_file,
+    open_folder
+  ]
 }

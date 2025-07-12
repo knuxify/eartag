@@ -10,7 +10,7 @@
 
   <schema id="@APP_ID@" path="@APP_GSCHEMA_PATH@">
     <key name="open-folders-recursively" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>When opening a folder, include files from its subfolders</summary>
     </key>
 
