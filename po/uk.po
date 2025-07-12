@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-07-11 17:06+0000\n"
-"PO-Revision-Date: 2025-07-11 20:32+0300\n"
+"POT-Creation-Date: 2025-07-12 13:02+0000\n"
+"PO-Revision-Date: 2025-07-12 20:19+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -22,8 +22,8 @@ msgstr ""
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:145 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:116 src/window.py:357
-#: src/window.py:369 src/ui/window.blp:262 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:123 src/window.py:364
+#: src/window.py:376 src/ui/window.blp:262 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -46,7 +46,7 @@ msgid "music;audio;tag;tagging;tagger;"
 msgstr ""
 "music;audio;tag;tagging;tagger;музика;звук;мітка;додавання міток;мітки;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:101
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -59,46 +59,45 @@ msgstr ""
 "«Ear Tag» не потребує від користувача налаштовування теки музичної "
 "бібліотеки. Програма може:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:103
+#: data/app.drey.EarTag.metainfo.xml.in:106
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Редагувати мітки у файлах MP3, WAV, M4A, FLAC, OGG і WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:104
+#: data/app.drey.EarTag.metainfo.xml.in:107
 msgid "Modify metadata of multiple files at once"
 msgstr "Змінити метадані для декількох файлів одночасно"
 
-#: data/app.drey.EarTag.metainfo.xml.in:105
+#: data/app.drey.EarTag.metainfo.xml.in:108
 msgid "Rename files using information from present tags"
 msgstr "Перейменувати файли на основі відомостей з наявних міток"
 
-#: data/app.drey.EarTag.metainfo.xml.in:106
+#: data/app.drey.EarTag.metainfo.xml.in:109
 msgid "Identify files using AcoustID"
 msgstr "Ідентифікувати файли за допомогою AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:108
-msgid ""
-"Network access is only used for the \"Identify selected files\" option."
+#: data/app.drey.EarTag.metainfo.xml.in:111
+msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Доступ до мережі буде використано лише для пункту «Ідентифікувати позначені "
 "файли»."
 
-#: src/window.py:132
+#: src/window.py:139
 msgid "All supported audio files"
 msgstr "Усі підтримувані звукові файли"
 
-#: src/window.py:297
+#: src/window.py:304
 msgid "Some files failed to load"
 msgstr "Деякі з файлів не вдалося завантажити"
 
-#: src/window.py:298
+#: src/window.py:305
 msgid "More Information"
 msgstr "Докладніше"
 
-#: src/window.py:306
+#: src/window.py:313
 msgid "No supported files found in opened folder"
 msgstr "У відкритій теці не знайдено підтримуваних файлів"
 
-#: src/window.py:315
+#: src/window.py:322
 #, python-brace-format
 msgid "Saved changes to 1 file"
 msgid_plural "Saved changes to {n} files"
@@ -107,56 +106,56 @@ msgstr[1] "Збережено зміни до {n} файлів"
 msgstr[2] "Збережено зміни до {n} файлів"
 msgstr[3] "Збережено зміни до {n} файла"
 
-#: src/window.py:324
+#: src/window.py:331
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Деякі з відкритих файлів призначено лише для читання; зміни неможливо "
 "зберегти"
 
-#: src/window.py:329
+#: src/window.py:336
 msgid "Maximum folder depth reached, some files may not be loaded"
 msgstr ""
 "Досягнуто максимальної можливої глибини вкладеності тек, деякі з файлів може "
 "бути не завантажено"
 
-#: src/window.py:340
+#: src/window.py:347
 msgid "Unselect all files"
 msgstr "Зняти позначення з усіх файлів"
 
-#: src/window.py:343 src/ui/window.blp:227
+#: src/window.py:350 src/ui/window.blp:227
 msgid "Select all files"
 msgstr "Позначити усі файли"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:378 src/fileview.py:753
+#: src/window.py:385 src/fileview.py:753
 msgid "(Multiple files selected)"
 msgstr "(Позначено декілька файлів)"
 
 #. : TRANSLATORS: Title of the popup for opening a file
-#: src/window.py:463 src/ui/nofile.blp:24
+#: src/window.py:470 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Відкрити файл"
 
-#: src/window.py:465
+#: src/window.py:472
 msgid "Add File"
 msgstr "Додати файл"
 
-#: src/window.py:471 src/ui/nofile.blp:35
+#: src/window.py:478 src/ui/nofile.blp:36
 msgid "Open Folder"
 msgstr "Відкрити теку"
 
-#: src/window.py:521
+#: src/window.py:528
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Для деяких з відкритих файлів виявлено некоректні значення; не вдалося "
 "зберегти"
 
-#: src/window.py:652
+#: src/window.py:659
 msgid "No files selected"
 msgstr "Не вибрано жодного файла"
 
-#: src/window.py:658
+#: src/window.py:665
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
@@ -165,7 +164,7 @@ msgstr[1] "Позначено {n} файли"
 msgstr[2] "Позначено {n} файлів"
 msgstr[3] "Позначено один файл"
 
-#: src/window.py:731
+#: src/window.py:738
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
@@ -174,11 +173,11 @@ msgstr[1] "Скасовано зміни у {n} файлах"
 msgstr[2] "Скасовано зміни у {n} файлах"
 msgstr[3] "Скасовано зміни у {n} файлі"
 
-#: src/window.py:736
+#: src/window.py:743
 msgid "Redo"
 msgstr "Повторити"
 
-#: src/window.py:764
+#: src/window.py:771
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
@@ -187,7 +186,7 @@ msgstr[1] "Повторено зміни у {n} файлах"
 msgstr[2] "Повторено зміни у {n} файлах"
 msgstr[3] "Повторено зміни у {n} файлі"
 
-#: src/window.py:810
+#: src/window.py:817
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
@@ -196,11 +195,11 @@ msgstr[1] "Вилучено мітки з {n} файлів"
 msgstr[2] "Вилучено мітки з {n} файлів"
 msgstr[3] "Вилучено мітки з {n} файла"
 
-#: src/window.py:815 src/fileview.py:302
+#: src/window.py:822 src/fileview.py:302
 msgid "Undo"
 msgstr "Скасувати"
 
-#: src/window.py:841
+#: src/window.py:848
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -303,6 +302,15 @@ msgid "Open or drag in some audio files to edit their metadata."
 msgstr ""
 "Відкрийте або перетягніть сюди якісь файли звукових даних, щоб редагувати "
 "метадані у них."
+
+#: src/ui/nofile.blp:46
+#| msgid "When opening a folder, include files from its subfolders"
+msgid "Include Files from Subfolders"
+msgstr "Включати файли з підтек"
+
+#: src/ui/nofile.blp:47 src/ui/settings.blp:11
+msgid "When opening a folder, include files from its subfolders"
+msgstr "При відкритті теки включати файли з її підтек"
 
 #: src/backends/file.py:60
 msgid "Length"
@@ -493,7 +501,6 @@ msgstr[2] "Вилучено обкладинки з {n} файлів"
 msgstr[3] "Вилучено обкладинки з {n} файла"
 
 #: src/fileview.py:412
-#| msgid "More tags"
 msgid "Remove tag"
 msgstr "Вилучити мітку"
 
@@ -832,6 +839,7 @@ msgid "Extract Tags from Filename"
 msgstr "Видобувати мітки з назви файла"
 
 #: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
+#: src/ui/identify/filerow.blp:44 src/ui/identify/recordingrow.blp:53
 msgid "Apply"
 msgstr "Застосувати"
 
@@ -867,14 +875,14 @@ msgstr "Див. випуск на MusicBrainz"
 msgid "Other releases"
 msgstr "Інші випуски"
 
-#: src/identify.py:708
+#: src/identify.py:714
 msgid "Unidentified Files"
 msgstr "Неідентифіковані файли"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:981
+#: src/identify.py:987
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
@@ -886,7 +894,7 @@ msgstr[3] "Ідентифіковано {identified} доріжку"
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:1049
+#: src/identify.py:1055
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
@@ -931,11 +939,11 @@ msgstr ""
 msgid "Recording ID or URL"
 msgstr "Ідентифікатор або адреса запису"
 
-#: src/ui/identify/filerow.blp:56
+#: src/ui/identify/filerow.blp:67
 msgid "File could not be identified"
 msgstr "Не вдалося ідентифікувати файл"
 
-#: src/ui/identify/recordingrow.blp:61
+#: src/ui/identify/recordingrow.blp:72
 msgid "See recording on MusicBrainz"
 msgstr "Див. запис на MusicBrainz"
 
@@ -946,10 +954,6 @@ msgstr "Загальне"
 #: src/ui/settings.blp:10
 msgid "Search for files in subfolders"
 msgstr "Шукати файли у підтеках"
-
-#: src/ui/settings.blp:11
-msgid "When opening a folder, include files from its subfolders"
-msgstr "При відкритті теки включати файли з її підтек"
 
 #: src/ui/settings.blp:16
 msgid "File identification"
