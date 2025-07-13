@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app.drey.EarTag\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-07-11 17:35+0000\n"
-"PO-Revision-Date: 2025-07-12 07:29+0800\n"
+"POT-Creation-Date: 2025-07-12 13:02+0000\n"
+"PO-Revision-Date: 2025-07-13 08:56+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -21,8 +21,8 @@ msgstr ""
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
 #: src/main.py:145 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:116 src/window.py:357
-#: src/window.py:369 src/ui/window.blp:262 src/ui/nofile.blp:11
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:123 src/window.py:364
+#: src/window.py:376 src/ui/window.blp:262 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
@@ -44,7 +44,7 @@ msgstr "编辑音频文件标签"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "music;audio;tag;tagging;tagger;音乐;音频;标签;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:101
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -55,124 +55,124 @@ msgstr ""
 "唱片中的曲目。不像其它标签编辑程序，Ear Tag 不需要用户设置一个音乐库文件夹。"
 "它可以："
 
-#: data/app.drey.EarTag.metainfo.xml.in:103
+#: data/app.drey.EarTag.metainfo.xml.in:106
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "编辑 MP3、WAV、M4A、FLAC、OGG 和 WMA 文件的标签"
 
-#: data/app.drey.EarTag.metainfo.xml.in:104
+#: data/app.drey.EarTag.metainfo.xml.in:107
 msgid "Modify metadata of multiple files at once"
 msgstr "同时修改多个文件的元数据"
 
-#: data/app.drey.EarTag.metainfo.xml.in:105
+#: data/app.drey.EarTag.metainfo.xml.in:108
 msgid "Rename files using information from present tags"
 msgstr "使用来自呈现标签的信息重命名文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:106
+#: data/app.drey.EarTag.metainfo.xml.in:109
 msgid "Identify files using AcoustID"
 msgstr "使用 AcoustID 识别文件"
 
-#: data/app.drey.EarTag.metainfo.xml.in:108
+#: data/app.drey.EarTag.metainfo.xml.in:111
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr "网络访问仅用于“识别选中文件”选项。"
 
-#: src/window.py:132
+#: src/window.py:139
 msgid "All supported audio files"
 msgstr "所有支持的音频文件"
 
-#: src/window.py:297
+#: src/window.py:304
 msgid "Some files failed to load"
 msgstr "有些文件加载失败"
 
-#: src/window.py:298
+#: src/window.py:305
 msgid "More Information"
 msgstr "更多信息"
 
-#: src/window.py:306
+#: src/window.py:313
 msgid "No supported files found in opened folder"
 msgstr "在打开的文件夹中未发现支持的文件"
 
-#: src/window.py:315
+#: src/window.py:322
 #, python-brace-format
 msgid "Saved changes to 1 file"
 msgid_plural "Saved changes to {n} files"
 msgstr[0] "已将修改保存到 {n} 个文件"
 
-#: src/window.py:324
+#: src/window.py:331
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr "部分打开的文件为只读；修改无法保存"
 
-#: src/window.py:329
+#: src/window.py:336
 msgid "Maximum folder depth reached, some files may not be loaded"
 msgstr "达到最大文件夹深度，一些文件可能未被加载"
 
-#: src/window.py:340
+#: src/window.py:347
 msgid "Unselect all files"
 msgstr "取消全选文件"
 
-#: src/window.py:343 src/ui/window.blp:227
+#: src/window.py:350 src/ui/window.blp:227
 msgid "Select all files"
 msgstr "选择所有文件"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:378 src/fileview.py:753
+#: src/window.py:385 src/fileview.py:753
 msgid "(Multiple files selected)"
 msgstr "（已选择多个文件）"
 
 #. : TRANSLATORS: Title of the popup for opening a file
-#: src/window.py:463 src/ui/nofile.blp:24
+#: src/window.py:470 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "打开文件"
 
-#: src/window.py:465
+#: src/window.py:472
 msgid "Add File"
 msgstr "添加文件"
 
-#: src/window.py:471 src/ui/nofile.blp:35
+#: src/window.py:478 src/ui/nofile.blp:36
 msgid "Open Folder"
 msgstr "打开文件夹"
 
-#: src/window.py:521
+#: src/window.py:528
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "部分打开的文件具有无效值；无法保存"
 
-#: src/window.py:652
+#: src/window.py:659
 msgid "No files selected"
 msgstr "未选择文件"
 
-#: src/window.py:658
+#: src/window.py:665
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "已选择 {n} 个文件"
 
-#: src/window.py:731
+#: src/window.py:738
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "已撤消在 {n} 个文件中的修改"
 
-#: src/window.py:736
+#: src/window.py:743
 msgid "Redo"
 msgstr "重做"
 
-#: src/window.py:764
+#: src/window.py:771
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "已重做在 {n} 个文件中的修改"
 
-#: src/window.py:810
+#: src/window.py:817
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "已从 {n} 个文件移除标签"
 
-#: src/window.py:815 src/fileview.py:302
+#: src/window.py:822 src/fileview.py:302
 msgid "Undo"
 msgstr "撤消"
 
-#: src/window.py:841
+#: src/window.py:848
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -270,6 +270,14 @@ msgstr "关于 Ear Tag(_A)"
 #: src/ui/nofile.blp:12
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "打开或拖拽一些音频文件来编辑它们的元数据。"
+
+#: src/ui/nofile.blp:46
+msgid "Include Files from Subfolders"
+msgstr "包含子文件夹的文件"
+
+#: src/ui/nofile.blp:47 src/ui/settings.blp:11
+msgid "When opening a folder, include files from its subfolders"
+msgstr "打开文件夹时，包含其子文件夹的文件"
 
 #: src/backends/file.py:60
 msgid "Length"
@@ -881,10 +889,6 @@ msgstr "常规"
 #: src/ui/settings.blp:10
 msgid "Search for files in subfolders"
 msgstr "搜索子文件夹中的文件"
-
-#: src/ui/settings.blp:11
-msgid "When opening a folder, include files from its subfolders"
-msgstr "打开文件夹时，包含其子文件夹的文件"
 
 #: src/ui/settings.blp:16
 msgid "File identification"
