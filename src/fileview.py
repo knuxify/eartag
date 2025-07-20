@@ -213,7 +213,6 @@ class EartagAlbumCoverButton(Adw.Bin):
         try:
             gfile = await file_chooser.open(self.get_native(), None)
         except GLib.GError:
-            traceback.print_exc()
             return
 
         if not gfile:
