@@ -30,7 +30,7 @@
   </requires>
 
   <releases>
-    <release version="1.0.0-rc1" date="2025-07-12">
+    <release version="1.0.0" date="2025-07-20">
       <description><p>General stability and speed improvements. Loading files is now considerably faster. The Identify option has been updated and should provide more accurate results, while being 4x as fast.</p></description>
     </release>
     <release version="0.6.5" date="2025-03-20">
