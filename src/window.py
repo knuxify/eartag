@@ -545,8 +545,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def on_save(self, *args):
-        if not self.file_manager.save():
-            return False
+        self.file_manager.save()
 
     @Gtk.Template.Callback()
     def insert_file(self, *args):
