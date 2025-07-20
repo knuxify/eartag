@@ -169,6 +169,28 @@ class EartagFileManager(GObject.Object):
             [f for f in self.files if f.is_writable and f.is_modified], mark_as_done=True
         )
 
+    async def save_async(self) -> bool:
+        """
+        Async wrapper for the save function, allows for waiting for
+        the saving process to end.
+
+        Returns True if there were no errors, False otherwise.
+        """
+        if not self.is_modified:
+            return True
+        if self.has_error:
+            return False
+
+        self.save_task.spawn_workers()
+        self.save_task.queue_put_multiple(
+            [f for f in self.files if f.is_writable and f.is_modified], mark_as_done=True
+        )
+        await self.save_task.wait_for_completion_async()
+
+        if self.save_task.errors:
+            return False
+        return True
+
     async def _save_single_file(self, file):
         """Saves changes in a single file."""
         return await asyncio.to_thread(file.save)

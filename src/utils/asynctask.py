@@ -172,6 +172,7 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         self.workers = workers
         self.tasks = set()
         self._is_running = False
+        self.running_lock = asyncio.Lock()
 
         #: If you want the multitasker to execute your task directly as the worker
         #: task, rather than managing the queue internally, set `.run_raw` to True.
@@ -212,16 +213,17 @@ class EartagAsyncMultitasker(EartagAsyncTask):
                 self.emit_progress_pulse()
 
     async def _run_multitasker(self):
-        self._is_running = True
-        self.emit("task-started")
-        async with asyncio.TaskGroup() as tg:
-            for _i in range(self.workers):
-                _task = tg.create_task(self._worker())
-                _task.set_priority(self.priority)
-                self.tasks.add(_task)
-        # The task group will block until all tasks are done
-        self._is_running = False
-        self.emit_task_done()
+        async with self.running_lock:
+            self._is_running = True
+            self.emit("task-started")
+            async with asyncio.TaskGroup() as tg:
+                for _i in range(self.workers):
+                    _task = tg.create_task(self._worker())
+                    _task.set_priority(self.priority)
+                    self.tasks.add(_task)
+            # The task group will block until all tasks are done
+            self._is_running = False
+            self.emit_task_done()
 
     def spawn_workers(self):
         """Start the task by spawning workers."""
@@ -260,6 +262,10 @@ class EartagAsyncMultitasker(EartagAsyncTask):
     def wait_for_completion(self):
         while self.task and not self.task.done():
             time.sleep(0.25)
+
+    async def wait_for_completion_async(self):
+        async with self.running_lock:
+            pass
 
     @GObject.Property(type=bool, default=False)
     def is_running(self):

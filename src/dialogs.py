@@ -17,16 +17,20 @@ class EartagCloseWarningDialog(Adw.AlertDialog):
         self.window = window
         self.file_manager = file_manager
 
-    @Gtk.Template.Callback()
-    def handle_response(self, dialog, response):
+    async def handle_response_async(self, dialog, response):
         if response == "discard":
             self.window.force_close = True
             self.window.close()
         elif response == "save":
-            if not self.file_manager.save():
-                return False
+            if not await self.file_manager.save_async():
+                self.close()
+                return
             self.window.close()
         self.close()
+
+    @Gtk.Template.Callback()
+    def handle_response(self, dialog, response):
+        asyncio.create_task(self.handle_response_async(dialog, response))
 
 
 @Gtk.Template(resource_path=f"{APP_GRESOURCE_PATH}/ui/dialogs/discardwarning.ui")
@@ -47,11 +51,11 @@ class EartagDiscardWarningDialog(Adw.AlertDialog):
         await self.closed_event.wait()
         return self.response
 
-    def present(self):
+    def present(self, window):
         """Show the dialog."""
         self.closed_event.clear()
         self.response = None
-        super().present()
+        super().present(window)
 
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
