@@ -199,7 +199,7 @@ class MusicBrainzRecording(GObject.Object):
         def _release_sort(rec) -> int:
             out = 0
             for rel in rec.mb_data.get("releases", []):
-                if rel["status"] == "Official" and "Compilation" not in rel.get(
+                if rel.get("status", "Official") == "Official" and "Compilation" not in rel.get(
                     "release_group", {}
                 ).get("secondary-types", []):
                     out += 1
