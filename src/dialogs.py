@@ -26,7 +26,8 @@ class EartagCloseWarningDialog(Adw.AlertDialog):
                 self.close()
                 return
             self.window.close()
-        self.close()
+        else:
+            self.close()
 
     @Gtk.Template.Callback()
     def handle_response(self, dialog, response):
