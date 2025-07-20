@@ -74,15 +74,18 @@ class EartagRemovalDiscardWarningDialog(Adw.AlertDialog):
         self.file_manager = file_manager
         self.files = files
 
-    @Gtk.Template.Callback()
-    def handle_response(self, dialog, response):
+    async def handle_response_async(self, dialog, response):
         if response == "save":
-            if not self.file_manager.save():
-                return False
+            if not await self.file_manager.save_async():
+                return
         if response != "cancel":
             self.file_manager.remove_files(self.files, force_discard=True)
         self.file = None
         self.close()
+
+    @Gtk.Template.Callback()
+    def handle_response(self, dialog, response):
+        asyncio.create_task(self.handle_response_async(dialog, response))
 
 
 class EartagErrorType(IntEnum):
