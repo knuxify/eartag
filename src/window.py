@@ -240,7 +240,7 @@ class EartagWindow(Adw.ApplicationWindow):
         self.refresh_actionbar_button_state()
 
         if paths:
-            self.file_manager.load_files(paths, mode=EartagFileManager.LOAD_OVERWRITE)
+            self.file_manager.load_files(paths, overwrite=True)
 
     @GObject.Property(type=bool, default=False)
     def is_busy(self):
