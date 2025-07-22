@@ -1,33 +1,33 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Ingir <ingirafn@this.is>, 2024, 2025.
 # SPDX-FileCopyrightText: 2024, 2025 Sveinn í Felli <sv1@fellsnet.is>
+# Ingir <ingirafn@this.is>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-04-10 18:16+0000\n"
-"PO-Revision-Date: 2025-04-18 13:39+0000\n"
-"Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
-"Language-Team: Icelandic\n"
+"POT-Creation-Date: 2025-07-20 09:45+0000\n"
+"PO-Revision-Date: 2025-07-22 12:24+0000\n"
+"Last-Translator: Ingir <ingirafn@this.is>\n"
+"Language-Team: Icelandic <kde-i18n-doc@kde.org>\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 22.12.3\n"
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:157 data/app.drey.EarTag.desktop.in:3
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:104 src/window.py:248
-#: src/window.py:263 src/ui/window.blp:243 src/ui/nofile.blp:11
+#: src/main.py:145 data/app.drey.EarTag.desktop.in:3
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:123 src/window.py:364
+#: src/window.py:376 src/ui/window.blp:262 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:167 src/main.py:169
+#: src/main.py:155 src/main.py:157
 msgid "translator-credits"
 msgstr "Ingirafn ingirafn at this dot is ,2024"
 
@@ -44,202 +44,237 @@ msgstr "Breyttu merkjum á hljóðskrám"
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "tónlist;hljóð;merki;merking,merki-ritill;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:101
+#: data/app.drey.EarTag.metainfo.xml.in:104
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
 "tagging programs, Ear Tag does not require the user to set up a music "
 "library folder. It can:"
 msgstr ""
-"Ear Tag er einfaldur merkjaritill fyrir hljóðskrár. Það er hannað til þess að"
-" vinna með merkingar og magnbreyta hljóðsporum af hljómplötum. Ólíkt öðrum"
-" forritum til merkinga, þarf Ear Tag ekki að búa til sérstaka möppu "
-"fyrir tónlistasafn. Með því er hægt að:"
+"Ear Tag er einfaldur merkjaritill fyrir hljóðskrár. Það er hannað til þess "
+"að vinna með merkingar og magnbreyta hljóðsporum af hljómplötum. Ólíkt öðrum "
+"forritum til merkinga, þarf Ear Tag ekki að búa til sérstaka möppu fyrir "
+"tónlistasafn. Með því er hægt að:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:103
+#: data/app.drey.EarTag.metainfo.xml.in:106
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr "Breyttu merkjum MP3, WAV, M4A, FLAC, OGG og WMA skráa"
 
-#: data/app.drey.EarTag.metainfo.xml.in:104
+#: data/app.drey.EarTag.metainfo.xml.in:107
 msgid "Modify metadata of multiple files at once"
 msgstr "Sýsla með lýsisgögn margra skráa í einu"
 
-#: data/app.drey.EarTag.metainfo.xml.in:105
+#: data/app.drey.EarTag.metainfo.xml.in:108
 msgid "Rename files using information from present tags"
 msgstr "Endurnefna skrár með upplýsingum úr fyrirliggjandi merkjum"
 
-#: data/app.drey.EarTag.metainfo.xml.in:106
+#: data/app.drey.EarTag.metainfo.xml.in:109
 msgid "Identify files using AcoustID"
 msgstr "Auðkenna skrár með AcustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:108
+#: data/app.drey.EarTag.metainfo.xml.in:111
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Netið er einungis notað þegar \"Auðkenna valdar skrár\" valmöguleikinn er "
 "notaður."
 
-#: src/window.py:118
+#: src/window.py:139
 msgid "All supported audio files"
 msgstr "Allar studdar skrár"
 
-#: src/window.py:230
+#: src/window.py:304
+msgid "Some files failed to load"
+msgstr "Ekki tókst að hlaða sumar skrár"
+
+#: src/window.py:305
+msgid "More Information"
+msgstr "Ýtarlegri upplýsingar"
+
+#: src/window.py:313
+msgid "No supported files found in opened folder"
+msgstr "Engar studdar skrár fundust í möppu"
+
+#: src/window.py:322
+#, python-brace-format
+#| msgid "Saved changes to files"
+msgid "Saved changes to 1 file"
+msgid_plural "Saved changes to {n} files"
+msgstr[0] "Vistaði breytingar í  eina skrá"
+msgstr[1] "Vistaði breytingar í {n} skrár"
+
+#: src/window.py:331
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr "Sumar af opnum skránum eru ritvarðar; breytingar er ekki hægt að vista"
+
+#: src/window.py:336
+msgid "Maximum folder depth reached, some files may not be loaded"
+msgstr "Hámarks dýpt, sumar skrár hlaðast kannski ekki "
+
+#: src/window.py:347
 msgid "Unselect all files"
 msgstr "Afvelja allar skrár"
 
-#: src/window.py:233 src/ui/window.blp:208
+#: src/window.py:350 src/ui/window.blp:227
 msgid "Select all files"
 msgstr "Veldu allar skrár"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:272 src/fileview.py:774
+#: src/window.py:385 src/fileview.py:752
 msgid "(Multiple files selected)"
 msgstr "(Margar skrár valdar)"
 
-#: src/window.py:364 src/ui/nofile.blp:35
-msgid "Open Folder"
-msgstr "Opna möppu"
-
-#: src/window.py:367 src/ui/nofile.blp:24
+#. : TRANSLATORS: Title of the popup for opening a file
+#: src/window.py:470 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Opna skrá"
 
-#: src/window.py:438
-msgid "No supported files found in opened folder"
-msgstr "Engar studdar skrár fundust í möppu"
+#: src/window.py:472
+#| msgid "Add file"
+msgid "Add File"
+msgstr "Bæta við skrá"
 
-#: src/window.py:447
+#: src/window.py:478 src/ui/nofile.blp:36
+msgid "Open Folder"
+msgstr "Opna möppu"
+
+#: src/window.py:528
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr "Sumar skrár hafa ótæk ógild, ekki hægt að vista"
 
-#: src/window.py:581
+#: src/window.py:658
 msgid "No files selected"
 msgstr "Engar skrár valdar"
 
-#: src/window.py:587
+#: src/window.py:664
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "Ein skrá valin"
 msgstr[1] "{n} skrár valdar"
 
-#: src/window.py:673
+#: src/window.py:737
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Henti breytingum úr einni skrá"
 msgstr[1] "Henti breytingum úr {n} skrám"
 
-#: src/window.py:678
+#: src/window.py:742
 msgid "Redo"
 msgstr "Endurtaka"
 
-#: src/window.py:709
+#: src/window.py:770
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Endurgerði breytingar á einni skrá"
 msgstr[1] "Endurgerði breytingar á {n} skrám"
 
-#: src/window.py:757
+#: src/window.py:816
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Fjarlægði merki af einni skrá"
 msgstr[1] "Fjarlægði merki af {n} skrám"
 
-#: src/window.py:762 src/fileview.py:308
+#: src/window.py:821 src/fileview.py:301
 msgid "Undo"
 msgstr "Afturkalla"
 
-#: src/window.py:792
+#: src/window.py:847
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
 msgstr[0] "Hætti við að fjarlægja merkingar úr einni skrá"
 msgstr[1] "Hætti við að fjarlægja merkingar úr {n} skrám"
 
-#: src/ui/window.blp:64
+#: src/ui/window.blp:78
 msgid "Drop a file to add it to the opened file list"
 msgstr "Sleppa skrá til að bæta henni við lista yfir opnaðar skrár"
 
-#: src/ui/window.blp:112
+#: src/ui/window.blp:106 src/ui/window.blp:147
+msgid "Menu"
+msgstr "Aðalvalmynd"
+
+#: src/ui/window.blp:127
 msgid "Save"
 msgstr "Vista"
 
-#: src/ui/window.blp:124
+#: src/ui/window.blp:139
 msgid "Close file list"
 msgstr "Loka skráar lista"
 
-#: src/ui/window.blp:140
+#: src/ui/window.blp:156
 msgid "Add file"
 msgstr "Bæta við skrá"
 
-#: src/ui/window.blp:146
+#: src/ui/window.blp:162
 msgid "Select multiple files"
 msgstr "Velja margar skrár"
 
-#: src/ui/window.blp:152
+#: src/ui/window.blp:168
 msgid "Search opened files"
 msgstr "Leita að skrám"
 
-#: src/ui/window.blp:194
+#. TRANSLATORS: Search entry placeholder for "Search opened files" option
+#: src/ui/window.blp:179 src/ui/previewselectorbutton.blp:25
+msgid "Search by title, artist, filename…"
+msgstr "Leita eftir titli, flytjanda, skráarnafni..."
+
+#: src/ui/window.blp:213
 msgid "No Results Found"
 msgstr "Engar niðurstöður fundust"
 
-#: src/ui/window.blp:195
+#: src/ui/window.blp:214
 msgid "Try a different search query."
 msgstr "Reyndu annað orð í leit."
 
-#: src/ui/window.blp:222
+#: src/ui/window.blp:241
 msgid "Remove selected files"
 msgstr "Fjarlægja valdar skrár"
 
-#: src/ui/window.blp:236
+#: src/ui/window.blp:255
 msgid "Show file list"
 msgstr "Sýna lista yfir skrár"
 
-#: src/ui/window.blp:258
+#: src/ui/window.blp:277
 msgid "_Open File"
 msgstr "_Opna skrá"
 
-#: src/ui/window.blp:263
+#: src/ui/window.blp:282
 msgid "O_pen Folder"
 msgstr "_Opna möppu"
 
-#: src/ui/window.blp:270
-msgid "_Sort File List"
-msgstr "_Flokka skráalista"
-
-#: src/ui/window.blp:277
+#: src/ui/window.blp:289
 msgid "_Rename Selected Files"
 msgstr "E_ndurnefna valdar skrár"
 
-#: src/ui/window.blp:282
+#: src/ui/window.blp:294
 msgid "_Extract Tags from Filename"
 msgstr "D_raga merki úr skráarheiti"
 
-#: src/ui/window.blp:287
+#: src/ui/window.blp:299
 msgid "_Identify Selected Files"
 msgstr "_Auðkenna valdar skrár"
 
-#: src/ui/window.blp:294
+#: src/ui/window.blp:306
 msgid "_Undo Changes in Selected Files"
 msgstr "_Henda breytingum á völdum skrám"
 
-#: src/ui/window.blp:299
+#: src/ui/window.blp:311
 msgid "_Remove All Tags in Selected Files"
 msgstr "_Fjarlægja öll merki af völdum skrám"
 
-#: src/ui/window.blp:306
+#: src/ui/window.blp:318
 msgid "_Keyboard Shortcuts"
 msgstr "Flýtily_klar"
 
-#: src/ui/window.blp:311
+#: src/ui/window.blp:323
 msgid "_Preferences"
 msgstr "_Kjörstillingar"
 
-#: src/ui/window.blp:316
+#: src/ui/window.blp:328
 msgid "_About Ear Tag"
 msgstr "_Um Ear Tag"
 
@@ -247,175 +282,181 @@ msgstr "_Um Ear Tag"
 msgid "Open or drag in some audio files to edit their metadata."
 msgstr "Opnaðu og dragið inn hljóðskrár til að vinna með lýsisgögn þeirra."
 
-#: src/filemanager.py:150
-msgid "Saved changes to files"
-msgstr "Vistaði breytingar í skrár"
+#: src/ui/nofile.blp:46
+msgid "Include Files from Subfolders"
+msgstr "Telja með skrár í undirmöppum"
 
-#: src/filemanager.py:256
-msgid "Opened file is read-only; changes cannot be saved"
-msgstr "Opnaði skrá sem er rit-varin; breytingar koma ekki til með að vistast"
+#: src/ui/nofile.blp:47 src/ui/settings.blp:11
+msgid "When opening a folder, include files from its subfolders"
+msgstr "Þegar mappa er opnuð, teljið með skrár í undirmöppunum"
 
-#: src/filemanager.py:259
-msgid "Some of the opened files are read-only; changes cannot be saved"
-msgstr "Sumar af opnum skránum eru ritvarðar; breytingar er ekki hægt að vista"
-
-#: src/backends/file.py:53
+#: src/backends/file.py:60
 msgid "Length"
 msgstr "Lengd"
 
-#: src/backends/file.py:54
+#: src/backends/file.py:61
 msgid "Bitrate"
 msgstr "Bitahraði"
 
-#: src/backends/file.py:56 src/ui/fileview.blp:95
+#: src/backends/file.py:63 src/ui/fileview.blp:90
 msgid "Title"
 msgstr "Titill"
 
-#: src/backends/file.py:57 src/ui/fileview.blp:127
+#: src/backends/file.py:64 src/ui/fileview.blp:101
 msgid "Artist"
 msgstr "Flytjandi"
 
-#: src/backends/file.py:58 src/ui/fileview.blp:210
+#: src/backends/file.py:65 src/ui/fileview.blp:169
 msgid "Album"
 msgstr "Hljómplata"
 
-#: src/backends/file.py:59 src/ui/fileview.blp:215
+#: src/backends/file.py:66 src/ui/fileview.blp:174
 msgid "Album artist"
 msgstr "Flytjandi á hljómplötu"
 
-#: src/backends/file.py:60 src/ui/fileview.blp:174
+#: src/backends/file.py:67 src/ui/fileview.blp:133
 msgid "Track number"
 msgstr "Númer hljóðspors"
 
-#: src/backends/file.py:61 src/ui/fileview.blp:187
+#: src/backends/file.py:68 src/ui/fileview.blp:146
 msgid "Total tracks"
 msgstr "Hljóðspor"
 
-#: src/backends/file.py:62 src/ui/fileview.blp:220
+#: src/backends/file.py:69 src/ui/fileview.blp:179
 msgid "Genre"
 msgstr "Tónlistarstíll"
 
-#: src/backends/file.py:63 src/ui/fileview.blp:225
+#: src/backends/file.py:70 src/ui/fileview.blp:184
 msgid "Release date"
 msgstr "Dagsetning útgáfu"
 
-#: src/backends/file.py:64 src/ui/fileview.blp:231
+#: src/backends/file.py:71 src/ui/fileview.blp:190
 msgid "Comment"
 msgstr "Athugasemd"
 
-#: src/backends/file.py:66
+#: src/backends/file.py:73
 msgid "(Select a tag)"
 msgstr "(Veldu merki)"
 
 #. TRANSLATORS: Short for "beats per minute".
-#: src/backends/file.py:68
+#: src/backends/file.py:75
 msgid "BPM"
 msgstr "Taktar á mínútu (BPM)"
 
-#: src/backends/file.py:69
+#: src/backends/file.py:76
 msgid "Compilation"
 msgstr "Safnplata"
 
-#: src/backends/file.py:70
+#: src/backends/file.py:77
 msgid "Composer"
 msgstr "Tónskáld"
 
-#: src/backends/file.py:71
+#: src/backends/file.py:78
 msgid "Copyright"
 msgstr "Höfundarréttur"
 
-#: src/backends/file.py:72
+#: src/backends/file.py:79
 msgid "Encoded by"
 msgstr "Þjappað af"
 
-#: src/backends/file.py:73
+#: src/backends/file.py:80
 msgid "Mood"
 msgstr "Stemmning"
 
 #. TRANSLATORS: Orchestra conductor
-#: src/backends/file.py:75
+#: src/backends/file.py:82
 msgid "Conductor"
 msgstr "Stjórnandi"
 
-#: src/backends/file.py:76
+#: src/backends/file.py:83
 msgid "Arranger"
 msgstr "Útsetjari"
 
-#: src/backends/file.py:77
+#: src/backends/file.py:84
 msgid "Disc number"
 msgstr "Númer disks"
 
-#: src/backends/file.py:78
+#: src/backends/file.py:85
 msgid "Publisher"
 msgstr "Útgefandi"
 
-#: src/backends/file.py:80
+#: src/backends/file.py:87
 msgid "Language"
 msgstr "Tungumál"
 
-#: src/backends/file.py:81
+#: src/backends/file.py:88
 msgid "Disc subtitle"
 msgstr "Undirtitill disks"
 
-#: src/backends/file.py:82
+#: src/backends/file.py:89
 msgid "Website/URL"
 msgstr "Heimasíða/Vefslóð "
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:86
+#: src/backends/file.py:93
 msgid "Album artist (sort)"
 msgstr "Listamaður á hljómplötu (raða)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:89
+#: src/backends/file.py:96
 msgid "Album (sort)"
 msgstr "Hljómplata (raða)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:92
+#: src/backends/file.py:99
 msgid "Composer (sort)"
 msgstr "Tónskáld (raða)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:95
+#: src/backends/file.py:102
 msgid "Artist (sort)"
 msgstr "Flytjandi (raða)"
 
 #. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
 #. software should treat this tag when sorting.
-#: src/backends/file.py:98
+#: src/backends/file.py:105
 msgid "Title (sort)"
 msgstr "Titill (raða)"
 
-#: src/backends/file.py:100
+#: src/backends/file.py:107
 msgid "MusicBrainz Artist ID"
 msgstr "MusicBrainz-auðkenni flytjanda"
 
-#: src/backends/file.py:101
+#: src/backends/file.py:108
 msgid "MusicBrainz Album ID"
 msgstr "MusicBrainz-auðkenni hljómplötu"
 
-#: src/backends/file.py:102
+#: src/backends/file.py:109
 msgid "MusicBrainz Album Artist ID"
 msgstr "MusicBrainz-auðkenni flytjanda hljómplötu"
 
-#: src/backends/file.py:103
+#: src/backends/file.py:110
 msgid "MusicBrainz Release Track ID"
 msgstr "MusicBrainz-aðkenni hljóðspors á útgáfu"
 
-#: src/backends/file.py:104
+#: src/backends/file.py:111
 msgid "MusicBrainz Recording ID"
 msgstr "MusicBrainz-auðkenni upptöku"
 
-#: src/backends/file.py:105
+#: src/backends/file.py:112
 msgid "MusicBrainz Release Group ID"
 msgstr "MusicBrainz-aðkenni hóps útgáfu"
 
-#: src/fileview.py:196
+#: src/fileview.py:110
+#| msgid "Album (sort)"
+msgid "Album cover (front)"
+msgstr "Umslag (framhlið)"
+
+#: src/fileview.py:112
+#| msgid "Album (sort)"
+msgid "Album cover (back)"
+msgstr "Umslag (bak)"
+
+#: src/fileview.py:207
 msgid "Select Album Cover Image"
 msgstr "Veldu mynd fyrir umslag"
 
@@ -425,26 +466,31 @@ msgstr "Vista umslag í..."
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
-#: src/fileview.py:280
+#: src/fileview.py:274
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Vista umslag í {path}"
 
-#: src/fileview.py:305
+#: src/fileview.py:298
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "Fjarlægði umslag úr skrá"
 msgstr[1] "Fjarlægði umslög úr {n} skrám"
 
-#: src/fileview.py:788
+#: src/fileview.py:411
+#| msgid "Remove from list"
+msgid "Remove tag"
+msgstr "Fjarlægja merki"
+
+#: src/fileview.py:766
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "1 rás"
 msgstr[1] "{n} rásir"
 
-#: src/fileview.py:833
+#: src/fileview.py:812
 msgid "(multiple files)"
 msgstr "(margar skrár)"
 
@@ -472,27 +518,27 @@ msgstr "Næsta skrá"
 msgid "Filename"
 msgstr "Skráarheiti"
 
-#: src/ui/albumcoverbutton.blp:71
+#: src/ui/albumcoverbutton.blp:73
 msgid "_Choose Image…"
 msgstr "_Veldu mynd…"
 
-#: src/ui/albumcoverbutton.blp:77
+#: src/ui/albumcoverbutton.blp:79
 msgid "_Save Image…"
 msgstr "Vi_sta mynd…"
 
-#: src/ui/albumcoverbutton.blp:83
+#: src/ui/albumcoverbutton.blp:85
 msgid "_Remove Cover"
 msgstr "Fja_rlægja umslag"
 
-#: src/ui/albumcoverbutton.blp:109
+#: src/ui/albumcoverbutton.blp:111
 msgid "Front"
 msgstr "Framhlið"
 
-#: src/ui/albumcoverbutton.blp:114
+#: src/ui/albumcoverbutton.blp:116
 msgid "Back"
 msgstr "Til baka"
 
-#: src/ui/albumcoverbutton.blp:120
+#: src/ui/albumcoverbutton.blp:122
 msgid "All supported image files"
 msgstr "Allar studdar mynda skrár"
 
@@ -500,12 +546,12 @@ msgstr "Allar studdar mynda skrár"
 msgid "Add tag"
 msgstr "Bæta við merki"
 
-#: src/tagentry.py:128
+#: src/tagentry.py:213
 msgid "(multiple values)"
 msgstr "(mörg gildi)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:171
+#: src/filelist.py:192
 msgid "(No title)"
 msgstr "(Engin titill)"
 
@@ -517,9 +563,59 @@ msgstr "Skráin hefur ótæk gildi"
 msgid "File has unsaved changes"
 msgstr "Óvistaðar breytingar á skrá"
 
-#: src/ui/filelistitem.blp:92
+#: src/ui/filelistitem.blp:84
 msgid "Remove from list"
 msgstr "Fjarlægja af lista"
+
+#: src/dialogs.py:114
+#| msgid "Failed to Load File"
+msgid "Failed to Load Files"
+msgstr "Tókst ekki að hlaða skrár"
+
+#: src/dialogs.py:115
+#| msgid "File could not be identified"
+msgid "Some files could not be loaded."
+msgstr "Tókst ekki að hlaða sumar skrár"
+
+#: src/dialogs.py:118
+#| msgid "Failed to Rename File"
+msgid "Failed to Rename Files"
+msgstr "Mistókst að endurnefna skrá"
+
+#: src/dialogs.py:119
+#| msgid "File could not be identified"
+msgid "Some files could not be renamed."
+msgstr "Ekki var hægt að endurnefna sumar skrár."
+
+#: src/dialogs.py:122
+#| msgid "Failed to Save File"
+msgid "Failed to Save Files"
+msgstr "Tókst ekki að vista skrár"
+
+#: src/dialogs.py:123
+#| msgid "File could not be identified"
+msgid "Some files could not be saved."
+msgstr "Ekki var hægt að vista sumar skrár."
+
+#: src/dialogs.py:126
+msgid "An Error Has Occured"
+msgstr "Villa kom upp"
+
+#: src/dialogs.py:127
+msgid "An internal error has occured."
+msgstr "Innvær villa kom upp"
+
+#: src/dialogs.py:133
+msgid ""
+"Please copy the logs below and <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">submit an issue report</a>."
+msgstr ""
+"Vinsamlegast afritið atviksskrár og <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">leggið fram skýrslu um vandamálið</a>."
+
+#: src/dialogs.py:147
+msgid "Copied error log to clipboard"
+msgstr "Afritaði villu atvikaskrá á klippispjald"
 
 #: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
 #: src/ui/dialogs/removaldiscardwarning.blp:5
@@ -603,9 +699,8 @@ msgid ""
 "This will remove all tags from the file, including ones that cannot be "
 "viewed in Ear Tag."
 msgstr ""
-"Þetta mun fjarlægja öll merki af skránni, einnig þau sem ekki eru sjáanleg"
-" með "
-"Ear Tag."
+"Þetta mun fjarlægja öll merki af skránni, einnig þau sem ekki eru sjáanleg "
+"með Ear Tag."
 
 #: src/ui/dialogs/tagdeletewarning.blp:13
 msgid "_Delete"
@@ -614,7 +709,7 @@ msgstr "_Eyða"
 #. TRANSLATORS: Default placeholder string for a missing title
 #. tag, used when renaming files - if the title tag is not
 #. present in the file, this placeholder will be used instead.
-#: src/rename.py:40
+#: src/rename.py:39
 msgid "Untitled"
 msgstr "Ónefnt"
 
@@ -623,23 +718,23 @@ msgstr "Ónefnt"
 #. file, this placeholder will be used instead.
 #. {tag_name} is a placeholder for the human-readable tag name.
 #. **Do not change the text between the curly brackets!**
-#: src/rename.py:52
+#: src/rename.py:51
 #, python-brace-format
 msgid "Unknown {tag_name}"
 msgstr "Óþekkt {tag_name}"
 
-#: src/rename.py:287
+#: src/rename.py:271
 msgid "Selected folder does not exist"
 msgstr "Mappa er ekki til"
 
-#: src/rename.py:294
+#: src/rename.py:276
 msgid "Selected folder is read-only"
 msgstr "Valin mappa er rit-varin"
 
 #. TRANSLATORS: {renamed} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/rename.py:385
+#: src/rename.py:363
 #, python-brace-format
 msgid "Renamed 1 file"
 msgid_plural "Renamed {renamed} files"
@@ -650,7 +745,7 @@ msgstr[1] "Endurnefnt {renamed} skrár"
 msgid "Rename Selected Files"
 msgstr "Endurnefna valdar skrár"
 
-#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:26
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:27
 msgid "Cancel"
 msgstr "Hætta við"
 
@@ -709,7 +804,7 @@ msgstr ""
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
 #. **Do not translate the text between the curly brackets!**
-#: src/extract.py:288
+#: src/extract.py:241
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
@@ -718,9 +813,10 @@ msgstr[1] "Afþjappaði merki fyrir {extracted} hljóðspor"
 
 #: src/ui/extract.blp:5
 msgid "Extract Tags from Filename"
-msgstr "Draga merki úr skráarnafni"
+msgstr "Búa til merki úr skráarnafni"
 
-#: src/ui/extract.blp:24 src/ui/identify/identify.blp:44
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
+#: src/ui/identify/filerow.blp:44 src/ui/identify/recordingrow.blp:53
 msgid "Apply"
 msgstr "Virkja"
 
@@ -740,35 +836,58 @@ msgstr ""
 msgid "Select file to preview"
 msgstr "Veldu skrá til að forskoða"
 
+#: src/identify.py:97 src/ui/identify/recordingrow.blp:15
+#| msgid "Identified 1 track"
+#| msgid_plural "Identified {identified} tracks"
+msgid "Apply identified data"
+msgstr "Virkja auðkennd gögn"
+
+#. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+#: src/identify.py:138
+msgid "See release on MusicBrainz"
+msgstr "Sjá útgáfuna á MusicBrainz"
+
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
-#: src/identify.py:125
+#: src/identify.py:150
 msgid "Other releases"
 msgstr "Aðrar útgáfur"
 
-#: src/identify.py:524
+#: src/identify.py:714
 msgid "Unidentified Files"
 msgstr "Óauðkenndar skrár"
 
 #. TRANSLATORS: {identified} is a placeholder for the number
 #. of tracks that were succesfully identified.
 #. **Do not translate the text between the curly brackets!**
-#: src/identify.py:970
+#: src/identify.py:987
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
 msgstr[0] "Auðkenndi 1 hljóðspor"
 msgstr[1] "Auðkenndi {identified} hljóðspor"
 
+#. TRANSLATORS: {n} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:1055
+#, python-brace-format
+#| msgid "Extracted tags for 1 track"
+#| msgid_plural "Extracted tags for {extracted} tracks"
+msgid "Applied changes to 1 track"
+msgid_plural "Applied changes to {n} tracks"
+msgstr[0] "VIrkjaði breytingar á einu hljóðspori"
+msgstr[1] "Virkjaði breytingar á {n} hljóðsporum"
+
 #: src/ui/identify/identify.blp:5
 msgid "Identify Selected Files"
 msgstr "Auðkenna valdar skrár"
 
-#: src/ui/identify/identify.blp:34
+#: src/ui/identify/identify.blp:35
 msgid "Identify"
 msgstr "Auðkenna"
 
-#: src/ui/identify/identify.blp:71
+#: src/ui/identify/identify.blp:72
 msgid ""
 "Track information is provided by <a href=\"https://musicbrainz."
 "org\">Musicbrainz</a>. Files without metadata are identified using the <a "
@@ -778,19 +897,51 @@ msgstr ""
 "org\">Musicbrainz</a>. Skrár án lýsisgagna eru auðkennd með <a "
 "href=\"https://acoustid.org\">AcoustID</a> þjónustunni."
 
-#: src/ui/identify/filerow.blp:22
+#: src/ui/identify/filerow.blp:19 src/ui/identify/recordingrow.blp:28
+msgid "Set recording manually"
+msgstr "Stilla upptöku handvirkt"
+
+#: src/ui/identify/filerow.blp:30 src/ui/identify/recordingrow.blp:39
+msgid ""
+"Search for the track on <a href=\"https://musicbrainz.org/\">MusicBrainz</"
+"a>, then paste the MusicBrainz ID or a link to the MusicBrainz recording "
+"page here."
+msgstr ""
+"Leita að hljóðspori á <a href=\"https://musicbrainz.org/\">MusicBrainz</"
+"a>, límið síðan auðkenni MusicBrainz eða hlekk í MusicBrainz upptöku síðuna"
+" hér. "
+
+#: src/ui/identify/filerow.blp:37 src/ui/identify/recordingrow.blp:46
+msgid "Recording ID or URL"
+msgstr "Auðkenni upptöku eða URL"
+
+#: src/ui/identify/filerow.blp:67
 msgid "File could not be identified"
 msgstr "Ekki var hægt að auðkenna skrána"
 
+#: src/ui/identify/recordingrow.blp:72
+msgid "See recording on MusicBrainz"
+msgstr "Sjá upptökuna á Musicbrainz"
+
 #: src/ui/settings.blp:7
+msgid "General"
+msgstr "Almennt"
+
+#: src/ui/settings.blp:10
+#| msgctxt "shortcut window"
+#| msgid "Select all files in sidebar"
+msgid "Search for files in subfolders"
+msgstr "Leita að skrám í undirmöppum"
+
+#: src/ui/settings.blp:16
 msgid "File identification"
 msgstr "Auðkenning skráar"
 
-#: src/ui/settings.blp:10
+#: src/ui/settings.blp:19
 msgid "MusicBrainz confidence treshold"
 msgstr "MusicBrainz áreiðanleikaþröskuldur"
 
-#: src/ui/settings.blp:11
+#: src/ui/settings.blp:20
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
@@ -798,11 +949,11 @@ msgstr ""
 "Lágmarksáreiðanleiki í prósentum sem MusicBrainz þarf til að "
 "leitarniðurstöðurnar séu teknar til skoðunar"
 
-#: src/ui/settings.blp:23
+#: src/ui/settings.blp:32
 msgid "AcoustID confidence treshold"
 msgstr "AcoustID áreiðanleikaþröskuldur"
 
-#: src/ui/settings.blp:24
+#: src/ui/settings.blp:33
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
@@ -810,27 +961,27 @@ msgstr ""
 "Lágmarksáreiðanleiki í prósentum sem uppfletting í AcoustID þarf til að "
 "niðurstöðurnar séu teknar til skoðunar"
 
-#: src/ui/settings.blp:36
+#: src/ui/settings.blp:45
 msgid "Downloaded cover art size"
 msgstr "Stærð sótts umslags"
 
-#: src/ui/settings.blp:40
+#: src/ui/settings.blp:49
 msgid "Do not download covers"
 msgstr "Ekki sækja umslög"
 
-#: src/ui/settings.blp:41
+#: src/ui/settings.blp:50
 msgid "250 px"
 msgstr "200 px"
 
-#: src/ui/settings.blp:42
+#: src/ui/settings.blp:51
 msgid "500 px"
 msgstr "500 px"
 
-#: src/ui/settings.blp:43
+#: src/ui/settings.blp:52
 msgid "1200 px"
 msgstr "1200 px"
 
-#: src/ui/settings.blp:44
+#: src/ui/settings.blp:53
 msgid "Maximum size"
 msgstr "Hámarksstærð"
 
@@ -894,6 +1045,12 @@ msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Flýtileiðir á lyklaborði"
 
+#~ msgid "_Sort File List"
+#~ msgstr "_Flokka skráalista"
+
+#~ msgid "Opened file is read-only; changes cannot be saved"
+#~ msgstr ""
+#~ "Opnaði skrá sem er rit-varin; breytingar koma ekki til með að vistast"
+
 #~ msgid "_Settings"
 #~ msgstr "_Stillingar"
-
