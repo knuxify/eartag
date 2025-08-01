@@ -103,8 +103,9 @@ class Application(Adw.Application):
 
             self.create_action("quit", self.on_quit_action, "<Ctrl>q")
 
-            win.present()
             self._ = _
+
+        win.present()
 
     def create_action(self, name, callback, accel=None):
         """Add an Action and connect to a callback"""
