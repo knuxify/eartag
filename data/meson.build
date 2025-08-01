@@ -2,6 +2,7 @@ data_conf = configuration_data()
 data_conf.set('APP_ID', app_id)
 data_conf.set('APP_BIN_NAME', bin_name)
 data_conf.set('APP_GSCHEMA_PATH', '/' + app_id.replace('.', '/') + '/')
+data_conf.set('BINDIR', join_paths(get_option('prefix'), get_option('bindir')))
 data_conf.set('VERSION', meson.project_version())
 
 desktop_file = i18n.merge_file(
@@ -60,5 +61,12 @@ if compile_schemas.found()
     args: ['--strict', '--dry-run', meson.current_source_dir()]
   )
 endif
+
+configure_file(
+  input: 'app.drey.EarTag.service.in',
+  output: app_id + '.service',
+  configuration: data_conf,
+  install_dir: join_paths(get_option('datadir'), 'dbus-1/services')
+)
 
 subdir('icons')
