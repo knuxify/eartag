@@ -208,7 +208,11 @@ class EartagAsyncMultitasker(EartagAsyncTask):
                 _progress_task = event_loop.create_task(
                     self.set_progress_threadsafe(self.n_done / self.n_items)
                 )
-                _progress_task.set_priority(GLib.PRIORITY_LOW)
+                try:
+                    _progress_task.set_priority(GLib.PRIORITY_LOW)
+                except AttributeError:
+                    # PyGObject <3.51.0 does not have set_priority
+                    pass
             else:
                 self.emit_progress_pulse()
 
@@ -219,7 +223,11 @@ class EartagAsyncMultitasker(EartagAsyncTask):
             async with asyncio.TaskGroup() as tg:
                 for _i in range(self.workers):
                     _task = tg.create_task(self._worker())
-                    _task.set_priority(self.priority)
+                    try:
+                        _task.set_priority(self.priority)
+                    except AttributeError:
+                        # PyGObject <3.51.0 does not have set_priority
+                        pass
                     self.tasks.add(_task)
             # The task group will block until all tasks are done
             self._is_running = False
