@@ -23,7 +23,7 @@ Ear Tag is written in Python, and uses GTK4 and libadwaita for the UI. The follo
 - Python >= 3.11
 - GTK4 >= 4.16.0
 - libadwaita >= 1.6.0
-- pygobject >= 3.49.0
+- pygobject >= 3.49.0 (3.51.0 or higher is highly recommended)
 - [pillow](https://pypi.org/project/pillow) (used for some picture operations)
 - [mutagen](https://pypi.org/project/mutagen) (used for file tagging)
 - [filetype](https://pypi.org/project/filetype) (used for MIME type detection)
