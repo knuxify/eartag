@@ -82,7 +82,7 @@ class EartagQueuedDownloader:
                 if (cur_time - self._last_request) < 1000:
                     await asyncio.sleep((1000 - (cur_time - self._last_request)) / 1000)
 
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(trust_env=True) as session:
                 async with RetryClient(
                     client_session=session, retry_options=retry_options
                 ) as retry_session:
