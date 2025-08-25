@@ -179,8 +179,7 @@ class EartagFileListItem(Gtk.Box):
         # Might be the same issue as https://gitlab.gnome.org/GNOME/gtk/-/issues/5794
         self.props.sensitive = False
         self.props.sensitive = True
-        if self.file_manager.remove_files([self.file]):
-            self.on_destroy()
+        self.file_manager.remove_files([self.file])
 
     @GObject.Property(type=str)
     def title(self):
