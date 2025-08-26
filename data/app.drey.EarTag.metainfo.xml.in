@@ -30,6 +30,10 @@
   </requires>
 
   <releases>
+    <release version="1.0.1" date="2025-08-26">
+      <description><p>Fixed issues with cover art handling. From 1.0.0 notes:</p>
+      <p>General stability and speed improvements. Loading files is now considerably faster. The Identify option has been updated and should provide more accurate results, while being 4x as fast.</p></description>
+    </release>
     <release version="1.0.0" date="2025-07-20">
       <description><p>General stability and speed improvements. Loading files is now considerably faster. The Identify option has been updated and should provide more accurate results, while being 4x as fast.</p></description>
     </release>
