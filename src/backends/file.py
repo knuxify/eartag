@@ -615,8 +615,9 @@ class EartagFile(GObject.Object):
         """
         _cover_type = int(cover_type)
 
-        # Remove conflicting covers
-        self.delete_cover(cover_type, clear_only=True)
+        if modified:
+            # Remove conflicting covers
+            self.delete_cover(cover_type, clear_only=True)
 
         self.covers[_cover_type] = await EartagFileCover.new_from_bytes(data)
         self.emit("cover-updated", _cover_type)
