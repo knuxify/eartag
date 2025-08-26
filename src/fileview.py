@@ -233,11 +233,12 @@ class EartagAlbumCoverButton(Adw.Bin):
     async def save_cover_async(self):
         """Opens a file dialog to have the cover art to a file."""
         file = next(iter(self.files))
-        cover = (
-            file.front_cover if
-            self.cover_type == CoverType.FRONT
-            else file.back_cover
-        )
+        if self.cover_type == CoverType.FRONT:
+            cover = file.front_cover
+        elif self.cover_type == CoverType.BACK:
+            cover = file.back_cover
+        else:
+            raise ValueError
 
         target_folder, target_filename = os.path.split(file.path)
         cover_extension = mimetypes.guess_extension(cover.mime)
