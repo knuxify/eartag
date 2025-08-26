@@ -232,15 +232,15 @@ class EartagAlbumCoverButton(Adw.Bin):
 
     async def save_cover_async(self):
         """Opens a file dialog to have the cover art to a file."""
-        if self.cover_type == CoverType.FRONT:
-            cover = self.files[0].front_cover
-        elif self.cover_type == CoverType.BACK:
-            cover = self.files[0].back_cover
-        else:
-            return
+        file = next(iter(self.files))
+        cover = (
+            file.front_cover if
+            self.cover_type == CoverType.FRONT
+            else file.back_cover
+        )
 
+        target_folder, target_filename = os.path.split(file.path)
         cover_extension = mimetypes.guess_extension(cover.mime)
-        target_folder, target_filename = os.path.split(self.files[0].path)
         target_filename = os.path.splitext(target_filename)[0] + cover_extension
 
         file_chooser = Gtk.FileDialog(
