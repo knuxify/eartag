@@ -325,12 +325,12 @@ class EartagAsyncMultitasker(EartagAsyncTask):
 
     async def queue_put_async(self, item):
         """Put an item in the queue."""
+        self._queue_target.add(item)
         await self.queue.put(item)
         self.n_items += 1
 
     def queue_put(self, item):
         """Put an item in the queue."""
-        self._queue_target.add(item)
         event_loop.create_task(self.queue_put_async(item))
 
     async def queue_put_multiple_async(self, items, mark_as_done: bool = False):
