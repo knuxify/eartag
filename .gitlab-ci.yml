@@ -58,5 +58,5 @@ flatpak@x86_64:
   extends: ['.flatpak@x86_64', '.vars-devel']
 
 # Build Flatpak for aarch64
-flatpak@aarch64:
-  extends: ['.flatpak@aarch64', '.vars-devel']
+#flatpak@aarch64:
+#	extends: ['.flatpak@aarch64', '.vars-devel']
