@@ -189,35 +189,46 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         self.n_items = 0
         self.n_done = 0
 
+    async def _worker_handle_item(self, item):
+        self._queue_actual.add(item)
+
+        try:
+            await self.target(item, *self.args, **self.kwargs)
+        except:  # noqa: E722
+            self.errors.append(
+                f"{self.target}: Error while processing {item}:\n\n{traceback.format_exc()}"
+            )
+            logger.error(self.errors[-1])
+            pass
+
+        self.n_done += 1
+        if self.queue_done_event.is_set():
+            _progress_task = event_loop.create_task(
+                self.set_progress_threadsafe(self.n_done / self.n_items)
+            )
+            try:
+                _progress_task.set_priority(GLib.PRIORITY_LOW)
+            except AttributeError:
+                # PyGObject <3.51.0 does not have set_priority
+                pass
+        else:
+            self.emit_progress_pulse()
+
     async def _worker(self):
         while True:
             item = await self.queue_get()
             if item is None:
                 break
-            try:
-                await self.target(item, *self.args, **self.kwargs)
-            except:  # noqa: E722
-                self.errors.append(
-                    f"{self.target}: Error while processing {item}:\n\n{traceback.format_exc()}"
-                )
-                logger.error(self.errors[-1])
-                pass
-
-            self.n_done += 1
-            if self.queue_done_event.is_set():
-                _progress_task = event_loop.create_task(
-                    self.set_progress_threadsafe(self.n_done / self.n_items)
-                )
-                try:
-                    _progress_task.set_priority(GLib.PRIORITY_LOW)
-                except AttributeError:
-                    # PyGObject <3.51.0 does not have set_priority
-                    pass
-            else:
-                self.emit_progress_pulse()
+            await self._worker_handle_item(item)
 
     async def _run_multitasker(self):
         async with self.running_lock:
+            self.n_items = 0
+            self.n_done = 0
+            self._queue_target = set()
+            self._queue_actual = set()
+            self.queue_done_event.clear()
+            self.clear_errors()
             self._is_running = True
             self.emit("task-started")
             async with asyncio.TaskGroup() as tg:
@@ -230,15 +241,22 @@ class EartagAsyncMultitasker(EartagAsyncTask):
                         pass
                     self.tasks.add(_task)
             # The task group will block until all tasks are done
+
+            # FIXME: For some reason, it's possible for some items to not get
+            # picked up from the queue. In those cases, we manually iterate over
+            # the items that were missed.
+            # Ideally this should be investigated and fixed...
+            for item in self._queue_target - self._queue_actual:
+                await self._worker_handle_item(item)
+
+            self._queue_target.clear()
+            self._queue_actual.clear()
+            self.tasks.clear()
             self._is_running = False
             self.emit_task_done()
 
     def spawn_workers(self):
         """Start the task by spawning workers."""
-        self.n_items = 0
-        self.n_done = 0
-        self.queue_done_event.clear()
-        self.clear_errors()
         event_loop.create_task(self._run_multitasker())
 
     async def spawn_workers_async(self):
@@ -246,10 +264,6 @@ class EartagAsyncMultitasker(EartagAsyncTask):
         Version of spawn_workers for use with async functions (usually task
         groups).
         """
-        self.n_items = 0
-        self.n_done = 0
-        self.queue_done_event.clear()
-        self.clear_errors()
         await self._run_multitasker()
 
     def run(self):
@@ -316,6 +330,7 @@ class EartagAsyncMultitasker(EartagAsyncTask):
 
     def queue_put(self, item):
         """Put an item in the queue."""
+        self._queue_target.add(item)
         event_loop.create_task(self.queue_put_async(item))
 
     async def queue_put_multiple_async(self, items, mark_as_done: bool = False):
