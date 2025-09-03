@@ -1,6 +1,7 @@
 include:
   - project: 'gnome/citemplates'
     file: 'flatpak/flatpak-ci-initiative-sdk-extensions.yml'
+    ref: 42fbc2526a7680b6a4f284a210e63e3973ea6dae
   - project: 'gnome/citemplates'
     file: 'templates/default-rules.yml'
 
