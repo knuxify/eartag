@@ -315,9 +315,7 @@ class EartagWindow(Adw.ApplicationWindow):
 
         # Handle saving being done
         if error_type == EartagErrorType.ERROR_SAVE:
-            saved_file_count = self.file_manager.save_task.n_items - len(
-                self.file_manager.load_task.errors
-            )
+            saved_file_count = self.file_manager.save_task.n_done
             save_message = ngettext(
                 "Saved changes to 1 file",
                 "Saved changes to {n} files",
