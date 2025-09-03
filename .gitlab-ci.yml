@@ -4,6 +4,7 @@ include:
     ref: 42fbc2526a7680b6a4f284a210e63e3973ea6dae
   - project: 'gnome/citemplates'
     file: 'templates/default-rules.yml'
+    ref: 42fbc2526a7680b6a4f284a210e63e3973ea6dae
 
 stages:
   - lint
