@@ -1,0 +1,1028 @@
+# Uzbek (Latin) translation for eartag.
+# Copyright (C) 2025 eartag's COPYRIGHT HOLDER
+# This file is distributed under the same license as the eartag package.
+# kHamidulloh <toxtayevhamidulloh6997@gmail.com>,  2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: eartag main\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
+"POT-Creation-Date: 2025-10-10 16:50+0000\n"
+"PO-Revision-Date: 2025-10-17 18:12+0500\n"
+"Last-Translator: Baxrom Raxmatov <https://t.me/bahrom04>\n"
+"Language-Team: Uzbek (Latin) <Uzbek>\n"
+"Language: uz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.5\n"
+
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
+#. Set up window title and file info label
+#: src/main.py:146 data/app.drey.EarTag.desktop.in:2
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:123 src/window.py:362
+#: src/window.py:374 src/ui/window.blp:262 src/ui/nofile.blp:11
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:156 src/main.py:158
+msgid "translator-credits"
+msgstr "Hamidulloh Toʻxtayev <toxtayevhamidulloh6997@gmail.com>"
+
+#: data/app.drey.EarTag.desktop.in:3
+msgid "Tag Editor"
+msgstr "Teg tahrirlovchisi"
+
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr "Audio fayl teglarini tahrirlash"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "musiqa;audio;teg;teglash;tegger;"
+
+#: data/app.drey.EarTag.metainfo.xml.in:112
+msgid ""
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder. It can:"
+msgstr ""
+"Ear Tag - bu audio fayl tegining oddiy tahrirlovchisi. U asosan albom/"
+"EPlarda tezkor tahrirlar yoki ommaviy muharrirlik treklarini yaratishga "
+"qaratilgan. Boshqa teglash dasturlaridan farqli o‘laroq, Ear Tag "
+"foydalanuvchidan musiqa kutubxonasi jildini sozlashni talab qilmaydi. U "
+"quyidagilarni bajarishi mumkin:"
+
+#: data/app.drey.EarTag.metainfo.xml.in:114
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr "MP3, WAV, M4A, FLAC, OGG va WMA fayl teglarini tahrirlash"
+
+#: data/app.drey.EarTag.metainfo.xml.in:115
+msgid "Modify metadata of multiple files at once"
+msgstr "Bir vaqtning o‘zida bir nechta faylning meta-axborotini o‘zgartirish"
+
+#: data/app.drey.EarTag.metainfo.xml.in:116
+msgid "Rename files using information from present tags"
+msgstr "Mavjud teglardagi ma’lumotlardan foydalanib fayllarni qayta nomlash"
+
+#: data/app.drey.EarTag.metainfo.xml.in:117
+msgid "Identify files using AcoustID"
+msgstr "AcoustID yordamida fayllarni aniqlash"
+
+#: data/app.drey.EarTag.metainfo.xml.in:119
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr ""
+"Tarmoqqa ulanish faqat \"Tanlangan fayllarni aniqlash\" imkoniyati uchun "
+"ishlatiladi."
+
+#: src/window.py:139
+msgid "All supported audio files"
+msgstr "Barcha qo‘llab-quvvatlanadigan audio fayllar"
+
+#: src/window.py:304
+msgid "Some files failed to load"
+msgstr "Ba’zi fayllarni yuklashda xatolik yuz berdi"
+
+#: src/window.py:305
+msgid "More Information"
+msgstr "Batafsil"
+
+#: src/window.py:313
+msgid "No supported files found in opened folder"
+msgstr "Ochilgan jildda qo‘llab-quvvatlanadigan fayllar topilmadi"
+
+#: src/window.py:320
+#, python-brace-format
+msgid "Saved changes to 1 file"
+msgid_plural "Saved changes to {n} files"
+msgstr[0] "{n} ta faylga o‘zgarishlar saqlandi"
+
+#: src/window.py:329
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr ""
+"Ochilgan fayllarning ayrimlari faqat o‘qish uchun mo‘ljallangan, "
+"o‘zgarishlarni saqlab bo‘lmaydi"
+
+#: src/window.py:334
+msgid "Maximum folder depth reached, some files may not be loaded"
+msgstr ""
+"Jildning maksimal uzunligiga yetildi, ayrim fayllar yuklanmasligi mumkin"
+
+#: src/window.py:345
+msgid "Unselect all files"
+msgstr "Barcha fayllarni tanlovdan chiqarish"
+
+#: src/window.py:348 src/ui/window.blp:227
+msgid "Select all files"
+msgstr "Barcha fayllarni tanlash"
+
+#. TRANSLATORS: Placeholder for file path when multiple files are selected.
+#. Shows up in the titlebar of the application.
+#: src/window.py:383 src/fileview.py:753
+msgid "(Multiple files selected)"
+msgstr "(Bir nechta fayl tanlangan)"
+
+#. : TRANSLATORS: Title of the popup for opening a file
+#: src/window.py:468 src/ui/nofile.blp:24
+msgid "Open File"
+msgstr "Faylni ochish"
+
+#: src/window.py:470
+msgid "Add File"
+msgstr "Fayl kiritish"
+
+#: src/window.py:476 src/ui/nofile.blp:36
+msgid "Open Folder"
+msgstr "Jildni oching"
+
+#: src/window.py:526
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr ""
+"Ochilgan fayllarning ayrimlari yaroqsiz qiymatlarga ega; saqlab bo‘lmaydi"
+
+#: src/window.py:656
+msgid "No files selected"
+msgstr "Hech qanday fayl belgilanmagan"
+
+#: src/window.py:662
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "{n} ta fayl tanlandi"
+
+#: src/window.py:735
+#, python-brace-format
+msgid "Undid changes in 1 file"
+msgid_plural "Undid changes in {n} files"
+msgstr[0] "{n} ta fayldagi o‘zgarishlar bekor qilindi"
+
+#: src/window.py:740
+msgid "Redo"
+msgstr "Qayta bajarish"
+
+#: src/window.py:768
+#, python-brace-format
+msgid "Redid changes in 1 file"
+msgid_plural "Redid changes in {n} files"
+msgstr[0] "{n} ta faylda qayta kiritilgan o‘zgarishlar"
+
+#: src/window.py:814
+#, python-brace-format
+msgid "Removed tags from 1 file"
+msgid_plural "Removed tags from {n} files"
+msgstr[0] "{n} ta fayldan teglar olib tashlandi"
+
+#: src/window.py:819 src/fileview.py:302
+msgid "Undo"
+msgstr "Bekor qilish"
+
+#: src/window.py:845
+#, python-brace-format
+msgid "Undid tag removal in 1 file"
+msgid_plural "Undid tag removal in {n} files"
+msgstr[0] "{n} ta fayldagi tegni olib tashlash"
+
+#: src/ui/window.blp:78
+msgid "Drop a file to add it to the opened file list"
+msgstr "Ochilgan fayllar ro‘yxatiga qo‘shish uchun faylni tashlang"
+
+#: src/ui/window.blp:106 src/ui/window.blp:147
+msgid "Menu"
+msgstr "Menyu"
+
+#: src/ui/window.blp:127
+msgid "Save"
+msgstr "Saqlash"
+
+#: src/ui/window.blp:139
+msgid "Close file list"
+msgstr "Fayllar ro‘yxatini yopish"
+
+#: src/ui/window.blp:156
+msgid "Add file"
+msgstr "Fayl qo‘shish"
+
+#: src/ui/window.blp:162
+msgid "Select multiple files"
+msgstr "Bir nechta faylni tanlash"
+
+#: src/ui/window.blp:168
+msgid "Search opened files"
+msgstr "Ochilgan fayllardan qidirish"
+
+#. TRANSLATORS: Search entry placeholder for "Search opened files" option
+#: src/ui/window.blp:179 src/ui/previewselectorbutton.blp:25
+msgid "Search by title, artist, filename…"
+msgstr "Sarlavha, rassom, fayl nomi asosida qidirish…"
+
+#: src/ui/window.blp:213
+msgid "No Results Found"
+msgstr "Hech qanday natija topilmadi"
+
+#: src/ui/window.blp:214
+msgid "Try a different search query."
+msgstr "Boshqa qidiruv so‘rovini sinang."
+
+#: src/ui/window.blp:241
+msgid "Remove selected files"
+msgstr "Belgilangan fayllarni o‘chirish"
+
+#: src/ui/window.blp:255
+msgid "Show file list"
+msgstr "Fayllar ro‘yxatini ko‘rsatish"
+
+#: src/ui/window.blp:277
+msgid "_Open File"
+msgstr "Faylni ochish"
+
+#: src/ui/window.blp:282
+msgid "O_pen Folder"
+msgstr "Jildni ochish"
+
+#: src/ui/window.blp:289
+msgid "_Rename Selected Files"
+msgstr "Tanlangan fayllarni qayta nomlash"
+
+#: src/ui/window.blp:294
+msgid "_Extract Tags from Filename"
+msgstr "Fayl nomidan teglarni ajratib olish"
+
+#: src/ui/window.blp:299
+msgid "_Identify Selected Files"
+msgstr "Tanlangan fayllarni aniqlash"
+
+#: src/ui/window.blp:306
+msgid "_Undo Changes in Selected Files"
+msgstr "Tanlangan fayllardagi o‘zgarishlarni bekor qilish"
+
+#: src/ui/window.blp:311
+msgid "_Remove All Tags in Selected Files"
+msgstr "Tanlangan fayllardagi barcha teglarni o‘chirish"
+
+#: src/ui/window.blp:318
+msgid "_Keyboard Shortcuts"
+msgstr "Klaviatura yorliqlari"
+
+#: src/ui/window.blp:323
+msgid "_Preferences"
+msgstr "Afzalliklar"
+
+#: src/ui/window.blp:328
+msgid "_About Ear Tag"
+msgstr "Ear Tag haqida"
+
+#: src/ui/nofile.blp:12
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr ""
+"Meta maʼlumotlarni tahrirlash uchun audio fayllarni oching yoki shu yerga "
+"tortib tashlang."
+
+#: src/ui/nofile.blp:46
+msgid "Include Files from Subfolders"
+msgstr "Ichki jildlardan fayllarni kiritish"
+
+#: src/ui/nofile.blp:47 src/ui/settings.blp:11
+msgid "When opening a folder, include files from its subfolders"
+msgstr "Jildni ochganda, uning ichki jildlaridagi fayllarni ham kiriting"
+
+#: src/backends/file.py:60
+msgid "Length"
+msgstr "Uzunlik"
+
+#: src/backends/file.py:61
+msgid "Bitrate"
+msgstr "Bitreyt"
+
+#: src/backends/file.py:63 src/ui/fileview.blp:90
+msgid "Title"
+msgstr "Sarlavha"
+
+#: src/backends/file.py:64 src/ui/fileview.blp:101
+msgid "Artist"
+msgstr "Ijrochi"
+
+#: src/backends/file.py:65 src/ui/fileview.blp:169
+msgid "Album"
+msgstr "Albom"
+
+#: src/backends/file.py:66 src/ui/fileview.blp:174
+msgid "Album artist"
+msgstr "Albom ijrochisi"
+
+#: src/backends/file.py:67 src/ui/fileview.blp:133
+msgid "Track number"
+msgstr "Trek raqami"
+
+#: src/backends/file.py:68 src/ui/fileview.blp:146
+msgid "Total tracks"
+msgstr "Jami treklar"
+
+#: src/backends/file.py:69 src/ui/fileview.blp:179
+msgid "Genre"
+msgstr "Janr"
+
+#: src/backends/file.py:70 src/ui/fileview.blp:184
+msgid "Release date"
+msgstr "Chiqarilgan sanasi"
+
+#: src/backends/file.py:71 src/ui/fileview.blp:190
+msgid "Comment"
+msgstr "Izoh"
+
+#: src/backends/file.py:73
+msgid "(Select a tag)"
+msgstr "(Tegni tanlang)"
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/backends/file.py:75
+msgid "BPM"
+msgstr "DZ"
+
+#: src/backends/file.py:76
+msgid "Compilation"
+msgstr "Kompilyatsiya"
+
+#: src/backends/file.py:77
+msgid "Composer"
+msgstr "Kompozitor"
+
+#: src/backends/file.py:78
+msgid "Copyright"
+msgstr "Mualliflik huquqi"
+
+#: src/backends/file.py:79
+msgid "Encoded by"
+msgstr "Kodlangan"
+
+#: src/backends/file.py:80
+msgid "Mood"
+msgstr "Kayfiyat"
+
+#. TRANSLATORS: Orchestra conductor
+#: src/backends/file.py:82
+msgid "Conductor"
+msgstr "Dirijor"
+
+#: src/backends/file.py:83
+msgid "Arranger"
+msgstr "Tartibga soluvchi"
+
+#: src/backends/file.py:84
+msgid "Disc number"
+msgstr "Disk raqami"
+
+#: src/backends/file.py:85
+msgid "Publisher"
+msgstr "Nashriyotchi"
+
+#: src/backends/file.py:87
+msgid "Language"
+msgstr "Til"
+
+#: src/backends/file.py:88
+msgid "Disc subtitle"
+msgstr "Disk yozuvlari"
+
+#: src/backends/file.py:89
+msgid "Website/URL"
+msgstr "Vebsayt/URL manzil"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:93
+msgid "Album artist (sort)"
+msgstr "Albom muallifi (saralash)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:96
+msgid "Album (sort)"
+msgstr "Albom (saralash)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:99
+msgid "Composer (sort)"
+msgstr "Kompozitor (saralash)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:102
+msgid "Artist (sort)"
+msgstr "Ijodkor (saralash)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:105
+msgid "Title (sort)"
+msgstr "Sarlavha (saralash)"
+
+#: src/backends/file.py:107
+msgid "MusicBrainz Artist ID"
+msgstr "MusicBrainz ijrochi ID"
+
+#: src/backends/file.py:108
+msgid "MusicBrainz Album ID"
+msgstr "MusicBrainz albom ID"
+
+#: src/backends/file.py:109
+msgid "MusicBrainz Album Artist ID"
+msgstr "MusicBrainz albomining ijrochi ID raqami"
+
+#: src/backends/file.py:110
+msgid "MusicBrainz Release Track ID"
+msgstr "MusicBrainz Reliz taronasi ID"
+
+#: src/backends/file.py:111
+msgid "MusicBrainz Recording ID"
+msgstr "MusicBrainz yozib olish ID"
+
+#: src/backends/file.py:112
+msgid "MusicBrainz Release Group ID"
+msgstr "MusicBrainz reliz guruhi ID raqami"
+
+#: src/fileview.py:110
+msgid "Album cover (front)"
+msgstr "Albom muqovasi (oldi)"
+
+#: src/fileview.py:112
+msgid "Album cover (back)"
+msgstr "Albom muqovasi (orqa)"
+
+#: src/fileview.py:207
+msgid "Select Album Cover Image"
+msgstr "Albom muqovasi rasmini tanlang"
+
+#: src/fileview.py:248
+msgid "Save Album Cover To…"
+msgstr "Albom muqovasini saqlash…"
+
+#. TRANSLATORS: {path} is a placeholder for the path.
+#. **Do not change the text between the curly brackets!**
+#: src/fileview.py:275
+#, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "Muqova {path}ʼga saqlandi"
+
+#: src/fileview.py:299
+#, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "{n} ta fayldan muqovalar olib tashlandi"
+
+#: src/fileview.py:412
+msgid "Remove tag"
+msgstr "Tegni olib tashlash"
+
+#: src/fileview.py:767
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "{n} ta kanal"
+
+#: src/fileview.py:813
+msgid "(multiple files)"
+msgstr "(bir nechta fayllar)"
+
+#: src/ui/fileview.blp:9
+msgid "Loading Files…"
+msgstr "Fayllar yuklanmoqda…"
+
+#: src/ui/fileview.blp:17
+msgid "Select a File"
+msgstr "Faylni tanlang"
+
+#: src/ui/fileview.blp:18
+msgid "Select the files you want to edit from the list of opened files."
+msgstr "Ochilgan fayllar ro‘yxatidan tahrirlanadigan fayllarni tanlang."
+
+#: src/ui/fileview.blp:53
+msgid "Previous file"
+msgstr "Avvalgi fayl"
+
+#: src/ui/fileview.blp:75
+msgid "Next file"
+msgstr "Keyingi fayl"
+
+#: src/ui/filenamerow.blp:5
+msgid "Filename"
+msgstr "Fayl nomi"
+
+#: src/ui/albumcoverbutton.blp:73
+msgid "_Choose Image…"
+msgstr "Rasm tanlang…"
+
+#: src/ui/albumcoverbutton.blp:79
+msgid "_Save Image…"
+msgstr "Rasmni saqlash…"
+
+#: src/ui/albumcoverbutton.blp:85
+msgid "_Remove Cover"
+msgstr "Muqovani olib tashlash"
+
+#: src/ui/albumcoverbutton.blp:111
+msgid "Front"
+msgstr "Oldi"
+
+#: src/ui/albumcoverbutton.blp:116
+msgid "Back"
+msgstr "Orqasi"
+
+#: src/ui/albumcoverbutton.blp:122
+msgid "All supported image files"
+msgstr "Barcha qo‘llab-quvvatlanadigan rasm fayllari"
+
+#: src/ui/moretagsgroup.blp:18
+msgid "Add tag"
+msgstr "Teg qoʻshish"
+
+#: src/tagentry.py:213
+msgid "(multiple values)"
+msgstr "(bir nechta qiymatlar)"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/filelist.py:191
+msgid "(No title)"
+msgstr "(Sarlavhasiz)"
+
+#: src/ui/filelistitem.blp:40
+msgid "File has invalid values"
+msgstr "Faylda yaroqsiz qiymatlar mavjud"
+
+#: src/ui/filelistitem.blp:47
+msgid "File has unsaved changes"
+msgstr "Faylda saqlanmagan o‘zgarishlar bor"
+
+#: src/ui/filelistitem.blp:84
+msgid "Remove from list"
+msgstr "Ro‘yxatdan olib tashlash"
+
+#: src/dialogs.py:114
+msgid "Failed to Load Files"
+msgstr "Fayllarni yuklashda xatolik yuz berdi"
+
+#: src/dialogs.py:115
+msgid "Some files could not be loaded."
+msgstr "Ba’zi fayllarni yuklab bo‘lmadi."
+
+#: src/dialogs.py:118
+msgid "Failed to Rename Files"
+msgstr "Fayllar nomini o‘zgartirishda xatolik yuz berdi"
+
+#: src/dialogs.py:119
+msgid "Some files could not be renamed."
+msgstr "Ba’zi fayllarning nomini o‘zgartirib bo‘lmadi."
+
+#: src/dialogs.py:122
+msgid "Failed to Save Files"
+msgstr "Fayllarni saqlashda xatolik yuz berdi"
+
+#: src/dialogs.py:123
+msgid "Some files could not be saved."
+msgstr "Ba’zi fayllarni saqlashning iloji bo‘lmadi."
+
+#: src/dialogs.py:126
+msgid "An Error Has Occured"
+msgstr "Xatolik yuz berdi"
+
+#: src/dialogs.py:127
+msgid "An internal error has occured."
+msgstr "Ichki xatolik yuz berdi."
+
+#: src/dialogs.py:133
+msgid ""
+"Please copy the logs below and <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">submit an issue report</a>."
+msgstr ""
+"Quyidagi jurnallardan nusxa oling va <a href=\"https://gitlab.gnome.org/"
+"World/eartag/-/issues/new\">muammo haqida xabar berish</a>."
+
+#: src/dialogs.py:147
+msgid "Copied error log to clipboard"
+msgstr "Xatolar jurnali buferga nusxalandi"
+
+#: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
+#: src/ui/dialogs/removaldiscardwarning.blp:5
+msgid "Save Changes?"
+msgstr "Oʻzgarishlar saqlansinmi?"
+
+#: src/ui/dialogs/closewarning.blp:6 src/ui/dialogs/discardwarning.blp:6
+#: src/ui/dialogs/removaldiscardwarning.blp:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "O‘zgarishlarni saqlamasangiz, ular butunlay yo‘qoladi."
+
+#: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
+#: src/ui/dialogs/removaldiscardwarning.blp:12
+#: src/ui/dialogs/tagdeletewarning.blp:12
+msgid "_Cancel"
+msgstr "Bekor qilish"
+
+#: src/ui/dialogs/closewarning.blp:13
+#: src/ui/dialogs/removaldiscardwarning.blp:13
+msgid "_Discard and Close"
+msgstr "Tashlab yuborish va yopish"
+
+#: src/ui/dialogs/closewarning.blp:14
+#: src/ui/dialogs/removaldiscardwarning.blp:14
+msgid "_Save and Close"
+msgstr "Saqlash va yopish"
+
+#: src/ui/dialogs/discardwarning.blp:13
+msgid "_Discard and Open"
+msgstr "Tashlab yuborish va ochish"
+
+#: src/ui/dialogs/discardwarning.blp:14
+msgid "_Save and Open"
+msgstr "Saqlash va ochish"
+
+#: src/ui/dialogs/savefailure.blp:5
+msgid "Failed to Save File"
+msgstr "Faylni saqlashda xatolik yuz berdi"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/savefailure.blp:8
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr ""
+"{f} faylini saqlashning iloji bo‘lmadi. Batafsil ma’lumot uchun "
+"qaydnomalarga qarang."
+
+#: src/ui/dialogs/savefailure.blp:14 src/ui/dialogs/loadingfailure.blp:14
+#: src/ui/dialogs/renamefailure.blp:14
+msgid "_OK"
+msgstr "Hop"
+
+#: src/ui/dialogs/loadingfailure.blp:5
+msgid "Failed to Load File"
+msgstr "Faylni yuklashda xatolik yuz berdi"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/loadingfailure.blp:8
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr ""
+"{f} faylini yuklab bo‘lmadi. Batafsil ma’lumot uchun qaydnomalarga qarang."
+
+#: src/ui/dialogs/renamefailure.blp:5
+msgid "Failed to Rename File"
+msgstr "Faylni qayta nomlashda xatolik yuz berdi"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/renamefailure.blp:8
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr ""
+"{f} faylining nomini o‘zgartirib bo‘lmadi. Ko‘proq ma’lumot olish uchun "
+"qaydnomalarni tekshiring."
+
+#: src/ui/dialogs/tagdeletewarning.blp:5
+msgid "Delete All Tags?"
+msgstr "Barcha teglar o‘chirib tashlansinmi?"
+
+#: src/ui/dialogs/tagdeletewarning.blp:6
+msgid ""
+"This will remove all tags from the file, including ones that cannot be "
+"viewed in Ear Tag."
+msgstr ""
+"Bunda fayldagi barcha teglar, jumladan, Ear Tag dasturida ko‘rish imkonsiz "
+"bo‘lgan teglar ham olib tashlanadi."
+
+#: src/ui/dialogs/tagdeletewarning.blp:13
+msgid "_Delete"
+msgstr "Oʻchirish"
+
+#. TRANSLATORS: Default placeholder string for a missing title
+#. tag, used when renaming files - if the title tag is not
+#. present in the file, this placeholder will be used instead.
+#: src/rename.py:39
+msgid "Untitled"
+msgstr "Sarlavhasiz"
+
+#. TRANSLATORS: Default placeholder string for missing tags,
+#. used when renaming files - if a tag is not present in the
+#. file, this placeholder will be used instead.
+#. {tag_name} is a placeholder for the human-readable tag name.
+#. **Do not change the text between the curly brackets!**
+#: src/rename.py:51
+#, python-brace-format
+msgid "Unknown {tag_name}"
+msgstr "Noma’lum {tag_name}"
+
+#: src/rename.py:271
+msgid "Selected folder does not exist"
+msgstr "Tanlangan jild mavjud emas"
+
+#: src/rename.py:276
+msgid "Selected folder is read-only"
+msgstr "Tanlangan jild faqat o‘qish uchun"
+
+#. TRANSLATORS: {renamed} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/rename.py:363
+#, python-brace-format
+msgid "Renamed 1 file"
+msgid_plural "Renamed {renamed} files"
+msgstr[0] "{renamed} ta fayl qayta nomlandi"
+
+#: src/ui/rename.blp:5
+msgid "Rename Selected Files"
+msgstr "Tanlangan fayllarni qayta nomlash"
+
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:27
+msgid "Cancel"
+msgstr "Bekor qilish"
+
+#: src/ui/rename.blp:24
+msgid "Rename"
+msgstr "Nomini oʻzgartirish"
+
+#: src/ui/rename.blp:49
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr ""
+"Qurilmadagi fayllarni qayta nomlash uchun Ear Tag qo‘shimcha ruxsatlarni "
+"talab qiladi."
+
+#: src/ui/rename.blp:50
+msgid "Learn More"
+msgstr "Batafsil"
+
+#: src/ui/rename.blp:59
+msgid "Failed to rename files. Check the logs for more information."
+msgstr ""
+"Fayllarning nomini o‘zgartirishda xatolik yuz berdi. Batafsil ma’lumot olish "
+"uchun loglarni tekshiring."
+
+#: src/ui/rename.blp:88 src/ui/extract.blp:66
+msgid "Preview"
+msgstr "Oldindan koʻrish"
+
+#: src/ui/rename.blp:98 src/ui/extract.blp:84
+msgid "Filename pattern"
+msgstr "Fayl nomi namunasi"
+
+#: src/ui/rename.blp:105 src/ui/extract.blp:90
+msgid "Insert tag placeholder"
+msgstr "Teg joylashtiruvchisini kiriting"
+
+#: src/ui/rename.blp:115
+msgid "Move to folder"
+msgstr "Jildga ko‘chirish"
+
+#: src/ui/rename.blp:120
+msgid "Select a folder…"
+msgstr "Jildni tanlash…"
+
+#: src/ui/rename.blp:132
+msgid "Unselect folder"
+msgstr "Jildni tanlovdan chiqarish"
+
+#: src/ui/rename.blp:148
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://gitlab.gnome."
+"org/World/eartag/-/blob/main/src/backends/README.md#available-tags\">list of "
+"available tags</a>."
+msgstr ""
+"Mavjud o‘rin belgilarining ro‘yxatini ko‘rish uchun quyidagiga qarang <a "
+"href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README."
+"md#available-tags\">mavjud teglar ro‘yxati</a>."
+
+#. TRANSLATORS: {extracted} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/extract.py:241
+#, python-brace-format
+msgid "Extracted tags for 1 track"
+msgid_plural "Extracted tags for {extracted} tracks"
+msgstr[0] "{extracted} ta trek uchun ajratib olingan teglar"
+
+#: src/ui/extract.blp:5
+msgid "Extract Tags from Filename"
+msgstr "Fayl nomidan teglarni ajratib olish"
+
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
+#: src/ui/identify/filerow.blp:44 src/ui/identify/recordingrow.blp:53
+msgid "Apply"
+msgstr "Qoʻllash"
+
+#: src/ui/extract.blp:100
+msgid "Ignore common suffixes"
+msgstr "Umumiy qo‘shimchalarni e’tiborga olmang"
+
+#: src/ui/extract.blp:101
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded "
+"files. Disable this option if it interferes with your filenames."
+msgstr ""
+"Yuklab olingan fayllarning fayl nomlarida tez-tez uchraydigan ID "
+"qo‘shimchalarini avtomatik ravishda e’tiborsiz qoldiradi. Agar bu xususiyat "
+"sizning fayl nomlaringizga xalaqit bersa, uni o‘chirib qo‘ying."
+
+#: src/ui/previewselectorbutton.blp:4
+msgid "Select file to preview"
+msgstr "Ko‘rib chiqish uchun faylni tanlang"
+
+#: src/identify.py:97 src/ui/identify/recordingrow.blp:15
+msgid "Apply identified data"
+msgstr "Aniqlangan ma’lumotlarni qo‘llash"
+
+#. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+#: src/identify.py:138
+msgid "See release on MusicBrainz"
+msgstr "MusicBrainz relizini ochish"
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:150
+msgid "Other releases"
+msgstr "Boshqa relizlar"
+
+#: src/identify.py:714
+msgid "Unidentified Files"
+msgstr "Aniqlanmagan fayllar"
+
+#. TRANSLATORS: {identified} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:987
+#, python-brace-format
+msgid "Identified 1 track"
+msgid_plural "Identified {identified} tracks"
+msgstr[0] "{identified} ta trek aniqlandi"
+
+#. TRANSLATORS: {n} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:1055
+#, python-brace-format
+msgid "Applied changes to 1 track"
+msgid_plural "Applied changes to {n} tracks"
+msgstr[0] "{n} ta trekga o‘zgarishlar qo‘llanildi"
+
+#: src/ui/identify/identify.blp:5
+msgid "Identify Selected Files"
+msgstr "Tanlangan fayllarni aniqlash"
+
+#: src/ui/identify/identify.blp:35
+msgid "Identify"
+msgstr "Aniqlash"
+
+#: src/ui/identify/identify.blp:72
+msgid ""
+"Track information is provided by <a href=\"https://musicbrainz."
+"org\">Musicbrainz</a>. Files without metadata are identified using the <a "
+"href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"Trek axboroti <a href=\"https://musicbrainz.org\">Musicbrainz</a> tomonidan "
+"taqdim etilgan. Meta-axboroti mavjud bo‘lmagan fayllar <a href=\"https://"
+"acoustid.org\">AcoustID</a> xizmati yordamida aniqlanadi."
+
+#: src/ui/identify/filerow.blp:19 src/ui/identify/recordingrow.blp:28
+msgid "Set recording manually"
+msgstr "Yozuvni qo‘lda sozlash"
+
+#: src/ui/identify/filerow.blp:30 src/ui/identify/recordingrow.blp:39
+msgid ""
+"Search for the track on <a href=\"https://musicbrainz.org/\">MusicBrainz</"
+"a>, then paste the MusicBrainz ID or a link to the MusicBrainz recording "
+"page here."
+msgstr ""
+"Trekni <a href=\"https://musicbrainz.org/\">MusicBrainz</a> orqali qidiring, "
+"keyin MusicBrainz ID yoki MusicBrainz yozib olish sahifasiga havolani bu "
+"yerga joylang."
+
+#: src/ui/identify/filerow.blp:37 src/ui/identify/recordingrow.blp:46
+msgid "Recording ID or URL"
+msgstr "ID yoki URL qayd qilinmoqda"
+
+#: src/ui/identify/filerow.blp:67
+msgid "File could not be identified"
+msgstr "Faylni aniqlab bo‘lmadi"
+
+#: src/ui/identify/recordingrow.blp:72
+msgid "See recording on MusicBrainz"
+msgstr "MusicBrainzda yozuvni ko‘rish"
+
+#: src/ui/settings.blp:7
+msgid "General"
+msgstr "Umumiy"
+
+#: src/ui/settings.blp:10
+msgid "Search for files in subfolders"
+msgstr "Qo‘shimcha jildlardan fayllarni qidirish"
+
+#: src/ui/settings.blp:16
+msgid "File identification"
+msgstr "Fayl aniqlash"
+
+#: src/ui/settings.blp:19
+msgid "MusicBrainz confidence treshold"
+msgstr "MusicBrainz ishonchni tekshirish"
+
+#: src/ui/settings.blp:20
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr ""
+"MusicBrainz qidiruv natijasini baholash uchun talab etiladigan eng kam "
+"ishonchlilik foizi"
+
+#: src/ui/settings.blp:32
+msgid "AcoustID confidence treshold"
+msgstr "AcoustID ishonchni tekshirish"
+
+#: src/ui/settings.blp:33
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr ""
+"AcoustID qidiruv natijasi baholanishi uchun talab qilinadigan minimal "
+"ishonchlilik foizi"
+
+#: src/ui/settings.blp:45
+msgid "Downloaded cover art size"
+msgstr "Yuklab olingan muqova hajmi"
+
+#: src/ui/settings.blp:49
+msgid "Do not download covers"
+msgstr "Muqovalar yuklab olinmasin"
+
+#: src/ui/settings.blp:50
+msgid "250 px"
+msgstr "250 px"
+
+#: src/ui/settings.blp:51
+msgid "500 px"
+msgstr "500 px"
+
+#: src/ui/settings.blp:52
+msgid "1200 px"
+msgstr "1200 px"
+
+#: src/ui/settings.blp:53
+msgid "Maximum size"
+msgstr "Eng katta o‘lcham"
+
+#: src/ui/shortcuts.blp:11
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "Fayllar"
+
+#: src/ui/shortcuts.blp:15
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "Fayllarni ochish"
+
+#: src/ui/shortcuts.blp:20
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "Jildni ochish"
+
+#: src/ui/shortcuts.blp:25
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "Barcha o‘zgartirilgan fayllarni saqlash"
+
+#: src/ui/shortcuts.blp:30
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "Yon panel"
+
+#: src/ui/shortcuts.blp:34
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Yon paneldagi avvalgi faylni tanlash"
+
+#: src/ui/shortcuts.blp:39
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "Yon panelda keyingi faylni tanlash"
+
+#: src/ui/shortcuts.blp:44
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "Yon paneldagi barcha fayllarni tanlash"
+
+#: src/ui/shortcuts.blp:49
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "Tanlangan fayllarni yon paneldan olib tashlash"
+
+#: src/ui/shortcuts.blp:50
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "Hech qanday fayl bo‘lmasa, oyna yopiladi."
+
+#: src/ui/shortcuts.blp:55
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "Boshqa"
+
+#: src/ui/shortcuts.blp:59
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Klaviatura yorliqlari"
