@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
 "POT-Creation-Date: 2025-11-10 11:41+0000\n"
-"PO-Revision-Date: 2025-11-17 13:29+0100\n"
+"PO-Revision-Date: 2025-11-19 14:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: Catalan <Catalan>\n"
 "Language: ca\n"
@@ -364,7 +364,7 @@ msgstr "Codificat per"
 
 #: src/backends/file.py:80
 msgid "Mood"
-msgstr ""
+msgstr "Emoció"
 
 #. TRANSLATORS: Orchestra conductor
 #: src/backends/file.py:82
@@ -796,6 +796,9 @@ msgid ""
 "gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
 "tags\">list of available tags</a>."
 msgstr ""
+"Per a una llista de marcadors de posició disponibles, vegeu la llista <a "
+"href=\"https://gitlab.gnome.org/World/eartag/-/blob/main/src/backends/"
+"README.md#available-tags\">d'etiquetes disponibles</a>."
 
 #. TRANSLATORS: {extracted} is a placeholder for the number
 #. of tracks the tags were succesfully extracted for.
@@ -804,12 +807,12 @@ msgstr ""
 #, python-brace-format
 msgid "Extracted tags for 1 track"
 msgid_plural "Extracted tags for {extracted} tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'han extret les etiquetes per a una pista"
+msgstr[1] "S'han extret les etiquetes per a {extracted} pistes"
 
 #: src/ui/extract.blp:5
 msgid "Extract Tags from Filename"
-msgstr ""
+msgstr "Extreu etiquetes del nom de fitxer"
 
 #: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
 #: src/ui/identify/filerow.blp:44 src/ui/identify/recordingrow.blp:53
@@ -818,26 +821,29 @@ msgstr "Aplica"
 
 #: src/ui/extract.blp:100
 msgid "Ignore common suffixes"
-msgstr ""
+msgstr "Ignora els sufixos comuns"
 
 #: src/ui/extract.blp:101
 msgid ""
 "Automatically ignores ID suffixes often found in filenames of downloaded "
 "files. Disable this option if it interferes with your filenames."
 msgstr ""
+"Ignora automàticament els sufixos de l'ID que sovint es troben als noms dels "
+"fitxers baixats. Desactiveu aquesta opció si interfereix amb els vostres "
+"noms de fitxer."
 
 #: src/ui/previewselectorbutton.blp:4
 msgid "Select file to preview"
-msgstr ""
+msgstr "Seleccioneu el fitxer a previsualitzar"
 
 #: src/identify.py:97 src/ui/identify/recordingrow.blp:15
 msgid "Apply identified data"
-msgstr ""
+msgstr "Aplica les dades identificades"
 
 #. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
 #: src/identify.py:138
 msgid "See release on MusicBrainz"
-msgstr ""
+msgstr "Vegeu la publicació al MusicBrainz"
 
 #. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
 #. This allows the user to switch between different releases of an album, EP, etc.
@@ -856,8 +862,8 @@ msgstr "Fitxers sense identificar"
 #, python-brace-format
 msgid "Identified 1 track"
 msgid_plural "Identified {identified} tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'ha identificat 1 pista"
+msgstr[1] "S'ha identificat {identified} pistes"
 
 #. TRANSLATORS: {n} is a placeholder for the number
 #. of tracks that were succesfully identified.
@@ -866,12 +872,12 @@ msgstr[1] ""
 #, python-brace-format
 msgid "Applied changes to 1 track"
 msgid_plural "Applied changes to {n} tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "S'han aplicat els canvis a una pista"
+msgstr[1] "S'han aplicat els canvis a {n} pistes"
 
 #: src/ui/identify/identify.blp:5
 msgid "Identify Selected Files"
-msgstr ""
+msgstr "Identifica els fitxers seleccionats"
 
 #: src/ui/identify/identify.blp:35
 msgid "Identify"
@@ -898,6 +904,9 @@ msgid ""
 "a>, then paste the MusicBrainz ID or a link to the MusicBrainz recording "
 "page here."
 msgstr ""
+"Cerqueu la pista al <a href=\"https://musicbrainz.org/\">MusicBrainz</a>, "
+"després enganxeu l'ID del MusicBrainz o un enllaç a la pàgina "
+"d'enregistrament del MusicBrainz aquí."
 
 #: src/ui/identify/filerow.blp:37 src/ui/identify/recordingrow.blp:46
 msgid "Recording ID or URL"
@@ -925,23 +934,27 @@ msgstr "Identificació del fitxer"
 
 #: src/ui/settings.blp:19
 msgid "MusicBrainz confidence treshold"
-msgstr ""
+msgstr "Llindar de confiança del MusicBrainz"
 
 #: src/ui/settings.blp:20
 msgid ""
 "Minimum confidence percentage required for a MusicBrainz search result to be "
 "evaluated"
 msgstr ""
+"Percentatge mínim de confiança requerit per a avaluar un resultat de cerca "
+"del MusicBrainz"
 
 #: src/ui/settings.blp:32
 msgid "AcoustID confidence treshold"
-msgstr ""
+msgstr "Llindar de confiança de l'AcoustID"
 
 #: src/ui/settings.blp:33
 msgid ""
 "Minimum confidence percentage required for an AcoustID lookup result to be "
 "evaluated"
 msgstr ""
+"Percentatge mínim de confiança requerit per a avaluar un resultat de cerca "
+"de l'AcoustID"
 
 #: src/ui/settings.blp:45
 msgid "Downloaded cover art size"
