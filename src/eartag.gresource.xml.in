@@ -21,7 +21,7 @@
     <file>ui/tagselectorbutton.ui</file>
     <file>ui/previewselectorbutton.ui</file>
     <file>ui/previewselectoritem.ui</file>
-    <file alias="gtk/help-overlay.ui">ui/shortcuts.ui</file>
+    <file alias="shortcuts-dialog.ui">ui/shortcuts.ui</file>
     <file>ui/nofile.ui</file>
     <file>ui/window.ui</file>
     <file>ui/settings.ui</file>
