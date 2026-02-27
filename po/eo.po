@@ -1,0 +1,1030 @@
+# Esperanto translation for eartag.
+# Copyright (C) 2026 eartag's COPYRIGHT HOLDER
+# This file is distributed under the same license as the eartag package.
+# Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: eartag main\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
+"POT-Creation-Date: 2026-01-31 13:22+0000\n"
+"PO-Revision-Date: 2026-02-27 13:00+0100\n"
+"Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
+"Language-Team: Esperanto <gnome-eo-list@gnome.org>\n"
+"Language: eo\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 49.0\n"
+
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
+#. Set up window title and file info label
+#: src/main.py:146 data/app.drey.EarTag.desktop.in:2
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:123 src/window.py:362
+#: src/window.py:374 src/ui/window.blp:262 src/ui/nofile.blp:11
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:156 src/main.py:158
+msgid "translator-credits"
+msgstr "Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>"
+
+#: data/app.drey.EarTag.desktop.in:3
+msgid "Tag Editor"
+msgstr "Etikedo-redaktilo"
+
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr "Redakti etikedojn de sonaj dosieroj"
+
+#: data/app.drey.EarTag.desktop.in:12
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "music;audio;tag;tagging;tagger;"
+
+#: data/app.drey.EarTag.metainfo.xml.in:112
+msgid ""
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder. It can:"
+msgstr ""
+"Ear Tag estas simpla redaktilo de etikedoj de sonaj dosieroj. Ĝi estas ĉefe "
+"celita por rapidaj redaktoj aŭ amasa redaktado de pecerojn en albumoj/EP-oj. "
+"Male al aliaj etikedprogramoj, Ear Tag ne postulas, ke la uzanto agordu "
+"muzik-bibliotekan dosierujon. Ĝi povas:"
+
+#: data/app.drey.EarTag.metainfo.xml.in:114
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr "Redakti etikedojn de MP3, WAV, M4A, FLAC, OGG kaj WMA dosieroj"
+
+#: data/app.drey.EarTag.metainfo.xml.in:115
+msgid "Modify metadata of multiple files at once"
+msgstr "Modifi metadatumojn de pluraj dosieroj samtempe"
+
+#: data/app.drey.EarTag.metainfo.xml.in:116
+msgid "Rename files using information from present tags"
+msgstr "Alinomi dosierojn uzante informojn el ekzistantaj etikedoj"
+
+#: data/app.drey.EarTag.metainfo.xml.in:117
+msgid "Identify files using AcoustID"
+msgstr "Identigi dosierojn uzante AcoustID"
+
+#: data/app.drey.EarTag.metainfo.xml.in:119
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr ""
+"Reta aliro estas uzata nur por la opcio \"Identigi elektitajn dosierojn\"."
+
+#: src/window.py:139
+msgid "All supported audio files"
+msgstr "Ĉiuj subtenataj sonaj dosieroj"
+
+#: src/window.py:304
+msgid "Some files failed to load"
+msgstr "Kelkaj dosieroj malsukcesis ŝarĝiĝi"
+
+#: src/window.py:305
+msgid "More Information"
+msgstr "Pliaj informoj"
+
+#: src/window.py:313
+msgid "No supported files found in opened folder"
+msgstr "Neniaj subtenataj dosieroj trovitaj en malfermita dosierujo"
+
+#: src/window.py:320
+#, python-brace-format
+msgid "Saved changes to 1 file"
+msgid_plural "Saved changes to {n} files"
+msgstr[0] "Konservitaj ŝanĝoj en 1 dosiero"
+msgstr[1] "Konservitaj ŝanĝoj en {n} dosieroj"
+
+#: src/window.py:329
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr ""
+"Kelkaj el la malfermitaj dosieroj estas nurlega; ŝanĝoj ne povas esti "
+"konservataj"
+
+#: src/window.py:334
+msgid "Maximum folder depth reached, some files may not be loaded"
+msgstr ""
+"Maksimuma dosierujo-profundo atingita, kelkaj dosieroj eble ne estos ŝarĝitaj"
+
+#: src/window.py:345
+msgid "Unselect all files"
+msgstr "Malselekti ĉiujn dosierojn"
+
+#: src/window.py:348 src/ui/window.blp:227
+msgid "Select all files"
+msgstr "Elekti ĉiujn dosierojn"
+
+#. TRANSLATORS: Placeholder for file path when multiple files are selected.
+#. Shows up in the titlebar of the application.
+#: src/window.py:383 src/fileview.py:753
+msgid "(Multiple files selected)"
+msgstr "(Pluraj dosieroj elektitaj)"
+
+#. : TRANSLATORS: Title of the popup for opening a file
+#: src/window.py:468 src/ui/nofile.blp:24
+msgid "Open File"
+msgstr "Malfermi dosieron"
+
+#: src/window.py:470
+msgid "Add File"
+msgstr "Aldoni dosieron"
+
+#: src/window.py:476 src/ui/nofile.blp:36
+msgid "Open Folder"
+msgstr "Malfermi dosierujon"
+
+#: src/window.py:526
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr ""
+"Kelkaj el la malfermitaj dosieroj havas nevalidajn valorojn; ne povas "
+"konservi"
+
+#: src/window.py:656
+msgid "No files selected"
+msgstr "Neniaj dosieroj elektitaj"
+
+#: src/window.py:662
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "1 dosiero elektita"
+msgstr[1] "{n} dosieroj elektitaj"
+
+#: src/window.py:735
+#, python-brace-format
+msgid "Undid changes in 1 file"
+msgid_plural "Undid changes in {n} files"
+msgstr[0] "Malfaris ŝanĝojn en 1 dosiero"
+msgstr[1] "Malfaris ŝanĝojn en {n} dosieroj"
+
+#: src/window.py:740
+msgid "Redo"
+msgstr "Refari"
+
+#: src/window.py:768
+#, python-brace-format
+msgid "Redid changes in 1 file"
+msgid_plural "Redid changes in {n} files"
+msgstr[0] "Refaris ŝanĝojn en 1 dosiero"
+msgstr[1] "Refaris ŝanĝojn en {n} dosieroj"
+
+#: src/window.py:814
+#, python-brace-format
+msgid "Removed tags from 1 file"
+msgid_plural "Removed tags from {n} files"
+msgstr[0] "Forigis etikedojn el 1 dosiero"
+msgstr[1] "Forigis etikedojn el {n} dosieroj"
+
+#: src/window.py:819 src/fileview.py:302
+msgid "Undo"
+msgstr "Malfari"
+
+#: src/window.py:845
+#, python-brace-format
+msgid "Undid tag removal in 1 file"
+msgid_plural "Undid tag removal in {n} files"
+msgstr[0] "Malfaris etiked-forigon en 1 dosiero"
+msgstr[1] "Malfaris etiked-forigon en {n} dosieroj"
+
+#: src/ui/window.blp:78
+msgid "Drop a file to add it to the opened file list"
+msgstr "Falgu dosieron por aldoni ĝin al la malfermita dosier-listo"
+
+#: src/ui/window.blp:106 src/ui/window.blp:147
+msgid "Menu"
+msgstr "Menuo"
+
+#: src/ui/window.blp:127
+msgid "Save"
+msgstr "Konservi"
+
+#: src/ui/window.blp:139
+msgid "Close file list"
+msgstr "Fermi dosier-liston"
+
+#: src/ui/window.blp:156
+msgid "Add file"
+msgstr "Aldoni dosieron"
+
+#: src/ui/window.blp:162
+msgid "Select multiple files"
+msgstr "Elekti plurajn dosierojn"
+
+#: src/ui/window.blp:168
+msgid "Search opened files"
+msgstr "Serĉi malfermitajn dosierojn"
+
+#. TRANSLATORS: Search entry placeholder for "Search opened files" option
+#: src/ui/window.blp:179 src/ui/previewselectorbutton.blp:25
+msgid "Search by title, artist, filename…"
+msgstr "Serĉi laŭ titolo, artisto, dosiernomo…"
+
+#: src/ui/window.blp:213
+msgid "No Results Found"
+msgstr "Neniaj rezultoj trovitaj"
+
+#: src/ui/window.blp:214
+msgid "Try a different search query."
+msgstr "Provu malsaman serĉdemandon."
+
+#: src/ui/window.blp:241
+msgid "Remove selected files"
+msgstr "Forigi elektitajn dosierojn"
+
+#: src/ui/window.blp:255
+msgid "Show file list"
+msgstr "Montri dosier-liston"
+
+#: src/ui/window.blp:277
+msgid "_Open File"
+msgstr "_Malfermi dosieron"
+
+#: src/ui/window.blp:282
+msgid "O_pen Folder"
+msgstr "M_alfermi dosierujon"
+
+#: src/ui/window.blp:289
+msgid "_Rename Selected Files"
+msgstr "_Alinomi elektitajn dosierojn"
+
+#: src/ui/window.blp:294
+msgid "_Extract Tags from Filename"
+msgstr "_Eltiri etikedojn el dosiernomo"
+
+#: src/ui/window.blp:299
+msgid "_Identify Selected Files"
+msgstr "_Identigi elektitajn dosierojn"
+
+#: src/ui/window.blp:306
+msgid "_Undo Changes in Selected Files"
+msgstr "_Malfari ŝanĝojn en elektitaj dosieroj"
+
+#: src/ui/window.blp:311
+msgid "_Remove All Tags in Selected Files"
+msgstr "_Forigi ĉiujn etikedojn en elektitaj dosieroj"
+
+#: src/ui/window.blp:318
+msgid "_Keyboard Shortcuts"
+msgstr "_Klav-mallongigoj"
+
+#: src/ui/window.blp:323
+msgid "_Preferences"
+msgstr "_Agordoj"
+
+#: src/ui/window.blp:328
+msgid "_About Ear Tag"
+msgstr "_Pri Ear Tag"
+
+#: src/ui/nofile.blp:12
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr "Malfermu aŭ trenfalgu sonajn dosierojn por redakti ilian metadatuman."
+
+#: src/ui/nofile.blp:46
+msgid "Include Files from Subfolders"
+msgstr "Inkluzivi dosierojn el subdosierujoj"
+
+#: src/ui/nofile.blp:47 src/ui/settings.blp:11
+msgid "When opening a folder, include files from its subfolders"
+msgstr "Dum malfermado de dosierujo, inkluzivi dosierojn el ĝiaj subdosierujoj"
+
+#: src/backends/file.py:60
+msgid "Length"
+msgstr "Daŭro"
+
+#: src/backends/file.py:61
+msgid "Bitrate"
+msgstr "Bittarigo"
+
+#: src/backends/file.py:63 src/ui/fileview.blp:90
+msgid "Title"
+msgstr "Titolo"
+
+#: src/backends/file.py:64 src/ui/fileview.blp:101
+msgid "Artist"
+msgstr "Artisto"
+
+#: src/backends/file.py:65 src/ui/fileview.blp:169
+msgid "Album"
+msgstr "Albumo"
+
+#: src/backends/file.py:66 src/ui/fileview.blp:174
+msgid "Album artist"
+msgstr "Albuma artisto"
+
+#: src/backends/file.py:67 src/ui/fileview.blp:133
+msgid "Track number"
+msgstr "Pec-numero"
+
+#: src/backends/file.py:68 src/ui/fileview.blp:146
+msgid "Total tracks"
+msgstr "Entuta pecoj"
+
+#: src/backends/file.py:69 src/ui/fileview.blp:179
+msgid "Genre"
+msgstr "Ĝenro"
+
+#: src/backends/file.py:70 src/ui/fileview.blp:184
+msgid "Release date"
+msgstr "Eldondato"
+
+#: src/backends/file.py:71 src/ui/fileview.blp:190
+msgid "Comment"
+msgstr "Komento"
+
+#: src/backends/file.py:73
+msgid "(Select a tag)"
+msgstr "(Elekti etikedon)"
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/backends/file.py:75
+msgid "BPM"
+msgstr "BPM"
+
+#: src/backends/file.py:76
+msgid "Compilation"
+msgstr "Kompilacio"
+
+#: src/backends/file.py:77
+msgid "Composer"
+msgstr "Komponisto"
+
+#: src/backends/file.py:78
+msgid "Copyright"
+msgstr "Aŭtorrajto"
+
+#: src/backends/file.py:79
+msgid "Encoded by"
+msgstr "Kodi de"
+
+#: src/backends/file.py:80
+msgid "Mood"
+msgstr "Humoro"
+
+#. TRANSLATORS: Orchestra conductor
+#: src/backends/file.py:82
+msgid "Conductor"
+msgstr "Direktisto"
+
+#: src/backends/file.py:83
+msgid "Arranger"
+msgstr "Aranĝisto"
+
+#: src/backends/file.py:84
+msgid "Disc number"
+msgstr "Disk-numero"
+
+#: src/backends/file.py:85
+msgid "Publisher"
+msgstr "Eldonisto"
+
+#: src/backends/file.py:87
+msgid "Language"
+msgstr "Lingvo"
+
+#: src/backends/file.py:88
+msgid "Disc subtitle"
+msgstr "Disk-subtitolo"
+
+#: src/backends/file.py:89
+msgid "Website/URL"
+msgstr "Retpaĝo/URL"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:93
+msgid "Album artist (sort)"
+msgstr "Albuma artisto (ordigo)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:96
+msgid "Album (sort)"
+msgstr "Albumo (ordigo)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:99
+msgid "Composer (sort)"
+msgstr "Komponisto (ordigo)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:102
+msgid "Artist (sort)"
+msgstr "Artisto (ordigo)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:105
+msgid "Title (sort)"
+msgstr "Titolo (ordigo)"
+
+#: src/backends/file.py:107
+msgid "MusicBrainz Artist ID"
+msgstr "MusicBrainz Artisto-ID"
+
+#: src/backends/file.py:108
+msgid "MusicBrainz Album ID"
+msgstr "MusicBrainz Albumo-ID"
+
+#: src/backends/file.py:109
+msgid "MusicBrainz Album Artist ID"
+msgstr "MusicBrainz Albuma Artisto-ID"
+
+#: src/backends/file.py:110
+msgid "MusicBrainz Release Track ID"
+msgstr "MusicBrainz Eldono-Pec-ID"
+
+#: src/backends/file.py:111
+msgid "MusicBrainz Recording ID"
+msgstr "MusicBrainz Registrado-ID"
+
+#: src/backends/file.py:112
+msgid "MusicBrainz Release Group ID"
+msgstr "MusicBrainz Eldona Grupo-ID"
+
+#: src/fileview.py:110
+msgid "Album cover (front)"
+msgstr "Albuma kovrilo (fronto)"
+
+#: src/fileview.py:112
+msgid "Album cover (back)"
+msgstr "Albuma kovrilo (dorso)"
+
+#: src/fileview.py:207
+msgid "Select Album Cover Image"
+msgstr "Elekti albuman kovril-bildon"
+
+#: src/fileview.py:248
+msgid "Save Album Cover To…"
+msgstr "Konservi albuman kovrilon al…"
+
+#. TRANSLATORS: {path} is a placeholder for the path.
+#. **Do not change the text between the curly brackets!**
+#: src/fileview.py:275
+#, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "Kovrilo konservita al {path}"
+
+#: src/fileview.py:299
+#, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "Forigis kovrilon el dosiero"
+msgstr[1] "Forigis kovrilojn el {n} dosieroj"
+
+#: src/fileview.py:412
+msgid "Remove tag"
+msgstr "Forigi etikedon"
+
+#: src/fileview.py:767
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "1 kanalo"
+msgstr[1] "{n} kanaloj"
+
+#: src/fileview.py:813
+msgid "(multiple files)"
+msgstr "(pluraj dosieroj)"
+
+#: src/ui/fileview.blp:9
+msgid "Loading Files…"
+msgstr "Ŝargado de dosieroj…"
+
+#: src/ui/fileview.blp:17
+msgid "Select a File"
+msgstr "Elekti dosieron"
+
+#: src/ui/fileview.blp:18
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
+"Elektu la dosierojn, kiujn vi volas redakti, el la listo de malfermitaj "
+"dosieroj."
+
+#: src/ui/fileview.blp:53
+msgid "Previous file"
+msgstr "Antaŭa dosiero"
+
+#: src/ui/fileview.blp:75
+msgid "Next file"
+msgstr "Sekva dosiero"
+
+#: src/ui/filenamerow.blp:5
+msgid "Filename"
+msgstr "Dosiernomo"
+
+#: src/ui/albumcoverbutton.blp:73
+msgid "_Choose Image…"
+msgstr "_Elekti bildon…"
+
+#: src/ui/albumcoverbutton.blp:79
+msgid "_Save Image…"
+msgstr "_Konservi bildon…"
+
+#: src/ui/albumcoverbutton.blp:85
+msgid "_Remove Cover"
+msgstr "_Forigi kovrilon"
+
+#: src/ui/albumcoverbutton.blp:111
+msgid "Front"
+msgstr "Fronto"
+
+#: src/ui/albumcoverbutton.blp:116
+msgid "Back"
+msgstr "Dorso"
+
+#: src/ui/albumcoverbutton.blp:122
+msgid "All supported image files"
+msgstr "Ĉiuj subtenataj bildaj dosieroj"
+
+#: src/ui/moretagsgroup.blp:18
+msgid "Add tag"
+msgstr "Aldoni etikedon"
+
+#: src/tagentry.py:213
+msgid "(multiple values)"
+msgstr "(pluraj valoroj)"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/filelist.py:191
+msgid "(No title)"
+msgstr "(Sen titolo)"
+
+#: src/ui/filelistitem.blp:40
+msgid "File has invalid values"
+msgstr "Dosiero havas nevalidajn valorojn"
+
+#: src/ui/filelistitem.blp:47
+msgid "File has unsaved changes"
+msgstr "Dosiero havas nekonservitajn ŝanĝojn"
+
+#: src/ui/filelistitem.blp:84
+msgid "Remove from list"
+msgstr "Forigi el listo"
+
+#: src/dialogs.py:114
+msgid "Failed to Load Files"
+msgstr "Malsukcesis ŝarĝi dosierojn"
+
+#: src/dialogs.py:115
+msgid "Some files could not be loaded."
+msgstr "Kelkaj dosieroj ne povis esti ŝarĝitaj."
+
+#: src/dialogs.py:118
+msgid "Failed to Rename Files"
+msgstr "Malsukcesis alinomi dosierojn"
+
+#: src/dialogs.py:119
+msgid "Some files could not be renamed."
+msgstr "Kelkaj dosieroj ne povis esti alinomitaj."
+
+#: src/dialogs.py:122
+msgid "Failed to Save Files"
+msgstr "Malsukcesis konservi dosierojn"
+
+#: src/dialogs.py:123
+msgid "Some files could not be saved."
+msgstr "Kelkaj dosieroj ne povis esti konservataj."
+
+#: src/dialogs.py:126
+msgid "An Error Has Occured"
+msgstr "Okazis eraro"
+
+#: src/dialogs.py:127
+msgid "An internal error has occured."
+msgstr "Okazis interna eraro."
+
+#: src/dialogs.py:133
+msgid ""
+"Please copy the logs below and <a href=\"https://gitlab.gnome.org/World/"
+"eartag/-/issues/new\">submit an issue report</a>."
+msgstr ""
+"Bonvolu kopii la protokolojn sube kaj <a href=\"https://gitlab.gnome.org/"
+"World/eartag/-/issues/new\">sendi problemraporton</a>."
+
+#: src/dialogs.py:147
+msgid "Copied error log to clipboard"
+msgstr "Erara protokolo kopiita en la tondujon"
+
+#: src/ui/dialogs/closewarning.blp:5 src/ui/dialogs/discardwarning.blp:5
+#: src/ui/dialogs/removaldiscardwarning.blp:5
+msgid "Save Changes?"
+msgstr "Konservi ŝanĝojn?"
+
+#: src/ui/dialogs/closewarning.blp:6 src/ui/dialogs/discardwarning.blp:6
+#: src/ui/dialogs/removaldiscardwarning.blp:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr "Se vi ne konservos viajn ŝanĝojn, ili estos por ĉiam perditaj."
+
+#: src/ui/dialogs/closewarning.blp:12 src/ui/dialogs/discardwarning.blp:12
+#: src/ui/dialogs/removaldiscardwarning.blp:12
+#: src/ui/dialogs/tagdeletewarning.blp:12
+msgid "_Cancel"
+msgstr "_Nuligi"
+
+#: src/ui/dialogs/closewarning.blp:13
+#: src/ui/dialogs/removaldiscardwarning.blp:13
+msgid "_Discard and Close"
+msgstr "_Forĵeti kaj fermi"
+
+#: src/ui/dialogs/closewarning.blp:14
+#: src/ui/dialogs/removaldiscardwarning.blp:14
+msgid "_Save and Close"
+msgstr "_Konservi kaj fermi"
+
+#: src/ui/dialogs/discardwarning.blp:13
+msgid "_Discard and Open"
+msgstr "_Forĵeti kaj malfermi"
+
+#: src/ui/dialogs/discardwarning.blp:14
+msgid "_Save and Open"
+msgstr "_Konservi kaj malfermi"
+
+#: src/ui/dialogs/savefailure.blp:5
+msgid "Failed to Save File"
+msgstr "Malsukcesis konservi dosieron"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/savefailure.blp:8
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr ""
+"Ne povis konservi dosieron {f}. Kontrolu la protokolojn por pliaj informoj."
+
+#: src/ui/dialogs/savefailure.blp:14 src/ui/dialogs/loadingfailure.blp:14
+#: src/ui/dialogs/renamefailure.blp:14
+msgid "_OK"
+msgstr "_Bone"
+
+#: src/ui/dialogs/loadingfailure.blp:5
+msgid "Failed to Load File"
+msgstr "Malsukcesis ŝarĝi dosieron"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/loadingfailure.blp:8
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr ""
+"Ne povis ŝarĝi dosieron {f}. Kontrolu la protokolojn por pliaj informoj."
+
+#: src/ui/dialogs/renamefailure.blp:5
+msgid "Failed to Rename File"
+msgstr "Malsukcesis alinomi dosieron"
+
+#. TRANSLATORS: {f} is a placeholder for the filename.
+#. **Do not change the letter between the curly brackets!**
+#: src/ui/dialogs/renamefailure.blp:8
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr ""
+"Ne povis alinomi dosieron {f}. Kontrolu la protokolojn por pliaj informoj."
+
+#: src/ui/dialogs/tagdeletewarning.blp:5
+msgid "Delete All Tags?"
+msgstr "Forigi ĉiujn etikedojn?"
+
+#: src/ui/dialogs/tagdeletewarning.blp:6
+msgid ""
+"This will remove all tags from the file, including ones that cannot be "
+"viewed in Ear Tag."
+msgstr ""
+"Tio forforiĝos ĉiujn etikedojn el la dosiero, inkluzive tiujn, kiuj ne povas "
+"esti viditaj en Ear Tag."
+
+#: src/ui/dialogs/tagdeletewarning.blp:13
+msgid "_Delete"
+msgstr "_Forigi"
+
+#. TRANSLATORS: Default placeholder string for a missing title
+#. tag, used when renaming files - if the title tag is not
+#. present in the file, this placeholder will be used instead.
+#: src/rename.py:39
+msgid "Untitled"
+msgstr "Sen titolo"
+
+#. TRANSLATORS: Default placeholder string for missing tags,
+#. used when renaming files - if a tag is not present in the
+#. file, this placeholder will be used instead.
+#. {tag_name} is a placeholder for the human-readable tag name.
+#. **Do not change the text between the curly brackets!**
+#: src/rename.py:51
+#, python-brace-format
+msgid "Unknown {tag_name}"
+msgstr "Nekonata {tag_name}"
+
+#: src/rename.py:271
+msgid "Selected folder does not exist"
+msgstr "La elektita dosierujo ne ekzistas"
+
+#: src/rename.py:276
+msgid "Selected folder is read-only"
+msgstr "La elektita dosierujo estas nurlega"
+
+#. TRANSLATORS: {renamed} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/rename.py:363
+#, python-brace-format
+msgid "Renamed 1 file"
+msgid_plural "Renamed {renamed} files"
+msgstr[0] "Alinomis 1 dosieron"
+msgstr[1] "Alinomis {renamed} dosierojn"
+
+#: src/ui/rename.blp:5
+msgid "Rename Selected Files"
+msgstr "Alinomi elektitajn dosierojn"
+
+#: src/ui/rename.blp:17 src/ui/extract.blp:17 src/ui/identify/identify.blp:27
+msgid "Cancel"
+msgstr "Nuligi"
+
+#: src/ui/rename.blp:24
+msgid "Rename"
+msgstr "Alinomi"
+
+#: src/ui/rename.blp:49
+msgid "Ear Tag needs additional permissions to rename files in-place."
+msgstr "Ear Tag bezonas aldonajn rajtojn por alinomi dosierojn surplace."
+
+#: src/ui/rename.blp:50
+msgid "Learn More"
+msgstr "Scii pli"
+
+#: src/ui/rename.blp:59
+msgid "Failed to rename files. Check the logs for more information."
+msgstr ""
+"Malsukcesis alinomi dosierojn. Kontrolu la protokolojn por pliaj informoj."
+
+#: src/ui/rename.blp:88 src/ui/extract.blp:66
+msgid "Preview"
+msgstr "Antaŭvido"
+
+#: src/ui/rename.blp:98 src/ui/extract.blp:84
+msgid "Filename pattern"
+msgstr "Dosiernom-ŝablono"
+
+#: src/ui/rename.blp:105 src/ui/extract.blp:90
+msgid "Insert tag placeholder"
+msgstr "Enigi etikedo-lokanstataŭanton"
+
+#: src/ui/rename.blp:115
+msgid "Move to folder"
+msgstr "Movi al dosierujo"
+
+#: src/ui/rename.blp:120
+msgid "Select a folder…"
+msgstr "Elekti dosierujon…"
+
+#: src/ui/rename.blp:132
+msgid "Unselect folder"
+msgstr "Malselekti dosierujon"
+
+#: src/ui/rename.blp:148
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">list of available tags</a>."
+msgstr ""
+"Por listo de disponeblaj lokanstataŭantoj, vidu la <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">liston de disponeblaj etikedoj</a>."
+
+#. TRANSLATORS: {extracted} is a placeholder for the number
+#. of tracks the tags were succesfully extracted for.
+#. **Do not translate the text between the curly brackets!**
+#: src/extract.py:241
+#, python-brace-format
+msgid "Extracted tags for 1 track"
+msgid_plural "Extracted tags for {extracted} tracks"
+msgstr[0] "Eltiriĝis etikedojn por 1 peco"
+msgstr[1] "Eltiriĝis etikedojn por {extracted} pecoj"
+
+#: src/ui/extract.blp:5
+msgid "Extract Tags from Filename"
+msgstr "Eltiri etikedojn el dosiernomo"
+
+#: src/ui/extract.blp:24 src/ui/identify/identify.blp:45
+#: src/ui/identify/filerow.blp:44 src/ui/identify/recordingrow.blp:53
+msgid "Apply"
+msgstr "Apliki"
+
+#: src/ui/extract.blp:100
+msgid "Ignore common suffixes"
+msgstr "Ignori komunajn sufiksojn"
+
+#: src/ui/extract.blp:101
+msgid ""
+"Automatically ignores ID suffixes often found in filenames of downloaded "
+"files. Disable this option if it interferes with your filenames."
+msgstr ""
+"Aŭtomate ignoras ID-sufiksojn ofte trovitajn en dosiernomoj de elŝutitaj "
+"dosieroj. Malŝaltu ĉi tiun opcion se ĝi interferas kun viaj dosiernomoj."
+
+#: src/ui/previewselectorbutton.blp:4
+msgid "Select file to preview"
+msgstr "Elekti dosieron por antaŭvidi"
+
+#: src/identify.py:97 src/ui/identify/recordingrow.blp:15
+msgid "Apply identified data"
+msgstr "Apliki identigitan datuman"
+
+#. TRANSLATORS: Tooltip for button to open release info in MusicBrainz identification dialog.
+#: src/identify.py:138
+msgid "See release on MusicBrainz"
+msgstr "Vidi eldonon en MusicBrainz"
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:150
+msgid "Other releases"
+msgstr "Aliaj eldonoj"
+
+#: src/identify.py:714
+msgid "Unidentified Files"
+msgstr "Neidentigitaj dosieroj"
+
+#. TRANSLATORS: {identified} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:987
+#, python-brace-format
+msgid "Identified 1 track"
+msgid_plural "Identified {identified} tracks"
+msgstr[0] "Identigis 1 pecon"
+msgstr[1] "Identigis {identified} pecojn"
+
+#. TRANSLATORS: {n} is a placeholder for the number
+#. of tracks that were succesfully identified.
+#. **Do not translate the text between the curly brackets!**
+#: src/identify.py:1055
+#, python-brace-format
+msgid "Applied changes to 1 track"
+msgid_plural "Applied changes to {n} tracks"
+msgstr[0] "Aplikis ŝanĝojn al 1 peco"
+msgstr[1] "Aplikis ŝanĝojn al {n} pecoj"
+
+#: src/ui/identify/identify.blp:5
+msgid "Identify Selected Files"
+msgstr "Identigi elektitajn dosierojn"
+
+#: src/ui/identify/identify.blp:35
+msgid "Identify"
+msgstr "Identigi"
+
+#: src/ui/identify/identify.blp:72
+msgid ""
+"Track information is provided by <a href=\"https://"
+"musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified "
+"using the <a href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"Informoj pri pecoj estas provenitaj de <a href=\"https://"
+"musicbrainz.org\">MusicBrainz</a>. Dosieroj sen metadatumoj estas "
+"identigitaj uzante la servon <a href=\"https://acoustid.org\">AcoustID</a>."
+
+#: src/ui/identify/filerow.blp:19 src/ui/identify/recordingrow.blp:28
+msgid "Set recording manually"
+msgstr "Agordi registradon mane"
+
+#: src/ui/identify/filerow.blp:30 src/ui/identify/recordingrow.blp:39
+msgid ""
+"Search for the track on <a href=\"https://musicbrainz.org/\">MusicBrainz</"
+"a>, then paste the MusicBrainz ID or a link to the MusicBrainz recording "
+"page here."
+msgstr ""
+"Serĉu la pecon en <a href=\"https://musicbrainz.org/\">MusicBrainz</a>, tiam "
+"algluu la MusicBrainz-ID aŭ ligilon al la MusicBrainz-registradpaĝo ĉi tie."
+
+#: src/ui/identify/filerow.blp:37 src/ui/identify/recordingrow.blp:46
+msgid "Recording ID or URL"
+msgstr "Registrado-ID aŭ URL"
+
+#: src/ui/identify/filerow.blp:67
+msgid "File could not be identified"
+msgstr "Dosiero ne povis esti identigita"
+
+#: src/ui/identify/recordingrow.blp:72
+msgid "See recording on MusicBrainz"
+msgstr "Vidi registradon en MusicBrainz"
+
+#: src/ui/settings.blp:7
+msgid "General"
+msgstr "Ĝenerala"
+
+#: src/ui/settings.blp:10
+msgid "Search for files in subfolders"
+msgstr "Serĉi dosierojn en subdosierujoj"
+
+#: src/ui/settings.blp:16
+msgid "File identification"
+msgstr "Dosier-identigo"
+
+#: src/ui/settings.blp:19
+msgid "MusicBrainz confidence treshold"
+msgstr "Konfidonivelo de MusicBrainz"
+
+#: src/ui/settings.blp:20
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr ""
+"Minimuma konfidprocento postulata por ke MusicBrainz-serĉrezulto estu taksata"
+
+#: src/ui/settings.blp:32
+msgid "AcoustID confidence treshold"
+msgstr "Konfidonivelo de AcoustID"
+
+#: src/ui/settings.blp:33
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr ""
+"Minimuma konfidprocento postulata por ke AcoustID-spurnrezulto estu taksata"
+
+#: src/ui/settings.blp:45
+msgid "Downloaded cover art size"
+msgstr "Grandeco de elŝutita kovril-arto"
+
+#: src/ui/settings.blp:49
+msgid "Do not download covers"
+msgstr "Ne elŝuti kovrilojn"
+
+#: src/ui/settings.blp:50
+msgid "250 px"
+msgstr "250 px"
+
+#: src/ui/settings.blp:51
+msgid "500 px"
+msgstr "500 px"
+
+#: src/ui/settings.blp:52
+msgid "1200 px"
+msgstr "1200 px"
+
+#: src/ui/settings.blp:53
+msgid "Maximum size"
+msgstr "Maksimuma grandeco"
+
+#: src/ui/shortcuts.blp:6
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "Dosieroj"
+
+#: src/ui/shortcuts.blp:10
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "Malfermi dosierojn"
+
+#: src/ui/shortcuts.blp:15
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "Malfermi dosierujon"
+
+#: src/ui/shortcuts.blp:20
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "Konservi ĉiujn modifitajn dosierojn"
+
+#: src/ui/shortcuts.blp:25
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "Flanklisto"
+
+#: src/ui/shortcuts.blp:29
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Elekti antaŭan dosieron en la flanklisto"
+
+#: src/ui/shortcuts.blp:34
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "Elekti sekvan dosieron en la flanklisto"
+
+#: src/ui/shortcuts.blp:39
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "Elekti ĉiujn dosierojn en la flanklisto"
+
+#: src/ui/shortcuts.blp:44
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "Forigi elektitajn dosierojn el la flanklisto"
+
+#: src/ui/shortcuts.blp:45
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "Fermas la fenestron se neniaj dosieroj estas ĉeestaj."
+
+#: src/ui/shortcuts.blp:50
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "Alia"
+
+#: src/ui/shortcuts.blp:54
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Klav-mallongigoj"
