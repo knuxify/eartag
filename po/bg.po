@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eartag main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
-"POT-Creation-Date: 2025-07-25 10:56+0000\n"
-"PO-Revision-Date: 2025-07-29 11:41+0200\n"
+"POT-Creation-Date: 2026-01-31 13:22+0000\n"
+"PO-Revision-Date: 2026-03-01 11:46+0100\n"
 "Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict-notifications@fsa-bg.org>\n"
 "Language: bg\n"
@@ -25,18 +25,25 @@ msgstr ""
 
 #. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
 #. Set up window title and file info label
-#: src/main.py:145 data/app.drey.EarTag.desktop.in:2
-#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:123 src/window.py:364
-#: src/window.py:376 src/ui/window.blp:262 src/ui/nofile.blp:11
+#: src/main.py:146 data/app.drey.EarTag.desktop.in:2
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/window.py:123 src/window.py:362
+#: src/window.py:374 src/ui/window.blp:262 src/ui/nofile.blp:11
 msgid "Ear Tag"
 msgstr "Ear Tag"
 
 #. TRANSLATORS: Add your name/nickname here
-#: src/main.py:155 src/main.py:157
+#: src/main.py:156 src/main.py:158
 msgid "translator-credits"
 msgstr ""
 "twlvnn kraftwerk &lt;<a "
-"href='mailto:kraft_werk@tutanota.com'>kraft_werk@tutanota.com</a>&gt;"
+"href='mailto:kraft_werk@tutanota.com'>kraft_werk@tutanota.com</a>&gt;\n"
+"\n"
+"\n"
+"Проектът за превод на GNOME има нужда от подкрепа.\n"
+"Научете повече за нас на <a href='https://fsa-bg.org/project/gtp'>уеб сайта</"
+"a> ни.\n"
+"Докладвайте за грешки в превода в <a href='https://fsa-bg.org/project/gtp/"
+"newticket'>съответния раздел</a>."
 
 #: data/app.drey.EarTag.desktop.in:3
 msgid "Tag Editor"
@@ -47,11 +54,11 @@ msgstr "Редактор на етикети"
 msgid "Edit audio file tags"
 msgstr "Редактиране на етикетите на звукови файлове"
 
-#: data/app.drey.EarTag.desktop.in:11
+#: data/app.drey.EarTag.desktop.in:12
 msgid "music;audio;tag;tagging;tagger;"
 msgstr "музика;аудио;звук;етикет;етикиране;music;audio;tag;tagging;tagger;"
 
-#: data/app.drey.EarTag.metainfo.xml.in:104
+#: data/app.drey.EarTag.metainfo.xml.in:112
 msgid ""
 "Ear Tag is a simple audio file tag editor. It is primarily geared towards "
 "making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
@@ -63,24 +70,24 @@ msgstr ""
 "дискове. За разлика от други подобни програми „Ear Tag“ не изисква от "
 "потребителя да създаде фонотека. „Ear Tag“ може да:"
 
-#: data/app.drey.EarTag.metainfo.xml.in:106
+#: data/app.drey.EarTag.metainfo.xml.in:114
 msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
 msgstr ""
 "Редактира етикетите на файлове във формат MP3, WAV, M4A, FLAC, OGG и WMA"
 
-#: data/app.drey.EarTag.metainfo.xml.in:107
+#: data/app.drey.EarTag.metainfo.xml.in:115
 msgid "Modify metadata of multiple files at once"
 msgstr "Променя метаданните на множество файлове наведнъж"
 
-#: data/app.drey.EarTag.metainfo.xml.in:108
+#: data/app.drey.EarTag.metainfo.xml.in:116
 msgid "Rename files using information from present tags"
 msgstr "Преименува файлове на базата на съществуващите етикети"
 
-#: data/app.drey.EarTag.metainfo.xml.in:109
+#: data/app.drey.EarTag.metainfo.xml.in:117
 msgid "Identify files using AcoustID"
 msgstr "Идентифицира файлове с помощта на AcoustID"
 
-#: data/app.drey.EarTag.metainfo.xml.in:111
+#: data/app.drey.EarTag.metainfo.xml.in:119
 msgid "Network access is only used for the \"Identify selected files\" option."
 msgstr ""
 "Достъп до мрежата се използва само за опцията „Идентифициране на избраните "
@@ -102,98 +109,98 @@ msgstr "Още информация"
 msgid "No supported files found in opened folder"
 msgstr "Няма поддържани файлове в отворената папка"
 
-#: src/window.py:322
+#: src/window.py:320
 #, python-brace-format
 msgid "Saved changes to 1 file"
 msgid_plural "Saved changes to {n} files"
 msgstr[0] "Промените в 1 файл са запазени"
 msgstr[1] "Промените в {n} файла са запазени"
 
-#: src/window.py:331
+#: src/window.py:329
 msgid "Some of the opened files are read-only; changes cannot be saved"
 msgstr ""
 "Някои от отворените файлове са само за четене: промените в тях не може да се "
 "запазят"
 
-#: src/window.py:336
+#: src/window.py:334
 msgid "Maximum folder depth reached, some files may not be loaded"
 msgstr ""
 "Достигната е максималната дълбочина на папки, някои файлове не бяха заредени"
 
-#: src/window.py:347
+#: src/window.py:345
 msgid "Unselect all files"
 msgstr "Махане на избора на всички файлове"
 
-#: src/window.py:350 src/ui/window.blp:227
+#: src/window.py:348 src/ui/window.blp:227
 msgid "Select all files"
 msgstr "Избиране на всички файлове"
 
 #. TRANSLATORS: Placeholder for file path when multiple files are selected.
 #. Shows up in the titlebar of the application.
-#: src/window.py:385 src/fileview.py:752
+#: src/window.py:383 src/fileview.py:753
 msgid "(Multiple files selected)"
 msgstr "(Избрани са множество файлове)"
 
 #. : TRANSLATORS: Title of the popup for opening a file
-#: src/window.py:470 src/ui/nofile.blp:24
+#: src/window.py:468 src/ui/nofile.blp:24
 msgid "Open File"
 msgstr "Отваряне на файл"
 
-#: src/window.py:472
+#: src/window.py:470
 msgid "Add File"
 msgstr "Добавяне на файл"
 
-#: src/window.py:478 src/ui/nofile.blp:36
+#: src/window.py:476 src/ui/nofile.blp:36
 msgid "Open Folder"
 msgstr "Отваряне на папка"
 
-#: src/window.py:528
+#: src/window.py:526
 msgid "Some of the opened files have invalid values; cannot save"
 msgstr ""
 "Някои от отворените файлове са с неправилни стойности: не може да бъдат "
 "запазени"
 
-#: src/window.py:658
+#: src/window.py:656
 msgid "No files selected"
 msgstr "Няма избран файл"
 
-#: src/window.py:664
+#: src/window.py:662
 #, python-brace-format
 msgid "1 file selected"
 msgid_plural "{n} files selected"
 msgstr[0] "1 избран файл"
 msgstr[1] "{n} избрани файла"
 
-#: src/window.py:737
+#: src/window.py:735
 #, python-brace-format
 msgid "Undid changes in 1 file"
 msgid_plural "Undid changes in {n} files"
 msgstr[0] "Отменени са промените в 1 файл"
 msgstr[1] "Отменени са промените в {n} файла"
 
-#: src/window.py:742
+#: src/window.py:740
 msgid "Redo"
 msgstr "Повтаряне"
 
-#: src/window.py:770
+#: src/window.py:768
 #, python-brace-format
 msgid "Redid changes in 1 file"
 msgid_plural "Redid changes in {n} files"
 msgstr[0] "Повторени са промените в 1 файл"
 msgstr[1] "Повторени са промените в {n} файла"
 
-#: src/window.py:816
+#: src/window.py:814
 #, python-brace-format
 msgid "Removed tags from 1 file"
 msgid_plural "Removed tags from {n} files"
 msgstr[0] "Премахнати са етикетите в 1 файл"
 msgstr[1] "Премахнати са етикетите в {n} файла"
 
-#: src/window.py:821 src/fileview.py:301
+#: src/window.py:819 src/fileview.py:302
 msgid "Undo"
 msgstr "Отмяна"
 
-#: src/window.py:847
+#: src/window.py:845
 #, python-brace-format
 msgid "Undid tag removal in 1 file"
 msgid_plural "Undid tag removal in {n} files"
@@ -471,36 +478,36 @@ msgstr "Албум (задна обложка)"
 msgid "Select Album Cover Image"
 msgstr "Избор на изображение на обложка на албума"
 
-#: src/fileview.py:247
+#: src/fileview.py:248
 msgid "Save Album Cover To…"
 msgstr "Запазване на обложката на албума в…"
 
 #. TRANSLATORS: {path} is a placeholder for the path.
 #. **Do not change the text between the curly brackets!**
-#: src/fileview.py:274
+#: src/fileview.py:275
 #, python-brace-format
 msgid "Saved cover to {path}"
 msgstr "Обложката е запазена в {path}"
 
-#: src/fileview.py:298
+#: src/fileview.py:299
 #, python-brace-format
 msgid "Removed cover from file"
 msgid_plural "Removed covers from {n} files"
 msgstr[0] "Обложката от файла е премахната"
 msgstr[1] "Обложките на {n} файла са премахнати"
 
-#: src/fileview.py:411
+#: src/fileview.py:412
 msgid "Remove tag"
 msgstr "Премахване на етикет"
 
-#: src/fileview.py:766
+#: src/fileview.py:767
 #, python-brace-format
 msgid "1 channel"
 msgid_plural "{n} channels"
 msgstr[0] "1 канал"
 msgstr[1] "{n} канала"
 
-#: src/fileview.py:812
+#: src/fileview.py:813
 msgid "(multiple files)"
 msgstr "(множество файлове)"
 
@@ -562,7 +569,7 @@ msgid "(multiple values)"
 msgstr "(множество стойности)"
 
 #. TRANSLATORS: Placeholder for file sidebar items with no title set
-#: src/filelist.py:192
+#: src/filelist.py:191
 msgid "(No title)"
 msgstr "(Без заглавие)"
 
@@ -985,62 +992,62 @@ msgstr "1200 px"
 msgid "Maximum size"
 msgstr "Максимален размер"
 
-#: src/ui/shortcuts.blp:11
+#: src/ui/shortcuts.blp:6
 msgctxt "shortcut window"
 msgid "Files"
 msgstr "Файлове"
 
-#: src/ui/shortcuts.blp:15
+#: src/ui/shortcuts.blp:10
 msgctxt "shortcut window"
 msgid "Open files"
 msgstr "Отваряне на файлове"
 
-#: src/ui/shortcuts.blp:20
+#: src/ui/shortcuts.blp:15
 msgctxt "shortcut window"
 msgid "Open folder"
 msgstr "Отваряне на папка"
 
-#: src/ui/shortcuts.blp:25
+#: src/ui/shortcuts.blp:20
 msgctxt "shortcut window"
 msgid "Save all modified files"
 msgstr "Запазване на всички променени файлове"
 
-#: src/ui/shortcuts.blp:30
+#: src/ui/shortcuts.blp:25
 msgctxt "shortcut window"
 msgid "Sidebar"
 msgstr "Странична лента"
 
-#: src/ui/shortcuts.blp:34
+#: src/ui/shortcuts.blp:29
 msgctxt "shortcut window"
 msgid "Select previous file in sidebar"
 msgstr "Избиране на предишния файл в страничната лента"
 
-#: src/ui/shortcuts.blp:39
+#: src/ui/shortcuts.blp:34
 msgctxt "shortcut window"
 msgid "Select next file in sidebar"
 msgstr "Избиране на следващия файл в страничната лента"
 
-#: src/ui/shortcuts.blp:44
+#: src/ui/shortcuts.blp:39
 msgctxt "shortcut window"
 msgid "Select all files in sidebar"
 msgstr "Избиране на всички файлове в страничната лента"
 
-#: src/ui/shortcuts.blp:49
+#: src/ui/shortcuts.blp:44
 msgctxt "shortcut window"
 msgid "Remove selected files from sidebar"
 msgstr "Премахване на избраните файлове от страничната лента"
 
-#: src/ui/shortcuts.blp:50
+#: src/ui/shortcuts.blp:45
 msgctxt "shortcut window"
 msgid "Closes the window if no files are present."
 msgstr "Затваря прозореца, ако в него няма файлове."
 
-#: src/ui/shortcuts.blp:55
+#: src/ui/shortcuts.blp:50
 msgctxt "shortcut window"
 msgid "Other"
 msgstr "Други"
 
-#: src/ui/shortcuts.blp:59
+#: src/ui/shortcuts.blp:54
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Клавишни комбинации"
