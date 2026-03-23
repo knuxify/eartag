@@ -1,0 +1,735 @@
+# Portuguese translation for eartag.
+# Copyright (C) 2026 eartag's COPYRIGHT HOLDER
+# This file is distributed under the same license as the eartag package.
+# André Moreira <afrmscb@gmail.com>, 2026.
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2020-2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: eartag 0.5.x\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/eartag/-/issues\n"
+"POT-Creation-Date: 2024-03-02 17:12+0000\n"
+"PO-Revision-Date: 2026-03-23 15:11+0000\n"
+"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
+"Language-Team: Portuguese <pt@li.org>\n"
+"Language: pt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
+
+#. TRANSLATORS: If possible, do not translate the name of the program (Ear Tag). Transliteration (re-writing to fit another alphabet) is acceptable.
+#: src/main.py:105 data/app.drey.EarTag.desktop.in:2
+#: data/app.drey.EarTag.metainfo.xml.in:4 src/ui/window.ui:294
+msgid "Ear Tag"
+msgstr "Ear Tag"
+
+#. TRANSLATORS: Add your name/nickname here
+#: src/main.py:115 src/main.py:117
+msgid "translator-credits"
+msgstr ""
+"André Moreira <afrmscb@gmail.com>\n"
+"Hugo Carvalho <hugokarvalho@hotmail.com>"
+
+#: data/app.drey.EarTag.desktop.in:3
+msgid "Tag Editor"
+msgstr "Editor de Etiquetas"
+
+#. TRANSLATORS: App description.
+#: data/app.drey.EarTag.desktop.in:4 data/app.drey.EarTag.metainfo.xml.in:6
+msgid "Edit audio file tags"
+msgstr "Edite as etiquetas de ficheiros de áudio"
+
+#: data/app.drey.EarTag.desktop.in:11
+msgid "music;audio;tag;tagging;tagger;"
+msgstr "música;áudio;etiqueta;etiquetar;etiquetador;"
+
+#: data/app.drey.EarTag.metainfo.xml.in:69
+msgid ""
+"Ear Tag is a simple audio file tag editor. It is primarily geared towards "
+"making quick edits or bulk-editing tracks in albums/EPs. Unlike other "
+"tagging programs, Ear Tag does not require the user to set up a music "
+"library folder. It can:"
+msgstr ""
+"O Ear Tag é um editor simples de etiquetas de ficheiros de áudio. É "
+"principalmente orientado para edições rápidas ou edições em massa de faixas "
+"em álbuns/EPs. Ao contrário de outros programas de etiquetagem, o Ear Tag "
+"não exige que o utilizador configure uma pasta de biblioteca de música. Ele "
+"pode:"
+
+#: data/app.drey.EarTag.metainfo.xml.in:71
+msgid "Edit tags of MP3, WAV, M4A, FLAC, OGG and WMA files"
+msgstr "Editar etiquetas de ficheiros MP3, WAV, M4A, FLAC, OGG e WMA"
+
+#: data/app.drey.EarTag.metainfo.xml.in:72
+msgid "Modify metadata of multiple files at once"
+msgstr "Modificar metadados de vários ficheiros ao mesmo tempo"
+
+#: data/app.drey.EarTag.metainfo.xml.in:73
+msgid "Rename files using information from present tags"
+msgstr "Renomear ficheiros usando a informação das etiquetas presentes"
+
+#: data/app.drey.EarTag.metainfo.xml.in:74
+msgid "Identify files using AcoustID"
+msgstr "Identificar ficheiros usando AcoustID"
+
+#: data/app.drey.EarTag.metainfo.xml.in:76
+msgid "Network access is only used for the \"Identify selected files\" option."
+msgstr ""
+"O acesso à rede só é utilizado para a opção \"Identificar ficheiros "
+"selecionados\"."
+
+#: src/window.py:109
+msgid "All supported audio files"
+msgstr "Todos os ficheiros de áudio suportados"
+
+#. TRANSLATOR: Placeholder for file path when multiple files are selected
+#: src/window.py:199 src/fileview.py:858
+msgid "(Multiple files selected)"
+msgstr "(Vários ficheiros selecionados)"
+
+#: src/window.py:271 src/ui/nofile.ui:39
+msgid "Open Folder"
+msgstr "Abrir pasta"
+
+#: src/window.py:274 src/ui/nofile.ui:26
+msgid "Open File"
+msgstr "Abrir ficheiro"
+
+#: src/window.py:336
+msgid "No supported files found in opened folder"
+msgstr "Nenhum ficheiro suportado foi encontrado na pasta aberta"
+
+#: src/window.py:343
+msgid "Some of the opened files have invalid values; cannot save"
+msgstr ""
+"Alguns dos ficheiros abertos têm valores inválidos; não é possível guardar"
+
+#: src/window.py:463
+msgid "No files selected"
+msgstr "Nenhum ficheiro selecionado"
+
+#: src/window.py:467
+#, python-brace-format
+msgid "1 file selected"
+msgid_plural "{n} files selected"
+msgstr[0] "1 ficheiro selecionado"
+msgstr[1] "{n} ficheiros selecionados"
+
+#. TRANSLATORS: Displayed when drag-and-dropping a music file onto the window
+#: src/ui/window.ui:62
+msgid "Drop a file to add it to the opened file list"
+msgstr "Largue um ficheiro para o adicionar à lista de ficheiros abertos"
+
+#: src/ui/window.ui:123
+msgid "Save"
+msgstr "Guardar"
+
+#. TRANSLATORS: Tooltip for button used to sort files in the opened file list
+#: src/ui/window.ui:137
+msgid "Sort files by track number, album, name"
+msgstr "Ordenar ficheiros por número de faixa, álbum, nome"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:146
+msgid "Close file list"
+msgstr "Fechar lista de ficheiros"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:160
+msgid "Add file"
+msgstr "Adicionar ficheiro"
+
+#. TRANSLATORS: Tooltip for button used to open a file that will be inserted into the file queue
+#: src/ui/window.ui:168
+msgid "Select multiple files"
+msgstr "Selecionar vários ficheiros"
+
+#: src/ui/window.ui:175
+msgid "Search opened files"
+msgstr "Pesquisar ficheiros abertos"
+
+#: src/ui/window.ui:232
+msgid "No Results Found"
+msgstr "Nenhum resultado encontrado"
+
+#: src/ui/window.ui:233
+msgid "Try a different search query."
+msgstr "Tente uma consulta de pesquisa diferente."
+
+#: src/ui/window.ui:248
+msgid "Select all files"
+msgstr "Selecionar todos os ficheiros"
+
+#: src/ui/window.ui:264
+msgid "Remove selected files"
+msgstr "Remover ficheiros selecionados"
+
+#. TRANSLATORS: Tooltip for the button used to close the file list sidebar
+#: src/ui/window.ui:284
+msgid "Show file list"
+msgstr "Mostrar lista de ficheiros"
+
+#: src/ui/window.ui:325
+msgid "_Open File"
+msgstr "_Abrir ficheiro"
+
+#: src/ui/window.ui:329
+msgid "O_pen Folder"
+msgstr "Abrir _pasta"
+
+#: src/ui/window.ui:335
+msgid "_Rename Selected Files"
+msgstr "_Renomear ficheiros selecionados"
+
+#: src/ui/window.ui:339
+msgid "_Identify Selected Files"
+msgstr "_Identificar ficheiros selecionados"
+
+#: src/ui/window.ui:345
+msgid "_Keyboard Shortcuts"
+msgstr "Atalhos de _teclado"
+
+#: src/ui/window.ui:349
+msgid "_Settings"
+msgstr "Definiçõe_s"
+
+#: src/ui/window.ui:353
+msgid "_About Ear Tag"
+msgstr "_Sobre o Ear Tag"
+
+#: src/ui/nofile.ui:13
+msgid "Open or drag in some audio files to edit their metadata."
+msgstr "Abra ou arraste ficheiros de áudio para editar os seus metadados."
+
+#: src/filemanager.py:95
+msgid "Failed to save file"
+msgstr "Falha ao guardar o ficheiro"
+
+#: src/filemanager.py:96
+#, python-brace-format
+msgid "Could not save file {f}. Check the logs for more information."
+msgstr ""
+"Não foi possível guardar o ficheiro {f}. Verifique os registos para mais "
+"informações."
+
+#. TRANSLATORS: "Okay" button in the "failed to save file" dialog
+#: src/filemanager.py:99
+msgid "OK"
+msgstr "OK"
+
+#: src/filemanager.py:105
+msgid "Saved changes to files"
+msgstr "Alterações guardadas nos ficheiros"
+
+#: src/filemanager.py:216
+msgid "Opened file is read-only; changes cannot be saved"
+msgstr ""
+"O ficheiro aberto é apenas de leitura; as alterações não podem ser guardadas"
+
+#: src/filemanager.py:218
+msgid "Some of the opened files are read-only; changes cannot be saved"
+msgstr ""
+"Alguns dos ficheiros abertos são apenas de leitura; as alterações não podem "
+"ser guardadas"
+
+#: src/backends/file.py:44
+msgid "Length"
+msgstr "Duração"
+
+#: src/backends/file.py:45
+msgid "Bitrate"
+msgstr "Taxa de bits"
+
+#: src/backends/file.py:47 src/ui/fileview.ui:109
+msgid "Title"
+msgstr "Título"
+
+#: src/backends/file.py:48 src/ui/fileview.ui:119
+msgid "Artist"
+msgstr "Artista"
+
+#: src/backends/file.py:49 src/ui/fileview.ui:165
+msgid "Album"
+msgstr "Álbum"
+
+#: src/backends/file.py:50 src/ui/fileview.ui:172
+msgid "Album artist"
+msgstr "Artista do álbum"
+
+#: src/backends/file.py:51 src/ui/fileview.ui:154
+msgid "Track number"
+msgstr "Número da faixa"
+
+#: src/backends/file.py:52
+msgid "Total tracks"
+msgstr "Total de faixas"
+
+#: src/backends/file.py:53 src/ui/fileview.ui:179
+msgid "Genre"
+msgstr "Género"
+
+#: src/backends/file.py:54 src/ui/fileview.ui:186
+msgid "Release date"
+msgstr "Data de lançamento"
+
+#: src/backends/file.py:55 src/ui/fileview.ui:194
+msgid "Comment"
+msgstr "Comentário"
+
+#: src/backends/file.py:57
+msgid "(Select a tag)"
+msgstr "(Selecione uma etiqueta)"
+
+#. TRANSLATORS: Short for "beats per minute".
+#: src/backends/file.py:59
+msgid "BPM"
+msgstr "BPM"
+
+#: src/backends/file.py:60
+msgid "Compilation"
+msgstr "Compilação"
+
+#: src/backends/file.py:61
+msgid "Composer"
+msgstr "Compositor"
+
+#: src/backends/file.py:62
+msgid "Copyright"
+msgstr "Direitos de autor"
+
+#: src/backends/file.py:63
+msgid "Encoded by"
+msgstr "Codificado por"
+
+#: src/backends/file.py:64
+msgid "Mood"
+msgstr "Ambiente"
+
+#. TRANSLATORS: Orchestra conductor
+#: src/backends/file.py:66
+msgid "Conductor"
+msgstr "Maestro"
+
+#: src/backends/file.py:67
+msgid "Arranger"
+msgstr "Arranjador"
+
+#: src/backends/file.py:68
+msgid "Disc number"
+msgstr "Número do disco"
+
+#: src/backends/file.py:69
+msgid "Publisher"
+msgstr "Editora"
+
+#: src/backends/file.py:71
+msgid "Language"
+msgstr "Idioma"
+
+#: src/backends/file.py:72
+msgid "Disc subtitle"
+msgstr "Subtítulo do disco"
+
+#: src/backends/file.py:73
+msgid "Website/URL"
+msgstr "Website/URL"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:77
+msgid "Album artist (sort)"
+msgstr "Artista do álbum (ordenação)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:80
+msgid "Album (sort)"
+msgstr "Álbum (ordenação)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:83
+msgid "Composer (sort)"
+msgstr "Compositor (ordenação)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:86
+msgid "Artist (sort)"
+msgstr "Artista (ordenação)"
+
+#. TRANSLATORS: This is a sort tag, as in, a tag that dictates how music
+#. software should treat this tag when sorting.
+#: src/backends/file.py:89
+msgid "Title (sort)"
+msgstr "Título (ordenação)"
+
+#: src/backends/file.py:91
+msgid "MusicBrainz Artist ID"
+msgstr "ID de Artista MusicBrainz"
+
+#: src/backends/file.py:92
+msgid "MusicBrainz Album ID"
+msgstr "ID de Álbum MusicBrainz"
+
+#: src/backends/file.py:93
+msgid "MusicBrainz Album Artist ID"
+msgstr "ID de Artista do Álbum MusicBrainz"
+
+#: src/backends/file.py:94
+msgid "MusicBrainz Release Track ID"
+msgstr "ID de Faixa de Lançamento MusicBrainz"
+
+#: src/backends/file.py:95
+msgid "MusicBrainz Recording ID"
+msgstr "ID de Gravação MusicBrainz"
+
+#: src/backends/file.py:96
+msgid "MusicBrainz Release Group ID"
+msgstr "ID de Grupo de Lançamento MusicBrainz"
+
+#: src/fileview.py:184
+msgid "Select Album Cover Image"
+msgstr "Selecionar imagem de capa do álbum"
+
+#: src/fileview.py:211
+msgid "Save Album Cover To…"
+msgstr "Guardar capa do álbum em…"
+
+#: src/fileview.py:239
+#, python-brace-format
+msgid "Saved cover to {path}"
+msgstr "Capa guardada em {path}"
+
+#: src/fileview.py:262
+#, python-brace-format
+msgid "Removed cover from file"
+msgid_plural "Removed covers from {n} files"
+msgstr[0] "Capa removida do ficheiro"
+msgstr[1] "Capas removidas de {n} ficheiros"
+
+#: src/fileview.py:266
+msgid "Undo"
+msgstr "Anular"
+
+#: src/fileview.py:496
+msgid "More tags"
+msgstr "Mais etiquetas"
+
+#: src/fileview.py:872
+#, python-brace-format
+msgid "1 channel"
+msgid_plural "{n} channels"
+msgstr[0] "1 canal"
+msgstr[1] "{n} canais"
+
+#: src/ui/fileview.ui:11
+msgid "Loading Files…"
+msgstr "A carregar ficheiros…"
+
+#: src/ui/fileview.ui:22
+msgid "Select a File"
+msgstr "Selecione um ficheiro"
+
+#: src/ui/fileview.ui:23
+msgid "Select the files you want to edit from the list of opened files."
+msgstr ""
+"Selecione os ficheiros que deseja editar da lista de ficheiros abertos."
+
+#: src/ui/fileview.ui:66
+msgid "Previous file"
+msgstr "Ficheiro anterior"
+
+#: src/ui/fileview.ui:90
+msgid "Next file"
+msgstr "Ficheiro seguinte"
+
+#: src/ui/albumcoverbutton.ui:90
+msgid "_Choose Image…"
+msgstr "_Escolher imagem…"
+
+#: src/ui/albumcoverbutton.ui:95
+msgid "_Save Image…"
+msgstr "_Guardar imagem…"
+
+#: src/ui/albumcoverbutton.ui:100
+msgid "_Remove Cover"
+msgstr "_Remover capa"
+
+#: src/ui/albumcoverbutton.ui:123
+msgid "Front"
+msgstr "Frente"
+
+#: src/ui/albumcoverbutton.ui:130
+msgid "Back"
+msgstr "Verso"
+
+#: src/tagentry.py:128
+msgid "(multiple values)"
+msgstr "(vários valores)"
+
+#. TRANSLATORS: Placeholder for file sidebar items with no title set
+#: src/filelist.py:116
+msgid "(No title)"
+msgstr "(Sem título)"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:50
+msgid "File has invalid values"
+msgstr "O ficheiro tem valores inválidos"
+
+#. TRANSLATORS: Shown when hovering over the dot next to modified files on the file list
+#: src/ui/filelistitem.ui:60
+msgid "File has unsaved changes"
+msgstr "O ficheiro tem alterações por guardar"
+
+#. TRANSLATORS: Tooltip for button used to remove file from opened file list
+#: src/ui/filelistitem.ui:126
+msgid "Remove from list"
+msgstr "Remover da lista"
+
+#: src/ui/dialogs/closewarning.ui:5 src/ui/dialogs/discardwarning.ui:5
+#: src/ui/dialogs/removaldiscardwarning.ui:5
+msgid "Save Changes?"
+msgstr "Guardar alterações?"
+
+#: src/ui/dialogs/closewarning.ui:6 src/ui/dialogs/discardwarning.ui:6
+#: src/ui/dialogs/removaldiscardwarning.ui:6
+msgid "If you don't save your changes, they will be permanently lost."
+msgstr ""
+"Se não guardar as suas alterações, estas serão permanentemente perdidas."
+
+#: src/ui/dialogs/closewarning.ui:12 src/ui/dialogs/discardwarning.ui:12
+#: src/ui/dialogs/removaldiscardwarning.ui:12
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: src/ui/dialogs/closewarning.ui:13 src/ui/dialogs/removaldiscardwarning.ui:13
+msgid "_Discard and Close"
+msgstr "_Descartar e fechar"
+
+#: src/ui/dialogs/closewarning.ui:14 src/ui/dialogs/removaldiscardwarning.ui:14
+msgid "_Save and Close"
+msgstr "_Guardar e fechar"
+
+#: src/ui/dialogs/discardwarning.ui:13
+msgid "_Discard and Open"
+msgstr "_Descartar e abrir"
+
+#: src/ui/dialogs/discardwarning.ui:14
+msgid "_Save and Open"
+msgstr "_Guardar e abrir"
+
+#: src/ui/dialogs/loadingfailure.ui:5
+msgid "Failed to Load File"
+msgstr "Falha ao carregar ficheiro"
+
+#: src/ui/dialogs/loadingfailure.ui:6
+msgid "Could not load file {f}. Check the logs for more information."
+msgstr ""
+"Não foi possível carregar o ficheiro {f}. Verifique os registos para mais "
+"informações."
+
+#: src/ui/dialogs/loadingfailure.ui:12 src/ui/dialogs/renamefailure.ui:12
+msgid "_OK"
+msgstr "_OK"
+
+#: src/ui/dialogs/renamefailure.ui:5
+msgid "Failed to Rename File"
+msgstr "Falha ao renomear ficheiro"
+
+#: src/ui/dialogs/renamefailure.ui:6
+msgid "Could not rename file {f}. Check the logs for more information."
+msgstr ""
+"Não foi possível renomear o ficheiro {f}. Verifique os registos para mais "
+"informações."
+
+#: src/ui/rename.ui:5
+msgid "Rename Selected Files"
+msgstr "Renomear ficheiros selecionados"
+
+#: src/ui/rename.ui:24 src/ui/identify/identify.ui:26
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: src/ui/rename.ui:44
+msgid "Rename"
+msgstr "Renomear"
+
+#: src/ui/rename.ui:82
+msgid "Failed to rename files. Check the logs for more information."
+msgstr ""
+"Falha ao renomear ficheiros. Verifique os registos para mais informações."
+
+#: src/ui/rename.ui:98
+msgid "Filename pattern"
+msgstr "Padrão do nome do ficheiro"
+
+#: src/ui/rename.ui:106
+msgid "Preview"
+msgstr "Pré-visualização"
+
+#: src/ui/rename.ui:118
+msgid ""
+"For a list of available placeholders, see the <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">list of available tags</a>."
+msgstr ""
+"Para uma lista de substitutos disponíveis, consulte a <a href=\"https://"
+"gitlab.gnome.org/World/eartag/-/blob/main/src/backends/README.md#available-"
+"tags\">lista de etiquetas disponíveis</a>."
+
+#. TRANSLATORS: Tooltip for release switcher button in MusicBrainz identification dialog.
+#. This allows the user to switch between different releases of an album, EP, etc.
+#: src/identify.py:117
+msgid "Other releases"
+msgstr "Outros lançamentos"
+
+#: src/identify.py:492
+msgid "Unidentified Files"
+msgstr "Ficheiros não identificados"
+
+#: src/identify.py:917
+#, python-brace-format
+msgid "Identified {identified} out of {total} tracks"
+msgstr "Identificadas {identified} de {total} faixas"
+
+#: src/ui/identify/identify.ui:5
+msgid "Identify Selected Files"
+msgstr "Identificar ficheiros selecionados"
+
+#: src/ui/identify/identify.ui:48
+msgid "Identify"
+msgstr "Identificar"
+
+#: src/ui/identify/identify.ui:59
+msgid "Apply"
+msgstr "Aplicar"
+
+#: src/ui/identify/identify.ui:92
+msgid ""
+"Track information is provided by <a href=\"https://"
+"musicbrainz.org\">Musicbrainz</a>. Files without metadata are identified "
+"using the <a href=\"https://acoustid.org\">AcoustID</a> service."
+msgstr ""
+"A informação da faixa é fornecida pelo <a href=\"https://"
+"musicbrainz.org\">Musicbrainz</a>. Ficheiros sem metadados são identificados "
+"através do serviço <a href=\"https://acoustid.org\">AcoustID</a>."
+
+#: src/ui/identify/filerow.ui:24
+msgid "File could not be identified"
+msgstr "Não foi possível identificar o ficheiro"
+
+#: src/ui/settings.ui:9
+msgid "File identification"
+msgstr "Identificação de ficheiros"
+
+#: src/ui/settings.ui:14
+msgid "MusicBrainz confidence treshold"
+msgstr "Limiar de confiança do MusicBrainz"
+
+#: src/ui/settings.ui:15
+msgid ""
+"Minimum confidence percentage required for a MusicBrainz search result to be "
+"evaluated"
+msgstr ""
+"Percentagem de confiança mínima exigida para que um resultado de pesquisa do "
+"MusicBrainz seja avaliado"
+
+#: src/ui/settings.ui:36
+msgid "AcoustID confidence treshold"
+msgstr "Limiar de confiança do AcoustID"
+
+#: src/ui/settings.ui:37
+msgid ""
+"Minimum confidence percentage required for an AcoustID lookup result to be "
+"evaluated"
+msgstr ""
+"Percentagem de confiança mínima exigida para que um resultado de consulta do "
+"AcoustID seja avaliado"
+
+#: src/ui/settings.ui:58
+msgid "Downloaded cover art size"
+msgstr "Tamanho da capa descarregada"
+
+#: src/ui/settings.ui:63
+msgid "Do not download covers"
+msgstr "Não descarregar capas"
+
+#: src/ui/settings.ui:64
+msgid "250 px"
+msgstr "250 px"
+
+#: src/ui/settings.ui:65
+msgid "500 px"
+msgstr "500 px"
+
+#: src/ui/settings.ui:66
+msgid "1200 px"
+msgstr "1200 px"
+
+#: src/ui/settings.ui:67
+msgid "Maximum size"
+msgstr "Tamanho máximo"
+
+#: src/ui/shortcuts.ui:12
+msgctxt "shortcut window"
+msgid "Files"
+msgstr "Ficheiros"
+
+#: src/ui/shortcuts.ui:16
+msgctxt "shortcut window"
+msgid "Open files"
+msgstr "Abrir ficheiros"
+
+#: src/ui/shortcuts.ui:23
+msgctxt "shortcut window"
+msgid "Open folder"
+msgstr "Abrir pasta"
+
+#: src/ui/shortcuts.ui:30
+msgctxt "shortcut window"
+msgid "Save all modified files"
+msgstr "Guardar todos os ficheiros modificados"
+
+#: src/ui/shortcuts.ui:38
+msgctxt "shortcut window"
+msgid "Sidebar"
+msgstr "Barra lateral"
+
+#: src/ui/shortcuts.ui:42
+msgctxt "shortcut window"
+msgid "Select previous file in sidebar"
+msgstr "Selecionar ficheiro anterior na barra lateral"
+
+#: src/ui/shortcuts.ui:49
+msgctxt "shortcut window"
+msgid "Select next file in sidebar"
+msgstr "Selecionar ficheiro seguinte na barra lateral"
+
+#: src/ui/shortcuts.ui:56
+msgctxt "shortcut window"
+msgid "Select all files in sidebar"
+msgstr "Selecionar todos os ficheiros na barra lateral"
+
+#: src/ui/shortcuts.ui:63
+msgctxt "shortcut window"
+msgid "Remove selected files from sidebar"
+msgstr "Remover ficheiros selecionados da barra lateral"
+
+#: src/ui/shortcuts.ui:64
+msgctxt "shortcut window"
+msgid "Closes the window if no files are present."
+msgstr "Fecha a janela se não existirem ficheiros presentes."
+
+#: src/ui/shortcuts.ui:72
+msgctxt "shortcut window"
+msgid "Other"
+msgstr "Outros"
+
+#: src/ui/shortcuts.ui:76
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Atalhos de teclado"
