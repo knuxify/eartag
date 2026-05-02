@@ -31,6 +31,8 @@ class EartagFileMutagenVorbis(EartagFileMutagenCommon):
     supported_extra_tags = (
         "composer", "copyright", "encodedby", "mood", "discnumber", "publisher",
         "isrc",
+        # Matching Picard and TagLib behavior:
+        "discsubtitle",
 
         "albumartistsort", "albumsort", "composersort", "artistsort", "titlesort",
 
